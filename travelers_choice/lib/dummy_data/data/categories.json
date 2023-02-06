@@ -1,0 +1,22 @@
+[
+  {
+    "name": "Attraction",
+    "icon": "assets/images/apps/shopping2/icons/attraction.png"
+  },
+  {
+    "name": "Flight",
+    "icon": "assets/images/apps/shopping2/icons/flight.png"
+  },
+  {
+    "name": "Hotel",
+    "icon": "assets/images/apps/shopping2/icons/hotel.png"
+  },
+  {
+    "name": "Visa",
+    "icon": "assets/images/apps/shopping2/icons/visa.png"
+  },
+  {
+    "name": "Transfer",
+    "icon": "assets/images/apps/shopping2/icons/card.png"
+  }
+]
