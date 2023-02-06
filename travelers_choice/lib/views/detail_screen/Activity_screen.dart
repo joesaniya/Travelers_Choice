@@ -7,11 +7,19 @@ import 'package:hotel_travel/extensions/extensions.dart';
 
 import '../../controllers/Activity_controller.dart';
 import '../../loading_effect.dart';
-import '../../models/cart.dart';
+import '../../models/atteraction_model.dart';
 import '../../theme/app_theme.dart';
 
 class ActivityScreen extends StatefulWidget {
-  const ActivityScreen({Key? key}) : super(key: key);
+  // final DetailattractionModal Excursions;
+  // List<DetailattractionModal> Excursions;
+  // final String excursions;
+  List<Activity> excursions;
+  ActivityScreen(
+      // this.Excursions,
+      this.excursions
+      //  {required List<DetailattractionModal> Excursions}
+      );
 
   @override
   _ActivityScreenState createState() => _ActivityScreenState();
@@ -30,6 +38,7 @@ class _ActivityScreenState extends State<ActivityScreen>
     theme = AppTheme.shoppingTheme;
 
     controller = FxControllerStore.put(ActivityController(this));
+    print(controller.person_count);
   }
 
   @override
@@ -41,12 +50,46 @@ class _ActivityScreenState extends State<ActivityScreen>
         });
   }
 
+  Widget _buildSelect() {
+    if (controller.selectedtour.isNotEmpty) {
+      return Container(
+          color: Colors.blue,
+          child: Column(
+            children: [
+              Column(
+                  children: controller.selectedtour.map((Activity tour) {
+                return Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(tour.name.toString()),
+                    Text(controller.getadultTotalPrice(tour)),
+                  ],
+                );
+              }).toList()),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text('Total Amount:'),
+                  Text(controller.grandTotal.toString())
+                ],
+              )
+            ],
+          ));
+    } else {
+      return const SizedBox();
+    }
+  }
+
   Widget _buildCartList() {
     List<Widget> list = [];
+    log('message');
+    log(widget.excursions.length.toString());
 
-    for (Cart cart in controller.carts!) {
-      bool increaseAble = controller.increaseAble(cart);
-      bool decreaseAble = controller.decreaseAble(cart);
+    // for (Cart cart in controller.carts!)
+    for (var cart in widget.excursions) {
+      // bool increaseAble = controller.increaseAble(cart);
+      // bool decreaseAble = controller.decreaseAble(cart);
+
       list.add(FadeTransition(
         opacity: controller.fadeAnimation,
         child: Column(
@@ -59,9 +102,11 @@ class _ActivityScreenState extends State<ActivityScreen>
                 InkWell(
                   onTap: () {
                     clickedExcursion = !clickedExcursion;
+                    controller.updateTours(cart);
+
                     setState(() {});
                     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                        content: clickedExcursion
+                        content: !clickedExcursion
                             ? const Text("Added this Excursion!!")
                             : const Text("Removed this Excursion!!")));
                     // Navigator.pop(context);
@@ -70,7 +115,7 @@ class _ActivityScreenState extends State<ActivityScreen>
                     paddingAll: 4,
                     color: theme.colorScheme.onPrimary,
                     borderColor: Colors.black,
-                    child: clickedExcursion
+                    child: !controller.selectedtour.contains(cart)
                         ? Icon(
                             FeatherIcons.plus,
                             color: Colors.indigo.withAlpha(200),
@@ -112,7 +157,7 @@ class _ActivityScreenState extends State<ActivityScreen>
                           fontWeight: 600,
                         ),
                         FxText.bodyMedium(
-                          'Ferrari',
+                          cart.name,
                           fontWeight: 700,
                         ),
                       ],
@@ -271,10 +316,13 @@ class _ActivityScreenState extends State<ActivityScreen>
                         Row(
                           children: [
                             FxContainer(
-                              onTap: () {
-                                // controller.increment(controller.product);
+                              onTap: () async {
+                                controller.increment(cart.id,
+                                    double.parse(cart.adultPrice.toString()));
+                                setState(() {});
                               },
-                              bordered: controller.increaseAble(cart),
+                              bordered: controller.getpersonsCount(cart.id),
+                              //  controller.increaseAble(cart),
                               paddingAll: 4,
                               borderRadiusAll: 2,
                               border:
@@ -294,29 +342,32 @@ class _ActivityScreenState extends State<ActivityScreen>
                             FxSpacing.width(15),
                             FxSpacing.height(8),
                             FxText.bodyMedium(
-                              '1',
+                              controller.getCount(cart.id),
                               fontWeight: 700,
                             ),
                             FxSpacing.height(8),
                             FxSpacing.width(15),
                             FxContainer(
-                              onTap: () {
-                                controller.decrement;
+                              onTap: () async {
+                                controller.decrement(cart.id,
+                                    double.parse(cart.adultPrice.toString()));
+                                setState(() {});
                               },
                               paddingAll: 4,
                               borderRadiusAll: 2,
-                              bordered: controller.decreaseAble(cart),
+                              bordered: controller.getpersonsCount(cart.id),
+                              //  controller.decreaseAble(cart),
                               border: Border.all(
                                   color:
                                       const Color(0xff1529e8).withAlpha(120)),
-                              color: controller.decreaseAble(cart)
+                              color: controller.getpersonsCount(cart.id)
                                   ? const Color(0xff1529e8).withAlpha(28)
                                   : theme.colorScheme.onBackground
                                       .withAlpha(200),
                               child: Icon(
                                 FeatherIcons.minus,
                                 size: 12,
-                                color: controller.decreaseAble(cart)
+                                color: controller.getpersonsCount(cart.id)
                                     ? const Color(0xff1529e8)
                                     // theme.colorScheme.primary
                                     : theme.colorScheme.onPrimary,
@@ -335,7 +386,7 @@ class _ActivityScreenState extends State<ActivityScreen>
                           fontWeight: 600,
                         ),
                         FxText.bodyMedium(
-                          '345.00 AED',
+                          controller.getadultTotalPrice(cart),
                           // 'IMG Worlds of Adventure',
                           fontWeight: 700,
                         ),
@@ -907,6 +958,7 @@ class _ActivityScreenState extends State<ActivityScreen>
             // _billingWidget(),
             _buildCartList(),
             FxSpacing.height(20),
+            _buildSelect(),
             FadeTransition(
               opacity: controller.fadeAnimation,
               child: FxButton.block(

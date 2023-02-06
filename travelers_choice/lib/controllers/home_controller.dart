@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
@@ -98,6 +99,28 @@ class HomeController extends FxController {
 
   void goBack() {
     Navigator.pop(context);
+  }
+
+  String? currencies, countryCode;
+
+  String? currency() {
+    if (currencies != null) {
+      List<dynamic> countriesList = jsonDecode(currencies!);
+      String? isoCode;
+
+      log("Country list => $countriesList");
+      print('''
+Country Code => $countryCode
+''');
+      for (var val in countriesList) {
+        if (val['country']['_id'] == countryCode) {
+          isoCode = val['isocode'];
+          break;
+        }
+      }
+      return isoCode;
+    }
+    return null;
   }
 
   Future<bool> onWillPop() async {

@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutx/flutx.dart';
+import 'package:hotel_travel/models/atteraction_model.dart';
 import 'package:intl/intl.dart';
 
 import '../models/cart.dart';
@@ -15,11 +16,59 @@ class ActivityController extends FxController {
   final List<String> TransferCodes = ['without'];
   String? selectedtransfer;
   bool addCart = false;
-  bool clickedExcursion = false;
-
+  double? adultTotalPrice;
   List<Cart>? carts;
 
-  // bool increaseAble(Product product) {
+  // int person_count = 1;
+  List<Map<String, dynamic>> person_count = [];
+  List<Activity> selectedtour = [];
+  double grandTotal = 0;
+
+  // void add() {
+  //   person_count++;
+  //   update();
+  //   // setState(() {
+  //   //   _n++;
+  //   // });
+  // }
+
+  // void minus() {
+  //   if (person_count != 1) person_count--;
+  //   update();
+  //   // setState(() {
+  //   //   if (_n != 0) _n--;
+  //   // });
+  // }
+
+  void updateTours(Activity tour) {
+    if (!selectedtour.contains(tour)) {
+      if (person_count.isEmpty) {
+        selectedtour.add(tour);
+      } else {
+        for (var val in person_count) {
+          if (val['id'] == tour.id) {
+            tour.adultPrice = val['price'];
+            selectedtour.add(tour);
+            break;
+          } else {
+            selectedtour.add(tour);
+          }
+        }
+      }
+    } else {
+      selectedtour.remove(tour);
+    }
+    getGrandTotal();
+  }
+
+  void getGrandTotal() {
+    grandTotal = 0;
+    for (var amount in person_count) {
+      grandTotal += amount['price'];
+      print("Grand Total =>> $grandTotal");
+    }
+    update();
+  } // bool increaseAble(Product product) {
   //   return product.person < 9;
   //   // return product.person < product.person;
   //   // return cart.quantity < cart.product.quantity;
@@ -42,26 +91,113 @@ class ActivityController extends FxController {
   //   // calculateBilling();
   //   update();
   // }
-  bool increaseAble(Cart cart) {
-    return cart.person < cart.product.person;
+
+  //todo
+  void incrementperson(personCount) {
+    if (!increaseAble(personCount)) return;
+    personCount++;
+    // calculateBilling();
+    update();
+  }
+
+  bool increaseAble1(personCount) {
+    return personCount;
+  }
+
+  //
+  bool increaseAble(Activity cart) {
+    // return cart.person < cart.product.person;
+    return true;
   }
 
   bool decreaseAble(Cart cart) {
     return cart.person > 1;
   }
 
-  void increment(Cart cart) {
-    if (!increaseAble(cart)) return;
-    cart.person++;
-    // calculateBilling();
-    update();
+  void increment(String id, double adultPrice) {
+    if (person_count.isEmpty) {
+      person_count.add({'id': id, 'count': 2, 'price': adultPrice});
+      calculateBilling(id, adultPrice);
+    } else {
+      for (var e in person_count) {
+        if (e['id'] == id) {
+          if (e['count'] < 1) {
+            return;
+          } else {
+            e['count']++;
+          }
+          calculateBilling(id, adultPrice);
+          print("personCount =>> $person_count $person_count");
+          update();
+        } else {
+          if (!person_count
+              .contains({'id': id, 'count': 2, 'price': adultPrice})) {
+            person_count.add({'id': id, 'count': 2, 'price': adultPrice});
+            calculateBilling(id, adultPrice);
+          }
+        }
+      }
+    }
   }
 
-  void decrement(Cart cart) {
-    if (!decreaseAble(cart)) return;
-    cart.person--;
-    // calculateBilling();
-    update();
+  void decrement(String id, double adultPrice) {
+    for (var e in person_count) {
+      if (e['id'] == id) {
+        if (e['count'] < 1) {
+          return;
+        } else {
+          e['count']--;
+        }
+        calculateBilling(id, adultPrice);
+        print("personCount =>> $person_count $person_count");
+        update();
+      }
+    }
+  }
+
+  bool getpersonsCount(String id) {
+    bool value = false;
+    person_count.map((e) {
+      if (e['id'] == id) {
+        value = e['count'] != 1;
+      } else {
+        value = false;
+      }
+    });
+    return value;
+  }
+
+  String getCount(String id) {
+    String? count;
+    for (Map<String, dynamic> values in person_count) {
+      if (values['id'] == id) {
+        count = values['count'].toString();
+        break;
+      }
+    }
+    return count.toString() == 'null' ? "1" : count.toString();
+  }
+
+  String getadultTotalPrice(Activity toursData) {
+    String? totalPrice;
+
+    for (var tour in person_count) {
+      if (tour['id'] == toursData.id) {
+        totalPrice = tour['price'].toString();
+        break;
+      }
+    }
+    return totalPrice ?? toursData.adultPrice.toString();
+  }
+
+  calculateBilling(String id, double adultPrice) {
+    for (var e in person_count) {
+      if (e['id'] == id) {
+        adultTotalPrice = double.parse((e['count'] * adultPrice).toString());
+        e['price'] = adultTotalPrice;
+      }
+    }
+    getGrandTotal();
   }
 
   late Animation<Offset> animation, dateAnimation;

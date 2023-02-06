@@ -1,12 +1,13 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutx/flutx.dart';
+import 'package:hotel_travel/views/detail_screen/Activity_screen.dart';
 import 'package:intl/intl.dart';
 
 import '../models/atteraction_model.dart';
-import '../views/checkout_screen.dart';
 import '../../controllers/attraction_Controller.dart';
 
 class DetailController extends FxController {
@@ -75,6 +76,29 @@ class DetailController extends FxController {
     '19',
     '20'
   ];
+
+
+   String? currencies, countryCode;
+
+  String? currency() {
+    if (currencies != null) {
+      List<dynamic> countriesList = jsonDecode(currencies!);
+      String? isoCode;
+
+      log("Country list => $countriesList");
+      print('''
+Country Code => $countryCode
+''');
+      for (var val in countriesList) {
+        if (val['country']['_id'] == countryCode) {
+          isoCode = val['isocode'];
+          break;
+        }
+      }
+      return isoCode;
+    }
+    return null;
+  }
   Color appBarColor = Colors.transparent;
 
   changeAppBarColor(ScrollController scrollController) {
@@ -306,7 +330,7 @@ class DetailController extends FxController {
   //   update();
   // }
 
-  Future<void> bookNow() async {
+  Future<void> bookNow(DetailattractionModal excursions) async {
     animationController.forward();
     await Future.delayed(const Duration(seconds: 1));
     Navigator.of(context, rootNavigator: true).push(PageRouteBuilder(
@@ -321,17 +345,41 @@ class DetailController extends FxController {
               opacity: animation,
               child: child,
             ),
-        pageBuilder: (_, __, ___) => const CheckOutScreen()));
+        pageBuilder: (_, __, ___) =>  ActivityScreen(excursions.activities)
+        // ActivityScreen(
+        //   Excursions: widget.detailattraction
+        //   )
+          ));
   }
+
+  // void goToSingleProduct(Datum product) {
+  //   log(product.id);
+  //   log('message');
+  //   Navigator.of(context, rootNavigator: true).push(PageRouteBuilder(
+  //       transitionDuration: const Duration(milliseconds: 500),
+  //       transitionsBuilder: (
+  //         BuildContext context,
+  //         Animation<double> animation,
+  //         Animation<double> secondaryAnimation,
+  //         Widget child,
+  //       ) =>
+  //           FadeTransition(
+  //             opacity: animation,
+  //             child: child,
+  //           ),
+  //       pageBuilder: (_, __, ___) => DetailScreen(product.id)
+  //       // SingleProductScreen(product.id)
+  //       ));
+  // }
+
+
+
 
   void goBack() {
     Navigator.pop(context);
   }
 
-  void selectSize(String size) {
-    selectedSize = size;
-    update();
-  }
+ 
 
   // void fetchData() async {
   //   log('fetch data');

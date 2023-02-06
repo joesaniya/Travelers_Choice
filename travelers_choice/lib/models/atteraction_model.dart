@@ -220,7 +220,7 @@ class Activity {
   String name;
   String facilities;
   int adultAgeLimit;
-  int adultPrice;
+  double adultPrice;
   int childAgeLimit;
   int childPrice;
   double infantAgeLimit;

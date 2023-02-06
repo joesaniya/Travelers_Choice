@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:flutx/flutx.dart';
 import 'package:hotel_travel/controllers/Detail_controller.dart';
 import 'package:hotel_travel/views/detail_screen/review_Screen.dart';
@@ -86,7 +87,7 @@ class _DetailScreenState extends State<DetailScreen>
             padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 15),
             child: FxButton.block(
               onPressed: () {
-                controller.bookNow();
+                controller.bookNow(controller.detailattraction.first);
                 // cartController.carts.add(Cart());
               },
               backgroundColor: const Color(0xff1529e8),
@@ -95,7 +96,7 @@ class _DetailScreenState extends State<DetailScreen>
 
               elevation: 0,
               child: FxText.bodyMedium(
-                'Add to Cart',
+                'View Tours',
                 color: Colors.white,
                 // color: customTheme.estateOnPrimary,
                 fontWeight: 700,
@@ -304,6 +305,7 @@ class _DetailScreenState extends State<DetailScreen>
                         FxText.bodyMedium("Price", fontWeight: 500),
                         FxText.bodyMedium(
                             // "350 \$",
+                            // '${controller.detailattraction.first.activities.first.adultPrice} ${controller.currency() ?? '\$'}',
                             '${controller.detailattraction.first.activities.first.adultPrice} AED',
                             // controller.product.price.toString(),
                             fontWeight: 700)
@@ -320,7 +322,7 @@ class _DetailScreenState extends State<DetailScreen>
                             children: <Widget>[
                               Hero(
                                 tag:
-                                    "product_image_${controller.detailattraction.first.averageRating}",
+                                    "product_raing_${controller.detailattraction.first.averageRating}",
                                 child: FxText.bodyMedium(
                                     controller
                                         .detailattraction.first.averageRating
@@ -329,7 +331,9 @@ class _DetailScreenState extends State<DetailScreen>
                               ),
                               Container(
                                   margin: const EdgeInsets.only(left: 4),
-                                  child: FxStarRating(rating: 4.1))
+                                  child: FxStarRating(
+                                      rating: controller.detailattraction.first
+                                          .averageRating))
                             ],
                           )
                         ],
@@ -422,23 +426,35 @@ class _DetailScreenState extends State<DetailScreen>
                           // itemCount: controller.product.description.length,
                           physics: const NeverScrollableScrollPhysics(),
                           itemBuilder: (context, index) {
-                            return const Text('Description');
-                            // return StepTile(
-                            //   // data: widget.data.tutorial[index],
-                            //   data: widget.product,
+                            // return Html(
+                            //   data: controller
+                            //       .detailattraction.first.sections.first.body
+                            //       .toString(),
+                            //   style: {
+                            //     'p': Style(color: Colors.grey),
+                            //     'h4': Style(color: Colors.redAccent)
+                            //   },
                             // );
+                            return const Text('data');
                           },
                         ),
                         ListView.builder(
                           shrinkWrap: true,
                           padding: EdgeInsets.zero,
-                          itemCount: controller.detailattraction.first.sections
-                              .first.body.length,
+                          // itemCount: controller.detailattraction.first.sections
+                          //     .first.body.length,
+                          itemCount: 1,
                           // itemCount: controller.product.description.length,
                           physics: const NeverScrollableScrollPhysics(),
                           itemBuilder: (context, index) {
-                            return Text(controller
-                                .detailattraction.first.sections.first.body);
+                            return Html(
+                              data: controller
+                                  .detailattraction.first.sections.first.body,
+                              style: {
+                                'p': Style(color: Colors.black),
+                              },
+                            );
+
                             // return StepTile(
                             //   // data: widget.data.tutorial[index],
                             //   data: widget.product,
@@ -448,22 +464,24 @@ class _DetailScreenState extends State<DetailScreen>
                         ListView.builder(
                           shrinkWrap: true,
                           padding: EdgeInsets.zero,
-                          itemCount: controller
-                              .detailattraction.first.highlights.length,
+                          // itemCount: controller
+                          //     .detailattraction.first.highlights.length,
+                          itemCount: 1,
                           physics: const NeverScrollableScrollPhysics(),
                           itemBuilder: (context, index) {
-                            return Text(controller
-                                .detailattraction.first.highlights
-                                .toString());
+                            return Html(
+                              data: controller.detailattraction.first.highlights
+                                  .toString(),
+                              style: {
+                                'p': Style(color: Colors.black),
+                                'h4': Style(color: Colors.redAccent)
+                              },
+                            );
                             // return Html(
                             //   data: ${controller
                             //     .detailattraction.first.highlights
                             //     .toString()};,
                             //   tagsList: Html.tags..addAll(["bird", "flutter"]),
-                            // );
-                            // return StepTile(
-                            //   // data: widget.data.tutorial[index],
-                            //   data: widget.product,
                             // );
                           },
                         ),

@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
@@ -30,31 +29,11 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
 
   late HomeController controller;
   String _tabbed = '1';
-  String? name, currencies, countryCode;
+  String? name;
   SharedPreferences? sharedPreferences;
 
   bool isLoading = true;
   List<AllattractionModal> allattractionList = <AllattractionModal>[];
-
-  String? currency() {
-    if (currencies != null) {
-      List<dynamic> countriesList = jsonDecode(currencies!);
-      String? isoCode;
-
-      log("Country list => $countriesList");
-      print('''
-Country Code => $countryCode
-''');
-      for (var val in countriesList) {
-        if (val['country']['_id'] == countryCode) {
-          isoCode = val['isocode'];
-          break;
-        }
-      }
-      return isoCode;
-    }
-    return null;
-  }
 
   getAttraction() async {
     await AuthService().getCountry();
@@ -67,9 +46,9 @@ Country Code => $countryCode
           allattractionList.add(value);
 
           setState(() {
-            countryCode = sharedPreferences!
+            controller.countryCode = sharedPreferences!
                 .getString(AppConstants.KEY_ACCESS_TOKEN_countryId);
-            currencies = sharedPreferences!
+            controller.currencies = sharedPreferences!
                 .getString(AppConstants.KEY_ACCESS_TOKEN_CurrenciesList);
           });
         }
@@ -237,8 +216,8 @@ Country Code => $countryCode
                         Hero(
                           tag: "${product.duration}",
                           child: FxText.labelLarge(
-                            // '\$' + product.price.toString(),
-                            "${product.duration} AED",
+                            '${controller.currency() ?? '\$'} ${product.activity.adultPrice.toString()}',
+                            // "${product.duration} AED",
                             // "\$" + product.price.toString() + "/hour",
                             fontWeight: 700,
                           ),
@@ -259,7 +238,7 @@ Country Code => $countryCode
                                   ),
                                   FxSpacing.width(4),
                                   FxText.bodySmall(
-                                    '4.5',
+                                    product.averageRating.toString(),
                                     fontWeight: 600,
                                     color: Colors.black,
                                   ),
@@ -497,7 +476,7 @@ Country Code => $countryCode
                       ],
                     ),
                     FxText(
-                      '${currency() ?? '\$'} ${product.activity.adultPrice.toString()}',
+                      '${controller.currency() ?? '\$'} ${product.activity.adultPrice.toString()}',
                       color: const Color(0xff1529e8),
                     ),
                   ],
