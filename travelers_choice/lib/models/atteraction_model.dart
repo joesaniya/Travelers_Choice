@@ -222,9 +222,9 @@ class Activity {
   int adultAgeLimit;
   double adultPrice;
   int childAgeLimit;
-  int childPrice;
+  double childPrice;
   double infantAgeLimit;
-  int infantPrice;
+  double infantPrice;
   bool isVat;
   int vat;
   String base;
@@ -246,11 +246,11 @@ class Activity {
         name: json["name"],
         facilities: json["facilities"],
         adultAgeLimit: json["adultAgeLimit"],
-        adultPrice: json["adultPrice"],
+        adultPrice: json["adultPrice"]?.toDouble(),
         childAgeLimit: json["childAgeLimit"],
-        childPrice: json["childPrice"],
+        childPrice: json["childPrice"]?.toDouble(),
         infantAgeLimit: json["infantAgeLimit"]?.toDouble(),
-        infantPrice: json["infantPrice"],
+        infantPrice: json["infantPrice"]?.toDouble(),
         isVat: json["isVat"],
         vat: json["vat"],
         base: json["base"],

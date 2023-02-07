@@ -77,8 +77,7 @@ class DetailController extends FxController {
     '20'
   ];
 
-
-   String? currencies, countryCode;
+  String? currencies, countryCode;
 
   String? currency() {
     if (currencies != null) {
@@ -99,6 +98,7 @@ Country Code => $countryCode
     }
     return null;
   }
+
   Color appBarColor = Colors.transparent;
 
   changeAppBarColor(ScrollController scrollController) {
@@ -345,11 +345,11 @@ Country Code => $countryCode
               opacity: animation,
               child: child,
             ),
-        pageBuilder: (_, __, ___) =>  ActivityScreen(excursions.activities)
+        pageBuilder: (_, __, ___) => ActivityScreen(excursions.activities)
         // ActivityScreen(
         //   Excursions: widget.detailattraction
         //   )
-          ));
+        ));
   }
 
   // void goToSingleProduct(Datum product) {
@@ -372,14 +372,9 @@ Country Code => $countryCode
   //       ));
   // }
 
-
-
-
   void goBack() {
     Navigator.pop(context);
   }
-
- 
 
   // void fetchData() async {
   //   log('fetch data');
