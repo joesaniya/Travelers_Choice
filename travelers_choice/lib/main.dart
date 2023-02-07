@@ -4,6 +4,7 @@
 * */
 
 import 'package:hotel_travel/views/auth_container.dart';
+import 'package:hotel_travel/views/visa_screen.dart';
 
 import '/localizations/app_localization_delegate.dart';
 import '/localizations/language.dart';

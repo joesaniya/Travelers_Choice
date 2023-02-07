@@ -6,6 +6,7 @@ import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutx/flutx.dart';
 import 'package:hotel_travel/services/auth_service.dart';
 import 'package:hotel_travel/views/search_screens/search_place.dart';
+import 'package:hotel_travel/views/visa_screen.dart';
 import 'package:iconsax/iconsax.dart';
 
 import '../controllers/attraction_Controller.dart';
@@ -793,6 +794,7 @@ Country Code => $countryCode
                         log('flight');
                         _tabbed = '4';
                         setState(() {});
+                        Navigator.push(context, MaterialPageRoute(builder: (context)=> VisaScreen()));
                       },
                       child: Container(
                         width: 120,
