@@ -229,8 +229,8 @@ class Activity {
   int vat;
   String base;
   bool isTransferAvailable;
-  int privateTransferPrice;
-  int sharedTransferPrice;
+  double privateTransferPrice;
+  double sharedTransferPrice;
   bool isActive;
   DateTime createdAt;
   DateTime updatedAt;
@@ -255,8 +255,8 @@ class Activity {
         vat: json["vat"],
         base: json["base"],
         isTransferAvailable: json["isTransferAvailable"],
-        privateTransferPrice: json["privateTransferPrice"],
-        sharedTransferPrice: json["sharedTransferPrice"],
+        privateTransferPrice: json["privateTransferPrice"]?.toDouble(),
+        sharedTransferPrice: json["sharedTransferPrice"]?.toDouble(),
         isActive: json["isActive"],
         createdAt: DateTime.parse(json["createdAt"]),
         updatedAt: DateTime.parse(json["updatedAt"]),

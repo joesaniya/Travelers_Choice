@@ -178,10 +178,10 @@ class _ActivityScreenState extends State<ActivityScreen>
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     // FxSpacing.height(10),
-                    FxText.bodyMedium(
+                    FxText.bodyLarge(
                       'Tour Options',
                       muted: true,
-                      fontWeight: 700,
+                      fontWeight: 900,
                     ),
                     FxSpacing.height(20),
                     Row(
@@ -217,96 +217,110 @@ class _ActivityScreenState extends State<ActivityScreen>
                         //   fontWeight: 700,
                         // ),
                         Expanded(child: Container()),
-                        Container(
-                          decoration: BoxDecoration(
-                              color: theme.cardTheme.color,
-                              // color: const Color(0xff1529e8),
-                              borderRadius: BorderRadius.circular(8)),
-                          height: 50,
-                          width: 150,
-                          child: DropdownButtonHideUnderline(
-                            child: DropdownButton2(
-                              isExpanded: true,
-                              hint: Row(
-                                children: [
-                                  Expanded(
-                                    child: FxText.labelLarge(
-                                      "Code",
-                                      fontWeight: 600,
-                                      color: Colors.black,
-                                      // color: theme.colorScheme.onPrimary,
-                                      letterSpacing: 0.4,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              value: controller.selectedtransfer,
-
-                              // hint: Center(
-                              //   child: FxText.labelLarge(
-                              //     "Choose",
-                              //     fontWeight: 600,
-                              //     color: Colors.black,
-                              //     // color: theme.colorScheme.onPrimary,
-                              //     letterSpacing: 0.4,
-                              //   ),
-                              // ),
-                              items:
-                                  controller.TransferCodes.map((String value) {
-                                return DropdownMenuItem<String>(
-                                    value: value,
-                                    child: Center(
-                                      child: Text(
-                                        value,
-                                        style: FxTextStyle.bodyMedium(),
-                                      ),
-                                    ));
-                              }).toList(),
-                              onChanged: (value) {
-                                setState(() {
-                                  controller.selectedtransfer =
-                                      value.toString();
-                                });
-                              },
-
-                              icon: const Icon(Icons.arrow_drop_down),
-                              iconSize: 20,
-                              iconEnabledColor: Colors.black,
-                              iconDisabledColor: Colors.black,
-                              buttonHeight: 30,
-                              buttonWidth: 200,
-                              buttonPadding: const EdgeInsets.only(
-                                  left: 14, right: 14, top: 4, bottom: 4),
-                              dropdownDecoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(4),
-                                color: Colors.white,
-                              ),
-                              buttonDecoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                                // border: Border.all(
-                                //     color: AppColor
-                                //         .Secondary1,
-                                //     width: 1),
-                                // color: const Color(0xff2C2138),
+                        GestureDetector(
+                          onTap: () {
+                            log('transfer clicked');
+                            log(controller.selectedtransfer == 'private'
+                                    ? cart.privateTransferPrice.toString()
+                                    : cart.sharedTransferPrice.toString()
+                                // controller.selectedtransfer=='Without'?0:controller.selectedtransfer=='private'?cart.privateTransferPrice:controller.selectedtransfer=='shared'?cart.sharedTransferPrice:0
+                                // cart.privateTransferPrice.toString()
+                                );
+                            setState(() {});
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
                                 color: theme.cardTheme.color,
-                              ),
-                              // .
-                              // copyWith(
-                              //   boxShadow:
-                              //       kElevationToShadow[
-                              //           2],
-                              // ),
-                              itemHeight: 40,
-                              // itemWidth: 200,
-                              itemPadding:
-                                  const EdgeInsets.only(left: 14, right: 14),
-                              dropdownMaxHeight: 200,
-                              dropdownPadding: null,
+                                // color: const Color(0xff1529e8),
+                                borderRadius: BorderRadius.circular(8)),
+                            height: 50,
+                            width: 150,
+                            child: DropdownButtonHideUnderline(
+                              child: DropdownButton2(
+                                isExpanded: true,
+                                hint: Row(
+                                  children: [
+                                    Expanded(
+                                      child: FxText.labelLarge(
+                                        // "Code",
+                                        controller.TransferCodes[0],
+                                        // controller.selectedtransfer![0],
+                                        fontWeight: 600,
+                                        color: Colors.black,
+                                        // color: theme.colorScheme.onPrimary,
+                                        letterSpacing: 0.4,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                value: controller.selectedtransfer,
 
-                              scrollbarRadius: const Radius.circular(40),
-                              scrollbarThickness: 2,
-                              scrollbarAlwaysShow: true,
-                              offset: const Offset(0, 0),
+                                // hint: Center(
+                                //   child: FxText.labelLarge(
+                                //     "Choose",
+                                //     fontWeight: 600,
+                                //     color: Colors.black,
+                                //     // color: theme.colorScheme.onPrimary,
+                                //     letterSpacing: 0.4,
+                                //   ),
+                                // ),
+                                items: controller.TransferCodes.map(
+                                    (String value) {
+                                  return DropdownMenuItem<String>(
+                                      value: value,
+                                      child: Center(
+                                        child: Text(
+                                          value,
+                                          style: FxTextStyle.bodyMedium(),
+                                        ),
+                                      ));
+                                }).toList(),
+                                onChanged: (value) {
+                                  setState(() {
+                                    controller.selectedtransfer =
+                                        value.toString();
+                                  });
+                                },
+
+                                icon: const Icon(Icons.arrow_drop_down),
+                                iconSize: 20,
+                                iconEnabledColor: Colors.black,
+                                iconDisabledColor: Colors.black,
+                                buttonHeight: 30,
+                                buttonWidth: 200,
+                                buttonPadding: const EdgeInsets.only(
+                                    left: 14, right: 14, top: 4, bottom: 4),
+                                dropdownDecoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(4),
+                                  color: Colors.white,
+                                ),
+                                buttonDecoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  // border: Border.all(
+                                  //     color: AppColor
+                                  //         .Secondary1,
+                                  //     width: 1),
+                                  // color: const Color(0xff2C2138),
+                                  color: theme.cardTheme.color,
+                                ),
+                                // .
+                                // copyWith(
+                                //   boxShadow:
+                                //       kElevationToShadow[
+                                //           2],
+                                // ),
+                                itemHeight: 40,
+                                // itemWidth: 200,
+                                itemPadding:
+                                    const EdgeInsets.only(left: 14, right: 14),
+                                dropdownMaxHeight: 200,
+                                dropdownPadding: null,
+
+                                scrollbarRadius: const Radius.circular(40),
+                                scrollbarThickness: 2,
+                                scrollbarAlwaysShow: true,
+                                offset: const Offset(0, 0),
+                              ),
                             ),
                           ),
                         ),
@@ -443,10 +457,10 @@ class _ActivityScreenState extends State<ActivityScreen>
                                 filled: true,
                                 isDense: true,
                                 fillColor: theme.cardTheme.color,
-                                suffixIcon: Icon(
-                                  FeatherIcons.calendar,
-                                  color: theme.colorScheme.onBackground,
-                                ),
+                                // suffixIcon: Icon(
+                                //   FeatherIcons.calendar,
+                                //   color: theme.colorScheme.onBackground,
+                                // ),
                                 hintText: "yyyy-mm-dd",
                                 border: InputBorder.none,
                                 enabledBorder: InputBorder.none,
@@ -629,7 +643,7 @@ class _ActivityScreenState extends State<ActivityScreen>
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         FxText.bodyMedium(
-                          'Adult',
+                          'Child',
                           fontWeight: 600,
                         ),
                         // FxText.bodyMedium(
