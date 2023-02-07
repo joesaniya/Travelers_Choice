@@ -188,32 +188,38 @@ class DetailattractionModal {
 }
 
 class Activity {
-  Activity({
-    required this.id,
-    required this.attraction,
-    required this.name,
-    required this.facilities,
-    required this.adultAgeLimit,
-    required this.adultPrice,
-    required this.childAgeLimit,
-    required this.childPrice,
-    required this.infantAgeLimit,
-    required this.infantPrice,
-    required this.isVat,
-    required this.vat,
-    required this.base,
-    required this.isTransferAvailable,
-    required this.privateTransferPrice,
-    required this.sharedTransferPrice,
-    required this.isActive,
-    required this.createdAt,
-    required this.updatedAt,
-    required this.v,
-    required this.isDeleted,
-    this.adultCost,
-    this.childCost,
-    this.infantCost,
-  });
+  Activity(
+      {required this.id,
+      required this.attraction,
+      required this.name,
+      required this.facilities,
+      required this.adultAgeLimit,
+      required this.adultPrice,
+      required this.childAgeLimit,
+      required this.childPrice,
+      required this.infantAgeLimit,
+      required this.infantPrice,
+      required this.isVat,
+      required this.vat,
+      required this.base,
+      required this.isTransferAvailable,
+      required this.privateTransferPrice,
+      required this.sharedTransferPrice,
+      required this.isActive,
+      required this.createdAt,
+      required this.updatedAt,
+      required this.v,
+      required this.isDeleted,
+      this.adultCost,
+      this.childCost,
+      this.infantCost,
+      this.adultCount = 1,
+      this.childCount = 0,
+      this.infantCount = 0,
+      this.totalAmount = 0,
+      this.grandTotal = 0,
+      this.isPrivate = false,
+      this.isSharing = false});
 
   String id;
   String attraction;
@@ -239,6 +245,13 @@ class Activity {
   dynamic adultCost;
   dynamic childCost;
   dynamic infantCost;
+  int adultCount;
+  int childCount;
+  int infantCount;
+  double totalAmount;
+  double grandTotal;
+  bool isPrivate;
+  bool isSharing;
 
   factory Activity.fromJson(Map<String, dynamic> json) => Activity(
         id: json["_id"],

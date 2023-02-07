@@ -68,7 +68,7 @@ class _ActivityScreenState extends State<ActivityScreen>
                   children: [
                     Expanded(child: Text(tour.name.toString())),
                     FxSpacing.width(20),
-                    Text(controller.getadultTotalPrice(tour)),
+                    Text(tour.grandTotal.toString()),
                   ],
                 );
               }).toList()),
@@ -89,7 +89,7 @@ class _ActivityScreenState extends State<ActivityScreen>
                     color: const Color(0xff1529e8),
                   ),
                   FxText.bodyLarge(
-                    controller.grandTotal.toString(),
+                    controller.grandSelectedTourAmount().toString(),
                     fontWeight: 700,
                     color: const Color(0xff1529e8),
                   ),
@@ -253,7 +253,11 @@ class _ActivityScreenState extends State<ActivityScreen>
                                     ),
                                   ],
                                 ),
-                                value: controller.selectedtransfer,
+                                value: cart.isSharing
+                                    ? controller.TransferCodes[2]
+                                    : cart.isPrivate
+                                        ? controller.TransferCodes[1]
+                                        : controller.TransferCodes[0],
 
                                 // hint: Center(
                                 //   child: FxText.labelLarge(
@@ -280,6 +284,11 @@ class _ActivityScreenState extends State<ActivityScreen>
                                     controller.selectedtransfer =
                                         value.toString();
                                   });
+                                  controller.addisPrivateORsharing(cart,
+                                      isPrivate: controller.selectedtransfer ==
+                                          controller.TransferCodes[1],
+                                      isSharing: controller.selectedtransfer ==
+                                          controller.TransferCodes[2]);
                                 },
 
                                 icon: const Icon(Icons.arrow_drop_down),
@@ -483,317 +492,19 @@ class _ActivityScreenState extends State<ActivityScreen>
                       ],
                     ),
                     FxSpacing.height(4),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        FxText.bodyMedium(
-                          'Adult',
-                          fontWeight: 600,
-                        ),
-                        // FxText.bodyMedium(
-                        //   // '\$' + controller.order.precise,
-                        //   '1 adult',
-                        //   fontWeight: 700,
-                        // ),
-                        Expanded(child: Container()),
-                        Row(
-                          children: [
-                            FxContainer(
-                              onTap: () async {
-                                controller.increment(cart.id,
-                                    double.parse(cart.adultPrice.toString()));
-                                setState(() {});
-                              },
-                              bordered: controller.getpersonsCount(cart.id),
-                              //  controller.increaseAble(cart),
-                              paddingAll: 4,
-                              borderRadiusAll: 2,
-                              border:
-                                  Border.all(color: const Color(0xff1529e8)),
-                              color: controller.increaseAble(cart)
-                                  ? const Color(0xff1529e8)
-                                  : theme.colorScheme.onBackground
-                                      .withAlpha(200),
-                              child: Icon(
-                                FeatherIcons.plus,
-                                size: 12,
-                                color: controller.increaseAble(cart)
-                                    ? theme.colorScheme.onPrimary
-                                    : theme.colorScheme.onPrimary,
-                              ),
-                            ),
-                            FxSpacing.width(15),
-                            FxSpacing.height(8),
-                            FxText.bodyMedium(
-                              controller.getCount(cart.id),
-                              fontWeight: 700,
-                            ),
-                            FxSpacing.height(8),
-                            FxSpacing.width(15),
-                            FxContainer(
-                              onTap: () async {
-                                controller.decrement(cart.id,
-                                    double.parse(cart.adultPrice.toString()));
-                                setState(() {});
-                              },
-                              paddingAll: 4,
-                              borderRadiusAll: 2,
-                              bordered: controller.getpersonsCount(cart.id),
-                              //  controller.decreaseAble(cart),
-                              border: Border.all(
-                                  color:
-                                      const Color(0xff1529e8).withAlpha(120)),
-                              color: controller.getpersonsCount(cart.id)
-                                  ? const Color(0xff1529e8).withAlpha(28)
-                                  : theme.colorScheme.onBackground
-                                      .withAlpha(200),
-                              child: Icon(
-                                FeatherIcons.minus,
-                                size: 12,
-                                color: controller.getpersonsCount(cart.id)
-                                    ? const Color(0xff1529e8)
-                                    // theme.colorScheme.primary
-                                    : theme.colorScheme.onPrimary,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-
+                    personCount(controller, cart, setState, theme,
+                        isAdult: true),
                     //child
                     FxSpacing.height(4),
-                    // Row(
-                    //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    //   crossAxisAlignment: CrossAxisAlignment.center,
-                    //   children: [
-                    //     FxText.bodyMedium(
-                    //       'Child',
-                    //       fontWeight: 600,
-                    //     ),
-                    //     Expanded(child: Container()),
-                    //     Row(
-                    //       children: [
-                    //         FxContainer(
-                    //           onTap: () async {
-                    //             controller.incrementchild(cart.id,
-                    //                 double.parse(cart.childPrice.toString()));
-                    //             setState(() {});
-                    //           },
-                    //           bordered: controller.getchildCount(cart.id),
-                    //           //  controller.increaseAble(cart),
-                    //           paddingAll: 4,
-                    //           borderRadiusAll: 2,
-                    //           border:
-                    //               Border.all(color: const Color(0xff1529e8)),
-                    //           color: controller.increaseAblechild(cart)
-                    //               ? const Color(0xff1529e8)
-                    //               : theme.colorScheme.onBackground
-                    //                   .withAlpha(200),
-                    //           child: Icon(
-                    //             FeatherIcons.plus,
-                    //             size: 12,
-                    //             color: controller.increaseAble(cart)
-                    //                 ? theme.colorScheme.onPrimary
-                    //                 : theme.colorScheme.onPrimary,
-                    //           ),
-                    //         ),
-                    //         FxSpacing.width(15),
-                    //         FxSpacing.height(8),
-                    //         FxText.bodyMedium(
-                    //           '0',
-                    //           // controller.getCountchild(cart.id),
-                    //           fontWeight: 700,
-                    //         ),
-                    //         FxSpacing.height(8),
-                    //         FxSpacing.width(15),
-                    //         FxContainer(
-                    //           onTap: () async {
-                    //             controller.decrement(cart.id,
-                    //                 double.parse(cart.adultPrice.toString()));
-                    //             setState(() {});
-                    //           },
-                    //           paddingAll: 4,
-                    //           borderRadiusAll: 2,
-                    //           bordered: controller.getpersonsCount(cart.id),
-                    //           //  controller.decreaseAble(cart),
-                    //           border: Border.all(
-                    //               color:
-                    //                   const Color(0xff1529e8).withAlpha(120)),
-                    //           color: controller.getpersonsCount(cart.id)
-                    //               ? const Color(0xff1529e8).withAlpha(28)
-                    //               : theme.colorScheme.onBackground
-                    //                   .withAlpha(200),
-                    //           child: Icon(
-                    //             FeatherIcons.minus,
-                    //             size: 12,
-                    //             color: controller.getpersonsCount(cart.id)
-                    //                 ? const Color(0xff1529e8)
-                    //                 // theme.colorScheme.primary
-                    //                 : theme.colorScheme.onPrimary,
-                    //           ),
-                    //         ),
-                    //       ],
-                    //     ),
-                    //   ],
-                    // ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        FxText.bodyMedium(
-                          'Child',
-                          fontWeight: 600,
-                        ),
-                        // FxText.bodyMedium(
-                        //   // '\$' + controller.order.precise,
-                        //   '1 adult',
-                        //   fontWeight: 700,
-                        // ),
-                        Expanded(child: Container()),
-                        Row(
-                          children: [
-                            FxContainer(
-                              onTap: () async {
-                                controller.increment(cart.id,
-                                    double.parse(cart.adultPrice.toString()));
-                                setState(() {});
-                              },
-                              bordered: controller.getpersonsCount(cart.id),
-                              //  controller.increaseAble(cart),
-                              paddingAll: 4,
-                              borderRadiusAll: 2,
-                              border:
-                                  Border.all(color: const Color(0xff1529e8)),
-                              color: controller.increaseAble(cart)
-                                  ? const Color(0xff1529e8)
-                                  : theme.colorScheme.onBackground
-                                      .withAlpha(200),
-                              child: Icon(
-                                FeatherIcons.plus,
-                                size: 12,
-                                color: controller.increaseAble(cart)
-                                    ? theme.colorScheme.onPrimary
-                                    : theme.colorScheme.onPrimary,
-                              ),
-                            ),
-                            FxSpacing.width(15),
-                            FxSpacing.height(8),
-                            FxText.bodyMedium(
-                              controller.getCount(cart.id),
-                              fontWeight: 700,
-                            ),
-                            FxSpacing.height(8),
-                            FxSpacing.width(15),
-                            FxContainer(
-                              onTap: () async {
-                                controller.decrement(cart.id,
-                                    double.parse(cart.adultPrice.toString()));
-                                setState(() {});
-                              },
-                              paddingAll: 4,
-                              borderRadiusAll: 2,
-                              bordered: controller.getpersonsCount(cart.id),
-                              //  controller.decreaseAble(cart),
-                              border: Border.all(
-                                  color:
-                                      const Color(0xff1529e8).withAlpha(120)),
-                              color: controller.getpersonsCount(cart.id)
-                                  ? const Color(0xff1529e8).withAlpha(28)
-                                  : theme.colorScheme.onBackground
-                                      .withAlpha(200),
-                              child: Icon(
-                                FeatherIcons.minus,
-                                size: 12,
-                                color: controller.getpersonsCount(cart.id)
-                                    ? const Color(0xff1529e8)
-                                    // theme.colorScheme.primary
-                                    : theme.colorScheme.onPrimary,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
+
+                    personCount(controller, cart, setState, theme,
+                        isChild: true),
                     FxSpacing.height(4),
 
                     //infant
 
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        FxText.bodyMedium(
-                          'Infant',
-                          fontWeight: 600,
-                        ),
-                        Expanded(child: Container()),
-                        Row(
-                          children: [
-                            FxContainer(
-                              onTap: () async {
-                                controller.increment(cart.id,
-                                    double.parse(cart.adultPrice.toString()));
-                                setState(() {});
-                              },
-                              bordered: controller.getpersonsCount(cart.id),
-                              //  controller.increaseAble(cart),
-                              paddingAll: 4,
-                              borderRadiusAll: 2,
-                              border:
-                                  Border.all(color: const Color(0xff1529e8)),
-                              color: controller.increaseAble(cart)
-                                  ? const Color(0xff1529e8)
-                                  : theme.colorScheme.onBackground
-                                      .withAlpha(200),
-                              child: Icon(
-                                FeatherIcons.plus,
-                                size: 12,
-                                color: controller.increaseAble(cart)
-                                    ? theme.colorScheme.onPrimary
-                                    : theme.colorScheme.onPrimary,
-                              ),
-                            ),
-                            FxSpacing.width(15),
-                            FxSpacing.height(8),
-                            FxText.bodyMedium(
-                              controller.getCount(cart.id),
-                              fontWeight: 700,
-                            ),
-                            FxSpacing.height(8),
-                            FxSpacing.width(15),
-                            FxContainer(
-                              onTap: () async {
-                                controller.decrement(cart.id,
-                                    double.parse(cart.adultPrice.toString()));
-                                setState(() {});
-                              },
-                              paddingAll: 4,
-                              borderRadiusAll: 2,
-                              bordered: controller.getpersonsCount(cart.id),
-                              //  controller.decreaseAble(cart),
-                              border: Border.all(
-                                  color:
-                                      const Color(0xff1529e8).withAlpha(120)),
-                              color: controller.getpersonsCount(cart.id)
-                                  ? const Color(0xff1529e8).withAlpha(28)
-                                  : theme.colorScheme.onBackground
-                                      .withAlpha(200),
-                              child: Icon(
-                                FeatherIcons.minus,
-                                size: 12,
-                                color: controller.getpersonsCount(cart.id)
-                                    ? const Color(0xff1529e8)
-                                    // theme.colorScheme.primary
-                                    : theme.colorScheme.onPrimary,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                    //aount
+                    personCount(controller, cart, setState, theme,
+                        isInfant: true), //aount
                     FxSpacing.height(4),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -803,13 +514,19 @@ class _ActivityScreenState extends State<ActivityScreen>
                           fontWeight: 600,
                         ),
                         FxText.bodyMedium(
-                          controller.getadultTotalPrice(cart),
+                          controller.getTotal(cart).toString(),
                           // 'IMG Worlds of Adventure',
                           fontWeight: 700,
                         ),
                       ],
                     ),
+                    if (cart.isPrivate) FxSpacing.height(4),
+                    if (cart.isPrivate) cost(cart, isPrivate: true),
+                    if (cart.isSharing) FxSpacing.height(4),
+                    if (cart.isSharing) cost(cart, isSharing: true),
+
                     FxSpacing.height(4),
+
                     // Row(
                     //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     //   children: [
@@ -868,7 +585,7 @@ class _ActivityScreenState extends State<ActivityScreen>
                         ),
                         FxText.bodyMedium(
                           // '\$' + controller.total.precise,
-                          '345.00 AED',
+                          controller.getGrandTotal(cart).toString(),
                           // controller.products.
                           fontWeight: 800,
                           color: const Color(0xff1529e8),
@@ -1422,4 +1139,138 @@ class _ActivityScreenState extends State<ActivityScreen>
       );
     }
   }
+}
+
+Widget personCount(controller, cart, setState, theme,
+    {isAdult = false, isChild = false, isInfant = false}) {
+  return Row(
+    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    crossAxisAlignment: CrossAxisAlignment.center,
+    children: [
+      FxText.bodyMedium(
+        isAdult
+            ? 'Adult'
+            : isChild
+                ? "Child"
+                : "Infant",
+        fontWeight: 600,
+      ),
+      // FxText.bodyMedium(
+      //   // '\$' + controller.order.precise,
+      //   '1 adult',
+      //   fontWeight: 700,
+      // ),
+      Expanded(child: Container()),
+      Row(
+        children: [
+          FxContainer(
+            onTap: () async {
+              controller.personCountFn(cart,
+                  isIncrement: true,
+                  isChild: isChild,
+                  isAdult: isAdult,
+                  isInfant: isInfant);
+              setState(() {});
+            },
+            bordered: isDefault(controller, cart,
+                isAdult: isAdult,
+                isChild: isChild,
+                isInfant: isInfant,
+                isIncrement: true),
+            //  controller.increaseAble(cart),
+            paddingAll: 4,
+            borderRadiusAll: 2,
+            border: Border.all(color: const Color(0xff1529e8)),
+            color: isDefault(controller, cart,
+                    isAdult: isAdult,
+                    isChild: isChild,
+                    isInfant: isInfant,
+                    isIncrement: true)
+                ? const Color(0xff1529e8)
+                : theme.colorScheme.onBackground.withAlpha(200),
+            child: Icon(
+              FeatherIcons.plus,
+              size: 12,
+              color: isDefault(controller, cart,
+                      isAdult: isAdult,
+                      isChild: isChild,
+                      isInfant: isInfant,
+                      isIncrement: true)
+                  ? theme.colorScheme.onPrimary
+                  : theme.colorScheme.onPrimary,
+            ),
+          ),
+          FxSpacing.width(15),
+          FxSpacing.height(8),
+          FxText.bodyMedium(
+            controller
+                .getCounts(cart.id,
+                    isAdult: isAdult, isChild: isChild, isInfant: isInfant)
+                .toString(),
+            fontWeight: 700,
+          ),
+          FxSpacing.height(8),
+          FxSpacing.width(15),
+          FxContainer(
+            onTap: () async {
+              controller.personCountFn(cart,
+                  isAdult: isAdult, isChild: isChild, isInfant: isInfant);
+              setState(() {});
+            },
+            paddingAll: 4,
+            borderRadiusAll: 2,
+            bordered: isDefault(controller, cart,
+                isAdult: isAdult, isChild: isChild, isInfant: isInfant),
+            //  controller.decreaseAble(cart),
+            border: Border.all(color: const Color(0xff1529e8).withAlpha(120)),
+            color: isDefault(controller, cart,
+                    isAdult: isAdult, isChild: isChild, isInfant: isInfant)
+                ? const Color(0xff1529e8).withAlpha(28)
+                : theme.colorScheme.onBackground.withAlpha(200),
+            child: Icon(
+              FeatherIcons.minus,
+              size: 12,
+              color: isDefault(controller, cart,
+                      isAdult: isAdult, isChild: isChild, isInfant: isInfant)
+                  ? const Color(0xff1529e8)
+                  // theme.colorScheme.primary
+                  : theme.colorScheme.onPrimary,
+            ),
+          ),
+        ],
+      ),
+    ],
+  );
+}
+
+bool isDefault(controller, cart,
+    {bool isAdult = false,
+    bool isChild = false,
+    bool isInfant = false,
+    isIncrement = false}) {
+  int value = controller.getCounts(cart.id,
+      isAdult: isAdult, isChild: isChild, isInfant: isInfant);
+  if (isAdult) {
+    return isIncrement ? value >= 1 : value != 1;
+  } else {
+    return isIncrement ? value >= 0 : value != 0;
+  }
+}
+
+Widget cost(Activity tour, {bool isPrivate = false, bool isSharing = false}) {
+  return Row(
+    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    children: [
+      FxText.bodyMedium(
+        isPrivate ? "Private" : "Sharing",
+        fontWeight: 600,
+      ),
+      FxText.bodyMedium(
+        (isPrivate ? tour.privateTransferPrice : tour.sharedTransferPrice)
+            .toString(),
+        // 'IMG Worlds of Adventure',
+        fontWeight: 700,
+      ),
+    ],
+  );
 }

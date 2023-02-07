@@ -181,8 +181,9 @@ class Category {
   Slug slug;
 
   factory Category.fromJson(Map<String, dynamic> json) => Category(
-        categoryName: categoryNameValues.map[json["categoryName"]]!,
-        slug: slugValues.map[json["slug"]]!,
+        categoryName:
+            categoryNameValues.map[json["categoryName"]] ?? CategoryName.TOUR,
+        slug: slugValues.map[json["slug"]] ?? Slug.ATTRACTIONS,
       );
 
   Map<String, dynamic> toJson() => {

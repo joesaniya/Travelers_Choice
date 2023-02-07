@@ -20,7 +20,7 @@ class ActivityController extends FxController {
   List<Cart>? carts;
 
   // int person_count = 1;
-  List<Map<String, dynamic>> person_count = [];
+  List<Activity> person_count = [];
   List<Map<String, dynamic>> child_count = [];
   List<Activity> selectedtour = [];
   double grandTotal = 0;
@@ -42,34 +42,24 @@ class ActivityController extends FxController {
   // }
 
   void updateTours(Activity tour) {
-    if (!selectedtour.contains(tour)) {
-      if (person_count.isEmpty) {
-        selectedtour.add(tour);
-      } else {
-        for (var val in person_count) {
-          if (val['id'] == tour.id) {
-            tour.adultPrice = val['price'];
-            selectedtour.add(tour);
-            break;
-          } else {
-            selectedtour.add(tour);
-          }
-        }
-      }
-    } else {
+    if (selectedtour.contains(tour)) {
       selectedtour.remove(tour);
-    }
-    getGrandTotal();
-  }
-
-  void getGrandTotal() {
-    grandTotal = 0;
-    for (var amount in person_count) {
-      grandTotal += amount['price'];
-      print("Grand Total =>> $grandTotal");
+    } else {
+      tour.grandTotal = tour.adultPrice;
+      selectedtour.add(tour);
     }
     update();
-  } // bool increaseAble(Product product) {
+  }
+
+  grandSelectedTourAmount() {
+    double amount = 0;
+    for (Activity tour in selectedtour) {
+      amount = amount + (tour.grandTotal);
+    }
+    return amount;
+  }
+
+  // bool increaseAble(Product product) {
   //   return product.person < 9;
   //   // return product.person < product.person;
   //   // return cart.quantity < cart.product.quantity;
@@ -115,189 +105,154 @@ class ActivityController extends FxController {
     return cart.person > 1;
   }
 
-  //childincreamet
-  // void incrementchild(childCount) {
-  //   if (!increaseAble(childCount)) return;
-  //   childCount++;
-  //   // calculateBilling();
-  //   update();
-  // }
-  bool increaseAblechild(childCount) {
-    return childCount;
-  }
-
-  void incrementchild(String id, double childPrice) {
-    if (child_count.isEmpty) {
-      child_count.add({'id': id, 'count': 2, 'price': childPrice});
-      calculateBilling(id, childPrice);
-    } else {
-      for (var e in child_count) {
-        if (e['id'] == id) {
-          if (e['count'] < 1) {
-            return;
-          } else {
-            e['count']++;
-          }
-          calculateBillingchild(id, childPrice);
-          print("childCount =>> $child_count $child_count");
-          update();
-        } else {
-          if (!child_count
-              .contains({'id': id, 'count': 2, 'price': childPrice})) {
-            child_count.add({'id': id, 'count': 2, 'price': childPrice});
-            calculateBillingchild(id, childPrice);
-          }
-        }
-      }
-    }
-  }
-
-  void decrementchild(String id, double childPrice) {
-    for (var e in child_count) {
-      if (e['id'] == id) {
-        if (e['count'] < 1) {
-          return;
-        } else {
-          e['count']--;
-        }
-        calculateBillingchild(id, childPrice);
-        print("childCount =>> $child_count $child_count");
-        update();
-      }
-    }
-  }
-
-  bool getchildCount(String id) {
-    bool value = false;
-    child_count.map((e) {
-      if (e['id'] == id) {
-        value = e['count'] != 1;
-      } else {
-        value = false;
-      }
-    });
-    return value;
-  }
-
-  String getCountchild(String id) {
-    String? count;
-    for (Map<String, dynamic> values in child_count) {
-      if (values['id'] == id) {
-        count = values['count'].toString();
-        break;
-      }
-    }
-    return count.toString() == 'null' ? "0" : count.toString();
-  }
-
-  String getchildTotalPrice(Activity toursData) {
-    String? totalPrice;
-
-    for (var tour in child_count) {
-      if (tour['id'] == toursData.id) {
-        totalPrice = tour['price'].toString();
-        break;
-      }
-    }
-    return totalPrice ?? toursData.childPrice.toString();
-  }
-
-  calculateBillingchild(String id, double childPrice) {
-    for (var e in child_count) {
-      if (e['id'] == id) {
-        adultTotalPrice = double.parse((e['count'] * childPrice).toString());
-        e['price'] = adultTotalPrice;
-      }
-    }
-    getGrandTotal();
-  }
-
 //adultincrement
-  void increment(String id, double adultPrice) {
-    if (person_count.isEmpty) {
-      person_count.add({'id': id, 'count': 2, 'price': adultPrice});
-      calculateBilling(id, adultPrice);
+  void personCountFn(Activity tour,
+      {bool isAdult = false,
+      bool isChild = false,
+      bool isInfant = false,
+      bool isIncrement = false}) {
+    List<Activity> value =
+        person_count.where((element) => element.id == tour.id).toList();
+
+    print("Person Count Added=-> $value");
+    if (value.isEmpty) {
+      if (isAdult) {
+        isIncrement
+            ? tour.adultCount++
+            : (tour.adultCount != 1)
+                ? tour.adultCount--
+                : 1;
+      }
+      if (isChild) {
+        isIncrement
+            ? tour.childCount++
+            : (tour.childCount != 1)
+                ? tour.childCount--
+                : 1;
+      }
+      if (isInfant) {
+        isIncrement
+            ? tour.infantCount++
+            : (tour.infantCount != 1)
+                ? tour.infantCount--
+                : 1;
+      }
+      person_count.add(tour);
     } else {
-      for (var e in person_count) {
-        if (e['id'] == id) {
-          if (e['count'] < 1) {
-            return;
-          } else {
-            e['count']++;
-          }
-          calculateBilling(id, adultPrice);
-          print("personCount =>> $person_count $person_count");
-          update();
-        } else {
-          if (!person_count
-              .contains({'id': id, 'count': 2, 'price': adultPrice})) {
-            person_count.add({'id': id, 'count': 2, 'price': adultPrice});
-            calculateBilling(id, adultPrice);
-          }
-        }
+      int index = person_count.indexOf(value[0]);
+      if (isAdult) {
+        isIncrement
+            ? person_count[index].adultCount++
+            : (person_count[index].adultCount != 1)
+                ? person_count[index].adultCount--
+                : 1;
       }
+      if (isChild) {
+        isIncrement
+            ? person_count[index].childCount++
+            : (person_count[index].childCount != 0)
+                ? person_count[index].childCount--
+                : 0;
+      }
+      if (isInfant) {
+        isIncrement
+            ? person_count[index].infantCount++
+            : (person_count[index].infantCount != 0)
+                ? person_count[index].infantCount--
+                : 0;
+      }
+    }
+    print('List Value=> ${person_count.length}');
+    update();
+  }
+
+  getTotal(Activity tour) {
+    List<Activity> value =
+        person_count.where((element) => element.id == tour.id).toList();
+    if (value.isEmpty) {
+      return tour.adultPrice;
+    } else {
+      return (value[0].adultCount * value[0].adultPrice) +
+          (value[0].childCount * value[0].childPrice) +
+          (value[0].infantCount * value[0].infantPrice);
     }
   }
 
-  void decrement(String id, double adultPrice) {
-    for (var e in person_count) {
-      if (e['id'] == id) {
-        if (e['count'] < 1) {
-          return;
-        } else {
-          e['count']--;
-        }
-        calculateBilling(id, adultPrice);
-        print("personCount =>> $person_count $person_count");
-        update();
-      }
-    }
-  }
-
-  bool getpersonsCount(String id) {
-    bool value = false;
-    person_count.map((e) {
-      if (e['id'] == id) {
-        value = e['count'] != 1;
+  addisPrivateORsharing(Activity tour,
+      {bool isPrivate = false, bool isSharing = false}) {
+    List<Activity> value =
+        person_count.where((element) => element.id == tour.id).toList();
+    if (value.isEmpty) {
+      personCountFn(tour, isAdult: true);
+      if (isPrivate) {
+        person_count[0].isPrivate = true;
+        person_count[0].isSharing = false;
+      } else if (isSharing) {
+        person_count[0].isPrivate = false;
+        person_count[0].isSharing = true;
       } else {
-        value = false;
+        person_count[0].isPrivate = false;
+        person_count[0].isSharing = false;
       }
-    });
-    return value;
+    } else {
+      if (isPrivate) {
+        value[0].isPrivate = true;
+        value[0].isSharing = false;
+      } else if (isSharing) {
+        value[0].isPrivate = false;
+        value[0].isSharing = true;
+      } else {
+        value[0].isPrivate = false;
+        value[0].isSharing = false;
+      }
+      update();
+    }
+  }
+
+  int getCounts(String id,
+      {bool isAdult = false, bool isChild = false, bool isInfant = false}) {
+    List<Activity> value =
+        person_count.where((element) => element.id == id).toList();
+
+    if (value.isEmpty) {
+      return isAdult ? 1 : 0;
+    } else {
+      int index = person_count.indexOf(value[0]);
+      if (isAdult) {
+        return person_count[index].adultCount;
+      } else if (isChild) {
+        return person_count[index].childCount;
+      } else {
+        return person_count[index].infantCount;
+      }
+    }
+  }
+
+  double getGrandTotal(Activity tour) {
+    double amount = getTotal(tour);
+    if (tour.isPrivate) {
+      amount = amount + tour.privateTransferPrice;
+    }
+    if (tour.isSharing) {
+      amount = amount + tour.sharedTransferPrice;
+    }
+    return amount;
+    update();
   }
 
   String getCount(String id) {
     String? count;
-    for (Map<String, dynamic> values in person_count) {
-      if (values['id'] == id) {
-        count = values['count'].toString();
-        break;
-      }
-    }
+
     return count.toString() == 'null' ? "1" : count.toString();
   }
 
   String getadultTotalPrice(Activity toursData) {
     String? totalPrice;
 
-    for (var tour in person_count) {
-      if (tour['id'] == toursData.id) {
-        totalPrice = tour['price'].toString();
-        break;
-      }
-    }
     return totalPrice ?? toursData.adultPrice.toString();
   }
 
-  calculateBilling(String id, double adultPrice) {
-    for (var e in person_count) {
-      if (e['id'] == id) {
-        adultTotalPrice = double.parse((e['count'] * adultPrice).toString());
-        e['price'] = adultTotalPrice;
-      }
-    }
-    getGrandTotal();
-  }
+  calculateBilling(String id, double adultPrice) {}
 
   late Animation<Offset> animation, dateAnimation;
   late Animation<double> sizeAnimation,
