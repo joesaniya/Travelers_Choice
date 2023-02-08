@@ -2,8 +2,9 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutx/flutx.dart';
-import 'package:hotel_travel/views/SearchScreen.dart';
 import 'package:intl/intl.dart';
+
+import '../views/SearchScreen.dart';
 
 class SearchController extends FxController {
   TickerProvider ticker;
@@ -104,41 +105,6 @@ class SearchController extends FxController {
     }
   }
 
-  // String? validateEmail(String? text) {
-  //   if (text == null || text.isEmpty) {
-  //     emailController.forward();
-  //     return "Please enter email";
-  //   } else if (FxStringValidator.isEmail(text)) {
-  //     emailController.forward();
-
-  //     return "Please enter valid email";
-  //   }
-  //   return null;
-  // }
-
-  // String? validatePassword(String? text) {
-  //   if (text == null || text.isEmpty) {
-  //     passwordController.forward();
-
-  //     return "Please enter password";
-  //   } else if (!FxStringValidator.validateStringRange(
-  //     text,
-  //   )) {
-  //     passwordController.forward();
-
-  //     return "Password length must between 8 and 20";
-  //   }
-  //   return null;
-  // }
-
-  // void goToForgotPasswordScreen() {
-  //   Navigator.of(context, rootNavigator: true).pushReplacement(
-  //     MaterialPageRoute(
-  //       builder: (context) => ForgotPasswordScreen(),
-  //     ),
-  //   );
-  // }
-
   Future<void> searchbtn(selectedCountry) async {
     log('search btn');
     locationCounter = 0;
@@ -179,7 +145,9 @@ class SearchController extends FxController {
                 opacity: animation,
                 child: child,
               ),
-          pageBuilder: (_, __, ___) => SearchScreen(place: selectedCountry)));
+          pageBuilder: (_, __, ___) => SearchScreen(
+              // place: selectedCountry.toString()
+              )));
     }
   }
 

@@ -230,7 +230,7 @@ class _SearchPlaceState extends State<SearchPlace>
                                     setState(() {});
                                     log('onSuggestionTap');
                                     print('onsugguest');
-                                    print('value-->${value.item!.id!}');
+                                    print('value-->${value.item!.id}');
 
                                     log(value.searchKey.toString());
                                     controller.focus.unfocus();

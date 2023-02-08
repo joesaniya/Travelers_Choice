@@ -13,9 +13,9 @@ import '../models/all_attraction_modal.dart';
 import '../theme/app_theme.dart';
 
 class SearchScreen extends StatefulWidget {
-  Destination? place;
-  // final BuildContext rootContext;
-  SearchScreen({required this.place});
+  // Destination? place;
+  // // final BuildContext rootContext;
+  // SearchScreen({required this.place});
 
   @override
   State<SearchScreen> createState() => _SearchScreenState();
@@ -79,13 +79,14 @@ class _SearchScreenState extends State<SearchScreen>
   void initState() {
     super.initState();
     getAttraction();
+
     theme = AppTheme.shoppingTheme;
     theme1 = AppTheme.learningTheme;
 
     controller = FxControllerStore.put(HomeSearchController(this));
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      // addCategories();
-    });
+    // WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+    //   // addCategories();
+    // });
   }
 
   @override
