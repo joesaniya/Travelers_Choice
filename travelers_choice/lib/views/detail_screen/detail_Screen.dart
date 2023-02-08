@@ -188,7 +188,7 @@ class _DetailScreenState extends State<DetailScreen>
                                 // color: Color(0xff1529e8),
                                 color: Colors.blueGrey,
                                 child: FxText.bodySmall(
-                                  'Ticket',
+                                  controller.detailattraction.first.bookingType,
                                   fontWeight: 300,
                                   color: Colors.white,
                                   // color: theme.colorScheme.onPrimary,
@@ -204,7 +204,11 @@ class _DetailScreenState extends State<DetailScreen>
                                 // color: Color(0xff1529e8),
                                 color: Colors.blueGrey,
                                 child: FxText.bodySmall(
-                                  'Offer',
+                                  // controller.detailattraction.first.category
+                                  //     .categoryName,
+                                  // 'Offer',
+                                  '${controller.detailattraction.first.duration}${controller.detailattraction.first.durationType}',
+
                                   fontWeight: 300,
                                   color: Colors.white,
                                   // color: theme.colorScheme.onPrimary,
@@ -385,7 +389,8 @@ class _DetailScreenState extends State<DetailScreen>
                   children: <Widget>[
                     //tabbar
                     Container(
-                      height: 60,
+                      // height: 60,
+                      height: 30,
                       width: MediaQuery.of(context).size.width,
                       color: Colors.transparent,
                       child: TabBar(
@@ -414,6 +419,8 @@ class _DetailScreenState extends State<DetailScreen>
                         ],
                       ),
                     ),
+
+                    FxSpacing.height(20),
 
                     //indexedStack
                     IndexedStack(

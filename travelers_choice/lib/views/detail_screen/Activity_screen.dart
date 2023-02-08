@@ -504,7 +504,11 @@ class _ActivityScreenState extends State<ActivityScreen>
                     //infant
 
                     personCount(controller, cart, setState, theme,
-                        isInfant: true), //aount
+                        isInfant: true),
+                    if (cart.isPrivate) FxSpacing.height(4),
+                    if (cart.isPrivate) cost(cart, isPrivate: true),
+                    if (cart.isSharing) FxSpacing.height(4),
+                    if (cart.isSharing) cost(cart, isSharing: true), //aount
                     FxSpacing.height(4),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -520,10 +524,10 @@ class _ActivityScreenState extends State<ActivityScreen>
                         ),
                       ],
                     ),
-                    if (cart.isPrivate) FxSpacing.height(4),
-                    if (cart.isPrivate) cost(cart, isPrivate: true),
-                    if (cart.isSharing) FxSpacing.height(4),
-                    if (cart.isSharing) cost(cart, isSharing: true),
+                    // if (cart.isPrivate) FxSpacing.height(4),
+                    // if (cart.isPrivate) cost(cart, isPrivate: true),
+                    // if (cart.isSharing) FxSpacing.height(4),
+                    // if (cart.isSharing) cost(cart, isSharing: true),
 
                     FxSpacing.height(4),
 

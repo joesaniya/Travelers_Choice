@@ -339,6 +339,7 @@ class _CheckOutScreenState extends State<CheckOutScreen>
             backgroundColor: const Color(0xfff5f5f5),
             // backgroundColor: theme.scaffoldBackgroundColor,
             appBar: AppBar(
+              backgroundColor: const Color(0xfff5f5f5),
               elevation: 0,
               centerTitle: true,
               title: FxText.titleMedium(
@@ -789,7 +790,7 @@ class _CheckOutScreenState extends State<CheckOutScreen>
                     ),
                     FxSpacing.height(10),
                     SlideTransition(
-                      position: controller.emailAnimation,
+                      position: controller.phoneAnimation,
                       child: TextFormField(
                         style: FxTextStyle.bodyMedium(),
                         decoration: InputDecoration(
@@ -812,7 +813,7 @@ class _CheckOutScreenState extends State<CheckOutScreen>
                             hintStyle: FxTextStyle.bodyMedium(),
                             isCollapsed: true),
                         maxLines: 1,
-                        controller: controller.emailTE,
+                        controller: controller.phoneTE,
                         // validator: controller.validateName,
                         cursorColor: theme.colorScheme.onBackground,
                       ),
@@ -977,97 +978,23 @@ class _CheckOutScreenState extends State<CheckOutScreen>
       child: ListView(
         // crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          FxText.labelLarge(
-            'Select payment method',
-            fontWeight: 600,
-          ),
-          FxSpacing.height(20),
-          FxContainer.bordered(
-            onTap: () {
-              controller.selectPaymentMethod(1);
-            },
-            borderRadiusAll: 4,
-            margin: FxSpacing.bottom(20),
-            border: Border.all(
-                color: controller.paymentMethodSelected == 1
-                    ? const Color(0xff1529e8)
-                    : theme.colorScheme.onBackground),
-            color: controller.paymentMethodSelected == 1
-                ? const Color(0xff1529e8).withAlpha(40)
-                : theme.scaffoldBackgroundColor,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    Icon(
-                      FeatherIcons.creditCard,
-                      size: 20,
-                      color: theme.colorScheme.onBackground.withAlpha(220),
-                    ),
-                    FxSpacing.width(8),
-                    FxText.bodyMedium(
-                      'Credit Card',
-                      fontWeight: 700,
-                    ),
-                    controller.paymentMethodSelected == 1
-                        ? Expanded(
-                            child: Align(
-                              alignment:
-                                  Language.autoDirection<AlignmentGeometry>(
-                                      Alignment.centerRight,
-                                      Alignment.centerLeft)!,
-                              child: FxContainer.roundBordered(
-                                paddingAll: 4,
-                                border:
-                                    Border.all(color: const Color(0xff1529e8)),
-                                color: const Color(0xff1529e8).withAlpha(40),
-                                child: const Icon(
-                                  Icons.check,
-                                  color: Color(0xff1529e8),
-                                  size: 10,
-                                ),
-                              ),
-                            ),
-                          )
-                        : Container(),
-                  ],
-                ),
-                FxSpacing.height(8),
-                FxText.bodySmall(
-                  'Nency AnGhan',
-                  fontWeight: 600,
-                ),
-                FxSpacing.height(4),
-                FxText.bodySmall(
-                  '**** **** **** 7865',
-                  fontWeight: 600,
-                ),
-                FxSpacing.height(4),
-                FxText.bodySmall(
-                  'Expiry: 06/25',
-                  fontWeight: 600,
-                ),
-                FxSpacing.height(20),
-                FxText.bodySmall(
-                  'Secure checkout powered by OnePay',
-                  muted: true,
-                ),
-              ],
-            ),
-          ),
+          // FxText.labelLarge(
+          //   'Select payment method',
+          //   fontWeight: 600,
+          // ),
+          // FxSpacing.height(20),
           // FxContainer.bordered(
           //   onTap: () {
-          //     controller.selectPaymentMethod(2);
+          //     controller.selectPaymentMethod(1);
           //   },
           //   borderRadiusAll: 4,
           //   margin: FxSpacing.bottom(20),
           //   border: Border.all(
-          //       color: controller.paymentMethodSelected == 2
-          //           ? theme.colorScheme.primary
+          //       color: controller.paymentMethodSelected == 1
+          //           ? const Color(0xff1529e8)
           //           : theme.colorScheme.onBackground),
-          //   color: controller.paymentMethodSelected == 2
-          //       ? theme.colorScheme.primary.withAlpha(40)
+          //   color: controller.paymentMethodSelected == 1
+          //       ? const Color(0xff1529e8).withAlpha(40)
           //       : theme.scaffoldBackgroundColor,
           //   child: Column(
           //     crossAxisAlignment: CrossAxisAlignment.start,
@@ -1075,16 +1002,16 @@ class _CheckOutScreenState extends State<CheckOutScreen>
           //       Row(
           //         children: [
           //           Icon(
-          //             FeatherIcons.dollarSign,
-          //             size: 18,
+          //             FeatherIcons.creditCard,
+          //             size: 20,
           //             color: theme.colorScheme.onBackground.withAlpha(220),
           //           ),
           //           FxSpacing.width(8),
           //           FxText.bodyMedium(
-          //             'Cash on delivery',
+          //             'Credit Card',
           //             fontWeight: 700,
           //           ),
-          //           controller.paymentMethodSelected == 2
+          //           controller.paymentMethodSelected == 1
           //               ? Expanded(
           //                   child: Align(
           //                     alignment:
@@ -1093,12 +1020,12 @@ class _CheckOutScreenState extends State<CheckOutScreen>
           //                             Alignment.centerLeft)!,
           //                     child: FxContainer.roundBordered(
           //                       paddingAll: 4,
-          //                       border: Border.all(
-          //                           color: theme.colorScheme.primary),
-          //                       color: theme.colorScheme.primary.withAlpha(40),
-          //                       child: Icon(
+          //                       border:
+          //                           Border.all(color: const Color(0xff1529e8)),
+          //                       color: const Color(0xff1529e8).withAlpha(40),
+          //                       child: const Icon(
           //                         Icons.check,
-          //                         color: theme.colorScheme.primary,
+          //                         color: Color(0xff1529e8),
           //                         size: 10,
           //                       ),
           //                     ),
@@ -1109,171 +1036,140 @@ class _CheckOutScreenState extends State<CheckOutScreen>
           //       ),
           //       FxSpacing.height(8),
           //       FxText.bodySmall(
-          //         'Additional \$ 20 charges for COD services.',
+          //         'Nency AnGhan',
+          //         fontWeight: 600,
+          //       ),
+          //       FxSpacing.height(4),
+          //       FxText.bodySmall(
+          //         '**** **** **** 7865',
+          //         fontWeight: 600,
+          //       ),
+          //       FxSpacing.height(4),
+          //       FxText.bodySmall(
+          //         'Expiry: 06/25',
+          //         fontWeight: 600,
+          //       ),
+          //       FxSpacing.height(20),
+          //       FxText.bodySmall(
+          //         'Secure checkout powered by OnePay',
           //         muted: true,
           //       ),
           //     ],
           //   ),
           // ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              FxText.labelLarge(
-                'Do you have promo code?',
-                fontWeight: 700,
-              ),
-              FxSpacing.width(20),
-              FxContainer.bordered(
-                // padding: FxSpacing.xy(16, 12),
-                onTap: () {
-                  controller.addCart
-                      ? controller.cartController.reverse()
-                      : controller.cartController.forward();
-                  // controller.showcode = !controller.showcode;
-                  // log(controller.showcode.toString());
-                  // // controller.showcode();
-                  // log('message');
-                },
-                borderRadiusAll: 4,
-                // elevation: 0,
-                splashColor: const Color(0xff1529e8).withAlpha(30),
-                // color: const Color(0xff1529e8),
-                color: const Color(0xff1529e8).withAlpha(40),
-                border: Border.all(color: const Color(0xff1529e8)),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    FxText.labelMedium(
-                      'Promo Code',
-                      // color: Colors.white,
-                      color: const Color(0xff1529e8),
-                      fontWeight: 600,
-                    ),
-                    const Icon(
-                      FeatherIcons.arrowDown,
-                      color: Color(0xff1529e8),
-                      // color: Colors.white,
-                      size: 18,
-                    ),
-                    // FxSpacing.width(8),
-                  ],
-                ),
-              ),
-            ],
-          ),
-          FxSpacing.height(20),
-          //code
-          controller.addCart
-              ? FxContainer(
-                  paddingAll: 12,
-                  borderRadiusAll: 4,
-                  child: Row(
-                    children: [
-                      // Icon(
-                      //   FeatherIcons.creditCard,
-                      //   size: 18,
-                      //   color: theme.colorScheme.primary,
-                      // ),
-                      // FxSpacing.width(16),
-                      Expanded(
-                        child: SlideTransition(
-                          position: controller.promoAnimation,
-                          child: TextFormField(
-                            style: FxTextStyle.bodyMedium(),
-                            decoration: InputDecoration(
-                                floatingLabelBehavior:
-                                    FloatingLabelBehavior.never,
-                                filled: true,
-                                isDense: true,
-                                fillColor: Colors.white,
-                                // fillColor: Colors.white
-                                // prefixIcon: Icon(
-                                //   FeatherIcons.user,
-                                //   color: theme.colorScheme.onBackground,
-                                // ),
-                                hintText: "Enter Promo Code",
-                                enabledBorder: outlineInputBorderenable,
-                                focusedBorder: outlineInputBorderfocus,
-                                border: outlineInputBorderenable,
-                                // enabledBorder: outlineInputBorder,
-                                // focusedBorder: outlineInputBorder,
-                                // border: outlineInputBorder,
-                                contentPadding: FxSpacing.all(16),
-                                hintStyle: FxTextStyle.bodyMedium(),
-                                isCollapsed: true),
-                            maxLines: 1,
-                            controller: controller.promoTE,
-                            // validator: controller.validateName,
-                            cursorColor: theme.colorScheme.onBackground,
-                          ),
-                        ),
-                        //     child: FxText.labelLarge(
-                        //   'Black Friday Promo',
-                        //   fontWeight: 600,
-                        // )
-                      ),
-                      FxSpacing.width(16),
-                      // FxContainer(
-                      //   borderRadiusAll: 2,
-                      //   padding: FxSpacing.xy(8, 4),
-                      //   color: theme.colorScheme.primary.withAlpha(40),
-                      //   child: FxText.bodySmall(
-                      //     'BLCK20',
-                      //     color: theme.colorScheme.primary,
-                      //   ),
-                      // ),
-                      // Expanded(
-                      //   child: Container(),
-                      // ),
 
-                      Expanded(
-                        child: FxButton.block(
-                          onPressed: () {},
-                          borderRadiusAll: 4,
-                          elevation: 0,
-                          splashColor: const Color(0xff1529e8).withAlpha(40),
-                          backgroundColor: const Color(0xff1529e8),
-                          child: FxText.bodyMedium(
-                            'Redeem',
-                            fontWeight: 600,
-                            color: theme.colorScheme.onPrimary,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                )
-              : const SizedBox(),
-          FxSpacing.height(20),
-          // FxContainer(
-          //   paddingAll: 12,
-          //   borderRadiusAll: 4,
-          //   child: Row(
-          //     children: [
-          //       Icon(
-          //         FeatherIcons.creditCard,
-          //         size: 18,
-          //         color: theme.colorScheme.primary,
+          // Row(
+          //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //   children: [
+          //     FxText.labelLarge(
+          //       'Do you have promo code?',
+          //       fontWeight: 700,
+          //     ),
+          //     FxSpacing.width(20),
+          //     FxContainer.bordered(
+          //       // padding: FxSpacing.xy(16, 12),
+          //       onTap: () {
+          //         controller.addCart
+          //             ? controller.cartController.reverse()
+          //             : controller.cartController.forward();
+
+          //       },
+          //       borderRadiusAll: 4,
+          //       // elevation: 0,
+          //       splashColor: const Color(0xff1529e8).withAlpha(30),
+          //       // color: const Color(0xff1529e8),
+          //       color: const Color(0xff1529e8).withAlpha(40),
+          //       border: Border.all(color: const Color(0xff1529e8)),
+          //       child: Row(
+          //         mainAxisSize: MainAxisSize.min,
+          //         children: [
+          //           FxText.labelMedium(
+          //             'Promo Code',
+          //             // color: Colors.white,
+          //             color: const Color(0xff1529e8),
+          //             fontWeight: 600,
+          //           ),
+          //           const Icon(
+          //             FeatherIcons.arrowDown,
+          //             color: Color(0xff1529e8),
+          //             // color: Colors.white,
+          //             size: 18,
+          //           ),
+          //           // FxSpacing.width(8),
+          //         ],
           //       ),
-          //       FxSpacing.width(16),
-          //       Expanded(
-          //           child: FxText.labelLarge(
-          //         'Cyber Week Deal',
-          //         fontWeight: 600,
-          //       )),
-          //       FxSpacing.width(16),
-          //       FxContainer(
-          //         borderRadiusAll: 2,
-          //         padding: FxSpacing.xy(8, 4),
-          //         color: theme.colorScheme.primary.withAlpha(40),
-          //         child: FxText.bodySmall(
-          //           'CYBR00',
-          //           color: theme.colorScheme.primary,
-          //         ),
-          //       ),
-          //     ],
-          //   ),
+          //     ),
+          //   ],
           // ),
+          // FxSpacing.height(20),
+          // //code
+          // controller.addCart
+          //     ? FxContainer(
+          //         paddingAll: 12,
+          //         borderRadiusAll: 4,
+          //         child: Row(
+          //           children: [
+          //             // Icon(
+          //             //   FeatherIcons.creditCard,
+          //             //   size: 18,
+          //             //   color: theme.colorScheme.primary,
+          //             // ),
+          //             // FxSpacing.width(16),
+          //             Expanded(
+          //               child: SlideTransition(
+          //                 position: controller.promoAnimation,
+          //                 child: TextFormField(
+          //                   style: FxTextStyle.bodyMedium(),
+          //                   decoration: InputDecoration(
+          //                       floatingLabelBehavior:
+          //                           FloatingLabelBehavior.never,
+          //                       filled: true,
+          //                       isDense: true,
+          //                       fillColor: Colors.white,
+          //                       // fillColor: Colors.white
+          //                       // prefixIcon: Icon(
+          //                       //   FeatherIcons.user,
+          //                       //   color: theme.colorScheme.onBackground,
+          //                       // ),
+          //                       hintText: "Enter Promo Code",
+          //                       enabledBorder: outlineInputBorderenable,
+          //                       focusedBorder: outlineInputBorderfocus,
+          //                       border: outlineInputBorderenable,
+          //                       // enabledBorder: outlineInputBorder,
+          //                       // focusedBorder: outlineInputBorder,
+          //                       // border: outlineInputBorder,
+          //                       contentPadding: FxSpacing.all(16),
+          //                       hintStyle: FxTextStyle.bodyMedium(),
+          //                       isCollapsed: true),
+          //                   maxLines: 1,
+          //                   controller: controller.promoTE,
+          //                   // validator: controller.validateName,
+          //                   cursorColor: theme.colorScheme.onBackground,
+          //                 ),
+          //               ),
+
+          //             ),
+          //             FxSpacing.width(16),
+
+          //             Expanded(
+          //               child: FxButton.block(
+          //                 onPressed: () {},
+          //                 borderRadiusAll: 4,
+          //                 elevation: 0,
+          //                 splashColor: const Color(0xff1529e8).withAlpha(40),
+          //                 backgroundColor: const Color(0xff1529e8),
+          //                 child: FxText.bodyMedium(
+          //                   'Redeem',
+          //                   fontWeight: 600,
+          //                   color: theme.colorScheme.onPrimary,
+          //                 ),
+          //               ),
+          //             ),
+          //           ],
+          //         ),
+          //       )
+          //     : const SizedBox(),
+          FxSpacing.height(20),
 
           //bill
           _billingWidget(),

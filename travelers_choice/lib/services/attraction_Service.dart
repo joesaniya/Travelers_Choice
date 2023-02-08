@@ -13,8 +13,9 @@ class AttractionService {
       var response = await http.get(
         Uri.parse(
           'https://a.walletbot.online/api/v1/attractions/all',
+          // 'https://a.walletbot.online/api/v1/attractions/all?limit=1000'
         ),
-        headers: {'Content-Type': 'application/json'},
+        headers: {'Content-Type': 'application/json', "limit": "1000"},
       );
       if (response.statusCode == 200) {
         log(response.body);

@@ -174,7 +174,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                               // color: Color(0xff1529e8),
                               color: Colors.blueGrey,
                               child: FxText.bodySmall(
-                                'Ticket',
+                                product.bookingType.name,
+                                // 'Ticket',
                                 fontWeight: 300,
                                 color: Colors.white,
                                 // color: theme.colorScheme.onPrimary,
@@ -190,7 +191,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                               // color: Color(0xff1529e8),
                               color: Colors.blueGrey,
                               child: FxText.bodySmall(
-                                'Offer',
+                                '${product.duration}${product.durationType.name.toString() == "hours" ? 'Hrs' : 'Hrs'}',
+                                // 'Offer',
                                 fontWeight: 300,
                                 color: Colors.white,
                                 // color: theme.colorScheme.onPrimary,
@@ -310,7 +312,10 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
 
           // width: 300,
           width: 260,
-          height: 274,
+          // height: 274,
+          // height: 280,
+          height: MediaQuery.of(context).size.height * 0.360,
+
           decoration: BoxDecoration(
               // color: Color(0xffe6e1e5),
               color: Colors.white,
@@ -365,7 +370,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                           // color: Color(0xff1529e8),
                           color: Colors.blueGrey,
                           child: FxText.bodySmall(
-                            'Ticket',
+                            product.bookingType.name,
                             fontWeight: 300,
                             color: Colors.white,
                             // color: theme.colorScheme.onPrimary,
@@ -380,16 +385,67 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                           padding: FxSpacing.xy(6, 2),
                           // color: Color(0xff1529e8),
                           color: Colors.blueGrey,
+
                           child: FxText.bodySmall(
-                            'Offer',
+                            '${product.duration}${product.durationType.name.toString() == "hours" ? 'Hrs' : 'Hrs'}',
+                            // '${product.duration} hrs',
+                            // 'offer',
                             fontWeight: 300,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
                             color: Colors.white,
                             // color: theme.colorScheme.onPrimary,
                           ),
                         ),
                       ],
                     ),
-                    Row(
+                    // Row(
+                    //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    //   children: [
+                    //     Row(
+                    //       children: [
+                    //         const Icon(
+                    //           // FeatherIcons.star,
+                    //           Icons.star,
+                    //           color: Colors.yellow,
+                    //           size: 12,
+                    //         ),
+                    //         FxSpacing.width(4),
+                    //         FxText.bodySmall(
+                    //           // '4.5',
+                    //           product.averageRating.toString(),
+                    //           fontWeight: 600,
+                    //           color: Colors.black,
+                    //         ),
+                    //       ],
+                    //     ),
+                    //   ],
+                    // ),
+                  ],
+                ),
+              ),
+              // FxSpacing.height(20),
+              FxSpacing.height(10),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    height: 30,
+                    color: Colors.transparent,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8),
+                      child: FxText.bodyLarge(
+                        // 'Ferrari world',
+                        product.title.toString(),
+                        fontWeight: 800,
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 1,
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8),
+                    child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Row(
@@ -411,23 +467,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                         ),
                       ],
                     ),
-                  ],
-                ),
-              ),
-              FxSpacing.height(20),
-              Container(
-                height: 30,
-                color: Colors.transparent,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8),
-                  child: FxText.bodyLarge(
-                    // 'Ferrari world',
-                    product.title.toString(),
-                    fontWeight: 800,
-                    overflow: TextOverflow.ellipsis,
-                    maxLines: 1,
                   ),
-                ),
+                ],
               ),
               FxSpacing.height(10),
               Padding(
@@ -599,6 +640,22 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
               //   ],
               // ),
               const SearchPlace(),
+
+              // //anim
+              //  Container(
+              //   // key: controller.intro.keys[2],
+              //   height: 50,
+              //   child: AnimatedList(
+              //       scrollDirection: Axis.horizontal,
+              //       key: controller.listKey,
+              //       initialItemCount: controller.newCategories.length,
+              //       itemBuilder: (context, index, animation) {
+              //         return SlideTransition(
+              //             position: animation.drive(controller.offset),
+              //             child: controller.newCategories[index]);
+              //       }),
+              // ),
+              // FxSpacing.height(20),
 
               FxSpacing.height(20),
               //scroll

@@ -140,8 +140,8 @@ Country Code => $countryCode
   }
 
   void fetchData() {
-    // categories = HotelTravelCache.categories;
-    // products = HotelTravelCache.products;
+    // categories = HotelTravelCache.categories!.cast<Category>();
+    // // products = HotelTravelCache.products;
     // selectedCategory = categories!.first;
     log('selectedCategory');
     // log(selectedCategory.)
@@ -149,6 +149,11 @@ Country Code => $countryCode
     // log(uiLoading.toString());
     update();
   }
+
+  // void changeSelectedCategory(Category category) {
+  //   selectedCategory = category;
+  //   update();
+  // }
 
   void fetchloader() async {
     await Future.delayed(const Duration(seconds: 4));
