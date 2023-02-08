@@ -1,6 +1,9 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutx/flutx.dart';
+import 'package:hotel_travel/controllers/Activity_Controller.dart';
 
 import '../controllers/checkout_controller.dart';
 import '../images.dart';
@@ -9,7 +12,34 @@ import '../models/shipping_address.dart';
 import '../theme/app_theme.dart';
 
 class CheckOutScreen extends StatefulWidget {
-  const CheckOutScreen({Key? key}) : super(key: key);
+  dynamic? length;
+  // String? name;
+  // String? acount;
+  // String? CCount;
+  // String? iount;
+  // String? TotalGrant;
+  // int length;
+  // List<Activity> selectedtours = [];
+  String? name;
+  int adultCount;
+  int childCount;
+  int infantCount;
+  double grandTotal;
+  String textdate;
+  String? Transfer;
+  // VoidCallback finalAmount;
+
+  CheckOutScreen(
+      this.length,
+      // this.selectedtours,
+      this.name,
+      this.adultCount,
+      this.childCount,
+      this.infantCount,
+      this.grandTotal,
+      // this.finalAmount,
+      this.textdate,
+      this.Transfer);
 
   @override
   _CheckOutScreenState createState() => _CheckOutScreenState();
@@ -20,16 +50,23 @@ class _CheckOutScreenState extends State<CheckOutScreen>
   late ThemeData theme;
 
   late CheckOutController controller;
+  late ActivityController controller1;
   // late OutlineInputBorder outlineInputBorder;
   late OutlineInputBorder outlineInputBorderenable;
   late OutlineInputBorder outlineInputBorderfocus;
 
   @override
   void initState() {
+    log('length:${widget.length}');
+    log('Adult Count:${widget.adultCount}');
+    log('date:${widget.textdate}');
+    log('Transfer:${widget.Transfer}');
+    // log('final' + $finalAmount.toString());
     super.initState();
     theme = AppTheme.shoppingTheme;
 
     controller = FxControllerStore.put(CheckOutController(this));
+    controller1 = FxControllerStore.putOrFind(ActivityController(this));
     // outlineInputBorder = const OutlineInputBorder(
     //   borderRadius: BorderRadius.all(Radius.circular(4)),
     //   borderSide: BorderSide(
@@ -89,163 +126,384 @@ class _CheckOutScreenState extends State<CheckOutScreen>
   }
 
   Widget _billingWidget() {
-    return FadeTransition(
-      opacity: controller.fadeAnimation,
-      child: FxContainer(
-        borderRadiusAll: 4,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            FxText.bodyMedium(
-              'Billing Information',
-              muted: true,
-              fontWeight: 700,
-            ),
-            FxSpacing.height(20),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                FxText.bodyMedium(
-                  'Option',
-                  fontWeight: 600,
+    List<Widget> list = [];
+    log('message');
+    log(widget.length.toString());
+    return SizedBox(
+      child: ListView.separated(
+          shrinkWrap: true,
+          itemBuilder: (context, index) {
+            return FadeTransition(
+              opacity: controller.fadeAnimation,
+              child: FxContainer(
+                borderRadiusAll: 4,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    FxText.bodyMedium(
+                      'Billing Information',
+                      muted: true,
+                      fontWeight: 700,
+                    ),
+                    FxSpacing.height(20),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        FxText.bodyMedium(
+                          'Option',
+                          fontWeight: 600,
+                        ),
+                        FxText.bodyMedium(
+                          // '\$' + controller.order.precise,
+                          widget.name.toString(),
+                          fontWeight: 700,
+                        ),
+                      ],
+                    ),
+                    FxSpacing.height(4),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        FxText.bodyMedium(
+                          'Transfer',
+                          fontWeight: 600,
+                        ),
+                        widget.Transfer == null
+                            ? FxText.bodyMedium(
+                                // '\$' + controller.order.precise,
+                                'without',
+                                fontWeight: 700,
+                              )
+                            : FxText.bodyMedium(
+                                widget.Transfer.toString(),
+                                fontWeight: 700,
+                              ),
+                      ],
+                    ),
+                    FxSpacing.height(4),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        FxText.bodyMedium(
+                          'Date',
+                          fontWeight: 600,
+                        ),
+                        widget.textdate.isEmpty
+                            ? FxText.bodyMedium(
+                                'select Date',
+                                fontWeight: 700,
+                              )
+                            : FxText.bodyMedium(
+                                widget.textdate.toString(),
+                                // '2023-01-31',
+                                fontWeight: 700,
+                              ),
+                      ],
+                    ),
+                    FxSpacing.height(4),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        FxText.bodyMedium(
+                          'Pax',
+                          fontWeight: 600,
+                        ),
+                        Expanded(child: Container()),
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            FxContainer(
+                              padding: FxSpacing.fromLTRB(8, 6, 8, 6),
+                              color: const Color(0xff1529e8).withAlpha(40),
+                              child: Row(
+                                children: [
+                                  FxText.bodyMedium(
+                                      widget.adultCount.toString(),
+                                      color: const Color(0xff1529e8),
+                                      // color: customTheme.groceryPrimary,
+                                      fontWeight: 500,
+                                      letterSpacing: -0.2),
+                                  FxSpacing.width(4),
+                                  FxText.bodyMedium('Adult',
+                                      color: const Color(0xff1529e8),
+                                      // color: customTheme.groceryPrimary,
+                                      fontWeight: 500,
+                                      letterSpacing: -0.2),
+                                ],
+                              ),
+                            ),
+                            FxSpacing.width(10),
+                            FxContainer(
+                              padding: FxSpacing.fromLTRB(8, 6, 8, 6),
+                              color: const Color(0xff1529e8).withAlpha(40),
+                              child: Row(
+                                children: [
+                                  FxText.bodyMedium(
+                                      widget.childCount.toString(),
+                                      color: const Color(0xff1529e8),
+                                      // color: customTheme.groceryPrimary,
+                                      fontWeight: 500,
+                                      letterSpacing: -0.2),
+                                  FxSpacing.width(4),
+                                  FxText.bodyMedium('child',
+                                      color: const Color(0xff1529e8),
+                                      // color: customTheme.groceryPrimary,
+                                      fontWeight: 500,
+                                      letterSpacing: -0.2),
+                                ],
+                              ),
+                            ),
+                            FxSpacing.width(10),
+                            FxContainer(
+                              padding: FxSpacing.fromLTRB(8, 6, 8, 6),
+                              color: const Color(0xff1529e8).withAlpha(40),
+                              child: Row(
+                                children: [
+                                  FxText.bodyMedium(
+                                      widget.infantCount.toString(),
+                                      color: const Color(0xff1529e8),
+                                      // color: customTheme.groceryPrimary,
+                                      fontWeight: 500,
+                                      letterSpacing: -0.2),
+                                  FxSpacing.width(4),
+                                  FxText.bodyMedium('Infant',
+                                      color: const Color(0xff1529e8),
+                                      // color: customTheme.groceryPrimary,
+                                      fontWeight: 500,
+                                      letterSpacing: -0.2),
+                                ],
+                              ),
+                            )
+                          ],
+                        )
+                      ],
+                    ),
+                    FxSpacing.height(4),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        FxText.bodyMedium(
+                          'Amount',
+                          fontWeight: 600,
+                        ),
+                        FxText.bodyMedium(
+                          "${widget.grandTotal}AED",
+                          fontWeight: 700,
+                        ),
+                      ],
+                    ),
+                    FxSpacing.height(12),
+                    Row(
+                      children: [
+                        Expanded(
+                          flex: 2,
+                          child: Container(),
+                        ),
+                        Expanded(
+                          child: FxDashedDivider(
+                            dashSpace: 4,
+                            dashWidth: 8,
+                            color:
+                                theme.colorScheme.onBackground.withAlpha(180),
+                            height: 1.2,
+                          ),
+                        )
+                      ],
+                    ),
+                    FxSpacing.height(12),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        FxText.bodyMedium(
+                          'Grand Total',
+                          fontWeight: 700,
+                          color: const Color(0xff1529e8),
+                        ),
+                        FxText.bodyMedium(
+                          // '\$' + controller.total.precise,
+                          "${widget.grandTotal}AED",
+                          fontWeight: 800,
+                          color: const Color(0xff1529e8),
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
-                FxText.bodyMedium(
-                  // '\$' + controller.order.precise,
-                  'IMG Worlds of Adventure',
-                  fontWeight: 700,
-                ),
-              ],
-            ),
-            FxSpacing.height(4),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                FxText.bodyMedium(
-                  'Transfer',
-                  fontWeight: 600,
-                ),
-                FxText.bodyMedium(
-                  // '\$' + controller.order.precise,
-                  'without',
-                  fontWeight: 700,
-                ),
-              ],
-            ),
-            FxSpacing.height(4),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                FxText.bodyMedium(
-                  'Date',
-                  fontWeight: 600,
-                ),
-                FxText.bodyMedium(
-                  // '\$' + controller.order.precise,
-                  '2023-01-31',
-                  fontWeight: 700,
-                ),
-              ],
-            ),
-            FxSpacing.height(4),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                FxText.bodyMedium(
-                  'Pax',
-                  fontWeight: 600,
-                ),
-                FxText.bodyMedium(
-                  // '\$' + controller.order.precise,
-                  '1 adult',
-                  fontWeight: 700,
-                ),
-              ],
-            ),
-            FxSpacing.height(4),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                FxText.bodyMedium(
-                  'Amount',
-                  fontWeight: 600,
-                ),
-                FxText.bodyMedium(
-                  '345.00 AED',
-                  // 'IMG Worlds of Adventure',
-                  fontWeight: 700,
-                ),
-              ],
-            ),
-            FxSpacing.height(4),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                FxText.bodyMedium(
-                  'Tax',
-                  fontWeight: 600,
-                ),
-                FxText.bodyMedium(
-                  // '\$' + controller.tax.precise,
-                  '\$ 33',
-                  fontWeight: 700,
-                ),
-              ],
-            ),
-            FxSpacing.height(4),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                FxText.bodyMedium(
-                  'Offer',
-                  fontWeight: 600,
-                ),
-                FxText.bodyMedium(
-                  // '- \$' + controller.offer.precise,
-                  '- \$ 50',
-                  fontWeight: 700,
-                ),
-              ],
-            ),
-            FxSpacing.height(12),
-            Row(
-              children: [
-                Expanded(
-                  flex: 2,
-                  child: Container(),
-                ),
-                Expanded(
-                  child: FxDashedDivider(
-                    dashSpace: 4,
-                    dashWidth: 8,
-                    color: theme.colorScheme.onBackground.withAlpha(180),
-                    height: 1.2,
-                  ),
-                )
-              ],
-            ),
-            FxSpacing.height(12),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                FxText.bodyMedium(
-                  'Grand Total',
-                  fontWeight: 700,
-                  color: const Color(0xff1529e8),
-                ),
-                FxText.bodyMedium(
-                  // '\$' + controller.total.precise,
-                  '345.00 AED',
-                  // controller.products.
-                  fontWeight: 800,
-                  color: const Color(0xff1529e8),
-                ),
-              ],
-            ),
-          ],
-        ),
-      ),
+              ),
+            );
+          },
+          separatorBuilder: (context, index) {
+            return FxSpacing.height(10);
+          },
+          itemCount: widget.length),
     );
+
+    // for (var dataselect in controller1.selectedtour.length) {
+    //   list.add(FadeTransition);
+    // }
+    // return Column(
+    //   children: list,
+    // );
   }
+
+  // Widget _billingWidget() {
+  //   return FadeTransition(
+  //     opacity: controller.fadeAnimation,
+  //     child: FxContainer(
+  //       borderRadiusAll: 4,
+  //       child: Column(
+  //         crossAxisAlignment: CrossAxisAlignment.start,
+  //         children: [
+  //           FxText.bodyMedium(
+  //             'Billing Information',
+  //             muted: true,
+  //             fontWeight: 700,
+  //           ),
+  //           FxSpacing.height(20),
+  //           Row(
+  //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //             children: [
+  //               FxText.bodyMedium(
+  //                 'Option',
+  //                 fontWeight: 600,
+  //               ),
+  //               FxText.bodyMedium(
+  //                 // '\$' + controller.order.precise,
+  //                 'IMG Worlds of Adventure',
+  //                 fontWeight: 700,
+  //               ),
+  //             ],
+  //           ),
+  //           FxSpacing.height(4),
+  //           Row(
+  //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //             children: [
+  //               FxText.bodyMedium(
+  //                 'Transfer',
+  //                 fontWeight: 600,
+  //               ),
+  //               FxText.bodyMedium(
+  //                 // '\$' + controller.order.precise,
+  //                 'without',
+  //                 fontWeight: 700,
+  //               ),
+  //             ],
+  //           ),
+  //           FxSpacing.height(4),
+  //           Row(
+  //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //             children: [
+  //               FxText.bodyMedium(
+  //                 'Date',
+  //                 fontWeight: 600,
+  //               ),
+  //               FxText.bodyMedium(
+  //                 // '\$' + controller.order.precise,
+  //                 '2023-01-31',
+  //                 fontWeight: 700,
+  //               ),
+  //             ],
+  //           ),
+  //           FxSpacing.height(4),
+  //           Row(
+  //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //             children: [
+  //               FxText.bodyMedium(
+  //                 'Pax',
+  //                 fontWeight: 600,
+  //               ),
+  //               FxText.bodyMedium(
+  //                 // '\$' + controller.order.precise,
+  //                 '1 adult',
+  //                 fontWeight: 700,
+  //               ),
+  //             ],
+  //           ),
+  //           FxSpacing.height(4),
+  //           Row(
+  //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //             children: [
+  //               FxText.bodyMedium(
+  //                 'Amount',
+  //                 fontWeight: 600,
+  //               ),
+  //               FxText.bodyMedium(
+  //                 '345.00 AED',
+  //                 // 'IMG Worlds of Adventure',
+  //                 fontWeight: 700,
+  //               ),
+  //             ],
+  //           ),
+  //           FxSpacing.height(4),
+  //           Row(
+  //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //             children: [
+  //               FxText.bodyMedium(
+  //                 'Tax',
+  //                 fontWeight: 600,
+  //               ),
+  //               FxText.bodyMedium(
+  //                 // '\$' + controller.tax.precise,
+  //                 '\$ 33',
+  //                 fontWeight: 700,
+  //               ),
+  //             ],
+  //           ),
+  //           FxSpacing.height(4),
+  //           Row(
+  //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //             children: [
+  //               FxText.bodyMedium(
+  //                 'Offer',
+  //                 fontWeight: 600,
+  //               ),
+  //               FxText.bodyMedium(
+  //                 // '- \$' + controller.offer.precise,
+  //                 '- \$ 50',
+  //                 fontWeight: 700,
+  //               ),
+  //             ],
+  //           ),
+  //           FxSpacing.height(12),
+  //           Row(
+  //             children: [
+  //               Expanded(
+  //                 flex: 2,
+  //                 child: Container(),
+  //               ),
+  //               Expanded(
+  //                 child: FxDashedDivider(
+  //                   dashSpace: 4,
+  //                   dashWidth: 8,
+  //                   color: theme.colorScheme.onBackground.withAlpha(180),
+  //                   height: 1.2,
+  //                 ),
+  //               )
+  //             ],
+  //           ),
+  //           FxSpacing.height(12),
+  //           Row(
+  //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //             children: [
+  //               FxText.bodyMedium(
+  //                 'Grand Total',
+  //                 fontWeight: 700,
+  //                 color: const Color(0xff1529e8),
+  //               ),
+  //               FxText.bodyMedium(
+  //                 // '\$' + controller.total.precise,
+  //                 '345.00 AED',
+  //                 // controller.products.
+  //                 fontWeight: 800,
+  //                 color: const Color(0xff1529e8),
+  //               ),
+  //             ],
+  //           ),
+  //         ],
+  //       ),
+  //     ),
+  //   );
+  // }
 
   Widget _buildSingleShippingAddress(ShippingAddress shippingAddress) {
     bool selected = controller.addressSelected == shippingAddress;
@@ -394,7 +652,7 @@ class _CheckOutScreenState extends State<CheckOutScreen>
           // crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             FxText.labelLarge(
-              'Passenger Details',
+              'Personal Details',
               fontWeight: 600,
             ),
             FxSpacing.height(20),
@@ -1191,7 +1449,10 @@ class _CheckOutScreenState extends State<CheckOutScreen>
                   color: theme.colorScheme.onPrimary,
                 ),
                 FxText.bodyMedium(
-                  '\$ 251.55',
+                  // '\$ 251.55',
+                  // widget.finalAmount.toString(),
+                  widget.grandTotal.toString(),
+                  // controller1.grandSelectedTourAmount().toString(),
                   fontWeight: 700,
                   color: theme.colorScheme.onPrimary,
                 ),

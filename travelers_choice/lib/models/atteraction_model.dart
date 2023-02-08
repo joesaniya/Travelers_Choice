@@ -36,7 +36,7 @@ class DetailattractionModal {
   List<Reviews>? reviews;
   Markup? markup;
   int? totalRating;
-  double? averageRating;
+  int? averageRating;
   List<Activity>? activities;
 
   DetailattractionModal(
@@ -461,11 +461,11 @@ class Activity {
   String? name;
   String? facilities;
   int? adultAgeLimit;
-  double? adultPrice;
+  int? adultPrice;
   int? childAgeLimit;
-  double? childPrice;
+  int? childPrice;
   double? infantAgeLimit;
-  double? infantPrice;
+  int? infantPrice;
   bool? isVat;
   int? vat;
   String? base;

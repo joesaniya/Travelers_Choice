@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutx/flutx.dart';
 import 'package:hotel_travel/views/hotel_travel_constants.dart';
+import 'package:iconsax/iconsax.dart';
 
 import '../models/product.dart';
 import '../models/shipping_address.dart';
@@ -70,7 +71,7 @@ class CheckOutController extends FxController {
     addressList = ShippingAddress.shipping();
     addressSelected = addressList!.first;
     tabs = [
-      Tab('Passenger Details', Icons.local_shipping_outlined),
+      Tab('Personal Details', Iconsax.user),
       Tab('Payment', Icons.payment),
       Tab('Booked', Icons.check_circle_outline),
     ];
@@ -265,43 +266,44 @@ class CheckOutController extends FxController {
       /*   Navigator.push(
           context, MaterialPageRoute(builder: (context) => FullApp()));*/
     } else {
-      // await pageController.animateToPage(
-      //   currentPage + 1,
-      //   duration: const Duration(milliseconds: 600),
-      //   curve: Curves.ease,
-      // );
+      await pageController.animateToPage(
+        currentPage + 1,
+        duration: const Duration(milliseconds: 600),
+        curve: Curves.ease,
+      );
       //validation
-      if (selectedname == null || selectedname!.isEmpty) {
-        ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text("Please Select Mr/Ms/Mrs")));
-      } else if (FnameTE.text.isEmpty) {
-        ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text("Please Enter First Name")));
-      } else if (LnameTE.text.isEmpty) {
-        ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text("Please Enter Last Name")));
-      } else if (emailTE.text.isEmpty) {
-        ScaffoldMessenger.of(context)
-            .showSnackBar(const SnackBar(content: Text("Please Enter Email")));
-      } else if (selectedcountry == null || selectedcountry!.isEmpty) {
-        ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text("Please Select Country")));
-      } else if (phoneTE.text.isEmpty
+      // if (selectedname == null || selectedname!.isEmpty) {
+      //   ScaffoldMessenger.of(context).showSnackBar(
+      //       const SnackBar(content: Text("Please Select Mr/Ms/Mrs")));
+      // } else if (FnameTE.text.isEmpty) {
+      //   ScaffoldMessenger.of(context).showSnackBar(
+      //       const SnackBar(content: Text("Please Enter First Name")));
+      // } else if (LnameTE.text.isEmpty) {
+      //   ScaffoldMessenger.of(context).showSnackBar(
+      //       const SnackBar(content: Text("Please Enter Last Name")));
+      // } else if (emailTE.text.isEmpty) {
+      //   ScaffoldMessenger.of(context)
+      //       .showSnackBar(const SnackBar(content: Text("Please Enter Email")));
+      // } else if (selectedcountry == null || selectedcountry!.isEmpty) {
+      //   ScaffoldMessenger.of(context).showSnackBar(
+      //       const SnackBar(content: Text("Please Select Country")));
+      // } else if (phoneTE.text.isEmpty
 
-          //  ||phoneTE.length!=10
-          ) {
-        ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text("Please Enter Phone Number")));
-      } else if (reqTE.text.isEmpty) {
-        ScaffoldMessenger.of(context)
-            .showSnackBar(const SnackBar(content: Text("Enter Request")));
-      } else {
-        await pageController.animateToPage(
-          currentPage + 1,
-          duration: const Duration(milliseconds: 600),
-          curve: Curves.ease,
-        );
-      }
+      //     //  ||phoneTE.length!=10
+      //     ) {
+      //   ScaffoldMessenger.of(context).showSnackBar(
+      //       const SnackBar(content: Text("Please Enter Phone Number")));
+      // } else if (reqTE.text.isEmpty) {
+      //   ScaffoldMessenger.of(context)
+      //       .showSnackBar(const SnackBar(content: Text("Enter Request")));
+      // }
+      // else {
+      //   await pageController.animateToPage(
+      //     currentPage + 1,
+      //     duration: const Duration(milliseconds: 600),
+      //     curve: Curves.ease,
+      //   );
+      // }
     }
   }
 

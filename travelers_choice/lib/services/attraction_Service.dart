@@ -37,6 +37,36 @@ class AttractionService {
     }
   }
 
+  //search
+  Future<AllattractionModal?> getSearchAttraction(place) async {
+    try {
+      var response = await http.get(
+        Uri.parse(
+            // 'https://a.walletbot.online/api/v1/attractions/all',
+            'https://a.walletbot.online/api/v1/attractions/all?limit=1000/$place'
+            //
+            ),
+        headers: {
+          'Content-Type': 'application/json',
+
+          // "limit": "1000"
+        },
+      );
+      log("search data:${response.body}");
+      if (response.statusCode == 200) {
+        log("search data:${response.body}");
+
+        return allattractionModalFromJson(response.body);
+      } else {
+        var jsondata = jsonDecode(response.body);
+        log(jsondata['error']);
+        return null;
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
+
   // //detailAttraction
 
   Future<DetailattractionModal?> getdetailAttraction(

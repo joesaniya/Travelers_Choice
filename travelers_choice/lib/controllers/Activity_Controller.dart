@@ -52,7 +52,7 @@ class ActivityController extends FxController {
       if (selectedtour.contains(tour)) {
         selectedtour.remove(tour);
       } else {
-        tour.grandTotal = tour.adultPrice!;
+        tour.grandTotal = tour.adultPrice!.toDouble();
         selectedtour.add(tour);
       }
     } else {
@@ -62,7 +62,7 @@ class ActivityController extends FxController {
       if (selectedtour.contains(person_count[index])) {
         selectedtour.remove(person_count[index]);
       } else {
-        person_count[index].grandTotal = tour.adultPrice!;
+        person_count[index].grandTotal = tour.adultPrice!.toDouble();
         selectedtour.add(person_count[index]);
       }
 
@@ -195,7 +195,7 @@ class ActivityController extends FxController {
     List<Activity> value =
         person_count.where((element) => element.sId == tour.sId).toList();
     if (value.isEmpty) {
-      return tour.adultPrice;
+      return tour.adultPrice!.toDouble();
     } else {
       return (value[0].adultCount * value[0].adultPrice!) +
           (value[0].childCount * value[0].childPrice!) +
@@ -254,7 +254,8 @@ class ActivityController extends FxController {
   }
 
   double getGrandTotal(Activity tour) {
-    double amount = getTotal(tour);
+    log(getTotal(tour).toString());
+    double amount = double.parse(getTotal(tour).toString());
     if (tour.isPrivate) {
       amount = amount + tour.privateTransferPrice!;
     }
@@ -425,6 +426,9 @@ class ActivityController extends FxController {
       ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text("Select Your Tour Option")));
     } else {
+      log(selectedtour.length.toString());
+      log(selectedtour.first.name.toString());
+      log(selectedtour.first.adultCount.toString());
       Navigator.of(context, rootNavigator: true).push(PageRouteBuilder(
           transitionDuration: const Duration(milliseconds: 500),
           transitionsBuilder: (
@@ -437,21 +441,22 @@ class ActivityController extends FxController {
                 opacity: animation,
                 child: child,
               ),
-          pageBuilder: (_, __, ___) => const CheckOutScreen()));
+          pageBuilder: (_, __, ___) => CheckOutScreen(
+              selectedtour.length,
+              // selectedtours,
+              // selectedtour,
+              selectedtour.first.name,
+              selectedtour.first.adultCount,
+              selectedtour.first.childCount,
+              selectedtour.first.infantCount,
+              selectedtour.first.grandTotal,
+              dateTE.text,
+              selectedtransfer
+              // excursions.activities!
+
+              // grandSelectedTourAmount()
+              )));
     }
-    // Navigator.of(context, rootNavigator: true).push(PageRouteBuilder(
-    //     transitionDuration: const Duration(milliseconds: 500),
-    //     transitionsBuilder: (
-    //       BuildContext context,
-    //       Animation<double> animation,
-    //       Animation<double> secondaryAnimation,
-    //       Widget child,
-    //     ) =>
-    //         FadeTransition(
-    //           opacity: animation,
-    //           child: child,
-    //         ),
-    //     pageBuilder: (_, __, ___) => const CheckOutScreen()));
   }
 
   @override

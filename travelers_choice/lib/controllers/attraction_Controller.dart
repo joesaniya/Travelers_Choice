@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:hotel_travel/models/all_attraction_modal.dart';
 import '../models/atteraction_model.dart';
 
@@ -17,6 +19,27 @@ class AttractionController {
         // isCountryListLoading = false;
         return data; //removed true
       } else {
+        return null; //falseremoved
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  //search
+
+  Future<AllattractionModal?> getSearchattractionList(place) async {
+    // isCountryListLoading = true;
+    try {
+      var data = await AttractionService().getSearchAttraction(place);
+      allattractionList.clear();
+      if (data != null) {
+        log('controllergetsearch');
+        allattractionList.add(data);
+        // isCountryListLoading = false;
+        return data; //removed true
+      } else {
+        log('null data');
         return null; //falseremoved
       }
     } catch (e) {

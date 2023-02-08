@@ -13,9 +13,9 @@ import '../models/all_attraction_modal.dart';
 import '../theme/app_theme.dart';
 
 class SearchScreen extends StatefulWidget {
-  // Destination? place;
-  // // final BuildContext rootContext;
-  // SearchScreen({required this.place});
+  String? place;
+  // final BuildContext rootContext;
+  SearchScreen({required this.place});
 
   @override
   State<SearchScreen> createState() => _SearchScreenState();
@@ -61,10 +61,10 @@ class _SearchScreenState extends State<SearchScreen>
     });
   }
 
-  getAttraction() {
+  getAttraction(place) {
     log('getAttraction function called');
     Future.delayed(Duration.zero, () async {
-      await AttractionController().getAllattractionList().then((value) {
+      await AttractionController().getSearchattractionList(place).then((value) {
         if (value != null) {
           isLoading = false;
           allattractionList.add(value);
@@ -78,7 +78,7 @@ class _SearchScreenState extends State<SearchScreen>
   @override
   void initState() {
     super.initState();
-    getAttraction();
+    getAttraction(widget.place);
 
     theme = AppTheme.shoppingTheme;
     theme1 = AppTheme.learningTheme;

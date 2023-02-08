@@ -145,9 +145,7 @@ class SearchController extends FxController {
                 opacity: animation,
                 child: child,
               ),
-          pageBuilder: (_, __, ___) => SearchScreen(
-              // place: selectedCountry.toString()
-              )));
+          pageBuilder: (_, __, ___) => SearchScreen(place:selectedCountry)));
     }
   }
 
