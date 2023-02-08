@@ -56,10 +56,11 @@ class MyApp extends StatelessWidget {
           ],
           supportedLocales: Language.getLocales(),
           // home: const LogInScreen(),
-          home: AuthContainer(),
+          // home: AuthContainer(),
           // home: const FullApp(),
           // home: MyHomePage(),
           // home: YourPage(),
+          home: VisaScreen(),
         );
       },
     );
