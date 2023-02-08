@@ -121,15 +121,15 @@ class _DetailScreenState extends State<DetailScreen>
                           });
                         },
                         itemCount:
-                            controller.detailattraction.first.images.length,
+                            controller.detailattraction.first.images!.length,
                         itemBuilder: (context, index) {
                           return Hero(
                               tag:
-                                  "product_image_${controller.detailattraction.first.images.first}",
+                                  "product_image_${controller.detailattraction.first.images!.first}",
                               child: Container(
                                 child: Image(
                                   image: NetworkImage(
-                                      'https://a.walletbot.online/${controller.detailattraction.first.images[index]}'),
+                                      'https://a.walletbot.online/${controller.detailattraction.first.images![index]}'),
                                   height:
                                       MediaQuery.of(context).size.height / 3,
                                   width: MediaQuery.of(context).size.width,
@@ -170,8 +170,9 @@ class _DetailScreenState extends State<DetailScreen>
                                 color: Colors.blueGrey,
                                 child: FxText.bodySmall(
                                   // 'Theme Park',
-                                  controller.detailattraction.first.category
-                                      .categoryName,
+                                  controller.detailattraction.first.category!
+                                          .categoryName ??
+                                      '',
                                   // controller.product.bookingType.toString(),
                                   fontWeight: 300,
                                   color: Colors.white,
@@ -188,7 +189,9 @@ class _DetailScreenState extends State<DetailScreen>
                                 // color: Color(0xff1529e8),
                                 color: Colors.blueGrey,
                                 child: FxText.bodySmall(
-                                  controller.detailattraction.first.bookingType,
+                                  controller
+                                          .detailattraction.first.bookingType ??
+                                      '',
                                   fontWeight: 300,
                                   color: Colors.white,
                                   // color: theme.colorScheme.onPrimary,
@@ -222,7 +225,7 @@ class _DetailScreenState extends State<DetailScreen>
                                 "product_title_${controller.detailattraction.first.title}",
                             child: FxText.titleMedium(
                                 // controller.product.title,
-                                controller.detailattraction.first.title,
+                                controller.detailattraction.first.title ?? '',
                                 fontWeight: 600,
                                 letterSpacing: 0),
                           ),
@@ -239,7 +242,8 @@ class _DetailScreenState extends State<DetailScreen>
                                     margin: const EdgeInsets.only(left: 2),
                                     child: FxText.bodySmall(
                                         controller.detailattraction.first
-                                            .destination.name,
+                                                .destination!.name ??
+                                            '',
                                         fontWeight: 500)),
                               ],
                             ),
@@ -310,7 +314,7 @@ class _DetailScreenState extends State<DetailScreen>
                         FxText.bodyMedium(
                             // "350 \$",
                             // '${controller.detailattraction.first.activities.first.adultPrice} ${controller.currency() ?? '\$'}',
-                            '${controller.detailattraction.first.activities.first.adultPrice} AED',
+                            '${controller.detailattraction.first.activities!.first.adultPrice} AED',
                             // controller.product.price.toString(),
                             fontWeight: 700)
                       ],
@@ -337,7 +341,8 @@ class _DetailScreenState extends State<DetailScreen>
                                   margin: const EdgeInsets.only(left: 4),
                                   child: FxStarRating(
                                       rating: controller.detailattraction.first
-                                          .averageRating))
+                                              .averageRating ??
+                                          2.55))
                             ],
                           )
                         ],
@@ -457,7 +462,7 @@ class _DetailScreenState extends State<DetailScreen>
                           itemBuilder: (context, index) {
                             return Html(
                               data: controller
-                                  .detailattraction.first.sections.first.body,
+                                  .detailattraction.first.sections!.first.body,
                               style: {
                                 'p': Style(color: Colors.black),
                               },

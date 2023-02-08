@@ -13,7 +13,7 @@ import '../models/all_attraction_modal.dart';
 import '../theme/app_theme.dart';
 
 class SearchScreen extends StatefulWidget {
-  String? place;
+  Destination? place;
   // final BuildContext rootContext;
   SearchScreen({required this.place});
 
@@ -28,6 +28,38 @@ class _SearchScreenState extends State<SearchScreen>
   late HomeSearchController controller;
   bool isLoading = true;
   List<AllattractionModal> allattractionList = <AllattractionModal>[];
+  List<AllattractionModal>? foundCustomer = [];
+
+  void _runFilter(String enteredKeyword) {
+    print('runFilters');
+    List results = [];
+    if (enteredKeyword.isEmpty) {
+      print('runFilters if');
+      results = controller.SearchTE as List;
+    } else {
+      print('runFilters else');
+      results = allattractionList
+          .where((Attract) => Attract.attractions.data.first.title
+                  .toString()
+                  .toLowerCase()
+                  .contains(enteredKeyword.toLowerCase())
+              // ||
+              // Customer.customeremail
+              //     .toString()
+              //     .toLowerCase()
+              //     .contains(enteredKeyword.toLowerCase())
+              )
+          .toList();
+      print(results);
+    }
+
+    setState(() {
+      print('set state');
+      // foundCustomer = results.cast<Customer>();
+      foundCustomer = results.cast<AllattractionModal>();
+      // foundrecipe = searchResult;
+    });
+  }
 
   getAttraction() {
     log('getAttraction function called');
@@ -97,7 +129,9 @@ class _SearchScreenState extends State<SearchScreen>
                 Expanded(
                   child: TextFormField(
                     style: FxTextStyle.bodyMedium(),
+                    controller: controller.SearchTE,
                     cursorColor: theme.colorScheme.primary,
+                    onChanged: (value) => _runFilter(value),
                     decoration: InputDecoration(
                       hintText: "Search your place ...",
                       hintStyle: FxTextStyle.bodySmall(
@@ -221,10 +255,14 @@ class _SearchScreenState extends State<SearchScreen>
             FxSpacing.height(20),
             //content
             SingleChildScrollView(
-              scrollDirection: Axis.vertical,
-              // child: _buildProductList(),
-              child: _buildProductListUi(),
-            ),
+                scrollDirection: Axis.vertical,
+                // child: _buildProductList(),
+                child:
+                    // foundCustomer!.isNotEmpty
+                    //     ?
+                    _buildProductListUi()
+                // : const Text('No Data'),
+                ),
           ],
         ),
       );

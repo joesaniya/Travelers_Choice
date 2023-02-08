@@ -11,6 +11,8 @@ class SearchController extends FxController {
   late TextEditingController locationTE, dateTE;
   GlobalKey<FormState> formKey = GlobalKey();
 
+  // List<AllattractionModal> searchResult = <AllattractionModal>[];
+
   //country
   final focus = FocusNode();
 
@@ -141,6 +143,7 @@ class SearchController extends FxController {
     log('search btn');
     locationCounter = 0;
     dateCounter = 0;
+
     // if (formKey.currentState!.validate()) {
     //   log('search');
     //   searchController.forward();
@@ -158,13 +161,12 @@ class SearchController extends FxController {
       ScaffoldMessenger.of(context)
           .showSnackBar(const SnackBar(content: Text("Please select date")));
     } else {
-      ScaffoldMessenger.of(context)
-          .showSnackBar(const SnackBar(content: Text("Success")));
-      // Navigator.of(context, rootNavigator: true).pushReplacement(
-      //   MaterialPageRoute(
-      //     builder: (context) => SearchScreen(place: selectedCountry),
-      //   ),
-      // );
+      // ScaffoldMessenger.of(context)
+      //     .showSnackBar(const SnackBar(content: Text("Success")));
+      log('country');
+      log(selectedCountry.toString());
+      print(selectedCountry.toString());
+
       Navigator.of(context, rootNavigator: true).push(PageRouteBuilder(
           transitionDuration: const Duration(milliseconds: 500),
           transitionsBuilder: (

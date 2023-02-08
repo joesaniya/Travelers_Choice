@@ -12,13 +12,20 @@ class AttractionService {
     try {
       var response = await http.get(
         Uri.parse(
-          'https://a.walletbot.online/api/v1/attractions/all',
-          // 'https://a.walletbot.online/api/v1/attractions/all?limit=1000'
-        ),
-        headers: {'Content-Type': 'application/json', "limit": "1000"},
+            // 'https://a.walletbot.online/api/v1/attractions/all',
+            'https://a.walletbot.online/api/v1/attractions/all?limit=1000'
+            //
+            ),
+        headers: {
+          'Content-Type': 'application/json',
+
+          // "limit": "1000"
+        },
+        // queryParam:{"limit": "1000"}
       );
       if (response.statusCode == 200) {
         log(response.body);
+
         return allattractionModalFromJson(response.body);
       } else {
         var jsondata = jsonDecode(response.body);
@@ -43,7 +50,8 @@ class AttractionService {
       );
       if (response.statusCode == 200) {
         log(response.body);
-        return detailattractionModalFromJson(response.body);
+        return DetailattractionModal.fromJson(jsonDecode(response.body));
+        // detailattractionModalFromJson(response.body);
       } else {
         var jsondata = jsonDecode(response.body);
         log(jsondata['error']);

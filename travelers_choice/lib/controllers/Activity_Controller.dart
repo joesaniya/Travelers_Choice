@@ -42,11 +42,31 @@ class ActivityController extends FxController {
   // }
 
   void updateTours(Activity tour) {
-    if (selectedtour.contains(tour)) {
-      selectedtour.remove(tour);
+    List<Activity> value =
+        person_count.where((element) => element.sId == tour.sId).toList();
+    print("Coutn => ${value.length}");
+    if (value.isEmpty) {
+      double val = getGrandTotal(tour);
+      tour.grandTotal = val;
+
+      if (selectedtour.contains(tour)) {
+        selectedtour.remove(tour);
+      } else {
+        tour.grandTotal = tour.adultPrice!;
+        selectedtour.add(tour);
+      }
     } else {
-      tour.grandTotal = tour.adultPrice;
-      selectedtour.add(tour);
+      int index = person_count.indexOf(value[0]);
+      double val = getGrandTotal(person_count[index]);
+      person_count[index].grandTotal = val;
+      if (selectedtour.contains(person_count[index])) {
+        selectedtour.remove(person_count[index]);
+      } else {
+        person_count[index].grandTotal = tour.adultPrice!;
+        selectedtour.add(person_count[index]);
+      }
+
+      print(person_count[index].grandTotal);
     }
     update();
   }
@@ -112,7 +132,7 @@ class ActivityController extends FxController {
       bool isInfant = false,
       bool isIncrement = false}) {
     List<Activity> value =
-        person_count.where((element) => element.id == tour.id).toList();
+        person_count.where((element) => element.sId == tour.sId).toList();
 
     print("Person Count Added=-> $value");
     if (value.isEmpty) {
@@ -137,6 +157,8 @@ class ActivityController extends FxController {
                 ? tour.infantCount--
                 : 1;
       }
+      double val = getGrandTotal(tour);
+      tour.grandTotal = val;
       person_count.add(tour);
     } else {
       int index = person_count.indexOf(value[0]);
@@ -162,26 +184,29 @@ class ActivityController extends FxController {
                 : 0;
       }
     }
+    int index = person_count.indexOf(value[0]);
+    double val = getGrandTotal(person_count[index]);
+    person_count[index].grandTotal = val;
     print('List Value=> ${person_count.length}');
     update();
   }
 
   getTotal(Activity tour) {
     List<Activity> value =
-        person_count.where((element) => element.id == tour.id).toList();
+        person_count.where((element) => element.sId == tour.sId).toList();
     if (value.isEmpty) {
       return tour.adultPrice;
     } else {
-      return (value[0].adultCount * value[0].adultPrice) +
-          (value[0].childCount * value[0].childPrice) +
-          (value[0].infantCount * value[0].infantPrice);
+      return (value[0].adultCount * value[0].adultPrice!) +
+          (value[0].childCount * value[0].childPrice!) +
+          (value[0].infantCount * value[0].infantPrice!);
     }
   }
 
   addisPrivateORsharing(Activity tour,
       {bool isPrivate = false, bool isSharing = false}) {
     List<Activity> value =
-        person_count.where((element) => element.id == tour.id).toList();
+        person_count.where((element) => element.sId == tour.sId).toList();
     if (value.isEmpty) {
       personCountFn(tour, isAdult: true);
       if (isPrivate) {
@@ -212,7 +237,7 @@ class ActivityController extends FxController {
   int getCounts(String id,
       {bool isAdult = false, bool isChild = false, bool isInfant = false}) {
     List<Activity> value =
-        person_count.where((element) => element.id == id).toList();
+        person_count.where((element) => element.sId == id).toList();
 
     if (value.isEmpty) {
       return isAdult ? 1 : 0;
@@ -231,10 +256,10 @@ class ActivityController extends FxController {
   double getGrandTotal(Activity tour) {
     double amount = getTotal(tour);
     if (tour.isPrivate) {
-      amount = amount + tour.privateTransferPrice;
+      amount = amount + tour.privateTransferPrice!;
     }
     if (tour.isSharing) {
-      amount = amount + tour.sharedTransferPrice;
+      amount = amount + tour.sharedTransferPrice!;
     }
     return amount;
     update();

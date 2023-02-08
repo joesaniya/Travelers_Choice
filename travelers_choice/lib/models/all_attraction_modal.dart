@@ -105,16 +105,18 @@ class Datum {
         destination: Destination.fromJson(json["destination"]),
         title: json["title"],
         category: Category.fromJson(json["category"]),
-        bookingType: bookingTypeValues.map[json["bookingType"]]!,
-        durationType: durationTypeValues.map[json["durationType"]]!,
+        bookingType:
+            bookingTypeValues.map[json["bookingType"]] ?? BookingType.BOOKING,
+        durationType:
+            durationTypeValues.map[json["durationType"]] ?? DurationType.DAYS,
         duration: json["duration"],
         isOffer: json["isOffer"],
-        offerAmountType: offerAmountTypeValues.map[json["offerAmountType"]]!,
-        offerAmount: json["offerAmount"],
+        offerAmountType: offerAmountTypeValues.map[json["offerAmountType"]]?? OfferAmountType.FLAT,
+        offerAmount: json["offerAmount"] ?? 0,
         images: List<String>.from(json["images"].map((x) => x)),
-        cancelBeforeTime: json["cancelBeforeTime"],
-        cancellationFee: json["cancellationFee"],
-        cancellationType: cancellationTypeValues.map[json["cancellationType"]]!,
+        cancelBeforeTime: json["cancelBeforeTime"] ?? 0,
+        cancellationFee: json["cancellationFee"] ?? 0,
+        cancellationType: cancellationTypeValues.map[json["cancellationType"]]?? CancellationType.FREE_CANCELLATION,
         isCombo: json["isCombo"],
         activity: Activity.fromJson(json["activity"]),
         totalReviews: json["totalReviews"],
@@ -135,7 +137,8 @@ class Datum {
         "images": List<dynamic>.from(images.map((x) => x)),
         "cancelBeforeTime": cancelBeforeTime,
         "cancellationFee": cancellationFee,
-        "cancellationType": cancellationTypeValues.reverse[cancellationType],
+        "cancellationType":
+            cancellationTypeValues.reverse[cancellationType] ?? cancellationFee,
         "isCombo": isCombo,
         "activity": activity.toJson(),
         "totalReviews": totalReviews,
@@ -221,7 +224,7 @@ class Destination {
     required this.updatedAt,
     required this.v,
     required this.isDeleted,
-    // required this.image,
+    required this.image,
   });
 
   Id id;
@@ -231,17 +234,17 @@ class Destination {
   DateTime updatedAt;
   int v;
   bool isDeleted;
-  // Image image;
+  ImageVal image;
 
   factory Destination.fromJson(Map<String, dynamic> json) => Destination(
-        id: idValues.map[json["_id"]]!,
-        country: countryValues.map[json["country"]]!,
-        name: nameValues.map[json["name"]]!,
+        id: idValues.map[json["_id"]]?? Id.THE_63_AFBD4_CE2247_E66126_E419_D,
+        country: countryValues.map[json["country"]]?? Country.THE_63_AC33_ECFF04_E5652_A2583_F5,
+        name: nameValues.map[json["name"]]?? Name.ABU_DHABI,
         createdAt: DateTime.parse(json["createdAt"]),
         updatedAt: DateTime.parse(json["updatedAt"]),
         v: json["__v"],
         isDeleted: json["isDeleted"],
-        // image: imageValues.map[json["image"]]!,
+        image: imageValues.map[json["image"]]?? ImageVal.PUBLIC_IMAGES_DESTINATIONS_IMAGE_1672982724148714879389_WEBP,
       );
 
   Map<String, dynamic> toJson() => {
@@ -252,7 +255,7 @@ class Destination {
         "updatedAt": updatedAt.toIso8601String(),
         "__v": v,
         "isDeleted": isDeleted,
-        // "image": imageValues.reverse[image],
+        "image": imageValues.reverse[image],
       };
 }
 
@@ -280,23 +283,23 @@ final idValues = EnumValues({
   "63c93b703b3de4b73b3da0ca": Id.THE_63_C93_B703_B3_DE4_B73_B3_DA0_CA
 });
 
-// enum Image {
-//   PUBLIC_IMAGES_DESTINATIONS_IMAGE_167440861906061001879_WEBP,
-//   PUBLIC_IMAGES_DESTINATIONS_IMAGE_1672982741618547465184_JPG,
-//   PUBLIC_IMAGES_DESTINATIONS_IMAGE_1672982724148714879389_WEBP,
-//   PUBLIC_IMAGES_DESTINATIONS_IMAGE_1674132336190668432010_JPG
-// }
+enum ImageVal {
+  PUBLIC_IMAGES_DESTINATIONS_IMAGE_167440861906061001879_WEBP,
+  PUBLIC_IMAGES_DESTINATIONS_IMAGE_1672982741618547465184_JPG,
+  PUBLIC_IMAGES_DESTINATIONS_IMAGE_1672982724148714879389_WEBP,
+  PUBLIC_IMAGES_DESTINATIONS_IMAGE_1674132336190668432010_JPG
+}
 
-// final imageValues = EnumValues({
-//   "/public/images/destinations/image-1672982724148-714879389.webp":
-//       Image.PUBLIC_IMAGES_DESTINATIONS_IMAGE_1672982724148714879389_WEBP,
-//   "/public/images/destinations/image-1672982741618-547465184.jpg":
-//       Image.PUBLIC_IMAGES_DESTINATIONS_IMAGE_1672982741618547465184_JPG,
-//   "/public/images/destinations/image-1674132336190-668432010.jpg":
-//       Image.PUBLIC_IMAGES_DESTINATIONS_IMAGE_1674132336190668432010_JPG,
-//   "/public/images/destinations/image-1674408619060-61001879.webp":
-//       Image.PUBLIC_IMAGES_DESTINATIONS_IMAGE_167440861906061001879_WEBP
-// });
+final imageValues = EnumValues({
+  "/public/images/destinations/image-1672982724148-714879389.webp":
+      ImageVal.PUBLIC_IMAGES_DESTINATIONS_IMAGE_1672982724148714879389_WEBP,
+  "/public/images/destinations/image-1672982741618-547465184.jpg":
+      ImageVal.PUBLIC_IMAGES_DESTINATIONS_IMAGE_1672982741618547465184_JPG,
+  "/public/images/destinations/image-1674132336190-668432010.jpg":
+      ImageVal.PUBLIC_IMAGES_DESTINATIONS_IMAGE_1674132336190668432010_JPG,
+  "/public/images/destinations/image-1674408619060-61001879.webp":
+      ImageVal.PUBLIC_IMAGES_DESTINATIONS_IMAGE_167440861906061001879_WEBP
+});
 
 enum Name { ABU_DHABI, DUBAI, SHARJAH, OMAN }
 

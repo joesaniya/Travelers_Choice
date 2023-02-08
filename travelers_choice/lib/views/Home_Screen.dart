@@ -294,7 +294,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     //   list.add(car(controller.products![i]));
     // }
     // for (Product product in controller.products!)
-    for (var product in allattractionList.first.attractions.data) {
+    for (Datum product in allattractionList.first.attractions.data) {
       list.add(
           // car(controller.products![i])
           InkWell(
@@ -313,8 +313,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
           // width: 300,
           width: 260,
           // height: 274,
-          // height: 280,
-          height: MediaQuery.of(context).size.height * 0.360,
+          height: 280,
+          // height: MediaQuery.of(context).size.height * 0.360,
 
           decoration: BoxDecoration(
               // color: Color(0xffe6e1e5),

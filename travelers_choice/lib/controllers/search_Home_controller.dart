@@ -20,17 +20,19 @@ class HomeSearchController extends FxController {
   late AnimationController animationController;
   late Animation<double> fadeAnimation;
   List<Product>? products;
-  late TextEditingController dateTE;
+  late TextEditingController dateTE, SearchTE;
   bool uiLoading = true;
 
   late Tween<Offset> offset;
-  late AnimationController dateController;
-  late Animation<Offset> dateAnimation;
+  late AnimationController dateController, searchController;
+  late Animation<Offset> dateAnimation,searchAnimation;
 
   int dateCounter = 0;
+  int searchCounter=0;
 
   @override
   void dispose() {
+    searchController.dispose();
     dateController.dispose();
     super.dispose();
   }
@@ -79,10 +81,13 @@ class HomeSearchController extends FxController {
     super.initState();
     fetchData();
     fetchloader();
+    SearchTE = TextEditingController();
     animationController = AnimationController(
       duration: const Duration(seconds: 3),
       vsync: ticker,
     );
+    searchController = AnimationController(
+        vsync: ticker, duration: const Duration(milliseconds: 500));
 
     fadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
       CurvedAnimation(
@@ -90,6 +95,12 @@ class HomeSearchController extends FxController {
         curve: Curves.easeIn,
       ),
     );
+     searchAnimation =
+        Tween<Offset>(begin: const Offset(0, 0), end: const Offset(8, 0))
+            .animate(CurvedAnimation(
+      parent: searchController,
+      curve: Curves.easeIn,
+    ));
 
     offset = Tween<Offset>(begin: const Offset(1, 0), end: const Offset(0, 0));
 
@@ -114,6 +125,15 @@ class HomeSearchController extends FxController {
       if (status == AnimationStatus.dismissed && dateCounter < 2) {
         dateController.forward();
         dateCounter++;
+      }
+    });
+     searchController.addStatusListener((status) {
+      if (status == AnimationStatus.completed) {
+        searchController.reverse();
+      }
+      if (status == AnimationStatus.dismissed && searchCounter < 2) {
+        searchController.forward();
+        searchCounter++;
       }
     });
   }

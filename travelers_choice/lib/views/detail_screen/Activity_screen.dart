@@ -196,7 +196,7 @@ class _ActivityScreenState extends State<ActivityScreen>
                           child: Align(
                             alignment: Alignment.centerRight,
                             child: FxText.bodyMedium(
-                              cart.name,
+                              cart.name ?? '',
                               fontWeight: 700,
                             ),
                           ),
@@ -1208,7 +1208,7 @@ Widget personCount(controller, cart, setState, theme,
           FxSpacing.height(8),
           FxText.bodyMedium(
             controller
-                .getCounts(cart.id,
+                .getCounts(cart.sId,
                     isAdult: isAdult, isChild: isChild, isInfant: isInfant)
                 .toString(),
             fontWeight: 700,
@@ -1252,7 +1252,7 @@ bool isDefault(controller, cart,
     bool isChild = false,
     bool isInfant = false,
     isIncrement = false}) {
-  int value = controller.getCounts(cart.id,
+  int value = controller.getCounts(cart.sId,
       isAdult: isAdult, isChild: isChild, isInfant: isInfant);
   if (isAdult) {
     return isIncrement ? value >= 1 : value != 1;

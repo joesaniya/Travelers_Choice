@@ -81,7 +81,7 @@ class DetailController extends FxController {
 
   String? currency() {
     if (currencies != null) {
-      List<dynamic> countriesList = jsonDecode(currencies!);
+      List<dynamic> countriesList = jsonDecode(currencies?? "");
       String? isoCode;
 
       log("Country list => $countriesList");
@@ -345,7 +345,7 @@ Country Code => $countryCode
               opacity: animation,
               child: child,
             ),
-        pageBuilder: (_, __, ___) => ActivityScreen(excursions.activities)
+        pageBuilder: (_, __, ___) => ActivityScreen(excursions.activities!)
         // ActivityScreen(
         //   Excursions: widget.detailattraction
         //   )

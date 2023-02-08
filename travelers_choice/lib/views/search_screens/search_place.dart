@@ -160,7 +160,7 @@ class _SearchPlaceState extends State<SearchPlace>
                               onTap: () => FocusScope.of(context).unfocus(),
                               child: SlideTransition(
                                 position: controller.locationAnimation,
-                                child: SearchField(
+                                child: SearchField<Destination>(
                                   focusNode: controller.focus,
                                   searchStyle: FxTextStyle.bodyMedium(),
                                   suggestionStyle: FxTextStyle.bodyMedium(),
@@ -220,6 +220,7 @@ class _SearchPlaceState extends State<SearchPlace>
                                   // },
                                   onSuggestionTap: (value) {
                                     log('tap');
+
                                     // log(countryList.first.destinations
                                     //     .toString());
                                     // log(countryList.first.destinations);
@@ -228,6 +229,9 @@ class _SearchPlaceState extends State<SearchPlace>
                                     _selectedCountry = value.item.toString();
                                     setState(() {});
                                     log('onSuggestionTap');
+                                    print('onsugguest');
+                                    print('value-->${value.item!.id!}');
+
                                     log(value.searchKey.toString());
                                     controller.focus.unfocus();
                                   },
@@ -256,9 +260,12 @@ class _SearchPlaceState extends State<SearchPlace>
                                           ? []
 
                                               // _countryCodes
-                                              .map((e) => SearchFieldListItem(
+                                              .map((e) => SearchFieldListItem<
+                                                      Destination>(
                                                   // e,
+
                                                   e!.countryName.toString(),
+                                                  item: e,
                                                   child: Padding(
                                                     padding: const EdgeInsets
                                                             .symmetric(
@@ -272,9 +279,12 @@ class _SearchPlaceState extends State<SearchPlace>
                                                   )))
                                               .toList()
                                           : countryList.first.destinations
-                                              .map((e) => SearchFieldListItem(
+                                              .map((e) => SearchFieldListItem<
+                                                      Destination>(
                                                   // e,
+
                                                   e.name.toString(),
+                                                  item: e,
                                                   child: Padding(
                                                     padding: const EdgeInsets
                                                             .symmetric(
@@ -297,31 +307,7 @@ class _SearchPlaceState extends State<SearchPlace>
                                 controller: controller.dateTE,
                                 readOnly:
                                     true, //set it true, so that user will not able to edit text
-                                // onTap: () async {
-                                //   DateTime? pickedDate = await showDatePicker(
-                                //       context: context,
-                                //       initialDate: DateTime.now(),
-                                //       firstDate: DateTime(
-                                //           1900), //DateTime.now() - not to allow to choose before today.
-                                //       lastDate: DateTime(2101));
 
-                                //   if (pickedDate != null) {
-                                //     print(
-                                //         pickedDate); //pickedDate output format => 2021-03-10 00:00:00.000
-                                //     String formattedDate =
-                                //         DateFormat('yyyy-MM-dd').format(pickedDate);
-                                //     print(
-                                //         formattedDate); //formatted date output using intl package =>  2021-03-16
-                                //     //you can implement different kind of Date Format here according to your requirement
-
-                                //     setState(() {
-                                //       dateinput.text =
-                                //           formattedDate; //set output date to TextField value.
-                                //     });
-                                //   } else {
-                                //     print("Date is not selected");
-                                //   }
-                                // },
                                 onTap: controller.dateselect,
                                 decoration: InputDecoration(
                                     floatingLabelBehavior:
@@ -363,6 +349,8 @@ class _SearchPlaceState extends State<SearchPlace>
                                 elevation: 0,
                                 borderRadiusAll: 4,
                                 onPressed: () {
+                                  log('search_button');
+                                  log(_selectedCountry.toString());
                                   controller.searchbtn(_selectedCountry);
                                 },
                                 splashColor:
