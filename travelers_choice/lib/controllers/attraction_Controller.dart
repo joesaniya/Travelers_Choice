@@ -37,6 +37,7 @@ class AttractionController {
         log('controllergetsearch');
         allattractionList.add(data);
         // isCountryListLoading = false;
+        
         return data; //removed true
       } else {
         log('null data');

@@ -29,7 +29,10 @@ class HomeController extends FxController {
   late Tween<Offset> offset;
   final GlobalKey<AnimatedListState> listKey = GlobalKey<AnimatedListState>();
   List<Widget> newCategories = [];
+  
   late Intro intro;
+
+  
 
   @override
   void initState() {

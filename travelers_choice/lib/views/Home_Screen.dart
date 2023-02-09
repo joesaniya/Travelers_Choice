@@ -497,7 +497,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                               FxSpacing.width(4),
                               FxText.labelLarge(
                                 // '\$' + product.price.toString(),
-                                product.destination.name.name.toString(),
+                                product.destination.name.toString(),
                                 // product.price.toString() + " " + "AED",
                                 // "\$" + product.price.toString() + "/hour",
                                 // fontWeight: 700,

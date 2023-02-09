@@ -343,7 +343,8 @@ class _DetailScreenState extends State<DetailScreen>
                                       rating: controller.detailattraction.first
                                               .averageRating!
                                               .toDouble() ??
-                                          2.55))
+                                          2.55
+                                          ))
                             ],
                           )
                         ],

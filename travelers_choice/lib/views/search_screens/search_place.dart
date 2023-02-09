@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
@@ -75,7 +76,7 @@ class _SearchPlaceState extends State<SearchPlace>
     });
   }
 
-  String? _selectedCountry;
+  Destination? _selectedCountry;
 
   List<CountryModal> countryList = <CountryModal>[];
   bool isCountryListLoading = true;
@@ -202,17 +203,17 @@ class _SearchPlaceState extends State<SearchPlace>
                                     // color: const Color(0xff1529e8),
                                     borderRadius: BorderRadius.circular(10),
                                   ),
-                                  onSubmit: (value) {
-                                    setState(() {
-                                      // _selectedItem = value;
-                                      _selectedCountry = value;
-                                      // foundCompany = value as List<Search>?;
-                                    });
+                                  // onSubmit: (value) {
+                                  //   setState(() {
+                                  //     // _selectedItem = value;
+                                  //     _selectedCountry = value;
+                                  //     // foundCompany = value as List<Search>?;
+                                  //   });
 
-                                    print(value);
-                                    log(value);
-                                    log('country');
-                                  },
+                                  //   print(value);
+                                  //   log(value);
+                                  //   log('country');
+                                  // },
                                   // onSuggestionTap: (SearchFieldListItem x) {
                                   //   _selectedCountry = x.item;
                                   //   setState(() {});
@@ -226,14 +227,18 @@ class _SearchPlaceState extends State<SearchPlace>
                                     // log(countryList.first.destinations);
                                     // countryList.first.countries =
                                     //     value.item as List<Country?>?;
-                                    _selectedCountry = value.item.toString();
-                                    setState(() {});
+                                    _selectedCountry =
+                                        value.item!;
+
                                     log('onSuggestionTap');
                                     print('onsugguest');
-                                    print('value-->${value.item!.id}');
+                                    print(
+                                        'value Country-->${value.item!.name}');
+                                    log('value Country-->${value.item!.name}');
 
                                     log(value.searchKey.toString());
                                     controller.focus.unfocus();
+                                    setState(() {});
                                   },
                                   // suggestions:
                                   //     //  _countryCodes
@@ -350,8 +355,12 @@ class _SearchPlaceState extends State<SearchPlace>
                                 borderRadiusAll: 4,
                                 onPressed: () {
                                   log('search_button');
-                                  log(_selectedCountry.toString());
-                                  controller.searchbtn(_selectedCountry);
+                                  log("Selected Data:$_selectedCountry");
+
+                                  controller.searchbtn(
+                                    _selectedCountry!,
+                                    // controller.allattractionList.first
+                                  );
                                 },
                                 splashColor:
                                     theme.colorScheme.onPrimary.withAlpha(28),

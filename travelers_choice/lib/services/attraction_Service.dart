@@ -18,10 +18,7 @@ class AttractionService {
             ),
         headers: {
           'Content-Type': 'application/json',
-
-          // "limit": "1000"
         },
-        // queryParam:{"limit": "1000"}
       );
       if (response.statusCode == 200) {
         log(response.body);
@@ -42,17 +39,14 @@ class AttractionService {
     try {
       var response = await http.get(
         Uri.parse(
-            // 'https://a.walletbot.online/api/v1/attractions/all',
-            'https://a.walletbot.online/api/v1/attractions/all?limit=1000/$place'
-            //
-            ),
+            // 'https: //a.walletbot.online/api/v1/attractions/all?limit=1000&destination=$place'
+            'https://a.walletbot.online/api/v1/attractions/all?limit=1000&id=$place'),
         headers: {
           'Content-Type': 'application/json',
-
-          // "limit": "1000"
         },
       );
       log("search data:${response.body}");
+
       if (response.statusCode == 200) {
         log("search data:${response.body}");
 

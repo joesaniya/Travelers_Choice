@@ -4,6 +4,8 @@
 
 import 'dart:convert';
 
+import 'Country_modal.dart';
+
 AllattractionModal allattractionModalFromJson(String str) =>
     AllattractionModal.fromJson(json.decode(str));
 
@@ -23,7 +25,7 @@ class AllattractionModal {
 
   factory AllattractionModal.fromJson(Map<String, dynamic> json) =>
       AllattractionModal(
-        attractions: Attractions.fromJson(json["attractions"]),
+        attractions: Attractions.fromJson(json["attractions"] ?? {}),
         skip: json["skip"],
         limit: json["limit"],
       );
@@ -48,8 +50,9 @@ class Attractions {
 
   factory Attractions.fromJson(Map<String, dynamic> json) => Attractions(
         id: json["_id"],
-        totalAttractions: json["totalAttractions"],
-        data: List<Datum>.from(json["data"].map((x) => Datum.fromJson(x))),
+        totalAttractions: json["totalAttractions"] ?? 0,
+        data: List<Datum>.from(json["data"].map((x) => Datum.fromJson(x)))
+            .toList(),
       );
 
   Map<String, dynamic> toJson() => {
@@ -111,12 +114,15 @@ class Datum {
             durationTypeValues.map[json["durationType"]] ?? DurationType.DAYS,
         duration: json["duration"],
         isOffer: json["isOffer"],
-        offerAmountType: offerAmountTypeValues.map[json["offerAmountType"]]?? OfferAmountType.FLAT,
+        offerAmountType: offerAmountTypeValues.map[json["offerAmountType"]] ??
+            OfferAmountType.FLAT,
         offerAmount: json["offerAmount"] ?? 0,
         images: List<String>.from(json["images"].map((x) => x)),
         cancelBeforeTime: json["cancelBeforeTime"] ?? 0,
         cancellationFee: json["cancellationFee"] ?? 0,
-        cancellationType: cancellationTypeValues.map[json["cancellationType"]]?? CancellationType.FREE_CANCELLATION,
+        cancellationType:
+            cancellationTypeValues.map[json["cancellationType"]] ??
+                CancellationType.FREE_CANCELLATION,
         isCombo: json["isCombo"],
         activity: Activity.fromJson(json["activity"]),
         totalReviews: json["totalReviews"],
@@ -215,49 +221,7 @@ final slugValues = EnumValues({
   "tour": Slug.TOUR
 });
 
-class Destination {
-  Destination({
-    required this.id,
-    required this.country,
-    required this.name,
-    required this.createdAt,
-    required this.updatedAt,
-    required this.v,
-    required this.isDeleted,
-    required this.image,
-  });
 
-  Id id;
-  Country country;
-  Name name;
-  DateTime createdAt;
-  DateTime updatedAt;
-  int v;
-  bool isDeleted;
-  ImageVal image;
-
-  factory Destination.fromJson(Map<String, dynamic> json) => Destination(
-        id: idValues.map[json["_id"]]?? Id.THE_63_AFBD4_CE2247_E66126_E419_D,
-        country: countryValues.map[json["country"]]?? Country.THE_63_AC33_ECFF04_E5652_A2583_F5,
-        name: nameValues.map[json["name"]]?? Name.ABU_DHABI,
-        createdAt: DateTime.parse(json["createdAt"]),
-        updatedAt: DateTime.parse(json["updatedAt"]),
-        v: json["__v"],
-        isDeleted: json["isDeleted"],
-        image: imageValues.map[json["image"]]?? ImageVal.PUBLIC_IMAGES_DESTINATIONS_IMAGE_1672982724148714879389_WEBP,
-      );
-
-  Map<String, dynamic> toJson() => {
-        "_id": idValues.reverse[id],
-        "country": countryValues.reverse[country],
-        "name": nameValues.reverse[name],
-        "createdAt": createdAt.toIso8601String(),
-        "updatedAt": updatedAt.toIso8601String(),
-        "__v": v,
-        "isDeleted": isDeleted,
-        "image": imageValues.reverse[image],
-      };
-}
 
 enum Country {
   THE_63_AC33_ECFF04_E5652_A2583_F5,

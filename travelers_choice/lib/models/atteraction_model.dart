@@ -36,7 +36,7 @@ class DetailattractionModal {
   List<Reviews>? reviews;
   Markup? markup;
   int? totalRating;
-  int? averageRating;
+  dynamic averageRating;
   List<Activity>? activities;
 
   DetailattractionModal(
@@ -477,8 +477,8 @@ class Activity {
   String? updatedAt;
   int? iV;
   bool? isDeleted;
-  double? adultCost;
-  double? childCost;
+  dynamic adultCost;
+  dynamic childCost;
   double? infantCost;
   int adultCount = 1;
   int childCount = 0;

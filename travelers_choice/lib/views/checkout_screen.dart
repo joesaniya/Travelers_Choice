@@ -1234,6 +1234,7 @@ class _CheckOutScreenState extends State<CheckOutScreen>
     return Container(
       padding: FxSpacing.x(20),
       child: ListView(
+        physics: const AlwaysScrollableScrollPhysics(),
         // crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // FxText.labelLarge(

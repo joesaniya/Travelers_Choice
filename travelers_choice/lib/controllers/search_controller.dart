@@ -1,9 +1,12 @@
+import 'dart:convert';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutx/flutx.dart';
 import 'package:intl/intl.dart';
 
+import '../models/Country_modal.dart';
+import '../models/all_attraction_modal.dart' as  all;
 import '../views/SearchScreen.dart';
 
 class SearchController extends FxController {
@@ -16,6 +19,7 @@ class SearchController extends FxController {
 
   //country
   final focus = FocusNode();
+  // List<AllattractionModal> allattractionList = <AllattractionModal>[];
 
 //ani
   late AnimationController searchController, locationController, dateController;
@@ -105,21 +109,13 @@ class SearchController extends FxController {
     }
   }
 
-  Future<void> searchbtn(selectedCountry) async {
+  Future<void> searchbtn(Destination selectedCountry
+      // ,AllattractionModal searchattractions
+      ) async {
     log('search btn');
     locationCounter = 0;
     dateCounter = 0;
 
-    // if (formKey.currentState!.validate()) {
-    //   log('search');
-    //   searchController.forward();
-    //   await Future.delayed(const Duration(milliseconds: 1000));
-    //   Navigator.of(context, rootNavigator: true).pushReplacement(
-    //     MaterialPageRoute(
-    //       builder: (context) => const SplashScreen2(),
-    //     ),
-    //   );
-    // }
     if (locationTE.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text("Please select location")));
@@ -127,11 +123,9 @@ class SearchController extends FxController {
       ScaffoldMessenger.of(context)
           .showSnackBar(const SnackBar(content: Text("Please select date")));
     } else {
-      // ScaffoldMessenger.of(context)
-      //     .showSnackBar(const SnackBar(content: Text("Success")));
       log('country');
       log(selectedCountry.toString());
-      print(selectedCountry.toString());
+      print('SElected$selectedCountry');
 
       Navigator.of(context, rootNavigator: true).push(PageRouteBuilder(
           transitionDuration: const Duration(milliseconds: 500),
@@ -145,7 +139,10 @@ class SearchController extends FxController {
                 opacity: animation,
                 child: child,
               ),
-          pageBuilder: (_, __, ___) => SearchScreen(place:selectedCountry)));
+          pageBuilder: (_, __, ___) => SearchScreen(
+                // place: Destination.fromJson(jsonDecode(selectedCountry)),
+                place:selectedCountry
+              )));
     }
   }
 
