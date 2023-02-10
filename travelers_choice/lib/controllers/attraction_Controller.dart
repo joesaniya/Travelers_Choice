@@ -50,6 +50,9 @@ class AttractionController {
     }
   }
 
+
+  //searchcattegories
+
   //detailAttractions
   List<DetailattractionModal> detailattractionList = <DetailattractionModal>[];
   bool isdetailAttractionListLoading = true;

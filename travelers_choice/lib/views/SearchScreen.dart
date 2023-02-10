@@ -33,7 +33,7 @@ class _SearchScreenState extends State<SearchScreen>
 
   late HomeSearchController controller;
   bool isLoading = true;
-  List<AllattractionModal> allattractionList = <AllattractionModal>[];
+
   List<AllattractionModal> _filteredBooks = [];
   List<AllattractionModal>? foundCustomer = [];
   List<AllattractionModal> temp = [];
@@ -45,7 +45,7 @@ class _SearchScreenState extends State<SearchScreen>
       results = controller.SearchTE as List;
     } else {
       print('runFilters else');
-      results = allattractionList
+      results = controller.allattractionList!
           .where((Attract) => Attract.attractions.data.first.title
                   .toString()
                   .toLowerCase()
@@ -76,10 +76,12 @@ class _SearchScreenState extends State<SearchScreen>
       await AttractionController().getSearchattractionList(place).then((value) {
         if (value != null) {
           isLoading = false;
-          allattractionList.add(value);
+          controller.allattractionList = [];
+          controller.allattractionList!.add(value);
+          _filteredBooks = controller.allattractionList!;
         }
 
-        for (AllattractionModal val in allattractionList) {
+        for (AllattractionModal val in controller.allattractionList!) {
           for (Datum des in val.attractions.data) {
             if (des.destination.name.toLowerCase().trim() ==
                 place.name.toLowerCase().trim()) {
@@ -91,7 +93,7 @@ class _SearchScreenState extends State<SearchScreen>
           }
         }
         print("Temp List => ${temp.length}");
-        setState(() => allattractionList = temp);
+        setState(() => controller.allattractionList = temp);
       });
     });
   }
@@ -99,7 +101,7 @@ class _SearchScreenState extends State<SearchScreen>
   void _searchBooks(String query) {
     log('query $query');
     setState(() {
-      _filteredBooks = allattractionList
+      _filteredBooks = controller.allattractionList!
           .where((book) => book.attractions.data.first.title
               .toLowerCase()
               .contains(query.toLowerCase()))
@@ -112,7 +114,7 @@ class _SearchScreenState extends State<SearchScreen>
   @override
   void initState() {
     super.initState();
-
+    controller = FxControllerStore.put(HomeSearchController(this));
     log('${widget.place.name}Place Search1');
     temp = [];
     getAttraction(widget.place);
@@ -120,9 +122,7 @@ class _SearchScreenState extends State<SearchScreen>
 
     theme = AppTheme.shoppingTheme;
     theme1 = AppTheme.learningTheme;
-    _filteredBooks = allattractionList;
 
-    controller = FxControllerStore.put(HomeSearchController(this));
     // WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
     //   // addCategories();
     // });
@@ -145,7 +145,8 @@ class _SearchScreenState extends State<SearchScreen>
 
   Widget _buildBody() {
     // if (controller.uiLoading)
-    if (allattractionList.isEmpty) {
+
+    if (controller.allattractionList == null) {
       return Scaffold(
           body: Padding(
         padding: FxSpacing.top(FxSpacing.safeAreaTop(context) + 20),
@@ -155,165 +156,175 @@ class _SearchScreenState extends State<SearchScreen>
         ),
       ));
     } else {
-      return Scaffold(
-        backgroundColor: const Color(0xfff5f5f5),
-        //   backgroundColor: Colors.red,
-        key: controller.scaffoldKey,
-        // endDrawer: endDrawer(),
-        body: ListView(
-          padding: FxSpacing.fromLTRB(
-              20, FxSpacing.safeAreaTop(context) + 20, 20, 20),
-          children: [
-            Container(
-              // padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                border: Border.all(width: 1, color: Colors.grey.shade300),
-                boxShadow: [
-                  BoxShadow(
-                    // color: Colors.grey.shade400,
-                    color: const Color(0xff1529e8).withOpacity(0.4),
-                    blurRadius: 2,
-                    offset: const Offset(0, 3),
-                  ),
-                ],
-              ),
-              child: TextFormField(
-                style: FxTextStyle.bodyMedium(),
-                controller: controller.SearchTE,
-                cursorColor: theme.colorScheme.primary,
-                onChanged: (value) => _searchBooks(value),
-                // onChanged: (value) => controller.attractFilter(value),
-                decoration: InputDecoration(
-                  hintText: "Search your place ...",
-                  hintStyle: FxTextStyle.bodySmall(
-                      color: theme.colorScheme.onBackground),
-                  border: const OutlineInputBorder(
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(4),
-                      ),
-                      borderSide: BorderSide.none),
-                  enabledBorder: const OutlineInputBorder(
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(4),
-                      ),
-                      borderSide: BorderSide.none),
-                  focusedBorder: const OutlineInputBorder(
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(4),
-                      ),
-                      borderSide: BorderSide.none),
-                  filled: true,
-                  // fillColor: const Color(0xffcfd2ff),
-                  fillColor: theme.cardTheme.color,
-                  prefixIcon: Icon(
-                    FeatherIcons.search,
-                    size: 16,
-                    color: theme.colorScheme.onBackground.withAlpha(150),
-                  ),
-                  isDense: true,
-                ),
-                textCapitalization: TextCapitalization.sentences,
-              ),
-            ),
-            // Text(
-            //   widget.place.toString(),
-            //   style: const TextStyle(color: Colors.red),
-            // ),
-            FxSpacing.height(20),
-            //btn
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                GestureDetector(
-                  onTap: () {
-                    showModalBottomSheet(
-                        context: context,
-                        builder: (BuildContext buildContext) {
-                          return const CategoriesBottomSheet();
-                        });
-                    // showModalBottomSheet(
-                    //   context: context,
-                    //   backgroundColor: Colors.white,
-                    //   shape: const RoundedRectangleBorder(
-                    //       borderRadius: BorderRadius.only(
-                    //           topLeft: Radius.circular(20),
-                    //           topRight: Radius.circular(20))),
-                    //   isScrollControlled: true,
-                    //   builder: (context) {
-                    //     return const CategoriesBottomSheet();
-                    //   },
-                    // );
-                  },
-                  child: FxContainer(
-                    borderRadiusAll: 10,
-                    // padding: FxSpacing.xy(8, 4),
-                    padding: FxSpacing.xy(6, 9),
-                    color: const Color(0xff1529e8),
-                    child: FxText.bodySmall(
-                      'Categories',
-                      fontWeight: 300,
-                      color: Colors.white,
-                      // color: theme.colorScheme.onPrimary,
+      if (controller.allattractionList!.isEmpty) {
+        return const Center(child: Text("No Data found"));
+      } else {
+        return Scaffold(
+          backgroundColor: const Color(0xfff5f5f5),
+          //   backgroundColor: Colors.red,
+          key: controller.scaffoldKey,
+          // endDrawer: endDrawer(),
+          body: ListView(
+            padding: FxSpacing.fromLTRB(
+                20, FxSpacing.safeAreaTop(context) + 20, 20, 20),
+            children: [
+              Container(
+                // padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  border: Border.all(width: 1, color: Colors.grey.shade300),
+                  boxShadow: [
+                    BoxShadow(
+                      // color: Colors.grey.shade400,
+                      color: const Color(0xff1529e8).withOpacity(0.4),
+                      blurRadius: 2,
+                      offset: const Offset(0, 3),
                     ),
-                  ),
+                  ],
                 ),
-                GestureDetector(
-                  onTap: () {
-                    // showModalBottomSheet(
-                    //     context: context,
-                    //     builder: (BuildContext buildContext) {
-                    //       return const FilterSheet();
-                    //     });
-                    showModalBottomSheet(
-                      context: context,
-                      backgroundColor: Colors.white,
-                      shape: const RoundedRectangleBorder(
-                          borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(20),
-                              topRight: Radius.circular(20))),
-                      isScrollControlled: true,
-                      builder: (context) {
-                        return const FilterSheet();
-                      },
-                    );
-                  },
-                  child: Container(
-                    height: 30,
-                    width: 80,
-                    decoration: BoxDecoration(
-                        color: const Color(0xff1529e8),
-                        borderRadius: BorderRadius.circular(10)),
-                    child: Center(
+                child: TextFormField(
+                  style: FxTextStyle.bodyMedium(),
+                  controller: controller.SearchTE,
+                  cursorColor: theme.colorScheme.primary,
+                  onChanged: (value) => _searchBooks(value),
+                  // onChanged: (value) => controller.attractFilter(value),
+                  decoration: InputDecoration(
+                    hintText: "Search your place ...",
+                    hintStyle: FxTextStyle.bodySmall(
+                        color: theme.colorScheme.onBackground),
+                    border: const OutlineInputBorder(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(4),
+                        ),
+                        borderSide: BorderSide.none),
+                    enabledBorder: const OutlineInputBorder(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(4),
+                        ),
+                        borderSide: BorderSide.none),
+                    focusedBorder: const OutlineInputBorder(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(4),
+                        ),
+                        borderSide: BorderSide.none),
+                    filled: true,
+                    // fillColor: const Color(0xffcfd2ff),
+                    fillColor: theme.cardTheme.color,
+                    prefixIcon: Icon(
+                      FeatherIcons.search,
+                      size: 16,
+                      color: theme.colorScheme.onBackground.withAlpha(150),
+                    ),
+                    isDense: true,
+                  ),
+                  textCapitalization: TextCapitalization.sentences,
+                ),
+              ),
+              // Text(
+              //   widget.place.toString(),
+              //   style: const TextStyle(color: Colors.red),
+              // ),
+              FxSpacing.height(20),
+              //btn
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  GestureDetector(
+                    onTap: () async {
+                      var data = await showModalBottomSheet(
+                          context: context,
+                          builder: (BuildContext buildContext) {
+                            return CategoriesBottomSheet(
+                              categoryplace: widget.place,
+                            );
+                          });
+                      setState(() {
+                        controller.allattractionList = [];
+                        controller.allattractionList = [data];
+                      });
+                      // showModalBottomSheet(
+                      //   context: context,
+                      //   backgroundColor: Colors.white,
+                      //   shape: const RoundedRectangleBorder(
+                      //       borderRadius: BorderRadius.only(
+                      //           topLeft: Radius.circular(20),
+                      //           topRight: Radius.circular(20))),
+                      //   isScrollControlled: true,
+                      //   builder: (context) {
+                      //     return const CategoriesBottomSheet();
+                      //   },
+                      // );
+                    },
+                    child: FxContainer(
+                      borderRadiusAll: 10,
+                      // padding: FxSpacing.xy(8, 4),
+                      padding: FxSpacing.xy(6, 9),
+                      color: const Color(0xff1529e8),
                       child: FxText.bodySmall(
-                        'Filter',
+                        'Categories',
                         fontWeight: 300,
                         color: Colors.white,
                         // color: theme.colorScheme.onPrimary,
                       ),
                     ),
                   ),
-                ),
-              ],
-            ),
+                  GestureDetector(
+                    onTap: () {
+                      // showModalBottomSheet(
+                      //     context: context,
+                      //     builder: (BuildContext buildContext) {
+                      //       return const FilterSheet();
+                      //     });
+                      showModalBottomSheet(
+                        context: context,
+                        backgroundColor: Colors.white,
+                        shape: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(20),
+                                topRight: Radius.circular(20))),
+                        isScrollControlled: true,
+                        builder: (context) {
+                          return const FilterSheet();
+                        },
+                      );
+                    },
+                    child: Container(
+                      height: 30,
+                      width: 80,
+                      decoration: BoxDecoration(
+                          color: const Color(0xff1529e8),
+                          borderRadius: BorderRadius.circular(10)),
+                      child: Center(
+                        child: FxText.bodySmall(
+                          'Filter',
+                          fontWeight: 300,
+                          color: Colors.white,
+                          // color: theme.colorScheme.onPrimary,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
 
-            FxSpacing.height(20),
-            //content
-            SingleChildScrollView(
-              scrollDirection: Axis.vertical,
-              // child: _buildProductList(),
-              child:
+              FxSpacing.height(20),
+              //content
+              SingleChildScrollView(
+                scrollDirection: Axis.vertical,
+                // child: _buildProductList(),
+                child:
 
-                  // controller.foundrecipe.isNotEmpty
-                  //     ?
-                  _filteredBooks.isNotEmpty
-                      ? _buildProductListUi()
-                      : const Text('No Data'),
-            ),
-          ],
-        ),
-      );
+                    // controller.foundrecipe.isNotEmpty
+                    //     ?
+                    _filteredBooks.isNotEmpty
+                        ? _buildProductListUi()
+                        : const Text('No Data'),
+              ),
+            ],
+          ),
+        );
+      }
     }
   }
 
@@ -323,9 +334,9 @@ class _SearchScreenState extends State<SearchScreen>
 
     // for (Product product in controller.products!)
 
-    // for (AllattractionModal val in allattractionList)
+    // for (AllattractionModal val incontroller.allattractionList)
     {
-      for (Datum product in allattractionList[0].attractions.data) {
+      for (Datum product in controller.allattractionList![0].attractions.data) {
         if (product.destination.name == widget.place.name) {
           print("Selected place=> ${widget.place.name}");
           list.add(FadeTransition(
@@ -375,7 +386,7 @@ class _SearchScreenState extends State<SearchScreen>
                           child: Image(
                             // image: AssetImage(product.image),
                             image: NetworkImage(
-                                'https://a.walletbot.online/${product.images.first}'),
+                                'https://a.walletbot.online${product.images.first}'),
                             // image: AssetImage(product.images.first),
                             // height: 100,
                             height: 132,

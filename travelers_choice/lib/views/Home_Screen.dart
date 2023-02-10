@@ -124,12 +124,12 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                     // child: Image(image: NetworkImage(product.images.first)),
                     child: Hero(
                       tag: "product_image_${product.images.first}",
-                      // tag: "excursion_id",
                       child: Image(
-                        // image: AssetImage(product.image),
                         image: NetworkImage(
-                            'https://a.walletbot.online/${product.images.first}'),
-                        // image: AssetImage(product.images.first),
+                            'https://a.walletbot.online${product.images.first}'
+                            // product.images.first
+                            ),
+
                         // height: 100,
                         height: 132,
                         width: 150,
@@ -212,7 +212,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                             //   ),
                             // ),
                             product.isOffer == false
-                                ? const SizedBox()
+                                ? Expanded(child: Container())
                                 : FxContainer(
                                     borderRadiusAll: 10,
                                     // padding: FxSpacing.xy(8, 4),
@@ -278,7 +278,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                   ),
                                   FxSpacing.width(4),
                                   FxText.bodySmall(
-                                    "(${product.totalReviews})",
+                                    "(${product.totalReviews.toStringAsFixed(0)})",
                                     fontWeight: 600,
                                     color: Colors.black,
                                   ),
@@ -371,7 +371,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                     borderRadius: BorderRadius.circular(10),
                     image: DecorationImage(
                         image: NetworkImage(
-                            'https://a.walletbot.online/${product.images.first}'
+                            'https://a.walletbot.online${product.images.first}'
                             // product.images.first.toString()
                             ),
                         fit: BoxFit.fill)),

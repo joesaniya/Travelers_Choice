@@ -131,7 +131,7 @@ class _DetailScreenState extends State<DetailScreen>
                               child: Container(
                                 child: Image(
                                   image: NetworkImage(
-                                      'https://a.walletbot.online/${controller.detailattraction.first.images![index]}'),
+                                      'https://a.walletbot.online${controller.detailattraction.first.images![index]}'),
                                   height:
                                       MediaQuery.of(context).size.height / 3,
                                   width: MediaQuery.of(context).size.width,
@@ -371,7 +371,7 @@ class _DetailScreenState extends State<DetailScreen>
                                   margin: const EdgeInsets.only(left: 4),
                                   child: FxStarRating(
                                       rating: controller.detailattraction.first
-                                              .averageRating!
+                                              .averageRating
                                               .toDouble() ??
                                           2.55))
                             ],

@@ -5,10 +5,14 @@ import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutx/flutx.dart';
 
 import '../../controllers/search_Home_controller.dart';
+import '../../models/Country_modal.dart';
+import '../../models/all_attraction_modal.dart';
+import '../../services/Search_Service.dart';
 import '../../theme/app_theme.dart';
 
 class CategoriesBottomSheet extends StatefulWidget {
-  const CategoriesBottomSheet({Key? key}) : super(key: key);
+  Destination? categoryplace;
+  CategoriesBottomSheet({this.categoryplace});
 
   @override
   State<CategoriesBottomSheet> createState() => _CategoriesBottomSheetState();
@@ -22,6 +26,8 @@ class _CategoriesBottomSheetState extends State<CategoriesBottomSheet>
 
   @override
   void initState() {
+    log('sheet');
+    log('Category Place:${widget.categoryplace!.name.toString()}');
     super.initState();
     theme = AppTheme.shoppingTheme;
     theme1 = AppTheme.learningTheme;
@@ -29,9 +35,30 @@ class _CategoriesBottomSheetState extends State<CategoriesBottomSheet>
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       // addCategories();
     });
+
     controller.getcategoryAttraction(
         // widget.productid,
         setState);
+  }
+
+  List<AllattractionModal> allattractionList = <AllattractionModal>[];
+  bool isAllAttractionListLoading = true;
+  Future<AllattractionModal?> getAllattractionList(
+      String place, String categoryId) async {
+    // isCountryListLoading = true;
+    try {
+      var data = await SearchService().getAllAttraction(place, categoryId);
+      allattractionList.clear();
+      if (data != null) {
+        allattractionList.add(data);
+        // isCountryListLoading = false;
+        return data; //removed true
+      } else {
+        return null; //falseremoved
+      }
+    } catch (e) {
+      rethrow;
+    }
   }
 
   @override
@@ -157,9 +184,26 @@ class _CategoriesBottomSheetState extends State<CategoriesBottomSheet>
                                 )),
                                 Expanded(
                                     child: FxContainer.none(
-                                  onTap: () {
+                                  onTap: () async {
                                     // controller.closeEndDrawer();
-                                    Navigator.pop(context);
+                                    // Navigator.pop(context);
+                                    if (controller.categoryid != null) {
+                                      //todo
+                                      AllattractionModal? temp =
+                                          await getAllattractionList(
+                                              widget.categoryplace!.name,
+                                              controller.categoryid!);
+
+                                      setState(() {
+                                        controller.allattractionList = [];
+
+                                        controller.allattractionList!
+                                            .add(temp!);
+                                      });
+                                      Navigator.pop(context, temp);
+                                    } else {
+                                      print("Data search Null");
+                                    }
                                   },
                                   padding: FxSpacing.y(12),
                                   // color: theme.colorScheme.primary,
@@ -216,7 +260,7 @@ class _CategoriesBottomSheetState extends State<CategoriesBottomSheet>
                         height: 24,
                         width: 24,
                         image: NetworkImage(
-                            'https://a.walletbot.online/${controller.categoryattraction.first.icon}')),
+                            'https://a.walletbot.online${controller.categoryattraction.first.icon}')),
                     FxSpacing.width(20),
                     FxText.bodySmall(
                       controller.categoryattraction.first.categoryName

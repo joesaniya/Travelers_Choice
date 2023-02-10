@@ -32,6 +32,7 @@ class HomeSearchController extends FxController {
   int dateCounter = 0;
   int searchCounter = 0;
   List<AllattractionModal> searchReasult = <AllattractionModal>[];
+  List<AllattractionModal>? allattractionList ;
 
   late List<AllattractionModal> foundrecipe;
 
@@ -39,6 +40,7 @@ class HomeSearchController extends FxController {
   List<SearchCategoriesModal> categoryattraction = <SearchCategoriesModal>[];
 
   bool isLoading = true;
+  String? categoryid;
 
   getcategoryAttraction(
       // productid,
@@ -79,7 +81,8 @@ class HomeSearchController extends FxController {
   ];
 
   void addChoice(String item) {
-    selectedChoices.add(item);
+    categoryid=item;
+    // selectedChoices.add(item);
     update();
   }
 
