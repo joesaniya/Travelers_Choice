@@ -105,7 +105,9 @@ class _DetailScreenState extends State<DetailScreen>
           ),
           body: ListView(
             padding: EdgeInsets.zero,
-            physics: const ClampingScrollPhysics(),
+            // physics: const NeverScrollableScrollPhysics(),
+            physics: const AlwaysScrollableScrollPhysics(),
+            // physics: const ClampingScrollPhysics(),
             children: <Widget>[
               Stack(
                 children: <Widget>[
@@ -168,15 +170,22 @@ class _DetailScreenState extends State<DetailScreen>
                                 padding: FxSpacing.xy(6, 2),
                                 // color: Color(0xff1529e8),
                                 color: Colors.blueGrey,
-                                child: FxText.bodySmall(
-                                  // 'Theme Park',
-                                  controller.detailattraction.first.category!
-                                          .categoryName ??
-                                      '',
-                                  // controller.product.bookingType.toString(),
-                                  fontWeight: 300,
-                                  color: Colors.white,
-                                  // color: theme.colorScheme.onPrimary,
+                                child: Center(
+                                  child: FxText.bodySmall(
+                                    // 'Theme Park',
+                                    controller.detailattraction.first.category!
+                                                .categoryName![0]
+                                                .toUpperCase() +
+                                            controller.detailattraction.first
+                                                .category!.categoryName!
+                                                .substring(1)
+                                                .toLowerCase() ??
+                                        '',
+                                    // controller.product.bookingType.toString(),
+                                    fontWeight: 300,
+                                    color: Colors.white,
+                                    // color: theme.colorScheme.onPrimary,
+                                  ),
                                 ),
                               ),
                               const SizedBox(
@@ -188,35 +197,46 @@ class _DetailScreenState extends State<DetailScreen>
                                 padding: FxSpacing.xy(6, 2),
                                 // color: Color(0xff1529e8),
                                 color: Colors.blueGrey,
-                                child: FxText.bodySmall(
-                                  controller
-                                          .detailattraction.first.bookingType ??
-                                      '',
-                                  fontWeight: 300,
-                                  color: Colors.white,
-                                  // color: theme.colorScheme.onPrimary,
+                                child: Center(
+                                  child: FxText.bodySmall(
+                                    controller.detailattraction.first
+                                                .bookingType![0]
+                                                .toUpperCase() +
+                                            controller.detailattraction.first
+                                                .bookingType!
+                                                .substring(1)
+                                                .toLowerCase() ??
+                                        '',
+                                    fontWeight: 300,
+                                    color: Colors.white,
+                                    // color: theme.colorScheme.onPrimary,
+                                  ),
                                 ),
                               ),
                               const SizedBox(
                                 width: 5,
                               ),
-                              FxContainer(
-                                borderRadiusAll: 10,
-                                // padding: FxSpacing.xy(8, 4),
-                                padding: FxSpacing.xy(6, 2),
-                                // color: Color(0xff1529e8),
-                                color: Colors.blueGrey,
-                                child: FxText.bodySmall(
-                                  // controller.detailattraction.first.category
-                                  //     .categoryName,
-                                  // 'Offer',
-                                  '${controller.detailattraction.first.duration}${controller.detailattraction.first.durationType}',
+                              controller.detailattraction.first.isOffer == false
+                                  ? const SizedBox()
+                                  : FxContainer(
+                                      borderRadiusAll: 10,
+                                      // padding: FxSpacing.xy(8, 4),
+                                      padding: FxSpacing.xy(6, 2),
+                                      // color: Color(0xff1529e8),
+                                      color: Colors.blueGrey,
+                                      child: Center(
+                                        child: FxText.bodySmall(
+                                          // controller.detailattraction.first.category
+                                          //     .categoryName,
+                                          'Offer',
+                                          // '${controller.detailattraction.first.duration}${controller.detailattraction.first.durationType}',
 
-                                  fontWeight: 300,
-                                  color: Colors.white,
-                                  // color: theme.colorScheme.onPrimary,
-                                ),
-                              ),
+                                          fontWeight: 300,
+                                          color: Colors.white,
+                                          // color: theme.colorScheme.onPrimary,
+                                        ),
+                                      ),
+                                    ),
                             ],
                           ),
                           FxSpacing.height(10),
@@ -225,7 +245,12 @@ class _DetailScreenState extends State<DetailScreen>
                                 "product_title_${controller.detailattraction.first.title}",
                             child: FxText.titleMedium(
                                 // controller.product.title,
-                                controller.detailattraction.first.title ?? '',
+                                controller.detailattraction.first.title![0]
+                                            .toUpperCase() +
+                                        controller.detailattraction.first.title!
+                                            .substring(1)
+                                            .toLowerCase() ??
+                                    '',
                                 fontWeight: 600,
                                 letterSpacing: 0),
                           ),
@@ -242,7 +267,12 @@ class _DetailScreenState extends State<DetailScreen>
                                     margin: const EdgeInsets.only(left: 2),
                                     child: FxText.bodySmall(
                                         controller.detailattraction.first
-                                                .destination!.name ??
+                                                    .destination!.name![0]
+                                                    .toUpperCase() +
+                                                controller.detailattraction
+                                                    .first.destination!.name!
+                                                    .substring(0)
+                                                    .toLowerCase() ??
                                             '',
                                         fontWeight: 500)),
                               ],
@@ -343,8 +373,7 @@ class _DetailScreenState extends State<DetailScreen>
                                       rating: controller.detailattraction.first
                                               .averageRating!
                                               .toDouble() ??
-                                          2.55
-                                          ))
+                                          2.55))
                             ],
                           )
                         ],
@@ -366,11 +395,22 @@ class _DetailScreenState extends State<DetailScreen>
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          FxText.bodyMedium("(243 review)",
-                              color: const Color(0xff1529e8),
-                              // color: customTheme.groceryPrimary,
-                              fontWeight: 500,
-                              letterSpacing: -0.2),
+                          // controller.detailattraction.first.totalRating.toDouble()?
+                          controller.detailattraction.first.reviews!.isEmpty
+                              ? FxText.bodyMedium("(0 review)",
+                                  color: const Color(0xff1529e8),
+                                  fontWeight: 500,
+                                  letterSpacing: -0.2)
+                              : FxText.bodyMedium(
+                                  '(${controller.detailattraction.first.reviews!.length} reviews)',
+                                  color: const Color(0xff1529e8),
+                                  fontWeight: 500,
+                                  letterSpacing: -0.2),
+                          // FxText.bodyMedium("(243 review)",
+                          //     color: const Color(0xff1529e8),
+                          //     // color: customTheme.groceryPrimary,
+                          //     fontWeight: 500,
+                          //     letterSpacing: -0.2),
                           const Icon(
                             MdiIcons.chevronRight,
                             size: 14,
@@ -449,13 +489,25 @@ class _DetailScreenState extends State<DetailScreen>
                             //     'h4': Style(color: Colors.redAccent)
                             //   },
                             // );
-                            return FxText.bodyMedium(
-                              'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.',
-                              // color: theme.colorScheme.onPrimary,
-                              // color: Colors.black,
-                              letterSpacing: 0.4,
-                              fontSize: 11,
-                            );
+                            return SizedBox(
+                                child: controller.detailattraction.first
+                                        .category!.description!.isEmpty
+                                    ? FxText.bodyMedium(
+                                        'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.',
+                                        // color: theme.colorScheme.onPrimary,
+                                        // color: Colors.black,
+                                        letterSpacing: 0.4,
+                                        fontSize: 11,
+                                      )
+                                    : Html(
+                                        data: controller.detailattraction.first
+                                            .category!.description
+                                            .toString(),
+                                        style: {
+                                          'p': Style(color: Colors.grey),
+                                          'h4': Style(color: Colors.redAccent)
+                                        },
+                                      ));
                           },
                         ),
                         ListView.builder(
@@ -509,41 +561,40 @@ class _DetailScreenState extends State<DetailScreen>
                     ),
 
                     //touroption
-                    FxSpacing.height(15),
+                    // FxSpacing.height(15),
                     // _billingWidget(),
                     // _buildoption(),
 
-                    FxSpacing.height(15),
-                    Container(
-                        decoration: BoxDecoration(
-                            // color: Color(0xffe6e1e5),
-                            color: Colors.white,
-                            // color: Color(0xffe5fdfd),
-                            borderRadius:
-                                const BorderRadius.all(Radius.circular(10)),
-                            border: Border.all(
-                                color: Colors.grey.shade300, width: 1)),
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 8, vertical: 15),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "Contact Details".toUpperCase(),
-                              style: const TextStyle(
-                                  fontWeight: FontWeight.w600, fontSize: 14.0),
-                            ),
-                            const SizedBox(height: 10.0),
-                            FxText.bodyLarge(
-                              'Sheikh Zayed Rd - Dubai - United Arab Emirates\n www.dubaiparksandresorts.com \n ph.No:+9718002629464',
-                              textAlign: TextAlign.justify,
-                              // style: TextStyle(
-                              //     fontWeight: FontWeight.w300, fontSize: 14.0),
-                            ),
-                          ],
-                        )),
+                    // Container(
+                    //     decoration: BoxDecoration(
+                    //         // color: Color(0xffe6e1e5),
+                    //         color: Colors.white,
+                    //         // color: Color(0xffe5fdfd),
+                    //         borderRadius:
+                    //             const BorderRadius.all(Radius.circular(10)),
+                    //         border: Border.all(
+                    //             color: Colors.grey.shade300, width: 1)),
+                    //     padding: const EdgeInsets.symmetric(
+                    //         horizontal: 8, vertical: 15),
+                    //     child: Column(
+                    //       crossAxisAlignment: CrossAxisAlignment.start,
+                    //       children: [
+                    //         Text(
+                    //           "Contact Details".toUpperCase(),
+                    //           style: const TextStyle(
+                    //               fontWeight: FontWeight.w600, fontSize: 14.0),
+                    //         ),
+                    //         const SizedBox(height: 10.0),
+                    //         FxText.bodyLarge(
+                    //           'Sheikh Zayed Rd - Dubai - United Arab Emirates\n www.dubaiparksandresorts.com \n ph.No:+9718002629464',
+                    //           textAlign: TextAlign.justify,
+                    //           // style: TextStyle(
+                    //           //     fontWeight: FontWeight.w300, fontSize: 14.0),
+                    //         ),
+                    //       ],
+                    //     )),
 
-                    const SizedBox(height: 10.0),
+                    // const SizedBox(height: 10.0),
                   ],
                 ),
               ),

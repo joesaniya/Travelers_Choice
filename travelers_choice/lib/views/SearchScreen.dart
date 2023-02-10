@@ -9,6 +9,7 @@ import 'package:iconsax/iconsax.dart';
 
 import '../controllers/attraction_Controller.dart';
 import '../controllers/search_Home_controller.dart';
+import '../loading_effect.dart';
 import '../models/all_attraction_modal.dart';
 import '../models/Country_modal.dart';
 import '../theme/app_theme.dart';
@@ -33,6 +34,7 @@ class _SearchScreenState extends State<SearchScreen>
   late HomeSearchController controller;
   bool isLoading = true;
   List<AllattractionModal> allattractionList = <AllattractionModal>[];
+  List<AllattractionModal> _filteredBooks = [];
   List<AllattractionModal>? foundCustomer = [];
   List<AllattractionModal> temp = [];
   void _runFilter(String enteredKeyword) {
@@ -94,6 +96,19 @@ class _SearchScreenState extends State<SearchScreen>
     });
   }
 
+  void _searchBooks(String query) {
+    log('query $query');
+    setState(() {
+      _filteredBooks = allattractionList
+          .where((book) => book.attractions.data.first.title
+              .toLowerCase()
+              .contains(query.toLowerCase()))
+          .toList();
+      print('Search:$_filteredBooks');
+      log('Search:$_filteredBooks');
+    });
+  }
+
   @override
   void initState() {
     super.initState();
@@ -105,6 +120,7 @@ class _SearchScreenState extends State<SearchScreen>
 
     theme = AppTheme.shoppingTheme;
     theme1 = AppTheme.learningTheme;
+    _filteredBooks = allattractionList;
 
     controller = FxControllerStore.put(HomeSearchController(this));
     // WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
@@ -132,80 +148,73 @@ class _SearchScreenState extends State<SearchScreen>
     if (allattractionList.isEmpty) {
       return Scaffold(
           body: Padding(
-              padding: FxSpacing.top(FxSpacing.safeAreaTop(context) + 20),
-              child: const Text("No Data Found")
-              // LoadingEffect.getHomeLoadingScreen(
-              //   context,
-              //   // theme, theme.colorScheme
-              // ),
-              ));
+        padding: FxSpacing.top(FxSpacing.safeAreaTop(context) + 20),
+        child: LoadingEffect.getHomeLoadingScreen(
+          context,
+          // theme, theme.colorScheme
+        ),
+      ));
     } else {
       return Scaffold(
         backgroundColor: const Color(0xfff5f5f5),
         //   backgroundColor: Colors.red,
         key: controller.scaffoldKey,
-        endDrawer: endDrawer(),
+        // endDrawer: endDrawer(),
         body: ListView(
           padding: FxSpacing.fromLTRB(
               20, FxSpacing.safeAreaTop(context) + 20, 20, 20),
           children: [
-            Row(
-              children: [
-                Expanded(
-                  child: TextFormField(
-                    style: FxTextStyle.bodyMedium(),
-                    controller: controller.SearchTE,
-                    cursorColor: theme.colorScheme.primary,
-                    onChanged: (value) => _runFilter(value),
-                    decoration: InputDecoration(
-                      hintText: "Search your place ...",
-                      hintStyle: FxTextStyle.bodySmall(
-                          color: theme.colorScheme.onBackground),
-                      border: const OutlineInputBorder(
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(4),
-                          ),
-                          borderSide: BorderSide.none),
-                      enabledBorder: const OutlineInputBorder(
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(4),
-                          ),
-                          borderSide: BorderSide.none),
-                      focusedBorder: const OutlineInputBorder(
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(4),
-                          ),
-                          borderSide: BorderSide.none),
-                      filled: true,
-                      // fillColor: const Color(0xffcfd2ff),
-                      fillColor: theme.cardTheme.color,
-                      prefixIcon: Icon(
-                        FeatherIcons.search,
-                        size: 16,
-                        color: theme.colorScheme.onBackground.withAlpha(150),
-                      ),
-                      isDense: true,
-                    ),
-                    textCapitalization: TextCapitalization.sentences,
+            Container(
+              // padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                border: Border.all(width: 1, color: Colors.grey.shade300),
+                boxShadow: [
+                  BoxShadow(
+                    // color: Colors.grey.shade400,
+                    color: const Color(0xff1529e8).withOpacity(0.4),
+                    blurRadius: 2,
+                    offset: const Offset(0, 3),
                   ),
+                ],
+              ),
+              child: TextFormField(
+                style: FxTextStyle.bodyMedium(),
+                controller: controller.SearchTE,
+                cursorColor: theme.colorScheme.primary,
+                onChanged: (value) => _searchBooks(value),
+                // onChanged: (value) => controller.attractFilter(value),
+                decoration: InputDecoration(
+                  hintText: "Search your place ...",
+                  hintStyle: FxTextStyle.bodySmall(
+                      color: theme.colorScheme.onBackground),
+                  border: const OutlineInputBorder(
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(4),
+                      ),
+                      borderSide: BorderSide.none),
+                  enabledBorder: const OutlineInputBorder(
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(4),
+                      ),
+                      borderSide: BorderSide.none),
+                  focusedBorder: const OutlineInputBorder(
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(4),
+                      ),
+                      borderSide: BorderSide.none),
+                  filled: true,
+                  // fillColor: const Color(0xffcfd2ff),
+                  fillColor: theme.cardTheme.color,
+                  prefixIcon: Icon(
+                    FeatherIcons.search,
+                    size: 16,
+                    color: theme.colorScheme.onBackground.withAlpha(150),
+                  ),
+                  isDense: true,
                 ),
-                // FxSpacing.width(20),
-                // FxContainer(
-                //   paddingAll: 12,
-                //   borderRadiusAll: 4,
-                //   onTap: () {
-                //     controller.openEndDrawer();
-                //   },
-                //   color: const Color(0xffcfd2ff),
-                //   // color: theme.colorScheme.primaryContainer,
-                //   child: Icon(
-                //     FeatherIcons.sliders,
-                //     color: theme1.colorScheme.onSecondaryContainer,
-                //     // color: theme.colorScheme.primary,
-                //     size: 20,
-                //   ),
-                // ),
-              ],
+                textCapitalization: TextCapitalization.sentences,
+              ),
             ),
             // Text(
             //   widget.place.toString(),
@@ -224,6 +233,18 @@ class _SearchScreenState extends State<SearchScreen>
                         builder: (BuildContext buildContext) {
                           return const CategoriesBottomSheet();
                         });
+                    // showModalBottomSheet(
+                    //   context: context,
+                    //   backgroundColor: Colors.white,
+                    //   shape: const RoundedRectangleBorder(
+                    //       borderRadius: BorderRadius.only(
+                    //           topLeft: Radius.circular(20),
+                    //           topRight: Radius.circular(20))),
+                    //   isScrollControlled: true,
+                    //   builder: (context) {
+                    //     return const CategoriesBottomSheet();
+                    //   },
+                    // );
                   },
                   child: FxContainer(
                     borderRadiusAll: 10,
@@ -280,14 +301,16 @@ class _SearchScreenState extends State<SearchScreen>
             FxSpacing.height(20),
             //content
             SingleChildScrollView(
-                scrollDirection: Axis.vertical,
-                // child: _buildProductList(),
-                child:
-                    // foundCustomer!.isNotEmpty
-                    //     ?
-                    _buildProductListUi()
-                // : const Text('No Data'),
-                ),
+              scrollDirection: Axis.vertical,
+              // child: _buildProductList(),
+              child:
+
+                  // controller.foundrecipe.isNotEmpty
+                  //     ?
+                  _filteredBooks.isNotEmpty
+                      ? _buildProductListUi()
+                      : const Text('No Data'),
+            ),
           ],
         ),
       );
@@ -376,15 +399,20 @@ class _SearchScreenState extends State<SearchScreen>
                                     padding: FxSpacing.xy(6, 2),
                                     // color: Color(0xff1529e8),
                                     color: Colors.blueGrey,
-                                    child: FxText.bodySmall(
-                                      overflow: TextOverflow.ellipsis,
-                                      maxLines: 1,
-                                      // 'Theme Park',
-                                      product.category.categoryName.name,
-                                      // 'Park',
-                                      fontWeight: 300,
-                                      color: Colors.white,
-                                      // color: theme.colorScheme.onPrimary,
+                                    child: Center(
+                                      child: FxText.bodySmall(
+                                        overflow: TextOverflow.ellipsis,
+                                        maxLines: 1,
+                                        // 'Theme Park',
+                                        product.category.categoryName.name[0]
+                                                .toUpperCase() +
+                                            product.category.categoryName.name
+                                                .substring(1)
+                                                .toLowerCase(),
+                                        fontWeight: 300,
+                                        color: Colors.white,
+                                        // color: theme.colorScheme.onPrimary,
+                                      ),
                                     ),
                                   ),
                                 ),
@@ -397,29 +425,42 @@ class _SearchScreenState extends State<SearchScreen>
                                   padding: FxSpacing.xy(6, 2),
                                   // color: Color(0xff1529e8),
                                   color: Colors.blueGrey,
-                                  child: FxText.bodySmall(
-                                    'Ticket',
-                                    fontWeight: 300,
-                                    color: Colors.white,
-                                    // color: theme.colorScheme.onPrimary,
+                                  child: Center(
+                                    child: FxText.bodySmall(
+                                      textAlign: TextAlign.center,
+                                      product.bookingType.name[0]
+                                              .toUpperCase() +
+                                          product.bookingType.name
+                                              .substring(1)
+                                              .toLowerCase(),
+                                      fontWeight: 300,
+                                      color: Colors.white,
+                                      // color: theme.colorScheme.onPrimary,
+                                    ),
                                   ),
                                 ),
                                 const SizedBox(
                                   width: 5,
                                 ),
-                                FxContainer(
-                                  borderRadiusAll: 10,
-                                  // padding: FxSpacing.xy(8, 4),
-                                  padding: FxSpacing.xy(6, 2),
-                                  // color: Color(0xff1529e8),
-                                  color: Colors.blueGrey,
-                                  child: FxText.bodySmall(
-                                    'Offer',
-                                    fontWeight: 300,
-                                    color: Colors.white,
-                                    // color: theme.colorScheme.onPrimary,
-                                  ),
-                                ),
+                                product.isOffer == false
+                                    ? const SizedBox()
+                                    : FxContainer(
+                                        borderRadiusAll: 10,
+                                        // padding: FxSpacing.xy(8, 4),
+                                        padding: FxSpacing.xy(6, 2),
+                                        // color: Color(0xff1529e8),
+                                        color: Colors.blueGrey,
+                                        child: Center(
+                                          child: FxText.bodySmall(
+                                            'Offer',
+                                            fontWeight: 300,
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
+                                            color: Colors.white,
+                                            // color: theme.colorScheme.onPrimary,
+                                          ),
+                                        ),
+                                      ),
                               ],
                             ),
                             FxSpacing.height(8),
@@ -430,7 +471,8 @@ class _SearchScreenState extends State<SearchScreen>
                               //   // fontWeight: 500,
                               // ),
                               child: FxText.bodyLarge(
-                                product.title,
+                                product.title[0].toUpperCase() +
+                                    product.title.substring(1).toLowerCase(),
                                 fontWeight: 800,
                                 overflow: TextOverflow.ellipsis,
                                 maxLines: 2,
@@ -438,11 +480,12 @@ class _SearchScreenState extends State<SearchScreen>
                             ),
                             FxSpacing.height(4),
                             Hero(
-                              tag:
-                                  "${product.duration}_${product.durationType}",
+                              tag: "${product.duration}",
+                              // _${product.durationType}
+                              // ",
                               child: FxText.labelLarge(
                                 // '\$' + product.price.toString(),
-                                "${product.duration} AED",
+                                "${product.activity.adultPrice.toString()} AED",
                                 // "\$" + product.price.toString() + "/hour",
                                 fontWeight: 700,
                               ),
@@ -450,9 +493,12 @@ class _SearchScreenState extends State<SearchScreen>
                             FxSpacing.height(6),
                             FxContainer(
                               borderRadiusAll: 8,
-                              padding: FxSpacing.xy(8, 4),
-                              // color: theme.colorScheme.primary,
-                              // color: Colors.yellow.shade400,
+                              padding: FxSpacing.xy(
+                                  //8
+                                  0,
+                                  4),
+
+                              //color: Colors.yellow.shade400,
                               color: Colors.white,
                               child: Row(
                                 children: [
@@ -465,7 +511,10 @@ class _SearchScreenState extends State<SearchScreen>
                                   FxSpacing.width(4),
                                   FxText.labelSmall(
                                     // '\$' + product.price.toString(),
-                                    product.destination.name.toString(),
+                                    product.destination.name[0].toUpperCase() +
+                                        product.destination.name
+                                            .substring(1)
+                                            .toLowerCase(),
                                     // product.price.toString() + " " + "AED",
                                     // "\$" + product.price.toString() + "/hour",
                                     // fontWeight: 700,
@@ -490,6 +539,12 @@ class _SearchScreenState extends State<SearchScreen>
                                       FxSpacing.width(4),
                                       FxText.bodySmall(
                                         '4.5',
+                                        fontWeight: 600,
+                                        color: Colors.black,
+                                      ),
+                                      FxSpacing.width(4),
+                                      FxText.bodySmall(
+                                        "(${product.totalReviews})",
                                         fontWeight: 600,
                                         color: Colors.black,
                                       ),

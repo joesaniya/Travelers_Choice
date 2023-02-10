@@ -1,8 +1,10 @@
 import 'dart:developer';
 
 import 'package:hotel_travel/models/all_attraction_modal.dart';
+import 'package:hotel_travel/services/Search_Service.dart';
 import '../models/atteraction_model.dart';
 
+import '../models/search_categories_modal.dart';
 import '../services/attraction_Service.dart';
 
 class AttractionController {
@@ -64,6 +66,27 @@ class AttractionController {
         return detailattractionList;
       } else {
         return null;
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+
+  //getCategories
+  List<List<SearchCategoriesModal>?> categoriesList = <List<SearchCategoriesModal>?>[];
+  bool isAllCategoriesListLoading = true;
+  Future<List<SearchCategoriesModal>?> getAllcategoriesList() async {
+    // isCountryListLoading = true;
+    try {
+      var data = await SearchService().getCategories();
+      categoriesList.clear();
+      if (data != null) {
+        categoriesList.add(data);
+        // isCountryListLoading = false;
+        return data; //removed true
+      } else {
+        return null; //falseremoved
       }
     } catch (e) {
       rethrow;

@@ -2,11 +2,13 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutx/flutx.dart';
+import 'package:hotel_travel/services/Search_Service.dart';
 
 import 'package:intl/intl.dart';
 
 import '../models/all_attraction_modal.dart';
 import '../models/product.dart';
+import '../models/search_categories_modal.dart';
 import '../views/detail_screen/detail_Screen.dart';
 import '../views/hotel_travel_constants.dart';
 
@@ -25,10 +27,40 @@ class HomeSearchController extends FxController {
 
   late Tween<Offset> offset;
   late AnimationController dateController, searchController;
-  late Animation<Offset> dateAnimation,searchAnimation;
+  late Animation<Offset> dateAnimation, searchAnimation;
 
   int dateCounter = 0;
-  int searchCounter=0;
+  int searchCounter = 0;
+  List<AllattractionModal> searchReasult = <AllattractionModal>[];
+
+  late List<AllattractionModal> foundrecipe;
+
+  //categories
+  List<SearchCategoriesModal> categoryattraction = <SearchCategoriesModal>[];
+
+  bool isLoading = true;
+
+  getcategoryAttraction(
+      // productid,
+      setState) {
+    log('getDetail Attraction function called');
+    Future.delayed(Duration.zero, () async {
+      await SearchService().getCategories()
+          // (
+          //   // productid: productid
+          //   )
+          .then((value) {
+        log('Details => $value');
+        if (value != null) {
+          isLoading = false;
+          // detailattraction = value;
+          setState(() {
+            categoryattraction = value;
+          });
+        }
+      });
+    });
+  }
 
   @override
   void dispose() {
@@ -76,9 +108,35 @@ class HomeSearchController extends FxController {
     update();
   }
 
+  void attractFilter(String enteredKeyword) {
+    print('runFilters');
+    List results = [];
+    if (enteredKeyword.isEmpty) {
+      print('runFilters if');
+      results = searchReasult.cast<Map<String, dynamic>>();
+    } else {
+      print('runFilters else');
+      results = searchReasult
+          .where((AllattractionModal) => AllattractionModal
+              .attractions.data.first.title
+              .toLowerCase()
+              .contains(enteredKeyword.toLowerCase()))
+          .toList();
+      print(results);
+    }
+    foundrecipe = results.cast<AllattractionModal>();
+
+    // setState(() {
+    //   print('set state');
+    //   foundrecipe = results.cast<AllattractionModal>();
+
+    // });
+  }
+
   @override
   void initState() {
     super.initState();
+    foundrecipe = searchReasult;
     fetchData();
     fetchloader();
     SearchTE = TextEditingController();
@@ -95,7 +153,7 @@ class HomeSearchController extends FxController {
         curve: Curves.easeIn,
       ),
     );
-     searchAnimation =
+    searchAnimation =
         Tween<Offset>(begin: const Offset(0, 0), end: const Offset(8, 0))
             .animate(CurvedAnimation(
       parent: searchController,
@@ -127,7 +185,7 @@ class HomeSearchController extends FxController {
         dateCounter++;
       }
     });
-     searchController.addStatusListener((status) {
+    searchController.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
         searchController.reverse();
       }

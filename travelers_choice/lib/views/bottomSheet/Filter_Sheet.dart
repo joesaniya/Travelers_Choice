@@ -40,20 +40,18 @@ class _FilterSheetState extends State<FilterSheet>
             padding: FxSpacing.xy(24, 16),
             decoration: const BoxDecoration(
                 // color: customTheme.card,
-                color: Colors.white,
+                color: Color(0xfff5f5f5),
                 borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(16),
                     topRight: Radius.circular(16))),
-            child: ListView(
-              // mainAxisSize: MainAxisSize.min,
+            child: Column(
               children: [
-                FxSpacing.height(8),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     FxText.bodyLarge(
-                      'Categories',
+                      'Filter',
                       fontWeight: 800,
                     ),
                     GestureDetector(
@@ -66,452 +64,536 @@ class _FilterSheetState extends State<FilterSheet>
                     )
                   ],
                 ),
-                FxSpacing.height(20),
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: Container(
-                    child: FxText.bodyLarge(
-                      'When are you Travelling?',
-                      letterSpacing: 0,
-                      fontWeight: 600,
-                    ),
-                  ),
-                ),
                 FxSpacing.height(10),
-                SlideTransition(
-                  position: controller.dateAnimation,
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 8.0),
-                    child: TextFormField(
-                      style: FxTextStyle.bodyMedium(),
-                      controller: controller.dateTE,
-                      readOnly:
-                          true, //set it true, so that user will not able to edit text
-
-                      onTap: controller.dateselect,
-                      decoration: InputDecoration(
-                          floatingLabelBehavior: FloatingLabelBehavior.never,
-                          filled: true,
-                          isDense: true,
-                          fillColor: theme.cardTheme.color,
-                          suffixIcon: Icon(
-                            FeatherIcons.calendar,
-                            color: theme.colorScheme.onBackground,
-                          ),
-                          hintText: "yyyy-mm-dd",
-                          // border: InputBorder.none,
-                          // enabledBorder: InputBorder.none,
-                          // focusedBorder: InputBorder.none,
-                          border: const OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: Color(0xff1529e8),
-                                  // color: Colors.lightBlueAccent,
-                                  width: 1)),
-                          enabledBorder: const OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: Color(0xff1529e8), width: 1)),
-                          focusedBorder: const OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: Color(0xff1529e8), width: 1)),
-                          contentPadding: FxSpacing.all(16),
-                          hintStyle: FxTextStyle.bodyMedium(),
-                          isCollapsed: true),
-                      autofocus: false,
-                      keyboardType: TextInputType.datetime,
-                    ),
-                  ),
-                ),
-
-                //duration
-                FxSpacing.height(20),
-                Align(
-                  alignment: Alignment.centerLeft,
+                Expanded(
                   child: Container(
-                    child: FxText.bodyLarge(
-                      'Duration',
-                      letterSpacing: 0,
-                      fontWeight: 600,
-                    ),
-                  ),
-                ),
-                FxSpacing.height(10),
-                Column(
-                  children: <Widget>[
-                    InkWell(
-                      onTap: () {
-                        setState(() {
-                          _radioValue = 0;
-                        });
-                      },
-                      child: Row(
-                        children: <Widget>[
-                          Radio(
-                            onChanged: (dynamic value) {
-                              setState(() {
-                                _radioValue = 0;
-                              });
-                            },
-                            groupValue: _radioValue,
-                            value: 0,
-                            visualDensity: VisualDensity.compact,
-                            activeColor: const Color(0xff1529e8),
-                            // activeColor: theme.colorScheme.primary,
-                          ),
-                          FxText.titleSmall("Upto 1 Hour", fontWeight: 60),
-                          // FxText.titleSmall("High to Low"),
-                        ],
-                      ),
-                    ),
-                    InkWell(
-                      onTap: () {
-                        setState(() {
-                          _radioValue = 1;
-                        });
-                      },
-                      child: Row(
-                        children: <Widget>[
-                          Radio(
-                            onChanged: (dynamic value) {
-                              setState(() {
-                                _radioValue = 1;
-                              });
-                            },
-                            groupValue: _radioValue,
-                            value: 1,
-                            visualDensity: VisualDensity.compact,
-                            activeColor: const Color(0xff1529e8),
-                            // activeColor: theme.colorScheme.primary,
-                          ),
-                          FxText.titleSmall("1 to 4 Hour", fontWeight: 600),
-                        ],
-                      ),
-                    ),
-                    InkWell(
-                      onTap: () {
-                        setState(() {
-                          _radioValue = 2;
-                        });
-                      },
-                      child: Row(
-                        children: <Widget>[
-                          Radio(
-                            onChanged: (dynamic value) {
-                              setState(() {
-                                _radioValue = 2;
-                              });
-                            },
-                            groupValue: _radioValue,
-                            value: 2,
-                            visualDensity: VisualDensity.compact,
-                            activeColor: const Color(0xff1529e8),
-                            // activeColor: theme.colorScheme.primary,
-                          ),
-                          FxText.titleSmall("4 Hour to 1 Day", fontWeight: 600),
-                        ],
-                      ),
-                    ),
-                    InkWell(
-                      onTap: () {
-                        setState(() {
-                          _radioValue = 3;
-                        });
-                      },
-                      child: Row(
-                        children: <Widget>[
-                          Radio(
-                            onChanged: (dynamic value) {
-                              setState(() {
-                                _radioValue = 3;
-                              });
-                            },
-                            groupValue: _radioValue,
-                            value: 3,
-                            visualDensity: VisualDensity.compact,
-                            activeColor: const Color(0xff1529e8),
-                            // activeColor: theme.colorScheme.primary,
-                          ),
-                          FxText.titleSmall("1 to 3 Day", fontWeight: 600),
-                        ],
-                      ),
-                    ),
-                    InkWell(
-                      onTap: () {
-                        setState(() {
-                          _radioValue = 4;
-                        });
-                      },
-                      child: Row(
-                        children: <Widget>[
-                          Radio(
-                            onChanged: (dynamic value) {
-                              setState(() {
-                                _radioValue = 4;
-                              });
-                            },
-                            groupValue: _radioValue,
-                            value: 4,
-                            visualDensity: VisualDensity.compact,
-                            activeColor: const Color(0xff1529e8),
-                            // activeColor: theme.colorScheme.primary,
-                          ),
-                          FxText.titleSmall("3 Day's or more", fontWeight: 600),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
+                    padding: FxSpacing.xy(10, 6),
+                    decoration: const BoxDecoration(
+                        // color: customTheme.card,
+                        color: Colors.white,
+                        borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(16),
+                            topRight: Radius.circular(16))),
+                    child: Column(
+                      children: [
+                        Expanded(
+                          child: ListView(
+                            physics: const AlwaysScrollableScrollPhysics(),
+                            // mainAxisSize: MainAxisSize.min,
+                            children: [
+                              FxSpacing.height(24),
+                              FxText.bodyLarge(
+                                'EXPLORE YOUR TRAVELLING',
+                                letterSpacing: 0,
+                                fontWeight: 600,
+                                decoration: TextDecoration.underline,
+                              ),
+                              FxSpacing.height(24),
+                              Container(
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    FxText.bodyLarge(
+                                      'Price Range',
+                                      letterSpacing: 0,
+                                      fontWeight: 600,
+                                    ),
+                                    FxText.bodySmall(
+                                      // "\$${controller.selectedRange.start.toInt()} - \$${controller.selectedRange.end.toInt()}",
+                                      "AED ${controller.selectedRange.start.toInt()} - ${controller.selectedRange.end.toInt()} AED",
+                                      color: const Color(0xff1529e8),
+                                      fontWeight: 600,
+                                      letterSpacing: 0.35,
+                                    )
+                                  ],
+                                ),
+                              ),
+                              FxSpacing.height(16),
+                              Container(
+                                child: RangeSlider(
+                                    activeColor: const Color(0xff1529e8),
+                                    inactiveColor: const Color(0xff5563e8),
+                                    // activeColor: theme.colorScheme.primary,
+                                    // inactiveColor: theme.colorScheme.primary.withAlpha(100),
+                                    max: 10000,
+                                    min: 0,
+                                    values: controller.selectedRange,
+                                    onChanged: (RangeValues newRange) {
+                                      controller.onChangePriceRange(newRange);
+                                    }),
+                              ),
+                              FxSpacing.height(20),
+                              // Align(
+                              //   alignment: Alignment.centerLeft,
+                              //   child: Container(
+                              //     child: FxText.bodyLarge(
+                              //       'When are you Travelling?',
+                              //       letterSpacing: 0,
+                              //       fontWeight: 600,
+                              //     ),
+                              //   ),
+                              // ),
+                              // FxSpacing.height(10),
+                              // SlideTransition(
+                              //   position: controller.dateAnimation,
+                              //   child: Padding(
+                              //     padding: const EdgeInsets.only(left: 8.0),
+                              //     child: TextFormField(
+                              //       style: FxTextStyle.bodyMedium(),
+                              //       controller: controller.dateTE,
+                              //       readOnly:
+                              //           true, //set it true, so that user will not able to edit text
 
-                //rating
-                FxSpacing.height(20),
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: Container(
-                    child: FxText.bodyLarge(
-                      'Rating',
-                      letterSpacing: 0,
-                      fontWeight: 600,
-                    ),
-                  ),
-                ),
-                FxSpacing.height(10),
-                Container(
-                    height: 200,
-                    color: Colors.transparent,
-                    // padding: const EdgeInsets.only(left: 16, right: 16, top: 8),
-                    // child: const RatingSearchDrawer()
-                    child: ListView.builder(
-                        itemCount: 1,
-                        itemBuilder: (context, index) {
-                          return Column(
-                            children: <Widget>[
-                              InkWell(
-                                onTap: () {
-                                  setState(() {
-                                    _ratingValue = 0;
-                                  });
-                                },
-                                child: Row(
-                                  children: <Widget>[
-                                    Radio(
-                                      onChanged: (dynamic value) {
-                                        setState(() {
-                                          _ratingValue = 0;
-                                        });
-                                      },
-                                      groupValue: _ratingValue,
-                                      value: 0,
-                                      visualDensity: VisualDensity.compact,
-                                      activeColor: const Color(0xff1529e8),
-                                      // activeColor: theme.colorScheme.primary,
-                                    ),
-                                    FxStarRating(
-                                      rating: (index + 1).toDouble(),
-                                    )
-                                    // FxText.titleSmall("High to Low"),
-                                  ],
+                              //       onTap: controller.dateselect,
+                              //       decoration: InputDecoration(
+                              //           floatingLabelBehavior: FloatingLabelBehavior.never,
+                              //           filled: true,
+                              //           isDense: true,
+                              //           fillColor: theme.cardTheme.color,
+                              //           suffixIcon: Icon(
+                              //             FeatherIcons.calendar,
+                              //             color: theme.colorScheme.onBackground,
+                              //           ),
+                              //           hintText: "yyyy-mm-dd",
+                              //           // border: InputBorder.none,
+                              //           // enabledBorder: InputBorder.none,
+                              //           // focusedBorder: InputBorder.none,
+                              //           border: const OutlineInputBorder(
+                              //               borderSide: BorderSide(
+                              //                   color: Color(0xff1529e8),
+                              //                   // color: Colors.lightBlueAccent,
+                              //                   width: 1)),
+                              //           enabledBorder: const OutlineInputBorder(
+                              //               borderSide: BorderSide(
+                              //                   color: Color(0xff1529e8), width: 1)),
+                              //           focusedBorder: const OutlineInputBorder(
+                              //               borderSide: BorderSide(
+                              //                   color: Color(0xff1529e8), width: 1)),
+                              //           contentPadding: FxSpacing.all(16),
+                              //           hintStyle: FxTextStyle.bodyMedium(),
+                              //           isCollapsed: true),
+                              //       autofocus: false,
+                              //       keyboardType: TextInputType.datetime,
+                              //     ),
+                              //   ),
+                              // ),
+
+                              //duration
+
+                              Align(
+                                alignment: Alignment.centerLeft,
+                                child: Container(
+                                  child: FxText.bodyLarge(
+                                    'Duration',
+                                    letterSpacing: 0,
+                                    fontWeight: 600,
+                                  ),
                                 ),
                               ),
-                              InkWell(
-                                onTap: () {
-                                  setState(() {
-                                    _ratingValue = 1;
-                                  });
-                                },
-                                child: Row(
-                                  children: <Widget>[
-                                    Radio(
-                                      onChanged: (dynamic value) {
-                                        setState(() {
-                                          _ratingValue = 1;
-                                        });
-                                      },
-                                      groupValue: _ratingValue,
-                                      value: 1,
-                                      visualDensity: VisualDensity.compact,
-                                      activeColor: const Color(0xff1529e8),
-                                      // activeColor: theme.colorScheme.primary,
+                              FxSpacing.height(10),
+                              Column(
+                                children: <Widget>[
+                                  InkWell(
+                                    onTap: () {
+                                      setState(() {
+                                        _radioValue = 0;
+                                      });
+                                    },
+                                    child: Row(
+                                      children: <Widget>[
+                                        Radio(
+                                          onChanged: (dynamic value) {
+                                            setState(() {
+                                              _radioValue = 0;
+                                            });
+                                          },
+                                          groupValue: _radioValue,
+                                          value: 0,
+                                          visualDensity: VisualDensity.compact,
+                                          activeColor: const Color(0xff1529e8),
+                                          // activeColor: theme.colorScheme.primary,
+                                        ),
+                                        FxText.titleSmall("Upto 1 Hour",
+                                            fontWeight: 60),
+                                        // FxText.titleSmall("High to Low"),
+                                      ],
                                     ),
-                                    FxStarRating(
-                                      rating: (index + 2).toDouble(),
-                                    )
-                                    // FxText.titleSmall("High to Low"),
-                                  ],
+                                  ),
+                                  InkWell(
+                                    onTap: () {
+                                      setState(() {
+                                        _radioValue = 1;
+                                      });
+                                    },
+                                    child: Row(
+                                      children: <Widget>[
+                                        Radio(
+                                          onChanged: (dynamic value) {
+                                            setState(() {
+                                              _radioValue = 1;
+                                            });
+                                          },
+                                          groupValue: _radioValue,
+                                          value: 1,
+                                          visualDensity: VisualDensity.compact,
+                                          activeColor: const Color(0xff1529e8),
+                                          // activeColor: theme.colorScheme.primary,
+                                        ),
+                                        FxText.titleSmall("1 to 4 Hour",
+                                            fontWeight: 600),
+                                      ],
+                                    ),
+                                  ),
+                                  InkWell(
+                                    onTap: () {
+                                      setState(() {
+                                        _radioValue = 2;
+                                      });
+                                    },
+                                    child: Row(
+                                      children: <Widget>[
+                                        Radio(
+                                          onChanged: (dynamic value) {
+                                            setState(() {
+                                              _radioValue = 2;
+                                            });
+                                          },
+                                          groupValue: _radioValue,
+                                          value: 2,
+                                          visualDensity: VisualDensity.compact,
+                                          activeColor: const Color(0xff1529e8),
+                                          // activeColor: theme.colorScheme.primary,
+                                        ),
+                                        FxText.titleSmall("4 Hour to 1 Day",
+                                            fontWeight: 600),
+                                      ],
+                                    ),
+                                  ),
+                                  InkWell(
+                                    onTap: () {
+                                      setState(() {
+                                        _radioValue = 3;
+                                      });
+                                    },
+                                    child: Row(
+                                      children: <Widget>[
+                                        Radio(
+                                          onChanged: (dynamic value) {
+                                            setState(() {
+                                              _radioValue = 3;
+                                            });
+                                          },
+                                          groupValue: _radioValue,
+                                          value: 3,
+                                          visualDensity: VisualDensity.compact,
+                                          activeColor: const Color(0xff1529e8),
+                                          // activeColor: theme.colorScheme.primary,
+                                        ),
+                                        FxText.titleSmall("1 to 3 Day",
+                                            fontWeight: 600),
+                                      ],
+                                    ),
+                                  ),
+                                  InkWell(
+                                    onTap: () {
+                                      setState(() {
+                                        _radioValue = 4;
+                                      });
+                                    },
+                                    child: Row(
+                                      children: <Widget>[
+                                        Radio(
+                                          onChanged: (dynamic value) {
+                                            setState(() {
+                                              _radioValue = 4;
+                                            });
+                                          },
+                                          groupValue: _radioValue,
+                                          value: 4,
+                                          visualDensity: VisualDensity.compact,
+                                          activeColor: const Color(0xff1529e8),
+                                          // activeColor: theme.colorScheme.primary,
+                                        ),
+                                        FxText.titleSmall("3 Day's or more",
+                                            fontWeight: 600),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+
+                              //rating
+                              FxSpacing.height(20),
+                              Align(
+                                alignment: Alignment.centerLeft,
+                                child: Container(
+                                  child: FxText.bodyLarge(
+                                    'Rating',
+                                    letterSpacing: 0,
+                                    fontWeight: 600,
+                                  ),
                                 ),
                               ),
-                              InkWell(
-                                onTap: () {
-                                  setState(() {
-                                    _ratingValue = 2;
-                                  });
-                                },
-                                child: Row(
-                                  children: <Widget>[
-                                    Radio(
-                                      onChanged: (dynamic value) {
-                                        setState(() {
-                                          _ratingValue = 2;
-                                        });
-                                      },
-                                      groupValue: _ratingValue,
-                                      value: 2,
-                                      visualDensity: VisualDensity.compact,
-                                      activeColor: const Color(0xff1529e8),
-                                      // activeColor: theme.colorScheme.primary,
-                                    ),
-                                    FxStarRating(
-                                      rating: (index + 3).toDouble(),
-                                    )
-                                    // FxText.titleSmall("High to Low"),
-                                  ],
-                                ),
-                              ),
-                              InkWell(
-                                onTap: () {
-                                  setState(() {
-                                    _ratingValue = 3;
-                                  });
-                                },
-                                child: Row(
-                                  children: <Widget>[
-                                    Radio(
-                                      onChanged: (dynamic value) {
-                                        setState(() {
-                                          _ratingValue = 3;
-                                        });
-                                      },
-                                      groupValue: _ratingValue,
-                                      value: 3,
-                                      visualDensity: VisualDensity.compact,
-                                      activeColor: const Color(0xff1529e8),
-                                      // activeColor: theme.colorScheme.primary,
-                                    ),
-                                    FxStarRating(
-                                      rating: (index + 4).toDouble(),
-                                    )
-                                    // FxText.titleSmall("High to Low"),
-                                  ],
-                                ),
-                              ),
-                              InkWell(
-                                onTap: () {
-                                  setState(() {
-                                    _ratingValue = 4;
-                                  });
-                                },
-                                child: Row(
-                                  children: <Widget>[
-                                    Radio(
-                                      onChanged: (dynamic value) {
-                                        setState(() {
-                                          _ratingValue = 4;
-                                        });
-                                      },
-                                      groupValue: _ratingValue,
-                                      value: 4,
-                                      visualDensity: VisualDensity.compact,
-                                      activeColor: const Color(0xff1529e8),
-                                      // activeColor: theme.colorScheme.primary,
-                                    ),
-                                    FxStarRating(
-                                      rating: (index + 5).toDouble(),
-                                    )
-                                    // FxText.titleSmall("High to Low"),
-                                  ],
-                                ),
-                              ),
+                              FxSpacing.height(10),
+                              Container(
+                                  height: 200,
+                                  color: Colors.transparent,
+                                  // padding: const EdgeInsets.only(left: 16, right: 16, top: 8),
+                                  // child: const RatingSearchDrawer()
+                                  child: ListView.builder(
+                                      itemCount: 1,
+                                      itemBuilder: (context, index) {
+                                        return Column(
+                                          children: <Widget>[
+                                            InkWell(
+                                              onTap: () {
+                                                setState(() {
+                                                  _ratingValue = 0;
+                                                });
+                                              },
+                                              child: Row(
+                                                children: <Widget>[
+                                                  Radio(
+                                                    onChanged: (dynamic value) {
+                                                      setState(() {
+                                                        _ratingValue = 0;
+                                                      });
+                                                    },
+                                                    groupValue: _ratingValue,
+                                                    value: 0,
+                                                    visualDensity:
+                                                        VisualDensity.compact,
+                                                    activeColor:
+                                                        const Color(0xff1529e8),
+                                                    // activeColor: theme.colorScheme.primary,
+                                                  ),
+                                                  FxStarRating(
+                                                    rating:
+                                                        (index + 1).toDouble(),
+                                                  )
+                                                  // FxText.titleSmall("High to Low"),
+                                                ],
+                                              ),
+                                            ),
+                                            InkWell(
+                                              onTap: () {
+                                                setState(() {
+                                                  _ratingValue = 1;
+                                                });
+                                              },
+                                              child: Row(
+                                                children: <Widget>[
+                                                  Radio(
+                                                    onChanged: (dynamic value) {
+                                                      setState(() {
+                                                        _ratingValue = 1;
+                                                      });
+                                                    },
+                                                    groupValue: _ratingValue,
+                                                    value: 1,
+                                                    visualDensity:
+                                                        VisualDensity.compact,
+                                                    activeColor:
+                                                        const Color(0xff1529e8),
+                                                    // activeColor: theme.colorScheme.primary,
+                                                  ),
+                                                  FxStarRating(
+                                                    rating:
+                                                        (index + 2).toDouble(),
+                                                  )
+                                                  // FxText.titleSmall("High to Low"),
+                                                ],
+                                              ),
+                                            ),
+                                            InkWell(
+                                              onTap: () {
+                                                setState(() {
+                                                  _ratingValue = 2;
+                                                });
+                                              },
+                                              child: Row(
+                                                children: <Widget>[
+                                                  Radio(
+                                                    onChanged: (dynamic value) {
+                                                      setState(() {
+                                                        _ratingValue = 2;
+                                                      });
+                                                    },
+                                                    groupValue: _ratingValue,
+                                                    value: 2,
+                                                    visualDensity:
+                                                        VisualDensity.compact,
+                                                    activeColor:
+                                                        const Color(0xff1529e8),
+                                                    // activeColor: theme.colorScheme.primary,
+                                                  ),
+                                                  FxStarRating(
+                                                    rating:
+                                                        (index + 3).toDouble(),
+                                                  )
+                                                  // FxText.titleSmall("High to Low"),
+                                                ],
+                                              ),
+                                            ),
+                                            InkWell(
+                                              onTap: () {
+                                                setState(() {
+                                                  _ratingValue = 3;
+                                                });
+                                              },
+                                              child: Row(
+                                                children: <Widget>[
+                                                  Radio(
+                                                    onChanged: (dynamic value) {
+                                                      setState(() {
+                                                        _ratingValue = 3;
+                                                      });
+                                                    },
+                                                    groupValue: _ratingValue,
+                                                    value: 3,
+                                                    visualDensity:
+                                                        VisualDensity.compact,
+                                                    activeColor:
+                                                        const Color(0xff1529e8),
+                                                    // activeColor: theme.colorScheme.primary,
+                                                  ),
+                                                  FxStarRating(
+                                                    rating:
+                                                        (index + 4).toDouble(),
+                                                  )
+                                                  // FxText.titleSmall("High to Low"),
+                                                ],
+                                              ),
+                                            ),
+                                            InkWell(
+                                              onTap: () {
+                                                setState(() {
+                                                  _ratingValue = 4;
+                                                });
+                                              },
+                                              child: Row(
+                                                children: <Widget>[
+                                                  Radio(
+                                                    onChanged: (dynamic value) {
+                                                      setState(() {
+                                                        _ratingValue = 4;
+                                                      });
+                                                    },
+                                                    groupValue: _ratingValue,
+                                                    value: 4,
+                                                    visualDensity:
+                                                        VisualDensity.compact,
+                                                    activeColor:
+                                                        const Color(0xff1529e8),
+                                                    // activeColor: theme.colorScheme.primary,
+                                                  ),
+                                                  FxStarRating(
+                                                    rating:
+                                                        (index + 5).toDouble(),
+                                                  )
+                                                  // FxText.titleSmall("High to Low"),
+                                                ],
+                                              ),
+                                            ),
+                                          ],
+                                        );
+                                      })
+                                  // child: ListView.builder(
+                                  //     shrinkWrap: true,
+                                  //     padding: EdgeInsets.zero,
+                                  //     itemCount: _star.length,
+                                  //     reverse: true,
+                                  //     itemBuilder: (BuildContext context, int index) {
+                                  //       return InkWell(
+                                  //         onTap: () {
+                                  //           setState(() {
+                                  //             _star[index] = _star[index];
+                                  //           });
+                                  //         },
+                                  //         child: Row(
+                                  //           children: <Widget>[
+                                  //             Checkbox(
+                                  //               visualDensity: VisualDensity.compact,
+                                  //               materialTapTargetSize:
+                                  //                   MaterialTapTargetSize.shrinkWrap,
+                                  //               value: _star[index],
+                                  //               activeColor: theme.colorScheme.primary,
+                                  //               onChanged: (bool? value) {
+                                  //                 setState(() {
+                                  //                   _star[index] = value;
+                                  //                 });
+                                  //               },
+                                  //             ),
+                                  //             // Radio(
+                                  //             //   onChanged: (dynamic value) {
+                                  //             //     setState(() {
+                                  //             //       _star[index] = value;
+                                  //             //     });
+                                  //             //   },
+                                  //             //   groupValue: _ratingValue,
+                                  //             //   value: 0,
+                                  //             //   visualDensity: VisualDensity.compact,
+                                  //             //   activeColor: theme.colorScheme.primary,
+                                  //             // ),
+                                  //             Container(
+                                  //                 // margin: const EdgeInsets.only(left: 4),
+                                  //                 child: FxStarRating(
+                                  //                     rating: (index + 1).toDouble(),
+                                  //                     inactiveColor:
+                                  //                         theme.colorScheme.onBackground))
+                                  //           ],
+                                  //         ),
+                                  //       );
+                                  //     }),
+                                  ),
                             ],
-                          );
-                        })
-                    // child: ListView.builder(
-                    //     shrinkWrap: true,
-                    //     padding: EdgeInsets.zero,
-                    //     itemCount: _star.length,
-                    //     reverse: true,
-                    //     itemBuilder: (BuildContext context, int index) {
-                    //       return InkWell(
-                    //         onTap: () {
-                    //           setState(() {
-                    //             _star[index] = _star[index];
-                    //           });
-                    //         },
-                    //         child: Row(
-                    //           children: <Widget>[
-                    //             Checkbox(
-                    //               visualDensity: VisualDensity.compact,
-                    //               materialTapTargetSize:
-                    //                   MaterialTapTargetSize.shrinkWrap,
-                    //               value: _star[index],
-                    //               activeColor: theme.colorScheme.primary,
-                    //               onChanged: (bool? value) {
-                    //                 setState(() {
-                    //                   _star[index] = value;
-                    //                 });
-                    //               },
-                    //             ),
-                    //             // Radio(
-                    //             //   onChanged: (dynamic value) {
-                    //             //     setState(() {
-                    //             //       _star[index] = value;
-                    //             //     });
-                    //             //   },
-                    //             //   groupValue: _ratingValue,
-                    //             //   value: 0,
-                    //             //   visualDensity: VisualDensity.compact,
-                    //             //   activeColor: theme.colorScheme.primary,
-                    //             // ),
-                    //             Container(
-                    //                 // margin: const EdgeInsets.only(left: 4),
-                    //                 child: FxStarRating(
-                    //                     rating: (index + 1).toDouble(),
-                    //                     inactiveColor:
-                    //                         theme.colorScheme.onBackground))
-                    //           ],
-                    //         ),
-                    //       );
-                    //     }),
+                          ),
+                        ),
+                        Container(
+                          child: Row(
+                            children: [
+                              Expanded(
+                                  child: FxContainer(
+                                onTap: () {
+                                  // controller.closeEndDrawer();
+                                  Navigator.pop(context);
+                                },
+                                color: Colors.transparent,
+                                padding: FxSpacing.y(12),
+                                child: Center(
+                                  child: FxText(
+                                    "Clear",
+                                    color: const Color(0xff1529e8),
+                                    // color: theme.colorScheme.primary,
+                                    fontWeight: 600,
+                                  ),
+                                ),
+                              )),
+                              Expanded(
+                                  child: FxContainer.none(
+                                onTap: () {
+                                  // controller.closeEndDrawer();
+                                  Navigator.pop(context);
+                                },
+                                padding: FxSpacing.y(12),
+                                // color: theme.colorScheme.primary,
+                                color: const Color(0xff1529e8),
+                                child: Center(
+                                  child: FxText(
+                                    "Apply",
+                                    color: theme.colorScheme.onPrimary,
+                                    fontWeight: 600,
+                                  ),
+                                ),
+                              )),
+                            ],
+                          ),
+                        )
+                      ],
                     ),
-
-                //btn
-                Container(
-                  child: Row(
-                    children: [
-                      Expanded(
-                          child: FxContainer(
-                        onTap: () {
-                          // controller.closeEndDrawer();
-                          Navigator.pop(context);
-                        },
-                        color: Colors.transparent,
-                        padding: FxSpacing.y(12),
-                        child: Center(
-                          child: FxText(
-                            "Clear",
-                            color: const Color(0xff1529e8),
-                            // color: theme.colorScheme.primary,
-                            fontWeight: 600,
-                          ),
-                        ),
-                      )),
-                      Expanded(
-                          child: FxContainer.none(
-                        onTap: () {
-                          // controller.closeEndDrawer();
-                          Navigator.pop(context);
-                        },
-                        padding: FxSpacing.y(12),
-                        // color: theme.colorScheme.primary,
-                        color: const Color(0xff1529e8),
-                        child: Center(
-                          child: FxText(
-                            "Apply",
-                            color: theme.colorScheme.onPrimary,
-                            fontWeight: 600,
-                          ),
-                        ),
-                      )),
-                    ],
                   ),
-                )
+                ),
               ],
             ),
           );

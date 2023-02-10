@@ -152,15 +152,22 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                 padding: FxSpacing.xy(6, 2),
                                 // color: Color(0xff1529e8),
                                 color: Colors.blueGrey,
-                                child: FxText.bodySmall(
-                                  overflow: TextOverflow.ellipsis,
-                                  maxLines: 1,
-                                  // 'Theme Park',
-                                  product.category.categoryName.name,
-                                  // 'Park',
-                                  fontWeight: 300,
-                                  color: Colors.white,
-                                  // color: theme.colorScheme.onPrimary,
+                                child: Center(
+                                  child: FxText.bodySmall(
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 1,
+                                    // 'Theme Park',
+                                    // product.category.categoryName.name,
+                                    // 'Park',
+                                    product.category.categoryName.name[0]
+                                            .toUpperCase() +
+                                        product.category.categoryName.name
+                                            .substring(1)
+                                            .toLowerCase(),
+                                    fontWeight: 300,
+                                    color: Colors.white,
+                                    // color: theme.colorScheme.onPrimary,
+                                  ),
                                 ),
                               ),
                             ),
@@ -173,31 +180,55 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                               padding: FxSpacing.xy(6, 2),
                               // color: Color(0xff1529e8),
                               color: Colors.blueGrey,
-                              child: FxText.bodySmall(
-                                product.bookingType.name,
-                                // 'Ticket',
-                                fontWeight: 300,
-                                color: Colors.white,
-                                // color: theme.colorScheme.onPrimary,
+                              child: Center(
+                                child: FxText.bodySmall(
+                                  // product.bookingType.name,
+                                  product.bookingType.name[0].toUpperCase() +
+                                      product.bookingType.name
+                                          .substring(1)
+                                          .toLowerCase(),
+                                  // 'Ticket',
+                                  fontWeight: 300,
+                                  color: Colors.white,
+                                  // color: theme.colorScheme.onPrimary,
+                                ),
                               ),
                             ),
                             const SizedBox(
                               width: 5,
                             ),
-                            FxContainer(
-                              borderRadiusAll: 10,
-                              // padding: FxSpacing.xy(8, 4),
-                              padding: FxSpacing.xy(6, 2),
-                              // color: Color(0xff1529e8),
-                              color: Colors.blueGrey,
-                              child: FxText.bodySmall(
-                                '${product.duration}${product.durationType.name.toString() == "hours" ? 'Hrs' : 'Hrs'}',
-                                // 'Offer',
-                                fontWeight: 300,
-                                color: Colors.white,
-                                // color: theme.colorScheme.onPrimary,
-                              ),
-                            ),
+                            // FxContainer(
+                            //   borderRadiusAll: 10,
+                            //   // padding: FxSpacing.xy(8, 4),
+                            //   padding: FxSpacing.xy(6, 2),
+                            //   // color: Color(0xff1529e8),
+                            //   color: Colors.blueGrey,
+                            //   child: FxText.bodySmall(
+                            //     '${product.duration}${product.durationType.name.toString() == "hours" ? 'Hrs' : 'Hrs'}',
+                            //     // 'Offer',
+                            //     fontWeight: 300,
+                            //     color: Colors.white,
+                            //     // color: theme.colorScheme.onPrimary,
+                            //   ),
+                            // ),
+                            product.isOffer == false
+                                ? const SizedBox()
+                                : FxContainer(
+                                    borderRadiusAll: 10,
+                                    // padding: FxSpacing.xy(8, 4),
+                                    padding: FxSpacing.xy(6, 2),
+                                    // color: Color(0xff1529e8),
+                                    color: Colors.blueGrey,
+                                    child: FxText.bodySmall(
+                                      'Offer',
+
+                                      fontWeight: 300,
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                      color: Colors.white,
+                                      // color: theme.colorScheme.onPrimary,
+                                    ),
+                                  )
                           ],
                         ),
                         FxSpacing.height(8),
@@ -208,7 +239,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                           //   // fontWeight: 500,
                           // ),
                           child: FxText.bodyLarge(
-                            product.title,
+                            product.title[0].toUpperCase() +
+                                product.title.substring(1).toLowerCase(),
                             fontWeight: 800,
                             overflow: TextOverflow.ellipsis,
                             maxLines: 2,
@@ -218,8 +250,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                         Hero(
                           tag: "${product.duration}",
                           child: FxText.labelLarge(
-                            '${controller.currency() ?? '\$'} ${product.activity.adultPrice.toString()}',
-                            // "${product.duration} AED",
+                            // '${controller.currency() ?? '\$'} ${product.activity.adultPrice.toString()}',
+                            "${product.activity.adultPrice.toString()} AED",
                             // "\$" + product.price.toString() + "/hour",
                             fontWeight: 700,
                           ),
@@ -240,7 +272,13 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                   ),
                                   FxSpacing.width(4),
                                   FxText.bodySmall(
-                                    product.averageRating.toString(),
+                                    product.averageRating.toStringAsFixed(1),
+                                    fontWeight: 600,
+                                    color: Colors.black,
+                                  ),
+                                  FxSpacing.width(4),
+                                  FxText.bodySmall(
+                                    "(${product.totalReviews})",
                                     fontWeight: 600,
                                     color: Colors.black,
                                   ),
@@ -352,12 +390,18 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                           padding: FxSpacing.xy(6, 2),
                           // color: Color(0xff1529e8),
                           color: Colors.blueGrey,
-                          child: FxText.bodySmall(
-                            // 'Theme Park',
-                            product.category.categoryName.name,
-                            fontWeight: 300,
-                            color: Colors.white,
-                            // color: theme.colorScheme.onPrimary,
+                          child: Center(
+                            child: FxText.bodySmall(
+                              // 'Theme Park',
+                              product.category.categoryName.name[0]
+                                      .toUpperCase() +
+                                  product.category.categoryName.name
+                                      .substring(1)
+                                      .toLowerCase(),
+                              fontWeight: 300,
+                              color: Colors.white,
+                              // color: theme.colorScheme.onPrimary,
+                            ),
                           ),
                         ),
                         const SizedBox(
@@ -369,34 +413,52 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                           padding: FxSpacing.xy(6, 2),
                           // color: Color(0xff1529e8),
                           color: Colors.blueGrey,
-                          child: FxText.bodySmall(
-                            product.bookingType.name,
-                            fontWeight: 300,
-                            color: Colors.white,
-                            // color: theme.colorScheme.onPrimary,
-                          ),
-                        ),
-                        const SizedBox(
-                          width: 5,
-                        ),
-                        FxContainer(
-                          borderRadiusAll: 10,
-                          // padding: FxSpacing.xy(8, 4),
-                          padding: FxSpacing.xy(6, 2),
-                          // color: Color(0xff1529e8),
-                          color: Colors.blueGrey,
+                          child: Center(
+                            child: FxText.bodySmall(
+                              product.bookingType.name[0].toUpperCase() +
+                                  product.bookingType.name
+                                      .substring(1)
+                                      .toLowerCase(),
 
-                          child: FxText.bodySmall(
-                            '${product.duration}${product.durationType.name.toString() == "hours" ? 'Hrs' : 'Hrs'}',
-                            // '${product.duration} hrs',
-                            // 'offer',
-                            fontWeight: 300,
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            color: Colors.white,
-                            // color: theme.colorScheme.onPrimary,
+                              fontWeight: 300,
+                              color: Colors.white,
+                              // color: theme.colorScheme.onPrimary,
+                            ),
                           ),
                         ),
+                        const SizedBox(
+                          width: 5,
+                        ),
+                        product.isOffer == false
+                            ? const SizedBox()
+                            : FxContainer(
+                                borderRadiusAll: 10,
+                                // padding: FxSpacing.xy(8, 4),
+                                padding: FxSpacing.xy(6, 2),
+                                // color: Color(0xff1529e8),
+                                color: Colors.blueGrey,
+                                child: FxText.bodySmall(
+                                  'Offer',
+
+                                  fontWeight: 300,
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  color: Colors.white,
+                                  // color: theme.colorScheme.onPrimary,
+                                ),
+
+                                // child: FxText.bodySmall(
+                                //  '${product.duration}${product.durationType.name.toString() == "hours" ? 'Hrs' : 'Hrs'}',
+                                //   // '${product.duration} hrs',
+                                //   // 'offer',
+
+                                //   fontWeight: 300,
+                                //   maxLines: 1,
+                                //   overflow: TextOverflow.ellipsis,
+                                //   color: Colors.white,
+                                //   // color: theme.colorScheme.onPrimary,
+                                // ),
+                              ),
                       ],
                     ),
                     // Row(
@@ -424,7 +486,6 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                   ],
                 ),
               ),
-              // FxSpacing.height(20),
               FxSpacing.height(10),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -435,8 +496,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 8),
                       child: FxText.bodyLarge(
-                        // 'Ferrari world',
-                        product.title.toString(),
+                        product.title[0].toUpperCase() +
+                            product.title.substring(1).toLowerCase(),
                         fontWeight: 800,
                         overflow: TextOverflow.ellipsis,
                         maxLines: 1,
@@ -459,7 +520,13 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                             FxSpacing.width(4),
                             FxText.bodySmall(
                               // '4.5',
-                              product.averageRating.toString(),
+                              product.averageRating.toStringAsFixed(1),
+                              fontWeight: 600,
+                              color: Colors.black,
+                            ),
+                            FxSpacing.width(4),
+                            FxText.bodySmall(
+                              "(${product.totalReviews})",
                               fontWeight: 600,
                               color: Colors.black,
                             ),
@@ -472,7 +539,6 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
               ),
               FxSpacing.height(10),
               Padding(
-                // padding: EdgeInsets.symmetric(horizontal: 0),
                 padding: const EdgeInsets.only(right: 8),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -497,7 +563,11 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                               FxSpacing.width(4),
                               FxText.labelLarge(
                                 // '\$' + product.price.toString(),
-                                product.destination.name.toString(),
+                                product.destination.name[0].toUpperCase() +
+                                    product.destination.name
+                                        .substring(1)
+                                        .toLowerCase(),
+
                                 // product.price.toString() + " " + "AED",
                                 // "\$" + product.price.toString() + "/hour",
                                 // fontWeight: 700,
@@ -517,7 +587,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                       ],
                     ),
                     FxText(
-                      '${controller.currency() ?? '\$'} ${product.activity.adultPrice.toString()}',
+                      "${product.activity.adultPrice.toString()} AED",
+                      // '${controller.currency() ?? '\$'} ${product.activity.adultPrice.toString()}',
                       color: const Color(0xff1529e8),
                     ),
                   ],

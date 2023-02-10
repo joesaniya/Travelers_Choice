@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
@@ -203,6 +202,9 @@ class _SearchPlaceState extends State<SearchPlace>
                                     // color: const Color(0xff1529e8),
                                     borderRadius: BorderRadius.circular(10),
                                   ),
+                                  onSubmit: (value) {
+                                    log('ONSUBIT');
+                                  },
                                   // onSubmit: (value) {
                                   //   setState(() {
                                   //     // _selectedItem = value;
@@ -227,8 +229,7 @@ class _SearchPlaceState extends State<SearchPlace>
                                     // log(countryList.first.destinations);
                                     // countryList.first.countries =
                                     //     value.item as List<Country?>?;
-                                    _selectedCountry =
-                                        value.item!;
+                                    _selectedCountry = value.item!;
 
                                     log('onSuggestionTap');
                                     print('onsugguest');
