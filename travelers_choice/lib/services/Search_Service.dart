@@ -56,4 +56,30 @@ class SearchService {
       rethrow;
     }
   }
+
+  //filter
+  Future<AllattractionModal?> FilterAttraction(
+      place, startprice, Endprice) async {
+    try {
+      var response = await http.get(
+        Uri.parse(
+            'https://a.walletbot.online/api/v1/attractions/all?search=$place&limit=1000&priceFrom=$startprice&priceTo=$Endprice'),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      );
+      if (response.statusCode == 200) {
+        log("https://a.walletbot.online/api/v1/attractions/all?search=$place&limit=1000&priceFrom=$startprice&priceTo=$Endprice"
+            "Category LIst          ${response.body}");
+
+        return allattractionModalFromJson(response.body);
+      } else {
+        var jsondata = jsonDecode(response.body);
+        log(jsondata['error']);
+        return null;
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
 }

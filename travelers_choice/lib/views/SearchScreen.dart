@@ -99,13 +99,19 @@ class _SearchScreenState extends State<SearchScreen>
   }
 
   void _searchBooks(String query) {
-    log('query $query');
     setState(() {
-      _filteredBooks = controller.allattractionList!
-          .where((book) => book.attractions.data.first.title
-              .toLowerCase()
-              .contains(query.toLowerCase()))
-          .toList();
+      _filteredBooks = controller.allattractionList!.where((book) {
+        log('query ${query.toLowerCase()}} actualValue => ${book.attractions.data.first.title.toLowerCase()}');
+        return book.attractions.data.first.title
+            .toLowerCase()
+            .contains(query.toLowerCase());
+      }).toList();
+
+      setState(() {
+        // controller.allattractionList = [];
+        controller.allattractionList = _filteredBooks;
+      });
+
       print('Search:$_filteredBooks');
       log('Search:$_filteredBooks');
     });
@@ -157,7 +163,7 @@ class _SearchScreenState extends State<SearchScreen>
       ));
     } else {
       if (controller.allattractionList!.isEmpty) {
-        return const Center(child: Text("No Data found"));
+        return const Scaffold(body: Center(child: Text("No Data found")));
       } else {
         return Scaffold(
           backgroundColor: const Color(0xfff5f5f5),
@@ -270,24 +276,49 @@ class _SearchScreenState extends State<SearchScreen>
                     ),
                   ),
                   GestureDetector(
-                    onTap: () {
+                    // onTap: () {
+                    //   // showModalBottomSheet(
+                    //   //     context: context,
+                    //   //     builder: (BuildContext buildContext) {
+                    //   //       return const FilterSheet();
+                    //   //     });
+                    //   showModalBottomSheet(
+                    //     context: context,
+                    //     backgroundColor: Colors.white,
+                    //     shape: const RoundedRectangleBorder(
+                    //         borderRadius: BorderRadius.only(
+                    //             topLeft: Radius.circular(20),
+                    //             topRight: Radius.circular(20))),
+                    //     isScrollControlled: true,
+                    //     builder: (context) {
+                    //       return const FilterSheet();
+                    //     },
+                    //   );
+                    // },
+                        onTap: () async {
+                      var data = await showModalBottomSheet(
+                          context: context,
+                          builder: (BuildContext buildContext) {
+                            return FilterSheet(
+                              categoryplace: widget.place,
+                            );
+                          });
+                      setState(() {
+                        controller.allattractionList = [];
+                        controller.allattractionList = [data];
+                      });
                       // showModalBottomSheet(
-                      //     context: context,
-                      //     builder: (BuildContext buildContext) {
-                      //       return const FilterSheet();
-                      //     });
-                      showModalBottomSheet(
-                        context: context,
-                        backgroundColor: Colors.white,
-                        shape: const RoundedRectangleBorder(
-                            borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(20),
-                                topRight: Radius.circular(20))),
-                        isScrollControlled: true,
-                        builder: (context) {
-                          return const FilterSheet();
-                        },
-                      );
+                      //   context: context,
+                      //   backgroundColor: Colors.white,
+                      //   shape: const RoundedRectangleBorder(
+                      //       borderRadius: BorderRadius.only(
+                      //           topLeft: Radius.circular(20),
+                      //           topRight: Radius.circular(20))),
+                      //   isScrollControlled: true,
+                      //   builder: (context) {
+                      //     return const CategoriesBottomSheet();
+                      //   },
+                      // );
                     },
                     child: Container(
                       height: 30,
@@ -454,7 +485,7 @@ class _SearchScreenState extends State<SearchScreen>
                                   width: 5,
                                 ),
                                 product.isOffer == false
-                                    ? const SizedBox()
+                                    ? Expanded(child: Container())
                                     : FxContainer(
                                         borderRadiusAll: 10,
                                         // padding: FxSpacing.xy(8, 4),
@@ -841,23 +872,23 @@ class _SearchScreenState extends State<SearchScreen>
                           color: theme.colorScheme.onBackground,
                           fontWeight: 600,
                         ),
-                        FxText.bodySmall(
-                          "${controller.selectedChoices.length} selected",
-                          color: theme.colorScheme.onBackground,
-                          fontWeight: 600,
-                          xMuted: true,
-                        ),
+                        // FxText.bodySmall(
+                        //   "${controller.selectedChoices.length} selected",
+                        //   color: theme.colorScheme.onBackground,
+                        //   fontWeight: 600,
+                        //   xMuted: true,
+                        // ),
                       ],
                     ),
                   ),
                   FxSpacing.height(16),
-                  Container(
-                    child: Wrap(
-                      spacing: 10,
-                      runSpacing: 10,
-                      children: _buildType(),
-                    ),
-                  ),
+                  // Container(
+                  //   child: Wrap(
+                  //     spacing: 10,
+                  //     runSpacing: 10,
+                  //     children: _buildType(),
+                  //   ),
+                  // ),
                   FxSpacing.height(24),
                   Container(
                     child: Row(
@@ -939,52 +970,52 @@ class _SearchScreenState extends State<SearchScreen>
     );
   }
 
-  List<Widget> _buildType() {
-    List<Widget> choices = [];
-    for (var item in controller.categoryList) {
-      bool selected = controller.selectedChoices.contains(item);
-      if (selected) {
-        choices.add(FxContainer.none(
-            color: theme.colorScheme.primary.withAlpha(28),
-            bordered: true,
-            borderRadiusAll: 20,
-            paddingAll: 8,
-            border: Border.all(color: theme.colorScheme.primary),
-            onTap: () {
-              controller.removeChoice(item);
-            },
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Icon(
-                  Icons.check,
-                  size: 14,
-                  color: theme.colorScheme.primary,
-                ),
-                FxSpacing.width(6),
-                FxText.bodySmall(
-                  item,
-                  fontSize: 11,
-                  color: theme.colorScheme.primary,
-                )
-              ],
-            )));
-      } else {
-        choices.add(FxContainer.none(
-          color: theme.cardTheme.color,
-          borderRadiusAll: 20,
-          padding: FxSpacing.xy(12, 8),
-          onTap: () {
-            controller.addChoice(item);
-          },
-          child: FxText.bodySmall(
-            item,
-            color: theme.colorScheme.onBackground,
-            fontSize: 11,
-          ),
-        ));
-      }
-    }
-    return choices;
-  }
+  // List<Widget> _buildType() {
+  //   List<Widget> choices = [];
+  //   for (var item in controller.categoryList) {
+  //     bool selected = controller.selectedChoices.contains(item);
+  //     if (selected) {
+  //       choices.add(FxContainer.none(
+  //           color: theme.colorScheme.primary.withAlpha(28),
+  //           bordered: true,
+  //           borderRadiusAll: 20,
+  //           paddingAll: 8,
+  //           border: Border.all(color: theme.colorScheme.primary),
+  //           onTap: () {
+  //             controller.removeChoice(item);
+  //           },
+  //           child: Row(
+  //             mainAxisSize: MainAxisSize.min,
+  //             children: [
+  //               Icon(
+  //                 Icons.check,
+  //                 size: 14,
+  //                 color: theme.colorScheme.primary,
+  //               ),
+  //               FxSpacing.width(6),
+  //               FxText.bodySmall(
+  //                 item,
+  //                 fontSize: 11,
+  //                 color: theme.colorScheme.primary,
+  //               )
+  //             ],
+  //           )));
+  //     } else {
+  //       choices.add(FxContainer.none(
+  //         color: theme.cardTheme.color,
+  //         borderRadiusAll: 20,
+  //         padding: FxSpacing.xy(12, 8),
+  //         onTap: () {
+  //           controller.addChoice(item);
+  //         },
+  //         child: FxText.bodySmall(
+  //           item,
+  //           color: theme.colorScheme.onBackground,
+  //           fontSize: 11,
+  //         ),
+  //       ));
+  //     }
+  //   }
+  //   return choices;
+  // }
 }

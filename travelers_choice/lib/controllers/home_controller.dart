@@ -17,7 +17,7 @@ class HomeController extends FxController {
   HomeController(this.ticker);
   // List<Category>? categories;
   List<Product>? products;
-  List<AllattractionModal> allattractionList = <AllattractionModal>[];
+   List<AllattractionModal> allattractionList = <AllattractionModal>[];
   bool uiLoading = true;
   // late Category selectedCategory;
   late AnimationController animationController;

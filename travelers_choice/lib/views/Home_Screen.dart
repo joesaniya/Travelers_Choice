@@ -35,12 +35,12 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   bool isLoading = true;
   List<AllattractionModal> allattractionList = <AllattractionModal>[];
 
-  getAttraction() async {
+  getAttraction(BuildContext context) async {
     await AuthService().getCountry();
     log('getAttraction function called');
     sharedPreferences = await SharedPreferences.getInstance();
     Future.delayed(Duration.zero, () async {
-      await AttractionController().getAllattractionList().then((value) {
+      await AttractionController().getAllattractionList(context).then((value) {
         if (value != null) {
           isLoading = false;
           allattractionList.add(value);
@@ -60,7 +60,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   void initState() {
     super.initState();
 
-    getAttraction();
+    getAttraction(context);
     theme = AppTheme.shoppingTheme;
     theme1 = AppTheme.learningTheme;
     SharedPreferences.getInstance().then((sharedPrefValue) {
@@ -82,6 +82,18 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
 
     // for (Product product in controller.products!)
     for (var product in allattractionList.first.attractions.data) {
+      String text = product.category.categoryName.name;
+
+      text = text.replaceAll("_", " ");
+
+      List<String> words = text.split(" ");
+
+      for (int i = 0; i < words.length; i++) {
+        words[i] =
+            words[i][0].toUpperCase() + words[i].substring(1).toLowerCase();
+      }
+
+      text = words.join(" ");
       list.add(FadeTransition(
         opacity: controller.fadeAnimation,
         child: InkWell(
@@ -156,14 +168,12 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                   child: FxText.bodySmall(
                                     overflow: TextOverflow.ellipsis,
                                     maxLines: 1,
-                                    // 'Theme Park',
-                                    // product.category.categoryName.name,
-                                    // 'Park',
-                                    product.category.categoryName.name[0]
-                                            .toUpperCase() +
-                                        product.category.categoryName.name
-                                            .substring(1)
-                                            .toLowerCase(),
+                                    text,
+                                    // product.category.categoryName.name[0]
+                                    //         .toUpperCase() +
+                                    //     product.category.categoryName.name
+                                    //         .substring(1)
+                                    //         .toLowerCase(),
                                     fontWeight: 300,
                                     color: Colors.white,
                                     // color: theme.colorScheme.onPrimary,
@@ -333,6 +343,20 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     // }
     // for (Product product in controller.products!)
     for (Datum product in allattractionList.first.attractions.data) {
+      String text = product.category.categoryName.name;
+
+      text = text.replaceAll("_", " ");
+
+      List<String> words = text.split(" ");
+
+      for (int i = 0; i < words.length; i++) {
+        words[i] =
+            words[i][0].toUpperCase() + words[i].substring(1).toLowerCase();
+      }
+
+      text = words.join(" ");
+
+      print(text);
       list.add(
           // car(controller.products![i])
           InkWell(
@@ -392,12 +416,12 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                           color: Colors.blueGrey,
                           child: Center(
                             child: FxText.bodySmall(
-                              // 'Theme Park',
-                              product.category.categoryName.name[0]
-                                      .toUpperCase() +
-                                  product.category.categoryName.name
-                                      .substring(1)
-                                      .toLowerCase(),
+                              text,
+                              // product.category.categoryName.name[0]
+                              //         .toUpperCase() +
+                              //     product.category.categoryName.name
+                              //         .substring(1)
+                              //         .toLowerCase(),
                               fontWeight: 300,
                               color: Colors.white,
                               // color: theme.colorScheme.onPrimary,

@@ -7,6 +7,7 @@ import 'package:flutx/flutx.dart';
 import '../../controllers/search_Home_controller.dart';
 import '../../models/Country_modal.dart';
 import '../../models/all_attraction_modal.dart';
+import '../../models/search_categories_modal.dart';
 import '../../services/Search_Service.dart';
 import '../../theme/app_theme.dart';
 
@@ -123,12 +124,12 @@ class _CategoriesBottomSheetState extends State<CategoriesBottomSheet>
                                         color: theme.colorScheme.onBackground,
                                         fontWeight: 600,
                                       ),
-                                      FxText.bodySmall(
-                                        "${controller.selectedChoices.length} selected",
-                                        color: theme.colorScheme.onBackground,
-                                        fontWeight: 600,
-                                        xMuted: true,
-                                      ),
+                                      // FxText.bodySmall(
+                                      //   "${controller.selectedChoices.length} selected",
+                                      //   color: theme.colorScheme.onBackground,
+                                      //   fontWeight: 600,
+                                      //   xMuted: true,
+                                      // ),
                                     ],
                                   ),
                                 ),
@@ -285,40 +286,63 @@ class _CategoriesBottomSheetState extends State<CategoriesBottomSheet>
       'category:${controller.categoryattraction.length}',
     );
     List<Widget> choices = [];
-    for (var item in controller.categoryattraction) {
-      bool selected = controller.selectedChoices.contains(item);
+    for (SearchCategoriesModal item in controller.categoryattraction) {
+      bool selected = controller.selectedChoices == item;
       if (selected) {
         choices.add(FxContainer.none(
-            // color: theme.colorScheme.primary.withAlpha(28),
-            color: const Color(0xff1529e8).withAlpha(28),
-            bordered: true,
-            borderRadiusAll: 20,
-            paddingAll: 8,
-            border: Border.all(
-              // color: theme.colorScheme.primary
-              color: const Color(0xff1529e8),
-            ),
-            onTap: () {
-              controller.removeChoice(item.id.toString());
-            },
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                const Icon(
-                  Icons.check,
-                  size: 14,
-                  color: Color(0xff1529e8),
-                  // color: theme.colorScheme.primary,
-                ),
-                FxSpacing.width(6),
-                FxText.bodySmall(
-                  item.categoryName.toString(),
-                  fontSize: 11,
-                  color: const Color(0xff1529e8),
-                  // color: theme.colorScheme.primary,
-                )
-              ],
-            )));
+          // color: theme.colorScheme.primary.withAlpha(28),
+          // color: const Color(0xff1529e8).withAlpha(28),
+          color: const Color(0xff1529e8),
+          splashColor: Colors.lightBlue,
+          
+          bordered: true,
+          borderRadiusAll: 20,
+          paddingAll: 8,
+          // border: Border.all(
+          //   // color: theme.colorScheme.primary
+          //   color: const Color(0xff1529e8),
+          // ),
+          onTap: () {
+            controller.removeChoice(item);
+          },
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Image(
+                  height: 24,
+                  width: 24,
+                  image:
+                      NetworkImage('https://a.walletbot.online/${item.icon}')),
+              FxSpacing.width(20),
+              FxText.bodySmall(
+                item.categoryName![0].toUpperCase() +
+                    item.categoryName!.substring(1).toLowerCase(),
+                // color: theme.colorScheme.onBackground,
+                color: Colors.white,
+                fontSize: 16,
+              ),
+            ],
+          ),
+          // child: Row(
+          //   mainAxisSize: MainAxisSize.min,
+          //   children: [
+          //     const Icon(
+          //       Icons.check,
+          //       size: 14,
+          //       color: Color(0xff1529e8),
+          //       // color: theme.colorScheme.primary,
+          //     ),
+          //     FxSpacing.width(6),
+          //     FxText.bodySmall(
+          //       item.categoryName.toString(),
+          //       fontSize: 11,
+          //       color: const Color(0xff1529e8),
+          //       // color: theme.colorScheme.primary,
+          //     )
+          //   ],
+          // )
+        ));
       } else {
         choices.add(FxContainer.none(
           color: Colors.blueGrey.shade100,
@@ -326,7 +350,7 @@ class _CategoriesBottomSheetState extends State<CategoriesBottomSheet>
           padding: FxSpacing.xy(12, 8),
           onTap: () {
             log('selected id:${item.id}');
-            controller.addChoice(item.id.toString());
+            controller.addChoice(item);
           },
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,

@@ -59,6 +59,19 @@ class _DetailScreenState extends State<DetailScreen>
         });
   }
 
+  categoryname(text) {
+    text = text.replaceAll("_", " ");
+
+    List<String> words = text.split(" ");
+
+    for (int i = 0; i < words.length; i++) {
+      words[i] =
+          words[i][0].toUpperCase() + words[i].substring(1).toLowerCase();
+    }
+
+    text = words.join(" ");
+  }
+
   Widget _buildnew() {
     log('buildnew');
     log(controller.detailattraction.toString());
@@ -172,6 +185,8 @@ class _DetailScreenState extends State<DetailScreen>
                                 color: Colors.blueGrey,
                                 child: Center(
                                   child: FxText.bodySmall(
+                                    // categoryname(controller.detailattraction
+                                    //         .first.category!.categoryName)
                                     // 'Theme Park',
                                     controller.detailattraction.first.category!
                                                 .categoryName![0]
@@ -271,8 +286,7 @@ class _DetailScreenState extends State<DetailScreen>
                                                     .toUpperCase() +
                                                 controller.detailattraction
                                                     .first.destination!.name!
-                                                    .substring(0)
-                                                    .toLowerCase() ??
+                                                    .substring(1) ??
                                             '',
                                         fontWeight: 500)),
                               ],
@@ -364,7 +378,7 @@ class _DetailScreenState extends State<DetailScreen>
                                 child: FxText.bodyMedium(
                                     controller
                                         .detailattraction.first.averageRating
-                                        .toString(),
+                                        .toStringAsFixed(1),
                                     fontWeight: 700),
                               ),
                               Container(

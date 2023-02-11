@@ -11,10 +11,10 @@ class AttractionController {
   //allattractions
   List<AllattractionModal> allattractionList = <AllattractionModal>[];
   bool isAllAttractionListLoading = true;
-  Future<AllattractionModal?> getAllattractionList() async {
+  Future<AllattractionModal?> getAllattractionList(context) async {
     // isCountryListLoading = true;
     try {
-      var data = await AttractionService().getAllAttraction();
+      var data = await AttractionService().getAllAttraction(context);
       allattractionList.clear();
       if (data != null) {
         allattractionList.add(data);

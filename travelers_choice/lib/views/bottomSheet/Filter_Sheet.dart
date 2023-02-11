@@ -1,12 +1,18 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutx/flutx.dart';
 
 import '../../controllers/search_Home_controller.dart';
+import '../../models/Country_modal.dart';
+import '../../models/all_attraction_modal.dart';
+import '../../services/Search_Service.dart';
 import '../../theme/app_theme.dart';
 
 class FilterSheet extends StatefulWidget {
-  const FilterSheet({Key? key}) : super(key: key);
+  Destination? categoryplace;
+  FilterSheet({this.categoryplace});
 
   @override
   State<FilterSheet> createState() => _FilterSheetState();
@@ -21,6 +27,8 @@ class _FilterSheetState extends State<FilterSheet>
   final List<bool?> _star = [false, true, true, true, true];
   @override
   void initState() {
+    log('sheet');
+    log('Category Place:${widget.categoryplace!.name.toString()}');
     super.initState();
     theme = AppTheme.shoppingTheme;
     theme1 = AppTheme.learningTheme;
@@ -28,6 +36,27 @@ class _FilterSheetState extends State<FilterSheet>
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       // addCategories();
     });
+  }
+
+  //filter
+  List<AllattractionModal> allattractionList = <AllattractionModal>[];
+  bool isAllAttractionListLoading = true;
+  Future<AllattractionModal?> FilterattractionList(
+      String place, String startprice,String Endprice) async {
+    // isCountryListLoading = true;
+    try {
+      var data = await SearchService().FilterAttraction(place, startprice,Endprice);
+      allattractionList.clear();
+      if (data != null) {
+        allattractionList.add(data);
+        // isCountryListLoading = false;
+        return data; //removed true
+      } else {
+        return null; //falseremoved
+      }
+    } catch (e) {
+      rethrow;
+    }
   }
 
   @override
@@ -120,6 +149,8 @@ class _FilterSheetState extends State<FilterSheet>
                                     min: 0,
                                     values: controller.selectedRange,
                                     onChanged: (RangeValues newRange) {
+                                      log('Start Value${newRange.start}');
+                                      log('End Value${newRange.end}');
                                       controller.onChangePriceRange(newRange);
                                     }),
                               ),
@@ -572,9 +603,31 @@ class _FilterSheetState extends State<FilterSheet>
                               )),
                               Expanded(
                                   child: FxContainer.none(
-                                onTap: () {
-                                  // controller.closeEndDrawer();
-                                  Navigator.pop(context);
+                                // onTap: () {
+                                //   // controller.closeEndDrawer();
+                                //   Navigator.pop(context);
+                                // },
+                                onTap: () async {
+                                  log('filter apply clicked');
+                                  if (controller.selectedRange != null) {
+                                    //todo
+                                    log('not equal');
+                                    AllattractionModal? temp =
+                                        await FilterattractionList(
+                                            widget.categoryplace!.name,
+                                            controller.selectedRange.start.toString(),controller.selectedRange.end.toString()
+                                             );
+
+                                    setState(() {
+                                      controller.allattractionList = [];
+
+                                      controller.allattractionList!.add(temp!);
+                                    });
+
+                                    Navigator.pop(context, temp);
+                                  } else {
+                                    print("Data search Null");
+                                  }
                                 },
                                 padding: FxSpacing.y(12),
                                 // color: theme.colorScheme.primary,

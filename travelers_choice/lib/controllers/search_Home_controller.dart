@@ -17,7 +17,7 @@ class HomeSearchController extends FxController {
   HomeSearchController(this.ticker);
 
   GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
-  List<String> selectedChoices = [];
+  SearchCategoriesModal? selectedChoices;
   RangeValues selectedRange = const RangeValues(200, 800);
   late AnimationController animationController;
   late Animation<double> fadeAnimation;
@@ -32,7 +32,7 @@ class HomeSearchController extends FxController {
   int dateCounter = 0;
   int searchCounter = 0;
   List<AllattractionModal> searchReasult = <AllattractionModal>[];
-  List<AllattractionModal>? allattractionList ;
+  List<AllattractionModal>? allattractionList;
 
   late List<AllattractionModal> foundrecipe;
 
@@ -80,14 +80,14 @@ class HomeSearchController extends FxController {
     "Theme Park 5",
   ];
 
-  void addChoice(String item) {
-    categoryid=item;
-    // selectedChoices.add(item);
+  void addChoice(SearchCategoriesModal item) {
+    categoryid = item.id;
+    selectedChoices =(item);
     update();
   }
 
-  void removeChoice(String item) {
-    selectedChoices.remove(item);
+  void removeChoice(SearchCategoriesModal item) {
+    selectedChoices = (item);
     update();
   }
 
