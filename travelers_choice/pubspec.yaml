@@ -73,6 +73,8 @@ dependencies:
   carousel_slider: ^4.2.1
   expandable: ^5.0.1
   anim_search_bar: ^2.0.3
+  im_stepper: ^1.0.1+1
+  form_field_validator: ^1.1.0
 
 
 

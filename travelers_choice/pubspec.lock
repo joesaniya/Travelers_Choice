@@ -9,22 +9,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.3"
-  animated_search_bar:
-    dependency: "direct main"
-    description:
-      name: animated_search_bar
-      sha256: "8316dcada02805e0e7aa56e3cf59bc170708aa07e3d52210ff1854d887972a89"
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.4.0"
-  animation_search_bar:
-    dependency: "direct main"
-    description:
-      name: animation_search_bar
-      sha256: "1742679df01989988a45075dbda1f84d7bfd94a197ca4e578179155689337b7b"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.0.10"
   async:
     dependency: transitive
     description:
@@ -235,14 +219,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.7"
-  flutter_riverpod:
-    dependency: transitive
-    description:
-      name: flutter_riverpod
-      sha256: "0c997763ce06359ee4686553b74def84062e9d6929ac63f61fa02465c1f8e32c"
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.1.3"
   flutter_staggered_grid_view:
     dependency: "direct main"
     description:
@@ -284,6 +260,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "10.3.0"
+  form_field_validator:
+    dependency: "direct main"
+    description:
+      name: form_field_validator
+      sha256: c1fc6c89b5525288c02fe989a88c6f30bb6072da4f9dded17a04cf68c4abfb87
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.1.0"
   google_fonts:
     dependency: "direct main"
     description:
@@ -364,6 +348,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.0.8"
+  im_stepper:
+    dependency: "direct main"
+    description:
+      name: im_stepper
+      sha256: "84ca411f7c4666cb8762a6dd6eec0353c96c67f674124614263875d0570ca634"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.1+1"
   intl:
     dependency: "direct main"
     description:
@@ -620,14 +612,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.8.4"
-  riverpod:
-    dependency: transitive
-    description:
-      name: riverpod
-      sha256: "0f43c64f1f79c2112c843305a879a746587fb7c1e388f1d4717737796756e2c4"
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.1.3"
   searchfield:
     dependency: "direct main"
     description:
@@ -729,14 +713,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.11.0"
-  state_notifier:
-    dependency: transitive
-    description:
-      name: state_notifier
-      sha256: "8fe42610f179b843b12371e40db58c9444f8757f8b69d181c97e50787caed289"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.7.2+1"
   stream_channel:
     dependency: transitive
     description:

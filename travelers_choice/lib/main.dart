@@ -3,6 +3,7 @@
 * Version : 1.0.0
 * */
 
+import 'package:hotel_travel/views/apply_visa.dart';
 import 'package:hotel_travel/views/auth_container.dart';
 import 'package:hotel_travel/views/visa_screen.dart';
 
@@ -60,7 +61,7 @@ class MyApp extends StatelessWidget {
           // home: const FullApp(),
           // home: MyHomePage(),
           // home: YourPage(),
-          home: VisaScreen(),
+          home: ApplyVisa(),
         );
       },
     );

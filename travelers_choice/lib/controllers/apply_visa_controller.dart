@@ -6,8 +6,19 @@ import 'package:flutx/flutx.dart';
 import 'package:intl/intl.dart';
 
 import '../models/atteraction_model.dart';
+import '../models/product.dart';
+import '../models/shipping_address.dart';
 import '../views/checkout_screen.dart';
 import '../../controllers/attraction_Controller.dart';
+import '../views/hotel_travel_constants.dart';
+
+class Tab {
+  String name;
+  IconData iconData;
+
+  Tab(this.name, this.iconData);
+}
+
 
 class ApplyVisaController extends FxController {
   TickerProvider ticker;
@@ -20,7 +31,7 @@ class ApplyVisaController extends FxController {
   late TabController tabController;
   late ScrollController scrollController;
   //
-
+  List<Tab> tabs = [];
 //  late  Product product;
   // late DetailattractionModal product;
 
@@ -37,9 +48,20 @@ class ApplyVisaController extends FxController {
   late Timer timerAnimation;
   late TextEditingController dateTE;
   late TextEditingController visaController;
+  GlobalKey<FormState> formKey = GlobalKey();
+
+  int paymentMethodSelected = 1;
+  ShippingAddress? addressSelected;
+  List<ShippingAddress>? addressList;
+  bool showcode = false;
+  List<Product>? products;
+  bool addCart = false;
+
+
+
+  // late AnimationController animationController;
 
   bool isFav = false;
-  bool addCart = false;
 
   late List<String> sizes;
   String selectedSize = 'M';
@@ -98,95 +120,100 @@ class ApplyVisaController extends FxController {
 
   bool isLoading = true;
 
+  // late AnimationController animationController;
+
+  late TextEditingController FnameTE, LnameTE, emailTE, addressTE, phoneTE,passportTE;
+
+  String? selectedname;
+  final List<String> nameCodes = ['Mr.', 'Mrs.', 'Ms.'];
+  String? selectedcountry;
+  final List<String> countryCodes = ['India', 'UAE', 'France', 'USA','England'];
+  late AnimationController arrowController,
+
+      firstnameController,
+      lastnameController,
+      emailController,
+      phoneController,
+      addressController,
+      passportController;
+
+  late Animation<Offset> arrowAnimation,
+      firstnameAnimation,
+      lastnameAnimation,
+      emailAnimation,
+      phoneAnimation,
+      addressAnimation,
+      passportAnimation;
+
+  int firstnameCounter = 0;
+  int lastnameCounter = 0;
+  int emailCounter = 0;
+  int addressCounter = 0;
+  int phoneCounter = 0;
+  int passportCounter = 0;
 
   @override
-  void initState() {
+  initState() {
     super.initState();
-    //new
-    tabController = TabController(length: 4, vsync: ticker);
-    scrollController = ScrollController(initialScrollOffset: 0.0);
-    scrollController.addListener(() {
-      changeAppBarColor(scrollController);
-    });
-    // scrollController.hasClients(() {
-    //   changeAppBarColor(scrollController);
-    // });
-    //
-    dateTE = TextEditingController();
-    visaController = TextEditingController();
-    save = false;
-    // fetchData();
-    dateController = AnimationController(
-        vsync: ticker, duration: const Duration(milliseconds: 50));
-    timerAnimation = Timer.periodic(const Duration(seconds: 4), (Timer timer) {
-      if (currentPage < numPages - 1) {
-        currentPage++;
-      } else {
-        currentPage = 0;
-      }
+    fetchData();
+    currentPage = 0;
+    addressList = ShippingAddress.shipping();
+    addressSelected = addressList!.first;
+    tabs = [
+      Tab('Traveller Details', Icons.card_travel_outlined),
+      Tab('Make Payment', Icons.payment),
+      Tab('Upload Details', Icons.paste_sharp),
+    ];
+    FnameTE = TextEditingController();
+    LnameTE = TextEditingController();
+    emailTE = TextEditingController();
+    addressTE = TextEditingController();
+    phoneTE = TextEditingController();
+    passportTE = TextEditingController();
 
-      pageController.animateToPage(
-        currentPage,
-        duration: const Duration(milliseconds: 800),
-        curve: Curves.ease,
-      );
-    });
-    dateAnimation =
-        Tween<Offset>(begin: const Offset(-0.01, 0), end: const Offset(0.01, 0))
-            .animate(CurvedAnimation(
-          parent: dateController,
-          curve: Curves.easeIn,
-        ));
     animationController = AnimationController(
-        vsync: ticker, duration: const Duration(milliseconds: 500));
-
+      duration: const Duration(seconds: 1),
+      vsync: ticker,
+    );
     cartController = AnimationController(
         vsync: ticker, duration: const Duration(milliseconds: 500));
 
-    colorAnimation =
-        ColorTween(begin: Colors.grey.shade400, end: const Color(0xff1529e8)
-          // end: const Color(0xff1c8c8c)
-        )
-            .animate(animationController);
-
-    sizeAnimation = TweenSequence(<TweenSequenceItem<double>>[
-      TweenSequenceItem<double>(
-          tween: Tween<double>(begin: 24, end: 28), weight: 50),
-      TweenSequenceItem<double>(
-          tween: Tween<double>(begin: 28, end: 24), weight: 50)
-    ]).animate(animationController);
     fadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
       CurvedAnimation(
         parent: animationController,
         curve: Curves.easeIn,
       ),
     );
-
     cartAnimation = TweenSequence(<TweenSequenceItem<double>>[
       TweenSequenceItem<double>(
           tween: Tween<double>(begin: 24, end: 28), weight: 50),
       TweenSequenceItem<double>(
           tween: Tween<double>(begin: 28, end: 24), weight: 50)
     ]).animate(cartController);
+    phoneController = AnimationController(
+        vsync: ticker, duration: const Duration(milliseconds: 500));
 
-    paddingAnimation = TweenSequence(<TweenSequenceItem<double>>[
-      TweenSequenceItem<double>(
-          tween: Tween<double>(begin: 16, end: 14), weight: 50),
-      TweenSequenceItem<double>(
-          tween: Tween<double>(begin: 14, end: 16), weight: 50)
-    ]).animate(cartController);
+    arrowController = AnimationController(
+        vsync: ticker, duration: const Duration(milliseconds: 500));
+    firstnameController = AnimationController(
+        vsync: ticker, duration: const Duration(milliseconds: 500));
+    lastnameController = AnimationController(
+        vsync: ticker, duration: const Duration(milliseconds: 500));
+    emailController = AnimationController(
+        vsync: ticker, duration: const Duration(milliseconds: 500));
+    passportController = AnimationController(
+        vsync: ticker, duration: const Duration(milliseconds: 500));
 
-    animationController.addStatusListener((status) {
-      if (status == AnimationStatus.completed) {
-        isFav = true;
-        update();
-      }
-      if (status == AnimationStatus.dismissed) {
-        isFav = false;
-        update();
-      }
-    });
+    addressController = AnimationController(
+        vsync: ticker, duration: const Duration(milliseconds: 500));
 
+    //animation
+    arrowAnimation =
+        Tween<Offset>(begin: const Offset(0, 0), end: const Offset(8, 0))
+            .animate(CurvedAnimation(
+          parent: arrowController,
+          curve: Curves.easeIn,
+        ));
     cartController.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
         addCart = true;
@@ -197,27 +224,186 @@ class ApplyVisaController extends FxController {
         update();
       }
     });
+    phoneAnimation =
+        Tween<Offset>(begin: const Offset(0, 0), end: const Offset(8, 0))
+            .animate(CurvedAnimation(
+          parent: phoneController,
+          curve: Curves.easeIn,
+        ));
+    firstnameAnimation =
+        Tween<Offset>(begin: const Offset(0, 0), end: const Offset(8, 0))
+            .animate(CurvedAnimation(
+          parent: firstnameController,
+          curve: Curves.easeIn,
+        ));
+    lastnameAnimation =
+        Tween<Offset>(begin: const Offset(0, 0), end: const Offset(8, 0))
+            .animate(CurvedAnimation(
+          parent: lastnameController,
+          curve: Curves.easeIn,
+        ));
+    emailAnimation =
+        Tween<Offset>(begin: const Offset(0, 0), end: const Offset(8, 0))
+            .animate(CurvedAnimation(
+          parent: emailController,
+          curve: Curves.easeIn,
+        ));
+    passportAnimation =
+        Tween<Offset>(begin: const Offset(0, 0), end: const Offset(8, 0))
+            .animate(CurvedAnimation(
+          parent: passportController,
+          curve: Curves.easeIn,
+        ));
+    addressAnimation =
+        Tween<Offset>(begin: const Offset(0, 0), end: const Offset(8, 0))
+            .animate(CurvedAnimation(
+          parent: addressController,
+          curve: Curves.easeIn,
+        ));
+    animationController.forward();
 
-    dateController.addStatusListener((status) {
+    //listener
+    phoneController.addStatusListener((status) {
+      log(status.toString());
       if (status == AnimationStatus.completed) {
-        dateController.reverse();
+        phoneController.reverse();
       }
-      if (status == AnimationStatus.dismissed && dateCounter < 2) {
-        dateController.forward();
-        dateCounter++;
+      if (status == AnimationStatus.dismissed && phoneCounter < 2) {
+        phoneController.forward();
+        phoneCounter++;
+      }
+    });
+    firstnameController.addStatusListener((status) {
+      log(status.toString());
+      if (status == AnimationStatus.completed) {
+        firstnameController.reverse();
+      }
+      if (status == AnimationStatus.dismissed && firstnameCounter < 2) {
+        firstnameController.forward();
+        firstnameCounter++;
+      }
+    });
+    lastnameController.addStatusListener((status) {
+      log(status.toString());
+      if (status == AnimationStatus.completed) {
+        lastnameController.reverse();
+      }
+      if (status == AnimationStatus.dismissed && lastnameCounter < 2) {
+        lastnameController.forward();
+        lastnameCounter++;
+      }
+    });
+    emailController.addStatusListener((status) {
+      log(status.toString());
+      if (status == AnimationStatus.completed) {
+        emailController.reverse();
+      }
+      if (status == AnimationStatus.dismissed && emailCounter < 2) {
+        emailController.forward();
+        emailCounter++;
+      }
+    });
+    passportController.addStatusListener((status) {
+      log(status.toString());
+      if (status == AnimationStatus.completed) {
+        passportController.reverse();
+      }
+      if (status == AnimationStatus.dismissed && passportCounter < 2) {
+        passportController.forward();
+        passportCounter++;
+      }
+    });
+    addressController.addStatusListener((status) {
+      log(status.toString());
+      if (status == AnimationStatus.completed) {
+        addressController.reverse();
+      }
+      if (status == AnimationStatus.dismissed && addressCounter < 2) {
+        addressController.forward();
+        addressCounter++;
       }
     });
   }
 
-  @override
-  void dispose() {
-    animationController.dispose();
-    cartController.dispose();
-    dateController.dispose();
-    super.dispose();
-    pageController.dispose();
-    timerAnimation.cancel();
+  String? validateFirstName(String? text) {
+    if (text == null || text.isEmpty) {
+      firstnameController.forward();
+      return "Please enter first name";
+    }
+    return null;
   }
+
+
+  String? validateLastName(String? text) {
+    if (text == null || text.isEmpty) {
+      lastnameController.forward();
+      return "Please enter Last name";
+    }
+    return null;
+  }
+
+  String? validateEmail(String? text) {
+    if (text == null || text.isEmpty) {
+      emailController.forward();
+      return "Please enter email";
+    } else if (FxStringValidator.isEmail(text)) {
+      emailController.forward();
+      return "Please enter valid email";
+    }
+    return null;
+  }
+  String? validatePhone(String? text) {
+    if (text == null || text.isEmpty) {
+      phoneController.forward();
+      return "Please enter Phone Number";
+    } else if (FxStringValidator.isPhone(text)) {
+      phoneController.forward();
+      return "Please enter valid Number";
+    }
+    return null;
+  }
+  String? validatePassport(String? text) {
+    if (text == null || text.isEmpty) {
+      passportController.forward();
+      return "Please enter Passport Number";
+    } else if (FxStringValidator.isPassport(text)) {
+      passportController.forward();
+      return "Please enter valid Number";
+    }
+    return null;
+  }
+  String? validateAddress(String? text) {
+    if (text == null || text.isEmpty) {
+      addressController.forward();
+      return "Please enter Address";
+    } else if (FxStringValidator.validateStringRange(text)) {
+      addressController.forward();
+      return "Please enter valid Address";
+    }
+    return null;
+  }
+
+  void fetchData() async {
+    products = HotelTravelCache.products;
+    // calculateBilling();
+    // showLoading = false;
+    // uiLoading = false;
+    update();
+  }
+
+  onPageChanged(int page, {bool fromUser = false}) async {
+    if (!fromUser) currentPage = page;
+    update();
+    if (fromUser) {
+      await pageController.animateToPage(
+        page,
+        duration: const Duration(milliseconds: 600),
+        curve: Curves.ease,
+      );
+    }
+  }
+
+
 
   // bool increaseAble(Product product) {
   //   return product.person < 9;
@@ -300,6 +486,10 @@ class ApplyVisaController extends FxController {
   void goBack() {
     Navigator.pop(context);
   }
+  void selectPaymentMethod(int method) {
+    paymentMethodSelected = method;
+    update();
+  }
 
   void selectSize(String size) {
     selectedSize = size;
@@ -336,9 +526,38 @@ class ApplyVisaController extends FxController {
   //     ),
   //   );
   // }
+  nextPage() async {
+    if (currentPage == numPages) {
+      /*   Navigator.push(
+          context, MaterialPageRoute(builder: (context) => FullApp()));*/
+    } else {
+      await pageController.animateToPage(
+        currentPage + 1,
+        duration: const Duration(milliseconds: 600),
+        curve: Curves.ease,
+      );
+    }
+  }
+
+
+
+  @override
+  void dispose() {
+    if (pageController.hasClients) pageController.dispose();
+    arrowController.dispose();
+    cartController.dispose();
+    firstnameController.dispose();
+    lastnameController.dispose();
+    emailController.dispose();
+    addressController.dispose();
+    phoneController.dispose();
+    animationController.dispose();
+    super.dispose();
+  }
 
   @override
   String getTag() {
-    return "Detail_controller";
+    return "checkout_controller";
   }
 }
+

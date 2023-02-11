@@ -95,16 +95,17 @@ class _VisaScreenState extends State<VisaScreen>
                   child: Container(
                     padding: EdgeInsets.all(10),
                     decoration: BoxDecoration(
+                      color:Color(0xff5c69e0),
                       borderRadius: BorderRadius.circular(15),
-                      gradient: const LinearGradient(
-                        colors: [
-                          Color(0xff1529e8),
-                          Color(0xff5c69e0),
-                          Color(0xff1529e8),
-                        ],
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                      ),
+                    //   gradient: const LinearGradient(
+                    //     colors: [
+                    //       Color(0xff1529e8),
+                    //       Color(0xff5c69e0),
+                    //       Color(0xff1529e8),
+                    //     ],
+                    //     begin: Alignment.topLeft,
+                    //     end: Alignment.bottomRight,
+                    //   ),
                     ),
                     child: Column(
                       children: const[
