@@ -33,8 +33,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   SharedPreferences? sharedPreferences;
 
   bool isLoading = true;
-  List<AllattractionModal> allattractionList = <AllattractionModal>[];
 
+  // List<AllattractionModal> allattractionList = <AllattractionModal>[];
+  List<AllattractionModal>? allattractionList;
   getAttraction(BuildContext context) async {
     await AuthService().getCountry();
     log('getAttraction function called');
@@ -43,7 +44,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       await AttractionController().getAllattractionList(context).then((value) {
         if (value != null) {
           isLoading = false;
-          allattractionList.add(value);
+          allattractionList = [];
+          allattractionList!.add(value);
 
           setState(() {
             controller.countryCode = sharedPreferences!
@@ -81,7 +83,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     List<Widget> list = [];
 
     // for (Product product in controller.products!)
-    for (var product in allattractionList.first.attractions.data) {
+    for (var product in allattractionList!.first.attractions.data) {
       String text = product.category.categoryName.name;
 
       text = text.replaceAll("_", " ");
@@ -342,7 +344,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     //   list.add(car(controller.products![i]));
     // }
     // for (Product product in controller.products!)
-    for (Datum product in allattractionList.first.attractions.data) {
+    for (Datum product in allattractionList!.first.attractions.data) {
       String text = product.category.categoryName.name;
 
       text = text.replaceAll("_", " ");
@@ -636,11 +638,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     double width = MediaQuery.of(context).size.width;
     double containerWidth = width / 2;
     // if (controller.uiLoading)
-    if (allattractionList.isEmpty) {
-      // log('home');
-      // log(allattractionList.length.toString());
-      // log('name' + allattractionList.first.attractions.id);
-
+    if (allattractionList == null) {
       return Scaffold(
           body: Padding(
         padding: FxSpacing.top(FxSpacing.safeAreaTop(context) + 20),
@@ -654,186 +652,342 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         ),
       ));
     } else {
-      return WillPopScope(
-        onWillPop: () => controller.onWillPop(),
-        child: Scaffold(
-          backgroundColor: const Color(0xfff5f5f5),
-          body: ListView(
-            padding: FxSpacing.fromLTRB(
-                20, FxSpacing.safeAreaTop(context) + 20, 20, 0),
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Hero(
-                    tag: "splash_username",
-                    child: FxText.titleLarge(
-                      // 'Hey Nency,',
-                      // name.toString(),
-                      'Hey $name',
-                      fontWeight: 700,
-                    ),
-                  ),
-                  RotationTransition(
-                    turns: controller.bellAnimation,
-                    // key: controller.intro.keys[0],
-                    child: InkWell(
-                      onTap: () {
-                        controller.goToNotification();
-                      },
-                      child: Stack(
-                        clipBehavior: Clip.none,
-                        children: [
-                          Icon(
-                            FeatherIcons.bell,
-                            color: theme.colorScheme.onBackground,
-                            size: 20,
-                          ),
-                          Positioned(
-                            bottom: -2,
-                            right: -2,
-                            child: FxContainer.rounded(
-                              paddingAll: 3,
-                              color: const Color(0xff1529e8),
-                              // color: theme.colorScheme.primary,
-                              child: Center(
-                                  child: FxText.bodySmall(
-                                '2',
-                                color: theme.colorScheme.onPrimary,
-                                fontSize: 8,
-                              )),
-                            ),
-                          )
-                        ],
+      if (allattractionList!.isEmpty) {
+        return const Scaffold(body: Center(child: Text("No Data found")));
+      } else {
+        return WillPopScope(
+          onWillPop: () => controller.onWillPop(),
+          child: Scaffold(
+            backgroundColor: const Color(0xfff5f5f5),
+            body: ListView(
+              padding: FxSpacing.fromLTRB(
+                  20, FxSpacing.safeAreaTop(context) + 20, 20, 0),
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Hero(
+                      tag: "splash_username",
+                      child: FxText.titleLarge(
+                        // 'Hey Nency,',
+                        // name.toString(),
+                        'Hey $name',
+                        fontWeight: 700,
                       ),
                     ),
-                  )
-                ],
-              ),
-              FxSpacing.height(4),
-              FadeTransition(
-                opacity: controller.fadeAnimation,
-                child: FxText.bodySmall(
-                  'Begin your Travel !!',
-                  xMuted: true,
-                ),
-              ),
-              FxSpacing.height(20),
-              //slanding widget
-              // Stack(
-              //   children: <Widget>[
-              //     Image(
-              //       width: double.infinity,
-              //       height: MediaQuery.of(context).size.height * 0.35,
-              //       fit: BoxFit.fill,
-              //       image: AssetImage("assets/images/apps/hotel/hotelbg.jpg"),
-              //     ),
-              //     SearchPlace()
-              //     // LogInScreen()
-              //     // buildSearchBar(MediaQuery.of(context).size, "long"),
-              //     // buildTitle(size),
-              //   ],
-              // ),
-              const SearchPlace(),
-
-              // //anim
-              //  Container(
-              //   // key: controller.intro.keys[2],
-              //   height: 50,
-              //   child: AnimatedList(
-              //       scrollDirection: Axis.horizontal,
-              //       key: controller.listKey,
-              //       initialItemCount: controller.newCategories.length,
-              //       itemBuilder: (context, index, animation) {
-              //         return SlideTransition(
-              //             position: animation.drive(controller.offset),
-              //             child: controller.newCategories[index]);
-              //       }),
-              // ),
-              // FxSpacing.height(20),
-
-              FxSpacing.height(20),
-              //scroll
-              SizedBox(
-                width: MediaQuery.of(context).size.width,
-                height: 50,
-                child: ListView(
-                  scrollDirection: Axis.horizontal,
-                  children: <Widget>[
-                    GestureDetector(
-                      onTap: () {
-                        log('Attraction');
-                        _tabbed = '1';
-                        setState(() {});
-                      },
-                      child: Container(
-                        // width: 100,
-                        decoration: BoxDecoration(
-                            color: _tabbed == '1'
-                                ? const Color(0xff1529e8)
-                                // theme1.colorScheme.primary
-                                : Colors.transparent,
-                            border: Border.all(
-                                color: _tabbed == '1'
-                                    ? Colors.transparent
-                                    : theme1.colorScheme.primaryContainer,
-                                width: _tabbed == '1' ? 0.0 : 1.0),
-                            // borderRadius:
-                            //     new BorderRadius.all(Radius.elliptical(90, 45)),
-                            // borderRadius: BorderRadius.only(
-                            //     topLeft: Radius.circular(20),
-                            //     topRight: Radius.circular(20))
-                            borderRadius: BorderRadius.circular(20.0)),
-                        padding: const EdgeInsets.symmetric(horizontal: 15),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
+                    RotationTransition(
+                      turns: controller.bellAnimation,
+                      // key: controller.intro.keys[0],
+                      child: InkWell(
+                        onTap: () {
+                          controller.goToNotification();
+                        },
+                        child: Stack(
+                          clipBehavior: Clip.none,
                           children: [
-                            Image.asset(
-                                "assets/images/apps/shopping2/icons/attraction.png",
-                                height: 20,
-                                width: 20,
-                                color: _tabbed == '1'
-                                    ? Colors.white
-                                    : Colors.black),
-                            const SizedBox(
-                              width: 7,
+                            Icon(
+                              FeatherIcons.bell,
+                              color: theme.colorScheme.onBackground,
+                              size: 20,
                             ),
-                            FxText.bodyLarge(
-                              'Attraction',
-                              style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.w800,
-                                color: _tabbed == '1'
-                                    ? Colors.white
-                                    : Colors.black,
+                            Positioned(
+                              bottom: -2,
+                              right: -2,
+                              child: FxContainer.rounded(
+                                paddingAll: 3,
+                                color: const Color(0xff1529e8),
+                                // color: theme.colorScheme.primary,
+                                child: Center(
+                                    child: FxText.bodySmall(
+                                  '2',
+                                  color: theme.colorScheme.onPrimary,
+                                  fontSize: 8,
+                                )),
                               ),
-                            ),
+                            )
                           ],
                         ),
                       ),
-                    ),
-                    const SizedBox(
-                      width: 10,
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        log('flight');
-                        _tabbed = '2';
-                        setState(() {});
-                      },
-                      child: Container(
-                          width: 120,
+                    )
+                  ],
+                ),
+                FxSpacing.height(4),
+                FadeTransition(
+                  opacity: controller.fadeAnimation,
+                  child: FxText.bodySmall(
+                    'Begin your Travel !!',
+                    xMuted: true,
+                  ),
+                ),
+                FxSpacing.height(20),
+                //slanding widget
+                // Stack(
+                //   children: <Widget>[
+                //     Image(
+                //       width: double.infinity,
+                //       height: MediaQuery.of(context).size.height * 0.35,
+                //       fit: BoxFit.fill,
+                //       image: AssetImage("assets/images/apps/hotel/hotelbg.jpg"),
+                //     ),
+                //     SearchPlace()
+                //     // LogInScreen()
+                //     // buildSearchBar(MediaQuery.of(context).size, "long"),
+                //     // buildTitle(size),
+                //   ],
+                // ),
+                const SearchPlace(),
+
+                // //anim
+                //  Container(
+                //   // key: controller.intro.keys[2],
+                //   height: 50,
+                //   child: AnimatedList(
+                //       scrollDirection: Axis.horizontal,
+                //       key: controller.listKey,
+                //       initialItemCount: controller.newCategories.length,
+                //       itemBuilder: (context, index, animation) {
+                //         return SlideTransition(
+                //             position: animation.drive(controller.offset),
+                //             child: controller.newCategories[index]);
+                //       }),
+                // ),
+                // FxSpacing.height(20),
+
+                FxSpacing.height(20),
+                //scroll
+                SizedBox(
+                  width: MediaQuery.of(context).size.width,
+                  height: 50,
+                  child: ListView(
+                    scrollDirection: Axis.horizontal,
+                    children: <Widget>[
+                      GestureDetector(
+                        onTap: () {
+                          log('Attraction');
+                          _tabbed = '1';
+                          setState(() {});
+                        },
+                        child: Container(
+                          // width: 100,
                           decoration: BoxDecoration(
-                              color: _tabbed == '2'
+                              color: _tabbed == '1'
                                   ? const Color(0xff1529e8)
                                   // theme1.colorScheme.primary
                                   : Colors.transparent,
                               border: Border.all(
-                                  color: _tabbed == '2'
+                                  color: _tabbed == '1'
                                       ? Colors.transparent
                                       : theme1.colorScheme.primaryContainer,
-                                  width: _tabbed == '2' ? 0.0 : 1.0),
+                                  width: _tabbed == '1' ? 0.0 : 1.0),
+                              // borderRadius:
+                              //     new BorderRadius.all(Radius.elliptical(90, 45)),
+                              // borderRadius: BorderRadius.only(
+                              //     topLeft: Radius.circular(20),
+                              //     topRight: Radius.circular(20))
+                              borderRadius: BorderRadius.circular(20.0)),
+                          padding: const EdgeInsets.symmetric(horizontal: 15),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Image.asset(
+                                  "assets/images/apps/shopping2/icons/attraction.png",
+                                  height: 20,
+                                  width: 20,
+                                  color: _tabbed == '1'
+                                      ? Colors.white
+                                      : Colors.black),
+                              const SizedBox(
+                                width: 7,
+                              ),
+                              FxText.bodyLarge(
+                                'Attraction',
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w800,
+                                  color: _tabbed == '1'
+                                      ? Colors.white
+                                      : Colors.black,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          log('flight');
+                          _tabbed = '2';
+                          setState(() {});
+                        },
+                        child: Container(
+                            width: 120,
+                            decoration: BoxDecoration(
+                                color: _tabbed == '2'
+                                    ? const Color(0xff1529e8)
+                                    // theme1.colorScheme.primary
+                                    : Colors.transparent,
+                                border: Border.all(
+                                    color: _tabbed == '2'
+                                        ? Colors.transparent
+                                        : theme1.colorScheme.primaryContainer,
+                                    width: _tabbed == '2' ? 0.0 : 1.0),
+                                borderRadius: BorderRadius.circular(20.0)
+                                // borderRadius:
+                                //     new BorderRadius.all(Radius.elliptical(90, 45)),
+                                ),
+                            padding: const EdgeInsets.symmetric(horizontal: 5),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Image.asset(
+                                    "assets/images/apps/shopping2/icons/flight.png",
+                                    height: 20,
+                                    width: 20,
+                                    color: _tabbed == '2'
+                                        ? Colors.white
+                                        : Colors.black),
+                                const SizedBox(
+                                  width: 7,
+                                ),
+                                FxText.bodyLarge(
+                                  'Flight',
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w800,
+                                    color: _tabbed == '2'
+                                        ? Colors.white
+                                        : Colors.black,
+                                  ),
+                                ),
+                              ],
+                            )),
+                      ),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          log('Hotel');
+                          _tabbed = '3';
+                          setState(() {});
+                        },
+                        child: Container(
+                          width: 120,
+                          decoration: BoxDecoration(
+                              color: _tabbed == '3'
+                                  ? const Color(0xff1529e8)
+                                  // theme1.colorScheme.primary
+                                  : Colors.transparent,
+                              border: Border.all(
+                                  color: _tabbed == '3'
+                                      ? Colors.transparent
+                                      : theme1.colorScheme.primaryContainer,
+                                  width: _tabbed == '3' ? 0.0 : 1.0),
+                              borderRadius: BorderRadius.circular(20.0)),
+                          padding: const EdgeInsets.symmetric(horizontal: 5),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Image.asset(
+                                  "assets/images/apps/shopping2/icons/hotel.png",
+                                  height: 20,
+                                  width: 20,
+                                  color: _tabbed == '3'
+                                      ? Colors.white
+                                      : Colors.black),
+                              const SizedBox(
+                                width: 7,
+                              ),
+                              FxText.bodyLarge(
+                                'Hotel',
+                                style: TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w800,
+                                    color: _tabbed == '3'
+                                        ? Colors.white
+                                        : Colors.black),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          log('flight');
+                          _tabbed = '4';
+                          setState(() {});
+                        },
+                        child: Container(
+                          width: 120,
+                          decoration: BoxDecoration(
+                              color: _tabbed == '4'
+                                  ? const Color(0xff1529e8)
+                                  // theme1.colorScheme.primary
+                                  : Colors.transparent,
+                              border: Border.all(
+                                  color: _tabbed == '4'
+                                      ? Colors.transparent
+                                      : theme1.colorScheme.primaryContainer,
+                                  width: _tabbed == '4' ? 0.0 : 1.0),
+                              borderRadius: BorderRadius.circular(20.0)),
+                          padding: const EdgeInsets.symmetric(horizontal: 5),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Image.asset(
+                                  "assets/images/apps/shopping2/icons/visa.png",
+                                  height: 20,
+                                  width: 20,
+                                  color: _tabbed == '4'
+                                      ? Colors.white
+                                      : Colors.black),
+                              const SizedBox(
+                                width: 7,
+                              ),
+                              FxText.bodyLarge(
+                                'Visa',
+                                style: TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w800,
+                                    color: _tabbed == '4'
+                                        ? Colors.white
+                                        : Colors.black),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          log('Transfer');
+                          _tabbed = '5';
+                          setState(() {});
+                        },
+                        child: Container(
+                          width: 120,
+                          decoration: BoxDecoration(
+                              color: _tabbed == '5'
+                                  ? const Color(0xff1529e8)
+                                  // theme1.colorScheme.primary
+                                  : Colors.transparent,
+                              border: Border.all(
+                                  color: _tabbed == '5'
+                                      ? Colors.transparent
+                                      : theme1.colorScheme.primaryContainer,
+                                  width: _tabbed == '5' ? 0.0 : 1.0),
                               borderRadius: BorderRadius.circular(20.0)
                               // borderRadius:
                               //     new BorderRadius.all(Radius.elliptical(90, 45)),
@@ -844,211 +998,59 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               Image.asset(
-                                  "assets/images/apps/shopping2/icons/flight.png",
+                                  "assets/images/apps/shopping2/icons/card.png",
                                   height: 20,
                                   width: 20,
-                                  color: _tabbed == '2'
+                                  color: _tabbed == '5'
                                       ? Colors.white
                                       : Colors.black),
                               const SizedBox(
                                 width: 7,
                               ),
                               FxText.bodyLarge(
-                                'Flight',
+                                'Transfer',
                                 style: TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w800,
-                                  color: _tabbed == '2'
-                                      ? Colors.white
-                                      : Colors.black,
-                                ),
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w800,
+                                    color: _tabbed == '5'
+                                        ? Colors.white
+                                        : Colors.black),
                               ),
                             ],
-                          )),
-                    ),
-                    const SizedBox(
-                      width: 10,
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        log('Hotel');
-                        _tabbed = '3';
-                        setState(() {});
-                      },
-                      child: Container(
-                        width: 120,
-                        decoration: BoxDecoration(
-                            color: _tabbed == '3'
-                                ? const Color(0xff1529e8)
-                                // theme1.colorScheme.primary
-                                : Colors.transparent,
-                            border: Border.all(
-                                color: _tabbed == '3'
-                                    ? Colors.transparent
-                                    : theme1.colorScheme.primaryContainer,
-                                width: _tabbed == '3' ? 0.0 : 1.0),
-                            borderRadius: BorderRadius.circular(20.0)),
-                        padding: const EdgeInsets.symmetric(horizontal: 5),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Image.asset(
-                                "assets/images/apps/shopping2/icons/hotel.png",
-                                height: 20,
-                                width: 20,
-                                color: _tabbed == '3'
-                                    ? Colors.white
-                                    : Colors.black),
-                            const SizedBox(
-                              width: 7,
-                            ),
-                            FxText.bodyLarge(
-                              'Hotel',
-                              style: TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w800,
-                                  color: _tabbed == '3'
-                                      ? Colors.white
-                                      : Colors.black),
-                            ),
-                          ],
+                          ),
                         ),
                       ),
-                    ),
-                    const SizedBox(
-                      width: 10,
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        log('flight');
-                        _tabbed = '4';
-                        setState(() {});
-                      },
-                      child: Container(
-                        width: 120,
-                        decoration: BoxDecoration(
-                            color: _tabbed == '4'
-                                ? const Color(0xff1529e8)
-                                // theme1.colorScheme.primary
-                                : Colors.transparent,
-                            border: Border.all(
-                                color: _tabbed == '4'
-                                    ? Colors.transparent
-                                    : theme1.colorScheme.primaryContainer,
-                                width: _tabbed == '4' ? 0.0 : 1.0),
-                            borderRadius: BorderRadius.circular(20.0)),
-                        padding: const EdgeInsets.symmetric(horizontal: 5),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Image.asset(
-                                "assets/images/apps/shopping2/icons/visa.png",
-                                height: 20,
-                                width: 20,
-                                color: _tabbed == '4'
-                                    ? Colors.white
-                                    : Colors.black),
-                            const SizedBox(
-                              width: 7,
-                            ),
-                            FxText.bodyLarge(
-                              'Visa',
-                              style: TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w800,
-                                  color: _tabbed == '4'
-                                      ? Colors.white
-                                      : Colors.black),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    const SizedBox(
-                      width: 10,
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        log('Transfer');
-                        _tabbed = '5';
-                        setState(() {});
-                      },
-                      child: Container(
-                        width: 120,
-                        decoration: BoxDecoration(
-                            color: _tabbed == '5'
-                                ? const Color(0xff1529e8)
-                                // theme1.colorScheme.primary
-                                : Colors.transparent,
-                            border: Border.all(
-                                color: _tabbed == '5'
-                                    ? Colors.transparent
-                                    : theme1.colorScheme.primaryContainer,
-                                width: _tabbed == '5' ? 0.0 : 1.0),
-                            borderRadius: BorderRadius.circular(20.0)
-                            // borderRadius:
-                            //     new BorderRadius.all(Radius.elliptical(90, 45)),
-                            ),
-                        padding: const EdgeInsets.symmetric(horizontal: 5),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Image.asset(
-                                "assets/images/apps/shopping2/icons/card.png",
-                                height: 20,
-                                width: 20,
-                                color: _tabbed == '5'
-                                    ? Colors.white
-                                    : Colors.black),
-                            const SizedBox(
-                              width: 7,
-                            ),
-                            FxText.bodyLarge(
-                              'Transfer',
-                              style: TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w800,
-                                  color: _tabbed == '5'
-                                      ? Colors.white
-                                      : Colors.black),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              FxSpacing.height(20),
-              TopAttraction(),
-              // const TopAttractionCard(),->crt
-              // _buildAttractionList(),
-              FxSpacing.height(20),
-
-              FadeTransition(
-                opacity: controller.fadeAnimation,
-                // key: controller.intro.keys[1],
-                child: Container(
-                  child: FxText.bodyLarge(
-                    'Top Attractions',
-                    letterSpacing: 0,
-                    fontWeight: 600,
+                    ],
                   ),
                 ),
-              ),
+                FxSpacing.height(20),
+                TopAttraction(),
+                // const TopAttractionCard(),->crt
+                // _buildAttractionList(),
+                FxSpacing.height(20),
 
-              FxSpacing.height(20),
-              SingleChildScrollView(
-                scrollDirection: Axis.vertical,
-                child: _buildProductList(),
-              ),
-            ],
+                FadeTransition(
+                  opacity: controller.fadeAnimation,
+                  // key: controller.intro.keys[1],
+                  child: Container(
+                    child: FxText.bodyLarge(
+                      'Top Attractions',
+                      letterSpacing: 0,
+                      fontWeight: 600,
+                    ),
+                  ),
+                ),
+
+                FxSpacing.height(20),
+                SingleChildScrollView(
+                  scrollDirection: Axis.vertical,
+                  child: _buildProductList(),
+                ),
+              ],
+            ),
           ),
-        ),
-      );
+        );
+      }
     }
   }
 }

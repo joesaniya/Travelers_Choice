@@ -18,7 +18,8 @@ class DetailController extends FxController {
 
 //  late  Product product;
   // late DetailattractionModal product;
-  List<DetailattractionModal> detailattraction = <DetailattractionModal>[];
+  // List<DetailattractionModal> detailattraction = <DetailattractionModal>[];
+  List<DetailattractionModal>? detailattraction;
   bool showLoading = true, uiLoading = true;
 
   //tab
@@ -81,7 +82,7 @@ class DetailController extends FxController {
 
   String? currency() {
     if (currencies != null) {
-      List<dynamic> countriesList = jsonDecode(currencies?? "");
+      List<dynamic> countriesList = jsonDecode(currencies ?? "");
       String? isoCode;
 
       log("Country list => $countriesList");
@@ -134,6 +135,7 @@ Country Code => $countryCode
         log('Details => $value');
         if (value != null) {
           isLoading = false;
+          detailattraction = [];
           // detailattraction = value;
           setState(() {
             detailattraction = value;

@@ -117,6 +117,8 @@ class _SearchScreenState extends State<SearchScreen>
     });
   }
 
+  
+
   @override
   void initState() {
     super.initState();
@@ -295,7 +297,7 @@ class _SearchScreenState extends State<SearchScreen>
                     //     },
                     //   );
                     // },
-                        onTap: () async {
+                    onTap: () async {
                       var data = await showModalBottomSheet(
                           context: context,
                           builder: (BuildContext buildContext) {
@@ -368,6 +370,18 @@ class _SearchScreenState extends State<SearchScreen>
     // for (AllattractionModal val incontroller.allattractionList)
     {
       for (Datum product in controller.allattractionList![0].attractions.data) {
+        String text = product.category.categoryName.name;
+
+        text = text.replaceAll("_", " ");
+
+        List<String> words = text.split(" ");
+
+        for (int i = 0; i < words.length; i++) {
+          words[i] =
+              words[i][0].toUpperCase() + words[i].substring(1).toLowerCase();
+        }
+        text = words.join(" ");
+
         if (product.destination.name == widget.place.name) {
           print("Selected place=> ${widget.place.name}");
           list.add(FadeTransition(
@@ -446,11 +460,12 @@ class _SearchScreenState extends State<SearchScreen>
                                         overflow: TextOverflow.ellipsis,
                                         maxLines: 1,
                                         // 'Theme Park',
-                                        product.category.categoryName.name[0]
-                                                .toUpperCase() +
-                                            product.category.categoryName.name
-                                                .substring(1)
-                                                .toLowerCase(),
+                                        text,
+                                        // product.category.categoryName.name[0]
+                                        //         .toUpperCase() +
+                                        //     product.category.categoryName.name
+                                        //         .substring(1)
+                                        //         .toLowerCase(),
                                         fontWeight: 300,
                                         color: Colors.white,
                                         // color: theme.colorScheme.onPrimary,
@@ -470,6 +485,7 @@ class _SearchScreenState extends State<SearchScreen>
                                   child: Center(
                                     child: FxText.bodySmall(
                                       textAlign: TextAlign.center,
+                                      // text,
                                       product.bookingType.name[0]
                                               .toUpperCase() +
                                           product.bookingType.name

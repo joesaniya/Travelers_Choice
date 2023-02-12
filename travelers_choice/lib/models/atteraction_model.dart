@@ -464,7 +464,7 @@ class Activity {
   int? adultPrice;
   int? childAgeLimit;
   int? childPrice;
-  double? infantAgeLimit;
+  dynamic infantAgeLimit;
   int? infantPrice;
   bool? isVat;
   int? vat;

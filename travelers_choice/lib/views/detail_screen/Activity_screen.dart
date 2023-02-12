@@ -52,7 +52,7 @@ class _ActivityScreenState extends State<ActivityScreen>
   }
 
   Widget _buildSelect() {
-    if (controller.selectedtour.isNotEmpty) {
+    if (controller.selectedtour == null) {
       return Container(
           padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 20),
           decoration: BoxDecoration(
@@ -98,20 +98,24 @@ class _ActivityScreenState extends State<ActivityScreen>
             ],
           ));
     } else {
-      return Container(
-        padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 20),
-        decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: const BorderRadius.all(Radius.circular(10)),
-            border: Border.all(color: Colors.grey.shade300, width: 1)),
-        child: Center(
-          child: FxText.bodyMedium(
-            'No Tour Option Selected!!',
-            muted: true,
-            fontWeight: 700,
+      if (controller.selectedtour.isEmpty) {
+        return const Scaffold(body: Center(child: Text("No Data found")));
+      } else {
+        return Container(
+          padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 20),
+          decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: const BorderRadius.all(Radius.circular(10)),
+              border: Border.all(color: Colors.grey.shade300, width: 1)),
+          child: Center(
+            child: FxText.bodyMedium(
+              'No Tour Option Selected!!',
+              muted: true,
+              fontWeight: 700,
+            ),
           ),
-        ),
-      );
+        );
+      }
     }
   }
 
