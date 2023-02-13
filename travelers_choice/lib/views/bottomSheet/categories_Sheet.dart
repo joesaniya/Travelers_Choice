@@ -151,7 +151,8 @@ class _CategoriesBottomSheetState extends State<CategoriesBottomSheet>
                                 // )
                                 Container(
                                   child: (controller.categoryattraction.isEmpty)
-                                      ? const CircularProgressIndicator()
+                                      ? const Center(
+                                          child: CircularProgressIndicator())
                                       :
                                       // _categoryCard()
                                       Wrap(
@@ -294,7 +295,7 @@ class _CategoriesBottomSheetState extends State<CategoriesBottomSheet>
           // color: const Color(0xff1529e8).withAlpha(28),
           color: const Color(0xff1529e8),
           splashColor: Colors.lightBlue,
-          
+
           bordered: true,
           borderRadiusAll: 20,
           paddingAll: 8,

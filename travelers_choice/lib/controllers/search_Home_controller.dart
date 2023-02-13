@@ -82,7 +82,7 @@ class HomeSearchController extends FxController {
 
   void addChoice(SearchCategoriesModal item) {
     categoryid = item.id;
-    selectedChoices =(item);
+    selectedChoices = (item);
     update();
   }
 
