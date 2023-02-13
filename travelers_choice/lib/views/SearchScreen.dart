@@ -34,7 +34,7 @@ class _SearchScreenState extends State<SearchScreen>
   late HomeSearchController controller;
   bool isLoading = true;
 
-  List<AllattractionModal> _filteredPlace = [];
+  List<AllattractionModal> _filteredBooks = [];
   List<AllattractionModal>? foundCustomer = [];
   List<AllattractionModal> temp = [];
   void _runFilter(String enteredKeyword) {
@@ -47,15 +47,9 @@ class _SearchScreenState extends State<SearchScreen>
       print('runFilters else');
       results = controller.allattractionList!
           .where((Attract) => Attract.attractions.data.first.title
-                  .toString()
-                  .toLowerCase()
-                  .contains(enteredKeyword.toLowerCase())
-              // ||
-              // Customer.customeremail
-              //     .toString()
-              //     .toLowerCase()
-              //     .contains(enteredKeyword.toLowerCase())
-              )
+              .toString()
+              .toLowerCase()
+              .contains(enteredKeyword.toLowerCase()))
           .toList();
       print(results);
       log('results$results');
@@ -78,7 +72,7 @@ class _SearchScreenState extends State<SearchScreen>
           isLoading = false;
           controller.allattractionList = [];
           controller.allattractionList!.add(value);
-          _filteredPlace = controller.allattractionList!;
+          _filteredBooks = controller.allattractionList!;
         }
 
         for (AllattractionModal val in controller.allattractionList!) {
@@ -100,7 +94,7 @@ class _SearchScreenState extends State<SearchScreen>
 
   void _searchBooks(String query) {
     setState(() {
-      _filteredPlace = controller.allattractionList!.where((place) {
+      _filteredBooks = controller.allattractionList!.where((place) {
         log('query ${query.toLowerCase()}} actualValue => ${place.attractions.data.first.title.toLowerCase()}');
         return place.attractions.data.first.title
             .toLowerCase()
@@ -109,16 +103,16 @@ class _SearchScreenState extends State<SearchScreen>
 
       setState(() {
         // controller.allattractionList = [];
-        controller.allattractionList = _filteredPlace;
+        controller.allattractionList = _filteredBooks;
       });
 
-      print('Search:$_filteredPlace');
-      log('Search:$_filteredPlace');
+      print('Search:$_filteredBooks');
+      log('Search:$_filteredBooks');
     });
   }
 
   onSearchTextChanged(String text) async {
-    _filteredPlace.clear();
+    _filteredBooks.clear();
     if (text.isEmpty) {
       setState(() {});
       return;
@@ -127,18 +121,18 @@ class _SearchScreenState extends State<SearchScreen>
     // for (var userDetail in controller.allattractionList!) {
     //   if (userDetail.attractions.data.first.title.contains(text)) {
     //     // controller.allattractionList!.add(userDetail);
-    //     _filteredPlace.add(userDetail);
+    //     _filteredBooks.add(userDetail);
     //   }
     // }
 
-    // controller.allattractionList!.addAll(_filteredPlace);
+    // controller.allattractionList!.addAll(_filteredBooks);
     for (var userDetail in controller.allattractionList!) {
       if (userDetail.attractions.data.first.title.contains(text)) {
-        _filteredPlace.add(userDetail);
+        _filteredBooks.add(userDetail);
       }
     }
 
-    log('filter:$_filteredPlace');
+    log('filter:$_filteredBooks');
 
     setState(() {});
   }
@@ -218,8 +212,37 @@ class _SearchScreenState extends State<SearchScreen>
                   style: FxTextStyle.bodyMedium(),
                   controller: controller.SearchTE,
                   cursorColor: theme.colorScheme.primary,
-                  onChanged: (value) => _searchBooks(value),
-                  // onChanged: (value) => onSearchTextChanged(value),
+                  // onChanged: (value) => _searchBooks(value),
+
+                  // onChanged: _runFilter,
+                  //     onChanged: (value) {
+                  //   List<AllattractionModal> _temp = _filteredBooks;
+
+                  //   var len;
+                  //   if (  len > value.length) {
+                  //     setState(() {
+                  //       len = value.length;
+                  //      _filteredBooks = [allattractionModalFromJson(json.encode(value))];
+                  //     });
+                  //   } else {
+                  //     if (len < value.length) {
+                  //       len = value.length;
+                  //     }
+                  //     print(' => ${_filteredBooks[0].toJson()}');
+
+                  //     List<Destination> data = _filteredBooks[0]
+                  //         .attractions.data.first.title.where((Datum i) => i
+                  //             .toString()
+                  //             .toLowerCase()
+                  //             .contains(value.toString().toLowerCase()))
+                  //         .toList();
+
+                  //     _temp[0].attractions.data.first.title = data as String;
+                  //     setState(() => _filteredBooks = _temp);
+                  //   }
+                  // },
+                  // onChanged: controller.runFilter1,
+                  onChanged: (value) => onSearchTextChanged(value),
                   // onChanged: (value) => controller.attractFilter(value),
                   decoration: InputDecoration(
                     hintText: "Search your place ...",
@@ -375,7 +398,7 @@ class _SearchScreenState extends State<SearchScreen>
 
                     // controller.foundrecipe.isNotEmpty
                     //     ?
-                    _filteredPlace.isNotEmpty
+                    _filteredBooks.isNotEmpty
                         ? _buildProductListUi()
                         : const Text('No Data'),
               ),

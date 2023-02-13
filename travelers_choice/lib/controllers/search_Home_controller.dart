@@ -136,6 +136,25 @@ class HomeSearchController extends FxController {
     // });
   }
 
+
+   void runFilter1(String enteredKeyword) {
+    print('runFilters');
+    List results = [];
+    if (enteredKeyword.isEmpty) {
+      print('runFilters if');
+      results = searchReasult.cast<Map<String, dynamic>>();
+    } else {
+      print('runFilters else');
+      results = searchReasult
+          .where((Recipe) =>
+              Recipe.attractions.data.first.title.toLowerCase().contains(enteredKeyword.toLowerCase()))
+          .toList();
+      print(results);
+    }
+
+     foundrecipe = results.cast<AllattractionModal>();
+  }
+
   @override
   void initState() {
     super.initState();

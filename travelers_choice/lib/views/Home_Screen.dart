@@ -737,6 +737,30 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                 // ),
                 const SearchPlace(),
 
+                // GestureDetector(
+                //   onTap: () {},
+                //   child: Container(
+                //     height: 50.0,
+                //     width: double.infinity,
+                //     decoration: BoxDecoration(
+                //       color: const Color(0xff1529e8).withOpacity(0.3),
+                //       borderRadius: BorderRadius.circular(50.0),
+                //       boxShadow: <BoxShadow>[
+                //         BoxShadow(
+                //           color: Colors.grey.shade100,
+                //           offset: const Offset(-4 * -1, 4 * -1),
+                //           blurRadius: 8.0,
+                //         ),
+                //         BoxShadow(
+                //           color: Colors.grey.shade500,
+                //           offset: const Offset(10, 10),
+                //           blurRadius: 8.0,
+                //         ),
+                //       ],
+                //     ),
+                //   ),
+                // ),
+
                 // //anim
                 //  Container(
                 //   // key: controller.intro.keys[2],

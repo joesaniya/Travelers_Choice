@@ -25,21 +25,7 @@ class ActivityController extends FxController {
   List<Activity> selectedtour = [];
   double grandTotal = 0;
 
-  // void add() {
-  //   person_count++;
-  //   update();
-  //   // setState(() {
-  //   //   _n++;
-  //   // });
-  // }
 
-  // void minus() {
-  //   if (person_count != 1) person_count--;
-  //   update();
-  //   // setState(() {
-  //   //   if (_n != 0) _n--;
-  //   // });
-  // }
 
   void updateTours(Activity tour) {
     List<Activity> value =
@@ -55,7 +41,9 @@ class ActivityController extends FxController {
         tour.grandTotal = tour.adultPrice!.toDouble();
         selectedtour.add(tour);
       }
-    } else {
+    }
+    
+     else {
       int index = person_count.indexOf(value[0]);
       double val = getGrandTotal(person_count[index]);
       person_count[index].grandTotal = val;

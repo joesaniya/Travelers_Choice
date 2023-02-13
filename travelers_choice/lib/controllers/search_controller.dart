@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
@@ -6,13 +5,13 @@ import 'package:flutx/flutx.dart';
 import 'package:intl/intl.dart';
 
 import '../models/Country_modal.dart';
-import '../models/all_attraction_modal.dart' as  all;
 import '../views/SearchScreen.dart';
 
 class SearchController extends FxController {
   TickerProvider ticker;
   SearchController(this.ticker);
   late TextEditingController locationTE, dateTE;
+  String? locationplace;
   GlobalKey<FormState> formKey = GlobalKey();
 
   // List<AllattractionModal> searchResult = <AllattractionModal>[];
@@ -109,9 +108,9 @@ class SearchController extends FxController {
     }
   }
 
-  Future<void> searchbtn(Destination selectedCountry
-      // ,AllattractionModal searchattractions
-      ) async {
+  Future<void> searchbtn(
+      // Destination locationplace
+      Destination selectedCountry) async {
     log('search btn');
     locationCounter = 0;
     dateCounter = 0;
@@ -119,13 +118,16 @@ class SearchController extends FxController {
     if (locationTE.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text("Please select location")));
-    } else if (dateTE.text.isEmpty) {
-      ScaffoldMessenger.of(context)
-          .showSnackBar(const SnackBar(content: Text("Please select date")));
-    } else {
+    }
+    // else if (dateTE.text.isEmpty) {
+    //   ScaffoldMessenger.of(context)
+    //       .showSnackBar(const SnackBar(content: Text("Please select date")));
+    // }
+    else {
       log('country');
       log(selectedCountry.toString());
       print('SElected$selectedCountry');
+      log('location:${locationTE.text}');
 
       Navigator.of(context, rootNavigator: true).push(PageRouteBuilder(
           transitionDuration: const Duration(milliseconds: 500),
@@ -140,8 +142,9 @@ class SearchController extends FxController {
                 child: child,
               ),
           pageBuilder: (_, __, ___) => SearchScreen(
-                // place: Destination.fromJson(jsonDecode(selectedCountry)),
-                place:selectedCountry
+              // place: Destination.fromJson(jsonDecode(selectedCountry)),
+              place: selectedCountry
+              // locationplace
               )));
     }
   }

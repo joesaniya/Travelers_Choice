@@ -51,6 +51,70 @@ class _ActivityScreenState extends State<ActivityScreen>
         });
   }
 
+  Widget _buildSelect1() {
+    if (controller.selectedtour.isNotEmpty) {
+      return Container(
+          padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 20),
+          decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: const BorderRadius.all(Radius.circular(10)),
+              border: Border.all(color: Colors.grey.shade300, width: 1)),
+          child: Column(
+            children: [
+              Column(
+                  children: controller.selectedtour.map((Activity tour) {
+                return Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(child: Text(tour.name.toString())),
+                    FxSpacing.width(20),
+                    Text(tour.grandTotal.toString()),
+                  ],
+                );
+              }).toList()),
+              FxSpacing.height(20),
+              FxDashedDivider(
+                dashSpace: 4,
+                dashWidth: 8,
+                color: theme.colorScheme.onBackground.withAlpha(180),
+                height: 1.2,
+              ),
+              FxSpacing.height(20),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  FxText.bodyLarge(
+                    'Total Amount',
+                    fontWeight: 700,
+                    color: const Color(0xff1529e8),
+                  ),
+                  FxText.bodyLarge(
+                    controller.grandSelectedTourAmount().toString(),
+                    fontWeight: 700,
+                    color: const Color(0xff1529e8),
+                  ),
+                ],
+              )
+            ],
+          ));
+    } else {
+      return Container(
+        padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 20),
+        decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: const BorderRadius.all(Radius.circular(10)),
+            border: Border.all(color: Colors.grey.shade300, width: 1)),
+        child: Center(
+          child: FxText.bodyMedium(
+            'No Tour Option Selected!!',
+            muted: true,
+            fontWeight: 700,
+          ),
+        ),
+      );
+    }
+  }
+
   Widget _buildSelect() {
     if (controller.selectedtour == null) {
       return Container(
@@ -139,15 +203,37 @@ class _ActivityScreenState extends State<ActivityScreen>
               children: [
                 Expanded(child: Container()),
                 InkWell(
-                  onTap: () {
+                  // onTap: () {
+                  //   clickedExcursion = !clickedExcursion;
+                  //   controller.updateTours(cart);
+
+                  //   setState(() {});
+                  //   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                  //       content: !clickedExcursion
+                  //           ? const Text("Added this Excursion!!")
+                  //           : const Text("Removed this Excursion!!")));
+                  //   // Navigator.pop(context);
+                  // },
+                   onTap: () {
                     clickedExcursion = !clickedExcursion;
-                    controller.updateTours(cart);
+                    if (controller.dateTE.text.isEmpty) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text("Select Your Date")));
+                    } else {
+                      controller.updateTours(cart);
+                    }
 
                     setState(() {});
-                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                        content: !clickedExcursion
-                            ? const Text("Added this Excursion!!")
-                            : const Text("Removed this Excursion!!")));
+                    if (controller.dateTE.text.isEmpty) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text("Select Your Date")));
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          content: !clickedExcursion
+                              ? const Text("Added this Excursion!!")
+                              : const Text("Removed this Excursion!!")));
+                    }
+
                     // Navigator.pop(context);
                   },
                   child: FxContainer.bordered(
@@ -316,14 +402,9 @@ class _ActivityScreenState extends State<ActivityScreen>
                                   // color: const Color(0xff2C2138),
                                   color: theme.cardTheme.color,
                                 ),
-                                // .
-                                // copyWith(
-                                //   boxShadow:
-                                //       kElevationToShadow[
-                                //           2],
-                                // ),
+                               
                                 itemHeight: 40,
-                                // itemWidth: 200,
+                               
                                 itemPadding:
                                     const EdgeInsets.only(left: 14, right: 14),
                                 dropdownMaxHeight: 200,
@@ -1106,7 +1187,7 @@ class _ActivityScreenState extends State<ActivityScreen>
             // _billingWidget(),
             _buildCartList(),
             FxSpacing.height(20),
-            _buildSelect(),
+            _buildSelect1(),
             FadeTransition(
               opacity: controller.fadeAnimation,
               child: FxButton.block(
