@@ -44,7 +44,7 @@ class ApplyVisaController extends FxController {
   late Animation<Offset> dateAnimation;
   int dateCounter = 0;
   final PageController pageController = PageController(initialPage: 0);
-  int currentPage = 0, numPages = 4;
+  int currentPage = 0, numPages = 3;
   late Timer timerAnimation;
   late TextEditingController dateTE;
   late TextEditingController visaController;
@@ -161,8 +161,8 @@ class ApplyVisaController extends FxController {
     addressSelected = addressList!.first;
     tabs = [
       Tab('Traveller Details', Icons.card_travel_outlined),
-      Tab('Make Payment', Icons.payment),
       Tab('Upload Details', Icons.paste_sharp),
+      Tab('Make Payment',Icons.payment ),
     ];
     FnameTE = TextEditingController();
     LnameTE = TextEditingController();
@@ -352,6 +352,7 @@ class ApplyVisaController extends FxController {
     }
     return null;
   }
+
   String? validatePhone(String? text) {
     if (text == null || text.isEmpty) {
       phoneController.forward();
@@ -362,6 +363,7 @@ class ApplyVisaController extends FxController {
     }
     return null;
   }
+
   String? validatePassport(String? text) {
     if (text == null || text.isEmpty) {
       passportController.forward();
@@ -372,6 +374,7 @@ class ApplyVisaController extends FxController {
     }
     return null;
   }
+
   String? validateAddress(String? text) {
     if (text == null || text.isEmpty) {
       addressController.forward();

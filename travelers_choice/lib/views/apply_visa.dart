@@ -1,3 +1,4 @@
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutx/core/state_management/builder.dart';
@@ -6,6 +7,7 @@ import 'package:flutx/themes/text_style.dart';
 import 'package:flutx/utils/spacing.dart';
 import 'package:flutx/widgets/button/button.dart';
 import 'package:flutx/widgets/container/container.dart';
+import 'package:flutx/widgets/dashed_divider/dashed_divider.dart';
 import 'package:flutx/widgets/text/text.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:im_stepper/stepper.dart';
@@ -25,12 +27,16 @@ class ApplyVisa extends StatefulWidget {
 
 class _ApplyVisaState extends State<ApplyVisa>  with TickerProviderStateMixin{
 
-
+  List<PlatformFile> files = [];
   late ApplyVisaController controller;
   late ThemeData theme;
   TextEditingController nameController = TextEditingController();
   int activeIndex = 0;
   int totalIndex = 3;
+
+  // bool isFinished0 = false;
+  // bool isFinished1 = false;
+  // bool isFinished2 = false;
 
   late FocusNode nameNode;
 
@@ -55,42 +61,105 @@ String userName = "";
 
   }
 
-  Widget buildTabs() {
-    List<Widget> tabs = [];
+  // Widget buildNwTab(){
+  //   return  Row(
+  //     children: [
+  //       Expanded(
+  //         flex:  4 ,
+  //         child: Container(
+  //           height: 60,
+  //           decoration: BoxDecoration(
+  //             borderRadius: BorderRadius.circular(40),
+  //             color: isFinished0 == true ?  Color(0xff1529e8).withAlpha(20):Color(0xff1529e8)
+  //           ),
+  //           child: Center(
+  //             child: isFinished0 == true ? Icon(Icons.check_circle_outline_outlined,color: Colors.green,):
+  //             FxText.bodySmall(
+  //               controller.tabs[0].name,
+  //               fontWeight: 600,
+  //               color:
+  //               // isSelected ?
+  //               theme.colorScheme.onPrimary
+  //                   // : theme.colorScheme.onBackground,
+  //             ),
+  //           ),
+  //         ),
+  //       ),
+  //       Expanded(
+  //         flex:  4 ,
+  //         child: Container(
+  //           height: 60,
+  //           decoration: BoxDecoration(
+  //             borderRadius: BorderRadius.circular(40),
+  //             color: isFinished1 == true ? Color(0xff1529e8).withAlpha(20):Color(0xff1529e8)
+  //           ),
+  //           child: isFinished1 == true ?  Icon(Icons.check_circle_outline_outlined,color: Colors.green,):Center(
+  //             child: FxText.bodySmall(
+  //               controller.tabs[1].name,
+  //               fontWeight: 600,
+  //               color:
+  //               // isSelected ?
+  //               theme.colorScheme.onPrimary
+  //                   // : theme.colorScheme.onBackground,
+  //             ),
+  //           ),
+  //         ),
+  //       ),
+  //       Expanded(
+  //         flex:  4 ,
+  //         child: Container(
+  //           height: 60,
+  //           decoration: BoxDecoration(
+  //               borderRadius: BorderRadius.circular(40),
+  //               color: isFinished2 == true ? Color(0xff1529e8).withAlpha(20):Color(0xff1529e8)
+  //           ),
+  //           child: Center(
+  //             child: isFinished2 ==  true ?Icon(Icons.check_circle_outline_outlined,color: Colors.green,):FxText.bodySmall(
+  //                 controller.tabs[2].name,
+  //                 fontWeight: 600,
+  //                 color:
+  //                 // isSelected ?
+  //                 theme.colorScheme.onPrimary
+  //               // : theme.colorScheme.onBackground,
+  //             ),
+  //           ),
+  //         ),
+  //       ),
+  //     ],
+  //   );
+  // }
 
-    for (int i = 0; i < controller.tabs.length; i++) {
-      bool selected = controller.currentPage == i;
-      tabs.add(Expanded(
-        flex:  4 ,
-        child: Container(
-
-          // onTap: () {
-          //   // controller.onPageChanged(i, fromUser: true);
-          // },
-
-          // padding: EdgeInsets.all(12),
-          // borderRadiusAll: 0,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(40),
-            color: selected ? const Color(0xff1529e8) : Colors.transparent,
-          ),
-          child: Center(
-            child: FxText.bodySmall(
-              controller.tabs[i].name,
-              fontWeight: 600,
-              color: selected
-                  ? theme.colorScheme.onPrimary
-                  : theme.colorScheme.onBackground,
-            ),
-          ),
-        ),
-      ));
-    }
-
-    return Row(
-      children: tabs,
-    );
-  }
+  // Widget buildTabs() {
+  //   List<Widget> tabs = [];
+  //
+  //   for (int i = 0; i < controller.tabs.length; i++) {
+  //     bool isSelected = controller.currentPage == i;
+  //     tabs.add(
+  //         Expanded(
+  //       flex:  4 ,
+  //       child: Container(
+  //         decoration: BoxDecoration(
+  //           borderRadius: BorderRadius.circular(40),
+  //           color: isSelected ? const Color(0xff1529e8)  : isFinished0 == true && isFinished1 == true ? Colors.green: Colors.transparent,
+  //         ),
+  //         child: Center(
+  //           child: FxText.bodySmall(
+  //             controller.tabs[i].name,
+  //             fontWeight: 600,
+  //             color: isSelected
+  //                 ? theme.colorScheme.onPrimary
+  //                 : theme.colorScheme.onBackground,
+  //           ),
+  //         ),
+  //       ),
+  //     )
+  //     );
+  //   }
+  //
+  //   return Row(
+  //     children: tabs,
+  //   );
+  // }
 
 
   @override
@@ -109,7 +178,7 @@ String userName = "";
               return true;
             },
             child:
-          Scaffold(
+            Scaffold(
               backgroundColor: const Color(0xfff5f5f5),
               // backgroundColor: theme.scaffoldBackgroundColor,
               appBar: AppBar(
@@ -133,22 +202,41 @@ String userName = "";
               Column(
                 children: [
                   FxSpacing.height(8),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 8.0,right: 8),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(40),
-                        color: Colors.grey,
-
-                      ),
-                      height: MediaQuery.of(context).size.height*0.05,
-                      width: MediaQuery.of(context).size.width *0.9,
-                      // margin: FxSpacing.x(20),
-                      // paddingAll: 0,
-                      // borderRadiusAll: 4,
-                      // clipBehavior: Clip.antiAliasWithSaveLayer,
-                      child: buildTabs(),
+                  // Padding(
+                  //   padding: const EdgeInsets.only(left: 8.0,right: 8),
+                  //   child: Container(
+                  //     decoration: BoxDecoration(
+                  //       borderRadius: BorderRadius.circular(40),
+                  //       color: Colors.transparent,
+                  //
+                  //     ),
+                  //     height: MediaQuery.of(context).size.height*0.05,
+                  //     width: MediaQuery.of(context).size.width *0.9,
+                  //     // margin: FxSpacing.x(20),
+                  //     // paddingAll: 0,
+                  //     // borderRadiusAll: 4,
+                  //     // clipBehavior: Clip.antiAliasWithSaveLayer,
+                  //     child: buildNwTab(),
+                  //   ),
+                  // ),
+                  Center(
+                    child: DotStepper(
+                      dotCount: 3,
+                      activeStep: controller.currentPage,
+                      dotRadius: 20.0,
+                      shape: Shape.pipe,
+                      indicator: Indicator.slide,
+                      indicatorDecoration: IndicatorDecoration(color: Color(0xff1529e8)),
+                      // fixedDotDecoration: FixedDotDecoration(color: Color(0xff1529e8).withAlpha(20)),
+                      spacing: 20.0,
                     ),
+                  ),
+                  Text(
+                    "Step ${controller.currentPage + 1} of ${controller.numPages}",
+                    style: const TextStyle(
+                      fontSize: 16.0,
+                    ),
+                    textAlign: TextAlign.center,
                   ),
                   FxSpacing.height(20),
                   Expanded(
@@ -178,18 +266,11 @@ String userName = "";
       child: ListView(
           physics: const AlwaysScrollableScrollPhysics(),
           children: [
-            // FxText.labelLarge(
-            //   'Traveller Details',
-            //   fontWeight: 600,
-            // ),
-            // FxSpacing.height(20),
             Form(
                 key: controller.formKey,
                 child: Column(
                   children: [
-                    // FadeTransition(
-                    //   opacity: controller.fadeAnimation,
-                    //   child:
+
                     Container(
                       child: Align(
                         alignment: Alignment.centerLeft,
@@ -250,9 +331,7 @@ String userName = "";
                       ),
                     ),
                     FxSpacing.height(20),
-                    // FadeTransition(
-                    //   opacity: controller.fadeAnimation,
-                    //   child:
+
                     Container(
                       child: Align(
                         alignment: Alignment.centerLeft,
@@ -264,9 +343,7 @@ String userName = "";
                       ),
                     ),
                     FxSpacing.height(10),
-                    // SlideTransition(
-                    //   position: controller.firstnameAnimation,
-                    //   child:
+
                     TextFormField(
                       style: FxTextStyle.bodyMedium(),
                       decoration: InputDecoration(
@@ -291,11 +368,9 @@ String userName = "";
                       validator: controller.validateFirstName,
                       cursorColor: theme.colorScheme.onBackground,
                     ),
-                    // ),
+
                     FxSpacing.height(20),
-                    // FadeTransition(
-                    //   opacity: controller.fadeAnimation,
-                    //   child:
+
                     Container(
                       child: Align(
                         alignment: Alignment.centerLeft,
@@ -305,12 +380,10 @@ String userName = "";
                           fontWeight: 600,
                         ),
                       ),
-                      // ),
+
                     ),
                     FxSpacing.height(10),
-                    // SlideTransition(
-                    //   position: controller.lastnameAnimation,
-                    //   child:
+
                     TextFormField(
                       style: FxTextStyle.bodyMedium(),
                       decoration: InputDecoration(
@@ -334,11 +407,9 @@ String userName = "";
                       validator: controller.validateLastName,
                       cursorColor: theme.colorScheme.onBackground,
                     ),
-                    // ),
+
                     FxSpacing.height(20),
-                    // FadeTransition(
-                    //   opacity: controller.fadeAnimation,
-                    //   child:
+
                     Container(
                       child: Align(
                         alignment: Alignment.centerLeft,
@@ -349,12 +420,10 @@ String userName = "";
                           fontWeight: 600,
                         ),
                       ),
-                      // ),
+
                     ),
                     FxSpacing.height(10),
-                    // SlideTransition(
-                    //   position: controller.emailAnimation,
-                    //   child:
+
                     TextFormField(
                       style: FxTextStyle.bodyMedium(),
                       decoration: InputDecoration(
@@ -378,11 +447,9 @@ String userName = "";
                       validator: controller.validateEmail,
                       cursorColor: theme.colorScheme.onBackground,
                     ),
-                    // ),
+
                     FxSpacing.height(20),
-                    // FadeTransition(
-                    //   opacity: controller.fadeAnimation,
-                    //   child:
+
                     Container(
                       child: Align(
                         alignment: Alignment.centerLeft,
@@ -393,7 +460,7 @@ String userName = "";
                           fontWeight: 600,
                         ),
                       ),
-                      // ),
+
                     ),
                     FxSpacing.height(10),
                     Container(
@@ -444,9 +511,7 @@ String userName = "";
                       ),
                     ),
                     FxSpacing.height(20),
-                    // FadeTransition(
-                    //   opacity: controller.fadeAnimation,
-                    //   child:
+
                     Container(
                       child: Align(
                         alignment: Alignment.centerLeft,
@@ -456,12 +521,10 @@ String userName = "";
                           fontWeight: 600,
                         ),
                       ),
-                      // ),
+
                     ),
                     FxSpacing.height(10),
-                    // SlideTransition(
-                    //   position: controller.emailAnimation,
-                    //   child:
+
                     TextFormField(
                       style: FxTextStyle.bodyMedium(),
                       decoration: InputDecoration(
@@ -485,11 +548,9 @@ String userName = "";
                       validator: controller.validatePhone,
                       cursorColor: theme.colorScheme.onBackground,
                     ),
-                    // ),
+
                     FxSpacing.height(20),
-                    // FadeTransition(
-                    //   opacity: controller.fadeAnimation,
-                    //   child:
+
                     Container(
                       child: Align(
                         alignment: Alignment.centerLeft,
@@ -499,12 +560,10 @@ String userName = "";
                           fontWeight: 600,
                         ),
                       ),
-                      // ),
+
                     ),
                     FxSpacing.height(10),
-                    // SlideTransition(
-                    //   position: controller.emailAnimation,
-                    //   child:
+
                     TextFormField(
                       style: FxTextStyle.bodyMedium(),
                       decoration: InputDecoration(
@@ -528,11 +587,9 @@ String userName = "";
                       validator: controller.validatePassport,
                       cursorColor: theme.colorScheme.onBackground,
                     ),
-                    // ),
+
                     FxSpacing.height(20),
-                    // FadeTransition(
-                    //   opacity: controller.fadeAnimation,
-                    //   child:
+
                     Container(
                       child: Align(
                         alignment: Alignment.centerLeft,
@@ -542,12 +599,10 @@ String userName = "";
                           fontWeight: 600,
                         ),
                       ),
-                      // ),
+
                     ),
                     FxSpacing.height(10),
-                    // SlideTransition(
-                    //   position: controller.emailAnimation,
-                    //   child:
+
                     TextFormField(
                       style: FxTextStyle.bodyMedium(),
                       decoration: InputDecoration(
@@ -571,7 +626,6 @@ String userName = "";
                       validator: controller.validateAddress,
                       cursorColor: theme.colorScheme.onBackground,
                     ),
-                    // ),
 
                   ],
                 )),
@@ -582,29 +636,30 @@ String userName = "";
                   child: FxButton(
                     padding: FxSpacing.y(12),
                     onPressed: () {
-                      if(controller.formKey.currentState!.validate()){
-                        controller.formKey.currentState!.save();
-                        if(
-                        controller.FnameTE.text.isNotEmpty &&
-                            controller.LnameTE.text.isNotEmpty &&
-                            controller.emailTE.text.isNotEmpty &&
-                            controller.phoneTE.text.isNotEmpty &&
-                            controller.passportTE.text.isNotEmpty &&
-                            controller.addressTE.text.isNotEmpty
-                        ){
-                          // controller.nextPage();
+                      // if(controller.formKey.currentState!.validate()){
+                      //   controller.formKey.currentState!.save();
+                      //   if(
+                      //   controller.FnameTE.text.isNotEmpty &&
+                      //       controller.LnameTE.text.isNotEmpty &&
+                      //       controller.emailTE.text.isNotEmpty &&
+                      //       controller.phoneTE.text.isNotEmpty &&
+                      //       controller.passportTE.text.isNotEmpty &&
+                      //       controller.addressTE.text.isNotEmpty
+                      //   ){
+
                           setState(() {
                             controller.currentPage++;
+                            // isFinished0 = true;
                           });
-                        }
-                      }
+                        // }
+                      // }
                     },
                     borderRadiusAll: 4,
                     elevation: 0,
                     splashColor: theme.colorScheme.onPrimary.withAlpha(30),
                     backgroundColor: const Color(0xff1529e8),
                     child: FxText.labelMedium(
-                      'Proceed to Payment',
+                      'Upload Documents',
                       color: theme.colorScheme.onPrimary,
                       fontWeight: 600,
                     ),
@@ -616,162 +671,398 @@ String userName = "";
     );
   }
 
-
-
-Widget bodyBuilder() {
+  Widget bodyBuilder() {
     switch (controller.currentPage) {
       case 0:
         return travellerDetails();
       case 1:
-        return makePayment();
-        case 2:
         return uploadDetails();
+        case 2:
+        return payments();
 
       default:
         return travellerDetails();
     }
   }
-  //
-  // Widget basicDetails() {
-  //   return Form(
-  //     key: controller.formKey,
-  //     child: ListView(
-  //       padding: const EdgeInsets.all(
-  //         12.0,
-  //       ),
-  //       children: [
-  //         Center(
-  //           child: DotStepper(
-  //             activeStep: activeIndex,
-  //             dotRadius: 20.0,
-  //             fixedDotDecoration: FixedDotDecoration(),
-  //             shape: Shape.pipe,
-  //             // spacing: 10.0,
-  //           ),
-  //         ),
-  //         TextFormField(
-  //           decoration: const InputDecoration(
-  //             labelText: "Name",
-  //           ),
-  //           validator: RequiredValidator(
-  //             errorText: "Required *",
-  //           ),
-  //         ),
-  //         TextFormField(
-  //             decoration: const InputDecoration(
-  //               labelText: "Email",
-  //             ),
-  //             validator: MultiValidator([
-  //               RequiredValidator(
-  //                 errorText: "Required *",
-  //               ),
-  //               EmailValidator(
-  //                 errorText: "Not Valid Email",
-  //               ),
-  //             ])),
-  //         TextFormField(
-  //           decoration: const InputDecoration(
-  //             labelText: "Passoword",
-  //           ),
-  //           validator: MinLengthValidator(
-  //             6,
-  //             errorText: "Min 6 characters required",
-  //           ),
-  //         ),
-  //         const SizedBox(
-  //           height: 12.0,
-  //         ),
-  //         SizedBox(
-  //           height: 40.0,
-  //           child: ElevatedButton(
-  //             onPressed: () {
-  //               if (controller.formKey.currentState?.validate() ?? false) {
-  //                 // next
-  //                 setState(() {
-  //                   activeIndex++;
-  //                 });
-  //               }
-  //             },
-  //             child: const Text(
-  //               "Next",
-  //               style: TextStyle(
-  //                 fontSize: 20.0,
-  //               ),
-  //             ),
-  //           ),
-  //         ),
-  //       ],
-  //     ),
-  //   );
-  // }
-  //
-  // Widget educationDetails() {
-  //   return ListView(
-  //     padding: const EdgeInsets.all(
-  //       12.0,
-  //     ),
-  //     children: [
-  //       Center(
-  //         child: DotStepper(
-  //           activeStep: activeIndex,
-  //           dotRadius: 20.0,
-  //           shape: Shape.pipe,
-  //           spacing: 10.0,
-  //         ),
-  //       ),
-  //
-  //       TextFormField(
-  //         decoration: const InputDecoration(
-  //           labelText: "Name",
-  //         ),
-  //         validator: RequiredValidator(
-  //           errorText: "Required *",
-  //         ),
-  //       ),
-  //       const SizedBox(
-  //         height: 12.0,
-  //       ),
-  //       SizedBox(
-  //         height: 40.0,
-  //         child: ElevatedButton(
-  //           onPressed: () {},
-  //           child: const Text(
-  //             "Register",
-  //             style: TextStyle(
-  //               fontSize: 20.0,
-  //             ),
-  //           ),
-  //         ),
-  //       ),
-  //     ],
-  //   );
-  // }
-  Widget makePayment() {
+
+  Widget uploadDetails() {
     return Container(
       padding: FxSpacing.x(20),
-      child:
-
-      ListView(
+      child: ListView(
         // crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text("Payment")
-          // FxText.labelLarge(
-          //   'Select payment method',
-          //   fontWeight: 600,
-          // ),
-          // FxSpacing.height(20),
+          Container(
+            child: Align(
+              alignment: Alignment.centerLeft,
+              child: FxText.bodyLarge(
+                'Passport',
+                // textAlign: TextAlign.left,
+                letterSpacing: 0,
+                fontWeight: 600,
+              ),
+              // ),
+            ),
+          ),
+
+          SizedBox(height: 10,),
+          Container(
+            alignment: Alignment.topCenter,
+            width: MediaQuery.of(context).size.width *0.8,
+            height: MediaQuery.of(context).size.height *0.15,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20),
+                border: Border.all(width: 1,color: Colors.black54),
+                color: Colors.transparent
+            ),
+            child: Center(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  GestureDetector(
+                    onTap:  ()async{
+                  final result = await FilePicker.platform.pickFiles();
+                  if (result == null) return;
+                  files = result.files; //EDIT: THIS PROBABLY CAUSED YOU AN ERROR
+                  setState((){});
+                  },
+                    child: Row(
+                      children: [
+                         Icon(Icons.upload_outlined,color: Colors.grey,),
+
+                        Text("Passport front",style: TextStyle(color: Colors.black54),),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+         
+          SizedBox(height: 10,),
+          Container(
+            alignment: Alignment.topCenter,
+            width: MediaQuery.of(context).size.width *0.8,
+            height: MediaQuery.of(context).size.height *0.15,
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                border: Border.all(width: 1,color: Colors.black54),
+                color: Colors.transparent
+            ),
+            child: Center(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  GestureDetector(
+                    onTap:  ()async{
+                      final result = await FilePicker.platform.pickFiles();
+                    },
+                    child: Row(
+                      children: [
+                        Icon(Icons.upload_outlined,color: Colors.grey,),
+
+                        Text("Passport back",style: TextStyle(color: Colors.black54),),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          SizedBox(height: 10,),
+          Container(
+            child: Align(
+              alignment: Alignment.centerLeft,
+              child: FxText.bodyLarge(
+                'Photo',
+                // textAlign: TextAlign.left,
+                letterSpacing: 0,
+                fontWeight: 600,
+              ),
+              // ),
+            ),
+          ),
+          SizedBox(height: 10,),
+          Container(
+            width: MediaQuery.of(context).size.width *0.8,
+            height: MediaQuery.of(context).size.height *0.15,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20),
+                border: Border.all(width: 1,color: Colors.black54),
+                color: Colors.transparent
+            ),
+            child: Center(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  GestureDetector(
+                    onTap:  ()async{
+                      final result = await FilePicker.platform.pickFiles();
+                    },
+                    child: Row(
+                      children: [
+                        Icon(Icons.upload_outlined,color: Colors.grey,),
+
+                        Text("Upload photo",style: TextStyle(color: Colors.black54),),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          SizedBox(height: 10,),
+           Container(
+            child: Align(
+              alignment: Alignment.centerLeft,
+              child: FxText.bodyLarge(
+                'Documents',
+                // textAlign: TextAlign.left,
+                letterSpacing: 0,
+                fontWeight: 600,
+              ),
+              // ),
+            ),
+          ),
+          SizedBox(height: 10,),
+          Container(
+            width: MediaQuery.of(context).size.width *0.8,
+            height: MediaQuery.of(context).size.height *0.15,
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                border: Border.all(width: 1,color: Colors.black54),
+                color: Colors.transparent
+            ),
+            child: Center(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  GestureDetector(
+                    onTap:  ()async{
+                      final result = await FilePicker.platform.pickFiles();
+                    },
+                    child: Row(
+                      children: [
+                        Icon(Icons.upload_outlined,color: Colors.grey,),
+
+                        Text("Upload L2 document",style: TextStyle(color: Colors.black54),),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+
+          SizedBox(height: 10,),
+          Container(
+            width: MediaQuery.of(context).size.width *0.8,
+            height: MediaQuery.of(context).size.height *0.15,
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                border: Border.all(width: 1,color: Colors.black54),
+                color: Colors.transparent
+            ),
+            child: Center(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  GestureDetector(
+                    onTap:  ()async{
+                      final result = await FilePicker.platform.pickFiles();
+                    },
+                    child: Row(
+                      children: [
+                        Icon(Icons.upload_outlined,color: Colors.grey,),
+
+                        Text("Upload L2 document (optional)",style: TextStyle(color: Colors.black54),),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+
+          SizedBox(height: 10,),
+          FxButton.block(
+            onPressed: () {
+              // controller.nextPage();
+              setState(() {
+                controller.currentPage++;
+                // isFinished1 = true;
+              });
+            },
+            borderRadiusAll: 4,
+            elevation: 0,
+            splashColor: const Color(0xff1529e8).withAlpha(40),
+            backgroundColor: const Color(0xff1529e8),
+            child: FxText.bodyMedium(
+              'Proceed Payment',
+              fontWeight: 600,
+              color: theme.colorScheme.onPrimary,
+            ),
+          ),
+          SizedBox(height: 10,),
+
+        ],
+      ),
+    );
+  }
+
+  Widget payments() {
+    return Padding(
+        padding: FxSpacing.x(20),
+        child:
+      ListView(
+        children: [
+          FxText.labelLarge(
+            'Select payment method',
+            fontWeight: 600,
+          ),
+          FxSpacing.height(20),
+          FxContainer.bordered(
+            onTap: () {
+              controller.selectPaymentMethod(1);
+            },
+            borderRadiusAll: 10,
+            // margin: FxSpacing.bottom(20),
+            border: Border.all(
+                color: controller.paymentMethodSelected == 1
+                    ? const Color(0xff1529e8)
+                    : theme.colorScheme.onBackground),
+            color: controller.paymentMethodSelected == 1
+                ? const Color(0xff1529e8).withAlpha(20)
+                : theme.scaffoldBackgroundColor,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Icon(
+                      FeatherIcons.creditCard,
+                      size: 20,
+                      color: theme.colorScheme.onBackground.withAlpha(220),
+                    ),
+                    FxSpacing.width(8),
+                    FxText.bodyMedium(
+                      'XYZ Bank Credit Card',
+                      fontWeight: 700,
+                    ),
+                    // controller.paymentMethodSelected == 1
+                    //     ? Expanded(
+                    //       child: Align(
+                    //         alignment:
+                    //         Language.autoDirection<AlignmentGeometry>(
+                    //             Alignment.centerRight,
+                    //             Alignment.centerLeft)!,
+                    //         child: const Icon(
+                    //           Icons.radio_button_checked,
+                    //           color: Color(0xff1529e8),
+                    //           size: 20,
+                    //         ),
+                    //       ),
+                    // )
+                    //     : Container(),
+                  ],
+                ),
+                FxSpacing.height(8),
+                FxText.bodySmall(
+                  'Abrar Ahmed',
+                  fontWeight: 600,
+                ),
+                FxSpacing.height(5),
+                FxText.bodySmall(
+                  '**** **** **** 7865',
+                  fontWeight: 600,
+                ),
+                FxSpacing.height(5),
+                FxText.bodySmall(
+                  'VALID THRU 12/27',
+                  fontWeight: 600,
+                ),
+                FxSpacing.height(10),
+
+              ],
+            ),
+          ),
+          FxSpacing.height(20),
+          FxContainer.bordered(
+            onTap: () {
+              controller.selectPaymentMethod(2);
+            },
+            borderRadiusAll: 10,
+            // margin: FxSpacing.bottom(20),
+            border: Border.all(
+                color: controller.paymentMethodSelected == 2
+                    ? const Color(0xff1529e8)
+                    : theme.colorScheme.onBackground),
+            color: controller.paymentMethodSelected == 2
+                ? const Color(0xff1529e8).withAlpha(20)
+                : theme.scaffoldBackgroundColor,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Icon(
+                      FeatherIcons.creditCard,
+                      size: 20,
+                      color: theme.colorScheme.onBackground.withAlpha(220),
+                    ),
+                    FxSpacing.width(8),
+                    FxText.bodyMedium(
+                      'ABC Bank Debit Card',
+                      fontWeight: 700,
+                    ),
+                    // controller.paymentMethodSelected == 1
+                    //     ? Expanded(
+                    //       child: Align(
+                    //         alignment:
+                    //         Language.autoDirection<AlignmentGeometry>(
+                    //             Alignment.centerRight,
+                    //             Alignment.centerLeft)!,
+                    //         child: const Icon(
+                    //           Icons.radio_button_checked,
+                    //           color: Color(0xff1529e8),
+                    //           size: 20,
+                    //         ),
+                    //       ),
+                    // )
+                    //     : Container(),
+                  ],
+                ),
+                FxSpacing.height(8),
+                FxText.bodySmall(
+                  'Britto John',
+                  fontWeight: 600,
+                ),
+                FxSpacing.height(5),
+                FxText.bodySmall(
+                  '**** **** **** 3214',
+                  fontWeight: 600,
+                ),
+                FxSpacing.height(5),
+                FxText.bodySmall(
+                  'VALID THRU 06/25',
+                  fontWeight: 600,
+                ),
+                FxSpacing.height(10),
+
+              ],
+            ),
+          ),
           // FxContainer.bordered(
           //   onTap: () {
-          //     controller.selectPaymentMethod(1);
+          //     controller.selectPaymentMethod(2);
           //   },
           //   borderRadiusAll: 4,
           //   margin: FxSpacing.bottom(20),
           //   border: Border.all(
-          //       color: controller.paymentMethodSelected == 1
-          //           ? const Color(0xff1529e8)
+          //       color: controller.paymentMethodSelected == 2
+          //           ? theme.colorScheme.primary
           //           : theme.colorScheme.onBackground),
-          //   color: controller.paymentMethodSelected == 1
-          //       ? const Color(0xff1529e8).withAlpha(40)
+          //   color: controller.paymentMethodSelected == 2
+          //       ? theme.colorScheme.primary.withAlpha(40)
           //       : theme.scaffoldBackgroundColor,
           //   child: Column(
           //     crossAxisAlignment: CrossAxisAlignment.start,
@@ -779,120 +1070,46 @@ Widget bodyBuilder() {
           //       Row(
           //         children: [
           //           Icon(
-          //             FeatherIcons.creditCard,
-          //             size: 20,
+          //             FeatherIcons.dollarSign,
+          //             size: 18,
           //             color: theme.colorScheme.onBackground.withAlpha(220),
           //           ),
           //           FxSpacing.width(8),
           //           FxText.bodyMedium(
-          //             'Credit Card',
+          //             'Cash on delivery',
           //             fontWeight: 700,
           //           ),
-          //           controller.paymentMethodSelected == 1
+          //           controller.paymentMethodSelected == 2
           //               ? Expanded(
-          //             child: Align(
-          //               alignment:
-          //               Language.autoDirection<AlignmentGeometry>(
-          //                   Alignment.centerRight,
-          //                   Alignment.centerLeft)!,
-          //               child: FxContainer.roundBordered(
-          //                 paddingAll: 4,
-          //                 border:
-          //                 Border.all(color: const Color(0xff1529e8)),
-          //                 color: const Color(0xff1529e8).withAlpha(40),
-          //                 child: const Icon(
-          //                   Icons.check,
-          //                   color: Color(0xff1529e8),
-          //                   size: 10,
-          //                 ),
-          //               ),
-          //             ),
-          //           )
+          //                   child: Align(
+          //                     alignment:
+          //                         Language.autoDirection<AlignmentGeometry>(
+          //                             Alignment.centerRight,
+          //                             Alignment.centerLeft)!,
+          //                     child: FxContainer.roundBordered(
+          //                       paddingAll: 4,
+          //                       border: Border.all(
+          //                           color: theme.colorScheme.primary),
+          //                       color: theme.colorScheme.primary.withAlpha(40),
+          //                       child: Icon(
+          //                         Icons.check,
+          //                         color: theme.colorScheme.primary,
+          //                         size: 10,
+          //                       ),
+          //                     ),
+          //                   ),
+          //                 )
           //               : Container(),
           //         ],
           //       ),
           //       FxSpacing.height(8),
           //       FxText.bodySmall(
-          //         'Nency AnGhan',
-          //         fontWeight: 600,
-          //       ),
-          //       FxSpacing.height(4),
-          //       FxText.bodySmall(
-          //         '**** **** **** 7865',
-          //         fontWeight: 600,
-          //       ),
-          //       FxSpacing.height(4),
-          //       FxText.bodySmall(
-          //         'Expiry: 06/25',
-          //         fontWeight: 600,
-          //       ),
-          //       FxSpacing.height(20),
-          //       FxText.bodySmall(
-          //         'Secure checkout powered by OnePay',
+          //         'Additional \$ 20 charges for COD services.',
           //         muted: true,
           //       ),
           //     ],
           //   ),
           // ),
-          // // FxContainer.bordered(
-          // //   onTap: () {
-          // //     controller.selectPaymentMethod(2);
-          // //   },
-          // //   borderRadiusAll: 4,
-          // //   margin: FxSpacing.bottom(20),
-          // //   border: Border.all(
-          // //       color: controller.paymentMethodSelected == 2
-          // //           ? theme.colorScheme.primary
-          // //           : theme.colorScheme.onBackground),
-          // //   color: controller.paymentMethodSelected == 2
-          // //       ? theme.colorScheme.primary.withAlpha(40)
-          // //       : theme.scaffoldBackgroundColor,
-          // //   child: Column(
-          // //     crossAxisAlignment: CrossAxisAlignment.start,
-          // //     children: [
-          // //       Row(
-          // //         children: [
-          // //           Icon(
-          // //             FeatherIcons.dollarSign,
-          // //             size: 18,
-          // //             color: theme.colorScheme.onBackground.withAlpha(220),
-          // //           ),
-          // //           FxSpacing.width(8),
-          // //           FxText.bodyMedium(
-          // //             'Cash on delivery',
-          // //             fontWeight: 700,
-          // //           ),
-          // //           controller.paymentMethodSelected == 2
-          // //               ? Expanded(
-          // //                   child: Align(
-          // //                     alignment:
-          // //                         Language.autoDirection<AlignmentGeometry>(
-          // //                             Alignment.centerRight,
-          // //                             Alignment.centerLeft)!,
-          // //                     child: FxContainer.roundBordered(
-          // //                       paddingAll: 4,
-          // //                       border: Border.all(
-          // //                           color: theme.colorScheme.primary),
-          // //                       color: theme.colorScheme.primary.withAlpha(40),
-          // //                       child: Icon(
-          // //                         Icons.check,
-          // //                         color: theme.colorScheme.primary,
-          // //                         size: 10,
-          // //                       ),
-          // //                     ),
-          // //                   ),
-          // //                 )
-          // //               : Container(),
-          // //         ],
-          // //       ),
-          // //       FxSpacing.height(8),
-          // //       FxText.bodySmall(
-          // //         'Additional \$ 20 charges for COD services.',
-          // //         muted: true,
-          // //       ),
-          // //     ],
-          // //   ),
-          // // ),
           // Row(
           //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
           //   children: [
@@ -947,12 +1164,7 @@ Widget bodyBuilder() {
           //   borderRadiusAll: 4,
           //   child: Row(
           //     children: [
-          //       // Icon(
-          //       //   FeatherIcons.creditCard,
-          //       //   size: 18,
-          //       //   color: theme.colorScheme.primary,
-          //       // ),
-          //       // FxSpacing.width(16),
+          //
           //       Expanded(
           //         child: SlideTransition(
           //           position: controller.passportAnimation,
@@ -991,18 +1203,6 @@ Widget bodyBuilder() {
           //         // )
           //       ),
           //       FxSpacing.width(16),
-          //       // FxContainer(
-          //       //   borderRadiusAll: 2,
-          //       //   padding: FxSpacing.xy(8, 4),
-          //       //   color: theme.colorScheme.primary.withAlpha(40),
-          //       //   child: FxText.bodySmall(
-          //       //     'BLCK20',
-          //       //     color: theme.colorScheme.primary,
-          //       //   ),
-          //       // ),
-          //       // Expanded(
-          //       //   child: Container(),
-          //       // ),
           //
           //       Expanded(
           //         child: FxButton.block(
@@ -1022,188 +1222,38 @@ Widget bodyBuilder() {
           //   ),
           // )
           //     : const SizedBox(),
-          // FxSpacing.height(20),
-          // // FxContainer(
-          // //   paddingAll: 12,
-          // //   borderRadiusAll: 4,
-          // //   child: Row(
-          // //     children: [
-          // //       Icon(
-          // //         FeatherIcons.creditCard,
-          // //         size: 18,
-          // //         color: theme.colorScheme.primary,
-          // //       ),
-          // //       FxSpacing.width(16),
-          // //       Expanded(
-          // //           child: FxText.labelLarge(
-          // //         'Cyber Week Deal',
-          // //         fontWeight: 600,
-          // //       )),
-          // //       FxSpacing.width(16),
-          // //       FxContainer(
-          // //         borderRadiusAll: 2,
-          // //         padding: FxSpacing.xy(8, 4),
-          // //         color: theme.colorScheme.primary.withAlpha(40),
-          // //         child: FxText.bodySmall(
-          // //           'CYBR00',
-          // //           color: theme.colorScheme.primary,
-          // //         ),
-          // //       ),
-          // //     ],
-          // //   ),
-          // // ),
-          //
-          // //bill
-          // // _billingWidget(),
-          // FxSpacing.height(20),
-          ,
+          FxSpacing.height(20),
+
+
           FxButton.block(
             onPressed: () {
-              // controller.nextPage();
+
               setState(() {
-                controller.currentPage++;
+                // isFinished2 = true;
               });
+
             },
             borderRadiusAll: 4,
             elevation: 0,
             splashColor: const Color(0xff1529e8).withAlpha(40),
             backgroundColor: const Color(0xff1529e8),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                FxText.bodyMedium(
-                  'Book Now',
-                  fontWeight: 600,
-                  color: theme.colorScheme.onPrimary,
-                ),
-                // FxText.bodyMedium(
-                //   '\$ 251.55',
-                //   fontWeight: 700,
-                //   color: theme.colorScheme.onPrimary,
-                // ),
-              ],
+            child: FxText.bodyMedium(
+              'Payment',
+              fontWeight: 600,
+              color: theme.colorScheme.onPrimary,
             ),
           ),
-          // FxSpacing.height(80),
         ],
       ),
     );
   }
-
-  Widget uploadDetails() {
-    return Padding(
-        padding: FxSpacing.x(20),
-        child:
-      ListView(
-        children: [
-          Text("Upload Details")
-
-          //     Container(
-      //         margin: FxSpacing.all(20),
-      //         child: Image(
-      //           image: AssetImage(Images.shoppingOrderSuccess),
-      //         )),
-      //     FxSpacing.height(20),
-      //     FxText.titleLarge(
-      //       'Booking Success!!',
-      //       fontWeight: 700,
-      //     ),
-      //     FxSpacing.height(8),
-      //     FxText.labelLarge(
-      //       'Enjoy Your \nVaccation, thanks for Booking',
-      //       textAlign: TextAlign.center,
-      //       xMuted: true,
-      //     ),
-      //     FxSpacing.height(24),
-      //     FxButton.block(
-      //       onPressed: () {
-      //         controller.goBack();
-      //       },
-      //       borderRadiusAll: 4,
-      //       elevation: 0,
-      //       splashColor: const Color(0xff1529e8).withAlpha(30),
-      //       backgroundColor: const Color(0xff1529e8),
-      //       child: FxText.labelLarge(
-      //         'Back To Home',
-      //         color: theme.colorScheme.onPrimary,
-      //         fontWeight: 600,
-      //       ),
-      //     ),
-        ],
-      ),
-    );
+  void openFiles(List<PlatformFile> files) {
+    show(files: files);
   }
+
+  void show({required List<PlatformFile> files}) {}
 }
 
 
-
-
-  // Widget _applyVisa (){
-  //   return Scaffold(
-  //       appBar: AppBar(
-  //         title: Text("Visa Details",style: TextStyle(color: Colors.black),),
-  //       ),
-  //       body: Form(
-  //         key: formKey,
-  //         child: ListView(
-  //           children: [
-  //             SizedBox(height: 10,),
-  //             TextFormField(
-  //               controller: nameController,
-  //               focusNode: nameNode,
-  //               onSaved: (value){
-  //                 value = _name;
-  //               },
-  //               validator:  (_name) {
-  //                 if (_name!.isEmpty) {
-  //                   return "Enter your name";
-  //                 } else if (_name.length <= 3) {
-  //                   return "Enter up to name three characters";
-  //                 } else {
-  //                   return null;
-  //                 }
-  //               },
-  //               style: const TextStyle(fontSize: 14),
-  //               keyboardType: TextInputType.text,
-  //
-  //               decoration: InputDecoration(
-  //                 prefixIcon:Icon(Icons.person),
-  //                 focusedBorder: OutlineInputBorder(
-  //                     borderSide: BorderSide(color: Colors.blue, width: 1),
-  //                     borderRadius: BorderRadius.circular(10)),
-  //                 errorBorder: OutlineInputBorder(
-  //                     borderSide: BorderSide(color: Colors.red, width: 2),
-  //                     borderRadius: BorderRadius.circular(10)),
-  //                 contentPadding: EdgeInsets.all(10.0),
-  //                 enabledBorder: OutlineInputBorder(
-  //                     borderSide: BorderSide(color: Colors.grey, width: 1),
-  //                     borderRadius: BorderRadius.circular(10)),
-  //                 hintText: "Enter your name",
-  //                 errorStyle: TextStyle(
-  //                     fontSize: 14,
-  //                     fontWeight: FontWeight.bold),
-  //
-  //                 // suffix:(isLocationEnable != null)? Icon(Icons.my_location,color: Colors.red,) : null,
-  //                 hintStyle: TextStyle(
-  //                   color: Colors.grey,
-  //                   fontSize: 16,
-  //                   fontWeight: FontWeight.bold,
-  //                 ),
-  //               ),
-  //             ),
-  //             SizedBox(height: 50,),
-  //             ElevatedButton(onPressed: (){
-  //               if(formKey.currentState!.validate()){
-  //
-  //                 formKey.currentState!.save();
-  //                 print(nameController.text);
-  //
-  //               }
-  //             }, child: Text("Submit"))
-  //           ],
-  //         ),
-  //       )
-  //   );
-  // }
 
 
