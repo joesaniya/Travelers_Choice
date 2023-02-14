@@ -6,17 +6,17 @@ import 'package:flutx/flutx.dart';
 import 'package:hotel_travel/controllers/Detail_controller.dart';
 import 'package:hotel_travel/views/detail_screen/review_Screen.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../loading_effect.dart';
 import '../../theme/app_theme.dart';
 
 class DetailScreen extends StatefulWidget {
   final String productid;
+  final Function toggleFavourite;
+  final Function isFavourite;
 
-  const DetailScreen(
-    this.productid, {
-    Key? key,
-  }) : super(key: key);
+  const DetailScreen(this.productid, this.toggleFavourite, this.isFavourite);
 
   @override
   State<DetailScreen> createState() => _DetailScreenState();
@@ -27,9 +27,7 @@ class _DetailScreenState extends State<DetailScreen>
   late ThemeData theme;
   late OutlineInputBorder outlineInputBorder;
   late DetailController controller;
-  // static const htmlData = r"""controller
-  //                               .detailattraction.first.highlights
-  //                               .toString()""";
+  //  List<String> favs = [];
 
   // List<DetailattractionModal> detailattraction = <DetailattractionModal>[];
 
@@ -48,6 +46,25 @@ class _DetailScreenState extends State<DetailScreen>
             color: Color(0xff1529e8),
             // color: Colors.lightBlueAccent,
             width: 0));
+    controller.addListener(() {
+      if (controller.favs.isEmpty) {
+        SharedPreferences.getInstance().then((prefs) {
+          if (prefs.getStringList("favs") != null) {
+            controller.favs.addAll(prefs.getStringList("favs")!.toList());
+          }
+          final mealId = ModalRoute.of(context)!.settings.arguments as String;
+          final selectedMeal = controller.allattractionList
+              .firstWhere((Meal) => Meal.attractions.data.first.id == mealId);
+          controller.favs = widget.toggleFavourite(mealId);
+          // setState(() {
+          //   final mealId = ModalRoute.of(context).settings.arguments as String;
+          //   final selectedMeal =
+          //     allattractionList.firstWhere((Meal) => Meal.id == mealId);
+          //   favs = widget.toggleFavourite(mealId);
+          // });
+        });
+      }
+    });
   }
 
   //split
@@ -64,6 +81,11 @@ class _DetailScreenState extends State<DetailScreen>
   Widget _buildnew() {
     log('buildnew');
     log(controller.detailattraction.toString());
+    // final mealId = ModalRoute.of(context)!.settings.arguments;
+    final mealId = widget.productid;
+    log('Meal Id:${widget.productid}');
+    final selectedMeal = controller.allattractionList
+        .contains((Meal) => Meal.attractions.data.first.id == mealId);
     if (controller.detailattraction == null) {
       return Scaffold(
           body: Padding(
@@ -330,7 +352,10 @@ class _DetailScreenState extends State<DetailScreen>
                                           width: 44,
                                           height: 44,
                                           child: Icon(
-                                            MdiIcons.heartOutline,
+                                            // MdiIcons.heartOutline,
+                                            widget.isFavourite(mealId)
+                                                ? Icons.abc
+                                                : Icons.star_border,
                                             color:
                                                 controller.colorAnimation.value,
                                             size:
@@ -341,11 +366,13 @@ class _DetailScreenState extends State<DetailScreen>
                                       // onTap: () {},
                                       onTap: () {
                                         log('liked:${controller.isFav}');
-                                        controller.isFav
-                                            ? controller.animationController
-                                                .reverse()
-                                            : controller.animationController
-                                                .forward();
+                                        log('likedid:${widget.productid}');
+                                        // controller.isFav
+                                        //     ? controller.animationController
+                                        //         .reverse()
+                                        //     : controller.animationController
+                                        //         .forward();
+                                        widget.toggleFavourite(mealId);
                                       },
                                     );
                                   },

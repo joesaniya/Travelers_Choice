@@ -217,6 +217,55 @@ class _SearchScreenState extends State<SearchScreen>
                   // onChanged: (value) => _searchBooks(value),
 
                   // onChanged: _runFilter,
+                  // onChanged: (value) {
+                  //   // log('Total Data:${_filteredBooks.first.attractions.data.map((e) => e.title)}');
+                  //   // log('Entered keyword:$value');
+                  //   if (len == 0) {
+                  //     temp2 = [..._filteredBooks];
+                  //   }
+                  //   // log('filter value:$_filteredBooks');
+
+                  //   if (value.isEmpty) {
+                  //     log('Temp:${_filteredBooks.first.attractions.data.map((e) => e.title)}');
+                  //     controller.allattractionList!.first.attractions.data =
+                  //         _filteredBooks.first.attractions.data;
+
+                  //     setState(() {
+                  //       // len = value.length;
+                  //       // _filteredBooks = [
+                  //       //   allattractionModalFromJson(json.encode(value))
+                  //       // ];
+                  //       controller.allattractionList!.first.attractions.data;
+                  //       // _filteredBooks =
+                  //       //     AllattractionModal as List<AllattractionModal>;
+                  //     });
+                  //     // log('Value:$_filteredBooks');
+                  //     log('Empty :${controller.allattractionList!.first.attractions.data.map((e) => e.title)}');
+                  //     return;
+                  //   }
+
+                  //   len = 1;
+                  //   // print(' => ${_filteredBooks.first.attractions.toJson()}');
+
+                  //   List<Datum> data =
+                  //       temp2.first.attractions.data.where((Datum i) {
+                  //     // log('title:${i.title}');
+                  //     // log('value:$value');
+                  //     return i.title
+                  //         .toLowerCase()
+                  //         .contains(value.toString().toLowerCase());
+                  //   }).toList();
+
+                  //   temp[0].attractions.data = data;
+
+                  //   setState(() {
+                  //     controller.allattractionList = temp;
+                  //     len;
+                  //   });
+
+                  //   // log('Controller:${controller.allattractionList!.first.attractions.data.map((e) => e.title)}');
+                  //   // print('temp:${temp2[0].attractions.data}');
+                  // },
                   onChanged: (value) {
                     // log('Total Data:${_filteredBooks.first.attractions.data.map((e) => e.title)}');
                     // log('Entered keyword:$value');
@@ -266,6 +315,22 @@ class _SearchScreenState extends State<SearchScreen>
                     // log('Controller:${controller.allattractionList!.first.attractions.data.map((e) => e.title)}');
                     // print('temp:${temp2[0].attractions.data}');
                   },
+                  // onChanged: (e) {
+                  //   if (e != Null || e.isNotEmpty) {
+                  //     setState(() {
+                  //       _filteredBooks = controller
+                  //           .allattractionList!.first.attractions.data
+                  //           .where((element) =>
+                  //               element.title.toLowerCase().contains(e))
+                  //           .cast<AllattractionModal>()
+                  //           .toList();
+                  //     });
+                  //   } else {
+                  //     _filteredBooks = controller
+                  //         .allattractionList!.first.attractions.data
+                  //         .cast<AllattractionModal>();
+                  //   }
+                  // },
 
                   // onChanged: controller.runFilter1,
                   // onChanged: (value) => onSearchTextChanged(value),

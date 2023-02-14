@@ -253,7 +253,36 @@ class HomeSearchController extends FxController {
               opacity: animation,
               child: child,
             ),
-        pageBuilder: (_, __, ___) => DetailScreen(product.id)));
+        pageBuilder: (_, __, ___) => DetailScreen(product.id, _toggleFavorite, _isMealFavorite)));
+  }
+
+    List<AllattractionModal> _favouriteMeals = [];
+  List<AllattractionModal> _availableMeals = <AllattractionModal>[];
+
+  void _toggleFavorite(String mealId) {
+    final existingIndex = _favouriteMeals
+        .indexWhere((meal) => meal.attractions.data.first.id == mealId);
+    if (existingIndex >= 0) {
+      _favouriteMeals.removeAt(existingIndex);
+      update();
+      // setState(() {
+      //   _favouriteMeals.removeAt(existingIndex);
+      // });
+    } else {
+      _favouriteMeals.add(
+        <AllattractionModal>[]
+            .firstWhere((meal) => meal.attractions.data.first.id == mealId),
+      );
+      // setState(() {
+      //   _favouriteMeals.add(
+      //      <AllattractionModal>[].firstWhere((meal) => meal.id == mealId),
+      //   );
+      // });
+    }
+  }
+
+  bool _isMealFavorite(String id) {
+    return _favouriteMeals.any((meal) => meal.attractions.data.first.id == id);
   }
 
   void openEndDrawer() {

@@ -507,7 +507,8 @@ class _SearchPlaceState extends State<SearchPlace>
                         padding: const EdgeInsets.symmetric(horizontal: 8.0),
                         child: Text(
                           // e,
-                          e.countryName.toString(),
+                          e.name.toString()[0].toUpperCase() +
+                              e.name.toString().substring(1).toLowerCase(),
                           style: FxTextStyle.bodyMedium(),
                         ),
                       )))
@@ -516,13 +517,15 @@ class _SearchPlaceState extends State<SearchPlace>
                   .map((e) => SearchFieldListItem<Destination>(
                       // e,
 
-                      e.name.toString(),
+                      e.name.toString()[0].toUpperCase() +
+                          e.name.toString().substring(1).toLowerCase(),
                       item: e,
                       child: Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 8.0),
                         child: Text(
                           // e,
-                          e.name.toString(),
+                          e.name.toString()[0].toUpperCase() +
+                              e.name.toString().substring(1).toLowerCase(),
                           style: FxTextStyle.bodyMedium(),
                         ),
                       )))

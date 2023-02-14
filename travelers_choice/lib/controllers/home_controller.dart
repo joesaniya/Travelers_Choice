@@ -17,7 +17,7 @@ class HomeController extends FxController {
   HomeController(this.ticker);
   // List<Category>? categories;
   List<Product>? products;
-   List<AllattractionModal> allattractionList = <AllattractionModal>[];
+  List<AllattractionModal> allattractionList = <AllattractionModal>[];
   bool uiLoading = true;
   // late Category selectedCategory;
   late AnimationController animationController;
@@ -29,10 +29,8 @@ class HomeController extends FxController {
   late Tween<Offset> offset;
   final GlobalKey<AnimatedListState> listKey = GlobalKey<AnimatedListState>();
   List<Widget> newCategories = [];
-  
-  late Intro intro;
 
-  
+  late Intro intro;
 
   @override
   void initState() {
@@ -187,9 +185,39 @@ Country Code => $countryCode
               opacity: animation,
               child: child,
             ),
-        pageBuilder: (_, __, ___) => DetailScreen(product.id)
+        pageBuilder: (_, __, ___) =>
+            DetailScreen(product.id, _toggleFavorite, _isMealFavorite)
         // SingleProductScreen(product.id)
         ));
+  }
+
+  final List<AllattractionModal> _favouriteMeals = [];
+  final List<AllattractionModal> _availableMeals = <AllattractionModal>[];
+
+  void _toggleFavorite(String mealId) {
+    final existingIndex = _favouriteMeals
+        .indexWhere((meal) => meal.attractions.data.first.id == mealId);
+    if (existingIndex >= 0) {
+      _favouriteMeals.removeAt(existingIndex);
+      update();
+      // setState(() {
+      //   _favouriteMeals.removeAt(existingIndex);
+      // });
+    } else {
+      _favouriteMeals.add(
+        _availableMeals
+            .firstWhere((meal) => meal.attractions.data.first.id == mealId),
+      );
+      // setState(() {
+      //   _favouriteMeals.add(
+      //      <AllattractionModal>[].firstWhere((meal) => meal.id == mealId),
+      //   );
+      // });
+    }
+  }
+
+  bool _isMealFavorite(String id) {
+    return _favouriteMeals.any((meal) => meal.attractions.data.first.id == id);
   }
 
   void goToSubscription() {
