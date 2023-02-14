@@ -106,7 +106,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             FxSpacing.width(8),
                             FxText.bodyMedium(
                               // profileController.email.toString()
-                              profileController.user.email,
+                              profileController.email.toString(),
                             ),
                             FxSpacing.height(8),
                             FxButton.outlined(

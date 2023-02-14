@@ -197,7 +197,7 @@ Country Code => $countryCode
         vsync: ticker, duration: const Duration(milliseconds: 500));
 
     colorAnimation =
-        ColorTween(begin: Colors.grey.shade400, end: const Color(0xff1529e8)
+        ColorTween(begin: const Color(0xff1529e8), end: const Color(0xff1529e8)
                 // end: const Color(0xff1c8c8c)
                 )
             .animate(animationController);

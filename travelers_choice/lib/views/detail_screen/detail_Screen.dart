@@ -50,7 +50,6 @@ class _DetailScreenState extends State<DetailScreen>
             width: 0));
   }
 
-
   //split
 
   @override
@@ -62,12 +61,11 @@ class _DetailScreenState extends State<DetailScreen>
         });
   }
 
-  
   Widget _buildnew() {
     log('buildnew');
     log(controller.detailattraction.toString());
-   if(controller.detailattraction==null){
-return Scaffold(
+    if (controller.detailattraction == null) {
+      return Scaffold(
           body: Padding(
         padding: FxSpacing.top(FxSpacing.safeAreaTop(context) + 20),
         child: LoadingEffect.getHomeLoadingScreen
@@ -79,16 +77,14 @@ return Scaffold(
           // theme, theme.colorScheme
         ),
       ));
-   }
-   else{
-     if (controller.detailattraction!.isEmpty)
+    } else {
+      if (controller.detailattraction!.isEmpty)
       // if (controller.uiLoading)
       {
         log('detail');
         log(controller.detailattraction!.length.toString());
         log('name${controller.detailattraction}');
-         return const Scaffold(body: Center(child: Text("No Data found")));
-        
+        return const Scaffold(body: Center(child: Text("No Data found")));
       } else {
         return Scaffold(
             backgroundColor: const Color(0xfff5f5f5),
@@ -322,20 +318,37 @@ return Scaffold(
                             child: ClipOval(
                               child: Material(
                                 color: const Color(0xff1529e8).withAlpha(24),
-                                child: InkWell(
-                                  highlightColor:
-                                      const Color(0xff1529e8).withAlpha(20),
-                                  splashColor:
-                                      const Color(0xff1529e8).withAlpha(100),
-                                  child: const SizedBox(
-                                      width: 44,
-                                      height: 44,
-                                      child: Icon(
-                                        MdiIcons.heartOutline,
-                                        size: 20,
-                                        color: Color(0xff1529e8),
-                                      )),
-                                  onTap: () {},
+                                child: AnimatedBuilder(
+                                  animation: controller.animationController,
+                                  builder: (BuildContext context, _) {
+                                    return InkWell(
+                                      highlightColor:
+                                          const Color(0xff1529e8).withAlpha(20),
+                                      splashColor: const Color(0xff1529e8)
+                                          .withAlpha(100),
+                                      child: SizedBox(
+                                          width: 44,
+                                          height: 44,
+                                          child: Icon(
+                                            MdiIcons.heartOutline,
+                                            color:
+                                                controller.colorAnimation.value,
+                                            size:
+                                                controller.sizeAnimation.value,
+                                            // size: 20,
+                                            // color: const Color(0xff1529e8),
+                                          )),
+                                      // onTap: () {},
+                                      onTap: () {
+                                        log('liked:${controller.isFav}');
+                                        controller.isFav
+                                            ? controller.animationController
+                                                .reverse()
+                                            : controller.animationController
+                                                .forward();
+                                      },
+                                    );
+                                  },
                                 ),
                               ),
                             ),
@@ -616,7 +629,6 @@ return Scaffold(
               ],
             ));
       }
-   }
-
+    }
   }
 }
