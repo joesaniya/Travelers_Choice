@@ -49,7 +49,7 @@ class _VisaScreenState extends State<VisaScreen>
     "Traveller or the customer has to fully bear the penalty amount in case the destination country levy any charges.",
   ];
 
-  bool disableCard = true;
+  bool disableCard = false;
   List<String> lastString = [
     "Policy",
     "Terms and settings",
@@ -59,12 +59,10 @@ class _VisaScreenState extends State<VisaScreen>
   String searchText="";
 
   Widget visaList(){
-    return ListView(
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-
-
+          SizedBox(height: 10,),
           FxText.bodyLarge(
             'Types of Dubai visa',
             style: const TextStyle(
@@ -74,10 +72,12 @@ class _VisaScreenState extends State<VisaScreen>
             ),
           ),
 
-          const SizedBox(height: 20,),
+          SizedBox(height: 10,),
 
           ListView.separated(
-            // scrollDirection: Axis.vertical,
+              padding: EdgeInsets.zero,
+
+              // scrollDirection: Axis.vertical,
             physics: const NeverScrollableScrollPhysics(),
               shrinkWrap: true,
               itemBuilder: (BuildContext, int index){
@@ -89,13 +89,13 @@ class _VisaScreenState extends State<VisaScreen>
                       borderRadius: BorderRadius.circular(15),
                     side: const BorderSide(
                       width: 2,
-                      color: Colors.white,
+                      color: Color(0xff1529e8),
                     ),
                   ),
                   child: Container(
                     padding: EdgeInsets.all(10),
                     decoration: BoxDecoration(
-                      color:Color(0xff5c69e0),
+                      color:Color(0xff1529e8).withAlpha(20),
                       borderRadius: BorderRadius.circular(15),
                     //   gradient: const LinearGradient(
                     //     colors: [
@@ -109,20 +109,19 @@ class _VisaScreenState extends State<VisaScreen>
                     ),
                     child: Column(
                       children: const[
-                        SizedBox(height: 10,),
                         Text(
                           "30 Days Single Entry Tourist Visa",
                           textAlign: TextAlign.center,
                           style: TextStyle(
                               fontSize: 24,
                               fontWeight: FontWeight.w600,
-                              color: Colors.white),
+                              color: Colors.black),
                         ),
                         SizedBox(height: 10,),
                         Text("AED 320.00",
                           textAlign: TextAlign.center,
                           style: TextStyle(
-                              color: Colors.white,
+                              color: Colors.black,
                               decoration: TextDecoration.underline,
                               fontSize: 20,
                               // fontWeight: FontWeight.w600
@@ -135,7 +134,7 @@ class _VisaScreenState extends State<VisaScreen>
                           style:  TextStyle(
                               fontSize: 20,
                               // fontWeight: FontWeight.w600,
-                              color: Colors.white
+                              color: Colors.black
                           ),
                         ),
                         SizedBox(height: 10,),
@@ -255,6 +254,7 @@ class _VisaScreenState extends State<VisaScreen>
           const SizedBox(height: 10,),
 
           ListView.builder(
+            padding: EdgeInsets.zero,
             physics: const NeverScrollableScrollPhysics(),
             shrinkWrap: true,
             itemBuilder: (BuildContext context, int index) {
@@ -320,6 +320,7 @@ class _VisaScreenState extends State<VisaScreen>
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: ListView.separated(
+                    padding: EdgeInsets.zero,
                     physics: const NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
                       itemCount: list.length,
@@ -348,6 +349,7 @@ class _VisaScreenState extends State<VisaScreen>
             child: Column(
               children: [
                 ListView.separated(
+                  padding: EdgeInsets.zero,
                   physics: const NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
                   itemBuilder: (BuildContext context, int index) {
@@ -652,27 +654,22 @@ class _VisaScreenState extends State<VisaScreen>
                 child: ListView(
                   shrinkWrap: true,
                   padding: const EdgeInsets.all(10),
-                  physics: const ClampingScrollPhysics(),
+                  physics: const AlwaysScrollableScrollPhysics(),
                   children: <Widget>[
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        IndexedStack(
-                          index: controller.tabController.index,
-                          children: [
+                    IndexedStack(
+                      index: controller.tabController.index,
+                      children: [
 
-                            visaList(),
+                        visaList(),
 
-                            const Text("Documents",style:TextStyle(color: Colors.black)),
+                        const Text("Documents",style:TextStyle(color: Colors.black)),
 
-                            // const Text("Process"),
+                        // const Text("Process"),
 
-                            const Text("FAQs",style:TextStyle(color: Colors.black)),
+                        const Text("FAQs",style:TextStyle(color: Colors.black)),
 
-                            const Text("Terms & conditions"),
+                        const Text("Terms & conditions"),
 
-                          ],
-                        ),
                       ],
                     ),
                   ],
@@ -688,7 +685,7 @@ class _VisaScreenState extends State<VisaScreen>
                       Navigator.push(
                           context, MaterialPageRoute(builder: (context)=> ApplyVisa()));
                     },
-                    child: Text("Apply Now",
+                    child: Text("Apply Online",
                     style: TextStyle(fontSize: 16),),
                     style:ElevatedButton.styleFrom(
                         backgroundColor: Color(0xff1529e8),

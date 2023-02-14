@@ -44,7 +44,7 @@ class ApplyVisaController extends FxController {
   late Animation<Offset> dateAnimation;
   int dateCounter = 0;
   final PageController pageController = PageController(initialPage: 0);
-  int currentPage = 0, numPages = 3;
+  int currentPage = 0, numPages = 4;
   late Timer timerAnimation;
   late TextEditingController dateTE;
   late TextEditingController visaController;
@@ -122,12 +122,20 @@ class ApplyVisaController extends FxController {
 
   // late AnimationController animationController;
 
-  late TextEditingController FnameTE, LnameTE, emailTE, addressTE, phoneTE,passportTE;
+  late TextEditingController  FnameTE,LnameTE, emailTE,
+      addressTE, phoneTE,passportTE, fromDateTE, toDateTE,dobTE, expiryTE;
 
-  String? selectedname;
-  final List<String> nameCodes = ['Mr.', 'Mrs.', 'Ms.'];
+  String? selectedTitle;
+  final List<String> titleCodes = ['Mr.','Ms.', 'Mrs.','Mstr.' ];
+  String? selectedVisa;
+  final List<String> visaTypes = ['30 day single entry tourist visa',
+    '60 days single entry tourist visa',
+    '12 days work visa'];
   String? selectedcountry;
-  final List<String> countryCodes = ['India', 'UAE', 'France', 'USA','England'];
+  final List<String> countryCodes = ['India',
+    'United Arab Emirates', 'France', 'United States of America','England'];
+  int? selectedTraveller;
+  final List<int> travellerNumber = [1,2,3,4,5,6,7,8,9,10];
   late AnimationController arrowController,
 
       firstnameController,
@@ -152,6 +160,13 @@ class ApplyVisaController extends FxController {
   int phoneCounter = 0;
   int passportCounter = 0;
 
+  List<TextEditingController> firstNameControllers = [];
+  List<TextEditingController> lastNameControllers = [];
+  List<TextEditingController> emailControllers = [];
+  List<TextEditingController> contactControllers = [];
+  List<TextEditingController> passportControllers = [];
+
+
   @override
   initState() {
     super.initState();
@@ -170,6 +185,10 @@ class ApplyVisaController extends FxController {
     addressTE = TextEditingController();
     phoneTE = TextEditingController();
     passportTE = TextEditingController();
+    fromDateTE = TextEditingController();
+    toDateTE = TextEditingController();
+    dobTE = TextEditingController();
+    expiryTE = TextEditingController();
 
     animationController = AnimationController(
       duration: const Duration(seconds: 1),
