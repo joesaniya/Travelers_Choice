@@ -46,6 +46,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
           isLoading = false;
           allattractionList = [];
           allattractionList!.add(value);
+          log('All1:$allattractionList');
 
           setState(() {
             controller.countryCode = sharedPreferences!
@@ -63,6 +64,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     super.initState();
 
     getAttraction(context);
+    log('All Data:$allattractionList');
     theme = AppTheme.shoppingTheme;
     theme1 = AppTheme.learningTheme;
     SharedPreferences.getInstance().then((sharedPrefValue) {

@@ -266,18 +266,68 @@ class _SearchScreenState extends State<SearchScreen>
                   //   // log('Controller:${controller.allattractionList!.first.attractions.data.map((e) => e.title)}');
                   //   // print('temp:${temp2[0].attractions.data}');
                   // },
-                  onChanged: (value) {
-                    // log('Total Data:${_filteredBooks.first.attractions.data.map((e) => e.title)}');
-                    // log('Entered keyword:$value');
-                    if (len == 0) {
-                      temp2 = [..._filteredBooks];
-                    }
-                    // log('filter value:$_filteredBooks');
+                  // onChanged: (value) {
+                  //   // log('Total Data:${_filteredBooks.first.attractions.data.map((e) => e.title)}');
+                  //   // log('Entered keyword:$value');
+                  //   if (len == 0) {
+                  //     temp2 = [..._filteredBooks];
+                  //   }
+                  //   // log('filter value:$_filteredBooks');
 
+                  //   if (value.isEmpty) {
+                  //     log('Temp:${_filteredBooks.first.attractions.data.map((e) => e.title)}');
+                  //     controller.allattractionList!.first.attractions.data =
+                  //         _filteredBooks.first.attractions.data;
+
+                  //     setState(() {
+                  //       // len = value.length;
+                  //       // _filteredBooks = [
+                  //       //   allattractionModalFromJson(json.encode(value))
+                  //       // ];
+                  //       controller.allattractionList!.first.attractions.data;
+                  //       // _filteredBooks =
+                  //       //     AllattractionModal as List<AllattractionModal>;
+                  //     });
+                  //     // log('Value:$_filteredBooks');
+                  //     log('Empty :${controller.allattractionList!.first.attractions.data.map((e) => e.title)}');
+                  //     return;
+                  //   }
+
+                  //   len = 1;
+                  //   // print(' => ${_filteredBooks.first.attractions.toJson()}');
+
+                  //   List<Datum> data =
+                  //       temp2.first.attractions.data.where((Datum i) {
+                  //     // log('title:${i.title}');
+                  //     // log('value:$value');
+                  //     return i.title
+                  //         .toLowerCase()
+                  //         .contains(value.toString().toLowerCase());
+                  //   }).toList();
+
+                  //   temp[0].attractions.data = data;
+
+                  //   setState(() {
+                  //     controller.allattractionList = temp;
+                  //     len;
+                  //   });
+
+                  //   // log('Controller:${controller.allattractionList!.first.attractions.data.map((e) => e.title)}');
+                  //   // print('temp:${temp2[0].attractions.data}');
+                  // },
+                  //2
+                  onChanged: (value) async {
                     if (value.isEmpty) {
-                      log('Temp:${_filteredBooks.first.attractions.data.map((e) => e.title)}');
-                      controller.allattractionList!.first.attractions.data =
-                          _filteredBooks.first.attractions.data;
+                      await AttractionController()
+                          .getSearchattractionList(widget.place)
+                          .then((value) {
+                        if (value != null) {
+                          isLoading = false;
+                          controller.allattractionList = [];
+                          controller.allattractionList!.add(value);
+                          _filteredBooks = controller.allattractionList!;
+                        }
+                      });
 
                       setState(() {
                         // len = value.length;
@@ -289,7 +339,7 @@ class _SearchScreenState extends State<SearchScreen>
                         //     AllattractionModal as List<AllattractionModal>;
                       });
                       // log('Value:$_filteredBooks');
-                      log('Empty :${controller.allattractionList!.first.attractions.data.map((e) => e.title)}');
+
                       return;
                     }
 
@@ -297,7 +347,7 @@ class _SearchScreenState extends State<SearchScreen>
                     // print(' => ${_filteredBooks.first.attractions.toJson()}');
 
                     List<Datum> data =
-                        temp2.first.attractions.data.where((Datum i) {
+                        _filteredBooks.first.attractions.data.where((Datum i) {
                       // log('title:${i.title}');
                       // log('value:$value');
                       return i.title
@@ -317,18 +367,25 @@ class _SearchScreenState extends State<SearchScreen>
                   },
                   // onChanged: (e) {
                   //   if (e != Null || e.isNotEmpty) {
-                  //     setState(() {
-                  //       _filteredBooks = controller
-                  //           .allattractionList!.first.attractions.data
-                  //           .where((element) =>
-                  //               element.title.toLowerCase().contains(e))
-                  //           .cast<AllattractionModal>()
-                  //           .toList();
-                  //     });
+                  //     // controller.allattractionList!.first.attractions.data = [];
+
+                  //     for (var i in temp.first.attractions.data) {
+                  //       log('i:$i');
+                  //       if (i.title.toLowerCase().contains(e)) {
+                  //         controller.allattractionList!.first.attractions.data
+                  //             .add(i);
+                  //       }
+                  //     }
+
+                  //     // if (value.title.toLowerCase().contains(e)) {
+                  //     //   controller.allattractionList!.first.attractions.data
+                  //     //       .add(value);
+                  //     // }
+
+                  //     log('Message:${controller.allattractionList!.first.attractions.data}');
                   //   } else {
-                  //     _filteredBooks = controller
-                  //         .allattractionList!.first.attractions.data
-                  //         .cast<AllattractionModal>();
+                  //     controller.allattractionList!.first.attractions.data =
+                  //         _filteredBooks.first.attractions.data;
                   //   }
                   // },
 

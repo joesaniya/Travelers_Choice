@@ -1476,6 +1476,8 @@ class _CheckOutScreenState extends State<CheckOutScreen>
               child: Image(
                 image: AssetImage(Images.shoppingOrderSuccess),
               )),
+          // Lottie.asset('assets/lottie/thumbs_up.json'),
+          
           FxSpacing.height(20),
           FxText.titleLarge(
             'Booking Success!!',

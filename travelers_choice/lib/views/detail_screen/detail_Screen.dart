@@ -14,6 +14,7 @@ import '../../theme/app_theme.dart';
 class DetailScreen extends StatefulWidget {
   final String productid;
   final Function toggleFavourite;
+
   final Function isFavourite;
 
   const DetailScreen(this.productid, this.toggleFavourite, this.isFavourite);
@@ -46,6 +47,7 @@ class _DetailScreenState extends State<DetailScreen>
             color: Color(0xff1529e8),
             // color: Colors.lightBlueAccent,
             width: 0));
+    
     controller.addListener(() {
       if (controller.favs.isEmpty) {
         SharedPreferences.getInstance().then((prefs) {
@@ -62,6 +64,7 @@ class _DetailScreenState extends State<DetailScreen>
           //     allattractionList.firstWhere((Meal) => Meal.id == mealId);
           //   favs = widget.toggleFavourite(mealId);
           // });
+          log('selectedMeal:${controller.allattractionList}');
         });
       }
     });
@@ -343,37 +346,45 @@ class _DetailScreenState extends State<DetailScreen>
                                 child: AnimatedBuilder(
                                   animation: controller.animationController,
                                   builder: (BuildContext context, _) {
-                                    return InkWell(
-                                      highlightColor:
-                                          const Color(0xff1529e8).withAlpha(20),
-                                      splashColor: const Color(0xff1529e8)
-                                          .withAlpha(100),
-                                      child: SizedBox(
-                                          width: 44,
-                                          height: 44,
-                                          child: Icon(
-                                            // MdiIcons.heartOutline,
-                                            widget.isFavourite(mealId)
-                                                ? Icons.abc
-                                                : Icons.star_border,
-                                            color:
-                                                controller.colorAnimation.value,
-                                            size:
-                                                controller.sizeAnimation.value,
-                                            // size: 20,
-                                            // color: const Color(0xff1529e8),
-                                          )),
-                                      // onTap: () {},
-                                      onTap: () {
-                                        log('liked:${controller.isFav}');
-                                        log('likedid:${widget.productid}');
-                                        // controller.isFav
-                                        //     ? controller.animationController
-                                        //         .reverse()
-                                        //     : controller.animationController
-                                        //         .forward();
-                                        widget.toggleFavourite(mealId);
-                                      },
+                                    return Container(
+                                      child: InkWell(
+                                        highlightColor: const Color(0xff1529e8)
+                                            .withAlpha(20),
+                                        splashColor: const Color(0xff1529e8)
+                                            .withAlpha(100),
+                                        child: SizedBox(
+                                            width: 44,
+                                            height: 44,
+                                            child: Icon(
+                                              // MdiIcons.heartOutline,
+                                              widget.isFavourite(mealId)
+                                                  ? Icons.abc
+                                                  : Icons.star_border,
+                                              color: controller
+                                                  .colorAnimation.value,
+                                              size: controller
+                                                  .sizeAnimation.value,
+                                              // size: 20,
+                                              // color: const Color(0xff1529e8),
+                                            )),
+                                        // onTap: () {},
+                                        onTap: () {
+                                          log('liked:${controller.isFav}');
+                                          log('likedid:${widget.productid}');
+                                          print(
+                                              'MealId Type:${mealId.runtimeType}');
+                                          // controller.isFav
+                                          //     ? controller.animationController
+                                          //         .reverse()
+                                          //     : controller.animationController
+                                          //         .forward();
+                                          log('Meal Id:$mealId');
+                                          setState(() {
+                                            widget.toggleFavourite(mealId);
+                                          });
+                                          // log('message:${widget.productid}');
+                                        },
+                                      ),
                                     );
                                   },
                                 ),
