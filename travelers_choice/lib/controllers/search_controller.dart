@@ -144,7 +144,7 @@ class SearchController extends FxController {
           pageBuilder: (_, __, ___) => SearchScreen(
               // place: Destination.fromJson(jsonDecode(selectedCountry)),
               place: selectedCountry
-              // locationplace
+              // place:locationTE.text
               )));
     }
   }

@@ -71,6 +71,7 @@ class _SearchPlaceState extends State<SearchPlace>
     });
     await Future.delayed(const Duration(seconds: 2));
     controller.searchbtn(
+      // controller.locationTE.text
       _selectedCountry!,
       // controller.allattractionList.first
     );
@@ -458,15 +459,6 @@ class _SearchPlaceState extends State<SearchPlace>
               enabledBorder: InputBorder.none,
               errorBorder: InputBorder.none,
               disabledBorder: InputBorder.none,
-              // border: const OutlineInputBorder(
-              //     borderSide: BorderSide(
-              //         color: Color(0xff1529e8),
-              //         // color: Colors.lightBlueAccent,
-              //         width: 1)),
-              // enabledBorder: const OutlineInputBorder(
-              //     borderSide: BorderSide(color: Color(0xff1529e8), width: 1)),
-              // focusedBorder: const OutlineInputBorder(
-              //     borderSide: BorderSide(color: Color(0xff1529e8), width: 1)),
               contentPadding: FxSpacing.all(16),
               hintStyle: const TextStyle(color: Colors.white),
               // hintStyle: FxTextStyle.bodyMedium(),
@@ -496,8 +488,9 @@ class _SearchPlaceState extends State<SearchPlace>
             log(value.searchKey.toString());
             controller.focus.unfocus();
             setState(() {
-              // _selectedCountry = controller.locationTE.text as Destination;
+              _selectedCountry!.country = controller.locationTE.text;
               // controller.locationTE.text = controller.locationplace!;
+              log('controller:${controller.locationTE.text}');
             });
           },
           suggestions: countryList.isEmpty ||

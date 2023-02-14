@@ -6,6 +6,7 @@ import 'package:hotel_travel/views/login_Screens/login_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/user.dart';
+import '../views/edit_profile.dart';
 
 class ProfileController extends FxController {
   bool showLoading = true, uiLoading = true;
@@ -51,6 +52,30 @@ class ProfileController extends FxController {
   //         (route) => false);
   //   });
   // }
+
+  void EditProfile() {
+    Navigator.of(context, rootNavigator: true).push(PageRouteBuilder(
+        transitionDuration: const Duration(milliseconds: 500),
+        transitionsBuilder: (
+          BuildContext context,
+          Animation<double> animation,
+          Animation<double> secondaryAnimation,
+          Widget child,
+        ) =>
+            FadeTransition(
+              opacity: animation,
+              child: child,
+            ),
+        pageBuilder: (_, __, ___) => EditProfileScreen()));
+  }
+
+  void goToEditProfile() {
+    Navigator.of(context, rootNavigator: true).push(
+      MaterialPageRoute(
+        builder: (context) => const EditProfileScreen(),
+      ),
+    );
+  }
 
   void fetchData() async {
     user = await User.getOne();

@@ -37,9 +37,9 @@ class _CategoriesBottomSheetState extends State<CategoriesBottomSheet>
       // addCategories();
     });
 
-    controller.getcategoryAttraction(
-        // widget.productid,
-        setState);
+    // controller.getcategoryAttraction(
+    //     // widget.productid,
+    //     setState);
   }
 
   List<AllattractionModal> allattractionList = <AllattractionModal>[];

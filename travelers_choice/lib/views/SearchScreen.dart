@@ -33,10 +33,12 @@ class _SearchScreenState extends State<SearchScreen>
 
   late HomeSearchController controller;
   bool isLoading = true;
+  int len = 0;
 
   List<AllattractionModal> _filteredBooks = [];
   List<AllattractionModal>? foundCustomer = [];
   List<AllattractionModal> temp = [];
+  List<AllattractionModal> temp2 = [];
   void _runFilter(String enteredKeyword) {
     print('runFilters');
     List results = [];
@@ -66,7 +68,7 @@ class _SearchScreenState extends State<SearchScreen>
   getAttraction(Destination place) {
     log('getAttraction function called');
     Future.delayed(Duration.zero, () async {
-      log('get${place.name}');
+      // log('get${place.name}');
       await AttractionController().getSearchattractionList(place).then((value) {
         if (value != null) {
           isLoading = false;
@@ -80,13 +82,13 @@ class _SearchScreenState extends State<SearchScreen>
             if (des.destination.name.toLowerCase().trim() ==
                 place.name.toLowerCase().trim()) {
               temp.add(val);
-              log('dest:${temp.length}');
-              log('destination:${des.destination.name}');
-              log('Search:${place.name}');
+              // log('dest:${temp.length}');
+              // log('destination:${des.destination.name}');
+              // log('Search:${place.name}');
             }
           }
         }
-        print("Temp List => ${temp.length}");
+        // print("Temp List => ${temp.length}");
         setState(() => controller.allattractionList = temp);
       });
     });
@@ -132,7 +134,7 @@ class _SearchScreenState extends State<SearchScreen>
       }
     }
 
-    log('filter:$_filteredBooks');
+    // log('filter:$_filteredBooks');
 
     setState(() {});
   }
@@ -141,10 +143,10 @@ class _SearchScreenState extends State<SearchScreen>
   void initState() {
     super.initState();
     controller = FxControllerStore.put(HomeSearchController(this));
-    log('${widget.place.name}Place Search1');
+    // log('${widget.place.name}Place Search1');
     temp = [];
     getAttraction(widget.place);
-    log('${widget.place}Place Search2');
+    // log('${widget.place}Place Search2');
 
     theme = AppTheme.shoppingTheme;
     theme1 = AppTheme.learningTheme;
@@ -215,34 +217,58 @@ class _SearchScreenState extends State<SearchScreen>
                   // onChanged: (value) => _searchBooks(value),
 
                   // onChanged: _runFilter,
-                  //     onChanged: (value) {
-                  //   List<AllattractionModal> _temp = _filteredBooks;
+                  onChanged: (value) {
+                    // log('Total Data:${_filteredBooks.first.attractions.data.map((e) => e.title)}');
+                    // log('Entered keyword:$value');
+                    if (len == 0) {
+                      temp2 = [..._filteredBooks];
+                    }
+                    // log('filter value:$_filteredBooks');
 
-                  //   var len;
-                  //   if (  len > value.length) {
-                  //     setState(() {
-                  //       len = value.length;
-                  //      _filteredBooks = [allattractionModalFromJson(json.encode(value))];
-                  //     });
-                  //   } else {
-                  //     if (len < value.length) {
-                  //       len = value.length;
-                  //     }
-                  //     print(' => ${_filteredBooks[0].toJson()}');
+                    if (value.isEmpty) {
+                      log('Temp:${_filteredBooks.first.attractions.data.map((e) => e.title)}');
+                      controller.allattractionList!.first.attractions.data =
+                          _filteredBooks.first.attractions.data;
 
-                  //     List<Destination> data = _filteredBooks[0]
-                  //         .attractions.data.first.title.where((Datum i) => i
-                  //             .toString()
-                  //             .toLowerCase()
-                  //             .contains(value.toString().toLowerCase()))
-                  //         .toList();
+                      setState(() {
+                        // len = value.length;
+                        // _filteredBooks = [
+                        //   allattractionModalFromJson(json.encode(value))
+                        // ];
+                        controller.allattractionList!.first.attractions.data;
+                        // _filteredBooks =
+                        //     AllattractionModal as List<AllattractionModal>;
+                      });
+                      // log('Value:$_filteredBooks');
+                      log('Empty :${controller.allattractionList!.first.attractions.data.map((e) => e.title)}');
+                      return;
+                    }
 
-                  //     _temp[0].attractions.data.first.title = data as String;
-                  //     setState(() => _filteredBooks = _temp);
-                  //   }
-                  // },
+                    len = 1;
+                    // print(' => ${_filteredBooks.first.attractions.toJson()}');
+
+                    List<Datum> data =
+                        temp2.first.attractions.data.where((Datum i) {
+                      // log('title:${i.title}');
+                      // log('value:$value');
+                      return i.title
+                          .toLowerCase()
+                          .contains(value.toString().toLowerCase());
+                    }).toList();
+
+                    temp[0].attractions.data = data;
+
+                    setState(() {
+                      controller.allattractionList = temp;
+                      len;
+                    });
+
+                    // log('Controller:${controller.allattractionList!.first.attractions.data.map((e) => e.title)}');
+                    // print('temp:${temp2[0].attractions.data}');
+                  },
+
                   // onChanged: controller.runFilter1,
-                  onChanged: (value) => onSearchTextChanged(value),
+                  // onChanged: (value) => onSearchTextChanged(value),
                   // onChanged: (value) => controller.attractFilter(value),
                   decoration: InputDecoration(
                     hintText: "Search your place ...",
@@ -304,7 +330,7 @@ class _SearchScreenState extends State<SearchScreen>
                       //   backgroundColor: Colors.white,
                       //   shape: const RoundedRectangleBorder(
                       //       borderRadius: BorderRadius.only(
-                      //           topLeft: Radius.circular(20),
+                      //           topLeft: Radiaus.circular(20),
                       //           topRight: Radius.circular(20))),
                       //   isScrollControlled: true,
                       //   builder: (context) {
