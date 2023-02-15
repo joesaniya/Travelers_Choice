@@ -1435,7 +1435,8 @@ class _CheckOutScreenState extends State<CheckOutScreen>
           FxSpacing.height(20),
           FxButton.block(
             onPressed: () {
-              controller.nextPage();
+              // controller.nextPage();
+              controller.initPlatformState();
             },
             borderRadiusAll: 4,
             elevation: 0,
