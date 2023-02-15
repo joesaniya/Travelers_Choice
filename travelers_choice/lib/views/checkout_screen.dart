@@ -6,10 +6,10 @@ import 'package:flutx/flutx.dart';
 import 'package:hotel_travel/controllers/Activity_Controller.dart';
 
 import '../controllers/checkout_controller.dart';
-import '../images.dart';
 import '../localizations/language.dart';
 import '../models/shipping_address.dart';
 import '../theme/app_theme.dart';
+import 'package:lottie/lottie.dart';
 
 class CheckOutScreen extends StatefulWidget {
   dynamic? length;
@@ -1469,19 +1469,21 @@ class _CheckOutScreenState extends State<CheckOutScreen>
   Widget placedInfo() {
     return Padding(
       padding: FxSpacing.x(20),
-      child: Column(
+      child: ListView(
+        physics: const BouncingScrollPhysics(),
         children: [
-          Container(
-              margin: FxSpacing.all(20),
-              child: Image(
-                image: AssetImage(Images.shoppingOrderSuccess),
-              )),
-          // Lottie.asset('assets/lottie/thumbs_up.json'),
-          
+          // Container(
+          //     margin: FxSpacing.all(20),
+          //     child: Image(
+          //       image: AssetImage(Images.shoppingOrderSuccess),
+          //     )),
+          Lottie.asset('assets/lottie/confirmation.json',
+              height: 300, width: 300),
           FxSpacing.height(20),
           FxText.titleLarge(
             'Booking Success!!',
             fontWeight: 700,
+            textAlign: TextAlign.center,
           ),
           FxSpacing.height(8),
           FxText.labelLarge(

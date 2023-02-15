@@ -6,7 +6,7 @@ import 'package:flutx/flutx.dart';
 
 import 'package:hotel_travel/models/all_attraction_modal.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
+import 'package:lottie/lottie.dart';
 import '../controllers/attraction_Controller.dart';
 import '../controllers/saved_controller.dart';
 import '../loading_effect.dart';
@@ -341,13 +341,15 @@ class _SavedScreenState extends State<SavedScreen>
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Container(
-                      decoration: const BoxDecoration(
-                          image: DecorationImage(
-                        image: NetworkImage(
-                            'https://c.tenor.com/hJDuRStH_cYAAAAC/cat-sleeping.gif'),
-                      )),
-                    ),
+                    // Container(
+                    //   decoration: const BoxDecoration(
+                    //       image: DecorationImage(
+                    //     image: NetworkImage(
+                    //         'https://c.tenor.com/hJDuRStH_cYAAAAC/cat-sleeping.gif'),
+                    //   )),
+                    // ),
+                    Lottie.asset('assets/lottie/confirmation.json',
+                        height: 300, width: 300),
                     const Text(
                         'You have no favourite yet - start adding some item!',
                         style: TextStyle(
