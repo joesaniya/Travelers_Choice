@@ -61,7 +61,7 @@ class MyApp extends StatelessWidget {
           // home: const FullApp(),
           // home: MyHomePage(),
           // home: YourPage(),
-          home: VisaScreen(),
+          home: ApplyVisa(),
         );
       },
     );

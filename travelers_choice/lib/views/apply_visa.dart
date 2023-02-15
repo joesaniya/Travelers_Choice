@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:math';
 
 import 'package:file_picker/file_picker.dart';
@@ -13,6 +14,7 @@ import 'package:flutx/widgets/dashed_divider/dashed_divider.dart';
 import 'package:flutx/widgets/text/text.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:im_stepper/stepper.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 
 import '../controllers/apply_visa_controller.dart';
@@ -36,12 +38,20 @@ class _ApplyVisaState extends State<ApplyVisa>  with TickerProviderStateMixin{
   TextEditingController nameController = TextEditingController();
   int activeIndex = 0;
   int totalIndex = 3;
-  // late List<TextEditingController> FnameTE =
-  // List.generate(5, (i) => TextEditingController());
-
-  // bool isFinished0 = false;
-  // bool isFinished1 = false;
-  // bool isFinished2 = false;
+  List<PickedFile?> _imageFile=[];
+  List<String> _fileName = [];
+  List<String> _fileName2 = [];
+  List<String> _fileName3 = [];
+  List<String> _fileName4 = [];
+  final ImagePicker _picker = ImagePicker();
+  void takePhoto(ImageSource source, index)async{
+    final pickedFile = await _picker.getImage(source: source);
+    setState(() {
+      _imageFile.removeAt(index);
+      _imageFile.insert(index, pickedFile!);
+      // _imageFile = pickedFile;
+    });
+  }
 
   late FocusNode nameNode;
 
@@ -204,6 +214,7 @@ String userName = "";
                       ),
                     ),
                     FxSpacing.height(10),
+
                     Container(
                       decoration: BoxDecoration(
                           border: Border.all(width: 1, color: Colors.black),
@@ -250,6 +261,7 @@ String userName = "";
                         ),
                       ),
                     ),
+
                     FxSpacing.height(20),
 
                     Container(
@@ -293,7 +305,7 @@ String userName = "";
 
                         if(pickedDate != null){
                           setState(() {
-                            controller.fromDateTE.text = DateFormat("dd-MM-yyy").format(pickedDate);
+                            controller.fromDateTE.text = DateFormat("dd/MM/yyy").format(pickedDate);
                           });
                         }
                       },
@@ -312,6 +324,7 @@ String userName = "";
                       ),
 
                     ),
+
                     FxSpacing.height(10),
 
                     TextFormField(
@@ -479,18 +492,44 @@ String userName = "";
                   physics: const NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
                   itemBuilder:(BuildContext context, int index){
+                    if (index >= controller.selectTitle.length) {
+                      controller.selectTitle.add(controller.titleCodes);
+                      
+                      // adding first item to display in the dropdown 
+                      controller.selectedTitle.add(controller.titleCodes[0]);
+                    }
+                    if (index >= controller.selectCountry.length) {
+                      controller.selectCountry.add(controller.countryCodes);
+
+                      // adding first item to display in the dropdown
+                      controller.selectedCountry.add(controller.countryCodes[0]);
+                    }
                     if (index >= controller.firstNameControllers.length) {
                       controller.firstNameControllers.add(TextEditingController());
                     }
                     if (index >= controller.lastNameControllers.length) {
                       controller.lastNameControllers.add(TextEditingController());
-                    }if (index >= controller.emailControllers.length) {
+                    }
+                    if (index >= controller.emailControllers.length) {
                       controller.emailControllers.add(TextEditingController());
-                    }if (index >= controller.contactControllers.length) {
+                    }
+                    // if (index >= controller.nationalityControllers.length) {
+                    //   controller.nationalityControllers.add(TextEditingController());
+                    // }
+                    if (index >= controller.contactControllers.length) {
                       controller.contactControllers.add(TextEditingController());
-                    }if (index >= controller.passportControllers.length) {
+                    }
+                    if (index >= controller.passportControllers.length) {
                       controller.passportControllers.add(TextEditingController());
                     }
+                    if (index >= controller.dobControllers.length) {
+                      controller.dobControllers.add(TextEditingController());
+                    }
+                    if (index >= controller.expiryControllers.length) {
+                      controller.expiryControllers.add(TextEditingController());
+                    }
+
+                    print(controller.selectTitle);
                   return  Container(
                     padding: EdgeInsets.all(10),
                     color: Colors.white,
@@ -524,7 +563,9 @@ String userName = "";
                             // ),
                           ),
                         ),
+
                         FxSpacing.height(10),
+
                         Container(
                           decoration: BoxDecoration(
                               border: Border.all(width: 1, color: Colors.black),
@@ -533,6 +574,7 @@ String userName = "";
                           height: 50,
                           width: MediaQuery.of(context).size.width,
                           child: DropdownButtonHideUnderline(
+
                             child: ButtonTheme(
                               alignedDropdown: true,
                               child: DropdownButton(
@@ -542,7 +584,7 @@ String userName = "";
                                   Icons.arrow_drop_down,
                                   color: Colors.black,
                                 ),
-                                value: controller.selectedTitle,
+                                value: controller.selectedTitle[index],
                                 hint: Center(
                                   child: FxText.labelLarge(
                                     "Choose title",
@@ -551,7 +593,7 @@ String userName = "";
                                     letterSpacing: 0.4,
                                   ),
                                 ),
-                                items: controller.titleCodes.map((String value) {
+                                items: controller.selectTitle[index].map((String value) {
                                   return DropdownMenuItem<String>(
                                       value: value,
                                       child: Center(
@@ -563,7 +605,7 @@ String userName = "";
                                 }).toList(),
                                 onChanged: (value) {
                                   setState(() {
-                                    controller.selectedTitle = value.toString();
+                                    controller.selectedTitle[index]= value.toString();
                                   });
                                 },
                                 style: FxTextStyle.bodyMedium(),
@@ -721,7 +763,7 @@ String userName = "";
                                   Icons.arrow_drop_down,
                                   color: Colors.black,
                                 ),
-                                value: controller.selectedcountry,
+                                value: controller.selectedCountry[index],
                                 hint: Center(
                                   child: FxText.labelLarge(
                                     "Choose country",
@@ -731,7 +773,7 @@ String userName = "";
                                     letterSpacing: 0.4,
                                   ),
                                 ),
-                                items: controller.countryCodes.map((String value) {
+                                items: controller.selectCountry[index].map((String value) {
                                   return DropdownMenuItem<String>(
                                       value: value,
                                       child: Center(
@@ -743,7 +785,7 @@ String userName = "";
                                 }).toList(),
                                 onChanged: (value) {
                                   setState(() {
-                                    controller.selectedcountry = value.toString();
+                                    controller.selectedCountry[index] = value.toString();
                                   });
                                 },
                                 style: FxTextStyle.bodyMedium(),
@@ -862,7 +904,7 @@ String userName = "";
                               hintStyle: FxTextStyle.bodyMedium(),
                               isCollapsed: true),
                           // maxLines: 1,
-                          controller: controller.dobTE,
+                          controller: controller.dobControllers[index],
                           // validator: controller.validateAddress,
                           cursorColor: theme.colorScheme.onBackground,
                           onTap: ()async{
@@ -872,7 +914,7 @@ String userName = "";
 
                             if(pickedDate != null){
                               setState(() {
-                                controller.dobTE.text = DateFormat("dd-MM-yyy").format(pickedDate);
+                                controller.dobControllers[index].text = DateFormat("dd/MM/yyy").format(pickedDate);
                               });
                             }
                           },
@@ -911,7 +953,7 @@ String userName = "";
                               hintStyle: FxTextStyle.bodyMedium(),
                               isCollapsed: true),
                           // maxLines: 1,
-                          controller: controller.expiryTE,
+                          controller: controller.expiryControllers[index],
                           // validator: controller.validateAddress,
                           cursorColor: theme.colorScheme.onBackground,
                           onTap: ()async{
@@ -921,7 +963,7 @@ String userName = "";
 
                             if(pickedDate != null){
                               setState(() {
-                                controller.expiryTE.text = DateFormat("dd-MM-yyy").format(pickedDate);
+                                controller.expiryControllers[index].text = DateFormat("dd/MM/yyy").format(pickedDate);
                               });
                             }
                           },
@@ -1004,46 +1046,191 @@ String userName = "";
             shrinkWrap: true,
               physics: NeverScrollableScrollPhysics(),
               itemBuilder: (BuildContext context, int index){
+
+              _fileName.add("");
+              _fileName2.add("");
+              _fileName3.add("");
+              _fileName4.add("");
+              _imageFile.add(null);
                 return  Container(
                   padding: EdgeInsets.all(10),
                   color: Colors.white,
                   child: Column(
                     children: [
-                      Container(
-                        child: Align(
-                          alignment: Alignment.center,
-                          child:   controller.selectedTraveller ==1 ? FxText.bodyLarge(
-                            "",
-                            // textAlign: TextAlign.left,
-                            letterSpacing: 0,
-                            fontWeight: 600,
-                          ) : controller.travellerNumber[index]>= 1? FxText.bodyLarge(
-                            "Passenger ${controller.travellerNumber[index]}" ,
-                            // textAlign: TextAlign.left,
-                            letterSpacing: 0,
-                            fontWeight: 600,
-                          ):  Text(""),
-                          // ),
-                        ),
+                      Align(
+                        alignment: Alignment.center,
+                        child:   controller.selectedTraveller ==1 ? FxText.bodyLarge(
+                          "",
+                          // textAlign: TextAlign.left,
+                          letterSpacing: 0,
+                          fontWeight: 600,
+                        ) : controller.travellerNumber[index]>= 1? FxText.bodyLarge(
+                          "Passenger ${controller.travellerNumber[index]}" ,
+                          // textAlign: TextAlign.left,
+                          letterSpacing: 0,
+                          fontWeight: 600,
+                        ):  const Text(""),
+                        // ),
                       ),
 
-                      Container(
-                        child: Align(
-                          alignment: Alignment.centerLeft,
-                          child: FxText.bodyLarge(
-                            'Passport First Page',
-                            // textAlign: TextAlign.left,
-                            letterSpacing: 0,
-                            fontWeight: 600,
+                      const SizedBox(height: 5,),
+
+                      Card(
+                        elevation:2,
+                        shape:RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+
+                        child: Container(
+                          decoration:BoxDecoration(
+                            color: Colors.grey.withAlpha(10),
+                            borderRadius: BorderRadius.circular(15),
                           ),
-                          // ),
+                          padding:EdgeInsets.all(10),
+                          child: Column(
+                            children: [
+                              Container(
+                                width: MediaQuery.of(context).size.width*0.9,
+                                child: Row(
+                                  // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    FittedBox(
+                                        fit:BoxFit.fitWidth,
+                                        child:RichText(
+                                          text: TextSpan(
+                                            text: 'First name: ',
+                                            style: TextStyle(fontSize: 16,color: Colors.black),
+                                            children: <TextSpan>[
+                                              TextSpan(
+                                                  text: '${controller.firstNameControllers[index].text}',
+                                                  style: TextStyle(fontSize: 16,color: Color(0xff1529e8))
+                                              ),
+                                            ],
+                                          ),
+                                        )
+                                    ),
+                                    SizedBox(width: 10,),
+                                    FittedBox(
+                                        fit: BoxFit.fitWidth,
+                                        child:RichText(
+                                          text: TextSpan(
+                                            text: 'Last name: ',
+                                            style: TextStyle(fontSize: 16,color: Colors.black),
+                                            children: <TextSpan>[
+                                              TextSpan(
+                                                  text: '${controller.lastNameControllers[index].text}',
+                                                  style: TextStyle(fontSize: 16,color: Color(0xff1529e8))
+                                              ),
+                                            ],
+                                          ),
+                                        )
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              SizedBox(height: 5,),
+                              Container(
+                                width: MediaQuery.of(context).size.width*0.9,
+                                child: Row(
+                                  children: [
+                                    FittedBox(
+                                        fit:BoxFit.fitWidth,
+                                        child: RichText(
+                                          text: TextSpan(
+                                            text: 'DOB: ',
+                                            style: TextStyle(fontSize: 16,color: Colors.black),
+                                            children: <TextSpan>[
+                                              TextSpan(
+                                                  text: '${controller.dobControllers[index].text}',
+                                                  style: TextStyle(fontSize: 16,color:  Color(0xff1529e8))
+                                              ),
+                                            ],
+                                          ),
+                                        )
+
+                              ),
+                                    SizedBox(width: 10,),
+                                    FittedBox(
+                                        fit: BoxFit.fitWidth,
+                                        child:RichText(
+                                          text: TextSpan(
+                                            text: 'Visit Date: ',
+                                            style: TextStyle(fontSize: 16,color: Colors.black),
+                                            children: <TextSpan>[
+                                              TextSpan(
+                                                  text: '${controller.fromDateTE.text}',
+                                                  style: TextStyle(fontSize: 16,color:  Color(0xff1529e8))
+                                              ),
+                                            ],
+                                          ),
+                                        )
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              SizedBox(height: 5,),
+                              Container(
+                                width: MediaQuery.of(context).size.width*0.9,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    FittedBox(
+                                        fit:BoxFit.fitWidth,
+                                        child: RichText(
+                                          text: TextSpan(
+                                            text: 'Passport number: ',
+                                            style: TextStyle(fontSize: 16,color: Colors.black),
+                                            children: <TextSpan>[
+                                              TextSpan(
+                                                  text: '${controller.passportControllers[index].text}',
+                                                  style: TextStyle(fontSize: 16,color: Color(0xff1529e8))
+                                              ),
+                                            ],
+                                          ),
+                                        )
+                                    ),
+                                    SizedBox(height: 5,),
+                                    FittedBox(
+                                        fit: BoxFit.fitWidth,
+                                        child: RichText(
+                                          text: TextSpan(
+                                            text: 'Passport expiry: ',
+                                            style: TextStyle(fontSize: 16,color: Colors.black),
+                                            children: <TextSpan>[
+                                              TextSpan(
+                                                  text: '${controller.expiryControllers[index].text}',
+                                                  style: TextStyle(fontSize: 16,color:  Color(0xff1529e8))
+                                              ),
+                                            ],
+                                          ),
+                                        )
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
 
-                      SizedBox(height: 10,),
+                      const SizedBox(height: 10,),
+
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: FxText.bodyLarge(
+                          'Passport First Page',
+                          // textAlign: TextAlign.left,
+                          letterSpacing: 0,
+                          fontWeight: 600,
+                        ),
+                        // ),
+                      ),
+
+                      const SizedBox(height: 10,),
 
                       Container(
                         alignment: Alignment.topCenter,
+                        padding: EdgeInsets.all(5),
                         width: MediaQuery.of(context).size.width *0.9,
                         height: MediaQuery.of(context).size.height *0.05,
                         decoration: BoxDecoration(
@@ -1051,46 +1238,97 @@ String userName = "";
                             border: Border.all(width: 1,color: Colors.black54),
                             color: Colors.transparent
                         ),
-                        child: Center(
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              GestureDetector(
-                                onTap:  ()async{
-                                  final result = await FilePicker.platform.pickFiles();
-                                  if (result == null) return;
-                                  files = result.files; //EDIT: THIS PROBABLY CAUSED YOU AN ERROR
-                                  setState((){});
-                                },
-                                child: Row(
-                                  children: [
-                                    Icon(Icons.upload_outlined,color: Colors.grey,),
-
-                                    Text("Choose File",style: TextStyle(color: Colors.black54),),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(_fileName[index]),
+                            ElevatedButton(
+                                onPressed: (){
+                                  upLoadFile(index);
+                                  },
+                                child: Text("Choose File"))
+                            // GestureDetector(
+                            //   onTap:  ()async{
+                            //     final result = await FilePicker.platform.pickFiles();
+                            //     if (result == null) return;
+                            //     files = result.files;
+                            //     setState((){});
+                            //   },
+                            //   child: Row(
+                            //     children: [
+                            //       Icon(Icons.upload_outlined,color: Colors.grey,),
+                            //
+                            //       Text("Choose File",style: TextStyle(color: Colors.black54),),
+                            //     ],
+                            //   ),
+                            // ),
+                          ],
                         ),
                       ),
-                      SizedBox(height: 10,),
-                      Container(
-                        child: Align(
-                          alignment: Alignment.centerLeft,
-                          child: FxText.bodyLarge(
-                            'Passport Second Page',
-                            // textAlign: TextAlign.left,
-                            letterSpacing: 0,
-                            fontWeight: 600,
-                          ),
-                          // ),
+                      const SizedBox(height: 10,),
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: FxText.bodyLarge(
+                          'Passport Second Page',
+                          // textAlign: TextAlign.left,
+                          letterSpacing: 0,
+                          fontWeight: 600,
                         ),
+                        // ),
                       ),
 
-                      SizedBox(height: 10,),
+                      const SizedBox(height: 10,),
                       Container(
                         alignment: Alignment.topCenter,
+                        padding: EdgeInsets.all(5),
+                        width: MediaQuery.of(context).size.width *0.9,
+                        height: MediaQuery.of(context).size.height *0.05,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            border: Border.all(width: 1,color: Colors.black54),
+                            color: Colors.transparent
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(_fileName2[index]),
+                            ElevatedButton(
+                                onPressed: (){
+                                  upLoadFile2(index);
+                                },
+                                child: Text("Choose File"))
+                            // GestureDetector(
+                            //   onTap:  ()async{
+                            //     final result = await FilePicker.platform.pickFiles();
+                            //     if (result == null) return;
+                            //     files = result.files;
+                            //     setState((){});
+                            //   },
+                            //   child: Row(
+                            //     children: [
+                            //       Icon(Icons.upload_outlined,color: Colors.grey,),
+                            //
+                            //       Text("Choose File",style: TextStyle(color: Colors.black54),),
+                            //     ],
+                            //   ),
+                            // ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(height: 10,),
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: FxText.bodyLarge(
+                          'Passport Size Photo',
+                          // textAlign: TextAlign.left,
+                          letterSpacing: 0,
+                          fontWeight: 600,
+                        ),
+                        // ),
+                      ),
+                      const SizedBox(height: 10,),
+                      Container(
+                        padding:EdgeInsets.all(5),
                         width: MediaQuery.of(context).size.width *0.9,
                         height: MediaQuery.of(context).size.height *0.05,
                         decoration: BoxDecoration(
@@ -1100,63 +1338,18 @@ String userName = "";
                         ),
                         child: Center(
                           child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              GestureDetector(
-                                onTap:  ()async{
-                                  final result = await FilePicker.platform.pickFiles();
-                                },
-                                child: Row(
-                                  children: [
-                                    Icon(Icons.upload_outlined,color: Colors.grey,),
-
-                                    Text("Choose File",style: TextStyle(color: Colors.black54),),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      SizedBox(height: 10,),
-                      Container(
-                        child: Align(
-                          alignment: Alignment.centerLeft,
-                          child: FxText.bodyLarge(
-                            'Passport Size Photo',
-                            // textAlign: TextAlign.left,
-                            letterSpacing: 0,
-                            fontWeight: 600,
-                          ),
-                          // ),
-                        ),
-                      ),
-                      SizedBox(height: 10,),
-                      Container(
-                        width: MediaQuery.of(context).size.width *0.9,
-                        height: MediaQuery.of(context).size.height *0.05,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            border: Border.all(width: 1,color: Colors.black54),
-                            color: Colors.transparent
-                        ),
-                        child: Center(
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              GestureDetector(
-                                onTap:  ()async{
-                                  final result = await FilePicker.platform.pickFiles();
-                                },
-                                child: Row(
-                                  children: [
-                                    Icon(Icons.upload_outlined,color: Colors.grey,),
-
-                                    Text("Choose File",style: TextStyle(color: Colors.black54),),
-                                  ],
-                                ),
-                              ),
-                            ],
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                (_imageFile[index] == null)? Container(): Container(
+                                  width:100,
+                                  height:30,
+                                  child: (_imageFile[index] != null)? Image.file(
+                                      File( _imageFile[index]?.path ?? "" )) : Container()),
+                                ElevatedButton(
+                                    onPressed: ()async{
+                                  takePhoto(ImageSource.gallery, index);
+                                }, child: Text("Choose File"))
+                              ]
                           ),
                         ),
                       ),
@@ -1175,6 +1368,8 @@ String userName = "";
                       ),
                       SizedBox(height: 10,),
                       Container(
+                        alignment: Alignment.topCenter,
+                        padding: EdgeInsets.all(5),
                         width: MediaQuery.of(context).size.width *0.9,
                         height: MediaQuery.of(context).size.height *0.05,
                         decoration: BoxDecoration(
@@ -1182,24 +1377,31 @@ String userName = "";
                             border: Border.all(width: 1,color: Colors.black54),
                             color: Colors.transparent
                         ),
-                        child: Center(
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              GestureDetector(
-                                onTap:  ()async{
-                                  final result = await FilePicker.platform.pickFiles();
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(_fileName3[index]),
+                            ElevatedButton(
+                                onPressed: (){
+                                  upLoadFile3(index);
                                 },
-                                child: Row(
-                                  children: [
-                                    Icon(Icons.upload_outlined,color: Colors.grey,),
-
-                                    Text("Choose File",style: TextStyle(color: Colors.black54),),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
+                                child: Text("Choose File"))
+                            // GestureDetector(
+                            //   onTap:  ()async{
+                            //     final result = await FilePicker.platform.pickFiles();
+                            //     if (result == null) return;
+                            //     files = result.files;
+                            //     setState((){});
+                            //   },
+                            //   child: Row(
+                            //     children: [
+                            //       Icon(Icons.upload_outlined,color: Colors.grey,),
+                            //
+                            //       Text("Choose File",style: TextStyle(color: Colors.black54),),
+                            //     ],
+                            //   ),
+                            // ),
+                          ],
                         ),
                       ),
                       SizedBox(height: 10,),
@@ -1218,6 +1420,8 @@ String userName = "";
 
                       SizedBox(height: 10,),
                       Container(
+                        alignment: Alignment.topCenter,
+                        padding: EdgeInsets.all(5),
                         width: MediaQuery.of(context).size.width *0.9,
                         height: MediaQuery.of(context).size.height *0.05,
                         decoration: BoxDecoration(
@@ -1225,24 +1429,31 @@ String userName = "";
                             border: Border.all(width: 1,color: Colors.black54),
                             color: Colors.transparent
                         ),
-                        child: Center(
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              GestureDetector(
-                                onTap:  ()async{
-                                  final result = await FilePicker.platform.pickFiles();
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(_fileName4[index]),
+                            ElevatedButton(
+                                onPressed: (){
+                                  upLoadFile4(index);
                                 },
-                                child: Row(
-                                  children: [
-                                    Icon(Icons.upload_outlined,color: Colors.grey,),
-
-                                    Text("Choose File",style: TextStyle(color: Colors.black54),),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
+                                child: Text("Choose File"))
+                            // GestureDetector(
+                            //   onTap:  ()async{
+                            //     final result = await FilePicker.platform.pickFiles();
+                            //     if (result == null) return;
+                            //     files = result.files;
+                            //     setState((){});
+                            //   },
+                            //   child: Row(
+                            //     children: [
+                            //       Icon(Icons.upload_outlined,color: Colors.grey,),
+                            //
+                            //       Text("Choose File",style: TextStyle(color: Colors.black54),),
+                            //     ],
+                            //   ),
+                            // ),
+                          ],
                         ),
                       ),
                       SizedBox(height: 10,),
@@ -1437,177 +1648,7 @@ String userName = "";
               ],
             ),
           ),
-          // FxContainer.bordered(
-          //   onTap: () {
-          //     controller.selectPaymentMethod(2);
-          //   },
-          //   borderRadiusAll: 4,
-          //   margin: FxSpacing.bottom(20),
-          //   border: Border.all(
-          //       color: controller.paymentMethodSelected == 2
-          //           ? theme.colorScheme.primary
-          //           : theme.colorScheme.onBackground),
-          //   color: controller.paymentMethodSelected == 2
-          //       ? theme.colorScheme.primary.withAlpha(40)
-          //       : theme.scaffoldBackgroundColor,
-          //   child: Column(
-          //     crossAxisAlignment: CrossAxisAlignment.start,
-          //     children: [
-          //       Row(
-          //         children: [
-          //           Icon(
-          //             FeatherIcons.dollarSign,
-          //             size: 18,
-          //             color: theme.colorScheme.onBackground.withAlpha(220),
-          //           ),
-          //           FxSpacing.width(8),
-          //           FxText.bodyMedium(
-          //             'Cash on delivery',
-          //             fontWeight: 700,
-          //           ),
-          //           controller.paymentMethodSelected == 2
-          //               ? Expanded(
-          //                   child: Align(
-          //                     alignment:
-          //                         Language.autoDirection<AlignmentGeometry>(
-          //                             Alignment.centerRight,
-          //                             Alignment.centerLeft)!,
-          //                     child: FxContainer.roundBordered(
-          //                       paddingAll: 4,
-          //                       border: Border.all(
-          //                           color: theme.colorScheme.primary),
-          //                       color: theme.colorScheme.primary.withAlpha(40),
-          //                       child: Icon(
-          //                         Icons.check,
-          //                         color: theme.colorScheme.primary,
-          //                         size: 10,
-          //                       ),
-          //                     ),
-          //                   ),
-          //                 )
-          //               : Container(),
-          //         ],
-          //       ),
-          //       FxSpacing.height(8),
-          //       FxText.bodySmall(
-          //         'Additional \$ 20 charges for COD services.',
-          //         muted: true,
-          //       ),
-          //     ],
-          //   ),
-          // ),
-          // Row(
-          //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          //   children: [
-          //     FxText.labelLarge(
-          //       'Do you have promo code?',
-          //       fontWeight: 700,
-          //     ),
-          //     FxSpacing.width(20),
-          //     FxContainer.bordered(
-          //       // padding: FxSpacing.xy(16, 12),
-          //       onTap: () {
-          //         controller.addCart
-          //             ? controller.cartController.reverse()
-          //             : controller.cartController.forward();
-          //         // controller.showcode = !controller.showcode;
-          //         // log(controller.showcode.toString());
-          //         // // controller.showcode();
-          //         // log('message');
-          //       },
-          //       borderRadiusAll: 4,
-          //       // elevation: 0,
-          //       splashColor: const Color(0xff1529e8).withAlpha(30),
-          //       // color: const Color(0xff1529e8),
-          //       color: const Color(0xff1529e8).withAlpha(40),
-          //       border: Border.all(color: const Color(0xff1529e8)),
-          //       child: Row(
-          //         mainAxisSize: MainAxisSize.min,
-          //         children: [
-          //           FxText.labelMedium(
-          //             'Promo Code',
-          //             // color: Colors.white,
-          //             color: const Color(0xff1529e8),
-          //             fontWeight: 600,
-          //           ),
-          //           const Icon(
-          //             FeatherIcons.arrowDown,
-          //             color: Color(0xff1529e8),
-          //             // color: Colors.white,
-          //             size: 18,
-          //           ),
-          //           // FxSpacing.width(8),
-          //         ],
-          //       ),
-          //     ),
-          //   ],
-          // ),
-          // FxSpacing.height(20),
-          // //code
-          // controller.addCart
-          //     ? FxContainer(
-          //   paddingAll: 12,
-          //   borderRadiusAll: 4,
-          //   child: Row(
-          //     children: [
-          //
-          //       Expanded(
-          //         child: SlideTransition(
-          //           position: controller.passportAnimation,
-          //           child: TextFormField(
-          //             style: FxTextStyle.bodyMedium(),
-          //             decoration: InputDecoration(
-          //                 floatingLabelBehavior:
-          //                 FloatingLabelBehavior.never,
-          //                 filled: true,
-          //                 isDense: true,
-          //                 fillColor: Colors.white,
-          //                 // fillColor: Colors.white
-          //                 // prefixIcon: Icon(
-          //                 //   FeatherIcons.user,
-          //                 //   color: theme.colorScheme.onBackground,
-          //                 // ),
-          //                 hintText: "Enter Promo Code",
-          //                 enabledBorder: outlineInputBorderenable,
-          //                 focusedBorder: outlineInputBorderfocus,
-          //                 border: outlineInputBorderenable,
-          //                 // enabledBorder: outlineInputBorder,
-          //                 // focusedBorder: outlineInputBorder,
-          //                 // border: outlineInputBorder,
-          //                 contentPadding: FxSpacing.all(16),
-          //                 hintStyle: FxTextStyle.bodyMedium(),
-          //                 isCollapsed: true),
-          //             maxLines: 1,
-          //             controller: controller.phoneTE,
-          //             // validator: controller.validateName,
-          //             cursorColor: theme.colorScheme.onBackground,
-          //           ),
-          //         ),
-          //         //     child: FxText.labelLarge(
-          //         //   'Black Friday Promo',
-          //         //   fontWeight: 600,
-          //         // )
-          //       ),
-          //       FxSpacing.width(16),
-          //
-          //       Expanded(
-          //         child: FxButton.block(
-          //           onPressed: () {},
-          //           borderRadiusAll: 4,
-          //           elevation: 0,
-          //           splashColor: const Color(0xff1529e8).withAlpha(40),
-          //           backgroundColor: const Color(0xff1529e8),
-          //           child: FxText.bodyMedium(
-          //             'Redeem',
-          //             fontWeight: 600,
-          //             color: theme.colorScheme.onPrimary,
-          //           ),
-          //         ),
-          //       ),
-          //     ],
-          //   ),
-          // )
-          //     : const SizedBox(),
+
           FxSpacing.height(20),
 
 
@@ -1634,12 +1675,92 @@ String userName = "";
     );
   }
 
-  void openFiles(List<PlatformFile> files) {
-    show(files: files);
+  // void openFiles(List<PlatformFile> files) {
+  //   show(files: files);
+  // }
+
+  void upLoadFile(index) async {
+    final results = await FilePicker.platform.pickFiles(
+      allowMultiple: false,
+      type: FileType.any,
+      // allowedExtensions: ['jpg', 'png'],
+    );
+
+    if (results != null) {
+      final path = results.files.single.path!;
+
+      _fileName.removeAt(index); //  ["ilfer","" , "", ];
+      _fileName.insert(index,  results.files.single.name);
+      // storage.uploadFile(path, fileName);
+      setState(() {});
+      print(_fileName);
+    } else {
+      // User canceled the picker
+    }
+  }
+  void upLoadFile2(index) async {
+    final results = await FilePicker.platform.pickFiles(
+      allowMultiple: false,
+      type: FileType.any,
+      // allowedExtensions: ['jpg', 'png'],
+    );
+
+    if (results != null) {
+      final path = results.files.single.path!;
+
+      _fileName2.removeAt(index); //  ["ilfer","" , "", ];
+      _fileName2.insert(index,  results.files.single.name);
+      // storage.uploadFile(path, fileName);
+      setState(() {});
+      print(_fileName2);
+    } else {
+      // User canceled the picker
+    }
+  }
+  void upLoadFile3(index) async {
+    final results = await FilePicker.platform.pickFiles(
+      allowMultiple: false,
+      type: FileType.any,
+      // allowedExtensions: ['jpg', 'png'],
+    );
+
+    if (results != null) {
+      final path = results.files.single.path!;
+
+      _fileName3.removeAt(index); //  ["ilfer","" , "", ];
+      _fileName3.insert(index,  results.files.single.name);
+      // storage.uploadFile(path, fileName);
+      setState(() {});
+      print(_fileName);
+    } else {
+      // User canceled the picker
+    }
+  }
+  void upLoadFile4(index) async {
+    final results = await FilePicker.platform.pickFiles(
+      allowMultiple: false,
+      type: FileType.any,
+      // allowedExtensions: ['jpg', 'png'],
+    );
+
+    if (results != null) {
+      final path = results.files.single.path!;
+
+      _fileName4.removeAt(index); //  ["ilfer","" , "", ];
+      _fileName4.insert(index,  results.files.single.name);
+      // storage.uploadFile(path, fileName);
+      setState(() {});
+      print(_fileName);
+    } else {
+      // User canceled the picker
+    }
   }
 
-  void show({required List<PlatformFile> files}) {}
+
 }
+
+
+
 
 
 

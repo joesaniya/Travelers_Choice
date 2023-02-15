@@ -125,17 +125,19 @@ class ApplyVisaController extends FxController {
   late TextEditingController  FnameTE,LnameTE, emailTE,
       addressTE, phoneTE,passportTE, fromDateTE, toDateTE,dobTE, expiryTE;
 
-  String? selectedTitle;
-  final List<String> titleCodes = ['Mr.','Ms.', 'Mrs.','Mstr.' ];
+  List<List<String>>selectTitle = [];
+  List<String> selectedTitle=[];
+  final List<String> titleCodes = ['Mr.','Ms.', 'Mrs.','Mstr.'];
   String? selectedVisa;
   final List<String> visaTypes = ['30 day single entry tourist visa',
     '60 days single entry tourist visa',
     '12 days work visa'];
-  String? selectedcountry;
+  List<List<String>>selectCountry = [];
+  List<String> selectedCountry=[];
   final List<String> countryCodes = ['India',
     'United Arab Emirates', 'France', 'United States of America','England'];
   int? selectedTraveller;
-  final List<int> travellerNumber = [1,2,3,4,5,6,7,8,9,10];
+  final List<int> travellerNumber = [1,2,3,4,5,6,7,8,9];
   late AnimationController arrowController,
 
       firstnameController,
@@ -165,6 +167,8 @@ class ApplyVisaController extends FxController {
   List<TextEditingController> emailControllers = [];
   List<TextEditingController> contactControllers = [];
   List<TextEditingController> passportControllers = [];
+  List<TextEditingController> dobControllers = [];
+  List<TextEditingController> expiryControllers = [];
 
 
   @override
@@ -580,6 +584,20 @@ class ApplyVisaController extends FxController {
   @override
   String getTag() {
     return "checkout_controller";
+  }
+  uploadFile(List<File> files) async {
+
+    var postUri = Uri.parse("url here");
+    var request =  http.MultipartRequest("POST", postUri);
+    request.fields['user'] = 'blah';
+    files.forEach((file) async{
+      request.files.add( http.MultipartFile.fromBytes('file', await File.fromUri(Uri.file(file.path)).readAsBytes(),));
+
+    });
+
+    request.send().then((response) {
+      if (response.statusCode == 200) print("Uploaded!");
+    });
   }
 }
 
