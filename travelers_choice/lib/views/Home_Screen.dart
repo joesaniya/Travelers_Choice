@@ -80,6 +80,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     });
   }
 
+
 //topatt
   Widget _buildProductList() {
     List<Widget> list = [];
@@ -625,7 +626,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
             ],
           ),
         ),
-      ));
+      )
+      );
     }
 
     return SingleChildScrollView(

@@ -11,6 +11,7 @@ import '../models/product.dart';
 
 import '../views/detail_screen/detail_Screen.dart';
 import '../views/hotel_travel_constants.dart';
+import 'attraction_Controller.dart';
 
 class HomeController extends FxController {
   TickerProvider ticker;
@@ -194,8 +195,18 @@ Country Code => $countryCode
   final List<AllattractionModal> _favouriteMeals = [];
   final List<AllattractionModal> _availableMeals = <AllattractionModal>[];
 
-  void _toggleFavorite(String mealId) {
+  void _toggleFavorite(String mealId) async {
+    await AttractionController().getAllattractionList(context).then((value) {
+      if (value != null) {
+        // isLoading = false;
+        allattractionList = [];
+        allattractionList.add(value);
+        log('data All1:$allattractionList');
+      }
+    });
+    log('All Data:${allattractionList.first.attractions.data.length}');
     log('toggle');
+
     final existingIndex = _favouriteMeals
         .indexWhere((meal) => meal.attractions.data.first.id == mealId);
     if (existingIndex >= 0) {
@@ -206,7 +217,7 @@ Country Code => $countryCode
       //   _availableMeals
       //       .firstWhere((meal) => meal.attractions.data.first.id == mealId),
       // );
-      log('All Data:$allattractionList');
+      log('All Data:${allattractionList.first.attractions.data.length}');
       _favouriteMeals.add(
         allattractionList
             .firstWhere((meal) => meal.attractions.data.first.id == mealId),

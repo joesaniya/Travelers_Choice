@@ -4,6 +4,7 @@ import 'package:flutx/flutx.dart';
 
 import 'package:hotel_travel/extensions/extensions.dart';
 
+import '../controllers/cart_controller.dart';
 import '../controllers/saved_controller.dart';
 import '../loading_effect.dart';
 import '../models/cart.dart';
@@ -20,14 +21,14 @@ class _CartScreenState extends State<CartScreen>
     with TickerProviderStateMixin {
   late ThemeData theme;
 
-  late SavedController controller;
+  late CartController controller;
 
   @override
   void initState() {
     super.initState();
     theme = AppTheme.shoppingTheme;
 
-    controller = FxControllerStore.put(SavedController(this));
+    controller = FxControllerStore.put(CartController(this));
   }
 
   Widget _buildCartList() {
@@ -339,7 +340,7 @@ class _CartScreenState extends State<CartScreen>
 
   @override
   Widget build(BuildContext context) {
-    return FxBuilder<SavedController>(
+    return FxBuilder<CartController>(
         controller: controller,
         builder: (controller) {
           return _buildBody();

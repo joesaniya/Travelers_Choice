@@ -47,17 +47,19 @@ class _DetailScreenState extends State<DetailScreen>
             color: Color(0xff1529e8),
             // color: Colors.lightBlueAccent,
             width: 0));
-    
+
     controller.addListener(() {
       if (controller.favs.isEmpty) {
         SharedPreferences.getInstance().then((prefs) {
           if (prefs.getStringList("favs") != null) {
+            log('Presf:${controller.allattractionList.first.attractions.data.first.id}');
             controller.favs.addAll(prefs.getStringList("favs")!.toList());
           }
           final mealId = ModalRoute.of(context)!.settings.arguments as String;
           final selectedMeal = controller.allattractionList
               .firstWhere((Meal) => Meal.attractions.data.first.id == mealId);
           controller.favs = widget.toggleFavourite(mealId);
+          setState(() {});
           // setState(() {
           //   final mealId = ModalRoute.of(context).settings.arguments as String;
           //   final selectedMeal =
@@ -82,11 +84,11 @@ class _DetailScreenState extends State<DetailScreen>
   }
 
   Widget _buildnew() {
-    log('buildnew');
-    log(controller.detailattraction.toString());
+    // log('buildnew');
+    // log(controller.detailattraction.toString());
     // final mealId = ModalRoute.of(context)!.settings.arguments;
     final mealId = widget.productid;
-    log('Meal Id:${widget.productid}');
+    // log('Meal Id:${widget.productid}');
     final selectedMeal = controller.allattractionList
         .contains((Meal) => Meal.attractions.data.first.id == mealId);
     if (controller.detailattraction == null) {
@@ -358,7 +360,7 @@ class _DetailScreenState extends State<DetailScreen>
                                             child: Icon(
                                               // MdiIcons.heartOutline,
                                               widget.isFavourite(mealId)
-                                                  ? Icons.abc
+                                                  ? Icons.star
                                                   : Icons.star_border,
                                               color: controller
                                                   .colorAnimation.value,
