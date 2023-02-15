@@ -7,6 +7,7 @@ import '../models/all_attraction_modal.dart';
 import '../models/cart.dart';
 import '../models/product.dart';
 import '../views/hotel_travel_constants.dart';
+import '../views/detail_screen/detail_Screen.dart';
 
 class SavedController extends FxController {
   TickerProvider ticker;
@@ -145,34 +146,28 @@ class SavedController extends FxController {
 
   void goToSingleProduct(Datum product) {
     log('Saved Detail:${product.id}');
-
-  }
-
-  Future<void> goToCheckout() async {
-    animationController.forward();
-    await Future.delayed(const Duration(seconds: 1));
-    // Navigator.of(context, rootNavigator: true).push(PageRouteBuilder(
-    //     transitionDuration: const Duration(milliseconds: 500),
-    //     transitionsBuilder: (
-    //       BuildContext context,
-    //       Animation<double> animation,
-    //       Animation<double> secondaryAnimation,
-    //       Widget child,
-    //     ) =>
-    //         FadeTransition(
-    //           opacity: animation,
-    //           child: child,
-    //         ),
-    //     pageBuilder: (_, __, ___) =>  CheckOutScreen()));
-    // Navigator.of(context, rootNavigator: true).push(
-    //   MaterialPageRoute(
-    //     builder: (context) => const CheckOutScreen(),
-    //   ),
-    // );
+    Navigator.of(context, rootNavigator: true).push(PageRouteBuilder(
+        transitionDuration: const Duration(milliseconds: 500),
+        transitionsBuilder: (
+          BuildContext context,
+          Animation<double> animation,
+          Animation<double> secondaryAnimation,
+          Widget child,
+        ) =>
+            FadeTransition(
+              opacity: animation,
+              child: child,
+            ),
+        pageBuilder: (_, __, ___) => DetailScreen(
+            product.id,
+            //  _toggleFavorite, _isMealFavorite,
+            product)
+        // SingleProductScreen(product.id)
+        ));
   }
 
   @override
   String getTag() {
-    return "cart_controller";
+    return "saved_controller";
   }
 }
