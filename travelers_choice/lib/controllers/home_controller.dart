@@ -187,47 +187,50 @@ Country Code => $countryCode
               child: child,
             ),
         pageBuilder: (_, __, ___) =>
-            DetailScreen(product.id, _toggleFavorite, _isMealFavorite)
+            DetailScreen(product.id,
+            //  _toggleFavorite, _isMealFavorite,
+              product)
         // SingleProductScreen(product.id)
         ));
   }
 
-  final List<AllattractionModal> _favouriteMeals = [];
-  final List<AllattractionModal> _availableMeals = <AllattractionModal>[];
+  // final List<AllattractionModal> favouriteMeals = [];
+  // final List<AllattractionModal> availableMeals = <AllattractionModal>[];
 
-  void _toggleFavorite(String mealId) async {
-    await AttractionController().getAllattractionList(context).then((value) {
-      if (value != null) {
-        // isLoading = false;
-        allattractionList = [];
-        allattractionList.add(value);
-        log('data All1:$allattractionList');
-      }
-    });
-    log('All Data:${allattractionList.first.attractions.data.length}');
-    log('toggle');
+  // void _toggleFavorite(String mealId) async {
+  //   await AttractionController().getAllattractionList(context).then((value) {
+  //     if (value != null) {
+  //       // isLoading = false;
+  //       allattractionList = [];
+  //       allattractionList.add(value);
+  //       log('data All1:$allattractionList');
+  //     }
+  //   });
+  //   log('All Data:${allattractionList.first.attractions.data.length}');
+  //   log('toggle');
 
-    final existingIndex = _favouriteMeals
-        .indexWhere((meal) => meal.attractions.data.first.id == mealId);
-    if (existingIndex >= 0) {
-      _favouriteMeals.removeAt(existingIndex);
-      update();
-    } else {
-      // _favouriteMeals.add(
-      //   _availableMeals
-      //       .firstWhere((meal) => meal.attractions.data.first.id == mealId),
-      // );
-      log('All Data:${allattractionList.first.attractions.data.length}');
-      _favouriteMeals.add(
-        allattractionList
-            .firstWhere((meal) => meal.attractions.data.first.id == mealId),
-      );
-    }
-  }
+  //   final existingIndex = _favouriteMeals
+  //       .indexWhere((meal) => meal.attractions.data.first.id == mealId);
+  //   if (existingIndex >= 0) {
+  //     _favouriteMeals.removeAt(existingIndex);
+  //     update();
+  //   } else {
+  //     // _favouriteMeals.add(
+  //     //   _availableMeals
+  //     //       .firstWhere((meal) => meal.attractions.data.first.id == mealId),
+  //     // );
+  //     log('All Data:${allattractionList.first.attractions.data.length}');
+  //     // AllattractionModal objmodal=a
+  //     _favouriteMeals.add(
+  //       allattractionList
+  //           .firstWhere((meal) => meal.attractions.data.first.id == mealId),
+  //     );
+  //   }
+  // }
 
-  bool _isMealFavorite(String id) {
-    return _favouriteMeals.any((meal) => meal.attractions.data.first.id == id);
-  }
+  // bool _isMealFavorite(String id) {
+  //   return _favouriteMeals.any((meal) => meal.attractions.data.first.id == id);
+  // }
 
   void goToSubscription() {
     // Navigator.of(context, rootNavigator: true).push(

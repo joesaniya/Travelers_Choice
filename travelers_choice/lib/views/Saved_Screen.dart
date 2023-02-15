@@ -11,6 +11,7 @@ import '../controllers/attraction_Controller.dart';
 import '../controllers/saved_controller.dart';
 import '../loading_effect.dart';
 import '../theme/app_theme.dart';
+import 'full_app.dart';
 
 class SavedScreen extends StatefulWidget {
   final List<AllattractionModal> favouriteMeals;
@@ -49,7 +50,7 @@ class _SavedScreenState extends State<SavedScreen>
   void initState() {
     super.initState();
     getAttraction(context);
-    log('saved:${widget.favouriteMeals}');
+    log('saved:${favouriteList.length}');
     theme = AppTheme.shoppingTheme;
 
     controller = FxControllerStore.put(SavedController(this));
@@ -335,29 +336,28 @@ class _SavedScreenState extends State<SavedScreen>
           centerTitle: true,
           backgroundColor: const Color(0xfff5f5f5),
         ),
-        body:
-            // widget.favouriteMeals.isEmpty
-            //     ? Center(
-            //         child: Column(
-            //           mainAxisAlignment: MainAxisAlignment.center,
-            //           children: [
-            //             Container(
-            //               decoration: const BoxDecoration(
-            //                   image: DecorationImage(
-            //                 image: NetworkImage(
-            //                     'https://c.tenor.com/hJDuRStH_cYAAAAC/cat-sleeping.gif'),
-            //               )),
-            //             ),
-            //             const Text(
-            //                 'You have no favourite yet - start adding some item!',
-            //                 style: TextStyle(
-            //                     fontFamily: 'inter',
-            //                     fontWeight: FontWeight.w400,
-            //                     fontSize: 16))
-            //           ],
-            //         ),
-            //       )
-            //     :
+        body: favouriteList.isEmpty
+            ? Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      decoration: const BoxDecoration(
+                          image: DecorationImage(
+                        image: NetworkImage(
+                            'https://c.tenor.com/hJDuRStH_cYAAAAC/cat-sleeping.gif'),
+                      )),
+                    ),
+                    const Text(
+                        'You have no favourite yet - start adding some item!',
+                        style: TextStyle(
+                            fontFamily: 'inter',
+                            fontWeight: FontWeight.w400,
+                            fontSize: 16))
+                  ],
+                ),
+              )
+            :
 
             /////
             // Container(
@@ -376,7 +376,7 @@ class _SavedScreenState extends State<SavedScreen>
                     20,
                     20),
                 shrinkWrap: true,
-                itemCount: 4,
+                itemCount: favouriteList.length,
                 // itemCount: controller.products!.length,
                 physics: const ClampingScrollPhysics(),
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -388,7 +388,7 @@ class _SavedScreenState extends State<SavedScreen>
                 itemBuilder: (BuildContext context, int index) {
                   return _buildSingleProduct(
                       // widget.favouriteMeals.first.attractions.data.first
-                      allattractionList!.first.attractions.data.first);
+                      favouriteList[index]);
                 }),
       );
     }

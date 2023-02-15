@@ -4,20 +4,25 @@ import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutx/flutx.dart';
 import 'package:hotel_travel/controllers/Detail_controller.dart';
+import 'package:hotel_travel/models/all_attraction_modal.dart';
 import 'package:hotel_travel/views/detail_screen/review_Screen.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../loading_effect.dart';
 import '../../theme/app_theme.dart';
+import '../full_app.dart';
 
 class DetailScreen extends StatefulWidget {
   final String productid;
-  final Function toggleFavourite;
+  // final Function toggleFavourite;
 
-  final Function isFavourite;
+  // final Function isFavourite;
+  final Datum productdatum;
 
-  const DetailScreen(this.productid, this.toggleFavourite, this.isFavourite);
+  const DetailScreen(
+      this.productid,
+      // this.toggleFavourite, this.isFavourite,
+      this.productdatum);
 
   @override
   State<DetailScreen> createState() => _DetailScreenState();
@@ -48,28 +53,28 @@ class _DetailScreenState extends State<DetailScreen>
             // color: Colors.lightBlueAccent,
             width: 0));
 
-    controller.addListener(() {
-      if (controller.favs.isEmpty) {
-        SharedPreferences.getInstance().then((prefs) {
-          if (prefs.getStringList("favs") != null) {
-            log('Presf:${controller.allattractionList.first.attractions.data.first.id}');
-            controller.favs.addAll(prefs.getStringList("favs")!.toList());
-          }
-          final mealId = ModalRoute.of(context)!.settings.arguments as String;
-          final selectedMeal = controller.allattractionList
-              .firstWhere((Meal) => Meal.attractions.data.first.id == mealId);
-          controller.favs = widget.toggleFavourite(mealId);
-          setState(() {});
-          // setState(() {
-          //   final mealId = ModalRoute.of(context).settings.arguments as String;
-          //   final selectedMeal =
-          //     allattractionList.firstWhere((Meal) => Meal.id == mealId);
-          //   favs = widget.toggleFavourite(mealId);
-          // });
-          log('selectedMeal:${controller.allattractionList}');
-        });
-      }
-    });
+    // controller.addListener(() {
+    //   if (controller.favs.isEmpty) {
+    //     SharedPreferences.getInstance().then((prefs) {
+    //       if (prefs.getStringList("favs") != null) {
+    //         log('Presf:${controller.allattractionList.first.attractions.data.first.id}');
+    //         controller.favs.addAll(prefs.getStringList("favs")!.toList());
+    //       }
+    //       final mealId = ModalRoute.of(context)!.settings.arguments as String;
+    //       final selectedMeal = controller.allattractionList
+    //           .firstWhere((Meal) => Meal.attractions.data.first.id == mealId);
+    //       controller.favs = widget.toggleFavourite(mealId);
+    //       setState(() {});
+    //       // setState(() {
+    //       //   final mealId = ModalRoute.of(context).settings.arguments as String;
+    //       //   final selectedMeal =
+    //       //     allattractionList.firstWhere((Meal) => Meal.id == mealId);
+    //       //   favs = widget.toggleFavourite(mealId);
+    //       // });
+    //       log('selectedMeal:${controller.allattractionList}');
+    //     });
+    //   }
+    // });
   }
 
   //split
@@ -359,9 +364,9 @@ class _DetailScreenState extends State<DetailScreen>
                                             height: 44,
                                             child: Icon(
                                               // MdiIcons.heartOutline,
-                                              widget.isFavourite(mealId)
-                                                  ? Icons.star
-                                                  : Icons.star_border,
+                                              widget.productdatum.favourite!
+                                                  ? MdiIcons.heart
+                                                  : MdiIcons.heartOutline,
                                               color: controller
                                                   .colorAnimation.value,
                                               size: controller
@@ -380,9 +385,27 @@ class _DetailScreenState extends State<DetailScreen>
                                           //         .reverse()
                                           //     : controller.animationController
                                           //         .forward();
-                                          log('Meal Id:$mealId');
+                                          log('Excursion Id:$mealId');
                                           setState(() {
-                                            widget.toggleFavourite(mealId);
+                                            log('Excursion Id 1:$mealId');
+
+                                            if (widget
+                                                .productdatum.favourite!) {
+                                              widget.productdatum.favourite =
+                                                  false;
+                                              favouriteList
+                                                  .remove(widget.productdatum);
+                                              //api
+                                            } else {
+                                              widget.productdatum.favourite =
+                                                  true;
+                                              favouriteList
+                                                  .add(widget.productdatum);
+                                              //api
+                                              log('Excursion Id Else:$mealId');
+                                            }
+
+                                            // widget.toggleFavourite(mealId);
                                           });
                                           // log('message:${widget.productid}');
                                         },

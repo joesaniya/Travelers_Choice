@@ -82,6 +82,7 @@ class Datum {
     required this.activity,
     required this.totalReviews,
     required this.averageRating,
+    this.favourite=false,
   });
 
   String id;
@@ -102,6 +103,7 @@ class Datum {
   Activity activity;
   int totalReviews;
   double averageRating;
+  bool? favourite;
 
   factory Datum.fromJson(Map<String, dynamic> json) => Datum(
         id: json["_id"],
@@ -220,8 +222,6 @@ final slugValues = EnumValues({
   "theme-park": Slug.THEME_PARK,
   "tour": Slug.TOUR
 });
-
-
 
 enum Country {
   THE_63_AC33_ECFF04_E5652_A2583_F5,

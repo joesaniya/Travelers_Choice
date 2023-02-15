@@ -253,7 +253,9 @@ class HomeSearchController extends FxController {
               opacity: animation,
               child: child,
             ),
-        pageBuilder: (_, __, ___) => DetailScreen(product.id, _toggleFavorite, _isMealFavorite)));
+        pageBuilder: (_, __, ___) => DetailScreen(product.id,
+        //  _toggleFavorite, _isMealFavorite,
+          product)));
   }
 
     List<AllattractionModal> _favouriteMeals = [];

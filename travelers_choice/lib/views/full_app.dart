@@ -10,11 +10,11 @@ import '../controllers/full_app_conrtoller.dart';
 import '../theme/app_theme.dart';
 import 'Saved_Screen.dart';
 
+List<Datum> favouriteList = <Datum>[];
+
 class FullApp extends StatefulWidget {
   List<AllattractionModal> favouriteMeal;
-   FullApp(
-    this.favouriteMeal
-  );
+  FullApp(this.favouriteMeal);
 
   @override
   _FullAppState createState() => _FullAppState();
@@ -106,7 +106,7 @@ class _FullAppState extends State<FullApp> with SingleTickerProviderStateMixin {
                     // HomeScreen(size: size),
 
                     // const Center(child: Text('Saved')),
-                  SavedScreen(widget.favouriteMeal),
+                    SavedScreen(widget.favouriteMeal),
                     const CartScreen(),
                     const ProfileScreen()
                   ],
