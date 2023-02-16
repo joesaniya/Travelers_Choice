@@ -5,6 +5,7 @@ import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutx/flutx.dart';
 import 'package:hotel_travel/services/auth_service.dart';
 import 'package:hotel_travel/views/search_screens/search_place.dart';
+import 'package:hotel_travel/views/visa_screen.dart';
 import 'package:iconsax/iconsax.dart';
 
 import '../controllers/attraction_Controller.dart';
@@ -945,37 +946,51 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                           ),
                         ),
                       ),
-                      const SizedBox(
-                        width: 10,
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          log('flight');
-                          _tabbed = '4';
-                          setState(() {});
-                        },
-                        child: Container(
-                          width: 120,
-                          decoration: BoxDecoration(
-                              color: _tabbed == '4'
-                                  ? const Color(0xff1529e8)
-                                  // theme1.colorScheme.primary
-                                  : Colors.transparent,
-                              border: Border.all(
-                                  color: _tabbed == '4'
-                                      ? Colors.transparent
-                                      : theme1.colorScheme.primaryContainer,
-                                  width: _tabbed == '4' ? 0.0 : 1.0),
-                              borderRadius: BorderRadius.circular(20.0)),
-                          padding: const EdgeInsets.symmetric(horizontal: 5),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Image.asset(
-                                  "assets/images/apps/shopping2/icons/visa.png",
-                                  height: 20,
-                                  width: 20,
+
+                    ),
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        log('flight');
+                        _tabbed = '4';
+                        setState(() {});
+                        Navigator.push(context, MaterialPageRoute(builder: (context)=> VisaScreen()));
+                      },
+                      child: Container(
+                        width: 120,
+                        decoration: BoxDecoration(
+                            color: _tabbed == '4'
+                                ? const Color(0xff1529e8)
+                                // theme1.colorScheme.primary
+                                : Colors.transparent,
+                            border: Border.all(
+                                color: _tabbed == '4'
+                                    ? Colors.transparent
+                                    : theme1.colorScheme.primaryContainer,
+                                width: _tabbed == '4' ? 0.0 : 1.0),
+                            borderRadius: BorderRadius.circular(20.0)),
+                        padding: const EdgeInsets.symmetric(horizontal: 5),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Image.asset(
+                                "assets/images/apps/shopping2/icons/visa.png",
+                                height: 20,
+                                width: 20,
+                                color: _tabbed == '4'
+                                    ? Colors.white
+                                    : Colors.black),
+                            const SizedBox(
+                              width: 7,
+                            ),
+                            FxText.bodyLarge(
+                              'Visa',
+                              style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w800,
                                   color: _tabbed == '4'
                                       ? Colors.white
                                       : Colors.black),

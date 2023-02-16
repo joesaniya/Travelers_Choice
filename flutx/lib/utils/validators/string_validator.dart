@@ -208,6 +208,18 @@ class FxStringValidator {
     RegExp regex = new RegExp(pattern as String);
     return (!regex.hasMatch(email));
   }
+  static bool isPhone(String phone) {
+    Pattern pattern =
+    (r'^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$');
+    RegExp regex = new RegExp(pattern as String);
+    return (!regex.hasMatch(phone));
+  }
+  static bool isPassport(String passport) {
+    Pattern pattern =
+    (r'^[A-Z]{1}[0-9]{7}$');
+    RegExp regex = new RegExp(pattern as String);
+    return (!regex.hasMatch(passport));
+  }
 
 
   static bool validateStringRange(String text, [
@@ -215,5 +227,6 @@ class FxStringValidator {
     int maxLength = 20]) {
     return text.length >= minLength && text.length <= maxLength;
   }
+
 
 }
