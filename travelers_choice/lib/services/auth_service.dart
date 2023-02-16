@@ -35,7 +35,7 @@ class AuthService {
       log(body.toString());
       var response = await http.post(
           Uri.parse(
-            'https://a.walletbot.online/api/v1/users/signup',
+            'https://secure.mytravellerschoice.com/api/v1/users/signup',
           ),
           headers: {'Content-Type': 'application/json'},
           body: jsonEncode(body));
@@ -120,7 +120,7 @@ class AuthService {
       };
       var response = await http.post(
           Uri.parse(
-            'https://a.walletbot.online/api/v1/users/login',
+            'https://secure.mytravellerschoice.com/api/v1/users/login',
           ),
           headers: {'Content-Type': 'application/json'},
           body: jsonEncode(body));
@@ -178,7 +178,7 @@ class AuthService {
     try {
       var response = await http.get(
         Uri.parse(
-          'https://a.walletbot.online/api/v1/home/initial-data',
+          'https://secure.mytravellerschoice.com/api/v1/home/initial-data',
         ),
         headers: {'Content-Type': 'application/json'},
       );
@@ -208,7 +208,7 @@ class AuthService {
     try {
       var response = await http.get(
         Uri.parse(
-          'https://a.walletbot.online/api/v1/attractions/all',
+          'https://secure.mytravellerschoice.com/api/v1/attractions/all',
         ),
         headers: {'Content-Type': 'application/json'},
       );
@@ -230,7 +230,7 @@ class AuthService {
     try {
       var response = await http.get(
         Uri.parse(
-          'https://a.walletbot.online/api/v1/attractions/single/63afca1b5896ed6d0f297449',
+          'https://secure.mytravellerschoice.com/api/v1/attractions/single/63afca1b5896ed6d0f297449',
         ),
         headers: {'Content-Type': 'application/json'},
       );

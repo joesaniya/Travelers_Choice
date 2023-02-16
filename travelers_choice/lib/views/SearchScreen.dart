@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutx/flutx.dart';
@@ -624,15 +625,30 @@ class _SearchScreenState extends State<SearchScreen>
                         // child: Image(image: NetworkImage(product.images.first)),
                         child: Hero(
                           tag: "product_image_${product.images}",
-                          child: Image(
-                            // image: AssetImage(product.image),
-                            image: NetworkImage(
-                                'https://a.walletbot.online${product.images.first}'),
-                            // image: AssetImage(product.images.first),
-                            // height: 100,
+                          // child: Image(
+                          //   // image: AssetImage(product.image),
+                          //   image: NetworkImage(
+                          //       'https://a.walletbot.online${product.images.first}'),
+                          //   // image: AssetImage(product.images.first),
+                          //   // height: 100,
+                          //   height: 132,
+                          //   width: 150,
+                          //   fit: BoxFit.cover,
+                          // ),
+                          child: CachedNetworkImage(
                             height: 132,
                             width: 150,
                             fit: BoxFit.cover,
+                            fadeOutDuration: const Duration(seconds: 1),
+                            fadeInDuration: const Duration(seconds: 3),
+                            progressIndicatorBuilder:
+                                (context, url, progress) => Center(
+                              child: CircularProgressIndicator(
+                                value: progress.progress,
+                              ),
+                            ),
+                            imageUrl:
+                                'https://a.walletbot.online${product.images.first}',
                           ),
                         ),
                       ),

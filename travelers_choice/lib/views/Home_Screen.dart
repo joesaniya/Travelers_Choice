@@ -15,6 +15,7 @@ import '../models/all_attraction_modal.dart';
 import '../services/app_constants.dart';
 import '../theme/app_theme.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class HomeScreen extends StatefulWidget {
   // const HomeScreen({required this.size});
@@ -80,7 +81,6 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     });
   }
 
-
 //topatt
   Widget _buildProductList() {
     List<Widget> list = [];
@@ -141,16 +141,36 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                     // child: Image(image: NetworkImage(product.images.first)),
                     child: Hero(
                       tag: "product_image_${product.images.first}",
-                      child: Image(
-                        image: NetworkImage(
-                            'https://a.walletbot.online${product.images.first}'
-                            // product.images.first
-                            ),
+                      // child: Image(
+                      //   image: NetworkImage(
+                      //       'https://a.walletbot.online${product.images.first}',
+                      //       // product.images.first
+                      //        errorBuilder: (BuildContext context, Object exception,
+                      //         StackTrace stackTrace) {
+                      //       return Text('Your error widget...');
+                      //     },
+                      //       ),
 
-                        // height: 100,
+                      //   // height: 100,
+                      //   height: 132,
+                      //   width: 150,
+                      //   fit: BoxFit.cover,
+                      // ),
+
+                      child: CachedNetworkImage(
                         height: 132,
                         width: 150,
                         fit: BoxFit.cover,
+                        fadeOutDuration: const Duration(seconds: 1),
+                        fadeInDuration: const Duration(seconds: 3),
+                        progressIndicatorBuilder: (context, url, progress) =>
+                            Center(
+                          child: CircularProgressIndicator(
+                            value: progress.progress,
+                          ),
+                        ),
+                        imageUrl:
+                            'https://a.walletbot.online${product.images.first}',
                       ),
                     ),
                   ),
@@ -393,17 +413,44 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              // Container(
+              //   margin: const EdgeInsets.all(8),
+              //   height: 150,
+              //   decoration: BoxDecoration(
+              //       borderRadius: BorderRadius.circular(10),
+              //       image: DecorationImage(
+              //           image: NetworkImage(
+              //               'https://a.walletbot.online${product.images.first}'
+              //               // product.images.first.toString()
+              //               ),
+              //           fit: BoxFit.fill)
+              //           ),
+              // ),
               Container(
                 margin: const EdgeInsets.all(8),
                 height: 150,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    image: DecorationImage(
-                        image: NetworkImage(
-                            'https://a.walletbot.online${product.images.first}'
-                            // product.images.first.toString()
-                            ),
-                        fit: BoxFit.fill)),
+                child: CachedNetworkImage(
+                  imageUrl: 'https://a.walletbot.online${product.images.first}',
+                  imageBuilder: (context, imageProvider) => Container(
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image: imageProvider,
+                        fit: BoxFit.cover,
+                        // colorFilter: const ColorFilter.mode(
+                        //   Colors.red,
+                        //   BlendMode.colorBurn,
+                        // ),
+                      ),
+                    ),
+                  ),
+                  placeholder: (context, url) => const Center(
+                      child: CircularProgressIndicator(
+                    color: Color(0xff1529e8),
+                  )),
+                  errorWidget: (context, url, error) => const Icon(Icons.error),
+                  fadeOutDuration: const Duration(seconds: 1),
+                  fadeInDuration: const Duration(seconds: 3),
+                ),
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
@@ -626,8 +673,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
             ],
           ),
         ),
-      )
-      );
+      ));
     }
 
     return SingleChildScrollView(
@@ -739,7 +785,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                 //     // buildTitle(size),
                 //   ],
                 // ),
-                const SearchPlace(),
+                const SearchPlace(), //
 
                 // GestureDetector(
                 //   onTap: () {},

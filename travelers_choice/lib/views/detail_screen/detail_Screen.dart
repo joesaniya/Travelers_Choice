@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutx/flutx.dart';
@@ -167,13 +168,37 @@ class _DetailScreenState extends State<DetailScreen>
                                 tag:
                                     "product_image_${controller.detailattraction!.first.images!.first}",
                                 child: Container(
-                                  child: Image(
-                                    image: NetworkImage(
-                                        'https://a.walletbot.online${controller.detailattraction!.first.images![index]}'),
+                                  // child: Image(
+                                  //   image: NetworkImage(
+                                  //       'https://a.walletbot.online${controller.detailattraction!.first.images![index]}'),
+                                  //   height:
+                                  //       MediaQuery.of(context).size.height / 3,
+                                  //   width: MediaQuery.of(context).size.width,
+                                  //   fit: BoxFit.fill,
+                                  // ),
+                                  child: CachedNetworkImage(
                                     height:
                                         MediaQuery.of(context).size.height / 3,
                                     width: MediaQuery.of(context).size.width,
-                                    fit: BoxFit.fill,
+                                    imageUrl:
+                                        'https://a.walletbot.online${controller.detailattraction!.first.images![index]}',
+                                    imageBuilder: (context, imageProvider) =>
+                                        Container(
+                                      decoration: BoxDecoration(
+                                        image: DecorationImage(
+                                          image: imageProvider,
+                                          fit: BoxFit.fill,
+                                        ),
+                                      ),
+                                    ),
+                                    placeholder: (context, url) => const Center(
+                                        child: CircularProgressIndicator(
+                                      color: Color(0xff1529e8),
+                                    )),
+                                    errorWidget: (context, url, error) =>
+                                        const Icon(Icons.error),
+                                    fadeOutDuration: const Duration(seconds: 1),
+                                    fadeInDuration: const Duration(seconds: 3),
                                   ),
                                 ));
                           }),

@@ -1,12 +1,12 @@
 import 'dart:developer';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutx/flutx.dart';
 
 import 'package:hotel_travel/models/all_attraction_modal.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:lottie/lottie.dart';
 import '../controllers/attraction_Controller.dart';
 import '../controllers/saved_controller.dart';
 import '../loading_effect.dart';
@@ -113,12 +113,24 @@ class _SavedScreenState extends State<SavedScreen>
               // ),
               child: Hero(
                 tag: "product_image_${product.images}",
-                child: Image(
-                  image: NetworkImage(
-                      'https://a.walletbot.online${product.images.first}'),
+                child: CachedNetworkImage(
                   height: 160,
                   fit: BoxFit.cover,
+                  fadeOutDuration: const Duration(seconds: 1),
+                  fadeInDuration: const Duration(seconds: 3),
+                  progressIndicatorBuilder: (context, url, progress) => Center(
+                    child: CircularProgressIndicator(
+                      value: progress.progress,
+                    ),
+                  ),
+                  imageUrl: 'https://a.walletbot.online${product.images.first}',
                 ),
+                // child: Image(
+                //   image: NetworkImage(
+                //       'https://a.walletbot.online${product.images.first}'),
+                //   height: 160,
+                //   fit: BoxFit.cover,
+                // ),
               ),
             ),
             FxSpacing.height(6),
