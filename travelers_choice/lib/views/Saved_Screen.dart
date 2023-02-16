@@ -340,18 +340,10 @@ class _SavedScreenState extends State<SavedScreen>
             ? Center(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    // Container(
-                    //   decoration: const BoxDecoration(
-                    //       image: DecorationImage(
-                    //     image: NetworkImage(
-                    //         'https://c.tenor.com/hJDuRStH_cYAAAAC/cat-sleeping.gif'),
-                    //   )),
-                    // ),
-                    Lottie.asset('assets/lottie/confirmation.json',
-                        height: 300, width: 300),
-                    const Text(
-                        'You have no favourite yet - start adding some item!',
+                  children: const [
+                    // Lottie.asset('assets/lottie/confirmation.json',
+                    //     height: 300, width: 300),
+                    Text('You have no favourite yet - start adding some item!',
                         style: TextStyle(
                             fontFamily: 'inter',
                             fontWeight: FontWeight.w400,
