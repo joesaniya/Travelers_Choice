@@ -1,12 +1,15 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutx/flutx.dart';
+import 'package:hotel_travel/views/detail_screen/Activity_screen.dart';
 import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
+import '../models/all_attraction_modal.dart';
 import '../models/atteraction_model.dart';
-import '../views/checkout_screen.dart';
 import '../../controllers/attraction_Controller.dart';
 
 class DetailController extends FxController {
@@ -17,7 +20,8 @@ class DetailController extends FxController {
 
 //  late  Product product;
   // late DetailattractionModal product;
-  List<DetailattractionModal> detailattraction = <DetailattractionModal>[];
+  // List<DetailattractionModal> detailattraction = <DetailattractionModal>[];
+  List<DetailattractionModal>? detailattraction;
   bool showLoading = true, uiLoading = true;
 
   //tab
@@ -75,6 +79,29 @@ class DetailController extends FxController {
     '19',
     '20'
   ];
+
+  String? currencies, countryCode;
+
+  String? currency() {
+    if (currencies != null) {
+      List<dynamic> countriesList = jsonDecode(currencies ?? "");
+      String? isoCode;
+
+      log("Country list => $countriesList");
+      print('''
+Country Code => $countryCode
+''');
+      for (var val in countriesList) {
+        if (val['country']['_id'] == countryCode) {
+          isoCode = val['isocode'];
+          break;
+        }
+      }
+      return isoCode;
+    }
+    return null;
+  }
+
   Color appBarColor = Colors.transparent;
 
   changeAppBarColor(ScrollController scrollController) {
@@ -110,6 +137,7 @@ class DetailController extends FxController {
         log('Details => $value');
         if (value != null) {
           isLoading = false;
+          detailattraction = [];
           // detailattraction = value;
           setState(() {
             detailattraction = value;
@@ -127,6 +155,9 @@ class DetailController extends FxController {
     return false;
   }
 
+  List<String> favs = [];
+    List<AllattractionModal> allattractionList = <AllattractionModal>[];
+
   @override
   void initState() {
     super.initState();
@@ -135,6 +166,23 @@ class DetailController extends FxController {
     scrollController = ScrollController(initialScrollOffset: 0.0);
     scrollController.addListener(() {
       changeAppBarColor(scrollController);
+      // if (favs.isEmpty) {
+      //   SharedPreferences.getInstance().then((prefs) {
+      //     if (prefs.getStringList("favs") != null) {
+      //       favs.addAll(prefs.getStringList("favs")!.toList());
+      //     }
+      //      final mealId = ModalRoute.of(context).settings.arguments as String;
+      //     final selectedMeal =
+      //         allattractionList.firstWhere((Meal) => Meal.id == mealId);
+      //     favs = widget.toggleFavourite(mealId);
+      //     // setState(() {
+      //     //   final mealId = ModalRoute.of(context).settings.arguments as String;
+      //     //   final selectedMeal =
+      //     //     allattractionList.firstWhere((Meal) => Meal.id == mealId);
+      //     //   favs = widget.toggleFavourite(mealId);
+      //     // });
+      //   });
+      // }
     });
     // scrollController.hasClients(() {
     //   changeAppBarColor(scrollController);
@@ -171,7 +219,7 @@ class DetailController extends FxController {
         vsync: ticker, duration: const Duration(milliseconds: 500));
 
     colorAnimation =
-        ColorTween(begin: Colors.grey.shade400, end: const Color(0xff1529e8)
+        ColorTween(begin: const Color(0xff1529e8), end: const Color(0xff1529e8)
                 // end: const Color(0xff1c8c8c)
                 )
             .animate(animationController);
@@ -306,7 +354,7 @@ class DetailController extends FxController {
   //   update();
   // }
 
-  Future<void> bookNow() async {
+  Future<void> bookNow(DetailattractionModal excursions) async {
     animationController.forward();
     await Future.delayed(const Duration(seconds: 1));
     Navigator.of(context, rootNavigator: true).push(PageRouteBuilder(
@@ -321,16 +369,35 @@ class DetailController extends FxController {
               opacity: animation,
               child: child,
             ),
-        pageBuilder: (_, __, ___) => const CheckOutScreen()));
+        pageBuilder: (_, __, ___) => ActivityScreen(excursions.activities!)
+        // ActivityScreen(
+        //   Excursions: widget.detailattraction
+        //   )
+        ));
   }
+
+  // void goToSingleProduct(Datum product) {
+  //   log(product.id);
+  //   log('message');
+  //   Navigator.of(context, rootNavigator: true).push(PageRouteBuilder(
+  //       transitionDuration: const Duration(milliseconds: 500),
+  //       transitionsBuilder: (
+  //         BuildContext context,
+  //         Animation<double> animation,
+  //         Animation<double> secondaryAnimation,
+  //         Widget child,
+  //       ) =>
+  //           FadeTransition(
+  //             opacity: animation,
+  //             child: child,
+  //           ),
+  //       pageBuilder: (_, __, ___) => DetailScreen(product.id)
+  //       // SingleProductScreen(product.id)
+  //       ));
+  // }
 
   void goBack() {
     Navigator.pop(context);
-  }
-
-  void selectSize(String size) {
-    selectedSize = size;
-    update();
   }
 
   // void fetchData() async {

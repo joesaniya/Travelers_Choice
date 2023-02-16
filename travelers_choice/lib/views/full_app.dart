@@ -1,15 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutx/flutx.dart';
+import 'package:hotel_travel/models/all_attraction_modal.dart';
 import 'package:hotel_travel/views/Home_Screen.dart';
-import 'package:hotel_travel/views/Saved_Screen.dart';
+import 'package:hotel_travel/views/Cart_Screen.dart';
 import 'package:hotel_travel/views/profile_screen.dart';
 
 import '../controllers/full_app_conrtoller.dart';
 import '../theme/app_theme.dart';
+import 'Saved_Screen.dart';
+
+List<Datum> favouriteList = <Datum>[];
 
 class FullApp extends StatefulWidget {
-  const FullApp({Key? key}) : super(key: key);
+  List<AllattractionModal> favouriteMeal;
+  FullApp(this.favouriteMeal);
 
   @override
   _FullAppState createState() => _FullAppState();
@@ -100,8 +105,9 @@ class _FullAppState extends State<FullApp> with SingleTickerProviderStateMixin {
                     HomeScreen(),
                     // HomeScreen(size: size),
 
-                    const Center(child: Text('Saved')),
-                    const SavedScreen(),
+                    // const Center(child: Text('Saved')),
+                    SavedScreen(widget.favouriteMeal),
+                    const CartScreen(),
                     const ProfileScreen()
                   ],
                 ),

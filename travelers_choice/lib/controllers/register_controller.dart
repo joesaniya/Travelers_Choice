@@ -252,7 +252,7 @@ class RegisterController extends FxController {
     //       const SnackBar(content: Text("please select country code")));
     // }
     else if (selectedCountryCode == null || selectedCountryCode!.isEmpty) {
-      // log('isempty');
+      
       ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text("please select country code")));
     } else if (phoneTE.text.isEmpty

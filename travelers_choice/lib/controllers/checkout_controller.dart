@@ -1,8 +1,11 @@
 import 'dart:developer';
 
+import 'package:cc_avenue/cc_avenue.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutx/flutx.dart';
 import 'package:hotel_travel/views/hotel_travel_constants.dart';
+import 'package:iconsax/iconsax.dart';
 
 import '../models/product.dart';
 import '../models/shipping_address.dart';
@@ -26,13 +29,14 @@ class CheckOutController extends FxController {
   bool showcode = false;
   List<Product>? products;
   bool addCart = false;
+  String? selectedCountryCode;
 
   List<Tab> tabs = [];
 //form
   late Animation<double> fadeAnimation, cartAnimation;
   // late AnimationController animationController;
 
-  late TextEditingController FnameTE, LnameTE, emailTE, reqTE, promoTE;
+  late TextEditingController FnameTE, LnameTE, emailTE, phoneTE, reqTE, promoTE;
   GlobalKey<FormState> formKey = GlobalKey();
   String? selectedname;
   final List<String> nameCodes = ['Mr.', 'Mrs.', 'Ms.'];
@@ -44,12 +48,14 @@ class CheckOutController extends FxController {
       firstnameController,
       lastnameController,
       emailController,
+      phoneController,
       promoController,
       reqController;
   late Animation<Offset> arrowAnimation,
       firstnameAnimation,
       lastnameAnimation,
       emailAnimation,
+      phoneAnimation,
       promoAnimation,
       reqAnimation;
 
@@ -57,6 +63,7 @@ class CheckOutController extends FxController {
   int lastnameCounter = 0;
   int emailCounter = 0;
   int reqCounter = 0;
+  int phoneCounter = 0;
   int promoCounter = 0;
 
   @override
@@ -67,13 +74,14 @@ class CheckOutController extends FxController {
     addressList = ShippingAddress.shipping();
     addressSelected = addressList!.first;
     tabs = [
-      Tab('Passenger Details', Icons.local_shipping_outlined),
+      Tab('Personal Details', Iconsax.user),
       Tab('Payment', Icons.payment),
       Tab('Booked', Icons.check_circle_outline),
     ];
     FnameTE = TextEditingController();
     LnameTE = TextEditingController();
     emailTE = TextEditingController();
+    phoneTE = TextEditingController();
     reqTE = TextEditingController();
     promoTE = TextEditingController();
 
@@ -106,6 +114,8 @@ class CheckOutController extends FxController {
     lastnameController = AnimationController(
         vsync: ticker, duration: const Duration(milliseconds: 500));
     emailController = AnimationController(
+        vsync: ticker, duration: const Duration(milliseconds: 500));
+    phoneController = AnimationController(
         vsync: ticker, duration: const Duration(milliseconds: 500));
     reqController = AnimationController(
         vsync: ticker, duration: const Duration(milliseconds: 500));
@@ -149,6 +159,12 @@ class CheckOutController extends FxController {
         Tween<Offset>(begin: const Offset(0, 0), end: const Offset(8, 0))
             .animate(CurvedAnimation(
       parent: emailController,
+      curve: Curves.easeIn,
+    ));
+    phoneAnimation =
+        Tween<Offset>(begin: const Offset(0, 0), end: const Offset(8, 0))
+            .animate(CurvedAnimation(
+      parent: phoneController,
       curve: Curves.easeIn,
     ));
     reqAnimation =
@@ -200,6 +216,16 @@ class CheckOutController extends FxController {
         emailCounter++;
       }
     });
+    phoneController.addStatusListener((status) {
+      log(status.toString());
+      if (status == AnimationStatus.completed) {
+        phoneController.reverse();
+      }
+      if (status == AnimationStatus.dismissed && emailCounter < 2) {
+        phoneController.forward();
+        phoneCounter++;
+      }
+    });
     reqController.addStatusListener((status) {
       log(status.toString());
       if (status == AnimationStatus.completed) {
@@ -230,6 +256,24 @@ class CheckOutController extends FxController {
     update();
   }
 
+  Future<void> initPlatformState() async {
+    // Platform messages may fail, so we use a try/catch PlatformException.
+    try {
+      await CcAvenue.cCAvenueInit(
+          transUrl: 'https://secure.ccavenue.com/transaction/initTrans',
+          accessCode: '4YRUXLSRO20O8NIH',
+          amount: '10',
+          cancelUrl: 'http://122.182.6.216/merchant/ccavResponseHandler.jsp',
+          currencyType: 'INR',
+          merchantId: '2',
+          orderId: '519',
+          redirectUrl: 'http://122.182.6.216/merchant/ccavResponseHandler.jsp',
+          rsaKeyUrl: 'https://secure.ccavenue.com/transaction/jsp/GetRSA.jsp');
+    } on PlatformException {
+      print('PlatformException');
+    }
+  }
+
   void fetchData() async {
     products = HotelTravelCache.products;
     // calculateBilling();
@@ -243,26 +287,61 @@ class CheckOutController extends FxController {
       /*   Navigator.push(
           context, MaterialPageRoute(builder: (context) => FullApp()));*/
     } else {
-      await pageController.animateToPage(
-        currentPage + 1,
-        duration: const Duration(milliseconds: 600),
-        curve: Curves.ease,
-      );
+      // await pageController.animateToPage(
+      //   currentPage + 1,
+      //   duration: const Duration(milliseconds: 600),
+      //   curve: Curves.ease,
+      // );
+      //validation
+      if (selectedname == null || selectedname!.isEmpty) {
+        ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text("Please Select Mr/Ms/Mrs")));
+      } else if (FnameTE.text.isEmpty) {
+        ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text("Please Enter First Name")));
+      } else if (LnameTE.text.isEmpty) {
+        ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text("Please Enter Last Name")));
+      } else if (emailTE.text.isEmpty) {
+        ScaffoldMessenger.of(context)
+            .showSnackBar(const SnackBar(content: Text("Please Enter Email")));
+      } else if (selectedcountry == null || selectedcountry!.isEmpty) {
+        ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text("Please Select Country")));
+      } else if (selectedCountryCode == null || selectedCountryCode!.isEmpty) {
+        ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text("Please Select Phone Code")));
+      } else if (phoneTE.text.isEmpty
+
+          //  ||phoneTE.length!=10
+          ) {
+        ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text("Please Enter Phone Number")));
+      } else if (reqTE.text.isEmpty) {
+        ScaffoldMessenger.of(context)
+            .showSnackBar(const SnackBar(content: Text("Enter Request")));
+      } else {
+        await pageController.animateToPage(
+          currentPage + 1,
+          duration: const Duration(milliseconds: 600),
+          curve: Curves.ease,
+        );
+      }
     }
   }
 
-  previousPage() async {
-    if (currentPage == 0) {
-      /*   Navigator.push(
-          context, MaterialPageRoute(builder: (context) => FullApp()));*/
-    } else {
-      await pageController.animateToPage(
-        currentPage - 1,
-        duration: const Duration(milliseconds: 600),
-        curve: Curves.ease,
-      );
-    }
-  }
+  // previousPage() async {
+  //   if (currentPage == 0) {
+  //     /*   Navigator.push(
+  //         context, MaterialPageRoute(builder: (context) => FullApp()));*/
+  //   } else {
+  //     await pageController.animateToPage(
+  //       currentPage - 1,
+  //       duration: const Duration(milliseconds: 600),
+  //       curve: Curves.ease,
+  //     );
+  //   }
+  // }
 
   onPageChanged(int page, {bool fromUser = false}) async {
     if (!fromUser) currentPage = page;

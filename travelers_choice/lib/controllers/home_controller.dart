@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
@@ -10,6 +11,7 @@ import '../models/product.dart';
 
 import '../views/detail_screen/detail_Screen.dart';
 import '../views/hotel_travel_constants.dart';
+import 'attraction_Controller.dart';
 
 class HomeController extends FxController {
   TickerProvider ticker;
@@ -28,6 +30,7 @@ class HomeController extends FxController {
   late Tween<Offset> offset;
   final GlobalKey<AnimatedListState> listKey = GlobalKey<AnimatedListState>();
   List<Widget> newCategories = [];
+
   late Intro intro;
 
   @override
@@ -100,6 +103,28 @@ class HomeController extends FxController {
     Navigator.pop(context);
   }
 
+  String? currencies, countryCode;
+
+  String? currency() {
+    if (currencies != null) {
+      List<dynamic> countriesList = jsonDecode(currencies!);
+      String? isoCode;
+
+      log("Country list => $countriesList");
+      print('''
+Country Code => $countryCode
+''');
+      for (var val in countriesList) {
+        if (val['country']['_id'] == countryCode) {
+          isoCode = val['isocode'];
+          break;
+        }
+      }
+      return isoCode;
+    }
+    return null;
+  }
+
   Future<bool> onWillPop() async {
     IntroStatus introStatus = intro.getStatus();
     if (introStatus.isOpen) {
@@ -117,8 +142,8 @@ class HomeController extends FxController {
   }
 
   void fetchData() {
-    // categories = HotelTravelCache.categories;
-    // products = HotelTravelCache.products;
+    // categories = HotelTravelCache.categories!.cast<Category>();
+    // // products = HotelTravelCache.products;
     // selectedCategory = categories!.first;
     log('selectedCategory');
     // log(selectedCategory.)
@@ -126,6 +151,11 @@ class HomeController extends FxController {
     // log(uiLoading.toString());
     update();
   }
+
+  // void changeSelectedCategory(Category category) {
+  //   selectedCategory = category;
+  //   update();
+  // }
 
   void fetchloader() async {
     await Future.delayed(const Duration(seconds: 4));
@@ -156,10 +186,51 @@ class HomeController extends FxController {
               opacity: animation,
               child: child,
             ),
-        pageBuilder: (_, __, ___) => DetailScreen(product.id)
+        pageBuilder: (_, __, ___) =>
+            DetailScreen(product.id,
+            //  _toggleFavorite, _isMealFavorite,
+              product)
         // SingleProductScreen(product.id)
         ));
   }
+
+  // final List<AllattractionModal> favouriteMeals = [];
+  // final List<AllattractionModal> availableMeals = <AllattractionModal>[];
+
+  // void _toggleFavorite(String mealId) async {
+  //   await AttractionController().getAllattractionList(context).then((value) {
+  //     if (value != null) {
+  //       // isLoading = false;
+  //       allattractionList = [];
+  //       allattractionList.add(value);
+  //       log('data All1:$allattractionList');
+  //     }
+  //   });
+  //   log('All Data:${allattractionList.first.attractions.data.length}');
+  //   log('toggle');
+
+  //   final existingIndex = _favouriteMeals
+  //       .indexWhere((meal) => meal.attractions.data.first.id == mealId);
+  //   if (existingIndex >= 0) {
+  //     _favouriteMeals.removeAt(existingIndex);
+  //     update();
+  //   } else {
+  //     // _favouriteMeals.add(
+  //     //   _availableMeals
+  //     //       .firstWhere((meal) => meal.attractions.data.first.id == mealId),
+  //     // );
+  //     log('All Data:${allattractionList.first.attractions.data.length}');
+  //     // AllattractionModal objmodal=a
+  //     _favouriteMeals.add(
+  //       allattractionList
+  //           .firstWhere((meal) => meal.attractions.data.first.id == mealId),
+  //     );
+  //   }
+  // }
+
+  // bool _isMealFavorite(String id) {
+  //   return _favouriteMeals.any((meal) => meal.attractions.data.first.id == id);
+  // }
 
   void goToSubscription() {
     // Navigator.of(context, rootNavigator: true).push(

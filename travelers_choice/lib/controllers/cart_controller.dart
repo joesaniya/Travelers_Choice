@@ -3,18 +3,15 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutx/flutx.dart';
 
-import '../models/all_attraction_modal.dart';
 import '../models/cart.dart';
-import '../models/product.dart';
+import '../views/checkout_screen.dart';
 import '../views/hotel_travel_constants.dart';
-import '../views/detail_screen/detail_Screen.dart';
 
-class SavedController extends FxController {
+class CartController extends FxController {
   TickerProvider ticker;
-  SavedController(this.ticker);
+  CartController(this.ticker);
   bool showLoading = true, uiLoading = true;
   List<Cart>? carts;
-  List<Product>? products;
   late double order, tax = 30, offer = 50, total;
   late AnimationController animationController, fadeController;
   late Animation<Offset> animation;
@@ -110,9 +107,8 @@ class SavedController extends FxController {
   }
 
   void fetchData() async {
-    // carts = HotelTravelCache.carts;
+    carts = HotelTravelCache.carts;
     // carts = HotelTravelCache.carts!.cast<Cart>();
-    products = HotelTravelCache.products;
     log('fetch');
     log(carts!.length.toString());
     calculateBilling();
@@ -139,35 +135,40 @@ class SavedController extends FxController {
     total = order + tax - offer;
   }
 
-  double findAspectRatio() {
-    double width = MediaQuery.of(context).size.width;
-    return ((width - 58) / 2) / (250);
-  }
-
-  void goToSingleProduct(Datum product) {
-    log('Saved Detail:${product.id}');
-    Navigator.of(context, rootNavigator: true).push(PageRouteBuilder(
-        transitionDuration: const Duration(milliseconds: 500),
-        transitionsBuilder: (
-          BuildContext context,
-          Animation<double> animation,
-          Animation<double> secondaryAnimation,
-          Widget child,
-        ) =>
-            FadeTransition(
-              opacity: animation,
-              child: child,
-            ),
-        pageBuilder: (_, __, ___) => DetailScreen(
-            product.id,
-            //  _toggleFavorite, _isMealFavorite,
-            product)
-        // SingleProductScreen(product.id)
-        ));
+  // Future<void> goToCheckout() async {
+  //   animationController.forward();
+  //   await Future.delayed(const Duration(seconds: 1));
+  //   // Navigator.of(context, rootNavigator: true).push(
+  //   //   MaterialPageRoute(
+  //   //     builder: (context) => CheckOutScreen(),
+  //   //   ),
+  //   // );
+  // }
+  Future<void> goToCheckout() async {
+    animationController.forward();
+    await Future.delayed(const Duration(seconds: 1));
+    // Navigator.of(context, rootNavigator: true).push(PageRouteBuilder(
+    //     transitionDuration: const Duration(milliseconds: 500),
+    //     transitionsBuilder: (
+    //       BuildContext context,
+    //       Animation<double> animation,
+    //       Animation<double> secondaryAnimation,
+    //       Widget child,
+    //     ) =>
+    //         FadeTransition(
+    //           opacity: animation,
+    //           child: child,
+    //         ),
+    //     pageBuilder: (_, __, ___) =>  CheckOutScreen()));
+    // Navigator.of(context, rootNavigator: true).push(
+    //   MaterialPageRoute(
+    //     builder: (context) => const CheckOutScreen(),
+    //   ),
+    // );
   }
 
   @override
   String getTag() {
-    return "saved_controller";
+    return "cart_controller";
   }
 }

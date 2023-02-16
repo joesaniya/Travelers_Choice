@@ -5,6 +5,7 @@
 
 import 'package:hotel_travel/views/apply_visa.dart';
 import 'package:hotel_travel/views/auth_container.dart';
+import 'package:hotel_travel/views/payment_screen.dart';
 import 'package:hotel_travel/views/visa_screen.dart';
 
 import '/localizations/app_localization_delegate.dart';
@@ -57,7 +58,7 @@ class MyApp extends StatelessWidget {
           ],
           supportedLocales: Language.getLocales(),
           // home: const LogInScreen(),
-          // home: AuthContainer(),
+          home: AuthContainer(),
           // home: const FullApp(),
           // home: MyHomePage(),
           // home: YourPage(),

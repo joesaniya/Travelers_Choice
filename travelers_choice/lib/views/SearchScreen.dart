@@ -5,17 +5,23 @@ import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutx/flutx.dart';
 import 'package:hotel_travel/views/bottomSheet/Filter_Sheet.dart';
 import 'package:hotel_travel/views/bottomSheet/categories_Sheet.dart';
+import 'package:iconsax/iconsax.dart';
 
 import '../controllers/attraction_Controller.dart';
 import '../controllers/search_Home_controller.dart';
 import '../loading_effect.dart';
 import '../models/all_attraction_modal.dart';
+import '../models/Country_modal.dart';
 import '../theme/app_theme.dart';
 
 class SearchScreen extends StatefulWidget {
-  String? place;
+  final Destination place;
+  // List<Datum> searchdata;
   // final BuildContext rootContext;
-  SearchScreen({required this.place});
+  const SearchScreen({
+    required this.place,
+    // required this.searchdata
+  });
 
   @override
   State<SearchScreen> createState() => _SearchScreenState();
@@ -27,33 +33,127 @@ class _SearchScreenState extends State<SearchScreen>
 
   late HomeSearchController controller;
   bool isLoading = true;
-  List<AllattractionModal> allattractionList = <AllattractionModal>[];
+  int len = 0;
 
-  getAttraction() {
+  List<AllattractionModal> _filteredBooks = [];
+  List<AllattractionModal>? foundCustomer = [];
+  List<AllattractionModal> temp = [];
+  List<AllattractionModal> temp2 = [];
+  void _runFilter(String enteredKeyword) {
+    print('runFilters');
+    List results = [];
+    if (enteredKeyword.isEmpty) {
+      print('runFilters if');
+      results = controller.SearchTE as List;
+    } else {
+      print('runFilters else');
+      results = controller.allattractionList!
+          .where((Attract) => Attract.attractions.data.first.title
+              .toString()
+              .toLowerCase()
+              .contains(enteredKeyword.toLowerCase()))
+          .toList();
+      print(results);
+      log('results$results');
+    }
+
+    setState(() {
+      print('set state');
+      // foundCustomer = results.cast<Customer>();
+      foundCustomer = results.cast<AllattractionModal>();
+      // foundrecipe = searchResult;
+    });
+  }
+
+  getAttraction(Destination place) {
     log('getAttraction function called');
     Future.delayed(Duration.zero, () async {
-      await AttractionController().getAllattractionList().then((value) {
+      // log('get${place.name}');
+      await AttractionController().getSearchattractionList(place).then((value) {
         if (value != null) {
           isLoading = false;
-          allattractionList.add(value);
-
-          setState(() {});
+          controller.allattractionList = [];
+          controller.allattractionList!.add(value);
+          _filteredBooks = controller.allattractionList!;
         }
+
+        for (AllattractionModal val in controller.allattractionList!) {
+          for (Datum des in val.attractions.data) {
+            if (des.destination.name.toLowerCase().trim() ==
+                place.name.toLowerCase().trim()) {
+              temp.add(val);
+              // log('dest:${temp.length}');
+              // log('destination:${des.destination.name}');
+              // log('Search:${place.name}');
+            }
+          }
+        }
+        // print("Temp List => ${temp.length}");
+        setState(() => controller.allattractionList = temp);
       });
     });
+  }
+
+  void _searchBooks(String query) {
+    setState(() {
+      _filteredBooks = controller.allattractionList!.where((place) {
+        log('query ${query.toLowerCase()}} actualValue => ${place.attractions.data.first.title.toLowerCase()}');
+        return place.attractions.data.first.title
+            .toLowerCase()
+            .contains(query.toLowerCase());
+      }).toList();
+
+      setState(() {
+        // controller.allattractionList = [];
+        controller.allattractionList = _filteredBooks;
+      });
+
+      print('Search:$_filteredBooks');
+      log('Search:$_filteredBooks');
+    });
+  }
+
+  onSearchTextChanged(String text) async {
+    _filteredBooks.clear();
+    if (text.isEmpty) {
+      setState(() {});
+      return;
+    }
+
+    // for (var userDetail in controller.allattractionList!) {
+    //   if (userDetail.attractions.data.first.title.contains(text)) {
+    //     // controller.allattractionList!.add(userDetail);
+    //     _filteredBooks.add(userDetail);
+    //   }
+    // }
+
+    // controller.allattractionList!.addAll(_filteredBooks);
+    for (var userDetail in controller.allattractionList!) {
+      if (userDetail.attractions.data.first.title.contains(text)) {
+        _filteredBooks.add(userDetail);
+      }
+    }
+
+    // log('filter:$_filteredBooks');
+
+    setState(() {});
   }
 
   @override
   void initState() {
     super.initState();
-    getAttraction();
+    controller = FxControllerStore.put(HomeSearchController(this));
+    // log('${widget.place.name}Place Search1');
+    temp = [];
+    getAttraction(widget.place);
+    // log('${widget.place}Place Search2');
+
     theme = AppTheme.shoppingTheme;
     theme1 = AppTheme.learningTheme;
 
-    controller = FxControllerStore.put(HomeSearchController(this));
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      // addCategories();
-    });
+    // WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+    //   // addCategories();
+    // });
   }
 
   @override
@@ -73,7 +173,8 @@ class _SearchScreenState extends State<SearchScreen>
 
   Widget _buildBody() {
     // if (controller.uiLoading)
-    if (allattractionList.isEmpty) {
+
+    if (controller.allattractionList == null) {
       return Scaffold(
           body: Padding(
         padding: FxSpacing.top(FxSpacing.safeAreaTop(context) + 20),
@@ -83,151 +184,376 @@ class _SearchScreenState extends State<SearchScreen>
         ),
       ));
     } else {
-      return Scaffold(
-        backgroundColor: const Color(0xfff5f5f5),
-        //   backgroundColor: Colors.red,
-        key: controller.scaffoldKey,
-        endDrawer: endDrawer(),
-        body: ListView(
-          padding: FxSpacing.fromLTRB(
-              20, FxSpacing.safeAreaTop(context) + 20, 20, 20),
-          children: [
-            Row(
-              children: [
-                Expanded(
-                  child: TextFormField(
-                    style: FxTextStyle.bodyMedium(),
-                    cursorColor: theme.colorScheme.primary,
-                    decoration: InputDecoration(
-                      hintText: "Search your place ...",
-                      hintStyle: FxTextStyle.bodySmall(
-                          color: theme.colorScheme.onBackground),
-                      border: const OutlineInputBorder(
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(4),
-                          ),
-                          borderSide: BorderSide.none),
-                      enabledBorder: const OutlineInputBorder(
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(4),
-                          ),
-                          borderSide: BorderSide.none),
-                      focusedBorder: const OutlineInputBorder(
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(4),
-                          ),
-                          borderSide: BorderSide.none),
-                      filled: true,
-                      // fillColor: const Color(0xffcfd2ff),
-                      fillColor: theme.cardTheme.color,
-                      prefixIcon: Icon(
-                        FeatherIcons.search,
-                        size: 16,
-                        color: theme.colorScheme.onBackground.withAlpha(150),
-                      ),
-                      isDense: true,
+      if (controller.allattractionList!.isEmpty) {
+        return const Scaffold(body: Center(child: Text("No Data found")));
+      } else {
+        return Scaffold(
+          backgroundColor: const Color(0xfff5f5f5),
+          //   backgroundColor: Colors.red,
+          key: controller.scaffoldKey,
+          // endDrawer: endDrawer(),
+          body: ListView(
+            padding: FxSpacing.fromLTRB(
+                20, FxSpacing.safeAreaTop(context) + 20, 20, 20),
+            children: [
+              Container(
+                // padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  border: Border.all(width: 1, color: Colors.grey.shade300),
+                  boxShadow: [
+                    BoxShadow(
+                      // color: Colors.grey.shade400,
+                      color: const Color(0xff1529e8).withOpacity(0.4),
+                      blurRadius: 2,
+                      offset: const Offset(0, 3),
                     ),
-                    textCapitalization: TextCapitalization.sentences,
-                  ),
+                  ],
                 ),
-                // FxSpacing.width(20),
-                // FxContainer(
-                //   paddingAll: 12,
-                //   borderRadiusAll: 4,
-                //   onTap: () {
-                //     controller.openEndDrawer();
-                //   },
-                //   color: const Color(0xffcfd2ff),
-                //   // color: theme.colorScheme.primaryContainer,
-                //   child: Icon(
-                //     FeatherIcons.sliders,
-                //     color: theme1.colorScheme.onSecondaryContainer,
-                //     // color: theme.colorScheme.primary,
-                //     size: 20,
-                //   ),
-                // ),
-              ],
-            ),
-            // Text(
-            //   widget.place.toString(),
-            //   style: const TextStyle(color: Colors.red),
-            // ),
-            FxSpacing.height(20),
-            //btn
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                GestureDetector(
-                  onTap: () {
-                    showModalBottomSheet(
-                        context: context,
-                        builder: (BuildContext buildContext) {
-                          return const CategoriesBottomSheet();
-                        });
+                child: TextFormField(
+                  style: FxTextStyle.bodyMedium(),
+                  controller: controller.SearchTE,
+                  cursorColor: theme.colorScheme.primary,
+                  // onChanged: (value) => _searchBooks(value),
+
+                  // onChanged: _runFilter,
+                  // onChanged: (value) {
+                  //   // log('Total Data:${_filteredBooks.first.attractions.data.map((e) => e.title)}');
+                  //   // log('Entered keyword:$value');
+                  //   if (len == 0) {
+                  //     temp2 = [..._filteredBooks];
+                  //   }
+                  //   // log('filter value:$_filteredBooks');
+
+                  //   if (value.isEmpty) {
+                  //     log('Temp:${_filteredBooks.first.attractions.data.map((e) => e.title)}');
+                  //     controller.allattractionList!.first.attractions.data =
+                  //         _filteredBooks.first.attractions.data;
+
+                  //     setState(() {
+                  //       // len = value.length;
+                  //       // _filteredBooks = [
+                  //       //   allattractionModalFromJson(json.encode(value))
+                  //       // ];
+                  //       controller.allattractionList!.first.attractions.data;
+                  //       // _filteredBooks =
+                  //       //     AllattractionModal as List<AllattractionModal>;
+                  //     });
+                  //     // log('Value:$_filteredBooks');
+                  //     log('Empty :${controller.allattractionList!.first.attractions.data.map((e) => e.title)}');
+                  //     return;
+                  //   }
+
+                  //   len = 1;
+                  //   // print(' => ${_filteredBooks.first.attractions.toJson()}');
+
+                  //   List<Datum> data =
+                  //       temp2.first.attractions.data.where((Datum i) {
+                  //     // log('title:${i.title}');
+                  //     // log('value:$value');
+                  //     return i.title
+                  //         .toLowerCase()
+                  //         .contains(value.toString().toLowerCase());
+                  //   }).toList();
+
+                  //   temp[0].attractions.data = data;
+
+                  //   setState(() {
+                  //     controller.allattractionList = temp;
+                  //     len;
+                  //   });
+
+                  //   // log('Controller:${controller.allattractionList!.first.attractions.data.map((e) => e.title)}');
+                  //   // print('temp:${temp2[0].attractions.data}');
+                  // },
+                  // onChanged: (value) {
+                  //   // log('Total Data:${_filteredBooks.first.attractions.data.map((e) => e.title)}');
+                  //   // log('Entered keyword:$value');
+                  //   if (len == 0) {
+                  //     temp2 = [..._filteredBooks];
+                  //   }
+                  //   // log('filter value:$_filteredBooks');
+
+                  //   if (value.isEmpty) {
+                  //     log('Temp:${_filteredBooks.first.attractions.data.map((e) => e.title)}');
+                  //     controller.allattractionList!.first.attractions.data =
+                  //         _filteredBooks.first.attractions.data;
+
+                  //     setState(() {
+                  //       // len = value.length;
+                  //       // _filteredBooks = [
+                  //       //   allattractionModalFromJson(json.encode(value))
+                  //       // ];
+                  //       controller.allattractionList!.first.attractions.data;
+                  //       // _filteredBooks =
+                  //       //     AllattractionModal as List<AllattractionModal>;
+                  //     });
+                  //     // log('Value:$_filteredBooks');
+                  //     log('Empty :${controller.allattractionList!.first.attractions.data.map((e) => e.title)}');
+                  //     return;
+                  //   }
+
+                  //   len = 1;
+                  //   // print(' => ${_filteredBooks.first.attractions.toJson()}');
+
+                  //   List<Datum> data =
+                  //       temp2.first.attractions.data.where((Datum i) {
+                  //     // log('title:${i.title}');
+                  //     // log('value:$value');
+                  //     return i.title
+                  //         .toLowerCase()
+                  //         .contains(value.toString().toLowerCase());
+                  //   }).toList();
+
+                  //   temp[0].attractions.data = data;
+
+                  //   setState(() {
+                  //     controller.allattractionList = temp;
+                  //     len;
+                  //   });
+
+                  //   // log('Controller:${controller.allattractionList!.first.attractions.data.map((e) => e.title)}');
+                  //   // print('temp:${temp2[0].attractions.data}');
+                  // },
+                  //2
+                  onChanged: (value) async {
+                    if (value.isEmpty) {
+                      await AttractionController()
+                          .getSearchattractionList(widget.place)
+                          .then((value) {
+                        if (value != null) {
+                          isLoading = false;
+                          controller.allattractionList = [];
+                          controller.allattractionList!.add(value);
+                          _filteredBooks = controller.allattractionList!;
+                        }
+                      });
+
+                      setState(() {
+                        // len = value.length;
+                        // _filteredBooks = [
+                        //   allattractionModalFromJson(json.encode(value))
+                        // ];
+                        controller.allattractionList!.first.attractions.data;
+                        // _filteredBooks =
+                        //     AllattractionModal as List<AllattractionModal>;
+                      });
+                      // log('Value:$_filteredBooks');
+
+                      return;
+                    }
+
+                    len = 1;
+                    // print(' => ${_filteredBooks.first.attractions.toJson()}');
+
+                    List<Datum> data =
+                        _filteredBooks.first.attractions.data.where((Datum i) {
+                      // log('title:${i.title}');
+                      // log('value:$value');
+                      return i.title
+                          .toLowerCase()
+                          .contains(value.toString().toLowerCase());
+                    }).toList();
+
+                    temp[0].attractions.data = data;
+
+                    setState(() {
+                      controller.allattractionList = temp;
+                      len;
+                    });
+
+                    // log('Controller:${controller.allattractionList!.first.attractions.data.map((e) => e.title)}');
+                    // print('temp:${temp2[0].attractions.data}');
                   },
-                  child: FxContainer(
-                    borderRadiusAll: 10,
-                    // padding: FxSpacing.xy(8, 4),
-                    padding: FxSpacing.xy(6, 9),
-                    color: const Color(0xff1529e8),
-                    child: FxText.bodySmall(
-                      'Categories',
-                      fontWeight: 300,
-                      color: Colors.white,
-                      // color: theme.colorScheme.onPrimary,
+                  // onChanged: (e) {
+                  //   if (e != Null || e.isNotEmpty) {
+                  //     // controller.allattractionList!.first.attractions.data = [];
+
+                  //     for (var i in temp.first.attractions.data) {
+                  //       log('i:$i');
+                  //       if (i.title.toLowerCase().contains(e)) {
+                  //         controller.allattractionList!.first.attractions.data
+                  //             .add(i);
+                  //       }
+                  //     }
+
+                  //     // if (value.title.toLowerCase().contains(e)) {
+                  //     //   controller.allattractionList!.first.attractions.data
+                  //     //       .add(value);
+                  //     // }
+
+                  //     log('Message:${controller.allattractionList!.first.attractions.data}');
+                  //   } else {
+                  //     controller.allattractionList!.first.attractions.data =
+                  //         _filteredBooks.first.attractions.data;
+                  //   }
+                  // },
+
+                  // onChanged: controller.runFilter1,
+                  // onChanged: (value) => onSearchTextChanged(value),
+                  // onChanged: (value) => controller.attractFilter(value),
+                  decoration: InputDecoration(
+                    hintText: "Search your place ...",
+                    hintStyle: FxTextStyle.bodySmall(
+                        color: theme.colorScheme.onBackground),
+                    border: const OutlineInputBorder(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(4),
+                        ),
+                        borderSide: BorderSide.none),
+                    enabledBorder: const OutlineInputBorder(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(4),
+                        ),
+                        borderSide: BorderSide.none),
+                    focusedBorder: const OutlineInputBorder(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(4),
+                        ),
+                        borderSide: BorderSide.none),
+                    filled: true,
+                    // fillColor: const Color(0xffcfd2ff),
+                    fillColor: theme.cardTheme.color,
+                    prefixIcon: Icon(
+                      FeatherIcons.search,
+                      size: 16,
+                      color: theme.colorScheme.onBackground.withAlpha(150),
                     ),
+                    isDense: true,
                   ),
+                  textCapitalization: TextCapitalization.sentences,
                 ),
-                GestureDetector(
-                  onTap: () {
-                    // showModalBottomSheet(
-                    //     context: context,
-                    //     builder: (BuildContext buildContext) {
-                    //       return const FilterSheet();
-                    //     });
-                    showModalBottomSheet(
-                      context: context,
-                      backgroundColor: Colors.white,
-                      shape: const RoundedRectangleBorder(
-                          borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(20),
-                              topRight: Radius.circular(20))),
-                      isScrollControlled: true,
-                      builder: (context) {
-                        return const FilterSheet();
-                      },
-                    );
-                  },
-                  child: Container(
-                    height: 30,
-                    width: 80,
-                    decoration: BoxDecoration(
-                        color: const Color(0xff1529e8),
-                        borderRadius: BorderRadius.circular(10)),
-                    child: Center(
+              ),
+              // Text(
+              //   widget.place.toString(),
+              //   style: const TextStyle(color: Colors.red),
+              // ),
+              FxSpacing.height(20),
+              //btn
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  GestureDetector(
+                    onTap: () async {
+                      var data = await showModalBottomSheet(
+                          context: context,
+                          builder: (BuildContext buildContext) {
+                            return CategoriesBottomSheet(
+                              categoryplace: widget.place,
+                            );
+                          });
+                      setState(() {
+                        controller.allattractionList = [];
+                        controller.allattractionList = [data];
+                      });
+                      // showModalBottomSheet(
+                      //   context: context,
+                      //   backgroundColor: Colors.white,
+                      //   shape: const RoundedRectangleBorder(
+                      //       borderRadius: BorderRadius.only(
+                      //           topLeft: Radiaus.circular(20),
+                      //           topRight: Radius.circular(20))),
+                      //   isScrollControlled: true,
+                      //   builder: (context) {
+                      //     return const CategoriesBottomSheet();
+                      //   },
+                      // );
+                    },
+                    child: FxContainer(
+                      borderRadiusAll: 10,
+                      // padding: FxSpacing.xy(8, 4),
+                      padding: FxSpacing.xy(6, 9),
+                      color: const Color(0xff1529e8),
                       child: FxText.bodySmall(
-                        'Filter',
+                        'Categories',
                         fontWeight: 300,
                         color: Colors.white,
                         // color: theme.colorScheme.onPrimary,
                       ),
                     ),
                   ),
-                ),
-              ],
-            ),
+                  GestureDetector(
+                    // onTap: () {
+                    //   // showModalBottomSheet(
+                    //   //     context: context,
+                    //   //     builder: (BuildContext buildContext) {
+                    //   //       return const FilterSheet();
+                    //   //     });
+                    //   showModalBottomSheet(
+                    //     context: context,
+                    //     backgroundColor: Colors.white,
+                    //     shape: const RoundedRectangleBorder(
+                    //         borderRadius: BorderRadius.only(
+                    //             topLeft: Radius.circular(20),
+                    //             topRight: Radius.circular(20))),
+                    //     isScrollControlled: true,
+                    //     builder: (context) {
+                    //       return const FilterSheet();
+                    //     },
+                    //   );
+                    // },
+                    onTap: () async {
+                      var data = await showModalBottomSheet(
+                          context: context,
+                          builder: (BuildContext buildContext) {
+                            return FilterSheet(
+                              categoryplace: widget.place,
+                            );
+                          });
+                      setState(() {
+                        controller.allattractionList = [];
+                        controller.allattractionList = [data];
+                      });
+                      // showModalBottomSheet(
+                      //   context: context,
+                      //   backgroundColor: Colors.white,
+                      //   shape: const RoundedRectangleBorder(
+                      //       borderRadius: BorderRadius.only(
+                      //           topLeft: Radius.circular(20),
+                      //           topRight: Radius.circular(20))),
+                      //   isScrollControlled: true,
+                      //   builder: (context) {
+                      //     return const CategoriesBottomSheet();
+                      //   },
+                      // );
+                    },
+                    child: Container(
+                      height: 30,
+                      width: 80,
+                      decoration: BoxDecoration(
+                          color: const Color(0xff1529e8),
+                          borderRadius: BorderRadius.circular(10)),
+                      child: Center(
+                        child: FxText.bodySmall(
+                          'Filter',
+                          fontWeight: 300,
+                          color: Colors.white,
+                          // color: theme.colorScheme.onPrimary,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
 
-            FxSpacing.height(20),
-            //content
-            SingleChildScrollView(
-              scrollDirection: Axis.vertical,
-              // child: _buildProductList(),
-              child: _buildProductListUi(),
-            ),
-          ],
-        ),
-      );
+              FxSpacing.height(20),
+              //content
+              SingleChildScrollView(
+                scrollDirection: Axis.vertical,
+                // child: _buildProductList(),
+                child:
+
+                    // controller.foundrecipe.isNotEmpty
+                    //     ?
+                    _filteredBooks.isNotEmpty
+                        ? _buildProductListUi()
+                        : const Text('No Data'),
+              ),
+            ],
+          ),
+        );
+      }
     }
   }
 
@@ -236,191 +562,271 @@ class _SearchScreenState extends State<SearchScreen>
     List<Widget> list = [];
 
     // for (Product product in controller.products!)
-    for (var product in allattractionList.first.attractions.data) {
-      list.add(FadeTransition(
-        opacity: controller.fadeAnimation,
-        child: InkWell(
-          onTap: () {
-            log('clicked');
-            controller.goToSingleProduct(product);
-          },
-          child: Container(
-            // onTap: () {
-            //   controller.goToSingleProduct(product);
-            // },
-            // borderRadiusAll: 4,
-            // // paddingAll: 16,
-            // height: 120,
-            height: 132,
-            decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: const BorderRadius.all(Radius.circular(10)),
-                border: Border.all(color: Colors.grey.shade300, width: 1)),
-            margin: const EdgeInsets.only(
-              bottom: 20,
-            ),
-            // //margin: EdgeInsets.all(8),
-            // // color: Colors.green,
-            // margin: FxSpacing.bottom(20),
 
-            child: Container(
-              margin: const EdgeInsets.all(8),
-              child: Row(
-                children: [
-                  Container(
-                    // margin: EdgeInsets.all(8),
-                    // paddingAll: 0,
-                    // borderRadiusAll: 4,
-                    // margin: EdgeInsets.all(8),
+    // for (AllattractionModal val incontroller.allattractionList)
+    {
+      for (Datum product in controller.allattractionList![0].attractions.data) {
+        String text = product.category.categoryName.name;
 
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    clipBehavior: Clip.antiAliasWithSaveLayer,
-                    // child: Image(image: NetworkImage(product.images.first)),
-                    child: Hero(
-                      tag: "product_image_${product.images}",
-                      child: Image(
-                        // image: AssetImage(product.image),
-                        image: NetworkImage(
-                            'https://a.walletbot.online/${product.images.first}'),
-                        // image: AssetImage(product.images.first),
-                        // height: 100,
-                        height: 132,
-                        width: 150,
-                        fit: BoxFit.cover,
+        text = text.replaceAll("_", " ");
+
+        List<String> words = text.split(" ");
+
+        for (int i = 0; i < words.length; i++) {
+          words[i] =
+              words[i][0].toUpperCase() + words[i].substring(1).toLowerCase();
+        }
+        text = words.join(" ");
+
+        if (product.destination.name == widget.place.name) {
+          print("Selected place=> ${widget.place.name}");
+          list.add(FadeTransition(
+            opacity: controller.fadeAnimation,
+            child: InkWell(
+              onTap: () {
+                log('clicked');
+                controller.goToSingleProduct(product);
+              },
+              child: Container(
+                // onTap: () {
+                //   controller.goToSingleProduct(product);
+                // },
+                // borderRadiusAll: 4,
+                // // paddingAll: 16,
+                // height: 120,
+                // height: 132,
+                height: 155,
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: const BorderRadius.all(Radius.circular(10)),
+                    border: Border.all(color: Colors.grey.shade300, width: 1)),
+                margin: const EdgeInsets.only(
+                  bottom: 20,
+                ),
+                // //margin: EdgeInsets.all(8),
+                // // color: Colors.green,
+                // margin: FxSpacing.bottom(20),
+
+                child: Container(
+                  margin: const EdgeInsets.all(8),
+                  child: Row(
+                    children: [
+                      Container(
+                        // margin: EdgeInsets.all(8),
+                        // paddingAll: 0,
+                        // borderRadiusAll: 4,
+                        // margin: EdgeInsets.all(8),
+
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        clipBehavior: Clip.antiAliasWithSaveLayer,
+                        // child: Image(image: NetworkImage(product.images.first)),
+                        child: Hero(
+                          tag: "product_image_${product.images}",
+                          child: Image(
+                            // image: AssetImage(product.image),
+                            image: NetworkImage(
+                                'https://a.walletbot.online${product.images.first}'),
+                            // image: AssetImage(product.images.first),
+                            // height: 100,
+                            height: 132,
+                            width: 150,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
                       ),
-                    ),
-                  ),
-                  FxSpacing.width(20),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Row(
+                      FxSpacing.width(20),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            Expanded(
-                              child: FxContainer(
-                                borderRadiusAll: 10,
-                                // padding: FxSpacing.xy(8, 4),
-                                padding: FxSpacing.xy(6, 2),
-                                // color: Color(0xff1529e8),
-                                color: Colors.blueGrey,
-                                child: FxText.bodySmall(
-                                  overflow: TextOverflow.ellipsis,
-                                  maxLines: 1,
-                                  // 'Theme Park',
-                                  product.category.categoryName.name,
-                                  // 'Park',
-                                  fontWeight: 300,
-                                  color: Colors.white,
-                                  // color: theme.colorScheme.onPrimary,
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: FxContainer(
+                                    borderRadiusAll: 10,
+                                    // padding: FxSpacing.xy(8, 4),
+                                    padding: FxSpacing.xy(6, 2),
+                                    // color: Color(0xff1529e8),
+                                    color: Colors.blueGrey,
+                                    child: Center(
+                                      child: FxText.bodySmall(
+                                        overflow: TextOverflow.ellipsis,
+                                        maxLines: 1,
+                                        // 'Theme Park',
+                                        text,
+                                        // product.category.categoryName.name[0]
+                                        //         .toUpperCase() +
+                                        //     product.category.categoryName.name
+                                        //         .substring(1)
+                                        //         .toLowerCase(),
+                                        fontWeight: 300,
+                                        color: Colors.white,
+                                        // color: theme.colorScheme.onPrimary,
+                                      ),
+                                    ),
+                                  ),
                                 ),
-                              ),
+                                const SizedBox(
+                                  width: 5,
+                                ),
+                                FxContainer(
+                                  borderRadiusAll: 10,
+                                  // padding: FxSpacing.xy(8, 4),
+                                  padding: FxSpacing.xy(6, 2),
+                                  // color: Color(0xff1529e8),
+                                  color: Colors.blueGrey,
+                                  child: Center(
+                                    child: FxText.bodySmall(
+                                      textAlign: TextAlign.center,
+                                      // text,
+                                      product.bookingType.name[0]
+                                              .toUpperCase() +
+                                          product.bookingType.name
+                                              .substring(1)
+                                              .toLowerCase(),
+                                      fontWeight: 300,
+                                      color: Colors.white,
+                                      // color: theme.colorScheme.onPrimary,
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(
+                                  width: 5,
+                                ),
+                                product.isOffer == false
+                                    ? Expanded(child: Container())
+                                    : FxContainer(
+                                        borderRadiusAll: 10,
+                                        // padding: FxSpacing.xy(8, 4),
+                                        padding: FxSpacing.xy(6, 2),
+                                        // color: Color(0xff1529e8),
+                                        color: Colors.blueGrey,
+                                        child: Center(
+                                          child: FxText.bodySmall(
+                                            'Offer',
+                                            fontWeight: 300,
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
+                                            color: Colors.white,
+                                            // color: theme.colorScheme.onPrimary,
+                                          ),
+                                        ),
+                                      ),
+                              ],
                             ),
-                            const SizedBox(
-                              width: 5,
-                            ),
-                            FxContainer(
-                              borderRadiusAll: 10,
-                              // padding: FxSpacing.xy(8, 4),
-                              padding: FxSpacing.xy(6, 2),
-                              // color: Color(0xff1529e8),
-                              color: Colors.blueGrey,
-                              child: FxText.bodySmall(
-                                'Ticket',
-                                fontWeight: 300,
-                                color: Colors.white,
-                                // color: theme.colorScheme.onPrimary,
-                              ),
-                            ),
-                            const SizedBox(
-                              width: 5,
-                            ),
-                            FxContainer(
-                              borderRadiusAll: 10,
-                              // padding: FxSpacing.xy(8, 4),
-                              padding: FxSpacing.xy(6, 2),
-                              // color: Color(0xff1529e8),
-                              color: Colors.blueGrey,
-                              child: FxText.bodySmall(
-                                'Offer',
-                                fontWeight: 300,
-                                color: Colors.white,
-                                // color: theme.colorScheme.onPrimary,
-                              ),
-                            ),
-                          ],
-                        ),
-                        FxSpacing.height(8),
-                        Hero(
-                          tag: "product_${product.title}",
-                          // child: FxText.bodyLarge(
-                          //   product.name,
-                          //   // fontWeight: 500,
-                          // ),
-                          child: FxText.bodyLarge(
-                            product.title,
-                            fontWeight: 800,
-                            overflow: TextOverflow.ellipsis,
-                            maxLines: 2,
-                          ),
-                        ),
-                        FxSpacing.height(4),
-                        Hero(
-                          tag: "${product.duration}_${product.durationType}",
-                          child: FxText.labelLarge(
-                            // '\$' + product.price.toString(),
-                            "${product.duration} AED",
-                            // "\$" + product.price.toString() + "/hour",
-                            fontWeight: 700,
-                          ),
-                        ),
-                        FxSpacing.height(6),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
+                            FxSpacing.height(8),
                             Hero(
-                              tag:
-                                  "${product.averageRating}_${product.totalReviews}",
+                              tag: "product_${product.title}",
+                              // child: FxText.bodyLarge(
+                              //   product.name,
+                              //   // fontWeight: 500,
+                              // ),
+                              child: FxText.bodyLarge(
+                                product.title[0].toUpperCase() +
+                                    product.title.substring(1).toLowerCase(),
+                                fontWeight: 800,
+                                overflow: TextOverflow.ellipsis,
+                                maxLines: 2,
+                              ),
+                            ),
+                            FxSpacing.height(4),
+                            Hero(
+                              tag: "${product.duration}",
+                              // _${product.durationType}
+                              // ",
+                              child: FxText.labelLarge(
+                                // '\$' + product.price.toString(),
+                                "${product.activity.adultPrice.toString()} AED",
+                                // "\$" + product.price.toString() + "/hour",
+                                fontWeight: 700,
+                              ),
+                            ),
+                            FxSpacing.height(6),
+                            FxContainer(
+                              borderRadiusAll: 8,
+                              padding: FxSpacing.xy(
+                                  //8
+                                  0,
+                                  4),
+
+                              //color: Colors.yellow.shade400,
+                              color: Colors.white,
                               child: Row(
                                 children: [
                                   const Icon(
-                                    // FeatherIcons.star,
-                                    Icons.star,
-                                    color: Colors.yellow,
+                                    Iconsax.location,
+                                    color: Colors.black,
+                                    // color: theme.colorScheme.onPrimary,
                                     size: 12,
                                   ),
                                   FxSpacing.width(4),
-                                  FxText.bodySmall(
-                                    '4.5',
-                                    fontWeight: 600,
-                                    color: Colors.black,
+                                  FxText.labelSmall(
+                                    // '\$' + product.price.toString(),
+                                    product.destination.name[0].toUpperCase() +
+                                        product.destination.name
+                                            .substring(1)
+                                            .toLowerCase(),
+                                    // product.price.toString() + " " + "AED",
+                                    // "\$" + product.price.toString() + "/hour",
+                                    // fontWeight: 700,
                                   ),
                                 ],
                               ),
                             ),
-                            // FxContainer.bordered(
-                            //   paddingAll: 4,
-                            //   borderRadiusAll: 4,
-                            //   child: Icon(
-                            //     FeatherIcons.plus,
-                            //     size: 14,
-                            //     color: theme.colorScheme.onBackground,
-                            //   ),
-                            // ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Hero(
+                                  tag:
+                                      "${product.averageRating}_${product.totalReviews}",
+                                  child: Row(
+                                    children: [
+                                      const Icon(
+                                        // FeatherIcons.star,
+                                        Icons.star,
+                                        color: Colors.yellow,
+                                        size: 12,
+                                      ),
+                                      FxSpacing.width(4),
+                                      FxText.bodySmall(
+                                        '4.5',
+                                        fontWeight: 600,
+                                        color: Colors.black,
+                                      ),
+                                      FxSpacing.width(4),
+                                      FxText.bodySmall(
+                                        "(${product.totalReviews})",
+                                        fontWeight: 600,
+                                        color: Colors.black,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                // FxContainer.bordered(
+                                //   paddingAll: 4,
+                                //   borderRadiusAll: 4,
+                                //   child: Icon(
+                                //     FeatherIcons.plus,
+                                //     size: 14,
+                                //     color: theme.colorScheme.onBackground,
+                                //   ),
+                                // ),
+                              ],
+                            ),
                           ],
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
-                ],
+                ),
               ),
             ),
-          ),
-        ),
-      ));
+          ));
+        }
+      }
     }
 
     return Column(
@@ -678,23 +1084,23 @@ class _SearchScreenState extends State<SearchScreen>
                           color: theme.colorScheme.onBackground,
                           fontWeight: 600,
                         ),
-                        FxText.bodySmall(
-                          "${controller.selectedChoices.length} selected",
-                          color: theme.colorScheme.onBackground,
-                          fontWeight: 600,
-                          xMuted: true,
-                        ),
+                        // FxText.bodySmall(
+                        //   "${controller.selectedChoices.length} selected",
+                        //   color: theme.colorScheme.onBackground,
+                        //   fontWeight: 600,
+                        //   xMuted: true,
+                        // ),
                       ],
                     ),
                   ),
                   FxSpacing.height(16),
-                  Container(
-                    child: Wrap(
-                      spacing: 10,
-                      runSpacing: 10,
-                      children: _buildType(),
-                    ),
-                  ),
+                  // Container(
+                  //   child: Wrap(
+                  //     spacing: 10,
+                  //     runSpacing: 10,
+                  //     children: _buildType(),
+                  //   ),
+                  // ),
                   FxSpacing.height(24),
                   Container(
                     child: Row(
@@ -776,52 +1182,52 @@ class _SearchScreenState extends State<SearchScreen>
     );
   }
 
-  List<Widget> _buildType() {
-    List<Widget> choices = [];
-    for (var item in controller.categoryList) {
-      bool selected = controller.selectedChoices.contains(item);
-      if (selected) {
-        choices.add(FxContainer.none(
-            color: theme.colorScheme.primary.withAlpha(28),
-            bordered: true,
-            borderRadiusAll: 20,
-            paddingAll: 8,
-            border: Border.all(color: theme.colorScheme.primary),
-            onTap: () {
-              controller.removeChoice(item);
-            },
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Icon(
-                  Icons.check,
-                  size: 14,
-                  color: theme.colorScheme.primary,
-                ),
-                FxSpacing.width(6),
-                FxText.bodySmall(
-                  item,
-                  fontSize: 11,
-                  color: theme.colorScheme.primary,
-                )
-              ],
-            )));
-      } else {
-        choices.add(FxContainer.none(
-          color: theme.cardTheme.color,
-          borderRadiusAll: 20,
-          padding: FxSpacing.xy(12, 8),
-          onTap: () {
-            controller.addChoice(item);
-          },
-          child: FxText.bodySmall(
-            item,
-            color: theme.colorScheme.onBackground,
-            fontSize: 11,
-          ),
-        ));
-      }
-    }
-    return choices;
-  }
+  // List<Widget> _buildType() {
+  //   List<Widget> choices = [];
+  //   for (var item in controller.categoryList) {
+  //     bool selected = controller.selectedChoices.contains(item);
+  //     if (selected) {
+  //       choices.add(FxContainer.none(
+  //           color: theme.colorScheme.primary.withAlpha(28),
+  //           bordered: true,
+  //           borderRadiusAll: 20,
+  //           paddingAll: 8,
+  //           border: Border.all(color: theme.colorScheme.primary),
+  //           onTap: () {
+  //             controller.removeChoice(item);
+  //           },
+  //           child: Row(
+  //             mainAxisSize: MainAxisSize.min,
+  //             children: [
+  //               Icon(
+  //                 Icons.check,
+  //                 size: 14,
+  //                 color: theme.colorScheme.primary,
+  //               ),
+  //               FxSpacing.width(6),
+  //               FxText.bodySmall(
+  //                 item,
+  //                 fontSize: 11,
+  //                 color: theme.colorScheme.primary,
+  //               )
+  //             ],
+  //           )));
+  //     } else {
+  //       choices.add(FxContainer.none(
+  //         color: theme.cardTheme.color,
+  //         borderRadiusAll: 20,
+  //         padding: FxSpacing.xy(12, 8),
+  //         onTap: () {
+  //           controller.addChoice(item);
+  //         },
+  //         child: FxText.bodySmall(
+  //           item,
+  //           color: theme.colorScheme.onBackground,
+  //           fontSize: 11,
+  //         ),
+  //       ));
+  //     }
+  //   }
+  //   return choices;
+  // }
 }

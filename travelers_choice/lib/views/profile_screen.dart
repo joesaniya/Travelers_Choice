@@ -46,6 +46,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
         FxControllerStore.putOrFind<ProfileController>(ProfileController());
     theme = AppTheme.theme;
     customTheme = AppTheme.customTheme;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      setState(() {
+        // code that updates state
+      });
+    });
   }
 
   @override
@@ -101,11 +106,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             FxSpacing.width(8),
                             FxText.bodyMedium(
                               // profileController.email.toString()
-                              profileController.user.email,
+                              profileController.email.toString(),
                             ),
                             FxSpacing.height(8),
                             FxButton.outlined(
-                                onPressed: () {},
+                                onPressed: () {
+                                  profileController.EditProfile();
+                                  // profileController.goToEditProfile();
+                                },
                                 splashColor:
                                     const Color(0xff1529e8).withAlpha(40),
                                 borderColor: const Color(0xff1529e8),

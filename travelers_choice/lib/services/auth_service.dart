@@ -237,7 +237,7 @@ class AuthService {
       );
       if (response.statusCode == 200) {
         log(response.body);
-        return detailattractionModalFromJson(response.body);
+      return DetailattractionModal.fromJson(jsonDecode(response.body));
       } else {
         var jsondata = jsonDecode(response.body);
         log(jsondata['error']);

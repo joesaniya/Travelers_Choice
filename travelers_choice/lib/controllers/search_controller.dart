@@ -2,17 +2,23 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutx/flutx.dart';
-import 'package:hotel_travel/views/SearchScreen.dart';
 import 'package:intl/intl.dart';
+
+import '../models/Country_modal.dart';
+import '../views/SearchScreen.dart';
 
 class SearchController extends FxController {
   TickerProvider ticker;
   SearchController(this.ticker);
   late TextEditingController locationTE, dateTE;
+  String? locationplace;
   GlobalKey<FormState> formKey = GlobalKey();
+
+  // List<AllattractionModal> searchResult = <AllattractionModal>[];
 
   //country
   final focus = FocusNode();
+  // List<AllattractionModal> allattractionList = <AllattractionModal>[];
 
 //ani
   late AnimationController searchController, locationController, dateController;
@@ -102,69 +108,27 @@ class SearchController extends FxController {
     }
   }
 
-  // String? validateEmail(String? text) {
-  //   if (text == null || text.isEmpty) {
-  //     emailController.forward();
-  //     return "Please enter email";
-  //   } else if (FxStringValidator.isEmail(text)) {
-  //     emailController.forward();
-
-  //     return "Please enter valid email";
-  //   }
-  //   return null;
-  // }
-
-  // String? validatePassword(String? text) {
-  //   if (text == null || text.isEmpty) {
-  //     passwordController.forward();
-
-  //     return "Please enter password";
-  //   } else if (!FxStringValidator.validateStringRange(
-  //     text,
-  //   )) {
-  //     passwordController.forward();
-
-  //     return "Password length must between 8 and 20";
-  //   }
-  //   return null;
-  // }
-
-  // void goToForgotPasswordScreen() {
-  //   Navigator.of(context, rootNavigator: true).pushReplacement(
-  //     MaterialPageRoute(
-  //       builder: (context) => ForgotPasswordScreen(),
-  //     ),
-  //   );
-  // }
-
-  Future<void> searchbtn(selectedCountry) async {
+  Future<void> searchbtn(
+      // Destination locationplace
+      Destination selectedCountry) async {
     log('search btn');
     locationCounter = 0;
     dateCounter = 0;
-    // if (formKey.currentState!.validate()) {
-    //   log('search');
-    //   searchController.forward();
-    //   await Future.delayed(const Duration(milliseconds: 1000));
-    //   Navigator.of(context, rootNavigator: true).pushReplacement(
-    //     MaterialPageRoute(
-    //       builder: (context) => const SplashScreen2(),
-    //     ),
-    //   );
-    // }
+
     if (locationTE.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text("Please select location")));
-    } else if (dateTE.text.isEmpty) {
-      ScaffoldMessenger.of(context)
-          .showSnackBar(const SnackBar(content: Text("Please select date")));
-    } else {
-      ScaffoldMessenger.of(context)
-          .showSnackBar(const SnackBar(content: Text("Success")));
-      // Navigator.of(context, rootNavigator: true).pushReplacement(
-      //   MaterialPageRoute(
-      //     builder: (context) => SearchScreen(place: selectedCountry),
-      //   ),
-      // );
+    }
+    // else if (dateTE.text.isEmpty) {
+    //   ScaffoldMessenger.of(context)
+    //       .showSnackBar(const SnackBar(content: Text("Please select date")));
+    // }
+    else {
+      log('country');
+      log(selectedCountry.toString());
+      print('SElected$selectedCountry');
+      log('location:${locationTE.text}');
+
       Navigator.of(context, rootNavigator: true).push(PageRouteBuilder(
           transitionDuration: const Duration(milliseconds: 500),
           transitionsBuilder: (
@@ -177,7 +141,11 @@ class SearchController extends FxController {
                 opacity: animation,
                 child: child,
               ),
-          pageBuilder: (_, __, ___) => SearchScreen(place: selectedCountry)));
+          pageBuilder: (_, __, ___) => SearchScreen(
+              // place: Destination.fromJson(jsonDecode(selectedCountry)),
+              place: selectedCountry
+              // place:locationTE.text
+              )));
     }
   }
 

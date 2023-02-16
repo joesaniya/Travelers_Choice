@@ -4,10 +4,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_intro/flutter_intro.dart';
 import 'package:flutx/flutx.dart';
-import 'package:hotel_travel/views/detail_screen/single_product_screen.dart';
 
-import '../models/category.dart';
-import '../models/product.dart';
 import '../views/hotel_travel_constants.dart';
 
 class ReviewController extends FxController {

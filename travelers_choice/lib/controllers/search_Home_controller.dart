@@ -2,11 +2,13 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutx/flutx.dart';
+import 'package:hotel_travel/services/Search_Service.dart';
 
 import 'package:intl/intl.dart';
 
 import '../models/all_attraction_modal.dart';
 import '../models/product.dart';
+import '../models/search_categories_modal.dart';
 import '../views/detail_screen/detail_Screen.dart';
 import '../views/hotel_travel_constants.dart';
 
@@ -15,22 +17,56 @@ class HomeSearchController extends FxController {
   HomeSearchController(this.ticker);
 
   GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
-  List<String> selectedChoices = [];
+  SearchCategoriesModal? selectedChoices;
   RangeValues selectedRange = const RangeValues(200, 800);
   late AnimationController animationController;
   late Animation<double> fadeAnimation;
   List<Product>? products;
-  late TextEditingController dateTE;
+  late TextEditingController dateTE, SearchTE;
   bool uiLoading = true;
 
   late Tween<Offset> offset;
-  late AnimationController dateController;
-  late Animation<Offset> dateAnimation;
+  late AnimationController dateController, searchController;
+  late Animation<Offset> dateAnimation, searchAnimation;
 
   int dateCounter = 0;
+  int searchCounter = 0;
+  List<AllattractionModal> searchReasult = <AllattractionModal>[];
+  List<AllattractionModal>? allattractionList;
+
+  late List<AllattractionModal> foundrecipe;
+
+  //categories
+  List<SearchCategoriesModal> categoryattraction = <SearchCategoriesModal>[];
+
+  bool isLoading = true;
+  String? categoryid;
+
+  getcategoryAttraction(
+      // productid,
+      setState) {
+    log('getDetail Attraction function called');
+    Future.delayed(Duration.zero, () async {
+      await SearchService().getCategories()
+          // (
+          //   // productid: productid
+          //   )
+          .then((value) {
+        log('Details => $value');
+        if (value != null) {
+          isLoading = false;
+          // detailattraction = value;
+          setState(() {
+            categoryattraction = value;
+          });
+        }
+      });
+    });
+  }
 
   @override
   void dispose() {
+    searchController.dispose();
     dateController.dispose();
     super.dispose();
   }
@@ -44,13 +80,14 @@ class HomeSearchController extends FxController {
     "Theme Park 5",
   ];
 
-  void addChoice(String item) {
-    selectedChoices.add(item);
+  void addChoice(SearchCategoriesModal item) {
+    categoryid = item.id;
+    selectedChoices = (item);
     update();
   }
 
-  void removeChoice(String item) {
-    selectedChoices.remove(item);
+  void removeChoice(SearchCategoriesModal item) {
+    selectedChoices = (item);
     update();
   }
 
@@ -74,15 +111,63 @@ class HomeSearchController extends FxController {
     update();
   }
 
+  void attractFilter(String enteredKeyword) {
+    print('runFilters');
+    List results = [];
+    if (enteredKeyword.isEmpty) {
+      print('runFilters if');
+      results = searchReasult.cast<Map<String, dynamic>>();
+    } else {
+      print('runFilters else');
+      results = searchReasult
+          .where((AllattractionModal) => AllattractionModal
+              .attractions.data.first.title
+              .toLowerCase()
+              .contains(enteredKeyword.toLowerCase()))
+          .toList();
+      print(results);
+    }
+    foundrecipe = results.cast<AllattractionModal>();
+
+    // setState(() {
+    //   print('set state');
+    //   foundrecipe = results.cast<AllattractionModal>();
+
+    // });
+  }
+
+
+   void runFilter1(String enteredKeyword) {
+    print('runFilters');
+    List results = [];
+    if (enteredKeyword.isEmpty) {
+      print('runFilters if');
+      results = searchReasult.cast<Map<String, dynamic>>();
+    } else {
+      print('runFilters else');
+      results = searchReasult
+          .where((Recipe) =>
+              Recipe.attractions.data.first.title.toLowerCase().contains(enteredKeyword.toLowerCase()))
+          .toList();
+      print(results);
+    }
+
+     foundrecipe = results.cast<AllattractionModal>();
+  }
+
   @override
   void initState() {
     super.initState();
+    foundrecipe = searchReasult;
     fetchData();
     fetchloader();
+    SearchTE = TextEditingController();
     animationController = AnimationController(
       duration: const Duration(seconds: 3),
       vsync: ticker,
     );
+    searchController = AnimationController(
+        vsync: ticker, duration: const Duration(milliseconds: 500));
 
     fadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
       CurvedAnimation(
@@ -90,6 +175,12 @@ class HomeSearchController extends FxController {
         curve: Curves.easeIn,
       ),
     );
+    searchAnimation =
+        Tween<Offset>(begin: const Offset(0, 0), end: const Offset(8, 0))
+            .animate(CurvedAnimation(
+      parent: searchController,
+      curve: Curves.easeIn,
+    ));
 
     offset = Tween<Offset>(begin: const Offset(1, 0), end: const Offset(0, 0));
 
@@ -114,6 +205,15 @@ class HomeSearchController extends FxController {
       if (status == AnimationStatus.dismissed && dateCounter < 2) {
         dateController.forward();
         dateCounter++;
+      }
+    });
+    searchController.addStatusListener((status) {
+      if (status == AnimationStatus.completed) {
+        searchController.reverse();
+      }
+      if (status == AnimationStatus.dismissed && searchCounter < 2) {
+        searchController.forward();
+        searchCounter++;
       }
     });
   }
@@ -153,7 +253,38 @@ class HomeSearchController extends FxController {
               opacity: animation,
               child: child,
             ),
-        pageBuilder: (_, __, ___) => DetailScreen(product.id)));
+        pageBuilder: (_, __, ___) => DetailScreen(product.id,
+        //  _toggleFavorite, _isMealFavorite,
+          product)));
+  }
+
+    List<AllattractionModal> _favouriteMeals = [];
+  List<AllattractionModal> _availableMeals = <AllattractionModal>[];
+
+  void _toggleFavorite(String mealId) {
+    final existingIndex = _favouriteMeals
+        .indexWhere((meal) => meal.attractions.data.first.id == mealId);
+    if (existingIndex >= 0) {
+      _favouriteMeals.removeAt(existingIndex);
+      update();
+      // setState(() {
+      //   _favouriteMeals.removeAt(existingIndex);
+      // });
+    } else {
+      _favouriteMeals.add(
+        <AllattractionModal>[]
+            .firstWhere((meal) => meal.attractions.data.first.id == mealId),
+      );
+      // setState(() {
+      //   _favouriteMeals.add(
+      //      <AllattractionModal>[].firstWhere((meal) => meal.id == mealId),
+      //   );
+      // });
+    }
+  }
+
+  bool _isMealFavorite(String id) {
+    return _favouriteMeals.any((meal) => meal.attractions.data.first.id == id);
   }
 
   void openEndDrawer() {

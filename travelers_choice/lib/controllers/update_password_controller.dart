@@ -144,11 +144,12 @@ class UpdatePasswordController extends FxController {
     if (formKey.currentState!.validate()) {
       arrowController.forward();
       await Future.delayed(const Duration(milliseconds: 500));
-      Navigator.of(context, rootNavigator: true).pushReplacement(
-        MaterialPageRoute(
-          builder: (context) => const FullApp(),
-        ),
-      );
+      // Navigator.of(context, rootNavigator: true).pushReplacement(
+      //   MaterialPageRoute(
+      //     builder: (context) => const FullApp(),
+      //   ),
+      // );
+      Navigator.pop(context);
     }
   }
 

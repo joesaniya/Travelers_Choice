@@ -1,7 +1,10 @@
 import 'dart:developer';
 
+import 'package:cc_avenue/cc_avenue.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutx/flutx.dart';
+import 'package:hotel_travel/models/atteraction_model.dart';
 import 'package:intl/intl.dart';
 
 import '../models/cart.dart';
@@ -12,12 +15,59 @@ class ActivityController extends FxController {
   TickerProvider ticker;
   ActivityController(this.ticker);
   bool showLoading = true, uiLoading = true;
-  final List<String> TransferCodes = ['without'];
+  final List<String> TransferCodes = ['without', 'private', 'shared'];
   String? selectedtransfer;
   bool addCart = false;
-  bool clickedExcursion = false;
-
+  double? adultTotalPrice;
   List<Cart>? carts;
+
+  // int person_count = 1;
+  List<Activity> person_count = [];
+  List<Map<String, dynamic>> child_count = [];
+  List<Activity> selectedtour = [];
+  double grandTotal = 0;
+
+
+
+  void updateTours(Activity tour) {
+    List<Activity> value =
+        person_count.where((element) => element.sId == tour.sId).toList();
+    print("Coutn => ${value.length}");
+    if (value.isEmpty) {
+      double val = getGrandTotal(tour);
+      tour.grandTotal = val;
+
+      if (selectedtour.contains(tour)) {
+        selectedtour.remove(tour);
+      } else {
+        tour.grandTotal = tour.adultPrice!.toDouble();
+        selectedtour.add(tour);
+      }
+    }
+    
+     else {
+      int index = person_count.indexOf(value[0]);
+      double val = getGrandTotal(person_count[index]);
+      person_count[index].grandTotal = val;
+      if (selectedtour.contains(person_count[index])) {
+        selectedtour.remove(person_count[index]);
+      } else {
+        person_count[index].grandTotal = tour.adultPrice!.toDouble();
+        selectedtour.add(person_count[index]);
+      }
+
+      print(person_count[index].grandTotal);
+    }
+    update();
+  }
+
+  grandSelectedTourAmount() {
+    double amount = 0;
+    for (Activity tour in selectedtour) {
+      amount = amount + (tour.grandTotal);
+    }
+    return amount;
+  }
 
   // bool increaseAble(Product product) {
   //   return product.person < 9;
@@ -42,27 +92,183 @@ class ActivityController extends FxController {
   //   // calculateBilling();
   //   update();
   // }
-  bool increaseAble(Cart cart) {
-    return cart.person < cart.product.person;
+
+  //todo
+  void incrementperson(personCount) {
+    if (!increaseAble(personCount)) return;
+    personCount++;
+    // calculateBilling();
+    update();
+  }
+
+  bool increaseAble1(personCount) {
+    return personCount;
+  }
+
+  //
+  bool increaseAble(Activity cart) {
+    // return cart.person < cart.product.person;
+    return true;
   }
 
   bool decreaseAble(Cart cart) {
     return cart.person > 1;
   }
 
-  void increment(Cart cart) {
-    if (!increaseAble(cart)) return;
-    cart.person++;
-    // calculateBilling();
+//adultincrement
+  void personCountFn(Activity tour,
+      {bool isAdult = false,
+      bool isChild = false,
+      bool isInfant = false,
+      bool isIncrement = false}) {
+    List<Activity> value =
+        person_count.where((element) => element.sId == tour.sId).toList();
+
+    print("Person Count Added=-> $value");
+    if (value.isEmpty) {
+      if (isAdult) {
+        isIncrement
+            ? tour.adultCount++
+            : (tour.adultCount != 1)
+                ? tour.adultCount--
+                : 1;
+      }
+      if (isChild) {
+        isIncrement
+            ? tour.childCount++
+            : (tour.childCount != 1)
+                ? tour.childCount--
+                : 1;
+      }
+      if (isInfant) {
+        isIncrement
+            ? tour.infantCount++
+            : (tour.infantCount != 1)
+                ? tour.infantCount--
+                : 1;
+      }
+      double val = getGrandTotal(tour);
+      tour.grandTotal = val;
+      person_count.add(tour);
+    } else {
+      int index = person_count.indexOf(value[0]);
+      if (isAdult) {
+        isIncrement
+            ? person_count[index].adultCount++
+            : (person_count[index].adultCount != 1)
+                ? person_count[index].adultCount--
+                : 1;
+      }
+      if (isChild) {
+        isIncrement
+            ? person_count[index].childCount++
+            : (person_count[index].childCount != 0)
+                ? person_count[index].childCount--
+                : 0;
+      }
+      if (isInfant) {
+        isIncrement
+            ? person_count[index].infantCount++
+            : (person_count[index].infantCount != 0)
+                ? person_count[index].infantCount--
+                : 0;
+      }
+    }
+    int index = person_count.indexOf(value[0]);
+    double val = getGrandTotal(person_count[index]);
+    person_count[index].grandTotal = val;
+    print('List Value=> ${person_count.length}');
     update();
   }
 
-  void decrement(Cart cart) {
-    if (!decreaseAble(cart)) return;
-    cart.person--;
-    // calculateBilling();
+  getTotal(Activity tour) {
+    List<Activity> value =
+        person_count.where((element) => element.sId == tour.sId).toList();
+    if (value.isEmpty) {
+      return tour.adultPrice!.toDouble();
+    } else {
+      return (value[0].adultCount * value[0].adultPrice!) +
+          (value[0].childCount * value[0].childPrice!) +
+          (value[0].infantCount * value[0].infantPrice!);
+    }
+  }
+
+  addisPrivateORsharing(Activity tour,
+      {bool isPrivate = false, bool isSharing = false}) {
+    List<Activity> value =
+        person_count.where((element) => element.sId == tour.sId).toList();
+    if (value.isEmpty) {
+      personCountFn(tour, isAdult: true);
+      if (isPrivate) {
+        person_count[0].isPrivate = true;
+        person_count[0].isSharing = false;
+      } else if (isSharing) {
+        person_count[0].isPrivate = false;
+        person_count[0].isSharing = true;
+      } else {
+        person_count[0].isPrivate = false;
+        person_count[0].isSharing = false;
+      }
+    } else {
+      if (isPrivate) {
+        value[0].isPrivate = true;
+        value[0].isSharing = false;
+      } else if (isSharing) {
+        value[0].isPrivate = false;
+        value[0].isSharing = true;
+      } else {
+        value[0].isPrivate = false;
+        value[0].isSharing = false;
+      }
+      update();
+    }
+  }
+
+  int getCounts(String id,
+      {bool isAdult = false, bool isChild = false, bool isInfant = false}) {
+    List<Activity> value =
+        person_count.where((element) => element.sId == id).toList();
+
+    if (value.isEmpty) {
+      return isAdult ? 1 : 0;
+    } else {
+      int index = person_count.indexOf(value[0]);
+      if (isAdult) {
+        return person_count[index].adultCount;
+      } else if (isChild) {
+        return person_count[index].childCount;
+      } else {
+        return person_count[index].infantCount;
+      }
+    }
+  }
+
+  double getGrandTotal(Activity tour) {
+    log(getTotal(tour).toString());
+    double amount = double.parse(getTotal(tour).toString());
+    if (tour.isPrivate) {
+      amount = amount + tour.privateTransferPrice!;
+    }
+    if (tour.isSharing) {
+      amount = amount + tour.sharedTransferPrice!;
+    }
+    return amount;
     update();
   }
+
+  String getCount(String id) {
+    String? count;
+
+    return count.toString() == 'null' ? "1" : count.toString();
+  }
+
+  String getadultTotalPrice(Activity toursData) {
+    String? totalPrice;
+
+    return totalPrice ?? toursData.adultPrice.toString();
+  }
+
+  calculateBilling(String id, double adultPrice) {}
 
   late Animation<Offset> animation, dateAnimation;
   late Animation<double> sizeAnimation,
@@ -204,21 +410,62 @@ class ActivityController extends FxController {
     Navigator.pop(context);
   }
 
+  Future<void> initPlatformState() async {
+    // Platform messages may fail, so we use a try/catch PlatformException.
+    try {
+      await CcAvenue.cCAvenueInit(
+          transUrl: 'https://secure.ccavenue.com/transaction/initTrans',
+          accessCode: '4YRUXLSRO20O8NIH',
+          amount: '10',
+          cancelUrl: 'http://122.182.6.216/merchant/ccavResponseHandler.jsp',
+          currencyType: 'INR',
+          merchantId: '2',
+          orderId: '519',
+          redirectUrl: 'http://122.182.6.216/merchant/ccavResponseHandler.jsp',
+          rsaKeyUrl: 'https://secure.ccavenue.com/transaction/jsp/GetRSA.jsp');
+    } on PlatformException {
+      print('PlatformException');
+    }
+  }
+
+
   Future<void> goToCheckout() async {
     await Future.delayed(const Duration(seconds: 1));
-    Navigator.of(context, rootNavigator: true).push(PageRouteBuilder(
-        transitionDuration: const Duration(milliseconds: 500),
-        transitionsBuilder: (
-          BuildContext context,
-          Animation<double> animation,
-          Animation<double> secondaryAnimation,
-          Widget child,
-        ) =>
-            FadeTransition(
-              opacity: animation,
-              child: child,
-            ),
-        pageBuilder: (_, __, ___) => const CheckOutScreen()));
+    if (selectedtour.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text("Select Your Tour Option")));
+    } else {
+      log(selectedtour.length.toString());
+      log(selectedtour.first.name.toString());
+      log(selectedtour.first.adultCount.toString());
+      Navigator.of(context, rootNavigator: true).push(PageRouteBuilder(
+          transitionDuration: const Duration(milliseconds: 500),
+          transitionsBuilder: (
+            BuildContext context,
+            Animation<double> animation,
+            Animation<double> secondaryAnimation,
+            Widget child,
+          ) =>
+              FadeTransition(
+                opacity: animation,
+                child: child,
+              ),
+          pageBuilder: (_, __, ___) => CheckOutScreen(
+              selectedtour.length,
+              // selectedtours,
+              // selectedtour,
+              selectedtour.first.name,
+              selectedtour.first.adultCount,
+              selectedtour.first.childCount,
+              selectedtour.first.infantCount,
+              selectedtour.first.grandTotal,
+              dateTE.text,
+              selectedtransfer
+              // excursions.activities!
+
+              // grandSelectedTourAmount()
+              )));
+    }
   }
 
   @override

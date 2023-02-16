@@ -4,6 +4,8 @@
 
 import 'dart:convert';
 
+import 'Country_modal.dart';
+
 AllattractionModal allattractionModalFromJson(String str) =>
     AllattractionModal.fromJson(json.decode(str));
 
@@ -23,7 +25,7 @@ class AllattractionModal {
 
   factory AllattractionModal.fromJson(Map<String, dynamic> json) =>
       AllattractionModal(
-        attractions: Attractions.fromJson(json["attractions"]),
+        attractions: Attractions.fromJson(json["attractions"] ?? {}),
         skip: json["skip"],
         limit: json["limit"],
       );
@@ -48,8 +50,9 @@ class Attractions {
 
   factory Attractions.fromJson(Map<String, dynamic> json) => Attractions(
         id: json["_id"],
-        totalAttractions: json["totalAttractions"],
-        data: List<Datum>.from(json["data"].map((x) => Datum.fromJson(x))),
+        totalAttractions: json["totalAttractions"] ?? 0,
+        data: List<Datum>.from(json["data"].map((x) => Datum.fromJson(x)))
+            .toList(),
       );
 
   Map<String, dynamic> toJson() => {
@@ -70,7 +73,7 @@ class Datum {
     required this.duration,
     required this.isOffer,
     required this.offerAmountType,
-    required this.offerAmount,
+    this.offerAmount,
     required this.images,
     this.cancelBeforeTime,
     this.cancellationFee,
@@ -79,6 +82,7 @@ class Datum {
     required this.activity,
     required this.totalReviews,
     required this.averageRating,
+    this.favourite=false,
   });
 
   String id;
@@ -90,31 +94,37 @@ class Datum {
   int duration;
   bool isOffer;
   OfferAmountType offerAmountType;
-  int offerAmount;
+  int? offerAmount;
   List<String> images;
-  dynamic cancelBeforeTime;
-  dynamic cancellationFee;
+  int? cancelBeforeTime;
+  int? cancellationFee;
   CancellationType cancellationType;
   bool isCombo;
   Activity activity;
   int totalReviews;
   double averageRating;
+  bool? favourite;
 
   factory Datum.fromJson(Map<String, dynamic> json) => Datum(
         id: json["_id"],
         destination: Destination.fromJson(json["destination"]),
         title: json["title"],
         category: Category.fromJson(json["category"]),
-        bookingType: bookingTypeValues.map[json["bookingType"]]!,
-        durationType: durationTypeValues.map[json["durationType"]]!,
+        bookingType:
+            bookingTypeValues.map[json["bookingType"]] ?? BookingType.BOOKING,
+        durationType:
+            durationTypeValues.map[json["durationType"]] ?? DurationType.DAYS,
         duration: json["duration"],
         isOffer: json["isOffer"],
-        offerAmountType: offerAmountTypeValues.map[json["offerAmountType"]]!,
-        offerAmount: json["offerAmount"],
+        offerAmountType: offerAmountTypeValues.map[json["offerAmountType"]] ??
+            OfferAmountType.FLAT,
+        offerAmount: json["offerAmount"] ?? 0,
         images: List<String>.from(json["images"].map((x) => x)),
-        cancelBeforeTime: json["cancelBeforeTime"],
-        cancellationFee: json["cancellationFee"],
-        cancellationType: cancellationTypeValues.map[json["cancellationType"]]!,
+        cancelBeforeTime: json["cancelBeforeTime"] ?? 0,
+        cancellationFee: json["cancellationFee"] ?? 0,
+        cancellationType:
+            cancellationTypeValues.map[json["cancellationType"]] ??
+                CancellationType.FREE_CANCELLATION,
         isCombo: json["isCombo"],
         activity: Activity.fromJson(json["activity"]),
         totalReviews: json["totalReviews"],
@@ -135,7 +145,8 @@ class Datum {
         "images": List<dynamic>.from(images.map((x) => x)),
         "cancelBeforeTime": cancelBeforeTime,
         "cancellationFee": cancellationFee,
-        "cancellationType": cancellationTypeValues.reverse[cancellationType],
+        "cancellationType":
+            cancellationTypeValues.reverse[cancellationType] ?? cancellationFee,
         "isCombo": isCombo,
         "activity": activity.toJson(),
         "totalReviews": totalReviews,
@@ -164,10 +175,12 @@ enum BookingType { TICKET, BOOKING }
 final bookingTypeValues =
     EnumValues({"booking": BookingType.BOOKING, "ticket": BookingType.TICKET});
 
-enum CancellationType { NON_REFUNDABLE }
+enum CancellationType { NON_REFUNDABLE, FREE_CANCELLATION }
 
-final cancellationTypeValues =
-    EnumValues({"nonRefundable": CancellationType.NON_REFUNDABLE});
+final cancellationTypeValues = EnumValues({
+  "freeCancellation": CancellationType.FREE_CANCELLATION,
+  "nonRefundable": CancellationType.NON_REFUNDABLE
+});
 
 class Category {
   Category({
@@ -179,8 +192,9 @@ class Category {
   Slug slug;
 
   factory Category.fromJson(Map<String, dynamic> json) => Category(
-        categoryName: categoryNameValues.map[json["categoryName"]]!,
-        slug: slugValues.map[json["slug"]]!,
+        categoryName:
+            categoryNameValues.map[json["categoryName"]] ?? CategoryName.TOUR,
+        slug: slugValues.map[json["slug"]] ?? Slug.ATTRACTIONS,
       );
 
   Map<String, dynamic> toJson() => {
@@ -189,102 +203,86 @@ class Category {
       };
 }
 
-enum CategoryName { THEME_PARK, ATTRACTIONS, SKY_DIVING }
+enum CategoryName { THEME_PARK, ATTRACTIONS, SKY_DIVING, MUSEUM, TOUR }
 
 final categoryNameValues = EnumValues({
   "attractions": CategoryName.ATTRACTIONS,
+  "museum": CategoryName.MUSEUM,
   "sky diving": CategoryName.SKY_DIVING,
-  "theme park": CategoryName.THEME_PARK
+  "theme park": CategoryName.THEME_PARK,
+  "tour": CategoryName.TOUR
 });
 
-enum Slug { THEME_PARK, ATTRACTIONS, SKY_DIVING }
+enum Slug { THEME_PARK, ATTRACTIONS, SKY_DIVING, MUSEUM, TOUR }
 
 final slugValues = EnumValues({
   "attractions": Slug.ATTRACTIONS,
+  "museum": Slug.MUSEUM,
   "sky-diving": Slug.SKY_DIVING,
-  "theme-park": Slug.THEME_PARK
+  "theme-park": Slug.THEME_PARK,
+  "tour": Slug.TOUR
 });
 
-class Destination {
-  Destination({
-    required this.id,
-    required this.country,
-    required this.name,
-    required this.createdAt,
-    required this.updatedAt,
-    required this.v,
-    required this.isDeleted,
-    // required this.image,
-  });
-
-  Id id;
-  Country country;
-  Name name;
-  DateTime createdAt;
-  DateTime updatedAt;
-  int v;
-  bool isDeleted;
-  // Image image;
-
-  factory Destination.fromJson(Map<String, dynamic> json) => Destination(
-        id: idValues.map[json["_id"]]!,
-        country: countryValues.map[json["country"]]!,
-        name: nameValues.map[json["name"]]!,
-        createdAt: DateTime.parse(json["createdAt"]),
-        updatedAt: DateTime.parse(json["updatedAt"]),
-        v: json["__v"],
-        isDeleted: json["isDeleted"],
-        // image: imageValues.map[json["image"]]!,
-      );
-
-  Map<String, dynamic> toJson() => {
-        "_id": idValues.reverse[id],
-        "country": countryValues.reverse[country],
-        "name": nameValues.reverse[name],
-        "createdAt": createdAt.toIso8601String(),
-        "updatedAt": updatedAt.toIso8601String(),
-        "__v": v,
-        "isDeleted": isDeleted,
-        // "image": imageValues.reverse[image],
-      };
+enum Country {
+  THE_63_AC33_ECFF04_E5652_A2583_F5,
+  THE_63_C93_A583_B3_DE4_B73_B3_DA088
 }
 
-enum Country { THE_63_AC33_ECFF04_E5652_A2583_F5 }
+final countryValues = EnumValues({
+  "63ac33ecff04e5652a2583f5": Country.THE_63_AC33_ECFF04_E5652_A2583_F5,
+  "63c93a583b3de4b73b3da088": Country.THE_63_C93_A583_B3_DE4_B73_B3_DA088
+});
 
-final countryValues = EnumValues(
-    {"63ac33ecff04e5652a2583f5": Country.THE_63_AC33_ECFF04_E5652_A2583_F5});
-
-enum Id { THE_63_AFBE8_FE2247_E66126_E41_CD, THE_63_AFBD4_CE2247_E66126_E419_D }
+enum Id {
+  THE_63_AFBE8_FE2247_E66126_E41_CD,
+  THE_63_AFBD4_CE2247_E66126_E419_D,
+  THE_63_B0204_CB6_FC41_AAA6_F396_B9,
+  THE_63_C93_B703_B3_DE4_B73_B3_DA0_CA
+}
 
 final idValues = EnumValues({
   "63afbd4ce2247e66126e419d": Id.THE_63_AFBD4_CE2247_E66126_E419_D,
-  "63afbe8fe2247e66126e41cd": Id.THE_63_AFBE8_FE2247_E66126_E41_CD
+  "63afbe8fe2247e66126e41cd": Id.THE_63_AFBE8_FE2247_E66126_E41_CD,
+  "63b0204cb6fc41aaa6f396b9": Id.THE_63_B0204_CB6_FC41_AAA6_F396_B9,
+  "63c93b703b3de4b73b3da0ca": Id.THE_63_C93_B703_B3_DE4_B73_B3_DA0_CA
 });
 
-// enum Image {
-//   PUBLIC_IMAGES_DESTINATIONS_IMAGE_167440861906061001879_WEBP,
-//   PUBLIC_IMAGES_DESTINATIONS_IMAGE_1672982741618547465184_JPG
-// }
+enum ImageVal {
+  PUBLIC_IMAGES_DESTINATIONS_IMAGE_167440861906061001879_WEBP,
+  PUBLIC_IMAGES_DESTINATIONS_IMAGE_1672982741618547465184_JPG,
+  PUBLIC_IMAGES_DESTINATIONS_IMAGE_1672982724148714879389_WEBP,
+  PUBLIC_IMAGES_DESTINATIONS_IMAGE_1674132336190668432010_JPG
+}
 
-// final imageValues = EnumValues({
-//   "/public/images/destinations/image-1672982741618-547465184.jpg":
-//       Image.PUBLIC_IMAGES_DESTINATIONS_IMAGE_1672982741618547465184_JPG,
-//   "/public/images/destinations/image-1674408619060-61001879.webp":
-//       Image.PUBLIC_IMAGES_DESTINATIONS_IMAGE_167440861906061001879_WEBP
-// });
+final imageValues = EnumValues({
+  "/public/images/destinations/image-1672982724148-714879389.webp":
+      ImageVal.PUBLIC_IMAGES_DESTINATIONS_IMAGE_1672982724148714879389_WEBP,
+  "/public/images/destinations/image-1672982741618-547465184.jpg":
+      ImageVal.PUBLIC_IMAGES_DESTINATIONS_IMAGE_1672982741618547465184_JPG,
+  "/public/images/destinations/image-1674132336190-668432010.jpg":
+      ImageVal.PUBLIC_IMAGES_DESTINATIONS_IMAGE_1674132336190668432010_JPG,
+  "/public/images/destinations/image-1674408619060-61001879.webp":
+      ImageVal.PUBLIC_IMAGES_DESTINATIONS_IMAGE_167440861906061001879_WEBP
+});
 
-enum Name { ABU_DHABI, DUBAI }
+enum Name { ABU_DHABI, DUBAI, SHARJAH, OMAN }
 
-final nameValues =
-    EnumValues({"abu dhabi": Name.ABU_DHABI, "dubai": Name.DUBAI});
+final nameValues = EnumValues({
+  "abu dhabi": Name.ABU_DHABI,
+  "dubai": Name.DUBAI,
+  "oman": Name.OMAN,
+  "sharjah": Name.SHARJAH
+});
 
-enum DurationType { HOURS }
+enum DurationType { HOURS, DAYS }
 
-final durationTypeValues = EnumValues({"hours": DurationType.HOURS});
+final durationTypeValues =
+    EnumValues({"days": DurationType.DAYS, "hours": DurationType.HOURS});
 
-enum OfferAmountType { FLAT }
+enum OfferAmountType { FLAT, PERCENTAGE }
 
-final offerAmountTypeValues = EnumValues({"flat": OfferAmountType.FLAT});
+final offerAmountTypeValues = EnumValues(
+    {"flat": OfferAmountType.FLAT, "percentage": OfferAmountType.PERCENTAGE});
 
 class EnumValues<T> {
   Map<String, T> map;

@@ -1,528 +1,583 @@
-// To parse this JSON data, do
-//
-//     final detailattractionModal = detailattractionModalFromJson(jsonString);
-
-import 'dart:convert';
-
-DetailattractionModal detailattractionModalFromJson(String str) =>
-    DetailattractionModal.fromJson(json.decode(str));
-
-String detailattractionModalToJson(DetailattractionModal data) =>
-    json.encode(data.toJson());
-
 class DetailattractionModal {
-  DetailattractionModal({
-    required this.id,
-    required this.destination,
-    required this.title,
-    required this.category,
-    required this.bookingType,
-    this.startDate,
-    this.endDate,
-    required this.offDays,
-    required this.durationType,
-    required this.duration,
-    required this.isActive,
-    required this.latitude,
-    required this.longitude,
-    required this.isOffer,
-    required this.offerAmountType,
-    required this.offerAmount,
-    required this.youtubeLink,
-    required this.images,
-    required this.highlights,
-    required this.sections,
-    required this.createdAt,
-    required this.updatedAt,
-    required this.v,
-    required this.isDeleted,
-    required this.availability,
-    this.cancelBeforeTime,
-    this.cancellationFee,
-    required this.cancellationType,
-    required this.faqs,
-    required this.isApiConnected,
-    required this.isCombo,
-    required this.isCustomDate,
-    required this.mapLink,
-    required this.offDates,
-    required this.reviews,
-    required this.markup,
-    required this.totalRating,
-    required this.averageRating,
-    required this.activities,
-  });
+  String? sId;
+  Destination? destination;
+  String? title;
+  Category? category;
+  String? bookingType;
+  String? startDate;
+  String? endDate;
+  List<dynamic>? offDays;
+  String? durationType;
+  int? duration;
+  bool? isActive;
+  String? latitude;
+  String? longitude;
+  bool? isOffer;
+  String? offerAmountType;
+  int? offerAmount;
+  String? youtubeLink;
+  List<String>? images;
+  String? highlights;
+  List<Sections>? sections;
+  String? createdAt;
+  String? updatedAt;
+  int? iV;
+  bool? isDeleted;
+  List<Availability>? availability;
+  dynamic? cancelBeforeTime;
+  dynamic? cancellationFee;
+  String? cancellationType;
+  List<dynamic>? faqs;
+  bool? isApiConnected;
+  bool? isCombo;
+  bool? isCustomDate;
+  String? mapLink;
+  List<dynamic>? offDates;
+  List<Reviews>? reviews;
+  Markup? markup;
+  int? totalRating;
+  dynamic averageRating;
+  List<Activity>? activities;
 
-  String id;
-  Destination destination;
-  String title;
-  Category category;
-  String bookingType;
-  DateTime? startDate;
-  DateTime? endDate;
-  List<dynamic> offDays;
-  String durationType;
-  int duration;
-  bool isActive;
-  String latitude;
-  String longitude;
-  bool isOffer;
-  String offerAmountType;
-  int offerAmount;
-  String youtubeLink;
-  List<String> images;
-  String highlights;
-  List<Section> sections;
-  DateTime createdAt;
-  DateTime updatedAt;
-  int v;
-  bool isDeleted;
-  List<Availability> availability;
-  dynamic cancelBeforeTime;
-  dynamic cancellationFee;
-  String cancellationType;
-  List<dynamic> faqs;
-  bool isApiConnected;
-  bool isCombo;
-  bool isCustomDate;
-  String mapLink;
-  List<dynamic> offDates;
-  List<Review> reviews;
-  Markup markup;
-  int totalRating;
-  double averageRating;
-  List<Activity> activities;
+  DetailattractionModal(
+      {this.sId,
+      this.destination,
+      this.title,
+      this.category,
+      this.bookingType,
+      this.startDate,
+      this.endDate,
+      this.offDays,
+      this.durationType,
+      this.duration,
+      this.isActive,
+      this.latitude,
+      this.longitude,
+      this.isOffer,
+      this.offerAmountType,
+      this.offerAmount,
+      this.youtubeLink,
+      this.images,
+      this.highlights,
+      this.sections,
+      this.createdAt,
+      this.updatedAt,
+      this.iV,
+      this.isDeleted,
+      this.availability,
+      this.cancelBeforeTime,
+      this.cancellationFee,
+      this.cancellationType,
+      this.faqs,
+      this.isApiConnected,
+      this.isCombo,
+      this.isCustomDate,
+      this.mapLink,
+      this.offDates,
+      this.reviews,
+      this.markup,
+      this.totalRating,
+      this.averageRating,
+      this.activities});
 
-  factory DetailattractionModal.fromJson(Map<String, dynamic> json) =>
-      DetailattractionModal(
-        id: json["_id"],
-        destination: Destination.fromJson(json["destination"]),
-        title: json["title"],
-        category: Category.fromJson(json["category"]),
-        bookingType: json["bookingType"],
-        startDate: json["startDate"] != null
-            ? DateTime.parse(json["startDate"])
-            : null,
-        endDate: json["endDate"] != null
-            ? DateTime.parse(json["endDate"] ?? '')
-            : null,
-        offDays: List<dynamic>.from(json["offDays"].map((x) => x)),
-        durationType: json["durationType"],
-        duration: json["duration"],
-        isActive: json["isActive"],
-        latitude: json["latitude"],
-        longitude: json["longitude"],
-        isOffer: json["isOffer"],
-        offerAmountType: json["offerAmountType"],
-        offerAmount: json["offerAmount"],
-        youtubeLink: json["youtubeLink"],
-        images: List<String>.from(json["images"].map((x) => x)),
-        highlights: json["highlights"],
-        sections: List<Section>.from(
-            json["sections"].map((x) => Section.fromJson(x))),
-        createdAt: DateTime.parse(json["createdAt"]),
-        updatedAt: DateTime.parse(json["updatedAt"]),
-        v: json["__v"],
-        isDeleted: json["isDeleted"],
-        availability: List<Availability>.from(
-            json["availability"].map((x) => Availability.fromJson(x))),
-        cancelBeforeTime: json["cancelBeforeTime"],
-        cancellationFee: json["cancellationFee"],
-        cancellationType: json["cancellationType"],
-        faqs: List<dynamic>.from(json["faqs"].map((x) => x)),
-        isApiConnected: json["isApiConnected"],
-        isCombo: json["isCombo"],
-        isCustomDate: json["isCustomDate"],
-        mapLink: json["mapLink"],
-        offDates: List<dynamic>.from(json["offDates"].map((x) => x)),
-        reviews:
-            List<Review>.from(json["reviews"].map((x) => Review.fromJson(x))),
-        markup: Markup.fromJson(json["markup"]),
-        totalRating: json["totalRating"],
-        averageRating: json["averageRating"]?.toDouble(),
-        activities: List<Activity>.from(
-            json["activities"].map((x) => Activity.fromJson(x))),
-      );
+  DetailattractionModal.fromJson(Map<String, dynamic> json) {
+    sId = json['_id'];
+    destination = json['destination'] != null
+        ? Destination.fromJson(json['destination'])
+        : null;
+    title = json['title'];
+    category =
+        json['category'] != null ? Category.fromJson(json['category']) : null;
+    bookingType = json['bookingType'];
+    startDate = json['startDate'];
+    endDate = json['endDate'];
+    if (json['offDays'] != null) {
+      offDays = [];
+      json['offDays'].forEach((v) {
+        // offDays!.add(new Null.fromJson(v));
+      });
+    }
+    durationType = json['durationType'];
+    duration = json['duration'];
+    isActive = json['isActive'];
+    latitude = json['latitude'];
+    longitude = json['longitude'];
+    isOffer = json['isOffer'];
+    offerAmountType = json['offerAmountType'];
+    offerAmount = json['offerAmount'];
+    youtubeLink = json['youtubeLink'];
+    images = json['images'].cast<String>();
+    highlights = json['highlights'];
+    if (json['sections'] != null) {
+      sections = <Sections>[];
+      json['sections'].forEach((v) {
+        sections!.add(Sections.fromJson(v));
+      });
+    }
+    createdAt = json['createdAt'];
+    updatedAt = json['updatedAt'];
+    iV = json['__v'];
+    isDeleted = json['isDeleted'];
+    if (json['availability'] != null) {
+      availability = <Availability>[];
+      json['availability'].forEach((v) {
+        availability!.add(Availability.fromJson(v));
+      });
+    }
+    cancelBeforeTime = json['cancelBeforeTime'];
+    cancellationFee = json['cancellationFee'];
+    cancellationType = json['cancellationType'];
+    if (json['faqs'] != null) {
+      faqs = <dynamic>[];
+      json['faqs'].forEach((v) {
+        // faqs!.add(new Null.fromJson(v));
+      });
+    }
+    isApiConnected = json['isApiConnected'];
+    isCombo = json['isCombo'];
+    isCustomDate = json['isCustomDate'];
+    mapLink = json['mapLink'];
+    if (json['offDates'] != null) {
+      offDates = <dynamic>[];
+      json['offDates'].forEach((v) {
+        // offDates!.add(new Null.fromJson(v));
+      });
+    }
+    if (json['reviews'] != null) {
+      reviews = <Reviews>[];
+      json['reviews'].forEach((v) {
+        reviews!.add(Reviews.fromJson(v));
+      });
+    }
+    markup = json['markup'] != null ? Markup.fromJson(json['markup']) : null;
+    totalRating = json['totalRating'];
+    averageRating = json['averageRating'];
+    if (json['activities'] != null) {
+      activities = <Activity>[];
+      json['activities'].forEach((v) {
+        activities!.add(Activity.fromJson(v));
+      });
+    }
+  }
 
-  Map<String, dynamic> toJson() => {
-        "_id": id,
-        "destination": destination.toJson(),
-        "title": title,
-        "category": category.toJson(),
-        "bookingType": bookingType,
-        "startDate": startDate!.toIso8601String(),
-        "endDate": endDate!.toIso8601String(),
-        "offDays": List<dynamic>.from(offDays.map((x) => x)),
-        "durationType": durationType,
-        "duration": duration,
-        "isActive": isActive,
-        "latitude": latitude,
-        "longitude": longitude,
-        "isOffer": isOffer,
-        "offerAmountType": offerAmountType,
-        "offerAmount": offerAmount,
-        "youtubeLink": youtubeLink,
-        "images": List<dynamic>.from(images.map((x) => x)),
-        "highlights": highlights,
-        "sections": List<dynamic>.from(sections.map((x) => x.toJson())),
-        "createdAt": createdAt.toIso8601String(),
-        "updatedAt": updatedAt.toIso8601String(),
-        "__v": v,
-        "isDeleted": isDeleted,
-        "availability": List<dynamic>.from(availability.map((x) => x.toJson())),
-        "cancelBeforeTime": cancelBeforeTime,
-        "cancellationFee": cancellationFee,
-        "cancellationType": cancellationType,
-        "faqs": List<dynamic>.from(faqs.map((x) => x)),
-        "isApiConnected": isApiConnected,
-        "isCombo": isCombo,
-        "isCustomDate": isCustomDate,
-        "mapLink": mapLink,
-        "offDates": List<dynamic>.from(offDates.map((x) => x)),
-        "reviews": List<dynamic>.from(reviews.map((x) => x.toJson())),
-        "markup": markup.toJson(),
-        "totalRating": totalRating,
-        "averageRating": averageRating,
-        "activities": List<dynamic>.from(activities.map((x) => x.toJson())),
-      };
-}
-
-class Activity {
-  Activity({
-    required this.id,
-    required this.attraction,
-    required this.name,
-    required this.facilities,
-    required this.adultAgeLimit,
-    required this.adultPrice,
-    required this.childAgeLimit,
-    required this.childPrice,
-    required this.infantAgeLimit,
-    required this.infantPrice,
-    required this.isVat,
-    required this.vat,
-    required this.base,
-    required this.isTransferAvailable,
-    required this.privateTransferPrice,
-    required this.sharedTransferPrice,
-    required this.isActive,
-    required this.createdAt,
-    required this.updatedAt,
-    required this.v,
-    required this.isDeleted,
-    this.adultCost,
-    this.childCost,
-    this.infantCost,
-  });
-
-  String id;
-  String attraction;
-  String name;
-  String facilities;
-  int adultAgeLimit;
-  int adultPrice;
-  int childAgeLimit;
-  int childPrice;
-  double infantAgeLimit;
-  int infantPrice;
-  bool isVat;
-  int vat;
-  String base;
-  bool isTransferAvailable;
-  int privateTransferPrice;
-  int sharedTransferPrice;
-  bool isActive;
-  DateTime createdAt;
-  DateTime updatedAt;
-  int v;
-  bool isDeleted;
-  dynamic adultCost;
-  dynamic childCost;
-  dynamic infantCost;
-
-  factory Activity.fromJson(Map<String, dynamic> json) => Activity(
-        id: json["_id"],
-        attraction: json["attraction"],
-        name: json["name"],
-        facilities: json["facilities"],
-        adultAgeLimit: json["adultAgeLimit"],
-        adultPrice: json["adultPrice"],
-        childAgeLimit: json["childAgeLimit"],
-        childPrice: json["childPrice"],
-        infantAgeLimit: json["infantAgeLimit"]?.toDouble(),
-        infantPrice: json["infantPrice"],
-        isVat: json["isVat"],
-        vat: json["vat"],
-        base: json["base"],
-        isTransferAvailable: json["isTransferAvailable"],
-        privateTransferPrice: json["privateTransferPrice"],
-        sharedTransferPrice: json["sharedTransferPrice"],
-        isActive: json["isActive"],
-        createdAt: DateTime.parse(json["createdAt"]),
-        updatedAt: DateTime.parse(json["updatedAt"]),
-        v: json["__v"],
-        isDeleted: json["isDeleted"],
-        adultCost: json["adultCost"],
-        childCost: json["childCost"],
-        infantCost: json["infantCost"],
-      );
-
-  Map<String, dynamic> toJson() => {
-        "_id": id,
-        "attraction": attraction,
-        "name": name,
-        "facilities": facilities,
-        "adultAgeLimit": adultAgeLimit,
-        "adultPrice": adultPrice,
-        "childAgeLimit": childAgeLimit,
-        "childPrice": childPrice,
-        "infantAgeLimit": infantAgeLimit,
-        "infantPrice": infantPrice,
-        "isVat": isVat,
-        "vat": vat,
-        "base": base,
-        "isTransferAvailable": isTransferAvailable,
-        "privateTransferPrice": privateTransferPrice,
-        "sharedTransferPrice": sharedTransferPrice,
-        "isActive": isActive,
-        "createdAt": createdAt.toIso8601String(),
-        "updatedAt": updatedAt.toIso8601String(),
-        "__v": v,
-        "isDeleted": isDeleted,
-        "adultCost": adultCost,
-        "childCost": childCost,
-        "infantCost": infantCost,
-      };
-}
-
-class Availability {
-  Availability({
-    required this.isEnabled,
-    required this.day,
-    required this.open,
-    required this.close,
-    required this.id,
-  });
-
-  bool isEnabled;
-  String day;
-  String open;
-  String close;
-  String id;
-
-  factory Availability.fromJson(Map<String, dynamic> json) => Availability(
-        isEnabled: json["isEnabled"],
-        day: json["day"],
-        open: json["open"],
-        close: json["close"],
-        id: json["_id"],
-      );
-
-  Map<String, dynamic> toJson() => {
-        "isEnabled": isEnabled,
-        "day": day,
-        "open": open,
-        "close": close,
-        "_id": id,
-      };
-}
-
-class Category {
-  Category({
-    required this.id,
-    required this.categoryName,
-    required this.description,
-    required this.createdAt,
-    required this.updatedAt,
-    required this.slug,
-    required this.v,
-    required this.icon,
-  });
-
-  String id;
-  String categoryName;
-  String description;
-  DateTime createdAt;
-  DateTime updatedAt;
-  String slug;
-  int v;
-  String icon;
-
-  factory Category.fromJson(Map<String, dynamic> json) => Category(
-        id: json["_id"],
-        categoryName: json["categoryName"],
-        description: json["description"],
-        createdAt: DateTime.parse(json["createdAt"]),
-        updatedAt: DateTime.parse(json["updatedAt"]),
-        slug: json["slug"],
-        v: json["__v"],
-        icon: json["icon"],
-      );
-
-  Map<String, dynamic> toJson() => {
-        "_id": id,
-        "categoryName": categoryName,
-        "description": description,
-        "createdAt": createdAt.toIso8601String(),
-        "updatedAt": updatedAt.toIso8601String(),
-        "slug": slug,
-        "__v": v,
-        "icon": icon,
-      };
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['_id'] = sId;
+    if (destination != null) {
+      data['destination'] = destination!.toJson();
+    }
+    data['title'] = title;
+    if (category != null) {
+      data['category'] = category!.toJson();
+    }
+    data['bookingType'] = bookingType;
+    data['startDate'] = startDate;
+    data['endDate'] = endDate;
+    if (offDays != null) {
+      data['offDays'] = offDays!.map((v) => v!.toJson()).toList();
+    }
+    data['durationType'] = durationType;
+    data['duration'] = duration;
+    data['isActive'] = isActive;
+    data['latitude'] = latitude;
+    data['longitude'] = longitude;
+    data['isOffer'] = isOffer;
+    data['offerAmountType'] = offerAmountType;
+    data['offerAmount'] = offerAmount;
+    data['youtubeLink'] = youtubeLink;
+    data['images'] = images;
+    data['highlights'] = highlights;
+    if (sections != null) {
+      data['sections'] = sections!.map((v) => v.toJson()).toList();
+    }
+    data['createdAt'] = createdAt;
+    data['updatedAt'] = updatedAt;
+    data['__v'] = iV;
+    data['isDeleted'] = isDeleted;
+    if (availability != null) {
+      data['availability'] = availability!.map((v) => v.toJson()).toList();
+    }
+    data['cancelBeforeTime'] = cancelBeforeTime;
+    data['cancellationFee'] = cancellationFee;
+    data['cancellationType'] = cancellationType;
+    if (faqs != null) {
+      data['faqs'] = faqs!.map((v) => v!.toJson()).toList();
+    }
+    data['isApiConnected'] = isApiConnected;
+    data['isCombo'] = isCombo;
+    data['isCustomDate'] = isCustomDate;
+    data['mapLink'] = mapLink;
+    if (offDates != null) {
+      data['offDates'] = offDates!.map((v) => v!.toJson()).toList();
+    }
+    if (reviews != null) {
+      data['reviews'] = reviews!.map((v) => v.toJson()).toList();
+    }
+    if (markup != null) {
+      data['markup'] = markup!.toJson();
+    }
+    data['totalRating'] = totalRating;
+    data['averageRating'] = averageRating;
+    if (activities != null) {
+      data['activities'] = activities!.map((v) => v.toJson()).toList();
+    }
+    return data;
+  }
 }
 
 class Destination {
-  Destination({
-    required this.id,
-    required this.country,
-    required this.name,
-    required this.createdAt,
-    required this.updatedAt,
-    required this.v,
-    required this.isDeleted,
-    required this.image,
-  });
+  String? sId;
+  String? country;
+  String? name;
+  String? createdAt;
+  String? updatedAt;
+  int? iV;
+  bool? isDeleted;
+  String? image;
 
-  String id;
-  String country;
-  String name;
-  DateTime createdAt;
-  DateTime updatedAt;
-  int v;
-  bool isDeleted;
-  String image;
+  Destination(
+      {this.sId,
+      this.country,
+      this.name,
+      this.createdAt,
+      this.updatedAt,
+      this.iV,
+      this.isDeleted,
+      this.image});
 
-  factory Destination.fromJson(Map<String, dynamic> json) => Destination(
-        id: json["_id"],
-        country: json["country"],
-        name: json["name"],
-        createdAt: DateTime.parse(json["createdAt"]),
-        updatedAt: DateTime.parse(json["updatedAt"]),
-        v: json["__v"],
-        isDeleted: json["isDeleted"],
-        image: json["image"],
-      );
+  Destination.fromJson(Map<String, dynamic> json) {
+    sId = json['_id'];
+    country = json['country'];
+    name = json['name'];
+    createdAt = json['createdAt'];
+    updatedAt = json['updatedAt'];
+    iV = json['__v'];
+    isDeleted = json['isDeleted'];
+    image = json['image'];
+  }
 
-  Map<String, dynamic> toJson() => {
-        "_id": id,
-        "country": country,
-        "name": name,
-        "createdAt": createdAt.toIso8601String(),
-        "updatedAt": updatedAt.toIso8601String(),
-        "__v": v,
-        "isDeleted": isDeleted,
-        "image": image,
-      };
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['_id'] = sId;
+    data['country'] = country;
+    data['name'] = name;
+    data['createdAt'] = createdAt;
+    data['updatedAt'] = updatedAt;
+    data['__v'] = iV;
+    data['isDeleted'] = isDeleted;
+    data['image'] = image;
+    return data;
+  }
+}
+
+class Category {
+  String? sId;
+  String? categoryName;
+  String? description;
+  String? createdAt;
+  String? updatedAt;
+  String? slug;
+  int? iV;
+  String? icon;
+
+  Category(
+      {this.sId,
+      this.categoryName,
+      this.description,
+      this.createdAt,
+      this.updatedAt,
+      this.slug,
+      this.iV,
+      this.icon});
+
+  Category.fromJson(Map<String, dynamic> json) {
+    sId = json['_id'];
+    categoryName = json['categoryName'];
+    description = json['description'];
+    createdAt = json['createdAt'];
+    updatedAt = json['updatedAt'];
+    slug = json['slug'];
+    iV = json['__v'];
+    icon = json['icon'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['_id'] = sId;
+    data['categoryName'] = categoryName;
+    data['description'] = description;
+    data['createdAt'] = createdAt;
+    data['updatedAt'] = updatedAt;
+    data['slug'] = slug;
+    data['__v'] = iV;
+    data['icon'] = icon;
+    return data;
+  }
+}
+
+class Sections {
+  String? title;
+  String? body;
+  String? sId;
+
+  Sections({this.title, this.body, this.sId});
+
+  Sections.fromJson(Map<String, dynamic> json) {
+    title = json['title'];
+    body = json['body'];
+    sId = json['_id'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['title'] = title;
+    data['body'] = body;
+    data['_id'] = sId;
+    return data;
+  }
+}
+
+class Availability {
+  bool? isEnabled;
+  String? day;
+  String? open;
+  String? close;
+  String? sId;
+
+  Availability({this.isEnabled, this.day, this.open, this.close, this.sId});
+
+  Availability.fromJson(Map<String, dynamic> json) {
+    isEnabled = json['isEnabled'];
+    day = json['day'];
+    open = json['open'];
+    close = json['close'];
+    sId = json['_id'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['isEnabled'] = isEnabled;
+    data['day'] = day;
+    data['open'] = open;
+    data['close'] = close;
+    data['_id'] = sId;
+    return data;
+  }
+}
+
+class Reviews {
+  String? sId;
+  String? title;
+  String? description;
+  int? rating;
+  String? attraction;
+  String? user;
+  String? createdAt;
+  String? updatedAt;
+  int? iV;
+
+  Reviews(
+      {this.sId,
+      this.title,
+      this.description,
+      this.rating,
+      this.attraction,
+      this.user,
+      this.createdAt,
+      this.updatedAt,
+      this.iV});
+
+  Reviews.fromJson(Map<String, dynamic> json) {
+    sId = json['_id'];
+    title = json['title'];
+    description = json['description'];
+    rating = json['rating'];
+    attraction = json['attraction'];
+    user = json['user'];
+    createdAt = json['createdAt'];
+    updatedAt = json['updatedAt'];
+    iV = json['__v'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['_id'] = sId;
+    data['title'] = title;
+    data['description'] = description;
+    data['rating'] = rating;
+    data['attraction'] = attraction;
+    data['user'] = user;
+    data['createdAt'] = createdAt;
+    data['updatedAt'] = updatedAt;
+    data['__v'] = iV;
+    return data;
+  }
 }
 
 class Markup {
-  Markup({
-    required this.id,
-    required this.attraction,
-    required this.v,
-    required this.createdAt,
-    required this.markup,
-    required this.markupType,
-    required this.updatedAt,
-  });
+  String? sId;
+  String? attraction;
+  int? iV;
+  String? createdAt;
+  int? markup;
+  String? markupType;
+  String? updatedAt;
 
-  String id;
-  String attraction;
-  int v;
-  DateTime createdAt;
-  int markup;
-  String markupType;
-  DateTime updatedAt;
+  Markup(
+      {this.sId,
+      this.attraction,
+      this.iV,
+      this.createdAt,
+      this.markup,
+      this.markupType,
+      this.updatedAt});
 
-  factory Markup.fromJson(Map<String, dynamic> json) => Markup(
-        id: json["_id"],
-        attraction: json["attraction"],
-        v: json["__v"],
-        createdAt: DateTime.parse(json["createdAt"]),
-        markup: json["markup"],
-        markupType: json["markupType"],
-        updatedAt: DateTime.parse(json["updatedAt"]),
-      );
+  Markup.fromJson(Map<String, dynamic> json) {
+    sId = json['_id'];
+    attraction = json['attraction'];
+    iV = json['__v'];
+    createdAt = json['createdAt'];
+    markup = json['markup'];
+    markupType = json['markupType'];
+    updatedAt = json['updatedAt'];
+  }
 
-  Map<String, dynamic> toJson() => {
-        "_id": id,
-        "attraction": attraction,
-        "__v": v,
-        "createdAt": createdAt.toIso8601String(),
-        "markup": markup,
-        "markupType": markupType,
-        "updatedAt": updatedAt.toIso8601String(),
-      };
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['_id'] = sId;
+    data['attraction'] = attraction;
+    data['__v'] = iV;
+    data['createdAt'] = createdAt;
+    data['markup'] = markup;
+    data['markupType'] = markupType;
+    data['updatedAt'] = updatedAt;
+    return data;
+  }
 }
 
-class Review {
-  Review({
-    required this.id,
-    required this.title,
-    required this.description,
-    required this.rating,
-    required this.attraction,
-    required this.user,
-    required this.createdAt,
-    required this.updatedAt,
-    required this.v,
-  });
+class Activity {
+  String? sId;
+  String? attraction;
+  String? name;
+  String? facilities;
+  int? adultAgeLimit;
+  int? adultPrice;
+  int? childAgeLimit;
+  int? childPrice;
+  dynamic infantAgeLimit;
+  int? infantPrice;
+  bool? isVat;
+  int? vat;
+  String? base;
+  bool? isTransferAvailable;
+  int? privateTransferPrice;
+  int? sharedTransferPrice;
+  bool? isActive;
+  String? createdAt;
+  String? updatedAt;
+  int? iV;
+  bool? isDeleted;
+  dynamic adultCost;
+  dynamic childCost;
+  double? infantCost;
+  int adultCount = 1;
+  int childCount = 0;
+  int infantCount = 0;
+  double totalAmount = 0;
+  double grandTotal = 0;
+  bool isPrivate = false;
+  bool isSharing = false;
 
-  String id;
-  String title;
-  String description;
-  int rating;
-  String attraction;
-  String user;
-  DateTime createdAt;
-  DateTime updatedAt;
-  int v;
+  Activity(
+      {this.sId,
+      this.attraction,
+      this.name,
+      this.facilities,
+      this.adultAgeLimit,
+      this.adultPrice,
+      this.childAgeLimit,
+      this.childPrice,
+      this.infantAgeLimit,
+      this.infantPrice,
+      this.isVat,
+      this.vat,
+      this.base,
+      this.isTransferAvailable,
+      this.privateTransferPrice,
+      this.sharedTransferPrice,
+      this.isActive,
+      this.createdAt,
+      this.updatedAt,
+      this.iV,
+      this.isDeleted,
+      this.adultCost,
+      this.childCost,
+      this.infantCost,
+      this.adultCount = 1,
+      this.childCount = 0,
+      this.infantCount = 0,
+      this.totalAmount = 0,
+      this.grandTotal = 0,
+      this.isPrivate = false,
+      this.isSharing = false});
 
-  factory Review.fromJson(Map<String, dynamic> json) => Review(
-        id: json["_id"],
-        title: json["title"],
-        description: json["description"],
-        rating: json["rating"],
-        attraction: json["attraction"],
-        user: json["user"],
-        createdAt: DateTime.parse(json["createdAt"]),
-        updatedAt: DateTime.parse(json["updatedAt"]),
-        v: json["__v"],
-      );
+  Activity.fromJson(Map<String, dynamic> json) {
+    sId = json['_id'];
+    attraction = json['attraction'];
+    name = json['name'];
+    facilities = json['facilities'];
+    adultAgeLimit = json['adultAgeLimit'];
+    adultPrice = json['adultPrice'];
+    childAgeLimit = json['childAgeLimit'];
+    childPrice = json['childPrice'];
+    infantAgeLimit = json['infantAgeLimit'];
+    infantPrice = json['infantPrice'];
+    isVat = json['isVat'];
+    vat = json['vat'];
+    base = json['base'];
+    isTransferAvailable = json['isTransferAvailable'];
+    privateTransferPrice = json['privateTransferPrice'];
+    sharedTransferPrice = json['sharedTransferPrice'];
+    isActive = json['isActive'];
+    createdAt = json['createdAt'];
+    updatedAt = json['updatedAt'];
+    iV = json['__v'];
+    isDeleted = json['isDeleted'];
+    adultCost = json['adultCost'];
+    childCost = json['childCost'];
+    infantCost = json['infantCost'];
+    adultCount = 1;
+    childCount = 0;
+    infantCount = 0;
+    grandTotal = 0;
+  }
 
-  Map<String, dynamic> toJson() => {
-        "_id": id,
-        "title": title,
-        "description": description,
-        "rating": rating,
-        "attraction": attraction,
-        "user": user,
-        "createdAt": createdAt.toIso8601String(),
-        "updatedAt": updatedAt.toIso8601String(),
-        "__v": v,
-      };
-}
-
-class Section {
-  Section({
-    required this.title,
-    required this.body,
-    required this.id,
-  });
-
-  String title;
-  String body;
-  String id;
-
-  factory Section.fromJson(Map<String, dynamic> json) => Section(
-        title: json["title"],
-        body: json["body"],
-        id: json["_id"],
-      );
-
-  Map<String, dynamic> toJson() => {
-        "title": title,
-        "body": body,
-        "_id": id,
-      };
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['_id'] = sId;
+    data['attraction'] = attraction;
+    data['name'] = name;
+    data['facilities'] = facilities;
+    data['adultAgeLimit'] = adultAgeLimit;
+    data['adultPrice'] = adultPrice;
+    data['childAgeLimit'] = childAgeLimit;
+    data['childPrice'] = childPrice;
+    data['infantAgeLimit'] = infantAgeLimit;
+    data['infantPrice'] = infantPrice;
+    data['isVat'] = isVat;
+    data['vat'] = vat;
+    data['base'] = base;
+    data['isTransferAvailable'] = isTransferAvailable;
+    data['privateTransferPrice'] = privateTransferPrice;
+    data['sharedTransferPrice'] = sharedTransferPrice;
+    data['isActive'] = isActive;
+    data['createdAt'] = createdAt;
+    data['updatedAt'] = updatedAt;
+    data['__v'] = iV;
+    data['isDeleted'] = isDeleted;
+    data['adultCost'] = adultCost;
+    data['childCost'] = childCost;
+    data['infantCost'] = infantCost;
+    return data;
+  }
 }

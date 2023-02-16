@@ -1,16 +1,20 @@
+import 'dart:developer';
+
 import 'package:hotel_travel/models/all_attraction_modal.dart';
+import 'package:hotel_travel/services/Search_Service.dart';
 import '../models/atteraction_model.dart';
 
+import '../models/search_categories_modal.dart';
 import '../services/attraction_Service.dart';
 
 class AttractionController {
   //allattractions
   List<AllattractionModal> allattractionList = <AllattractionModal>[];
   bool isAllAttractionListLoading = true;
-  Future<AllattractionModal?> getAllattractionList() async {
+  Future<AllattractionModal?> getAllattractionList(context) async {
     // isCountryListLoading = true;
     try {
-      var data = await AttractionService().getAllAttraction();
+      var data = await AttractionService().getAllAttraction(context);
       allattractionList.clear();
       if (data != null) {
         allattractionList.add(data);
@@ -23,6 +27,31 @@ class AttractionController {
       rethrow;
     }
   }
+
+  //search
+
+  Future<AllattractionModal?> getSearchattractionList(place) async {
+    // isCountryListLoading = true;
+    try {
+      var data = await AttractionService().getSearchAttraction(place);
+      allattractionList.clear();
+      if (data != null) {
+        log('controllergetsearch');
+        allattractionList.add(data);
+        // isCountryListLoading = false;
+        
+        return data; //removed true
+      } else {
+        log('null data');
+        return null; //falseremoved
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+
+  //searchcattegories
 
   //detailAttractions
   List<DetailattractionModal> detailattractionList = <DetailattractionModal>[];
@@ -40,6 +69,27 @@ class AttractionController {
         return detailattractionList;
       } else {
         return null;
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+
+  //getCategories
+  List<List<SearchCategoriesModal>?> categoriesList = <List<SearchCategoriesModal>?>[];
+  bool isAllCategoriesListLoading = true;
+  Future<List<SearchCategoriesModal>?> getAllcategoriesList() async {
+    // isCountryListLoading = true;
+    try {
+      var data = await SearchService().getCategories();
+      categoriesList.clear();
+      if (data != null) {
+        categoriesList.add(data);
+        // isCountryListLoading = false;
+        return data; //removed true
+      } else {
+        return null; //falseremoved
       }
     } catch (e) {
       rethrow;
