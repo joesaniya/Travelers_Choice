@@ -4,6 +4,7 @@ import 'package:cc_avenue/cc_avenue.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutx/flutx.dart';
+
 import 'package:hotel_travel/models/atteraction_model.dart';
 import 'package:intl/intl.dart';
 
@@ -16,7 +17,16 @@ class ActivityController extends FxController {
   ActivityController(this.ticker);
   bool showLoading = true, uiLoading = true;
   final List<String> TransferCodes = ['without', 'private', 'shared'];
+  final List<String> withoutSharedCodes = [
+    'without',
+    'private',
+  ];
+  final List<String> withoutPrivateCodes = [
+    'without',
+  ];
   String? selectedtransfer;
+  String? SelectedwithoutSharedCodes;
+  String? SelectedwithoutPrivateCodes;
   bool addCart = false;
   double? adultTotalPrice;
   List<Cart>? carts;
@@ -26,8 +36,6 @@ class ActivityController extends FxController {
   List<Map<String, dynamic>> child_count = [];
   List<Activity> selectedtour = [];
   double grandTotal = 0;
-
-
 
   void updateTours(Activity tour) {
     List<Activity> value =
@@ -43,9 +51,7 @@ class ActivityController extends FxController {
         tour.grandTotal = tour.adultPrice!.toDouble();
         selectedtour.add(tour);
       }
-    }
-    
-     else {
+    } else {
       int index = person_count.indexOf(value[0]);
       double val = getGrandTotal(person_count[index]);
       person_count[index].grandTotal = val;
@@ -61,12 +67,17 @@ class ActivityController extends FxController {
     update();
   }
 
+  // double amount = 0;
+
   grandSelectedTourAmount() {
     double amount = 0;
     for (Activity tour in selectedtour) {
       amount = amount + (tour.grandTotal);
     }
+
     return amount;
+    // update();
+    // log('Amount:$amount');
   }
 
   // bool increaseAble(Product product) {
@@ -428,7 +439,6 @@ class ActivityController extends FxController {
     }
   }
 
-
   Future<void> goToCheckout() async {
     await Future.delayed(const Duration(seconds: 1));
     if (selectedtour.isEmpty) {
@@ -453,16 +463,16 @@ class ActivityController extends FxController {
           pageBuilder: (_, __, ___) => CheckOutScreen(
               selectedtour.length,
               // selectedtours,
-              // selectedtour,
-              selectedtour.first.name,
-              selectedtour.first.adultCount,
-              selectedtour.first.childCount,
-              selectedtour.first.infantCount,
+              selectedtour,
+              // selectedtour.first.name,
+              // selectedtour.first.adultCount,
+              // selectedtour.first.childCount,
+              // selectedtour.first.infantCount,
               selectedtour.first.grandTotal,
               dateTE.text,
               selectedtransfer
               // excursions.activities!
-
+              // amount
               // grandSelectedTourAmount()
               )));
     }

@@ -18,7 +18,8 @@ class ActivityScreen extends StatefulWidget {
   List<Activity> excursions;
   ActivityScreen(
       // this.Excursions,
-      this.excursions
+      this.excursions,
+      {super.key}
       //  {required List<DetailattractionModal> Excursions}
       );
 
@@ -32,6 +33,7 @@ class _ActivityScreenState extends State<ActivityScreen>
 
   late ActivityController controller;
   bool clickedExcursion = true;
+  List<TextEditingController> controllerTE = [];
 
   @override
   void initState() {
@@ -187,11 +189,17 @@ class _ActivityScreenState extends State<ActivityScreen>
     List<Widget> list = [];
     log('message');
     log(widget.excursions.length.toString());
+    
 
     // for (Cart cart in controller.carts!)
     for (var cart in widget.excursions) {
-      // bool increaseAble = controller.increaseAble(cart);
-      // bool decreaseAble = controller.decreaseAble(cart);
+    List<TextEditingController> controllers = List.generate(
+        10,
+        (index) => TextEditingController(),
+      );
+      // if (index >= controllerTE.length) {
+      //   controllerTE.add(TextEditingController());
+      // }
 
       list.add(FadeTransition(
         opacity: controller.fadeAnimation,
@@ -214,7 +222,7 @@ class _ActivityScreenState extends State<ActivityScreen>
                   //           : const Text("Removed this Excursion!!")));
                   //   // Navigator.pop(context);
                   // },
-                   onTap: () {
+                  onTap: () {
                     clickedExcursion = !clickedExcursion;
                     if (controller.dateTE.text.isEmpty) {
                       ScaffoldMessenger.of(context).showSnackBar(
@@ -358,7 +366,8 @@ class _ActivityScreenState extends State<ActivityScreen>
                                 //     letterSpacing: 0.4,
                                 //   ),
                                 // ),
-                                items: controller.TransferCodes.map(
+                                items:  widget.excursions.first.
+                                    ==false?controller.TransferCodes.map(
                                     (String value) {
                                   return DropdownMenuItem<String>(
                                       value: value,
@@ -402,9 +411,9 @@ class _ActivityScreenState extends State<ActivityScreen>
                                   // color: const Color(0xff2C2138),
                                   color: theme.cardTheme.color,
                                 ),
-                               
+
                                 itemHeight: 40,
-                               
+
                                 itemPadding:
                                     const EdgeInsets.only(left: 14, right: 14),
                                 dropdownMaxHeight: 200,
@@ -418,67 +427,7 @@ class _ActivityScreenState extends State<ActivityScreen>
                             ),
                           ),
                         ),
-                        // Expanded(
-                        //   child: Container(
-                        //     decoration: BoxDecoration(
-                        //         color: theme.cardTheme.color,
-                        //         // color: const Color(0xff1529e8),
-                        //         borderRadius: BorderRadius.circular(4)),
-                        //     height: 45.0,
-                        //     width: MediaQuery.of(context).size.width,
-                        //     // margin: const EdgeInsets.all(3.0),
-                        //     //width: 300.0,
-                        //     child: DropdownButtonHideUnderline(
-                        //       child: ButtonTheme(
-                        //         alignedDropdown: true,
-                        //         child: DropdownButton(
-                        //           iconSize: 25.0,
-
-                        //           // dropdownColor: theme.cardTheme.color,
-                        //           dropdownColor: Colors.white,
-                        //           icon: const Icon(
-                        //             Icons.arrow_drop_down,
-                        //             color: Colors.black,
-                        //           ),
-                        //           value: controller.selectedtransfer,
-                        //           // value: _selectedCountryCode,
-                        //           hint: Center(
-                        //             child: FxText.labelLarge(
-                        //               "Choose",
-                        //               fontWeight: 600,
-                        //               color: Colors.black,
-                        //               // color: theme.colorScheme.onPrimary,
-                        //               letterSpacing: 0.4,
-                        //             ),
-                        //           ),
-                        //           items: controller.TransferCodes.map(
-                        //               (String value) {
-                        //             return DropdownMenuItem<String>(
-                        //                 value: value,
-                        //                 child: Center(
-                        //                   child: Text(
-                        //                     value,
-                        //                     style: FxTextStyle.bodyMedium(),
-                        //                   ),
-                        //                 ));
-                        //           }).toList(),
-                        //           onChanged: (value) {
-                        //             setState(() {
-                        //               controller.selectedtransfer =
-                        //                   value.toString();
-                        //             });
-                        //           },
-
-                        //           style: FxTextStyle.bodyMedium(),
-                        //           // style: const TextStyle(
-                        //           //     color: Colors.black,
-                        //           //     fontSize: 20,
-                        //           //     fontWeight: FontWeight.w500),
-                        //         ),
-                        //       ),
-                        //     ),
-                        //   ),
-                        // ),
+                      
                       ],
                     ),
                     FxSpacing.height(4),
@@ -489,48 +438,7 @@ class _ActivityScreenState extends State<ActivityScreen>
                           'Date',
                           fontWeight: 600,
                         ),
-
                         FxSpacing.width(50),
-                        // Expanded(child: Container()),
-                        // SizedBox(
-                        //   height: 45,
-                        //   width: 250,
-                        //   child: TextFormField(
-                        //     style: FxTextStyle.bodyMedium(),
-                        //     controller: controller.dateTE,
-                        //     readOnly:
-                        //         true, //set it true, so that user will not able to edit text
-
-                        //     onTap: controller.dateselect,
-                        //     decoration: InputDecoration(
-                        //         floatingLabelBehavior:
-                        //             FloatingLabelBehavior.never,
-                        //         filled: true,
-                        //         isDense: true,
-                        //         fillColor: theme.cardTheme.color,
-                        //         // suffixIcon: Icon(
-                        //         //   FeatherIcons.calendar,
-                        //         //   color: theme.colorScheme.onBackground,
-                        //         // ),
-                        //         hintText: "yyyy-mm-dd",
-                        //         border: InputBorder.none,
-                        //         enabledBorder: InputBorder.none,
-                        //         focusedBorder: InputBorder.none,
-                        //         // enabledBorder: outlineInputBorder,
-                        //         // focusedBorder: outlineInputBorder,
-                        //         // border: outlineInputBorder,
-                        //         contentPadding: FxSpacing.all(16),
-                        //         hintStyle: const TextStyle(
-                        //           fontWeight: FontWeight.w600,
-                        //           color: Colors.black,
-                        //           letterSpacing: 0.4,
-                        //         ),
-                        //         // hintStyle: FxTextStyle.bodyMedium(),
-                        //         isCollapsed: true),
-                        //     autofocus: false,
-                        //     keyboardType: TextInputType.datetime,
-                        //   ),
-                        // ),
                         Container(
                           decoration: BoxDecoration(
                               color: theme.cardTheme.color,
@@ -541,6 +449,7 @@ class _ActivityScreenState extends State<ActivityScreen>
                           child: TextFormField(
                             style: FxTextStyle.bodyMedium(),
                             controller: controller.dateTE,
+                            //  controller: controllers[i],
                             readOnly:
                                 true, //set it true, so that user will not able to edit text
 
@@ -687,81 +596,17 @@ class _ActivityScreenState extends State<ActivityScreen>
             )
           ],
         ),
-        // child: Column(
-        //   children: [
-        //     Row(
-        //       children: [
-        //         Expanded(child: Container()),
-        //         InkWell(
-        //           onTap: () {
-        //             // Navigator.pop(context);
-        //           },
-        //           child: FxContainer.bordered(
-        //             paddingAll: 4,
-        //             color: theme.colorScheme.onPrimary,
-        //             borderColor: Colors.black,
-        //             child: Icon(
-        //               FeatherIcons.minus,
-        //               color: Colors.red.withAlpha(200),
-        //               size: 12,
-        //             ),
-        //           ),
-        //         ),
-        //       ],
-        //     ),
-        //     FxSpacing.height(10),
-        //     FxContainer(
-        //       margin: FxSpacing.bottom(20),
-        //       borderRadiusAll: 4,
-        //       paddingAll: 12,
-        //       child: Column(
-        //         children: [
-        //           Row(
-        //             children: [
-        //               FxContainer(
-        //                 paddingAll: 0,
-        //                 borderRadiusAll: 4,
-        //                 height: 80,
-        //                 width: 80,
-        //                 clipBehavior: Clip.antiAliasWithSaveLayer,
-        //                 child: Image(
-        //                   fit: BoxFit.cover,
-        //                   image: AssetImage(cart.product.image),
-        //                 ),
-        //               ),
-        //               FxSpacing.width(16),
-        //               Expanded(
-        //                 child: Column(
-        //                   crossAxisAlignment: CrossAxisAlignment.start,
-        //                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        //                   children: [
-        //                     FxText.titleMedium(
-        //                       cart.product.name,
-        //                       fontWeight: 700,
-        //                     ),
-        //                     FxSpacing.height(8),
-        //                     FxText.bodyMedium(
-        //                       '\$${cart.product.price}',
-        //                       fontWeight: 700,
-        //                     ),
-        //                     FxSpacing.height(8),
-        //                   ],
-        //                 ),
-        //               ),
-        //               FxSpacing.width(20),
-        //             ],
-        //           ),
-        //         ],
-        //       ),
-        //     ),
-        //   ],
-        // ),
-      ));
+        
+      )
+      );
     }
     return Column(
       children: list,
     );
   }
+
+
+  
 
   Widget _billingWidget() {
     log('billing Widget');
@@ -821,100 +666,7 @@ class _ActivityScreenState extends State<ActivityScreen>
                       color: Colors.red,
                       borderRadius: BorderRadius.circular(4)),
                 ),
-                // Container(
-                //   decoration: BoxDecoration(
-                //       color: theme.cardTheme.color,
-                //       // color: const Color(0xff1529e8),
-                //       borderRadius: BorderRadius.circular(4)),
-                //   height: 45.0,
-                //   // width: MediaQuery.of(context).size.width,
-                //   // margin: const EdgeInsets.all(3.0),
-                //   width: 300.0,
-                //   child: DropdownButtonHideUnderline(
-                //     child: ButtonTheme(
-                //       alignedDropdown: true,
-                //       child: DropdownButton(
-                //         iconSize: 25.0,
-
-                //         // dropdownColor: theme.cardTheme.color,
-                //         dropdownColor: Colors.white,
-                //         icon: const Icon(
-                //           Icons.arrow_drop_down,
-                //           color: Colors.black,
-                //         ),
-                //         value: controller.selectedtransfer,
-                //         // value: _selectedCountryCode,
-                //         hint: Center(
-                //           child: FxText.labelLarge(
-                //             "Choose",
-                //             fontWeight: 600,
-                //             color: Colors.black,
-                //             // color: theme.colorScheme.onPrimary,
-                //             letterSpacing: 0.4,
-                //           ),
-                //         ),
-                //         items: controller.TransferCodes.map((String value) {
-                //           return DropdownMenuItem<String>(
-                //               value: value,
-                //               child: Center(
-                //                 child: Text(
-                //                   value,
-                //                   style: FxTextStyle.bodyMedium(),
-                //                 ),
-                //               ));
-                //         }).toList(),
-                //         onChanged: (value) {
-                //           setState(() {
-                //             controller.selectedtransfer = value.toString();
-                //           });
-                //         },
-                //         // items:
-                //         //     // controller.countryCodes.map
-                //         //     // _countryCodes.map
-                //         //     // countryList.isNotEmpty &&
-                //         //     //         countryList.first.countries!.isNotEmpty
-                //         //     //     ? countryList.first.countries!.map((value) {
-                //         //     //         return DropdownMenuItem<String>(
-                //         //     //             value: value!.phonecode.toString(),
-                //         //     //             child: Center(
-                //         //     //               child: Text(
-                //         //     //                 value.phonecode.toString(),
-                //         //     //                 style: const TextStyle(
-                //         //     //                     color: Colors.black,
-                //         //     //                     fontSize: 20,
-                //         //     //                     fontWeight: FontWeight.w500),
-                //         //     //               ),
-                //         //     //             ));
-                //         //     //       }).toList()
-                //         //     //     : [].map((value) {
-                //         //     //         return DropdownMenuItem<String>(
-                //         //     //             value: value,
-                //         //     //             child: Center(
-                //         //     //               child: Text(
-                //         //     //                 value,
-                //         //     //                 style: const TextStyle(
-                //         //     //                     color: Colors.black,
-                //         //     //                     fontSize: 20,
-                //         //     //                     fontWeight: FontWeight.w500),
-                //         //     //               ),
-                //         //     //             ));
-                //         //     //       }).toList(),
-                //         // onChanged: (value) {
-                //         //   setState(() {
-                //         //     log(value.toString());
-                //         //     controller.selectedCountryCode = value.toString();
-                //         //     // _selectedCountryCode = value.toString();
-                //         //   });
-                //         // },
-                //         style: FxTextStyle.bodyMedium(),
-                //         // style: const TextStyle(
-                //         //     color: Colors.black,
-                //         //     fontSize: 20,
-                //         //     fontWeight: FontWeight.w500),
-                //       ),
-                //     ),
-                //   ),
-                // ),
+               
               ],
             ),
             FxSpacing.height(4),

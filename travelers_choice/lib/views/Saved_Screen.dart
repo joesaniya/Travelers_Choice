@@ -15,7 +15,7 @@ import 'full_app.dart';
 
 class SavedScreen extends StatefulWidget {
   final List<AllattractionModal> favouriteMeals;
-  const SavedScreen(this.favouriteMeals);
+  const SavedScreen(this.favouriteMeals, {super.key});
 
   @override
   _SavedScreenState createState() => _SavedScreenState();
@@ -54,6 +54,7 @@ class _SavedScreenState extends State<SavedScreen>
     theme = AppTheme.shoppingTheme;
 
     controller = FxControllerStore.put(SavedController(this));
+    log('Item:${favouriteList.map((e) => e.id)}');
   }
 
   Widget _buildSingleProduct(Datum product) {
@@ -175,7 +176,7 @@ class _SavedScreenState extends State<SavedScreen>
                             ),
                             FxSpacing.width(6),
                             FxText.bodySmall(
-                              product.averageRating.toString(),
+                              product.averageRating.toStringAsFixed(1),
                               fontWeight: 600,
                               color: theme.colorScheme.onPrimary,
                             ),

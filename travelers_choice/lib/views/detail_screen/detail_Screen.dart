@@ -23,7 +23,8 @@ class DetailScreen extends StatefulWidget {
   const DetailScreen(
       this.productid,
       // this.toggleFavourite, this.isFavourite,
-      this.productdatum);
+      this.productdatum,
+      {super.key});
 
   @override
   State<DetailScreen> createState() => _DetailScreenState();
@@ -37,15 +38,23 @@ class _DetailScreenState extends State<DetailScreen>
   //  List<String> favs = [];
 
   // List<DetailattractionModal> detailattraction = <DetailattractionModal>[];
+  bool isSelected = false;
+  List<Datum> tempFavouriteList = favouriteList.map((e) => e).toList();
 
   @override
   void initState() {
     super.initState();
+
+    favouriteListCheck();
+    log('isSelected555');
     controller = FxControllerStore.put(DetailController(
       this,
       //  widget.productid
     ));
+    log('isSelected:$isSelected');
     controller.getDetailAttraction(widget.productid, setState);
+
+    log('isSelected:$isSelected');
     theme = AppTheme.shoppingTheme;
 
     outlineInputBorder = const OutlineInputBorder(
@@ -53,32 +62,7 @@ class _DetailScreenState extends State<DetailScreen>
             color: Color(0xff1529e8),
             // color: Colors.lightBlueAccent,
             width: 0));
-
-    // controller.addListener(() {
-    //   if (controller.favs.isEmpty) {
-    //     SharedPreferences.getInstance().then((prefs) {
-    //       if (prefs.getStringList("favs") != null) {
-    //         log('Presf:${controller.allattractionList.first.attractions.data.first.id}');
-    //         controller.favs.addAll(prefs.getStringList("favs")!.toList());
-    //       }
-    //       final mealId = ModalRoute.of(context)!.settings.arguments as String;
-    //       final selectedMeal = controller.allattractionList
-    //           .firstWhere((Meal) => Meal.attractions.data.first.id == mealId);
-    //       controller.favs = widget.toggleFavourite(mealId);
-    //       setState(() {});
-    //       // setState(() {
-    //       //   final mealId = ModalRoute.of(context).settings.arguments as String;
-    //       //   final selectedMeal =
-    //       //     allattractionList.firstWhere((Meal) => Meal.id == mealId);
-    //       //   favs = widget.toggleFavourite(mealId);
-    //       // });
-    //       log('selectedMeal:${controller.allattractionList}');
-    //     });
-    //   }
-    // });
   }
-
-  //split
 
   @override
   Widget build(BuildContext context) {
@@ -389,50 +373,63 @@ class _DetailScreenState extends State<DetailScreen>
                                             height: 44,
                                             child: Icon(
                                               // MdiIcons.heartOutline,
-                                              widget.productdatum.favourite!
+                                              isSelected
                                                   ? MdiIcons.heart
                                                   : MdiIcons.heartOutline,
                                               color: controller
                                                   .colorAnimation.value,
                                               size: controller
                                                   .sizeAnimation.value,
+
                                               // size: 20,
                                               // color: const Color(0xff1529e8),
                                             )),
-                                        // onTap: () {},
                                         onTap: () {
-                                          log('liked:${controller.isFav}');
-                                          log('likedid:${widget.productid}');
-                                          print(
-                                              'MealId Type:${mealId.runtimeType}');
                                           // controller.isFav
                                           //     ? controller.animationController
                                           //         .reverse()
                                           //     : controller.animationController
                                           //         .forward();
-                                          log('Excursion Id:$mealId');
-                                          setState(() {
-                                            log('Excursion Id 1:$mealId');
+                                          log('Fav Item:${favouriteList.map((e) => e.id)}');
+                                          log('Sel Id:${widget.productdatum.id}');
+                                          if (tempFavouriteList.isNotEmpty) {
+                                            tempFavouriteList.map((e) {
+                                              if (e.id ==
+                                                  widget.productdatum.id) {
+                                                favouriteList.remove(e);
+                                              } else {
+                                                favouriteList
+                                                    .add(widget.productdatum);
+                                              }
+                                            }).toList();
+                                          } else {
+                                            favouriteList
+                                                .add(widget.productdatum);
+                                          }
 
-                                            if (widget
-                                                .productdatum.favourite!) {
-                                              widget.productdatum.favourite =
-                                                  false;
-                                              favouriteList
-                                                  .remove(widget.productdatum);
-                                              //api
-                                            } else {
-                                              widget.productdatum.favourite =
-                                                  true;
-                                              favouriteList
-                                                  .add(widget.productdatum);
-                                              //api
-                                              log('Excursion Id Else:$mealId');
-                                            }
+                                          // if (isSelected) {
+                                          //   // widget.productdatum.favourite =
+                                          //   //     false;
+                                          //   favouriteList
+                                          //       .remove(widget.productdatum);
+
+                                          //   //api
+                                          // } else {
+                                          //   // widget.productdatum.favourite =
+                                          //   //     true;
+                                          //   favouriteList
+                                          //       .add(widget.productdatum);
+                                          //   log('Fav Item:${favouriteList.first.id}');
+                                          //   //api
+                                          //   log('Excursion Id Else:$mealId');
+                                          // }
+                                          setState(() {
+                                            favouriteList;
+                                            isSelected = !isSelected;
 
                                             // widget.toggleFavourite(mealId);
                                           });
-                                          // log('message:${widget.productid}');
+                                          log('Detail:${favouriteList.map((e) => e.id)}');
                                         },
                                       ),
                                     );
@@ -718,5 +715,13 @@ class _DetailScreenState extends State<DetailScreen>
             ));
       }
     }
+  }
+
+  favouriteListCheck() async {
+    isSelected = favouriteList.any((e) => e.id == widget.productid);
+    setState(() {
+      isSelected;
+    });
+    log('Fav List Check:$isSelected');
   }
 }
