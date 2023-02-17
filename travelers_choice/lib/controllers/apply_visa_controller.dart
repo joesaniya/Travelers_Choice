@@ -491,23 +491,23 @@ class ApplyVisaController extends FxController {
   //   update();
   // }
 
-  Future<void> bookNow() async {
-    animationController.forward();
-    await Future.delayed(const Duration(seconds: 1));
-    Navigator.of(context, rootNavigator: true).push(PageRouteBuilder(
-        transitionDuration: const Duration(milliseconds: 500),
-        transitionsBuilder: (
-            BuildContext context,
-            Animation<double> animation,
-            Animation<double> secondaryAnimation,
-            Widget child,
-            ) =>
-            FadeTransition(
-              opacity: animation,
-              child: child,
-            ),
-        pageBuilder: (_, __, ___) => const CheckOutScreen()));
-  }
+  // Future<void> bookNow() async {
+  //   animationController.forward();
+  //   await Future.delayed(const Duration(seconds: 1));
+  //   Navigator.of(context, rootNavigator: true).push(PageRouteBuilder(
+  //       transitionDuration: const Duration(milliseconds: 500),
+  //       transitionsBuilder: (
+  //           BuildContext context,
+  //           Animation<double> animation,
+  //           Animation<double> secondaryAnimation,
+  //           Widget child,
+  //           ) =>
+  //           FadeTransition(
+  //             opacity: animation,
+  //             child: child,
+  //           ),
+  //       pageBuilder: (_, __, ___) => const CheckOutScreen()));
+  // }
 
   void goBack() {
     Navigator.pop(context);
@@ -585,19 +585,19 @@ class ApplyVisaController extends FxController {
   String getTag() {
     return "checkout_controller";
   }
-  uploadFile(List<File> files) async {
-
-    var postUri = Uri.parse("url here");
-    var request =  http.MultipartRequest("POST", postUri);
-    request.fields['user'] = 'blah';
-    files.forEach((file) async{
-      request.files.add( http.MultipartFile.fromBytes('file', await File.fromUri(Uri.file(file.path)).readAsBytes(),));
-
-    });
-
-    request.send().then((response) {
-      if (response.statusCode == 200) print("Uploaded!");
-    });
-  }
+  // uploadFile(List<File> files) async {
+  //
+  //   var postUri = Uri.parse("url here");
+  //   var request =  http.MultipartRequest("POST", postUri);
+  //   request.fields['user'] = 'blah';
+  //   files.forEach((file) async{
+  //     request.files.add( http.MultipartFile.fromBytes('file', await File.fromUri(Uri.file(file.path)).readAsBytes(),));
+  //
+  //   });
+  //
+  //   request.send().then((response) {
+  //     if (response.statusCode == 200) print("Uploaded!");
+  //   });
+  // }
 }
 

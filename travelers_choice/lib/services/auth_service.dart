@@ -193,6 +193,7 @@ class AuthService {
             jsonEncode(jsondata['currencies']));
         // sharedPreferences.setString("countrycode", countryModalFromJson(response.body).toJson() );
 
+        print("new response ${countryModalFromJson(response.body)}");
         return countryModalFromJson(response.body);
       } else {
         var jsondata = jsonDecode(response.body);

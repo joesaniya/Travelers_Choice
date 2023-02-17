@@ -242,40 +242,9 @@ class VisaController extends FxController {
     super.dispose();
     pageController.dispose();
     timerAnimation.cancel();
+    scrollController.dispose();
   }
 
-  // bool increaseAble(Product product) {
-  //   return product.person < 9;
-  //   // return product.person < product.person;
-  //   // return cart.quantity < cart.product.quantity;
-  // }
-
-  // bool decreaseAble(Product product) {
-  //   return product.person > 1;
-  // }
-
-  // void increment(Product product) {
-  //   if (!increaseAble(product)) return;
-  //   product.person++;
-  //   calculateBilling();
-  //   update();
-  // }
-
-  // void decrement(Product product) {
-  //   if (!decreaseAble(product)) return;
-  //   product.person--;
-  //   calculateBilling();
-  //   update();
-  // }
-
-  // void calculateBilling() {
-  //   order = 0;
-  //   for (Product product in products!) {
-  //     order = order + (product.price * product.person);
-  //   }
-
-  //   total = order + tax - offer;
-  // }
 
   Future<void> dateselect() async {
     DateTime? pickedDate = await showDatePicker(
@@ -304,23 +273,23 @@ class VisaController extends FxController {
   //   update();
   // }
 
-  Future<void> bookNow() async {
-    animationController.forward();
-    await Future.delayed(const Duration(seconds: 1));
-    Navigator.of(context, rootNavigator: true).push(PageRouteBuilder(
-        transitionDuration: const Duration(milliseconds: 500),
-        transitionsBuilder: (
-            BuildContext context,
-            Animation<double> animation,
-            Animation<double> secondaryAnimation,
-            Widget child,
-            ) =>
-            FadeTransition(
-              opacity: animation,
-              child: child,
-            ),
-        pageBuilder: (_, __, ___) => const CheckOutScreen()));
-  }
+  // Future<void> bookNow() async {
+  //   animationController.forward();
+  //   await Future.delayed(const Duration(seconds: 1));
+  //   Navigator.of(context, rootNavigator: true).push(PageRouteBuilder(
+  //       transitionDuration: const Duration(milliseconds: 500),
+  //       transitionsBuilder: (
+  //           BuildContext context,
+  //           Animation<double> animation,
+  //           Animation<double> secondaryAnimation,
+  //           Widget child,
+  //           ) =>
+  //           FadeTransition(
+  //             opacity: animation,
+  //             child: child,
+  //           ),
+  //       pageBuilder: (_, __, ___) => const CheckOutScreen()));
+  // }
 
   void goBack() {
     Navigator.pop(context);

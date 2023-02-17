@@ -3,6 +3,9 @@ import 'package:anim_search_bar/anim_search_bar.dart';
 import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutx/flutx.dart';
+import 'package:hotel_travel/models/select_visa_modal.dart';
+import 'package:hotel_travel/models/visa_country_modal.dart';
+import 'package:hotel_travel/services/visa_service.dart';
 import 'package:tab_indicator_styler/tab_indicator_styler.dart';
 import '../controllers/visa_controller.dart';
 import 'apply_visa.dart';
@@ -10,7 +13,10 @@ import 'apply_visa.dart';
 
 class VisaScreen extends StatefulWidget {
 
-  const VisaScreen({Key? key,}) : super(key: key);
+  final VisaCountryModal place;
+
+
+  const VisaScreen({Key? key, required this.place ,}) : super(key: key);
 
   @override
   State<VisaScreen> createState() => _VisaScreenState();
@@ -21,13 +27,14 @@ class _VisaScreenState extends State<VisaScreen>
   // late ThemeData theme;
   // late OutlineInputBorder outlineInputBorder;
   late VisaController controller;
-
+  bool isLoading = true;
 
   @override
   void initState() {
     super.initState();
     controller = FxControllerStore.put(VisaController(this));
- 
+    VisaService().getSelectVisa(widget.place.id);
+    fetchData();
     // theme = AppTheme.shoppingTheme;
 
     // outlineInputBorder = const OutlineInputBorder(
@@ -35,6 +42,38 @@ class _VisaScreenState extends State<VisaScreen>
     //         color: Color(0xff1529e8),
     //         // color: Colors.lightBlueAccent,
     //         width: 0));
+  }
+
+  fetchData() {
+    Future.delayed(Duration.zero, () async {
+      await getVisa().then((value) {
+        if (value) {
+          isLoading = false;
+          setState(() {});
+        }
+      });
+    });
+  }
+
+  SelectVisaModal? selectVisa ;
+  bool isCountryListLoading = true;
+  Future getVisa() async {
+    isCountryListLoading = true;
+    try {
+      var data = await VisaService().getSelectVisa(widget.place.id);
+      if (data != null) {
+        setState(() {});
+        // countryList.add(data);
+        selectVisa = data;
+
+        isCountryListLoading = false;
+        return true;
+      } else {
+        return false;
+      }
+    } catch (e) {
+      rethrow;
+    }
   }
 
 
@@ -59,6 +98,7 @@ class _VisaScreenState extends State<VisaScreen>
   String searchText="";
 
   Widget visaList(){
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
         children: [

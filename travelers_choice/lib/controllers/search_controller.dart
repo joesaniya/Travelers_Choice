@@ -2,6 +2,8 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutx/flutx.dart';
+import 'package:hotel_travel/models/visa_country_modal.dart';
+import 'package:hotel_travel/views/visa_screen.dart';
 import 'package:intl/intl.dart';
 
 import '../models/Country_modal.dart';
@@ -10,7 +12,7 @@ import '../views/SearchScreen.dart';
 class SearchController extends FxController {
   TickerProvider ticker;
   SearchController(this.ticker);
-  late TextEditingController locationTE, dateTE;
+  late TextEditingController locationTE, dateTE,visaTE;
   String? locationplace;
   GlobalKey<FormState> formKey = GlobalKey();
 
@@ -26,10 +28,12 @@ class SearchController extends FxController {
   int locationCounter = 0;
   int dateCounter = 0;
 
+
   @override
   void initState() {
     super.initState();
     locationTE = TextEditingController();
+    visaTE = TextEditingController();
     dateTE = TextEditingController();
     searchController = AnimationController(
         vsync: ticker, duration: const Duration(milliseconds: 500));
@@ -146,6 +150,45 @@ class SearchController extends FxController {
               place: selectedCountry
               // place:locationTE.text
               )));
+    }
+  }
+
+  Future<void> searchVisabtn(
+      // Destination locationplace
+      VisaCountryModal selectedVisaCountry) async {
+    log('search btn');
+    locationCounter = 0;
+    dateCounter = 0;
+
+    if (visaTE.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text("Please select location")));
+    }
+    // else if (dateTE.text.isEmpty) {
+    //   ScaffoldMessenger.of(context)
+    //       .showSnackBar(const SnackBar(content: Text("Please select date")));
+    // }
+    else {
+
+      Navigator.of(context, rootNavigator: true).push(PageRouteBuilder(
+          transitionDuration: const Duration(milliseconds: 500),
+          transitionsBuilder: (
+              BuildContext context,
+              Animation<double> animation,
+              Animation<double> secondaryAnimation,
+              Widget child,
+              ) =>
+              FadeTransition(
+                opacity: animation,
+                child: child,
+              ),
+          // pageBuilder: (_, __, ___) =>Container()
+          pageBuilder: (_, __, ___) => VisaScreen(
+            // place: Destination.fromJson(jsonDecode(selectedCountry)),
+              place: selectedVisaCountry
+            // place:locationTE.text
+          )
+      ));
     }
   }
 
