@@ -189,11 +189,10 @@ class _ActivityScreenState extends State<ActivityScreen>
     List<Widget> list = [];
     log('message');
     log(widget.excursions.length.toString());
-    
 
     // for (Cart cart in controller.carts!)
     for (var cart in widget.excursions) {
-    List<TextEditingController> controllers = List.generate(
+      List<TextEditingController> controllers = List.generate(
         10,
         (index) => TextEditingController(),
       );
@@ -366,8 +365,7 @@ class _ActivityScreenState extends State<ActivityScreen>
                                 //     letterSpacing: 0.4,
                                 //   ),
                                 // ),
-                                items:  widget.excursions.first.
-                                    ==false?controller.TransferCodes.map(
+                                items: controller.TransferCodes.map(
                                     (String value) {
                                   return DropdownMenuItem<String>(
                                       value: value,
@@ -378,6 +376,7 @@ class _ActivityScreenState extends State<ActivityScreen>
                                         ),
                                       ));
                                 }).toList(),
+
                                 onChanged: (value) {
                                   setState(() {
                                     controller.selectedtransfer =
@@ -427,7 +426,6 @@ class _ActivityScreenState extends State<ActivityScreen>
                             ),
                           ),
                         ),
-                      
                       ],
                     ),
                     FxSpacing.height(4),
@@ -596,17 +594,12 @@ class _ActivityScreenState extends State<ActivityScreen>
             )
           ],
         ),
-        
-      )
-      );
+      ));
     }
     return Column(
       children: list,
     );
   }
-
-
-  
 
   Widget _billingWidget() {
     log('billing Widget');
@@ -666,7 +659,6 @@ class _ActivityScreenState extends State<ActivityScreen>
                       color: Colors.red,
                       borderRadius: BorderRadius.circular(4)),
                 ),
-               
               ],
             ),
             FxSpacing.height(4),
