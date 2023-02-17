@@ -1,369 +1,340 @@
-// import 'dart:async';
-// import 'dart:developer';
 
-// import 'package:flutter/material.dart';
-// import 'package:flutx/flutx.dart';
-// import 'package:intl/intl.dart';
+import 'dart:async';
+import 'dart:developer';
 
-// import '../models/atteraction_model.dart';
-// import '../views/checkout_screen.dart';
-// import '../../controllers/attraction_Controller.dart';
+import 'package:flutter/material.dart';
+import 'package:flutx/flutx.dart';
+import 'package:intl/intl.dart';
 
-// class VisaController extends FxController {
-//   TickerProvider ticker;
-//   VisaController(this.ticker);
+import '../models/atteraction_model.dart';
+import '../views/checkout_screen.dart';
+import '../../controllers/attraction_Controller.dart';
 
-//   List<DetailattractionModal> detailattraction = <DetailattractionModal>[];
-//   bool showLoading = true, uiLoading = true;
+class VisaController extends FxController {
+  TickerProvider ticker;
+  VisaController(this.ticker);
 
-//   //tab
-//   late TabController tabController;
-//   late ScrollController scrollController;
-//   //
+  List<DetailattractionModal> detailattraction = <DetailattractionModal>[];
+  bool showLoading = true, uiLoading = true;
 
-// //  late  Product product;
-//   // late DetailattractionModal product;
+  //tab
+  late TabController tabController;
+  late ScrollController scrollController;
+  //
 
-//   late AnimationController animationController, cartController, dateController;
-//   late Animation<Color?> colorAnimation;
-//   late Animation<double> sizeAnimation,
-//       cartAnimation,
-//       paddingAnimation,
-//       fadeAnimation;
-//   late Animation<Offset> dateAnimation;
-//   int dateCounter = 0;
-//   final PageController pageController = PageController(initialPage: 0);
-//   int currentPage = 0, numPages = 4;
-//   late Timer timerAnimation;
-//   late TextEditingController dateTE;
-//   late TextEditingController visaController;
+//  late  Product product;
+  // late DetailattractionModal product;
 
-//   bool isFav = false;
-//   bool addCart = false;
+  late AnimationController animationController, cartController, dateController;
+  late Animation<Color?> colorAnimation;
+  late Animation<double> sizeAnimation,
+      cartAnimation,
+      paddingAnimation,
+      fadeAnimation;
+  late Animation<Offset> dateAnimation;
+  int dateCounter = 0;
+  final PageController pageController = PageController(initialPage: 0);
+  int currentPage = 0, numPages = 4;
+  late Timer timerAnimation;
+  late TextEditingController dateTE;
+  late TextEditingController visaController;
 
-//   late List<String> sizes;
-//   String selectedSize = 'M';
+  bool isFav = false;
+  bool addCart = false;
 
-//   // List<Product>? products;
-//   late double order, tax = 30, offer = 50, total;
+  late List<String> sizes;
+  String selectedSize = 'M';
 
-//   String? selectedtransfer;
-//   final List<String> TransferCodes = ['without'];
-//   String? selectedPax;
-//   final List<String> PaxCodes = [
-//     '1',
-//     '2',
-//     '3',
-//     '4',
-//     '5',
-//     '6',
-//     '7',
-//     '8',
-//     '9',
-//     '10',
-//     '11',
-//     '12',
-//     '13',
-//     '14',
-//     '15',
-//     '16',
-//     '17',
-//     '18',
-//     '19',
-//     '20'
-//   ];
-//   Color appBarColor = Colors.transparent;
+  // List<Product>? products;
+  late double order, tax = 30, offer = 50, total;
 
-//   changeAppBarColor(ScrollController scrollController) {
-//     if (scrollController.position.hasPixels) {
-//       if (scrollController.position.pixels > 2.0) {
-//         appBarColor = Colors.green;
-//         // setState(() {
-//         //   appBarColor = AppColor.primary;
-//         // });
-//       }
-//       if (scrollController.position.pixels <= 2.0) {
-//         appBarColor = Colors.transparent;
-//         // setState(() {
-//         //   appBarColor = Colors.transparent;
-//         // });
-//       }
-//     } else {
-//       appBarColor = Colors.transparent;
-//       // setState(() {
-//       //   appBarColor = Colors.transparent;
-//       // });
-//     }
-//   }
+  String? selectedtransfer;
+  final List<String> TransferCodes = ['without'];
+  String? selectedPax;
+  final List<String> PaxCodes = [
+    '1',
+    '2',
+    '3',
+    '4',
+    '5',
+    '6',
+    '7',
+    '8',
+    '9',
+    '10',
+    '11',
+    '12',
+    '13',
+    '14',
+    '15',
+    '16',
+    '17',
+    '18',
+    '19',
+    '20'
+  ];
+  Color appBarColor = Colors.transparent;
 
-//   bool isLoading = true;
+  changeAppBarColor(ScrollController scrollController) {
+    if (scrollController.position.hasPixels) {
+      if (scrollController.position.pixels > 2.0) {
+        appBarColor = Colors.green;
+        // setState(() {
+        //   appBarColor = AppColor.primary;
+        // });
+      }
+      if (scrollController.position.pixels <= 2.0) {
+        appBarColor = Colors.transparent;
+        // setState(() {
+        //   appBarColor = Colors.transparent;
+        // });
+      }
+    } else {
+      appBarColor = Colors.transparent;
+      // setState(() {
+      //   appBarColor = Colors.transparent;
+      // });
+    }
+  }
 
-//   // getDetailAttraction(productid, setState) {
-//   //   log('getDetail Attraction function called');
-//   //   Future.delayed(Duration.zero, () async {
-//   //     await AttractionController()
-//   //         .getDetailattractionList(productid: productid)
-//   //         .then((value) {
-//   //       log('Details => $value');
-//   //       if (value != null) {
-//   //         isLoading = false;
-//   //         // detailattraction = value;
-//   //         setState(() {
-//   //           detailattraction = value;
-//   //         });
-//   //       }
-//   //     });
-//   //   });
-//   // }
-//   //
-//   // showFAB(TabController tabController) {
-//   //   int reviewTabIndex = 2;
-//   //   if (tabController.index == reviewTabIndex) {
-//   //     return true;
-//   //   }
-//   //   return false;
-//   // }
+  bool isLoading = true;
 
-//   @override
-//   void initState() {
-//     super.initState();
-//     //new
-//     tabController = TabController(length: 4, vsync: ticker);
-//     scrollController = ScrollController(initialScrollOffset: 0.0);
-//     scrollController.addListener(() {
-//       changeAppBarColor(scrollController);
-//     });
-//     // scrollController.hasClients(() {
-//     //   changeAppBarColor(scrollController);
-//     // });
-//     //
-//     dateTE = TextEditingController();
-//     visaController = TextEditingController();
-//     save = false;
-//     // fetchData();
-//     dateController = AnimationController(
-//         vsync: ticker, duration: const Duration(milliseconds: 50));
-//     timerAnimation = Timer.periodic(const Duration(seconds: 4), (Timer timer) {
-//       if (currentPage < numPages - 1) {
-//         currentPage++;
-//       } else {
-//         currentPage = 0;
-//       }
+  // getDetailAttraction(productid, setState) {
+  //   log('getDetail Attraction function called');
+  //   Future.delayed(Duration.zero, () async {
+  //     await AttractionController()
+  //         .getDetailattractionList(productid: productid)
+  //         .then((value) {
+  //       log('Details => $value');
+  //       if (value != null) {
+  //         isLoading = false;
+  //         // detailattraction = value;
+  //         setState(() {
+  //           detailattraction = value;
+  //         });
+  //       }
+  //     });
+  //   });
+  // }
+  //
+  // showFAB(TabController tabController) {
+  //   int reviewTabIndex = 2;
+  //   if (tabController.index == reviewTabIndex) {
+  //     return true;
+  //   }
+  //   return false;
+  // }
 
-//       pageController.animateToPage(
-//         currentPage,
-//         duration: const Duration(milliseconds: 800),
-//         curve: Curves.ease,
-//       );
-//     });
-//     dateAnimation =
-//         Tween<Offset>(begin: const Offset(-0.01, 0), end: const Offset(0.01, 0))
-//             .animate(CurvedAnimation(
-//           parent: dateController,
-//           curve: Curves.easeIn,
-//         ));
-//     animationController = AnimationController(
-//         vsync: ticker, duration: const Duration(milliseconds: 500));
+  @override
+  void initState() {
+    super.initState();
+    //new
+    tabController = TabController(length: 4, vsync: ticker);
+    scrollController = ScrollController(initialScrollOffset: 0.0);
+    scrollController.addListener(() {
+      changeAppBarColor(scrollController);
+    });
+    // scrollController.hasClients(() {
+    //   changeAppBarColor(scrollController);
+    // });
+    //
+    dateTE = TextEditingController();
+    visaController = TextEditingController();
+    save = false;
+    // fetchData();
+    dateController = AnimationController(
+        vsync: ticker, duration: const Duration(milliseconds: 50));
+    timerAnimation = Timer.periodic(const Duration(seconds: 4), (Timer timer) {
+      if (currentPage < numPages - 1) {
+        currentPage++;
+      } else {
+        currentPage = 0;
+      }
 
-//     cartController = AnimationController(
-//         vsync: ticker, duration: const Duration(milliseconds: 500));
+      pageController.animateToPage(
+        currentPage,
+        duration: const Duration(milliseconds: 800),
+        curve: Curves.ease,
+      );
+    });
+    dateAnimation =
+        Tween<Offset>(begin: const Offset(-0.01, 0), end: const Offset(0.01, 0))
+            .animate(CurvedAnimation(
+          parent: dateController,
+          curve: Curves.easeIn,
+        ));
+    animationController = AnimationController(
+        vsync: ticker, duration: const Duration(milliseconds: 500));
 
-//     colorAnimation =
-//         ColorTween(begin: Colors.grey.shade400, end: const Color(0xff1529e8)
-//           // end: const Color(0xff1c8c8c)
-//         )
-//             .animate(animationController);
+    cartController = AnimationController(
+        vsync: ticker, duration: const Duration(milliseconds: 500));
 
-//     sizeAnimation = TweenSequence(<TweenSequenceItem<double>>[
-//       TweenSequenceItem<double>(
-//           tween: Tween<double>(begin: 24, end: 28), weight: 50),
-//       TweenSequenceItem<double>(
-//           tween: Tween<double>(begin: 28, end: 24), weight: 50)
-//     ]).animate(animationController);
-//     fadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
-//       CurvedAnimation(
-//         parent: animationController,
-//         curve: Curves.easeIn,
-//       ),
-//     );
+    colorAnimation =
+        ColorTween(begin: Colors.grey.shade400, end: const Color(0xff1529e8)
+          // end: const Color(0xff1c8c8c)
+        )
+            .animate(animationController);
 
-//     cartAnimation = TweenSequence(<TweenSequenceItem<double>>[
-//       TweenSequenceItem<double>(
-//           tween: Tween<double>(begin: 24, end: 28), weight: 50),
-//       TweenSequenceItem<double>(
-//           tween: Tween<double>(begin: 28, end: 24), weight: 50)
-//     ]).animate(cartController);
+    sizeAnimation = TweenSequence(<TweenSequenceItem<double>>[
+      TweenSequenceItem<double>(
+          tween: Tween<double>(begin: 24, end: 28), weight: 50),
+      TweenSequenceItem<double>(
+          tween: Tween<double>(begin: 28, end: 24), weight: 50)
+    ]).animate(animationController);
+    fadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
+      CurvedAnimation(
+        parent: animationController,
+        curve: Curves.easeIn,
+      ),
+    );
 
-//     paddingAnimation = TweenSequence(<TweenSequenceItem<double>>[
-//       TweenSequenceItem<double>(
-//           tween: Tween<double>(begin: 16, end: 14), weight: 50),
-//       TweenSequenceItem<double>(
-//           tween: Tween<double>(begin: 14, end: 16), weight: 50)
-//     ]).animate(cartController);
+    cartAnimation = TweenSequence(<TweenSequenceItem<double>>[
+      TweenSequenceItem<double>(
+          tween: Tween<double>(begin: 24, end: 28), weight: 50),
+      TweenSequenceItem<double>(
+          tween: Tween<double>(begin: 28, end: 24), weight: 50)
+    ]).animate(cartController);
 
-//     animationController.addStatusListener((status) {
-//       if (status == AnimationStatus.completed) {
-//         isFav = true;
-//         update();
-//       }
-//       if (status == AnimationStatus.dismissed) {
-//         isFav = false;
-//         update();
-//       }
-//     });
+    paddingAnimation = TweenSequence(<TweenSequenceItem<double>>[
+      TweenSequenceItem<double>(
+          tween: Tween<double>(begin: 16, end: 14), weight: 50),
+      TweenSequenceItem<double>(
+          tween: Tween<double>(begin: 14, end: 16), weight: 50)
+    ]).animate(cartController);
 
-//     cartController.addStatusListener((status) {
-//       if (status == AnimationStatus.completed) {
-//         addCart = true;
-//         update();
-//       }
-//       if (status == AnimationStatus.dismissed) {
-//         addCart = false;
-//         update();
-//       }
-//     });
+    animationController.addStatusListener((status) {
+      if (status == AnimationStatus.completed) {
+        isFav = true;
+        update();
+      }
+      if (status == AnimationStatus.dismissed) {
+        isFav = false;
+        update();
+      }
+    });
 
-//     dateController.addStatusListener((status) {
-//       if (status == AnimationStatus.completed) {
-//         dateController.reverse();
-//       }
-//       if (status == AnimationStatus.dismissed && dateCounter < 2) {
-//         dateController.forward();
-//         dateCounter++;
-//       }
-//     });
-//   }
+    cartController.addStatusListener((status) {
+      if (status == AnimationStatus.completed) {
+        addCart = true;
+        update();
+      }
+      if (status == AnimationStatus.dismissed) {
+        addCart = false;
+        update();
+      }
+    });
 
-//   @override
-//   void dispose() {
-//     animationController.dispose();
-//     cartController.dispose();
-//     dateController.dispose();
-//     super.dispose();
-//     pageController.dispose();
-//     timerAnimation.cancel();
-//   }
+    dateController.addStatusListener((status) {
+      if (status == AnimationStatus.completed) {
+        dateController.reverse();
+      }
+      if (status == AnimationStatus.dismissed && dateCounter < 2) {
+        dateController.forward();
+        dateCounter++;
+      }
+    });
+  }
 
-//   // bool increaseAble(Product product) {
-//   //   return product.person < 9;
-//   //   // return product.person < product.person;
-//   //   // return cart.quantity < cart.product.quantity;
-//   // }
+  @override
+  void dispose() {
+    animationController.dispose();
+    cartController.dispose();
+    dateController.dispose();
+    super.dispose();
+    pageController.dispose();
+    timerAnimation.cancel();
+    scrollController.dispose();
+  }
 
-//   // bool decreaseAble(Product product) {
-//   //   return product.person > 1;
-//   // }
 
-//   // void increment(Product product) {
-//   //   if (!increaseAble(product)) return;
-//   //   product.person++;
-//   //   calculateBilling();
-//   //   update();
-//   // }
+  Future<void> dateselect() async {
+    DateTime? pickedDate = await showDatePicker(
+        context: context,
+        initialDate: DateTime.now(),
+        firstDate: DateTime(
+            1900), //DateTime.now() - not to allow to choose before today.
+        lastDate: DateTime(2101));
 
-//   // void decrement(Product product) {
-//   //   if (!decreaseAble(product)) return;
-//   //   product.person--;
-//   //   calculateBilling();
-//   //   update();
-//   // }
+    if (pickedDate != null) {
+      print(pickedDate); //pickedDate output format => 2021-03-10 00:00:00.000
+      String formattedDate = DateFormat('yyyy-MM-dd').format(pickedDate);
+      print(formattedDate);
+      dateTE.text = formattedDate;
 
-//   // void calculateBilling() {
-//   //   order = 0;
-//   //   for (Product product in products!) {
-//   //     order = order + (product.price * product.person);
-//   //   }
+      // setState(() {
+      //   dateinput.text = formattedDate; //set output date to TextField value.
+      // });
+    } else {
+      print("Date is not selected");
+    }
+  }
 
-//   //   total = order + tax - offer;
-//   // }
+  // void toggleFavorite() {
+  //   product.favorite = !product.favorite;
+  //   update();
+  // }
 
-//   Future<void> dateselect() async {
-//     DateTime? pickedDate = await showDatePicker(
-//         context: context,
-//         initialDate: DateTime.now(),
-//         firstDate: DateTime(
-//             1900), //DateTime.now() - not to allow to choose before today.
-//         lastDate: DateTime(2101));
+  // Future<void> bookNow() async {
+  //   animationController.forward();
+  //   await Future.delayed(const Duration(seconds: 1));
+  //   Navigator.of(context, rootNavigator: true).push(PageRouteBuilder(
+  //       transitionDuration: const Duration(milliseconds: 500),
+  //       transitionsBuilder: (
+  //           BuildContext context,
+  //           Animation<double> animation,
+  //           Animation<double> secondaryAnimation,
+  //           Widget child,
+  //           ) =>
+  //           FadeTransition(
+  //             opacity: animation,
+  //             child: child,
+  //           ),
+  //       pageBuilder: (_, __, ___) => const CheckOutScreen()));
+  // }
 
-//     if (pickedDate != null) {
-//       print(pickedDate); //pickedDate output format => 2021-03-10 00:00:00.000
-//       String formattedDate = DateFormat('yyyy-MM-dd').format(pickedDate);
-//       print(formattedDate);
-//       dateTE.text = formattedDate;
+  void goBack() {
+    Navigator.pop(context);
+  }
 
-//       // setState(() {
-//       //   dateinput.text = formattedDate; //set output date to TextField value.
-//       // });
-//     } else {
-//       print("Date is not selected");
-//     }
-//   }
+  void selectSize(String size) {
+    selectedSize = size;
+    update();
+  }
 
-//   // void toggleFavorite() {
-//   //   product.favorite = !product.favorite;
-//   //   update();
-//   // }
+  // void fetchData() async {
+  //   log('fetch data');
+  //   products = HotelTravelCache.products;
+  //   log(products!.length.toString());
+  // }
 
-//   Future<void> bookNow() async {
-//     animationController.forward();
-//     await Future.delayed(const Duration(seconds: 1));
-//     Navigator.of(context, rootNavigator: true).push(PageRouteBuilder(
-//         transitionDuration: const Duration(milliseconds: 500),
-//         transitionsBuilder: (
-//             BuildContext context,
-//             Animation<double> animation,
-//             Animation<double> secondaryAnimation,
-//             Widget child,
-//             ) =>
-//             FadeTransition(
-//               opacity: animation,
-//               child: child,
-//             ),
-//         pageBuilder: (_, __, ___) => const CheckOutScreen()));
-//   }
+  void fetchloader() async {
+    await Future.delayed(const Duration(seconds: 4));
 
-//   void goBack() {
-//     Navigator.pop(context);
-//   }
+    uiLoading = false;
+    log('fetchloader');
+    log(uiLoading.toString());
+    update();
+  }
 
-//   void selectSize(String size) {
-//     selectedSize = size;
-//     update();
-//   }
+  Future<void> goToCheckout() async {
+    /*Navigator.of(context, rootNavigator: true).push(
+      MaterialPageRoute(
+        builder: (context) => CheckOutScreen(),
+      ),
+    );*/
+  }
 
-//   // void fetchData() async {
-//   //   log('fetch data');
-//   //   products = HotelTravelCache.products;
-//   //   log(products!.length.toString());
-//   // }
+  // void goToSingleProduct(Product product) {
+  //   Navigator.of(context, rootNavigator: true).push(
+  //     MaterialPageRoute(
+  //       builder: (context) => SingleProductScreen(product),
+  //     ),
+  //   );
+  // }
 
-//   void fetchloader() async {
-//     await Future.delayed(const Duration(seconds: 4));
+  @override
+  String getTag() {
+    return "Detail_controller";
+  }
+}
 
-//     uiLoading = false;
-//     log('fetchloader');
-//     log(uiLoading.toString());
-//     update();
-//   }
-
-//   Future<void> goToCheckout() async {
-//     /*Navigator.of(context, rootNavigator: true).push(
-//       MaterialPageRoute(
-//         builder: (context) => CheckOutScreen(),
-//       ),
-//     );*/
-//   }
-
-//   // void goToSingleProduct(Product product) {
-//   //   Navigator.of(context, rootNavigator: true).push(
-//   //     MaterialPageRoute(
-//   //       builder: (context) => SingleProductScreen(product),
-//   //     ),
-//   //   );
-//   // }
-
-//   @override
-//   String getTag() {
-//     return "Detail_controller";
-//   }
-// }
