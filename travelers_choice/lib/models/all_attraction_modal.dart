@@ -5,6 +5,7 @@
 import 'dart:convert';
 
 import 'Country_modal.dart';
+import 'atteraction_model.dart';
 
 AllattractionModal allattractionModalFromJson(String str) =>
     AllattractionModal.fromJson(json.decode(str));
@@ -154,21 +155,21 @@ class Datum {
       };
 }
 
-class Activity {
-  Activity({
-    required this.adultPrice,
-  });
+// class Activity {
+//   Activity({
+//     required this.adultPrice,
+//   });
 
-  int adultPrice;
+//   int adultPrice;
 
-  factory Activity.fromJson(Map<String, dynamic> json) => Activity(
-        adultPrice: json["adultPrice"],
-      );
+//   factory Activity.fromJson(Map<String, dynamic> json) => Activity(
+//         adultPrice: json["adultPrice"],
+//       );
 
-  Map<String, dynamic> toJson() => {
-        "adultPrice": adultPrice,
-      };
-}
+//   Map<String, dynamic> toJson() => {
+//         "adultPrice": adultPrice,
+//       };
+// }
 
 enum BookingType { TICKET, BOOKING }
 

@@ -1,12 +1,12 @@
 import 'dart:developer';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutx/flutx.dart';
 
 import 'package:hotel_travel/models/all_attraction_modal.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:lottie/lottie.dart';
 import '../controllers/attraction_Controller.dart';
 import '../controllers/saved_controller.dart';
 import '../loading_effect.dart';
@@ -15,7 +15,7 @@ import 'full_app.dart';
 
 class SavedScreen extends StatefulWidget {
   final List<AllattractionModal> favouriteMeals;
-  const SavedScreen(this.favouriteMeals);
+  const SavedScreen(this.favouriteMeals, {super.key});
 
   @override
   _SavedScreenState createState() => _SavedScreenState();
@@ -54,6 +54,7 @@ class _SavedScreenState extends State<SavedScreen>
     theme = AppTheme.shoppingTheme;
 
     controller = FxControllerStore.put(SavedController(this));
+    log('Item:${favouriteList.map((e) => e.id)}');
   }
 
   Widget _buildSingleProduct(Datum product) {
@@ -113,12 +114,24 @@ class _SavedScreenState extends State<SavedScreen>
               // ),
               child: Hero(
                 tag: "product_image_${product.images}",
-                child: Image(
-                  image: NetworkImage(
-                      'https://a.walletbot.online${product.images.first}'),
+                child: CachedNetworkImage(
                   height: 160,
                   fit: BoxFit.cover,
+                  fadeOutDuration: const Duration(seconds: 1),
+                  fadeInDuration: const Duration(seconds: 3),
+                  progressIndicatorBuilder: (context, url, progress) => Center(
+                    child: CircularProgressIndicator(
+                      value: progress.progress,
+                    ),
+                  ),
+                  imageUrl: 'https://a.walletbot.online${product.images.first}',
                 ),
+                // child: Image(
+                //   image: NetworkImage(
+                //       'https://a.walletbot.online${product.images.first}'),
+                //   height: 160,
+                //   fit: BoxFit.cover,
+                // ),
               ),
             ),
             FxSpacing.height(6),
@@ -163,7 +176,7 @@ class _SavedScreenState extends State<SavedScreen>
                             ),
                             FxSpacing.width(6),
                             FxText.bodySmall(
-                              product.averageRating.toString(),
+                              product.averageRating.toStringAsFixed(1),
                               fontWeight: 600,
                               color: theme.colorScheme.onPrimary,
                             ),

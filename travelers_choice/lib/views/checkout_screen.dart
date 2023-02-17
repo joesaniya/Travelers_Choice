@@ -9,6 +9,7 @@ import 'package:hotel_travel/controllers/Activity_Controller.dart';
 import '../controllers/checkout_controller.dart';
 import '../localizations/language.dart';
 import '../models/Country_modal.dart';
+import '../models/atteraction_model.dart';
 import '../models/shipping_address.dart';
 import '../services/auth_service.dart';
 import '../theme/app_theme.dart';
@@ -22,27 +23,34 @@ class CheckOutScreen extends StatefulWidget {
   // String? iount;
   // String? TotalGrant;
   // int length;
+  List<Activity> selectedtourOption;
   // List<Activity> selectedtours = [];
-  String? name;
-  int adultCount;
-  int childCount;
-  int infantCount;
+  // String? name;
+  // int adultCount;
+  // int childCount;
+  // int infantCount;
   double grandTotal;
   String textdate;
   String? Transfer;
+  // double? TotalCalculation;
+  @override
+  Key? key;
   // VoidCallback finalAmount;
 
   CheckOutScreen(
       this.length,
+      this.selectedtourOption,
       // this.selectedtours,
-      this.name,
-      this.adultCount,
-      this.childCount,
-      this.infantCount,
+      // this.name,
+      // this.adultCount,
+      // this.childCount,
+      // this.infantCount,
       this.grandTotal,
-      // this.finalAmount,
+      // // this.finalAmount,
       this.textdate,
-      this.Transfer);
+      this.Transfer,
+      // this.TotalCalculation,
+      {super.key});
 
   @override
   _CheckOutScreenState createState() => _CheckOutScreenState();
@@ -61,9 +69,9 @@ class _CheckOutScreenState extends State<CheckOutScreen>
   @override
   void initState() {
     log('length:${widget.length}');
-    log('Adult Count:${widget.adultCount}');
-    log('date:${widget.textdate}');
-    log('Transfer:${widget.Transfer}');
+    // log('Adult Count:${widget.adultCount}');
+    // log('date:${widget.textdate}');
+    // log('Transfer:${widget.Transfer}');
     // log('final' + $finalAmount.toString());
     super.initState();
     fetchData();
@@ -176,211 +184,226 @@ class _CheckOutScreenState extends State<CheckOutScreen>
     log(widget.length.toString());
     return SizedBox(
       child: ListView.separated(
-          shrinkWrap: true,
-          itemBuilder: (context, index) {
-            return FadeTransition(
-              opacity: controller.fadeAnimation,
-              child: FxContainer(
-                borderRadiusAll: 4,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    FxText.bodyMedium(
-                      'Billing Information',
-                      muted: true,
-                      fontWeight: 700,
-                    ),
-                    FxSpacing.height(20),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        FxText.bodyMedium(
-                          'Option',
-                          fontWeight: 600,
-                        ),
-                        FxText.bodyMedium(
+        itemCount: widget.length,
+        shrinkWrap: true,
+        itemBuilder: (context, index) {
+          return FadeTransition(
+            opacity: controller.fadeAnimation,
+            child: FxContainer(
+              borderRadiusAll: 4,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  FxText.bodyMedium(
+                    'Billing Information',
+                    muted: true,
+                    fontWeight: 700,
+                  ),
+                  FxSpacing.height(20),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      FxText.bodyMedium(
+                        'Option',
+                        fontWeight: 600,
+                      ),
+                      FxSpacing.width(20),
+                      Expanded(
+                        child: FxText.bodyMedium(
                           // '\$' + controller.order.precise,
-                          widget.name.toString(),
+                          widget.selectedtourOption[index].name.toString(),
                           fontWeight: 700,
                         ),
-                      ],
-                    ),
-                    FxSpacing.height(4),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        FxText.bodyMedium(
-                          'Transfer',
-                          fontWeight: 600,
-                        ),
-                        widget.Transfer == null
-                            ? FxText.bodyMedium(
-                                // '\$' + controller.order.precise,
-                                'without',
-                                fontWeight: 700,
-                              )
-                            : FxText.bodyMedium(
-                                widget.Transfer.toString(),
-                                fontWeight: 700,
-                              ),
-                      ],
-                    ),
-                    FxSpacing.height(4),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        FxText.bodyMedium(
-                          'Date',
-                          fontWeight: 600,
-                        ),
-                        widget.textdate.isEmpty
-                            ? FxText.bodyMedium(
-                                'select Date',
-                                fontWeight: 700,
-                              )
-                            : FxText.bodyMedium(
-                                widget.textdate.toString(),
-                                // '2023-01-31',
-                                fontWeight: 700,
-                              ),
-                      ],
-                    ),
-                    FxSpacing.height(4),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        FxText.bodyMedium(
-                          'Pax',
-                          fontWeight: 600,
-                        ),
-                        Expanded(child: Container()),
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: [
-                            FxContainer(
-                              padding: FxSpacing.fromLTRB(8, 6, 8, 6),
-                              color: const Color(0xff1529e8).withAlpha(40),
-                              child: Row(
-                                children: [
-                                  FxText.bodyMedium(
-                                      widget.adultCount.toString(),
-                                      color: const Color(0xff1529e8),
-                                      // color: customTheme.groceryPrimary,
-                                      fontWeight: 500,
-                                      letterSpacing: -0.2),
-                                  FxSpacing.width(4),
-                                  FxText.bodyMedium('Adult',
-                                      color: const Color(0xff1529e8),
-                                      // color: customTheme.groceryPrimary,
-                                      fontWeight: 500,
-                                      letterSpacing: -0.2),
-                                ],
-                              ),
-                            ),
-                            FxSpacing.width(10),
-                            FxContainer(
-                              padding: FxSpacing.fromLTRB(8, 6, 8, 6),
-                              color: const Color(0xff1529e8).withAlpha(40),
-                              child: Row(
-                                children: [
-                                  FxText.bodyMedium(
-                                      widget.childCount.toString(),
-                                      color: const Color(0xff1529e8),
-                                      // color: customTheme.groceryPrimary,
-                                      fontWeight: 500,
-                                      letterSpacing: -0.2),
-                                  FxSpacing.width(4),
-                                  FxText.bodyMedium('child',
-                                      color: const Color(0xff1529e8),
-                                      // color: customTheme.groceryPrimary,
-                                      fontWeight: 500,
-                                      letterSpacing: -0.2),
-                                ],
-                              ),
-                            ),
-                            FxSpacing.width(10),
-                            FxContainer(
-                              padding: FxSpacing.fromLTRB(8, 6, 8, 6),
-                              color: const Color(0xff1529e8).withAlpha(40),
-                              child: Row(
-                                children: [
-                                  FxText.bodyMedium(
-                                      widget.infantCount.toString(),
-                                      color: const Color(0xff1529e8),
-                                      // color: customTheme.groceryPrimary,
-                                      fontWeight: 500,
-                                      letterSpacing: -0.2),
-                                  FxSpacing.width(4),
-                                  FxText.bodyMedium('Infant',
-                                      color: const Color(0xff1529e8),
-                                      // color: customTheme.groceryPrimary,
-                                      fontWeight: 500,
-                                      letterSpacing: -0.2),
-                                ],
-                              ),
+                      ),
+                    ],
+                  ),
+                  FxSpacing.height(4),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      FxText.bodyMedium(
+                        'Transfer',
+                        fontWeight: 600,
+                      ),
+                      // widget.selectedtourOption[index].isSharing == null
+                      //     ? FxText.bodyMedium(
+                      //         // '\$' + controller.order.precise,
+                      //         'without',
+                      //         fontWeight: 700,
+                      //       )
+                      //     : FxText.bodyMedium(
+                      //         widget.Transfer.toString(),
+                      //         fontWeight: 700,
+                      //       ),
+                      widget.Transfer == null
+                          ? FxText.bodyMedium(
+                              'without',
+                              fontWeight: 700,
                             )
-                          ],
-                        )
-                      ],
-                    ),
-                    FxSpacing.height(4),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        FxText.bodyMedium(
-                          'Amount',
-                          fontWeight: 600,
-                        ),
-                        FxText.bodyMedium(
-                          "${widget.grandTotal}AED",
-                          fontWeight: 700,
-                        ),
-                      ],
-                    ),
-                    FxSpacing.height(12),
-                    Row(
-                      children: [
-                        Expanded(
-                          flex: 2,
-                          child: Container(),
-                        ),
-                        Expanded(
-                          child: FxDashedDivider(
-                            dashSpace: 4,
-                            dashWidth: 8,
-                            color:
-                                theme.colorScheme.onBackground.withAlpha(180),
-                            height: 1.2,
+                          : FxText.bodyMedium(
+                              widget.Transfer.toString(),
+                              fontWeight: 700,
+                            ),
+                    ],
+                  ),
+                  FxSpacing.height(4),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      FxText.bodyMedium(
+                        'Date',
+                        fontWeight: 600,
+                      ),
+                      widget.textdate.isEmpty
+                          ? FxText.bodyMedium(
+                              'select Date',
+                              fontWeight: 700,
+                            )
+                          : FxText.bodyMedium(
+                              widget.textdate.toString(),
+                              // '2023-01-31',
+                              fontWeight: 700,
+                            ),
+                    ],
+                  ),
+                  FxSpacing.height(4),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      FxText.bodyMedium(
+                        'Pax',
+                        fontWeight: 600,
+                      ),
+                      Expanded(child: Container()),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          FxContainer(
+                            padding: FxSpacing.fromLTRB(8, 6, 8, 6),
+                            color: const Color(0xff1529e8).withAlpha(40),
+                            child: Row(
+                              children: [
+                                FxText.bodyMedium(
+                                    widget.selectedtourOption[index].adultCount
+                                        .toString(),
+                                    color: const Color(0xff1529e8),
+                                    // color: customTheme.groceryPrimary,
+                                    fontWeight: 500,
+                                    letterSpacing: -0.2),
+                                FxSpacing.width(4),
+                                FxText.bodyMedium('Adult',
+                                    color: const Color(0xff1529e8),
+                                    // color: customTheme.groceryPrimary,
+                                    fontWeight: 500,
+                                    letterSpacing: -0.2),
+                              ],
+                            ),
                           ),
-                        )
-                      ],
-                    ),
-                    FxSpacing.height(12),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        FxText.bodyMedium(
-                          'Grand Total',
-                          fontWeight: 700,
-                          color: const Color(0xff1529e8),
+                          FxSpacing.width(10),
+                          FxContainer(
+                            padding: FxSpacing.fromLTRB(8, 6, 8, 6),
+                            color: const Color(0xff1529e8).withAlpha(40),
+                            child: Row(
+                              children: [
+                                FxText.bodyMedium(
+                                    widget.selectedtourOption[index].childCount
+                                        .toString(),
+                                    color: const Color(0xff1529e8),
+                                    // color: customTheme.groceryPrimary,
+                                    fontWeight: 500,
+                                    letterSpacing: -0.2),
+                                FxSpacing.width(4),
+                                FxText.bodyMedium('child',
+                                    color: const Color(0xff1529e8),
+                                    // color: customTheme.groceryPrimary,
+                                    fontWeight: 500,
+                                    letterSpacing: -0.2),
+                              ],
+                            ),
+                          ),
+                          FxSpacing.width(10),
+                          FxContainer(
+                            padding: FxSpacing.fromLTRB(8, 6, 8, 6),
+                            color: const Color(0xff1529e8).withAlpha(40),
+                            child: Row(
+                              children: [
+                                FxText.bodyMedium(
+                                    widget.selectedtourOption[index].infantCount
+                                        .toString(),
+                                    color: const Color(0xff1529e8),
+                                    // color: customTheme.groceryPrimary,
+                                    fontWeight: 500,
+                                    letterSpacing: -0.2),
+                                FxSpacing.width(4),
+                                FxText.bodyMedium('Infant',
+                                    color: const Color(0xff1529e8),
+                                    // color: customTheme.groceryPrimary,
+                                    fontWeight: 500,
+                                    letterSpacing: -0.2),
+                              ],
+                            ),
+                          )
+                        ],
+                      )
+                    ],
+                  ),
+                  FxSpacing.height(4),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      FxText.bodyMedium(
+                        'Amount',
+                        fontWeight: 600,
+                      ),
+                      FxText.bodyMedium(
+                        "${widget.selectedtourOption[index].grandTotal}AED",
+                        fontWeight: 700,
+                      ),
+                    ],
+                  ),
+                  FxSpacing.height(12),
+                  Row(
+                    children: [
+                      Expanded(
+                        flex: 2,
+                        child: Container(),
+                      ),
+                      Expanded(
+                        child: FxDashedDivider(
+                          dashSpace: 4,
+                          dashWidth: 8,
+                          color: theme.colorScheme.onBackground.withAlpha(180),
+                          height: 1.2,
                         ),
-                        FxText.bodyMedium(
-                          // '\$' + controller.total.precise,
-                          "${widget.grandTotal}AED",
-                          fontWeight: 800,
-                          color: const Color(0xff1529e8),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
+                      )
+                    ],
+                  ),
+                  FxSpacing.height(12),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      FxText.bodyMedium(
+                        'Grand Total',
+                        fontWeight: 700,
+                        color: const Color(0xff1529e8),
+                      ),
+                      FxText.bodyMedium(
+                        // '\$' + controller.total.precise,
+                        "${widget.selectedtourOption[index].grandTotal}AED",
+                        fontWeight: 800,
+                        color: const Color(0xff1529e8),
+                      ),
+                    ],
+                  ),
+                ],
               ),
-            );
-          },
-          separatorBuilder: (context, index) {
-            return FxSpacing.height(10);
-          },
-          itemCount: widget.length),
+            ),
+          );
+        },
+        separatorBuilder: (context, index) {
+          return FxSpacing.height(10);
+        },
+      ),
     );
 
     // for (var dataselect in controller1.selectedtour.length) {
@@ -693,7 +716,8 @@ class _CheckOutScreenState extends State<CheckOutScreen>
   Widget shippingInfo() {
     return Container(
       padding: FxSpacing.x(20),
-      child: ListView(physics: const AlwaysScrollableScrollPhysics(),
+      child: ListView(
+          physics: const AlwaysScrollableScrollPhysics(),
           // crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             FxText.labelLarge(
@@ -1706,9 +1730,9 @@ class _CheckOutScreenState extends State<CheckOutScreen>
                   color: theme.colorScheme.onPrimary,
                 ),
                 FxText.bodyMedium(
-                  // '\$ 251.55',
+                  '\$ 251.55',
                   // widget.finalAmount.toString(),
-                  widget.grandTotal.toString(),
+                  // widget.TotalCalculation.toString(),
                   // controller1.grandSelectedTourAmount().toString(),
                   fontWeight: 700,
                   color: theme.colorScheme.onPrimary,

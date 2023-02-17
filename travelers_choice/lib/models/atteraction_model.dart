@@ -1,3 +1,5 @@
+import 'Country_modal.dart';
+
 class DetailattractionModal {
   String? sId;
   Destination? destination;
@@ -225,50 +227,50 @@ class DetailattractionModal {
   }
 }
 
-class Destination {
-  String? sId;
-  String? country;
-  String? name;
-  String? createdAt;
-  String? updatedAt;
-  int? iV;
-  bool? isDeleted;
-  String? image;
+// class Destination {
+//   String? sId;
+//   String? country;
+//   String? name;
+//   String? createdAt;
+//   String? updatedAt;
+//   int? iV;
+//   bool? isDeleted;
+//   String? image;
 
-  Destination(
-      {this.sId,
-      this.country,
-      this.name,
-      this.createdAt,
-      this.updatedAt,
-      this.iV,
-      this.isDeleted,
-      this.image});
+//   Destination(
+//       {this.sId,
+//       this.country,
+//       this.name,
+//       this.createdAt,
+//       this.updatedAt,
+//       this.iV,
+//       this.isDeleted,
+//       this.image});
 
-  Destination.fromJson(Map<String, dynamic> json) {
-    sId = json['_id'];
-    country = json['country'];
-    name = json['name'];
-    createdAt = json['createdAt'];
-    updatedAt = json['updatedAt'];
-    iV = json['__v'];
-    isDeleted = json['isDeleted'];
-    image = json['image'];
-  }
+//   Destination.fromJson(Map<String, dynamic> json) {
+//     sId = json['_id'];
+//     country = json['country'];
+//     name = json['name'];
+//     createdAt = json['createdAt'];
+//     updatedAt = json['updatedAt'];
+//     iV = json['__v'];
+//     isDeleted = json['isDeleted'];
+//     image = json['image'];
+//   }
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['_id'] = sId;
-    data['country'] = country;
-    data['name'] = name;
-    data['createdAt'] = createdAt;
-    data['updatedAt'] = updatedAt;
-    data['__v'] = iV;
-    data['isDeleted'] = isDeleted;
-    data['image'] = image;
-    return data;
-  }
-}
+//   Map<String, dynamic> toJson() {
+//     final Map<String, dynamic> data = <String, dynamic>{};
+//     data['_id'] = sId;
+//     data['country'] = country;
+//     data['name'] = name;
+//     data['createdAt'] = createdAt;
+//     data['updatedAt'] = updatedAt;
+//     data['__v'] = iV;
+//     data['isDeleted'] = isDeleted;
+//     data['image'] = image;
+//     return data;
+//   }
+// }
 
 class Category {
   String? sId;

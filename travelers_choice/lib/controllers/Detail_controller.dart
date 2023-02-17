@@ -11,6 +11,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../models/all_attraction_modal.dart';
 import '../models/atteraction_model.dart';
 import '../../controllers/attraction_Controller.dart';
+import '../views/full_app.dart';
 
 class DetailController extends FxController {
   TickerProvider ticker;
@@ -127,9 +128,12 @@ Country Code => $countryCode
   }
 
   bool isLoading = true;
+  
 
   getDetailAttraction(productid, setState) {
     log('getDetail Attraction function called');
+
+   
     Future.delayed(Duration.zero, () async {
       await AttractionController()
           .getDetailattractionList(productid: productid)
@@ -156,7 +160,7 @@ Country Code => $countryCode
   }
 
   List<String> favs = [];
-    List<AllattractionModal> allattractionList = <AllattractionModal>[];
+  List<AllattractionModal> allattractionList = <AllattractionModal>[];
 
   @override
   void initState() {

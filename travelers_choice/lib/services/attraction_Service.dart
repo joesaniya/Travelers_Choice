@@ -14,7 +14,7 @@ class AttractionService {
       var response = await http.get(
         Uri.parse(
             // 'https://a.walletbot.online/api/v1/attractions/all',
-            'https://a.walletbot.online/api/v1/attractions/all?limit=1000'
+            'https://secure.mytravellerschoice.com/api/v1/attractions/all?limit=1000'
             //
             ),
         headers: {
@@ -44,7 +44,7 @@ class AttractionService {
       var response = await http.get(
         Uri.parse(
             // 'https: //a.walletbot.online/api/v1/attractions/all?limit=1000&destination=$place'
-            'https://a.walletbot.online/api/v1/attractions/all?limit=1000&id=$place'),
+            'https://secure.mytravellerschoice.com/api/v1/attractions/all?limit=1000&id=$place'),
         headers: {
           'Content-Type': 'application/json',
         },
@@ -72,7 +72,7 @@ class AttractionService {
     try {
       var response = await http.get(
         Uri.parse(
-          'https://a.walletbot.online/api/v1/attractions/single/$productid',
+          'https://secure.mytravellerschoice.com/api/v1/attractions/single/$productid',
         ),
         headers: {'Content-Type': 'application/json'},
       );
