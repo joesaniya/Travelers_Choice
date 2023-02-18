@@ -579,7 +579,7 @@ class _VisaScreenState extends State<VisaScreen>
                                   borderRadius: BorderRadius.circular(15)
                               ),
                               child: Container(
-                                height: 60,
+                                height: 65,
                                 width: MediaQuery
                                     .of(context)
                                     .size
@@ -680,10 +680,10 @@ class _VisaScreenState extends State<VisaScreen>
                       ],
                     ),
 
-                    const SizedBox(height: 15,),
+                    const SizedBox(height: 10,),
 
                     Container(
-                      height: 60,
+                      height: 65,
                       width: MediaQuery
                           .of(context)
                           .size
@@ -722,7 +722,7 @@ class _VisaScreenState extends State<VisaScreen>
                               Column(
                                 children: const [
                                   Text("Visa"),
-                                  SizedBox(height: 5,),
+                                  SizedBox(height: 3,),
                                   Icon(Icons.credit_card),
                                 ],
                               ),
@@ -739,7 +739,7 @@ class _VisaScreenState extends State<VisaScreen>
                               Column(
                                 children: const [
                                   Text("Documents"),
-                                  SizedBox(height: 5,),
+                                  SizedBox(height: 3,),
                                   Icon(Icons.file_copy_outlined),
                                 ],
                               ),
@@ -754,7 +754,7 @@ class _VisaScreenState extends State<VisaScreen>
                               Column(
                                 children: const [
                                   Text("FAQs"),
-                                  SizedBox(height: 5,),
+                                  SizedBox(height: 3,),
                                   Icon(Icons.format_quote),
                                 ],
                               ),
@@ -769,7 +769,7 @@ class _VisaScreenState extends State<VisaScreen>
                               Column(
                                 children: const [
                                   Text("Terms"),
-                                  SizedBox(height: 5,),
+                                  SizedBox(height: 3,),
                                   Icon(Icons.menu_open_outlined),
                                 ],
                               ),
