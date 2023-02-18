@@ -722,8 +722,8 @@ class _VisaScreenState extends State<VisaScreen>
                   padding: EdgeInsets.all(10),
                   child: ElevatedButton(
                     onPressed: (){
-                      Navigator.push(
-                          context, MaterialPageRoute(builder: (context)=> ApplyVisa()));
+                      // Navigator.push(
+                      //     context, MaterialPageRoute(builder: (context)=> ApplyVisa()));
                     },
                     child: Text("Apply Online",
                     style: TextStyle(fontSize: 16),),

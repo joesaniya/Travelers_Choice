@@ -21,6 +21,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
 class HomeScreen extends StatefulWidget {
+  const HomeScreen({super.key});
+
   // const HomeScreen({required this.size});
   // final Size size;
 
@@ -62,6 +64,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       });
     });
   }
+
   getVisa(BuildContext context) async {
     await VisaService().getVisaCountry();
     log('getVisa function called');
@@ -312,7 +315,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                           tag: "${product.duration}",
                           child: FxText.labelLarge(
                             // '${controller.currency() ?? '\$'} ${product.activity.adultPrice.toString()}',
-                            "${product.activity.adultPrice.toString()} AED",
+                            "${product.activity.lowPrice.toString()} AED",
                             // "\$" + product.price.toString() + "/hour",
                             fontWeight: 700,
                           ),
@@ -563,28 +566,6 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                               ),
                       ],
                     ),
-                    // Row(
-                    //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    //   children: [
-                    //     Row(
-                    //       children: [
-                    //         const Icon(
-                    //           // FeatherIcons.star,
-                    //           Icons.star,
-                    //           color: Colors.yellow,
-                    //           size: 12,
-                    //         ),
-                    //         FxSpacing.width(4),
-                    //         FxText.bodySmall(
-                    //           // '4.5',
-                    //           product.averageRating.toString(),
-                    //           fontWeight: 600,
-                    //           color: Colors.black,
-                    //         ),
-                    //       ],
-                    //     ),
-                    //   ],
-                    // ),
                   ],
                 ),
               ),
@@ -689,7 +670,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                       ],
                     ),
                     FxText(
-                      "${product.activity.adultPrice.toString()} AED",
+                      // "${product.activity.adultPrice.toString()} AED",,
+                      "${product.activity.lowPrice.toString()} AED",
                       // '${controller.currency() ?? '\$'} ${product.activity.adultPrice.toString()}',
                       color: const Color(0xff1529e8),
                     ),
@@ -812,7 +794,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                 //   ],
                 // ),
 
-                _tabbed == '1' ? SearchPlace() : SearchVisa(),
+                _tabbed == '1' ? const SearchPlace() : const SearchVisa(),
 
                 // GestureDetector(
                 //   onTap: () {},
@@ -1018,56 +1000,42 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                           ),
                         ),
                       ),
-
-
-                    const SizedBox(
-                      width: 10,
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        log('flight');
-                        _tabbed = '4';
-                        setState(() {});
-                        // Navigator.push(context, MaterialPageRoute(builder: (context)=> VisaScreen()));
-                      },
-                      child: Container(
-                        width: 120,
-                        decoration: BoxDecoration(
-                            color: _tabbed == '4'
-                                ? const Color(0xff1529e8)
-                                // theme1.colorScheme.primary
-                                : Colors.transparent,
-                            border: Border.all(
-                                color: _tabbed == '4'
-                                    ? Colors.transparent
-                                    : theme1.colorScheme.primaryContainer,
-                                width: _tabbed == '4' ? 0.0 : 1.0),
-                            borderRadius: BorderRadius.circular(20.0)),
-                        padding: const EdgeInsets.symmetric(horizontal: 5),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Image.asset(
-                                "assets/images/apps/shopping2/icons/visa.png",
-                                height: 20,
-                                width: 20,
-                                color: _tabbed == '4'
-                                    ? Colors.white
-                                    : Colors.black),
-                            const SizedBox(
-                              width: 7,
-                            ),
-                            FxText.bodyLarge(
-                              'Visa',
-                              style: TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w800,
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          log('flight');
+                          _tabbed = '4';
+                          setState(() {});
+                          // Navigator.push(context, MaterialPageRoute(builder: (context)=> VisaScreen()));
+                        },
+                        child: Container(
+                          width: 120,
+                          decoration: BoxDecoration(
+                              color: _tabbed == '4'
+                                  ? const Color(0xff1529e8)
+                                  // theme1.colorScheme.primary
+                                  : Colors.transparent,
+                              border: Border.all(
+                                  color: _tabbed == '4'
+                                      ? Colors.transparent
+                                      : theme1.colorScheme.primaryContainer,
+                                  width: _tabbed == '4' ? 0.0 : 1.0),
+                              borderRadius: BorderRadius.circular(20.0)),
+                          padding: const EdgeInsets.symmetric(horizontal: 5),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Image.asset(
+                                  "assets/images/apps/shopping2/icons/visa.png",
+                                  height: 20,
+                                  width: 20,
                                   color: _tabbed == '4'
                                       ? Colors.white
-                                      : Colors.black),),
-
-                             SizedBox(
+                                      : Colors.black),
+                              const SizedBox(
                                 width: 7,
                               ),
                               FxText.bodyLarge(
@@ -1079,7 +1047,18 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                         ? Colors.white
                                         : Colors.black),
                               ),
-
+                              const SizedBox(
+                                width: 7,
+                              ),
+                              FxText.bodyLarge(
+                                'Visa',
+                                style: TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w800,
+                                    color: _tabbed == '4'
+                                        ? Colors.white
+                                        : Colors.black),
+                              ),
                             ],
                           ),
                         ),

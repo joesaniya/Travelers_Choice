@@ -20,6 +20,7 @@ class SearchScreen extends StatefulWidget {
   // List<Datum> searchdata;
   // final BuildContext rootContext;
   const SearchScreen({
+    super.key,
     required this.place,
     // required this.searchdata
   });
@@ -755,7 +756,7 @@ class _SearchScreenState extends State<SearchScreen>
                               // ",
                               child: FxText.labelLarge(
                                 // '\$' + product.price.toString(),
-                                "${product.activity.adultPrice.toString()} AED",
+                                "${product.activity.lowPrice.toString()} AED",
                                 // "\$" + product.price.toString() + "/hour",
                                 fontWeight: 700,
                               ),

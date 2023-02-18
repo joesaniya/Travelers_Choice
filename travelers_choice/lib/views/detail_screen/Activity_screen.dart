@@ -223,18 +223,21 @@ class _ActivityScreenState extends State<ActivityScreen>
                   // },
                   onTap: () {
                     clickedExcursion = !clickedExcursion;
-                    if (controller.dateTE.text.isEmpty) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text("Select Your Date")));
-                    } else {
-                      controller.updateTours(cart);
-                    }
+                    // if (controller.dateTE.text.isEmpty) {
+                    //   ScaffoldMessenger.of(context).showSnackBar(
+                    //       const SnackBar(content: Text("Select Your Date")));
+                    // } else {
+                    //   controller.updateTours(cart);
+                    // }
 
                     setState(() {});
                     if (controller.dateTE.text.isEmpty) {
                       ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(content: Text("Select Your Date")));
                     } else {
+                      controller.updateTours(cart);
+                      log('Count:${cart.adultCount}${cart.childCount}${cart.infantCount}');
+
                       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                           content: !clickedExcursion
                               ? const Text("Added this Excursion!!")
@@ -356,27 +359,77 @@ class _ActivityScreenState extends State<ActivityScreen>
                                         ? controller.TransferCodes[1]
                                         : controller.TransferCodes[0],
 
-                                // hint: Center(
-                                //   child: FxText.labelLarge(
-                                //     "Choose",
-                                //     fontWeight: 600,
-                                //     color: Colors.black,
-                                //     // color: theme.colorScheme.onPrimary,
-                                //     letterSpacing: 0.4,
-                                //   ),
-                                // ),
-                                items: controller.TransferCodes.map(
-                                    (String value) {
-                                  return DropdownMenuItem<String>(
-                                      value: value,
-                                      child: Center(
-                                        child: Text(
-                                          value,
-                                          style: FxTextStyle.bodyMedium(),
-                                        ),
-                                      ));
-                                }).toList(),
+                                items: widget.excursions.first
+                                            .isSharedTransferAvailable ==
+                                        false
+                                    ? controller.SharedwithoutCodes.map(
+                                        (String value) {
+                                        return DropdownMenuItem<String>(
+                                            value: value,
+                                            child: Center(
+                                              child: Text(
+                                                value,
+                                                style: FxTextStyle.bodyMedium(),
+                                              ),
+                                            ));
+                                      }).toList()
+                                    : widget.excursions.first
+                                                .isPrivateTransferAvailable ==
+                                            false
+                                        ? controller.withoutPrivateCodes
+                                            .map((String value) {
+                                            return DropdownMenuItem<String>(
+                                                value: value,
+                                                child: Center(
+                                                  child: Text(
+                                                    value,
+                                                    style: FxTextStyle
+                                                        .bodyMedium(),
+                                                  ),
+                                                ));
+                                          }).toList()
+                                        : widget.excursions.first
+                                                        .isPrivateTransferAvailable ==
+                                                    false ||
+                                                widget.excursions.first
+                                                        .isSharedTransferAvailable ==
+                                                    false
+                                            ? controller.withoutcodes
+                                                .map((String value) {
+                                                return DropdownMenuItem<String>(
+                                                    value: value,
+                                                    child: Center(
+                                                      child: Text(
+                                                        value,
+                                                        style: FxTextStyle
+                                                            .bodyMedium(),
+                                                      ),
+                                                    ));
+                                              }).toList()
+                                            : controller.TransferCodes.map(
+                                                (String value) {
+                                                return DropdownMenuItem<String>(
+                                                    value: value,
+                                                    child: Center(
+                                                      child: Text(
+                                                        value,
+                                                        style: FxTextStyle
+                                                            .bodyMedium(),
+                                                      ),
+                                                    ));
+                                              }).toList(),
 
+                                // items: controller.TransferCodes.map(
+                                //     (String value) {
+                                //   return DropdownMenuItem<String>(
+                                //       value: value,
+                                //       child: Center(
+                                //         child: Text(
+                                //           value,
+                                //           style: FxTextStyle.bodyMedium(),
+                                //         ),
+                                //       ));
+                                // }).toList(),
                                 onChanged: (value) {
                                   setState(() {
                                     controller.selectedtransfer =
