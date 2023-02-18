@@ -461,7 +461,7 @@ class Activity {
   String? sId;
   String? attraction;
   String? name;
-  String? facilities;
+  String? facilities; //no
   int? adultAgeLimit;
   int? adultPrice;
   int? childAgeLimit;
@@ -489,39 +489,56 @@ class Activity {
   double grandTotal = 0;
   bool isPrivate = false;
   bool isSharing = false;
+  //new
+  String? activityType;
+  String? description;
+  bool? isSharedTransferAvailable;
+  bool? isPrivateTransferAvailable;
+  List<PrivateTransfers>? privateTransfers;
 
-  Activity(
-      {this.sId,
-      this.attraction,
-      this.name,
-      this.facilities,
-      this.adultAgeLimit,
-      this.adultPrice,
-      this.childAgeLimit,
-      this.childPrice,
-      this.infantAgeLimit,
-      this.infantPrice,
-      this.isVat,
-      this.vat,
-      this.base,
-      this.isTransferAvailable,
-      this.privateTransferPrice,
-      this.sharedTransferPrice,
-      this.isActive,
-      this.createdAt,
-      this.updatedAt,
-      this.iV,
-      this.isDeleted,
-      this.adultCost,
-      this.childCost,
-      this.infantCost,
-      this.adultCount = 1,
-      this.childCount = 0,
-      this.infantCount = 0,
-      this.totalAmount = 0,
-      this.grandTotal = 0,
-      this.isPrivate = false,
-      this.isSharing = false});
+  int? sharedTransferCost;
+  int? lowPrice;
+
+  Activity({
+    this.sId,
+    this.attraction,
+    this.name,
+    this.facilities,
+    this.adultAgeLimit,
+    this.adultPrice,
+    this.childAgeLimit,
+    this.childPrice,
+    this.infantAgeLimit,
+    this.infantPrice,
+    this.isVat,
+    this.vat,
+    this.base,
+    this.isTransferAvailable,
+    this.privateTransferPrice,
+    this.sharedTransferPrice,
+    this.isActive,
+    this.createdAt,
+    this.updatedAt,
+    this.iV,
+    this.isDeleted,
+    this.adultCost,
+    this.childCost,
+    this.infantCost,
+    this.adultCount = 1,
+    this.childCount = 0,
+    this.infantCount = 0,
+    this.totalAmount = 0,
+    this.grandTotal = 0,
+    this.isPrivate = false,
+    this.isSharing = false,
+    this.activityType,
+    this.description,
+    this.isPrivateTransferAvailable,
+    this.isSharedTransferAvailable,
+    this.privateTransfers,
+    this.sharedTransferCost,
+    this.lowPrice,
+  });
 
   Activity.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
@@ -552,6 +569,21 @@ class Activity {
     childCount = 0;
     infantCount = 0;
     grandTotal = 0;
+    activityType:
+    json["activityType"];
+    description:
+    json["description"];
+    isSharedTransferAvailable = json['isSharedTransferAvailable'];
+    isPrivateTransferAvailable = json['isPrivateTransferAvailable'];
+    if (json['privateTransfers'] != null) {
+      privateTransfers = <PrivateTransfers>[];
+      json['privateTransfers'].forEach((v) {
+        privateTransfers!.add(PrivateTransfers.fromJson(v));
+      });
+    }
+    sharedTransferCost:
+    json["sharedTransferCost"];
+    lowPrice = json['lowPrice'];
   }
 
   Map<String, dynamic> toJson() {
@@ -580,6 +612,45 @@ class Activity {
     data['adultCost'] = adultCost;
     data['childCost'] = childCost;
     data['infantCost'] = infantCost;
+    data['activityType'] = activityType;
+    data['description'] = description;
+    data['isSharedTransferAvailable'] = isSharedTransferAvailable;
+    data['isPrivateTransferAvailable'] = isPrivateTransferAvailable;
+    if (privateTransfers != null) {
+      data['privateTransfers'] =
+          privateTransfers!.map((v) => v.toJson()).toList();
+    }
+    data['sharedTransferCost'] = sharedTransferCost;
+    data['lowPrice'] = lowPrice;
+    return data;
+  }
+}
+
+class PrivateTransfers {
+  String? name;
+  int? maxCapacity;
+  int? price;
+  int? cost;
+  String? sId;
+
+  PrivateTransfers(
+      {this.name, this.maxCapacity, this.price, this.cost, this.sId});
+
+  PrivateTransfers.fromJson(Map<String, dynamic> json) {
+    name = json['name'] ?? '';
+    maxCapacity = json['maxCapacity'] ?? '';
+    price = json['price'] ?? '';
+    cost = json['cost'] ?? '';
+    sId = json['_id'] ?? '';
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['name'] = name;
+    data['maxCapacity'] = maxCapacity;
+    data['price'] = price;
+    data['cost'] = cost;
+    data['_id'] = sId;
     return data;
   }
 }

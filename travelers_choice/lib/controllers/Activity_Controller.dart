@@ -17,13 +17,13 @@ class ActivityController extends FxController {
   ActivityController(this.ticker);
   bool showLoading = true, uiLoading = true;
   final List<String> TransferCodes = ['without', 'private', 'shared'];
-  final List<String> withoutSharedCodes = [
+  final List<String> SharedwithoutCodes = [
     'without',
     'private',
   ];
-  final List<String> withoutPrivateCodes = [
-    'without',
-  ];
+  final List<String> withoutPrivateCodes = ['without', 'shared'];
+  final List<String> withoutcodes = ['without'];
+
   String? selectedtransfer;
   String? SelectedwithoutSharedCodes;
   String? SelectedwithoutPrivateCodes;
@@ -71,8 +71,12 @@ class ActivityController extends FxController {
 
   grandSelectedTourAmount() {
     double amount = 0;
+
     for (Activity tour in selectedtour) {
+      log('tour.grandTotal:${tour.grandTotal}');
+
       amount = amount + (tour.grandTotal);
+      log('amount:$amount');
     }
 
     return amount;
@@ -163,6 +167,7 @@ class ActivityController extends FxController {
       person_count.add(tour);
     } else {
       int index = person_count.indexOf(value[0]);
+
       if (isAdult) {
         isIncrement
             ? person_count[index].adultCount++
@@ -196,11 +201,15 @@ class ActivityController extends FxController {
     List<Activity> value =
         person_count.where((element) => element.sId == tour.sId).toList();
     if (value.isEmpty) {
-      return tour.adultPrice!.toDouble();
+      // return tour.adultPrice!.toDouble();
+      return tour.adultPrice == null
+          ? tour.privateTransfers!.first.price
+          : tour.adultPrice!.toDouble();
+      // : tour.privateTransfers!.first.price;
     } else {
-      return (value[0].adultCount * value[0].adultPrice!) +
-          (value[0].childCount * value[0].childPrice!) +
-          (value[0].infantCount * value[0].infantPrice!);
+      return (value[0].adultCount * (value[0].adultPrice ?? 1.0)) +
+          (value[0].childCount * (value[0].childPrice ?? 1.0)) +
+          (value[0].infantCount * (value[0].infantPrice ?? 1.0));
     }
   }
 

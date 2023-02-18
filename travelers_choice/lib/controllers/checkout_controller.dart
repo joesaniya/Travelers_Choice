@@ -66,11 +66,13 @@ class CheckOutController extends FxController {
   int reqCounter = 0;
   int phoneCounter = 0;
   int promoCounter = 0;
+  List<Map<String, dynamic>> details = [];
 
   @override
   initState() {
     super.initState();
     fetchData();
+    // details=;
     currentPage = 0;
     addressList = ShippingAddress.shipping();
     addressSelected = addressList!.first;
@@ -297,7 +299,8 @@ class CheckOutController extends FxController {
       //     // .PersonalInfo(nameTE.text, emailTE.text, selectedCountryCode.toString(),
       //     //     phoneTE.text, passwordTE.text, context)
       //     .PersonalInfo('jeni', 'jeni@gmail.com', '6098754321',
-      //         '63db60f9f926b340dbb3f446',)
+      //         '63db60f9f926b340dbb3f446',
+      // )
       //     .then((value) {
       //   if (value) {
       //     pageController.animateToPage(
