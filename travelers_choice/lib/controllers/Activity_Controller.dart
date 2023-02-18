@@ -38,6 +38,7 @@ class ActivityController extends FxController {
   double grandTotal = 0;
 
   void updateTours(Activity tour) {
+    log('updateTours Calling');
     List<Activity> value =
         person_count.where((element) => element.sId == tour.sId).toList();
     print("Coutn => ${value.length}");
@@ -64,6 +65,7 @@ class ActivityController extends FxController {
 
       print(person_count[index].grandTotal);
     }
+    log('Select:${selectedtour.map((e) => e.adultCount)}');
     update();
   }
 

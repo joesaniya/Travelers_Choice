@@ -65,15 +65,18 @@ class _CheckOutScreenState extends State<CheckOutScreen>
   // late OutlineInputBorder outlineInputBorder;
   late OutlineInputBorder outlineInputBorderenable;
   late OutlineInputBorder outlineInputBorderfocus;
-
+  List? selectedExcursions;
   @override
   void initState() {
-    log('length:${widget.length}');
+    super.initState();
+    selectedExcursions = widget.selectedtourOption;
+    log('Selected Tour length:${widget.selectedtourOption.first.sId}');
+    fetchlog();
     // log('Adult Count:${widget.adultCount}');
     // log('date:${widget.textdate}');
     // log('Transfer:${widget.Transfer}');
     // log('final' + $finalAmount.toString());
-    super.initState();
+
     fetchData();
     theme = AppTheme.shoppingTheme;
 
@@ -94,6 +97,24 @@ class _CheckOutScreenState extends State<CheckOutScreen>
       borderRadius: BorderRadius.all(Radius.circular(4)),
       borderSide: BorderSide(width: 1, color: Color(0xff1529e8)),
     );
+  }
+
+  fetchlog() async {
+    log('fetch log calling');
+    log('Excursions:$selectedExcursions');
+    // selectedExcursions!.map((e) {
+    //   // e.sId;
+    //   // e.createdAt;
+    //   // e.adultCount;
+    //   // e.infantCount;
+    //   // e.childCount;
+    //   // e.activityType;
+
+    //   log('Sid:${e.sId.toString()}');
+    // });
+    for (var element in selectedExcursions!) {
+      log('Sid:${element.sId.toString()}');
+    }
   }
 
   bool isLoading = true;
@@ -702,6 +723,7 @@ class _CheckOutScreenState extends State<CheckOutScreen>
                     // physics: const ClampingScrollPhysics(),
                     controller: controller.pageController,
                     onPageChanged: (int page) {
+                      log('Page:$page');
                       controller.onPageChanged(page);
                     },
                     children: [shippingInfo(), paymentInfo(), placedInfo()],
@@ -729,77 +751,6 @@ class _CheckOutScreenState extends State<CheckOutScreen>
                 key: controller.formKey,
                 child: Column(
                   children: [
-                    // FadeTransition(
-                    //   opacity: controller.fadeAnimation,
-                    //   child: Container(
-                    //     child: Align(
-                    //       alignment: Alignment.centerLeft,
-                    //       child: FxText.bodyLarge(
-                    //         'Select(Mr/Mrs/Ms)',
-                    //         // textAlign: TextAlign.left,
-                    //         letterSpacing: 0,
-                    //         fontWeight: 600,
-                    //       ),
-                    //     ),
-                    //   ),
-                    // ),
-                    // FxSpacing.height(10),
-                    // Container(
-                    //   decoration: BoxDecoration(
-                    //       border: Border.all(width: 1, color: Colors.black),
-                    //       // color: theme.cardTheme.color,
-                    //       color: Colors.white,
-                    //       // color: const Color(0xff1529e8),
-                    //       borderRadius: BorderRadius.circular(4)),
-                    //   height: 45.0,
-                    //   width: MediaQuery.of(context).size.width,
-                    //   // margin: const EdgeInsets.all(3.0),
-                    //   //width: 300.0,
-                    //   child: DropdownButtonHideUnderline(
-                    //     child: ButtonTheme(
-                    //       alignedDropdown: true,
-                    //       child: DropdownButton(
-                    //         iconSize: 25.0,
-
-                    //         // dropdownColor: theme.cardTheme.color,
-                    //         dropdownColor: Colors.white,
-                    //         icon: const Icon(
-                    //           Icons.arrow_drop_down,
-                    //           color: Colors.black,
-                    //         ),
-                    //         value: controller.selectedname,
-                    //         // value: _selectedCountryCode,
-                    //         hint: Center(
-                    //           child: FxText.labelLarge(
-                    //             "Choose",
-                    //             fontWeight: 600,
-                    //             color: Colors.black,
-                    //             // color: theme.colorScheme.onPrimary,
-                    //             letterSpacing: 0.4,
-                    //           ),
-                    //         ),
-                    //         items: controller.nameCodes.map((String value) {
-                    //           return DropdownMenuItem<String>(
-                    //               value: value,
-                    //               child: Center(
-                    //                 child: Text(
-                    //                   value,
-                    //                   style: FxTextStyle.bodyMedium(),
-                    //                 ),
-                    //               ));
-                    //         }).toList(),
-                    //         onChanged: (value) {
-                    //           setState(() {
-                    //             controller.selectedname = value.toString();
-                    //           });
-                    //         },
-
-                    //         style: FxTextStyle.bodyMedium(),
-                    //       ),
-                    //     ),
-                    //   ),
-                    // ),
-                    // FxSpacing.height(20),
                     FadeTransition(
                       opacity: controller.fadeAnimation,
                       child: Container(
@@ -815,49 +766,6 @@ class _CheckOutScreenState extends State<CheckOutScreen>
                       ),
                     ),
                     FxSpacing.height(10),
-                    // SlideTransition(
-                    //   position: controller.firstnameAnimation,
-                    //   child: TextFormField(
-                    //     style: FxTextStyle.bodyMedium(),
-                    //     decoration: InputDecoration(
-                    //         floatingLabelBehavior: FloatingLabelBehavior.never,
-                    //         filled: true,
-                    //         isDense: true,
-                    //         // fillColor: theme.cardTheme.color,
-                    //         fillColor: Colors.white,
-                    //         // prefixIcon: Icon(
-                    //         //   FeatherIcons.user,
-                    //         //   color: theme.colorScheme.onBackground,
-                    //         // ),
-                    //         hintText: "First Name",
-                    //         // enabledBorder: outlineInputBorder,
-                    //         // focusedBorder: outlineInputBorder,
-                    //         // border: outlineInputBorder,
-                    //         enabledBorder: outlineInputBorderenable,
-                    //         focusedBorder: outlineInputBorderfocus,
-                    //         border: outlineInputBorderenable,
-
-                    //         // enabledBorder: const OutlineInputBorder(
-                    //         //   borderSide:
-                    //         //       BorderSide(width: 1, color: Colors.red),
-                    //         // ),
-                    //         // focusedBorder: const OutlineInputBorder(
-                    //         //   borderSide:
-                    //         //       BorderSide(width: 1, color: Colors.indigo),
-                    //         // ),
-                    //         // border: const OutlineInputBorder(
-                    //         //   borderSide:
-                    //         //       BorderSide(width: 1, color: Colors.black),
-                    //         // ),
-                    //         contentPadding: FxSpacing.all(16),
-                    //         hintStyle: FxTextStyle.bodyMedium(),
-                    //         isCollapsed: true),
-                    //     maxLines: 1,
-                    //     controller: controller.FnameTE,
-                    //     // validator: controller.validateName,
-                    //     cursorColor: theme.colorScheme.onBackground,
-                    //   ),
-                    // ),
 
                     //todo
                     Container(
@@ -1490,7 +1398,7 @@ class _CheckOutScreenState extends State<CheckOutScreen>
                   child: FxButton(
                     padding: FxSpacing.y(12),
                     onPressed: () {
-                      controller.nextPage();
+                      controller.nextPage(selectedExcursions);
                     },
                     borderRadiusAll: 4,
                     elevation: 0,
@@ -1714,8 +1622,8 @@ class _CheckOutScreenState extends State<CheckOutScreen>
           FxSpacing.height(20),
           FxButton.block(
             onPressed: () {
-              // controller.nextPage();
-              controller.initPlatformState();
+              controller.nextPage(selectedExcursions);
+              // controller.initPlatformState();
             },
             borderRadiusAll: 4,
             elevation: 0,

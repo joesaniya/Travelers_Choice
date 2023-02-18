@@ -6,6 +6,8 @@ import 'package:http/http.dart' as http;
 class PaymentService {
   Future PersonalInfo(String name, String email, String phoneNumber,
       String countryId, List SelectedActivities) async {
+    log('Activities data');
+    log('Activities:$SelectedActivities');
     try {
       var body = {
         "name": name,
