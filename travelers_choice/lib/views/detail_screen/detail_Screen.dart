@@ -318,10 +318,10 @@ class _DetailScreenState extends State<DetailScreen>
                                       margin: const EdgeInsets.only(left: 2),
                                       child: FxText.bodySmall(
                                           controller.detailattraction!.first
-                                                      .destination!.name![0]
+                                                      .destination!.name[0]
                                                       .toUpperCase() +
                                                   controller.detailattraction!
-                                                      .first.destination!.name!
+                                                      .first.destination!.name
                                                       .substring(1) ??
                                               '',
                                           fontWeight: 500)),
@@ -455,8 +455,13 @@ class _DetailScreenState extends State<DetailScreen>
                           FxText.bodyMedium("Price", fontWeight: 500),
                           FxText.bodyMedium(
                               // "350 \$",
+                              controller.detailattraction!.first.activities!
+                                          .first.privateTransfers ==
+                                      null
+                                  ? '350'
+                                  : '${controller.detailattraction!.first.activities!.first.privateTransfers!.first.price} AED',
                               // '${controller.detailattraction.first.activities.first.adultPrice} ${controller.currency() ?? '\$'}',
-                              '${controller.detailattraction!.first.activities!.first.adultPrice} AED',
+                              // '${controller.detailattraction!.first.activities!.first.privateTransfers!.first.price} AED',
                               // controller.product.price.toString(),
                               fontWeight: 700)
                         ],

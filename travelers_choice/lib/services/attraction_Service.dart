@@ -31,9 +31,9 @@ class AttractionService {
         return null;
       }
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-           const SnackBar(content: Text("Please Select Mr/Ms/Mrs")));
-      
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(e.toString())));
+
       rethrow;
     }
   }
@@ -74,7 +74,10 @@ class AttractionService {
         Uri.parse(
           'https://secure.mytravellerschoice.com/api/v1/attractions/single/$productid',
         ),
-        headers: {'Content-Type': 'application/json'},
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application / json'
+        },
       );
       if (response.statusCode == 200) {
         log(response.body);

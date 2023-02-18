@@ -42,12 +42,11 @@ class HomeSearchController extends FxController {
   bool isLoading = true;
   String? categoryid;
 
-  getcategoryAttraction(
-      // productid,
-      setState) {
+  getcategoryAttraction(productid, setState) {
     log('getDetail Attraction function called');
     Future.delayed(Duration.zero, () async {
-      await SearchService().getCategories()
+      await SearchService()
+          .getCategories()
           // (
           //   // productid: productid
           //   )
@@ -59,6 +58,7 @@ class HomeSearchController extends FxController {
           setState(() {
             categoryattraction = value;
           });
+          log('Category Attraction:$categoryattraction');
         }
       });
     });
@@ -136,8 +136,7 @@ class HomeSearchController extends FxController {
     // });
   }
 
-
-   void runFilter1(String enteredKeyword) {
+  void runFilter1(String enteredKeyword) {
     print('runFilters');
     List results = [];
     if (enteredKeyword.isEmpty) {
@@ -146,13 +145,14 @@ class HomeSearchController extends FxController {
     } else {
       print('runFilters else');
       results = searchReasult
-          .where((Recipe) =>
-              Recipe.attractions.data.first.title.toLowerCase().contains(enteredKeyword.toLowerCase()))
+          .where((Recipe) => Recipe.attractions.data.first.title
+              .toLowerCase()
+              .contains(enteredKeyword.toLowerCase()))
           .toList();
       print(results);
     }
 
-     foundrecipe = results.cast<AllattractionModal>();
+    foundrecipe = results.cast<AllattractionModal>();
   }
 
   @override
@@ -253,13 +253,14 @@ class HomeSearchController extends FxController {
               opacity: animation,
               child: child,
             ),
-        pageBuilder: (_, __, ___) => DetailScreen(product.id,
-        //  _toggleFavorite, _isMealFavorite,
-          product)));
+        pageBuilder: (_, __, ___) => DetailScreen(
+            product.id,
+            //  _toggleFavorite, _isMealFavorite,
+            product)));
   }
 
-    List<AllattractionModal> _favouriteMeals = [];
-  List<AllattractionModal> _availableMeals = <AllattractionModal>[];
+  final List<AllattractionModal> _favouriteMeals = [];
+  final List<AllattractionModal> _availableMeals = <AllattractionModal>[];
 
   void _toggleFavorite(String mealId) {
     final existingIndex = _favouriteMeals
