@@ -25,11 +25,11 @@ import '../theme/app_theme.dart';
 
 class ApplyVisa extends StatefulWidget {
 
-  // final SelectVisaModal? visa;
-  const ApplyVisa( {Key? key,}) : super(key: key);
+  final SelectVisaModal? visa;
+  const ApplyVisa( {Key? key, required  this.visa,}) : super(key: key);
 
   @override
-  State<ApplyVisa> createState() => _ApplyVisaState();
+  State<ApplyVisa> createState() => _ApplyVisaState(visa);
 }
 
 class _ApplyVisaState extends State<ApplyVisa>  with TickerProviderStateMixin{
@@ -46,6 +46,10 @@ class _ApplyVisaState extends State<ApplyVisa>  with TickerProviderStateMixin{
   List<String> _fileName3 = [];
   List<String> _fileName4 = [];
   final ImagePicker _picker = ImagePicker();
+
+  _ApplyVisaState(SelectVisaModal? visa);
+
+
   void takePhoto(ImageSource source, index)async{
     final pickedFile = await _picker.getImage(source: source);
     setState(() {
@@ -83,6 +87,7 @@ String userName = "";
   @override
   Widget build(BuildContext context){
     // print(widget.visa!.visa.country);
+    print(widget.visa!.visa.country.countryName);
     return FxBuilder<ApplyVisaController>(
         controller: controller,
         builder: (controller) {
@@ -142,7 +147,7 @@ String userName = "";
                   ),
                   FxSpacing.height(10),
                   Expanded(
-                    child: bodyBuilder(),
+                    child: bodyBuilder(widget.visa),
                   )
                   // Expanded(
                   //   child: PageView(
@@ -164,7 +169,7 @@ String userName = "";
   }
 
 
-  Widget bodyBuilder() {
+  Widget bodyBuilder(SelectVisaModal? visa) {
     switch (controller.currentPage) {
       case 0:
         return itenaryDetails();
@@ -244,7 +249,8 @@ String userName = "";
                                 letterSpacing: 0.4,
                               ),
                             ),
-                            items: controller.visaTypes.map((String value) {
+                            items:
+                            controller.visaTypes.map((String value) {
                               return DropdownMenuItem<String>(
                                   value: value,
                                   child: Center(
@@ -433,7 +439,9 @@ String userName = "";
                         ),
                       ),
                     ),
-                    FxSpacing.height(20),
+                    FxSpacing.height(10),
+
+                    // Text("134 ${widget.visa!.visa.country.currencySymbol}"),
 
                   ],
                 )
@@ -1245,6 +1253,9 @@ String userName = "";
                           children: [
                             Text(_fileName[index]),
                             ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: const Color(0xff1529e8),
+                              ),
                                 onPressed: (){
                                   upLoadFile(index);
                                   },
@@ -1295,6 +1306,9 @@ String userName = "";
                           children: [
                             Text(_fileName2[index]),
                             ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: const Color(0xff1529e8),
+                                ),
                                 onPressed: (){
                                   upLoadFile2(index);
                                 },
@@ -1349,6 +1363,9 @@ String userName = "";
                                   child: (_imageFile[index] != null)? Image.file(
                                       File( _imageFile[index]?.path ?? "" )) : Container()),
                                 ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: const Color(0xff1529e8),
+                                    ),
                                     onPressed: ()async{
                                   takePhoto(ImageSource.gallery, index);
                                 }, child: Text("Choose File"))
@@ -1385,6 +1402,9 @@ String userName = "";
                           children: [
                             Text(_fileName3[index]),
                             ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: const Color(0xff1529e8),
+                                ),
                                 onPressed: (){
                                   upLoadFile3(index);
                                 },
@@ -1437,6 +1457,9 @@ String userName = "";
                           children: [
                             Text(_fileName4[index]),
                             ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: const Color(0xff1529e8),
+                                ),
                                 onPressed: (){
                                   upLoadFile4(index);
                                 },

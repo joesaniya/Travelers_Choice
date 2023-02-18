@@ -103,7 +103,7 @@ class _VisaScreenState extends State<VisaScreen>
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SizedBox(height: 10,),
+          const SizedBox(height: 10,),
           FxText.bodyLarge(
             'Types of ${selectVisa!.visa.name}',
             style: const TextStyle(
@@ -113,7 +113,7 @@ class _VisaScreenState extends State<VisaScreen>
             ),
           ),
 
-          SizedBox(height: 10,),
+          const SizedBox(height: 15,),
 
           ListView.separated(
               padding: EdgeInsets.zero,
@@ -121,17 +121,17 @@ class _VisaScreenState extends State<VisaScreen>
               // scrollDirection: Axis.vertical,
             physics: const NeverScrollableScrollPhysics(),
               shrinkWrap: true,
-              itemBuilder: (BuildContext, int index){
+              itemBuilder: (BuildContext context, int index){
                 return Card(
                   // color:  Color(0xff4741f0),
                   shadowColor: Colors.black,
                   elevation: 7,
                   shape:RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(15),
-                    side: const BorderSide(
-                      width: 2,
-                      color: Color(0xff1529e8),
-                    ),
+                    // side: const BorderSide(
+                    //   width: 2,
+                    //   color: Color(0xff1529e8),
+                    // ),
                   ),
                   child: Container(
                     padding: EdgeInsets.all(10),
@@ -150,65 +150,65 @@ class _VisaScreenState extends State<VisaScreen>
                     ),
                     child: Column(
                       children: [
-                        Text(
+                        const SizedBox(height: 10,),
+                        FxText.bodyLarge(
                           selectVisa!.visaType[index].visaName,
                           textAlign: TextAlign.center,
-                          style: TextStyle(
+                          style: const TextStyle(
                               fontSize: 24,
                               fontWeight: FontWeight.w600,
                               color: Colors.black),
                         ),
-                        SizedBox(height: 10,),
-                        Text( selectVisa!.visa.country.currencySymbol+" "+selectVisa!.visaType[index].visaPrice.toString(),
+                        const SizedBox(height: 10,),
+                        FxText.bodyMedium( "${selectVisa!.visa.country.currencySymbol} ${selectVisa!.visaType[index].visaPrice}",
                           textAlign: TextAlign.center,
-                          style: TextStyle(
+                          style: const TextStyle(
                               color: Colors.black,
                               decoration: TextDecoration.underline,
-                              fontSize: 20,
+                              fontSize: 16,
                               // fontWeight: FontWeight.w600
                           ),
                         ),
-                        SizedBox(height: 10,),
-                        Text(
+                        const SizedBox(height: 10,),
+                        FxText.bodyMedium(
                           "${selectVisa!.visaType[index].visaName} Medical Insurance (COVID)",
                           textAlign: TextAlign.center,
-                          style:  TextStyle(
-                              fontSize: 20,
+                          style:  const TextStyle(
+                              fontSize: 16,
                               // fontWeight: FontWeight.w600,
                               color: Colors.black
                           ),
                         ),
-                        SizedBox(height: 10,),
+                        const SizedBox(height: 10,),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text(
+                            FxText.bodyMedium(
                               "Child age Limit: ${selectVisa!.visaType[index].ageFrom}",
                               // textAlign: TextAlign.center,
-                              style:  TextStyle(
-                                  fontSize: 20,
+                              style:  const TextStyle(
+                                  fontSize: 16,
                                   // fontWeight: FontWeight.w600,
                                   color: Colors.black
                               ),
                             ),
-                            Text(
+                            FxText.bodyMedium(
                               "Adult age Limit: ${selectVisa!.visaType[index].ageTo}",
                               // textAlign: TextAlign.center,
-                              style:  TextStyle(
-                                  fontSize: 20,
-                                  // fontWeight: FontWeight.w600,
+                              style:  const TextStyle(
+                                  fontSize: 16,
                                   color: Colors.black
                               ),
                             ),
                           ],
                         ),
-                        SizedBox(height: 10,),
+                        const SizedBox(height: 10,),
                       ],
                     ),
                   ),
                 );
               },
-              separatorBuilder: (BuildContext, int index){
+              separatorBuilder: (BuildContext context, int index){
             return const SizedBox(height: 20,);
           },
               itemCount: selectVisa!.visaType.length),
@@ -221,21 +221,21 @@ class _VisaScreenState extends State<VisaScreen>
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children:  [
-                const Text("Documents required for Dubai visa",
-                  style: TextStyle(
+                 FxText.bodyMedium("Documents required for Dubai visa",
+                  style: const TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.w500),
                 ),
                 const SizedBox(height: 10,),
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: const [
-                    Text('\u2022',style: TextStyle(fontSize: 25),),
-                    SizedBox(width: 10),
+                  children:  [
+                    FxText.bodySmall('\u2022',style: const TextStyle(fontSize: 25),),
+                    const SizedBox(width: 10),
                     Expanded(
-                        child: Text(
+                        child: FxText.bodySmall(
                           "Scanned color copy of first and last page of your valid passport",
-                          style: TextStyle(fontSize: 18,color: Colors.grey),)
+                          style: const TextStyle(fontSize: 18,color: Colors.grey),)
                     )
                   ],
                 ) ,
@@ -243,27 +243,27 @@ class _VisaScreenState extends State<VisaScreen>
                 const SizedBox(height: 10,),
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: const [
-                    Text('\u2022',style: TextStyle(fontSize: 25),),
-                    SizedBox(width: 10),
+                  children:  [
+                    FxText.bodySmall('\u2022',style:const TextStyle(fontSize: 25),),
+                    const SizedBox(width: 10),
                     Expanded(
-                        child: Text(
+                        child: FxText.bodySmall(
                           "Scanned color copy of your passport size photograph with white background",
-                          style: TextStyle(fontSize: 18,color: Colors.grey),)
+                          style: const TextStyle(fontSize: 18,color: Colors.grey),)
                     )
                   ],
                 ),
 
-                SizedBox(height: 10,),
+                const SizedBox(height: 10,),
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: const [
-                    Text('\u2022',style: TextStyle(fontSize: 25),),
-                    SizedBox(width: 10),
+                  children:  [
+                    FxText.bodySmall('\u2022',style:const TextStyle(fontSize: 25),),
+                    const SizedBox(width: 10),
                     Expanded(
-                        child: Text(
-                          "Confrimed return air ticket (requires for Ok to Board processing)",
-                          style: TextStyle(fontSize: 18,color: Colors.grey),)
+                        child: FxText.bodySmall(
+                          "Confirmed return air ticket (requires for Ok to Board processing)",
+                          style:const TextStyle(fontSize: 18,color: Colors.grey),)
                     )
                   ],
                 )
@@ -273,30 +273,32 @@ class _VisaScreenState extends State<VisaScreen>
           const SizedBox(height:20),
 
           InkWell(
-            onTap: (){},
+            onTap: (){
+
+            },
             child: Container(
               height: 80,
               width: MediaQuery.of(context).size.width,
+
               padding: const EdgeInsets.all(10),
               color:  const Color(0xff1529e8),
               child: Row(
-
                 children: [
                   const Icon(Icons.file_copy_outlined,color: Colors.white,size: 35,),
                   const SizedBox(width: 15,),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children:const [
-                      Text("View Sample Visa Copy",
-                          style:TextStyle(
+                    children: [
+                      FxText.bodyMedium("View Sample Visa Copy",
+                          style:const TextStyle(
                               color: Colors.white,
                               fontSize: 20,
                             fontWeight: FontWeight.w600
                           )
                       ),
-                      SizedBox(height: 10,),
-                      Text("For better understanding click here!!",
-                          style:TextStyle(
+                      const SizedBox(height: 10,),
+                      FxText.bodyMedium("For better understanding click here!!",
+                          style:const TextStyle(
                               color: Colors.white,
                               fontSize: 16,
                               fontWeight: FontWeight.w400
@@ -311,8 +313,8 @@ class _VisaScreenState extends State<VisaScreen>
 
           const SizedBox(height: 20,),
 
-          const Text("Dubai Visa FAQs",
-            style: TextStyle(
+           FxText.bodyMedium("Dubai Visa FAQs",
+            style:const  TextStyle(
               fontSize: 24,
               fontWeight: FontWeight.w600),
           ),
@@ -334,11 +336,11 @@ class _VisaScreenState extends State<VisaScreen>
                           iconColor: Colors.transparent,
                         ),
                         header:  ListTile(
-                            leading: Icon(Icons.add),
+                            leading: const Icon(Icons.add),
                             title: Text(
                               // "Can I get Dubai Visa on Arrival"
                               selectVisa!.visa.faqs[index].question,
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontSize: 18,
                                 color: Color(0xff1529e8)
                               ),
@@ -346,7 +348,7 @@ class _VisaScreenState extends State<VisaScreen>
                         ),
                         collapsed: Container(),
                         expanded: Padding(
-                          padding: EdgeInsets.all(15),
+                          padding:const EdgeInsets.all(15),
                           child: Text(
                             selectVisa!.visa.faqs[index].answer
                             // "Yes, Citizens of few countries do not require advance"
@@ -362,7 +364,7 @@ class _VisaScreenState extends State<VisaScreen>
                             //   " must be not less than six months and the fee for an entry "
                             //   "permit will be Dirham 100 (Rs 1,750)."
                             ,
-                          style: TextStyle(fontSize: 18,color: Colors.grey),
+                          style:const TextStyle(fontSize: 18,color: Colors.grey),
                             textAlign: TextAlign.justify,
                           ),
                         ),
@@ -483,6 +485,31 @@ class _VisaScreenState extends State<VisaScreen>
 
         ],
 
+    );
+  }
+
+  Widget applyNow(){
+    return  Expanded(
+      flex: 1,
+      child: Container(
+        padding: EdgeInsets.all(10),
+        child: ElevatedButton(
+            onPressed: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => ApplyVisa( visa: selectVisa)));
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor:const Color(0xff1529e8),
+              minimumSize: Size(MediaQuery
+                  .of(context)
+                  .size
+                  .width * 0.9, 40),
+            ),
+            child: const Text("Apply Online",
+              style: TextStyle(fontSize: 16),)
+        ),
+      ),
     );
   }
 
@@ -786,28 +813,7 @@ class _VisaScreenState extends State<VisaScreen>
               ),
             ),
 
-            Expanded(
-              flex: 1,
-              child: Container(
-                padding: EdgeInsets.all(10),
-                child: ElevatedButton(
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => ApplyVisa( )));
-                    },
-                    child: Text("Apply Online",
-                      style: TextStyle(fontSize: 16),),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Color(0xff1529e8),
-                      minimumSize: Size(MediaQuery
-                          .of(context)
-                          .size
-                          .width * 0.9, 40),
-                    )
-                ),
-              ),
-            )
+           applyNow()
           ],
         ),
       );
