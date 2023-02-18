@@ -13,7 +13,7 @@ import '../../theme/app_theme.dart';
 
 class CategoriesBottomSheet extends StatefulWidget {
   Destination? categoryplace;
-  CategoriesBottomSheet({this.categoryplace});
+  CategoriesBottomSheet({super.key, this.categoryplace});
 
   @override
   State<CategoriesBottomSheet> createState() => _CategoriesBottomSheetState();
@@ -37,9 +37,7 @@ class _CategoriesBottomSheetState extends State<CategoriesBottomSheet>
       // addCategories();
     });
 
-    // controller.getcategoryAttraction(
-    //     // widget.productid,
-    //     setState);
+    controller.getcategoryAttraction(widget.categoryplace, setState);
   }
 
   List<AllattractionModal> allattractionList = <AllattractionModal>[];
