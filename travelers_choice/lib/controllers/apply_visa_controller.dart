@@ -130,7 +130,8 @@ class ApplyVisaController extends FxController {
   List<String> selectedTitle=[];
   final List<String> titleCodes = ['Mr.','Ms.', 'Mrs.','Mstr.'];
   String? selectedVisa;
-  final List<String> visaTypes = ['30 day single entry tourist visa',
+  final List<String> visaTypes = [
+    '30 day single entry tourist visa',
     '60 days single entry tourist visa',
     '12 days work visa'];
   List<List<String>>selectCountry = [];
@@ -353,6 +354,19 @@ class ApplyVisaController extends FxController {
     if (text == null || text.isEmpty) {
       firstnameController.forward();
       return "Please enter first name";
+    }
+    return null;
+  }
+  String? validateFromDate(String? text) {
+    if (text == null || text.isEmpty) {
+      firstnameController.forward();
+      return "Please select date";
+    }
+    return null;
+  } String? validateToDate(String? text) {
+    if (text == null || text.isEmpty) {
+      firstnameController.forward();
+      return "Please select date";
     }
     return null;
   }

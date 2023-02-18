@@ -8,6 +8,7 @@ import 'package:hotel_travel/models/visa_country_modal.dart';
 import 'package:hotel_travel/services/visa_service.dart';
 import 'package:tab_indicator_styler/tab_indicator_styler.dart';
 import '../controllers/visa_controller.dart';
+import '../loading_effect.dart';
 import 'apply_visa.dart';
 
 
@@ -104,7 +105,7 @@ class _VisaScreenState extends State<VisaScreen>
         children: [
           SizedBox(height: 10,),
           FxText.bodyLarge(
-            'Types of Dubai visa',
+            'Types of ${selectVisa!.visa.name}',
             style: const TextStyle(
               fontSize: 26,
               fontWeight: FontWeight.w500,
@@ -148,9 +149,9 @@ class _VisaScreenState extends State<VisaScreen>
                     //   ),
                     ),
                     child: Column(
-                      children: const[
+                      children: [
                         Text(
-                          "30 Days Single Entry Tourist Visa",
+                          selectVisa!.visaType[index].visaName,
                           textAlign: TextAlign.center,
                           style: TextStyle(
                               fontSize: 24,
@@ -158,7 +159,7 @@ class _VisaScreenState extends State<VisaScreen>
                               color: Colors.black),
                         ),
                         SizedBox(height: 10,),
-                        Text("AED 320.00",
+                        Text( selectVisa!.visa.country.currencySymbol+" "+selectVisa!.visaType[index].visaPrice.toString(),
                           textAlign: TextAlign.center,
                           style: TextStyle(
                               color: Colors.black,
@@ -169,13 +170,37 @@ class _VisaScreenState extends State<VisaScreen>
                         ),
                         SizedBox(height: 10,),
                         Text(
-                          "30 days UAE Tourist Visa Medical Insurance (COVID)",
+                          "${selectVisa!.visaType[index].visaName} Medical Insurance (COVID)",
                           textAlign: TextAlign.center,
                           style:  TextStyle(
                               fontSize: 20,
                               // fontWeight: FontWeight.w600,
                               color: Colors.black
                           ),
+                        ),
+                        SizedBox(height: 10,),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              "Child age Limit: ${selectVisa!.visaType[index].ageFrom}",
+                              // textAlign: TextAlign.center,
+                              style:  TextStyle(
+                                  fontSize: 20,
+                                  // fontWeight: FontWeight.w600,
+                                  color: Colors.black
+                              ),
+                            ),
+                            Text(
+                              "Adult age Limit: ${selectVisa!.visaType[index].ageTo}",
+                              // textAlign: TextAlign.center,
+                              style:  TextStyle(
+                                  fontSize: 20,
+                                  // fontWeight: FontWeight.w600,
+                                  color: Colors.black
+                              ),
+                            ),
+                          ],
                         ),
                         SizedBox(height: 10,),
                       ],
@@ -186,11 +211,12 @@ class _VisaScreenState extends State<VisaScreen>
               separatorBuilder: (BuildContext, int index){
             return const SizedBox(height: 20,);
           },
-              itemCount: 4),
+              itemCount: selectVisa!.visaType.length),
 
           const SizedBox(height: 20,),
 
-          Padding(
+          Container(
+            color: Colors.white,
             padding: const EdgeInsets.all(8.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -307,9 +333,11 @@ class _VisaScreenState extends State<VisaScreen>
                         theme: const ExpandableThemeData(
                           iconColor: Colors.transparent,
                         ),
-                        header: const ListTile(
+                        header:  ListTile(
                             leading: Icon(Icons.add),
-                            title: Text("Can I get Dubai Visa on Arrival",
+                            title: Text(
+                              // "Can I get Dubai Visa on Arrival"
+                              selectVisa!.visa.faqs[index].question,
                               style: TextStyle(
                                 fontSize: 18,
                                 color: Color(0xff1529e8)
@@ -317,21 +345,23 @@ class _VisaScreenState extends State<VisaScreen>
                             )
                         ),
                         collapsed: Container(),
-                        expanded:const Padding(
+                        expanded: Padding(
                           padding: EdgeInsets.all(15),
                           child: Text(
-                            "Yes, Citizens of few countries do not require advance"
-                                " visa arrangements to enter the UAE and can obtain a Dubai visa "
-                              "on arrival. Indian nationals holding a normal passport and a "
-                              "valid Visa, or a Green Card issued by the USA, or UK or EU "
-                              "Residency, can obtain a Dubai Tourist visa on arrival for a "
-                              "maximum stay of 14 days. The US Visa, the Green Card, the UK"
-                              " Resident Permit and the EU Resident Permit must be valid for"
-                              " at least six months from the date of arrival into the UAE. "
-                              "The Dubai visa on arrival will be valid for 14 days, extendable "
-                              "for a similar period one time only. The validity of the passport"
-                              " must be not less than six months and the fee for an entry "
-                              "permit will be Dirham 100 (Rs 1,750).",
+                            selectVisa!.visa.faqs[index].answer
+                            // "Yes, Citizens of few countries do not require advance"
+                            //     " visa arrangements to enter the UAE and can obtain a Dubai visa "
+                            //   "on arrival. Indian nationals holding a normal passport and a "
+                            //   "valid Visa, or a Green Card issued by the USA, or UK or EU "
+                            //   "Residency, can obtain a Dubai Tourist visa on arrival for a "
+                            //   "maximum stay of 14 days. The US Visa, the Green Card, the UK"
+                            //   " Resident Permit and the EU Resident Permit must be valid for"
+                            //   " at least six months from the date of arrival into the UAE. "
+                            //   "The Dubai visa on arrival will be valid for 14 days, extendable "
+                            //   "for a similar period one time only. The validity of the passport"
+                            //   " must be not less than six months and the fee for an entry "
+                            //   "permit will be Dirham 100 (Rs 1,750)."
+                            ,
                           style: TextStyle(fontSize: 18,color: Colors.grey),
                             textAlign: TextAlign.justify,
                           ),
@@ -340,7 +370,7 @@ class _VisaScreenState extends State<VisaScreen>
                     ),
                   ));
             },
-            itemCount: 4,
+            itemCount: selectVisa!.visa.faqs.length,
           ),
 
           const SizedBox(height: 10,),
@@ -383,73 +413,73 @@ class _VisaScreenState extends State<VisaScreen>
 
           const SizedBox(height: 10,),
 
-          Container(
-            padding:const EdgeInsets.all(10),
-            color:Colors.black,
-            child: Column(
-              children: [
-                ListView.separated(
-                  padding: EdgeInsets.zero,
-                  physics: const NeverScrollableScrollPhysics(),
-                  shrinkWrap: true,
-                  itemBuilder: (BuildContext context, int index) {
-                    return  ExpandableNotifier(
-                        child: ScrollOnExpand(
-                          child: ExpandablePanel(
-                            theme: const ExpandableThemeData(
-                              iconColor: Colors.transparent,
-                            ),
-                            header: ListTile(
-                                title: Text(lastString[index],
-                                  style: const TextStyle(
-                                      fontSize: 18,
-                                      color:Colors.grey
-                                  ),
-                                ),
-                            ),
-                            collapsed: Container(),
-                            expanded:const Padding(
-                              padding:  EdgeInsets.all(15),
-                              child: Text("Travel Policy\nTravel Communities",
-                                style: TextStyle(fontSize: 18,color: Colors.grey),
-                                textAlign: TextAlign.justify,
-                              ),
-                            ),
-                          ),
-                        )
-                    );
-                  },
-                  itemCount: 4, separatorBuilder: (BuildContext context, int index) {
-                    return const Divider(height: 1,color: Colors.grey,);
-                },
-                ),
-
-                const Divider(height: 1,color: Colors.grey,),
-
-                const SizedBox(height: 10,),
-                Column(
-                  children: const [
-                    Text("License No.671267",
-                      style: TextStyle(
-                          fontSize: 14,
-                          color: Colors.grey
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                    SizedBox(height: 10,),
-                    Text("Copyright © 1996–2023 TravellersChoice.com™. All rights reserved.",
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: Colors.grey
-                    ),
-                      textAlign: TextAlign.center,
-                    ),
-                    SizedBox(height: 10,),
-                  ],
-                )
-              ],
-            ),
-          ),
+          // Container(
+          //   padding:const EdgeInsets.all(10),
+          //   color:Colors.black,
+          //   child: Column(
+          //     children: [
+          //       ListView.separated(
+          //         padding: EdgeInsets.zero,
+          //         physics: const NeverScrollableScrollPhysics(),
+          //         shrinkWrap: true,
+          //         itemBuilder: (BuildContext context, int index) {
+          //           return  ExpandableNotifier(
+          //               child: ScrollOnExpand(
+          //                 child: ExpandablePanel(
+          //                   theme: const ExpandableThemeData(
+          //                     iconColor: Colors.transparent,
+          //                   ),
+          //                   header: ListTile(
+          //                       title: Text(lastString[index],
+          //                         style: const TextStyle(
+          //                             fontSize: 18,
+          //                             color:Colors.grey
+          //                         ),
+          //                       ),
+          //                   ),
+          //                   collapsed: Container(),
+          //                   expanded:const Padding(
+          //                     padding:  EdgeInsets.all(15),
+          //                     child: Text("Travel Policy\nTravel Communities",
+          //                       style: TextStyle(fontSize: 18,color: Colors.grey),
+          //                       textAlign: TextAlign.justify,
+          //                     ),
+          //                   ),
+          //                 ),
+          //               )
+          //           );
+          //         },
+          //         itemCount: 4, separatorBuilder: (BuildContext context, int index) {
+          //           return const Divider(height: 1,color: Colors.grey,);
+          //       },
+          //       ),
+          //
+          //       const Divider(height: 1,color: Colors.grey,),
+          //
+          //       const SizedBox(height: 10,),
+          //       Column(
+          //         children: const [
+          //           Text("License No.671267",
+          //             style: TextStyle(
+          //                 fontSize: 14,
+          //                 color: Colors.grey
+          //             ),
+          //             textAlign: TextAlign.center,
+          //           ),
+          //           SizedBox(height: 10,),
+          //           Text("Copyright © 1996–2023 TravellersChoice.com™. All rights reserved.",
+          //           style: TextStyle(
+          //             fontSize: 14,
+          //             color: Colors.grey
+          //           ),
+          //             textAlign: TextAlign.center,
+          //           ),
+          //           SizedBox(height: 10,),
+          //         ],
+          //       )
+          //     ],
+          //   ),
+          // ),
 
         ],
 
@@ -461,282 +491,326 @@ class _VisaScreenState extends State<VisaScreen>
     return FxBuilder<VisaController>(
         controller: controller,
         builder: (controller) {
-          return _visaWidget();
+          return _visaWidget(selectVisa);
         });
   }
 
-  Widget _visaWidget() {
+  Widget _visaWidget(SelectVisaModal? selectVisa) {
+    if (selectVisa == null) {
       return Scaffold(
-          backgroundColor:  const Color(0xfff5f5f5),
-          body: Column(
-            children: [
-              Expanded(
-                  flex: 4,
-                  child: Container(
-                    decoration: const BoxDecoration(
-                      gradient: LinearGradient(
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                        colors: <Color>[
-                          Color(0xff1529e8),
-                          Color(0xff5c69e0),
-                        ],
-                      ),
-                    ),
-                    // color: Colors.blue,
-                    height: MediaQuery.of(context).size.height/3.65,
-                    child: ListView(
-                      children: [
-                        const SizedBox(height: 30,),
+          body: Padding(
+            padding: FxSpacing.top(FxSpacing.safeAreaTop(context) + 20),
+            child: LoadingEffect.getHomeLoadingScreen
+            // getProductLoadingScreen->profile
+            //getDatingHomeScreen->detail
 
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            const SizedBox(width: 10,),
-
-                            if(!disableCard )
-                              Expanded(
-                                flex:  12,
-                                child: Card(
-                                  shadowColor: Colors.black,
-                                  elevation: 6,
-                                  clipBehavior: Clip.antiAlias,
-                                  shape:RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(15)
-                                  ),
-                                  child: Container(
-                                    height: 60,
-                                    width: MediaQuery.of(context).size.width*0.8,
-                                    padding: const EdgeInsets.all(10),
-                                    decoration: const BoxDecoration(
-                                        color: Colors.white
-                                    ),
-                                    child: Padding(
-                                      padding: const EdgeInsets.only(left: 5),
-                                      child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: const [
-                                          Text("Explore Visas for",
-                                            style: TextStyle(
-                                                color: Colors.black,
-                                                fontSize: 18,
-                                                fontWeight: FontWeight.w800
-                                            ),
-                                          ),
-                                          Text("I'm open to anywhere",
-                                            style: TextStyle(
-                                                color: Colors.black,
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.w600
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-
-                            const SizedBox(width: 5,),
-
-                            Expanded(
-                              flex: 2,
-                              child: AnimatedContainer(
-                                width: disableCard ? MediaQuery.of(context).size.width*0.9 :
-                                MediaQuery.of(context).size.height *0.06,
-                                height: MediaQuery.of(context).size.height *0.06,
-                                decoration: const BoxDecoration(
-                                    color:Colors.white,
-                                    borderRadius: BorderRadius.all(Radius.circular(30))),
-                                duration: const Duration(milliseconds: 300),
-                                child:
-                                !disableCard ? InkWell(
-                                    onTap: (){
-                                      setState(() {
-                                        disableCard=true;
-                                      });
-                                    },
-                                    child: const Icon(Icons.search_rounded)) :
-                                Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      const SizedBox(width: 10,),
-                                      InkWell(
-                                          onTap: (){
-                                            setState(() {
-                                              disableCard=false;
-                                            });
-                                          },
-                                          child: const Icon(Icons.arrow_back_ios)),
-                                      Expanded(
-                                          child: TextField(
-                                        controller: controller.visaController,
-                                            decoration: const InputDecoration(
-                                              hintText: "Search",
-                                              border: InputBorder.none,
-                                            ),
-                                      )),
-                                      InkWell(
-                                          onTap: (){
-                                            controller.visaController.clear();
-                                          },
-                                          child: const Icon(Icons.close)),
-                                      const SizedBox(width: 10,)
-                                    ],
-                                  ),
-                              ),
-                            ),
-
-                          const SizedBox(width: 5,)
-
-                        ],
-                        ),
-
-                        const SizedBox(height: 15,),
-
-                        Container(
-                          height: 60,
-                          width: MediaQuery.of(context).size.width,
-                          child: TabBar(
-                            controller: controller.tabController,
-                            onTap: (index) {
-                              setState(() {
-                                controller.tabController.index = index;
-                              });
-                            },
-                            labelColor: Colors.white,
-                            unselectedLabelColor: Colors.white60,
-                            // indicatorWeight: 0,
-                            // unselectedLabelColor: Colors.black.withOpacity(0.6),
-                            labelStyle: const TextStyle(
-                                fontFamily: 'inter', fontWeight: FontWeight.w500),
-                            isScrollable: true,
-                            // indicatorSize: TabBarIndicatorSize.label,
-                            indicatorColor: Colors.transparent,
-                            // indicator: RectangularIndicator(
-                            //   bottomLeftRadius: 15,
-                            //   bottomRightRadius: 15,
-                            //   topLeftRadius: 15,
-                            //   topRightRadius: 15,
-                            //   paintingStyle: PaintingStyle.stroke,
-                            //   strokeWidth: 0,
-                            //   color: Colors.white
-                            // ),
-                            tabs:  [
-                              Tab(
-                                child: Padding(
-                                  padding: const EdgeInsets.only(left: 10,right: 5),
-                                  child: Center(child:
-                                      Column(
-                                        children:const [
-                                          Text("Visa"),
-                                          SizedBox(height: 5,),
-                                          Icon(Icons.credit_card),
-                                        ],
-                                      ),
-
-
-                                  ),
-                                ),
-                              ),
-                              Tab(
-                                child: Padding(
-                                  padding: const EdgeInsets.only(left: 10,right: 5),
-                                  child: Center(child:
-                                      Column(
-                                        children:const [
-                                          Text("Documents"),
-                                          SizedBox(height: 5,),
-                                          Icon(Icons.file_copy_outlined),
-                                        ],
-                                      ),
-                                  ),
-                                ),
-                              ),
-                              Tab(
-                                child: Padding(
-                                  padding: const EdgeInsets.only(left: 10,right: 5),
-                                  child: Center(child:
-                                  Column(
-                                    children:const [
-                                      Text("FAQs"),
-                                      SizedBox(height: 5,),
-                                      Icon(Icons.format_quote),
-                                    ],
-                                  ),
-                                  ),
-                                ),
-                              ),
-                              Tab(
-                                child: Padding(
-                                  padding: const EdgeInsets.only(left: 10,right: 5),
-                                  child: Center(child:
-                                  Column(
-                                    children:const [
-                                      Text("Terms"),
-                                      SizedBox(height: 5,),
-                                      Icon(Icons.menu_open_outlined),
-                                    ],
-                                  ),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
+              (
+              context,
+              // theme, theme.colorScheme
+            ),
+          ));
+    }else {
+      return Scaffold(
+        backgroundColor: const Color(0xfff5f5f5),
+        body: Column(
+          children: [
+            Expanded(
+              flex: 4,
+              child: Container(
+                decoration: const BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: <Color>[
+                      Color(0xff1529e8),
+                      Color(0xff5c69e0),
+                    ],
                   ),
                 ),
-
-              Expanded(
-                flex: 10,
+                // color: Colors.blue,
+                height: MediaQuery
+                    .of(context)
+                    .size
+                    .height / 3.65,
                 child: ListView(
-                  shrinkWrap: true,
-                  padding: const EdgeInsets.all(10),
-                  physics: const AlwaysScrollableScrollPhysics(),
-                  children: <Widget>[
-                    IndexedStack(
-                      index: controller.tabController.index,
+                  children: [
+                    const SizedBox(height: 30,),
+
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
                       children: [
+                        const SizedBox(width: 10,),
 
-                        visaList(),
+                        if(!disableCard )
+                          Expanded(
+                            flex: 12,
+                            child: Card(
+                              shadowColor: Colors.black,
+                              elevation: 6,
+                              clipBehavior: Clip.antiAlias,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(15)
+                              ),
+                              child: Container(
+                                height: 60,
+                                width: MediaQuery
+                                    .of(context)
+                                    .size
+                                    .width * 0.8,
+                                padding: const EdgeInsets.all(10),
+                                decoration: const BoxDecoration(
+                                    color: Colors.white
+                                ),
+                                child: Padding(
+                                  padding: const EdgeInsets.only(left: 5),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment
+                                        .start,
+                                    children: const [
+                                      Text("Explore Visas for",
+                                        style: TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.w800
+                                        ),
+                                      ),
+                                      Text("I'm open to anywhere",
+                                        style: TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w600
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
 
-                        const Text("Documents",style:TextStyle(color: Colors.black)),
+                        const SizedBox(width: 5,),
 
-                        // const Text("Process"),
+                        Expanded(
+                          flex: 2,
+                          child: AnimatedContainer(
+                            width: disableCard ? MediaQuery
+                                .of(context)
+                                .size
+                                .width * 0.9 :
+                            MediaQuery
+                                .of(context)
+                                .size
+                                .height * 0.06,
+                            height: MediaQuery
+                                .of(context)
+                                .size
+                                .height * 0.06,
+                            decoration: const BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.all(
+                                    Radius.circular(30))),
+                            duration: const Duration(milliseconds: 300),
+                            child:
+                            !disableCard ? InkWell(
+                                onTap: () {
+                                  setState(() {
+                                    disableCard = true;
+                                  });
+                                },
+                                child: const Icon(Icons.search_rounded)) :
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                const SizedBox(width: 10,),
+                                InkWell(
+                                    onTap: () {
+                                      setState(() {
+                                        disableCard = false;
+                                      });
+                                    },
+                                    child: const Icon(Icons.arrow_back_ios)),
+                                Expanded(
+                                    child: TextField(
+                                      controller: controller.visaController,
+                                      decoration: const InputDecoration(
+                                        hintText: "Search",
+                                        border: InputBorder.none,
+                                      ),
+                                    )),
+                                InkWell(
+                                    onTap: () {
+                                      controller.visaController.clear();
+                                    },
+                                    child: const Icon(Icons.close)),
+                                const SizedBox(width: 10,)
+                              ],
+                            ),
+                          ),
+                        ),
 
-                        const Text("FAQs",style:TextStyle(color: Colors.black)),
-
-                        const Text("Terms & conditions"),
+                        const SizedBox(width: 5,)
 
                       ],
+                    ),
+
+                    const SizedBox(height: 15,),
+
+                    Container(
+                      height: 60,
+                      width: MediaQuery
+                          .of(context)
+                          .size
+                          .width,
+                      child: TabBar(
+                        controller: controller.tabController,
+                        onTap: (index) {
+                          setState(() {
+                            controller.tabController.index = index;
+                          });
+                        },
+                        labelColor: Colors.white,
+                        unselectedLabelColor: Colors.white60,
+                        // indicatorWeight: 0,
+                        // unselectedLabelColor: Colors.black.withOpacity(0.6),
+                        labelStyle: const TextStyle(
+                            fontFamily: 'inter', fontWeight: FontWeight.w500),
+                        isScrollable: true,
+                        // indicatorSize: TabBarIndicatorSize.label,
+                        indicatorColor: Colors.transparent,
+                        // indicator: RectangularIndicator(
+                        //   bottomLeftRadius: 15,
+                        //   bottomRightRadius: 15,
+                        //   topLeftRadius: 15,
+                        //   topRightRadius: 15,
+                        //   paintingStyle: PaintingStyle.stroke,
+                        //   strokeWidth: 0,
+                        //   color: Colors.white
+                        // ),
+                        tabs: [
+                          Tab(
+                            child: Padding(
+                              padding: const EdgeInsets.only(
+                                  left: 10, right: 5),
+                              child: Center(child:
+                              Column(
+                                children: const [
+                                  Text("Visa"),
+                                  SizedBox(height: 5,),
+                                  Icon(Icons.credit_card),
+                                ],
+                              ),
+
+
+                              ),
+                            ),
+                          ),
+                          Tab(
+                            child: Padding(
+                              padding: const EdgeInsets.only(
+                                  left: 10, right: 5),
+                              child: Center(child:
+                              Column(
+                                children: const [
+                                  Text("Documents"),
+                                  SizedBox(height: 5,),
+                                  Icon(Icons.file_copy_outlined),
+                                ],
+                              ),
+                              ),
+                            ),
+                          ),
+                          Tab(
+                            child: Padding(
+                              padding: const EdgeInsets.only(
+                                  left: 10, right: 5),
+                              child: Center(child:
+                              Column(
+                                children: const [
+                                  Text("FAQs"),
+                                  SizedBox(height: 5,),
+                                  Icon(Icons.format_quote),
+                                ],
+                              ),
+                              ),
+                            ),
+                          ),
+                          Tab(
+                            child: Padding(
+                              padding: const EdgeInsets.only(
+                                  left: 10, right: 5),
+                              child: Center(child:
+                              Column(
+                                children: const [
+                                  Text("Terms"),
+                                  SizedBox(height: 5,),
+                                  Icon(Icons.menu_open_outlined),
+                                ],
+                              ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ],
                 ),
               ),
+            ),
 
-              Expanded(
-                flex: 1,
-                child: Container(
-                  padding: EdgeInsets.all(10),
-                  child: ElevatedButton(
-                    onPressed: (){
+            Expanded(
+              flex: 10,
+              child: ListView(
+                shrinkWrap: true,
+                padding: const EdgeInsets.all(10),
+                physics: const AlwaysScrollableScrollPhysics(),
+                children: <Widget>[
+                  IndexedStack(
+                    index: controller.tabController.index,
+                    children: [
+
+                      visaList(),
+
+                      const Text(
+                          "Documents", style: TextStyle(color: Colors.black)),
+
+                      // const Text("Process"),
+
+                      const Text("FAQs", style: TextStyle(color: Colors.black)),
+
+                      const Text("Terms & conditions"),
+
+                    ],
+                  ),
+                ],
+              ),
+            ),
+
+            Expanded(
+              flex: 1,
+              child: Container(
+                padding: EdgeInsets.all(10),
+                child: ElevatedButton(
+                    onPressed: () {
                       Navigator.push(
-                          context, MaterialPageRoute(builder: (context)=> ApplyVisa()));
+                          context,
+                          MaterialPageRoute(builder: (context) => ApplyVisa( )));
                     },
                     child: Text("Apply Online",
-                    style: TextStyle(fontSize: 16),),
-                    style:ElevatedButton.styleFrom(
-                        backgroundColor: Color(0xff1529e8),
-                    minimumSize: Size(MediaQuery.of(context).size.width*0.9, 40),
+                      style: TextStyle(fontSize: 16),),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Color(0xff1529e8),
+                      minimumSize: Size(MediaQuery
+                          .of(context)
+                          .size
+                          .width * 0.9, 40),
                     )
-                  ),
                 ),
-              )
-            ],
-          ),
+              ),
+            )
+          ],
+        ),
       );
+    }
   }
 
 }
