@@ -4,7 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutx/flutx.dart';
 import 'package:hotel_travel/services/auth_service.dart';
+import 'package:hotel_travel/services/visa_service.dart';
 import 'package:hotel_travel/views/search_screens/search_place.dart';
+import 'package:hotel_travel/views/search_screens/visa_search.dart';
+import 'package:hotel_travel/views/visa_screen.dart';
 import 'package:iconsax/iconsax.dart';
 
 import '../controllers/attraction_Controller.dart';
@@ -62,11 +65,35 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     });
   }
 
+  getVisa(BuildContext context) async {
+    await VisaService().getVisaCountry();
+    log('getVisa function called');
+    // sharedPreferences = await SharedPreferences.getInstance();
+    // Future.delayed(Duration.zero, () async {
+    //   await AttractionController().getAllattractionList(context).then((value) {
+    //     if (value != null) {
+    //       isLoading = false;
+    //       allattractionList = [];
+    //       allattractionList!.add(value);
+    //       log('All1:$allattractionList');
+    //
+    //       setState(() {
+    //         controller.countryCode = sharedPreferences!
+    //             .getString(AppConstants.KEY_ACCESS_TOKEN_countryId);
+    //         controller.currencies = sharedPreferences!
+    //             .getString(AppConstants.KEY_ACCESS_TOKEN_CurrenciesList);
+    //       });
+    //     }
+    //   });
+    // });
+  }
+
   @override
   void initState() {
     super.initState();
 
     getAttraction(context);
+    getVisa(context);
     log('All Data:$allattractionList');
     theme = AppTheme.shoppingTheme;
     theme1 = AppTheme.learningTheme;
@@ -766,7 +793,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                 //     // buildTitle(size),
                 //   ],
                 // ),
-                const SearchPlace(), //
+
+                _tabbed == '1' ? const SearchPlace() : const SearchVisa(),
 
                 // GestureDetector(
                 //   onTap: () {},
