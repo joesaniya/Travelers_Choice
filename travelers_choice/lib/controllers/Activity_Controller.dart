@@ -12,6 +12,8 @@ import '../models/cart.dart';
 import '../views/checkout_screen.dart';
 import '../views/hotel_travel_constants.dart';
 
+List<TextEditingController> controllerTE = [];
+
 class ActivityController extends FxController {
   TickerProvider ticker;
   ActivityController(this.ticker);
@@ -39,6 +41,8 @@ class ActivityController extends FxController {
 
   void updateTours(Activity tour) {
     log('updateTours Calling');
+    log('Selected Tour Date:${tour.selectedDate}');
+    
     List<Activity> value =
         person_count.where((element) => element.sId == tour.sId).toList();
     print("Coutn => ${value.length}");
@@ -65,7 +69,7 @@ class ActivityController extends FxController {
 
       print(person_count[index].grandTotal);
     }
-    log('Select:${selectedtour.map((e) => e.adultCount)}');
+    log('Select:${selectedtour.map((e) => e.selectedDate)}');
     update();
   }
 
@@ -388,7 +392,7 @@ class ActivityController extends FxController {
     });
   }
 
-  Future<void> dateselect() async {
+  dateselect(index) async {
     DateTime? pickedDate = await showDatePicker(
         context: context,
         initialDate: DateTime.now(),
@@ -400,7 +404,8 @@ class ActivityController extends FxController {
       print(pickedDate); //pickedDate output format => 2021-03-10 00:00:00.000
       String formattedDate = DateFormat('yyyy-MM-dd').format(pickedDate);
       print(formattedDate);
-      dateTE.text = formattedDate;
+      // dateTE.text = formattedDate;
+      controllerTE[index].text = formattedDate;
 
       // setState(() {
       //   dateinput.text = formattedDate; //set output date to TextField value.

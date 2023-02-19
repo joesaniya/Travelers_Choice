@@ -498,6 +498,7 @@ class Activity {
 
   int? sharedTransferCost;
   int? lowPrice;
+  String? selectedDate;
 
   Activity({
     this.sId,
@@ -538,6 +539,7 @@ class Activity {
     this.privateTransfers,
     this.sharedTransferCost,
     this.lowPrice,
+    this.selectedDate,
   });
 
   Activity.fromJson(Map<String, dynamic> json) {
@@ -569,10 +571,10 @@ class Activity {
     childCount = 0;
     infantCount = 0;
     grandTotal = 0;
-    activityType:
-    json["activityType"];
-    description:
-    json["description"];
+    activityType=
+    json["activityType"];//:
+    description=
+    json["description"];//:->=
     isSharedTransferAvailable = json['isSharedTransferAvailable'];
     isPrivateTransferAvailable = json['isPrivateTransferAvailable'];
     if (json['privateTransfers'] != null) {
@@ -581,9 +583,10 @@ class Activity {
         privateTransfers!.add(PrivateTransfers.fromJson(v));
       });
     }
-    sharedTransferCost:
+    sharedTransferCost=
     json["sharedTransferCost"];
     lowPrice = json['lowPrice'];
+    selectedDate = json['selectedDate'];
   }
 
   Map<String, dynamic> toJson() {
@@ -622,6 +625,7 @@ class Activity {
     }
     data['sharedTransferCost'] = sharedTransferCost;
     data['lowPrice'] = lowPrice;
+    data['selectedDate']=selectedDate;
     return data;
   }
 }

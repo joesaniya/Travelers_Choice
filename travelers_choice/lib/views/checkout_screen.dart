@@ -275,16 +275,22 @@ class _CheckOutScreenState extends State<CheckOutScreen>
                         'Date',
                         fontWeight: 600,
                       ),
-                      widget.textdate.isEmpty
-                          ? FxText.bodyMedium(
-                              'select Date',
-                              fontWeight: 700,
-                            )
-                          : FxText.bodyMedium(
-                              widget.textdate.toString(),
-                              // '2023-01-31',
-                              fontWeight: 700,
-                            ),
+                      FxText.bodyMedium(
+                        widget.selectedtourOption[index].selectedDate
+                            .toString(),
+                        fontWeight: 700,
+                      ),
+                      // widget.textdate.isEmpty
+                      //     ? FxText.bodyMedium(
+                      //         'select Date',
+                      //         fontWeight: 700,
+                      //       )
+                      //     : FxText.bodyMedium(
+                      //         // widget.textdate.toString(),
+                      //         widget.selectedtourOption[index].selectedDate
+                      //             .toString(),
+                      //         fontWeight: 700,
+                      //       ),
                     ],
                   ),
                   FxSpacing.height(4),

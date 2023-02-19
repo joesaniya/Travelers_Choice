@@ -7,7 +7,7 @@ class PaymentController {
       String countryId, List SelectedActivities) async {
     try {
       var data = PaymentService().PersonalInfo(
-          name, email, phoneNumber, countryId, SelectedActivities.first);
+          name, email, phoneNumber, countryId, SelectedActivities);
       if (data != null) {
         log(data.toString());
         return true;
