@@ -91,8 +91,8 @@ class DetailattractionModal {
     category =
         json['category'] != null ? Category.fromJson(json['category']) : null;
     bookingType = json['bookingType'];
-    startDate = json['startDate'];
-    endDate = json['endDate'];
+    startDate = json['startDate'] ?? '';
+    endDate = json['endDate'] ?? '';
     if (json['offDays'] != null) {
       offDays = [];
       json['offDays'].forEach((v) {
@@ -126,8 +126,8 @@ class DetailattractionModal {
         availability!.add(Availability.fromJson(v));
       });
     }
-    cancelBeforeTime = json['cancelBeforeTime'];
-    cancellationFee = json['cancellationFee'];
+    cancelBeforeTime = json['cancelBeforeTime'] ?? '';
+    cancellationFee = json['cancellationFee'] ?? '';
     cancellationType = json['cancellationType'];
     if (json['faqs'] != null) {
       faqs = <dynamic>[];
@@ -564,17 +564,15 @@ class Activity {
     updatedAt = json['updatedAt'];
     iV = json['__v'];
     isDeleted = json['isDeleted'];
-    adultCost = json['adultCost'];
-    childCost = json['childCost'];
-    infantCost = json['infantCost'];
+    adultCost = json['adultCost'] ?? 0.0;
+    childCost = json['childCost'] ?? 0.0;
+    infantCost = json['infantCost'] ?? 0.0;
     adultCount = 1;
     childCount = 0;
     infantCount = 0;
     grandTotal = 0;
-    activityType=
-    json["activityType"];//:
-    description=
-    json["description"];//:->=
+    activityType = json["activityType"]; //:
+    description = json["description"]; //:->=
     isSharedTransferAvailable = json['isSharedTransferAvailable'];
     isPrivateTransferAvailable = json['isPrivateTransferAvailable'];
     if (json['privateTransfers'] != null) {
@@ -583,8 +581,7 @@ class Activity {
         privateTransfers!.add(PrivateTransfers.fromJson(v));
       });
     }
-    sharedTransferCost=
-    json["sharedTransferCost"];
+    sharedTransferCost = json["sharedTransferCost"];
     lowPrice = json['lowPrice'];
     selectedDate = json['selectedDate'];
   }
@@ -625,7 +622,7 @@ class Activity {
     }
     data['sharedTransferCost'] = sharedTransferCost;
     data['lowPrice'] = lowPrice;
-    data['selectedDate']=selectedDate;
+    data['selectedDate'] = selectedDate;
     return data;
   }
 }

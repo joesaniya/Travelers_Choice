@@ -385,6 +385,7 @@ class _DetailScreenState extends State<DetailScreen>
                                               // color: const Color(0xff1529e8),
                                             )),
                                         onTap: () {
+                                          bool existing = false;
                                           // controller.isFav
                                           //     ? controller.animationController
                                           //         .reverse()
@@ -392,16 +393,38 @@ class _DetailScreenState extends State<DetailScreen>
                                           //         .forward();
                                           log('Fav Item:${favouriteList.map((e) => e.id)}');
                                           log('Sel Id:${widget.productdatum.id}');
-                                          if (tempFavouriteList.isNotEmpty) {
-                                            tempFavouriteList.map((e) {
-                                              if (e.id ==
+                                          if (favouriteList.isNotEmpty) {
+                                            for (var i = 0;
+                                                i < favouriteList.length;
+                                                i++) {
+                                              if (favouriteList[i].id ==
                                                   widget.productdatum.id) {
-                                                favouriteList.remove(e);
+                                                // favouriteList
+                                                //     .remove(favouriteList[i]);
+                                                existing = true;
                                               } else {
-                                                favouriteList
-                                                    .add(widget.productdatum);
+                                                existing = false;
+                                                // favouriteList
+                                                //     .add(widget.productdatum);
                                               }
-                                            }).toList();
+                                            }
+                                            log('Existing:$existing');
+                                            if (existing) {
+                                              favouriteList
+                                                  .remove(widget.productdatum);
+                                            } else {
+                                              favouriteList
+                                                  .add(widget.productdatum);
+                                            }
+                                            // tempFavouriteList.map((e) {
+                                            //   if (e.id ==
+                                            //       widget.productdatum.id) {
+                                            //     favouriteList.remove(e);
+                                            //   } else {
+                                            //     favouriteList
+                                            //         .add(widget.productdatum);
+                                            //   }
+                                            // }).toList();
                                           } else {
                                             favouriteList
                                                 .add(widget.productdatum);
@@ -453,15 +476,15 @@ class _DetailScreenState extends State<DetailScreen>
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           FxText.bodyMedium("Price", fontWeight: 500),
-                          FxText.bodyMedium(
-                              // "350 \$",
-                              controller.detailattraction!.first.activities!
-                                          .first.privateTransfers ==
-                                      null
-                                  ? '350'
-                                  : '${controller.detailattraction!.first.activities!.first.privateTransfers!.first.price} AED',
-                              // '${controller.detailattraction.first.activities.first.adultPrice} ${controller.currency() ?? '\$'}',
-                              // '${controller.detailattraction!.first.activities!.first.privateTransfers!.first.price} AED',
+                          FxText.bodyMedium("350 \$",
+                              // controller.detailattraction!.first.activities!
+                              //             .first.privateTransfers ==
+                              //         null
+                              //     ? '350 AED'
+                              //     // ? '${controller.detailattraction!.first.activities!.first.adultPrice} AED'
+                              //     : '${controller.detailattraction!.first.activities!.first.privateTransfers!.first.price} AED',
+                              // // '${controller.detailattraction.first.activities.first.adultPrice} ${controller.currency() ?? '\$'}',
+                              // // '${controller.detailattraction!.first.activities!.first.privateTransfers!.first.price} AED',
                               // controller.product.price.toString(),
                               fontWeight: 700)
                         ],

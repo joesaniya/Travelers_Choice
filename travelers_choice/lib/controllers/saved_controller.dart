@@ -114,7 +114,7 @@ class SavedController extends FxController {
     // carts = HotelTravelCache.carts!.cast<Cart>();
     products = HotelTravelCache.products;
     log('fetch');
-    log(carts!.length.toString());
+    // log(carts!.length.toString());
     calculateBilling();
     showLoading = false;
     // uiLoading = false;

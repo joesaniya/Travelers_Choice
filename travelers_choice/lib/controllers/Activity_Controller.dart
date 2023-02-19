@@ -13,6 +13,7 @@ import '../views/checkout_screen.dart';
 import '../views/hotel_travel_constants.dart';
 
 List<TextEditingController> controllerTE = [];
+double amount = 0;
 
 class ActivityController extends FxController {
   TickerProvider ticker;
@@ -42,7 +43,7 @@ class ActivityController extends FxController {
   void updateTours(Activity tour) {
     log('updateTours Calling');
     log('Selected Tour Date:${tour.selectedDate}');
-    
+
     List<Activity> value =
         person_count.where((element) => element.sId == tour.sId).toList();
     print("Coutn => ${value.length}");
@@ -76,7 +77,7 @@ class ActivityController extends FxController {
   // double amount = 0;
 
   grandSelectedTourAmount() {
-    double amount = 0;
+    // double amount = 0;
 
     for (Activity tour in selectedtour) {
       log('tour.grandTotal:${tour.grandTotal}');
@@ -486,7 +487,8 @@ class ActivityController extends FxController {
               // selectedtour.first.infantCount,
               selectedtour.first.grandTotal,
               dateTE.text,
-              selectedtransfer
+              selectedtransfer,
+              amount
               // excursions.activities!
               // amount
               // grandSelectedTourAmount()
