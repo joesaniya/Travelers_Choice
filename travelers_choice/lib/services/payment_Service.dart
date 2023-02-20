@@ -5,19 +5,20 @@ import 'package:http/http.dart' as http;
 
 class PaymentService {
   Future PersonalInfo(String name, String email, String phoneNumber,
-      String countryId, List SelectedActivities) async {
+      String countryId,String paymentProcessor, List SelectedActivities) async {
     log('Activities data');
     // log('Activities:$SelectedActivities');
     for (var element in SelectedActivities) {
       log('Element:${element.sId}');
     }
-    return;
+    // return;
     try {
       var body = {
         "name": name,
         "email": email,
         "phoneNumber": phoneNumber,
         "country": countryId,
+        "paymentProcessor":paymentProcessor,
         "SelectedActivities": SelectedActivities
       };
       log(body.toString());

@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:developer';
-import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:hotel_travel/models/all_attraction_modal.dart';
@@ -136,7 +135,7 @@ class AuthService {
         sharedPreferences.setString("token", jsondata['jwtToken']);
         sharedPreferences.setString("username", jsondata['user']['name']);
         sharedPreferences.setString("useremail", jsondata['user']['email']);
-          sharedPreferences.setString("balance", jsondata['user']['balance']);
+        sharedPreferences.setString("balance", jsondata['user']['balance']);
         sharedPreferences.setString(AppConstants.KEY_ACCESS_TOKEN_countryId,
             jsondata['user']['country']);
         return response.body;
@@ -240,7 +239,7 @@ class AuthService {
       );
       if (response.statusCode == 200) {
         log(response.body);
-      return DetailattractionModal.fromJson(jsonDecode(response.body));
+        return DetailattractionModal.fromJson(jsonDecode(response.body));
       } else {
         var jsondata = jsonDecode(response.body);
         log(jsondata['error']);
