@@ -180,6 +180,7 @@ class _SearchVisaState extends State<SearchVisa>
             position: controller.locationAnimation,
             child:
             SearchField(
+                focusNode: controller.visaFocus,
               searchStyle: const TextStyle(color: Colors.white),
               suggestionStyle: FxTextStyle.bodyMedium(),
               controller: controller.visaTE,
