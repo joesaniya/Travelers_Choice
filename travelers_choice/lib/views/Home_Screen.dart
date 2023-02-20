@@ -105,9 +105,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         name = sharedPrefValue.getString(AppConstants.KEY_ACCESS_TOKEN_Name);
         log(name.toString());
         log('username');
-        flagname = sharedPrefValue
-            .getString(AppConstants.KEY_ACCESS_TOKEN_CountryFlag);
-        log('Country Flag:$flagname');
+        // flagname = sharedPrefValue
+        //     .getString(AppConstants.KEY_ACCESS_TOKEN_CountryFlag);
+        // log('Country Flag:$flagname');
       });
     });
     controller = FxControllerStore.put(HomeController(this));
