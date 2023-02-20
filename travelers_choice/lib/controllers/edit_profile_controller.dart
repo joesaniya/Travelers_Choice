@@ -5,6 +5,8 @@ class EditProfileController extends FxController {
   bool showLoading = true, uiLoading = true;
 
   Gender gender = Gender.male;
+   String? name, email;
+  double? balanceamount;
 
   @override
   void initState() {

@@ -1,13 +1,16 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutx/flutx.dart';
 import 'package:hotel_travel/extensions/extensions.dart';
 import 'package:hotel_travel/localizations/language.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../theme/constant.dart';
 import '../controllers/edit_profile_controller.dart';
-import '../images.dart';
 import '../loading_effect.dart';
+import '../services/app_constants.dart';
 import '../theme/app_theme.dart';
 
 class EditProfileScreen extends StatefulWidget {
@@ -24,6 +27,17 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   @override
   void initState() {
     super.initState();
+    SharedPreferences.getInstance().then((sharedPrefValue) {
+      setState(() {
+        controller.name =
+            sharedPrefValue.getString(AppConstants.KEY_ACCESS_TOKEN_Name);
+        log(controller.name.toString());
+        controller.email =
+            sharedPrefValue.getString(AppConstants.KEY_ACCESS_TOKEN_Email);
+        log(controller.email.toString());
+        log('username');
+      });
+    });
     theme = AppTheme.learningTheme;
     controller = FxControllerStore.putOrFind(EditProfileController());
   }
@@ -80,11 +94,22 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     ClipRRect(
                       clipBehavior: Clip.antiAliasWithSaveLayer,
                       borderRadius: const BorderRadius.all(Radius.circular(60)),
-                      child: Image(
+                      // child: Image(
+                      //   height: 100,
+                      //   width: 100,
+                      //   image: AssetImage(Images.learningProfile),
+                      //   fit: BoxFit.cover,
+                      // ),
+                      child: SizedBox(
                         height: 100,
                         width: 100,
-                        image: AssetImage(Images.learningProfile),
-                        fit: BoxFit.cover,
+                        child: CircleAvatar(
+                          backgroundColor:
+                              theme.colorScheme.primary.withAlpha(28),
+                          child: FxText.bodyLarge(controller.name![0],
+                              color: theme.colorScheme.primary,
+                              fontWeight: 600),
+                        ),
                       ),
                     ),
                     Positioned(

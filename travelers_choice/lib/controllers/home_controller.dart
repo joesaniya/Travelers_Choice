@@ -32,6 +32,7 @@ class HomeController extends FxController {
   List<Widget> newCategories = [];
 
   late Intro intro;
+  String? selectedCountryCode;
 
   @override
   void initState() {

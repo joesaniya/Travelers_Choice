@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutx/flutx.dart';
@@ -8,11 +9,12 @@ import 'package:hotel_travel/services/visa_service.dart';
 import 'package:hotel_travel/views/search_screens/search_place.dart';
 import 'package:hotel_travel/views/search_screens/visa_search.dart';
 import 'package:iconsax/iconsax.dart';
-
+import 'package:flutter_svg/flutter_svg.dart';
 import '../controllers/attraction_Controller.dart';
 import '../controllers/home_controller.dart';
 import '../loading_effect.dart';
 
+import '../models/Country_modal.dart';
 import '../models/all_attraction_modal.dart';
 import '../services/app_constants.dart';
 import '../theme/app_theme.dart';
@@ -93,6 +95,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
 
     getAttraction(context);
     getVisa(context);
+    fetchData();
     log('All Data:$allattractionList');
     theme = AppTheme.shoppingTheme;
     theme1 = AppTheme.learningTheme;
@@ -107,6 +110,45 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       // addCategories();
     });
+  }
+
+  fetchData() {
+    Future.delayed(Duration.zero, () async {
+      await getCountryList().then((value) {
+        if (value) {
+          isLoading = false;
+          setState(() {});
+        }
+      });
+      // await AuthController().getCountryList().then((value) {
+      //   if (value) {
+      //     isLoading = false;
+      //     setState(() {});
+      //   }
+      // });
+    });
+  }
+
+  String? _selectedCountry;
+
+  List<CountryModal> countryList = <CountryModal>[];
+  bool isCountryListLoading = true;
+  Future getCountryList() async {
+    isCountryListLoading = true;
+    try {
+      var data = await AuthService().getCountry();
+      countryList.clear();
+      if (data != null) {
+        setState(() {});
+        countryList.add(data);
+        isCountryListLoading = false;
+        return true;
+      } else {
+        return false;
+      }
+    } catch (e) {
+      rethrow;
+    }
   }
 
 //topatt
@@ -732,38 +774,143 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                         fontWeight: 700,
                       ),
                     ),
-                    RotationTransition(
-                      turns: controller.bellAnimation,
-                      // key: controller.intro.keys[0],
-                      child: InkWell(
-                        onTap: () {
-                          controller.goToNotification();
-                        },
-                        child: Stack(
-                          clipBehavior: Clip.none,
-                          children: [
-                            Icon(
-                              FeatherIcons.bell,
-                              color: theme.colorScheme.onBackground,
-                              size: 20,
-                            ),
-                            Positioned(
-                              bottom: -2,
-                              right: -2,
-                              child: FxContainer.rounded(
-                                paddingAll: 3,
-                                color: const Color(0xff1529e8),
-                                // color: theme.colorScheme.primary,
-                                child: Center(
-                                    child: FxText.bodySmall(
-                                  '2',
-                                  color: theme.colorScheme.onPrimary,
-                                  fontSize: 8,
-                                )),
+                    Container(
+                      child: Row(
+                        children: [
+                          SizedBox(
+                            height: 30,
+                            width: 50,
+                            // decoration: const BoxDecoration(color: Colors.white),
+                            child: DropdownButtonHideUnderline(
+                              child: DropdownButton2(
+                                isExpanded: true,
+                                iconSize: 0.0,
+                                hint: Row(
+                                  children: [
+                                    Expanded(
+                                      child: FxText.labelLarge(
+                                        "Code",
+                                        fontWeight: 600,
+                                        color: Colors.black,
+                                        // color: theme.colorScheme.onPrimary,
+                                        letterSpacing: 0.4,
+                                      ),
+                                    ),
+                                    // Expanded(
+                                    //   child: SvgPicture.network(
+                                    //     controller.selectedCountryCode![5],
+                                    //     width: 16,
+                                    //     height: 16,
+                                    //   ),
+                                    // ),
+                                  ],
+                                ),
+                                items: countryList.isNotEmpty &&
+                                        countryList.first.countries.isNotEmpty
+                                    ? countryList.first.countries.map((value) {
+                                        return DropdownMenuItem<String>(
+                                            value: value.id.toString(),
+                                            child: Center(
+                                              // child: Text(
+                                              //   value.flag.toString(),
+                                              //   style: FxTextStyle.bodyMedium(),
+                                              // ),
+                                              child: SvgPicture.network(
+                                                value.flag,
+                                                width: 16,
+                                                height: 16,
+                                              ),
+                                            ));
+                                      }).toList()
+                                    : [].map((value) {
+                                        return DropdownMenuItem<String>(
+                                            value: value,
+                                            child: Center(
+                                              child: Text(
+                                                value,
+                                                style: FxTextStyle.bodyMedium(),
+                                              ),
+                                            ));
+                                      }).toList(),
+
+                                value: controller.selectedCountryCode,
+
+                                onChanged: (value) {
+                                  setState(() {
+                                    log(value.toString());
+                                    controller.selectedCountryCode =
+                                        value.toString();
+                                    // _selectedCountryCode = value.toString();
+                                  });
+                                },
+
+                                buttonHeight: 30,
+                                buttonWidth: 200,
+                                buttonPadding: const EdgeInsets.only(
+                                    left: 14, right: 14, top: 4, bottom: 4),
+                                dropdownDecoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(4),
+                                  color: Colors.white,
+                                ),
+                                buttonDecoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  border: Border.all(
+                                      color: Colors.grey.shade300, width: 1),
+                                  color: Colors.white,
+                                  // color: theme.cardTheme.color,
+                                ),
+                                // .
+
+                                itemHeight: 40,
+
+                                itemPadding:
+                                    const EdgeInsets.only(left: 14, right: 14),
+                                dropdownMaxHeight: 200,
+                                dropdownPadding: null,
+
+                                scrollbarRadius: const Radius.circular(40),
+                                scrollbarThickness: 2,
+                                scrollbarAlwaysShow: true,
+                                offset: const Offset(0, 0),
                               ),
-                            )
-                          ],
-                        ),
+                            ),
+                          ),
+                          FxSpacing.width(20),
+                          RotationTransition(
+                            turns: controller.bellAnimation,
+                            // key: controller.intro.keys[0],
+                            child: InkWell(
+                              onTap: () {
+                                controller.goToNotification();
+                              },
+                              child: Stack(
+                                clipBehavior: Clip.none,
+                                children: [
+                                  Icon(
+                                    FeatherIcons.bell,
+                                    color: theme.colorScheme.onBackground,
+                                    size: 20,
+                                  ),
+                                  Positioned(
+                                    bottom: -2,
+                                    right: -2,
+                                    child: FxContainer.rounded(
+                                      paddingAll: 3,
+                                      color: const Color(0xff1529e8),
+                                      // color: theme.colorScheme.primary,
+                                      child: Center(
+                                          child: FxText.bodySmall(
+                                        '2',
+                                        color: theme.colorScheme.onPrimary,
+                                        fontSize: 8,
+                                      )),
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     )
                   ],
