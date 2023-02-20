@@ -139,7 +139,7 @@ class ApplyVisaController extends FxController {
   List<String> selectedCountry=[];
   final List<String> countryCodes = ['India',
     'United Arab Emirates', 'France', 'United States of America','England'];
-  int? selectedTraveller;
+  int? selectedTraveller ;
   final List<int> travellerNumber = [1,2,3,4,5,6,7,8,9];
   late AnimationController arrowController,
 

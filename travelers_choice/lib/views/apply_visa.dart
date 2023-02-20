@@ -230,7 +230,9 @@ String userName = "";
                           borderRadius: BorderRadius.circular(15)),
                       height: 50,
                       width: MediaQuery.of(context).size.width,
-                      child: DropdownButtonHideUnderline(
+                      child:
+
+                      DropdownButtonHideUnderline(
                         child: ButtonTheme(
                           alignedDropdown: true,
                           child: DropdownButton(
@@ -250,6 +252,28 @@ String userName = "";
                               ),
                             ),
                             items:
+                            // widget.visa!.visaType.isNotEmpty ? widget.visa!.visaType
+                            //     .map((value) {
+                            //   return DropdownMenuItem<String>(
+                            //       value: value.visaName.toString(),
+                            //       child: Center(
+                            //         child: Text(
+                            //           value.visa.toString(),
+                            //           style: FxTextStyle
+                            //               .bodyMedium(),
+                            //         ),
+                            //       ));
+                            // }).toList() :  [].map((value) {
+                            //   return DropdownMenuItem<String>(
+                            //       value: value,
+                            //       child: Center(
+                            //         child: Text(
+                            //           value,
+                            //           style: FxTextStyle
+                            //               .bodyMedium(),
+                            //         ),
+                            //       ));
+                            // }).toList(),
                             controller.visaTypes.map((String value) {
                               return DropdownMenuItem<String>(
                                   value: value,
@@ -441,49 +465,54 @@ String userName = "";
                     ),
                     FxSpacing.height(10),
 
-                    // Text("134 ${widget.visa!.visa.country.currencySymbol}"),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                       controller.selectedTraveller == null ? Text(""): FxText.bodyLarge(
+                            "${controller.selectedTraveller! * widget.visa!.visaType.first.visaPrice} "
+                                "${widget.visa!.visa.country.currencySymbol}",
+                        color:  const Color(0xff1529e8),
+                          decoration: TextDecoration.underline,
+                        ),
+                      SizedBox(width: 10,)
+                      ],
+                    ),
 
                   ],
                 )
             ),
             FxSpacing.height(20),
-            Row(
-              children: [
-                Expanded(
-                  child: FxButton(
-                    padding: FxSpacing.y(12),
-                    onPressed: () {
-                      print(controller.selectedVisa);
-                      print(controller.selectedTraveller);
-                      print(controller.fromDateTE.text);
-                      print(controller.toDateTE.text);
-                      if(controller.selectedVisa == null){
-                        var snackBar = SnackBar(content: Text('Choose visa type'));
-                        ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                        controller.formKey.currentState!.validate() ;
-                      }else if(controller.selectedTraveller == null){
-                        var snackBar = SnackBar(content: Text('Select no of travellers'));
-                        ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                      }else if(controller.selectedVisa!= null && controller.selectedTraveller != null){
-                        setState(() {
-                          controller.currentPage++;
-                          // isFinished0 = true;
-                        });
-                      }
+            FxButton(
+              padding: FxSpacing.y(12),
+              onPressed: () {
+                print(controller.selectedVisa);
+                print(controller.selectedTraveller);
+                print(controller.fromDateTE.text);
+                print(controller.toDateTE.text);
+                if(controller.selectedVisa == null){
+                  var snackBar = SnackBar(content: Text('Choose visa type'));
+                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                  controller.formKey.currentState!.validate() ;
+                }else if(controller.selectedTraveller == null){
+                  var snackBar = SnackBar(content: Text('Select no of travellers'));
+                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                }else if(controller.selectedVisa!= null && controller.selectedTraveller != null){
+                  setState(() {
+                    controller.currentPage++;
+                    // isFinished0 = true;
+                  });
+                }
 
-                    },
-                    borderRadiusAll: 4,
-                    elevation: 0,
-                    splashColor: theme.colorScheme.onPrimary.withAlpha(30),
-                    backgroundColor: const Color(0xff1529e8),
-                    child: FxText.labelMedium(
-                      'Go To Details',
-                      color: theme.colorScheme.onPrimary,
-                      fontWeight: 600,
-                    ),
-                  ),
-                ),
-              ],
+              },
+              borderRadiusAll: 4,
+              elevation: 0,
+              splashColor: theme.colorScheme.onPrimary.withAlpha(30),
+              backgroundColor: const Color(0xff1529e8),
+              child: FxText.labelMedium(
+                'Go To Details',
+                color: theme.colorScheme.onPrimary,
+                fontWeight: 600,
+              ),
             ),
           ]),
     );

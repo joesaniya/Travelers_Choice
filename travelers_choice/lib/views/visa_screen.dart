@@ -150,7 +150,7 @@ class _VisaScreenState extends State<VisaScreen>
                     ),
                     child: Column(
                       children: [
-                        const SizedBox(height: 10,),
+                        const SizedBox(height: 5,),
                         FxText.bodyLarge(
                           selectVisa!.visaType[index].visaName,
                           textAlign: TextAlign.center,
@@ -202,7 +202,7 @@ class _VisaScreenState extends State<VisaScreen>
                             ),
                           ],
                         ),
-                        const SizedBox(height: 10,),
+                        const SizedBox(height: 5,),
                       ],
                     ),
                   ),
@@ -542,7 +542,7 @@ class _VisaScreenState extends State<VisaScreen>
         body: Column(
           children: [
             Expanded(
-              flex: 4,
+              flex: 3,
               child: Container(
                 decoration: const BoxDecoration(
                   gradient: LinearGradient(
@@ -558,7 +558,7 @@ class _VisaScreenState extends State<VisaScreen>
                 height: MediaQuery
                     .of(context)
                     .size
-                    .height / 3.65,
+                    .height / 3.7,
                 child: ListView(
                   children: [
                     const SizedBox(height: 30,),
@@ -675,110 +675,110 @@ class _VisaScreenState extends State<VisaScreen>
                           ),
                         ),
 
-                        const SizedBox(width: 5,)
+                        const SizedBox(width: 10,)
 
                       ],
                     ),
 
                     const SizedBox(height: 10,),
 
-                    Container(
-                      height: 65,
-                      width: MediaQuery
-                          .of(context)
-                          .size
-                          .width,
-                      child: TabBar(
-                        controller: controller.tabController,
-                        onTap: (index) {
-                          setState(() {
-                            controller.tabController.index = index;
-                          });
-                        },
-                        labelColor: Colors.white,
-                        unselectedLabelColor: Colors.white60,
-                        // indicatorWeight: 0,
-                        // unselectedLabelColor: Colors.black.withOpacity(0.6),
-                        labelStyle: const TextStyle(
-                            fontFamily: 'inter', fontWeight: FontWeight.w500),
-                        isScrollable: true,
-                        // indicatorSize: TabBarIndicatorSize.label,
-                        indicatorColor: Colors.transparent,
-                        // indicator: RectangularIndicator(
-                        //   bottomLeftRadius: 15,
-                        //   bottomRightRadius: 15,
-                        //   topLeftRadius: 15,
-                        //   topRightRadius: 15,
-                        //   paintingStyle: PaintingStyle.stroke,
-                        //   strokeWidth: 0,
-                        //   color: Colors.white
-                        // ),
-                        tabs: [
-                          Tab(
-                            child: Padding(
-                              padding: const EdgeInsets.only(
-                                  left: 10, right: 5),
-                              child: Center(child:
-                              Column(
-                                children: const [
-                                  Text("Visa"),
-                                  SizedBox(height: 3,),
-                                  Icon(Icons.credit_card),
-                                ],
-                              ),
-
-
-                              ),
-                            ),
-                          ),
-                          Tab(
-                            child: Padding(
-                              padding: const EdgeInsets.only(
-                                  left: 10, right: 5),
-                              child: Center(child:
-                              Column(
-                                children: const [
-                                  Text("Documents"),
-                                  SizedBox(height: 3,),
-                                  Icon(Icons.file_copy_outlined),
-                                ],
-                              ),
-                              ),
-                            ),
-                          ),
-                          Tab(
-                            child: Padding(
-                              padding: const EdgeInsets.only(
-                                  left: 10, right: 5),
-                              child: Center(child:
-                              Column(
-                                children: const [
-                                  Text("FAQs"),
-                                  SizedBox(height: 3,),
-                                  Icon(Icons.format_quote),
-                                ],
-                              ),
-                              ),
-                            ),
-                          ),
-                          Tab(
-                            child: Padding(
-                              padding: const EdgeInsets.only(
-                                  left: 10, right: 5),
-                              child: Center(child:
-                              Column(
-                                children: const [
-                                  Text("Terms"),
-                                  SizedBox(height: 3,),
-                                  Icon(Icons.menu_open_outlined),
-                                ],
-                              ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
+                    // Container(
+                    //   height: 65,
+                    //   width: MediaQuery
+                    //       .of(context)
+                    //       .size
+                    //       .width,
+                    //   child: TabBar(
+                    //     controller: controller.tabController,
+                    //     onTap: (index) {
+                    //       setState(() {
+                    //         controller.tabController.index = index;
+                    //       });
+                    //     },
+                    //     labelColor: Colors.white,
+                    //     unselectedLabelColor: Colors.white60,
+                    //     // indicatorWeight: 0,
+                    //     // unselectedLabelColor: Colors.black.withOpacity(0.6),
+                    //     labelStyle: const TextStyle(
+                    //         fontFamily: 'inter', fontWeight: FontWeight.w500),
+                    //     isScrollable: true,
+                    //     // indicatorSize: TabBarIndicatorSize.label,
+                    //     indicatorColor: Colors.transparent,
+                    //     // indicator: RectangularIndicator(
+                    //     //   bottomLeftRadius: 15,
+                    //     //   bottomRightRadius: 15,
+                    //     //   topLeftRadius: 15,
+                    //     //   topRightRadius: 15,
+                    //     //   paintingStyle: PaintingStyle.stroke,
+                    //     //   strokeWidth: 0,
+                    //     //   color: Colors.white
+                    //     // ),
+                    //     tabs: [
+                    //       Tab(
+                    //         child: Padding(
+                    //           padding: const EdgeInsets.only(
+                    //               left: 10, right: 5),
+                    //           child: Center(child:
+                    //           Column(
+                    //             children: const [
+                    //               Text("Visa"),
+                    //               SizedBox(height: 3,),
+                    //               Icon(Icons.credit_card),
+                    //             ],
+                    //           ),
+                    //
+                    //
+                    //           ),
+                    //         ),
+                    //       ),
+                    //       Tab(
+                    //         child: Padding(
+                    //           padding: const EdgeInsets.only(
+                    //               left: 10, right: 5),
+                    //           child: Center(child:
+                    //           Column(
+                    //             children: const [
+                    //               Text("Documents"),
+                    //               SizedBox(height: 3,),
+                    //               Icon(Icons.file_copy_outlined),
+                    //             ],
+                    //           ),
+                    //           ),
+                    //         ),
+                    //       ),
+                    //       Tab(
+                    //         child: Padding(
+                    //           padding: const EdgeInsets.only(
+                    //               left: 10, right: 5),
+                    //           child: Center(child:
+                    //           Column(
+                    //             children: const [
+                    //               Text("FAQs"),
+                    //               SizedBox(height: 3,),
+                    //               Icon(Icons.format_quote),
+                    //             ],
+                    //           ),
+                    //           ),
+                    //         ),
+                    //       ),
+                    //       Tab(
+                    //         child: Padding(
+                    //           padding: const EdgeInsets.only(
+                    //               left: 10, right: 5),
+                    //           child: Center(child:
+                    //           Column(
+                    //             children: const [
+                    //               Text("Terms"),
+                    //               SizedBox(height: 3,),
+                    //               Icon(Icons.menu_open_outlined),
+                    //             ],
+                    //           ),
+                    //           ),
+                    //         ),
+                    //       ),
+                    //     ],
+                    //   ),
+                    // ),
                   ],
                 ),
               ),
@@ -786,7 +786,7 @@ class _VisaScreenState extends State<VisaScreen>
 
 
             Expanded(
-              flex: 10,
+              flex: 11,
               child: ListView(
                 shrinkWrap: true,
                 padding: const EdgeInsets.all(10),
