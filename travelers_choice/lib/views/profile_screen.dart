@@ -40,6 +40,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
             sharedPrefValue.getString(AppConstants.KEY_ACCESS_TOKEN_Email);
         log(profileController.email.toString());
         log('username');
+        profileController.balanceamount = sharedPrefValue
+            .getString(AppConstants.KEY_ACCESS_BALANCE) as double?;
+        log('Balance:${profileController.balanceamount == null ? 0.0 : 2440}');
       });
     });
     profileController =
@@ -88,10 +91,21 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     children: [
                       ClipRRect(
                         borderRadius: BorderRadius.circular(50),
-                        child: Image(
-                          image: AssetImage(profileController.user.url),
+                        // child: Image(
+                        //   image: AssetImage(profileController.user.url),
+                        //   height: 100,
+                        //   width: 100,
+                        // ),
+                        child: SizedBox(
                           height: 100,
                           width: 100,
+                          child: CircleAvatar(
+                            backgroundColor:
+                                theme.colorScheme.primary.withAlpha(28),
+                            child: FxText.bodyLarge(profileController.name![0],
+                                color: theme.colorScheme.primary,
+                                fontWeight: 600),
+                          ),
                         ),
                       ),
                       FxSpacing.width(16),
@@ -142,10 +156,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         children: [
                           FxText.bodySmall("My balance".toUpperCase(),
                               fontSize: 12, fontWeight: 600, xMuted: true),
-                          FxText.bodyLarge(
-                              // "\$ 24",
-                              '24 AED',
-                              fontWeight: 800),
+                          // FxText.bodyLarge(
+                          //     // "\$ 24",
+                          //     // '24 AED',
+                          //     profileController.balanceamount == null ? 0.0 : 2440,
+                          //     fontWeight: 800),
+                          profileController.balanceamount == null
+                              ? FxText.bodyLarge('0 AED', fontWeight: 800)
+                              : FxText.bodyLarge(
+                                  '${profileController.balanceamount}AED',
+                                  fontWeight: 800)
                         ],
                       ),
                       Column(

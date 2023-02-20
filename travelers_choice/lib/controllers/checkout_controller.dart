@@ -4,12 +4,12 @@ import 'package:cc_avenue/cc_avenue.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutx/flutx.dart';
-import 'package:hotel_travel/controllers/attraction_payment_Controller/payment_Controller.dart';
 import 'package:hotel_travel/views/hotel_travel_constants.dart';
 import 'package:iconsax/iconsax.dart';
 
 import '../models/product.dart';
 import '../models/shipping_address.dart';
+import 'attraction_payment_Controller/payment_Controller.dart';
 
 class Tab {
   String name;
@@ -285,66 +285,153 @@ class CheckOutController extends FxController {
     update();
   }
 
-  nextPage() async {
-    if (currentPage == numPages) {
-      /*   Navigator.push(
-          context, MaterialPageRoute(builder: (context) => FullApp()));*/
-    } else {
+  // nextPage1(selectedExcursionsDatas) async {
+  //   if (currentPage == numPages) {
+  //     /*   Navigator.push(
+  //         context, MaterialPageRoute(builder: (context) => FullApp()));*/
+  //   } else {
+  //     // await pageController.animateToPage(
+  //     //   currentPage + 1,
+  //     //   duration: const Duration(milliseconds: 600),
+  //     //   curve: Curves.ease,
+  //     // );
+  //     await PaymentController()
+  //         // .PersonalInfo(nameTE.text, emailTE.text, selectedCountryCode.toString(),
+  //         //     phoneTE.text, passwordTE.text, context)
+  //         .PersonalInfo('jeni', 'jeni@gmail.com', '6098754321',
+  //             '63db60f9f926b340dbb3f446', selectedExcursionsDatas)
+  //         .then((value) {
+  //       if (value) {
+  //         log('Value:$value');
+  //         pageController.animateToPage(
+  //           currentPage + 1,
+  //           duration: const Duration(milliseconds: 600),
+  //           curve: Curves.ease,
+  //         );
+  //       }
+  //     });
+  //     //validation
+  //     // if (selectedname == null || selectedname!.isEmpty) {
+  //     //   ScaffoldMessenger.of(context).showSnackBar(
+  //     //       const SnackBar(content: Text("Please Select Mr/Ms/Mrs")));
+  //     // } else if (FnameTE.text.isEmpty) {
+  //     //   ScaffoldMessenger.of(context).showSnackBar(
+  //     //       const SnackBar(content: Text("Please Enter First Name")));
+  //     // } else if (LnameTE.text.isEmpty) {
+  //     //   ScaffoldMessenger.of(context).showSnackBar(
+  //     //       const SnackBar(content: Text("Please Enter Last Name")));
+  //     // } else if (emailTE.text.isEmpty) {
+  //     //   ScaffoldMessenger.of(context)
+  //     //       .showSnackBar(const SnackBar(content: Text("Please Enter Email")));
+  //     // } else if (selectedcountry == null || selectedcountry!.isEmpty) {
+  //     //   ScaffoldMessenger.of(context).showSnackBar(
+  //     //       const SnackBar(content: Text("Please Select Country")));
+  //     // } else if (selectedCountryCode == null || selectedCountryCode!.isEmpty) {
+  //     //   ScaffoldMessenger.of(context).showSnackBar(
+  //     //       const SnackBar(content: Text("Please Select Phone Code")));
+  //     // } else if (phoneTE.text.isEmpty
+
+  //     //     //  ||phoneTE.length!=10
+  //     //     ) {
+  //     //   ScaffoldMessenger.of(context).showSnackBar(
+  //     //       const SnackBar(content: Text("Please Enter Phone Number")));
+  //     // } else if (reqTE.text.isEmpty) {
+  //     //   ScaffoldMessenger.of(context)
+  //     //       .showSnackBar(const SnackBar(content: Text("Enter Request")));
+  //     // } else {
+  //     //   await pageController.animateToPage(
+  //     //     currentPage + 1,
+  //     //     duration: const Duration(milliseconds: 600),
+  //     //     curve: Curves.ease,
+  //     //   );
+  //     // }
+  //   }
+  // }
+
+  //next button
+  nextPage(selectedExcursionsDatas) async {
+    log('Page Number:$currentPage ');
+    // if (currentPage == 1) {
+    //   log('First Page');
+    //   await pageController.animateToPage(
+    //     currentPage + 1,
+    //     duration: const Duration(milliseconds: 600),
+    //     curve: Curves.ease,
+    //   );
+    // } else if (currentPage == 2) {
+    //   log('second page');
+    //   await pageController.animateToPage(
+    //     currentPage + 1,
+    //     duration: const Duration(milliseconds: 600),
+    //     curve: Curves.ease,
+    //   );
+    // } else {
+    //   log('final page');
+    //   log('final page:$currentPage');
+    //   if (currentPage == 1) {
+    //     log('1st screen');
+    //     await pageController.animateToPage(
+    //       currentPage + 1,
+    //       duration: const Duration(milliseconds: 600),
+    //       curve: Curves.ease,
+    //     );
+    //   } else if (currentPage == 2) {
+    //     log('2nd Screen');
+    //     await PaymentController()
+    //         // .PersonalInfo(nameTE.text, emailTE.text, selectedCountryCode.toString(),
+    //         //     phoneTE.text, passwordTE.text, context)
+    //         .PersonalInfo('jeni', 'jeni@gmail.com', '6098754321',
+    //             '63db60f9f926b340dbb3f446', selectedExcursionsDatas)
+    //         .then((value) {
+    //       if (value) {
+    //         log('Value:$value');
+    //         pageController.animateToPage(
+    //           currentPage + 1,
+    //           duration: const Duration(milliseconds: 600),
+    //           curve: Curves.ease,
+    //         );
+    //       }
+    //     });
+    //   } else {
+    //     log('final');
+    //     //   await pageController.animateToPage(
+    //     //   currentPage + 1,
+    //     //   duration: const Duration(milliseconds: 600),
+    //     //   curve: Curves.ease,
+    //     // );
+    //   }
+    // }
+    if (currentPage == 0) {
+      log('selected page 0');
       await pageController.animateToPage(
         currentPage + 1,
         duration: const Duration(milliseconds: 600),
         curve: Curves.ease,
       );
-      // await PaymentController()
-      //     // .PersonalInfo(nameTE.text, emailTE.text, selectedCountryCode.toString(),
-      //     //     phoneTE.text, passwordTE.text, context)
-      //     .PersonalInfo('jeni', 'jeni@gmail.com', '6098754321',
-      //         '63db60f9f926b340dbb3f446',
-      // )
-      //     .then((value) {
-      //   if (value) {
-      //     pageController.animateToPage(
-      //       currentPage + 1,
-      //       duration: const Duration(milliseconds: 600),
-      //       curve: Curves.ease,
-      //     );
-      //   }
-      // });
-      //validation
-      // if (selectedname == null || selectedname!.isEmpty) {
-      //   ScaffoldMessenger.of(context).showSnackBar(
-      //       const SnackBar(content: Text("Please Select Mr/Ms/Mrs")));
-      // } else if (FnameTE.text.isEmpty) {
-      //   ScaffoldMessenger.of(context).showSnackBar(
-      //       const SnackBar(content: Text("Please Enter First Name")));
-      // } else if (LnameTE.text.isEmpty) {
-      //   ScaffoldMessenger.of(context).showSnackBar(
-      //       const SnackBar(content: Text("Please Enter Last Name")));
-      // } else if (emailTE.text.isEmpty) {
-      //   ScaffoldMessenger.of(context)
-      //       .showSnackBar(const SnackBar(content: Text("Please Enter Email")));
-      // } else if (selectedcountry == null || selectedcountry!.isEmpty) {
-      //   ScaffoldMessenger.of(context).showSnackBar(
-      //       const SnackBar(content: Text("Please Select Country")));
-      // } else if (selectedCountryCode == null || selectedCountryCode!.isEmpty) {
-      //   ScaffoldMessenger.of(context).showSnackBar(
-      //       const SnackBar(content: Text("Please Select Phone Code")));
-      // } else if (phoneTE.text.isEmpty
-
-      //     //  ||phoneTE.length!=10
-      //     ) {
-      //   ScaffoldMessenger.of(context).showSnackBar(
-      //       const SnackBar(content: Text("Please Enter Phone Number")));
-      // } else if (reqTE.text.isEmpty) {
-      //   ScaffoldMessenger.of(context)
-      //       .showSnackBar(const SnackBar(content: Text("Enter Request")));
-      // } else {
-      //   await pageController.animateToPage(
-      //     currentPage + 1,
-      //     duration: const Duration(milliseconds: 600),
-      //     curve: Curves.ease,
-      //   );
-      // }
+    } else if (currentPage == 1) {
+      log('selected page 1');
+      await PaymentController()
+          // .PersonalInfo(nameTE.text, emailTE.text, selectedCountryCode.toString(),
+          //     phoneTE.text, passwordTE.text, context)
+          .PersonalInfo('jeni', 'jeni@gmail.com', '6098754321',
+              '63db60f9f926b340dbb3f446', selectedExcursionsDatas)
+          .then((value) {
+        if (value) {
+          log('Value:$value');
+          pageController.animateToPage(
+            currentPage + 1,
+            duration: const Duration(milliseconds: 600),
+            curve: Curves.ease,
+          );
+        }
+      });
+    } else {
+      log('selected page final');
+      await pageController.animateToPage(
+        currentPage + 1,
+        duration: const Duration(milliseconds: 600),
+        curve: Curves.ease,
+      );
     }
   }
 

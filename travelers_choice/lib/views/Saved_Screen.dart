@@ -185,7 +185,7 @@ class _SavedScreenState extends State<SavedScreen>
                       ),
                     ),
                     FxText.labelLarge(
-                      "${product.activity.adultPrice} AED",
+                      "${product.activity.lowPrice} AED",
                       color: const Color(0xff1529e8),
                     )
                   ],
@@ -195,125 +195,6 @@ class _SavedScreenState extends State<SavedScreen>
           ],
         ),
       ),
-      //todo
-      // child: InkWell(
-      //   onTap: () {
-      //     // controller.goToSingleProduct(product);
-      //   },
-      //   child: Container(
-      //     margin: const EdgeInsets.all(5.0),
-      //     // height: 200,
-      //     width: double.infinity,
-      //     decoration: BoxDecoration(
-      //         // color: Color(0xffe6e1e5),
-      //         color: Colors.white,
-      //         // color: Color(0xffe5fdfd),
-      //         borderRadius: const BorderRadius.all(Radius.circular(10)),
-      //         border: Border.all(color: Colors.grey.shade300, width: 1)),
-      //     child: Column(
-      //       crossAxisAlignment: CrossAxisAlignment.start,
-      //       children: [
-      //         Container(
-      //           margin: const EdgeInsets.all(8),
-      //           height: 100,
-      //           decoration: BoxDecoration(
-      //               borderRadius: BorderRadius.circular(10),
-      //               image: DecorationImage(
-      //                   image: NetworkImage(
-      //                       'https://a.walletbot.online${product.images.first}'
-      //                       // product.images.first.toString()
-      //                       ),
-      //                   fit: BoxFit.fill)),
-      //         ),
-      //         FxSpacing.height(4),
-      //         Column(
-      //           crossAxisAlignment: CrossAxisAlignment.start,
-      //           children: [
-      //             Padding(
-      //               padding: const EdgeInsets.symmetric(horizontal: 8),
-      //               child: FxText.bodyLarge(
-      //                 product.title[0].toUpperCase() +
-      //                     product.title.substring(1).toLowerCase(),
-      //                 fontWeight: 800,
-      //                 overflow: TextOverflow.ellipsis,
-      //                 maxLines: 2,
-      //               ),
-      //             ),
-      //             Padding(
-      //               padding: const EdgeInsets.symmetric(horizontal: 8),
-      //               child: Row(
-      //                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      //                 children: [
-      //                   Row(
-      //                     children: [
-      //                       const Icon(
-      //                         // FeatherIcons.star,
-      //                         Icons.star,
-      //                         color: Colors.yellow,
-      //                         size: 12,
-      //                       ),
-      //                       FxSpacing.width(4),
-      //                       FxText.bodySmall(
-      //                         // '4.5',
-      //                         product.averageRating.toStringAsFixed(1),
-      //                         fontWeight: 600,
-      //                         color: Colors.black,
-      //                       ),
-      //                       FxSpacing.width(4),
-      //                       FxText.bodySmall(
-      //                         "(${product.totalReviews})",
-      //                         fontWeight: 600,
-      //                         color: Colors.black,
-      //                       ),
-      //                     ],
-      //                   ),
-      //                 ],
-      //               ),
-      //             ),
-      //           ],
-      //         ),
-      //         FxSpacing.height(10),
-      //         Padding(
-      //           padding: const EdgeInsets.only(right: 8),
-      //           child: Row(
-      //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      //             children: [
-      //               FxContainer(
-      //                 borderRadiusAll: 8,
-      //                 padding: FxSpacing.xy(8, 4),
-      //                 // color: theme.colorScheme.primary,
-      //                 // color: Colors.yellow.shade400,
-      //                 color: Colors.white,
-      //                 child: Row(
-      //                   children: [
-      //                     const Icon(
-      //                       Iconsax.location,
-      //                       color: Colors.black,
-      //                       // color: theme.colorScheme.onPrimary,
-      //                       size: 12,
-      //                     ),
-      //                     FxSpacing.width(4),
-      //                     FxText.labelLarge(
-      //                       // '\$' + product.price.toString(),
-      //                       product.destination.name[0].toUpperCase() +
-      //                           product.destination.name
-      //                               .substring(1)
-      //                               .toLowerCase(),
-
-      //                       // product.price.toString() + " " + "AED",
-      //                       // "\$" + product.price.toString() + "/hour",
-      //                       // fontWeight: 700,
-      //                     ),
-      //                   ],
-      //                 ),
-      //               ),
-      //             ],
-      //           ),
-      //         ),
-      //       ],
-      //     ),
-      //   ),
-      // ),
     );
   }
 

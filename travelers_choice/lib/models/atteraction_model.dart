@@ -41,46 +41,47 @@ class DetailattractionModal {
   dynamic averageRating;
   List<Activity>? activities;
 
-  DetailattractionModal(
-      {this.sId,
-      this.destination,
-      this.title,
-      this.category,
-      this.bookingType,
-      this.startDate,
-      this.endDate,
-      this.offDays,
-      this.durationType,
-      this.duration,
-      this.isActive,
-      this.latitude,
-      this.longitude,
-      this.isOffer,
-      this.offerAmountType,
-      this.offerAmount,
-      this.youtubeLink,
-      this.images,
-      this.highlights,
-      this.sections,
-      this.createdAt,
-      this.updatedAt,
-      this.iV,
-      this.isDeleted,
-      this.availability,
-      this.cancelBeforeTime,
-      this.cancellationFee,
-      this.cancellationType,
-      this.faqs,
-      this.isApiConnected,
-      this.isCombo,
-      this.isCustomDate,
-      this.mapLink,
-      this.offDates,
-      this.reviews,
-      this.markup,
-      this.totalRating,
-      this.averageRating,
-      this.activities});
+  DetailattractionModal({
+    this.sId,
+    this.destination,
+    this.title,
+    this.category,
+    this.bookingType,
+    this.startDate,
+    this.endDate,
+    this.offDays,
+    this.durationType,
+    this.duration,
+    this.isActive,
+    this.latitude,
+    this.longitude,
+    this.isOffer,
+    this.offerAmountType,
+    this.offerAmount,
+    this.youtubeLink,
+    this.images,
+    this.highlights,
+    this.sections,
+    this.createdAt,
+    this.updatedAt,
+    this.iV,
+    this.isDeleted,
+    this.availability,
+    this.cancelBeforeTime,
+    this.cancellationFee,
+    this.cancellationType,
+    this.faqs,
+    this.isApiConnected,
+    this.isCombo,
+    this.isCustomDate,
+    this.mapLink,
+    this.offDates,
+    this.reviews,
+    this.markup,
+    this.totalRating,
+    this.averageRating,
+    this.activities,
+  });
 
   DetailattractionModal.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
@@ -91,8 +92,8 @@ class DetailattractionModal {
     category =
         json['category'] != null ? Category.fromJson(json['category']) : null;
     bookingType = json['bookingType'];
-    startDate = json['startDate'];
-    endDate = json['endDate'];
+    startDate = json['startDate'] ?? '';
+    endDate = json['endDate'] ?? '';
     if (json['offDays'] != null) {
       offDays = [];
       json['offDays'].forEach((v) {
@@ -126,8 +127,8 @@ class DetailattractionModal {
         availability!.add(Availability.fromJson(v));
       });
     }
-    cancelBeforeTime = json['cancelBeforeTime'];
-    cancellationFee = json['cancellationFee'];
+    cancelBeforeTime = json['cancelBeforeTime'] ?? '';
+    cancellationFee = json['cancellationFee'] ?? '';
     cancellationType = json['cancellationType'];
     if (json['faqs'] != null) {
       faqs = <dynamic>[];
@@ -495,50 +496,55 @@ class Activity {
   bool? isSharedTransferAvailable;
   bool? isPrivateTransferAvailable;
   List<PrivateTransfers>? privateTransfers;
+  String? transferType;
 
   int? sharedTransferCost;
   int? lowPrice;
+  String? selectedDate;
+  double GrandTotalAmount = 0.0;
 
-  Activity({
-    this.sId,
-    this.attraction,
-    this.name,
-    this.facilities,
-    this.adultAgeLimit,
-    this.adultPrice,
-    this.childAgeLimit,
-    this.childPrice,
-    this.infantAgeLimit,
-    this.infantPrice,
-    this.isVat,
-    this.vat,
-    this.base,
-    this.isTransferAvailable,
-    this.privateTransferPrice,
-    this.sharedTransferPrice,
-    this.isActive,
-    this.createdAt,
-    this.updatedAt,
-    this.iV,
-    this.isDeleted,
-    this.adultCost,
-    this.childCost,
-    this.infantCost,
-    this.adultCount = 1,
-    this.childCount = 0,
-    this.infantCount = 0,
-    this.totalAmount = 0,
-    this.grandTotal = 0,
-    this.isPrivate = false,
-    this.isSharing = false,
-    this.activityType,
-    this.description,
-    this.isPrivateTransferAvailable,
-    this.isSharedTransferAvailable,
-    this.privateTransfers,
-    this.sharedTransferCost,
-    this.lowPrice,
-  });
+  Activity(
+      {this.sId,
+      this.attraction,
+      this.name,
+      this.facilities,
+      this.adultAgeLimit,
+      this.adultPrice,
+      this.childAgeLimit,
+      this.childPrice,
+      this.infantAgeLimit,
+      this.infantPrice,
+      this.isVat,
+      this.vat,
+      this.base,
+      this.isTransferAvailable,
+      this.privateTransferPrice,
+      this.sharedTransferPrice,
+      this.isActive,
+      this.createdAt,
+      this.updatedAt,
+      this.iV,
+      this.isDeleted,
+      this.adultCost,
+      this.childCost,
+      this.infantCost,
+      this.adultCount = 1,
+      this.childCount = 0,
+      this.infantCount = 0,
+      this.totalAmount = 0,
+      this.grandTotal = 0,
+      this.isPrivate = false,
+      this.isSharing = false,
+      this.activityType,
+      this.description,
+      this.isPrivateTransferAvailable,
+      this.isSharedTransferAvailable,
+      this.privateTransfers,
+      this.sharedTransferCost,
+      this.lowPrice,
+      this.selectedDate,
+      this.GrandTotalAmount = 0.0,
+      this.transferType});
 
   Activity.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
@@ -562,17 +568,15 @@ class Activity {
     updatedAt = json['updatedAt'];
     iV = json['__v'];
     isDeleted = json['isDeleted'];
-    adultCost = json['adultCost'];
-    childCost = json['childCost'];
-    infantCost = json['infantCost'];
+    adultCost = json['adultCost'] ?? 0.0;
+    childCost = json['childCost'] ?? 0.0;
+    infantCost = json['infantCost'] ?? 0.0;
     adultCount = 1;
     childCount = 0;
     infantCount = 0;
     grandTotal = 0;
-    activityType:
-    json["activityType"];
-    description:
-    json["description"];
+    activityType = json["activityType"]; //:
+    description = json["description"]; //:->=
     isSharedTransferAvailable = json['isSharedTransferAvailable'];
     isPrivateTransferAvailable = json['isPrivateTransferAvailable'];
     if (json['privateTransfers'] != null) {
@@ -581,9 +585,11 @@ class Activity {
         privateTransfers!.add(PrivateTransfers.fromJson(v));
       });
     }
-    sharedTransferCost:
-    json["sharedTransferCost"];
+    sharedTransferCost = json["sharedTransferCost"];
     lowPrice = json['lowPrice'];
+    selectedDate = json['selectedDate'];
+    GrandTotalAmount = 0.0;
+    transferType = json['transferType'];
   }
 
   Map<String, dynamic> toJson() {
@@ -622,6 +628,8 @@ class Activity {
     }
     data['sharedTransferCost'] = sharedTransferCost;
     data['lowPrice'] = lowPrice;
+    data['selectedDate'] = selectedDate;
+    data['transferType'] = transferType;
     return data;
   }
 }

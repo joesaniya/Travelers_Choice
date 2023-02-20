@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutx/flutx.dart';
 import 'package:hotel_travel/extensions/extensions.dart';
+import 'package:intl/intl.dart';
 
 import '../../controllers/Activity_controller.dart';
 import '../../loading_effect.dart';
@@ -91,6 +92,7 @@ class _ActivityScreenState extends State<ActivityScreen>
                     color: const Color(0xff1529e8),
                   ),
                   FxText.bodyLarge(
+                    // controller.selectedtour.first.GrandTotalAmount.toString(),
                     controller.grandSelectedTourAmount().toString(),
                     fontWeight: 700,
                     color: const Color(0xff1529e8),
@@ -155,6 +157,7 @@ class _ActivityScreenState extends State<ActivityScreen>
                     color: const Color(0xff1529e8),
                   ),
                   FxText.bodyLarge(
+                    // controller.selectedtour.first.GrandTotalAmount.toString(),
                     controller.grandSelectedTourAmount().toString(),
                     fontWeight: 700,
                     color: const Color(0xff1529e8),
@@ -191,14 +194,22 @@ class _ActivityScreenState extends State<ActivityScreen>
     log(widget.excursions.length.toString());
 
     // for (Cart cart in controller.carts!)
-    for (var cart in widget.excursions) {
+    // for (var cart in widget.excursions)
+
+    for (var i = 0; i < widget.excursions.length; i++) {
       List<TextEditingController> controllers = List.generate(
-        10,
+        widget.excursions.length,
         (index) => TextEditingController(),
       );
-      // if (index >= controllerTE.length) {
+      controllerTE.add(TextEditingController());
+      // if (i >= controllerTE.length) {
       //   controllerTE.add(TextEditingController());
       // }
+
+      // controller.selectedtour[i].selectedDate = controllerTE[i].text;
+
+      print(
+          'Selected Tour Date:${controller.selectedtour.map((e) => e.selectedDate)}');
 
       list.add(FadeTransition(
         opacity: controller.fadeAnimation,
@@ -231,12 +242,12 @@ class _ActivityScreenState extends State<ActivityScreen>
                     // }
 
                     setState(() {});
-                    if (controller.dateTE.text.isEmpty) {
+                    if (controllerTE[i].text.isEmpty) {
                       ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(content: Text("Select Your Date")));
                     } else {
-                      controller.updateTours(cart);
-                      log('Count:${cart.adultCount}${cart.childCount}${cart.infantCount}');
+                      controller.updateTours(widget.excursions[i]);
+                      log('Count:${widget.excursions[i].adultCount}${widget.excursions[i].childCount}${widget.excursions[i].infantCount}');
 
                       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                           content: !clickedExcursion
@@ -250,17 +261,18 @@ class _ActivityScreenState extends State<ActivityScreen>
                     paddingAll: 4,
                     color: theme.colorScheme.onPrimary,
                     borderColor: Colors.black,
-                    child: !controller.selectedtour.contains(cart)
-                        ? Icon(
-                            FeatherIcons.plus,
-                            color: Colors.indigo.withAlpha(200),
-                            size: 12,
-                          )
-                        : Icon(
-                            FeatherIcons.minus,
-                            color: Colors.red.withAlpha(200),
-                            size: 12,
-                          ),
+                    child:
+                        !controller.selectedtour.contains(widget.excursions[i])
+                            ? Icon(
+                                FeatherIcons.plus,
+                                color: Colors.indigo.withAlpha(200),
+                                size: 12,
+                              )
+                            : Icon(
+                                FeatherIcons.minus,
+                                color: Colors.red.withAlpha(200),
+                                size: 12,
+                              ),
                   ),
                 ),
               ],
@@ -296,7 +308,7 @@ class _ActivityScreenState extends State<ActivityScreen>
                           child: Align(
                             alignment: Alignment.centerRight,
                             child: FxText.bodyMedium(
-                              cart.name ?? '',
+                              widget.excursions[i].name ?? '',
                               fontWeight: 700,
                             ),
                           ),
@@ -321,10 +333,12 @@ class _ActivityScreenState extends State<ActivityScreen>
                           onTap: () {
                             log('transfer clicked');
                             log(controller.selectedtransfer == 'private'
-                                    ? cart.privateTransferPrice.toString()
-                                    : cart.sharedTransferPrice.toString()
-                                // controller.selectedtransfer=='Without'?0:controller.selectedtransfer=='private'?cart.privateTransferPrice:controller.selectedtransfer=='shared'?cart.sharedTransferPrice:0
-                                // cart.privateTransferPrice.toString()
+                                    ? widget.excursions[i].privateTransferPrice
+                                        .toString()
+                                    : widget.excursions[i].sharedTransferPrice
+                                        .toString()
+                                // controller.selectedtransfer=='Without'?0:controller.selectedtransfer=='private'?widget.excursions[i].privateTransferPrice:controller.selectedtransfer=='shared'?widget.excursions[i].sharedTransferPrice:0
+                                // widget.excursions[i].privateTransferPrice.toString()
                                 );
                             setState(() {});
                           },
@@ -353,89 +367,90 @@ class _ActivityScreenState extends State<ActivityScreen>
                                     ),
                                   ],
                                 ),
-                                value: cart.isSharing
+                                value: widget.excursions[i].isSharing
                                     ? controller.TransferCodes[2]
-                                    : cart.isPrivate
+                                    : widget.excursions[i].isPrivate
                                         ? controller.TransferCodes[1]
                                         : controller.TransferCodes[0],
 
-                                items: widget.excursions.first
-                                            .isSharedTransferAvailable ==
-                                        false
-                                    ? controller.SharedwithoutCodes.map(
-                                        (String value) {
-                                        return DropdownMenuItem<String>(
-                                            value: value,
-                                            child: Center(
-                                              child: Text(
-                                                value,
-                                                style: FxTextStyle.bodyMedium(),
-                                              ),
-                                            ));
-                                      }).toList()
-                                    : widget.excursions.first
-                                                .isPrivateTransferAvailable ==
-                                            false
-                                        ? controller.withoutPrivateCodes
-                                            .map((String value) {
-                                            return DropdownMenuItem<String>(
-                                                value: value,
-                                                child: Center(
-                                                  child: Text(
-                                                    value,
-                                                    style: FxTextStyle
-                                                        .bodyMedium(),
-                                                  ),
-                                                ));
-                                          }).toList()
-                                        : widget.excursions.first
-                                                        .isPrivateTransferAvailable ==
-                                                    false ||
-                                                widget.excursions.first
-                                                        .isSharedTransferAvailable ==
-                                                    false
-                                            ? controller.withoutcodes
-                                                .map((String value) {
-                                                return DropdownMenuItem<String>(
-                                                    value: value,
-                                                    child: Center(
-                                                      child: Text(
-                                                        value,
-                                                        style: FxTextStyle
-                                                            .bodyMedium(),
-                                                      ),
-                                                    ));
-                                              }).toList()
-                                            : controller.TransferCodes.map(
-                                                (String value) {
-                                                return DropdownMenuItem<String>(
-                                                    value: value,
-                                                    child: Center(
-                                                      child: Text(
-                                                        value,
-                                                        style: FxTextStyle
-                                                            .bodyMedium(),
-                                                      ),
-                                                    ));
-                                              }).toList(),
+                                // items: widget.excursions.first
+                                //             .isSharedTransferAvailable ==
+                                //         false
+                                //     ? controller.SharedwithoutCodes.map(
+                                //         (String value) {
+                                //         return DropdownMenuItem<String>(
+                                //             value: value,
+                                //             child: Center(
+                                //               child: Text(
+                                //                 value,
+                                //                 style: FxTextStyle.bodyMedium(),
+                                //               ),
+                                //             ));
+                                //       }).toList()
+                                //     : widget.excursions.first
+                                //                 .isPrivateTransferAvailable ==
+                                //             false
+                                //         ? controller.withoutPrivateCodes
+                                //             .map((String value) {
+                                //             return DropdownMenuItem<String>(
+                                //                 value: value,
+                                //                 child: Center(
+                                //                   child: Text(
+                                //                     value,
+                                //                     style: FxTextStyle
+                                //                         .bodyMedium(),
+                                //                   ),
+                                //                 ));
+                                //           }).toList()
+                                //         : widget.excursions.first
+                                //                         .isPrivateTransferAvailable ==
+                                //                     false ||
+                                //                 widget.excursions.first
+                                //                         .isSharedTransferAvailable ==
+                                //                     false
+                                //             ? controller.withoutcodes
+                                //                 .map((String value) {
+                                //                 return DropdownMenuItem<String>(
+                                //                     value: value,
+                                //                     child: Center(
+                                //                       child: Text(
+                                //                         value,
+                                //                         style: FxTextStyle
+                                //                             .bodyMedium(),
+                                //                       ),
+                                //                     ));
+                                //               }).toList()
+                                //             : controller.TransferCodes.map(
+                                //                 (String value) {
+                                //                 return DropdownMenuItem<String>(
+                                //                     value: value,
+                                //                     child: Center(
+                                //                       child: Text(
+                                //                         value,
+                                //                         style: FxTextStyle
+                                //                             .bodyMedium(),
+                                //                       ),
+                                //                     ));
+                                //               }).toList(),
 
-                                // items: controller.TransferCodes.map(
-                                //     (String value) {
-                                //   return DropdownMenuItem<String>(
-                                //       value: value,
-                                //       child: Center(
-                                //         child: Text(
-                                //           value,
-                                //           style: FxTextStyle.bodyMedium(),
-                                //         ),
-                                //       ));
-                                // }).toList(),
+                                items: controller.TransferCodes.map(
+                                    (String value) {
+                                  return DropdownMenuItem<String>(
+                                      value: value,
+                                      child: Center(
+                                        child: Text(
+                                          value,
+                                          style: FxTextStyle.bodyMedium(),
+                                        ),
+                                      ));
+                                }).toList(),
                                 onChanged: (value) {
                                   setState(() {
                                     controller.selectedtransfer =
                                         value.toString();
                                   });
-                                  controller.addisPrivateORsharing(cart,
+                                  controller.addisPrivateORsharing(
+                                      widget.excursions[i],
                                       isPrivate: controller.selectedtransfer ==
                                           controller.TransferCodes[1],
                                       isSharing: controller.selectedtransfer ==
@@ -499,12 +514,38 @@ class _ActivityScreenState extends State<ActivityScreen>
                           width: 150,
                           child: TextFormField(
                             style: FxTextStyle.bodyMedium(),
-                            controller: controller.dateTE,
-                            //  controller: controllers[i],
+                            // controller: controller.dateTE,
+                            // controller: controllers[i],
+                            controller: controllerTE[i],
                             readOnly:
                                 true, //set it true, so that user will not able to edit text
 
-                            onTap: controller.dateselect,
+                            onTap: () async {
+                              DateTime? pickedDate = await showDatePicker(
+                                  context: context,
+                                  initialDate: DateTime.now(),
+                                  firstDate: DateTime(
+                                      1900), //DateTime.now() - not to allow to choose before today.
+                                  lastDate: DateTime(2101));
+
+                              if (pickedDate != null) {
+                                print(
+                                    pickedDate); //pickedDate output format => 2021-03-10 00:00:00.000
+                                String formattedDate =
+                                    DateFormat('yyyy-MM-dd').format(pickedDate);
+                                print(formattedDate);
+                                // dateTE.text = formattedDate;
+                                controllerTE[i].text = formattedDate;
+                                widget.excursions[i].selectedDate =
+                                    formattedDate;
+
+                                // setState(() {
+                                //   dateinput.text = formattedDate; //set output date to TextField value.
+                                // });
+                              } else {
+                                print("Date is not selected");
+                              }
+                            },
                             decoration: InputDecoration(
                                 floatingLabelBehavior:
                                     FloatingLabelBehavior.never,
@@ -537,23 +578,28 @@ class _ActivityScreenState extends State<ActivityScreen>
                       ],
                     ),
                     FxSpacing.height(4),
-                    personCount(controller, cart, setState, theme,
+                    personCount(
+                        controller, widget.excursions[i], setState, theme,
                         isAdult: true),
                     //child
                     FxSpacing.height(4),
 
-                    personCount(controller, cart, setState, theme,
+                    personCount(
+                        controller, widget.excursions[i], setState, theme,
                         isChild: true),
                     FxSpacing.height(4),
 
                     //infant
 
-                    personCount(controller, cart, setState, theme,
+                    personCount(
+                        controller, widget.excursions[i], setState, theme,
                         isInfant: true),
-                    if (cart.isPrivate) FxSpacing.height(4),
-                    if (cart.isPrivate) cost(cart, isPrivate: true),
-                    if (cart.isSharing) FxSpacing.height(4),
-                    if (cart.isSharing) cost(cart, isSharing: true), //aount
+                    if (widget.excursions[i].isPrivate) FxSpacing.height(4),
+                    if (widget.excursions[i].isPrivate)
+                      cost(widget.excursions[i], isPrivate: true),
+                    if (widget.excursions[i].isSharing) FxSpacing.height(4),
+                    if (widget.excursions[i].isSharing)
+                      cost(widget.excursions[i], isSharing: true), //aount
                     FxSpacing.height(4),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -563,7 +609,7 @@ class _ActivityScreenState extends State<ActivityScreen>
                           fontWeight: 600,
                         ),
                         FxText.bodyMedium(
-                          controller.getTotal(cart).toString(),
+                          controller.getTotal(widget.excursions[i]).toString(),
                           // 'IMG Worlds of Adventure',
                           fontWeight: 700,
                         ),
@@ -634,7 +680,9 @@ class _ActivityScreenState extends State<ActivityScreen>
                         ),
                         FxText.bodyMedium(
                           // '\$' + controller.total.precise,
-                          controller.getGrandTotal(cart).toString(),
+                          controller
+                              .getGrandTotal(widget.excursions[i])
+                              .toString(),
                           // controller.products.
                           fontWeight: 800,
                           color: const Color(0xff1529e8),
@@ -734,7 +782,8 @@ class _ActivityScreenState extends State<ActivityScreen>
                         readOnly:
                             true, //set it true, so that user will not able to edit text
 
-                        onTap: controller.dateselect,
+                        // onTap: controller.dateselect(i),
+                        onTap: () {},
                         decoration: InputDecoration(
                             floatingLabelBehavior: FloatingLabelBehavior.never,
                             filled: true,
@@ -780,64 +829,7 @@ class _ActivityScreenState extends State<ActivityScreen>
                   'Adult',
                   fontWeight: 600,
                 ),
-                // FxText.bodyMedium(
-                //   // '\$' + controller.order.precise,
-                //   '1 adult',
-                //   fontWeight: 700,
-                // ),
                 Expanded(child: Container()),
-                // Row(
-                //   children: [
-                //     FxContainer(
-                //       onTap: () {
-                //         // controller.increment(controller.product);
-                //       },
-                //       bordered: controller.increaseAble(controller.product),
-                //       paddingAll: 4,
-                //       borderRadiusAll: 2,
-                //       border: Border.all(color: const Color(0xff1529e8)),
-                //       color: controller.increaseAble(controller.product)
-                //           ? const Color(0xff1529e8)
-                //           : theme.colorScheme.onBackground.withAlpha(200),
-                //       child: Icon(
-                //         FeatherIcons.plus,
-                //         size: 12,
-                //         color: controller.increaseAble(controller.product)
-                //             ? theme.colorScheme.onPrimary
-                //             : theme.colorScheme.onPrimary,
-                //       ),
-                //     ),
-                //     FxSpacing.width(15),
-                //     FxSpacing.height(8),
-                //     FxText.bodyMedium(
-                //       controller.product.person.toString(),
-                //       fontWeight: 700,
-                //     ),
-                //     FxSpacing.height(8),
-                //     FxSpacing.width(15),
-                //     FxContainer(
-                //       onTap: () {
-                //         controller.decrement(controller.product);
-                //       },
-                //       paddingAll: 4,
-                //       borderRadiusAll: 2,
-                //       bordered: controller.decreaseAble(controller.product),
-                //       border: Border.all(
-                //           color: const Color(0xff1529e8).withAlpha(120)),
-                //       color: controller.decreaseAble(controller.product)
-                //           ? const Color(0xff1529e8).withAlpha(28)
-                //           : theme.colorScheme.onBackground.withAlpha(200),
-                //       child: Icon(
-                //         FeatherIcons.minus,
-                //         size: 12,
-                //         color: controller.decreaseAble(controller.product)
-                //             ? const Color(0xff1529e8)
-                //             // theme.colorScheme.primary
-                //             : theme.colorScheme.onPrimary,
-                //       ),
-                //     ),
-                //   ],
-                // ),
               ],
             ),
             FxSpacing.height(4),

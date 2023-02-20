@@ -10,4 +10,5 @@ class AppConstants {
   static const String KEY_ACCESS_TOKEN_Email = 'useremail';
   static const String KEY_ACCESS_TOKEN_countryId = 'countrycode';
   static const String KEY_ACCESS_TOKEN_CurrenciesList = 'currencies';
+  static const String KEY_ACCESS_BALANCE = 'balance';
 }

@@ -12,6 +12,9 @@ import '../models/cart.dart';
 import '../views/checkout_screen.dart';
 import '../views/hotel_travel_constants.dart';
 
+List<TextEditingController> controllerTE = [];
+double amount = 0;
+
 class ActivityController extends FxController {
   TickerProvider ticker;
   ActivityController(this.ticker);
@@ -38,6 +41,9 @@ class ActivityController extends FxController {
   double grandTotal = 0;
 
   void updateTours(Activity tour) {
+    log('updateTours Calling');
+    log('Selected Tour Date:${tour.selectedDate}');
+
     List<Activity> value =
         person_count.where((element) => element.sId == tour.sId).toList();
     print("Coutn => ${value.length}");
@@ -64,13 +70,14 @@ class ActivityController extends FxController {
 
       print(person_count[index].grandTotal);
     }
+    log('Select:${selectedtour.map((e) => e.selectedDate)}');
     update();
   }
 
   // double amount = 0;
 
   grandSelectedTourAmount() {
-    double amount = 0;
+    // double amount = 0;
 
     for (Activity tour in selectedtour) {
       log('tour.grandTotal:${tour.grandTotal}');
@@ -386,7 +393,7 @@ class ActivityController extends FxController {
     });
   }
 
-  Future<void> dateselect() async {
+  dateselect(index) async {
     DateTime? pickedDate = await showDatePicker(
         context: context,
         initialDate: DateTime.now(),
@@ -398,7 +405,8 @@ class ActivityController extends FxController {
       print(pickedDate); //pickedDate output format => 2021-03-10 00:00:00.000
       String formattedDate = DateFormat('yyyy-MM-dd').format(pickedDate);
       print(formattedDate);
-      dateTE.text = formattedDate;
+      // dateTE.text = formattedDate;
+      controllerTE[index].text = formattedDate;
 
       // setState(() {
       //   dateinput.text = formattedDate; //set output date to TextField value.
@@ -479,7 +487,8 @@ class ActivityController extends FxController {
               // selectedtour.first.infantCount,
               selectedtour.first.grandTotal,
               dateTE.text,
-              selectedtransfer
+              selectedtransfer,
+              amount
               // excursions.activities!
               // amount
               // grandSelectedTourAmount()
