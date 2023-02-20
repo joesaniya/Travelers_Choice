@@ -121,6 +121,11 @@ class _SearchPlaceState extends State<SearchPlace>
   }
 
   @override
+  void dispose() {
+    fetchData();
+    super.dispose();
+  }
+  @override
   Widget build(BuildContext context) {
     return
         // isLoading

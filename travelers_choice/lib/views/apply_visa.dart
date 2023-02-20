@@ -17,6 +17,7 @@ import 'package:hotel_travel/models/select_visa_modal.dart';
 import 'package:im_stepper/stepper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
+import 'package:lottie/lottie.dart';
 
 import '../controllers/apply_visa_controller.dart';
 import '../images.dart';
@@ -489,14 +490,10 @@ String userName = "";
                 print(controller.selectedTraveller);
                 print(controller.fromDateTE.text);
                 print(controller.toDateTE.text);
-                if(controller.selectedVisa == null){
-                  var snackBar = SnackBar(content: Text('Choose visa type'));
-                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                  controller.formKey.currentState!.validate() ;
-                }else if(controller.selectedTraveller == null){
+                 if(controller.selectedTraveller == null){
                   var snackBar = SnackBar(content: Text('Select no of travellers'));
                   ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                }else if(controller.selectedVisa!= null && controller.selectedTraveller != null){
+                }else {
                   setState(() {
                     controller.currentPage++;
                     // isFinished0 = true;
@@ -1024,8 +1021,8 @@ String userName = "";
             FxButton(
               padding: FxSpacing.y(12),
               onPressed: () {
-                if(controller.formKey.currentState!.validate()){
-                  controller.formKey.currentState!.save();
+                // if(controller.formKey.currentState!.validate()){
+                //   controller.formKey.currentState!.save();
 
                     // if(
                     // controllers.text.isNotEmpty
@@ -1042,7 +1039,7 @@ String userName = "";
                       });
 
                   //
-                  }
+                  // }
 
               },
               borderRadiusAll: 4,
@@ -1547,6 +1544,293 @@ String userName = "";
     );
   }
 
+  Widget _billingWidget() {
+    List<Widget> list = [];
+    return SizedBox(
+      child: ListView.separated(
+        itemCount: 1,
+        shrinkWrap: true,
+        itemBuilder: (context, index) {
+          return FadeTransition(
+            opacity: controller.fadeAnimation,
+            child: FxContainer(
+              borderRadiusAll: 4,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  FxText.bodyMedium(
+                    'Billing Information',
+                    muted: true,
+                    fontWeight: 700,
+                  ),
+                  FxSpacing.height(20),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      FxText.bodyMedium(
+                        'Option',
+                        fontWeight: 600,
+                      ),
+                      FxSpacing.width(20),
+                      // Expanded(child: Container()),
+                      Expanded(
+                        child: Align(
+                          alignment: Alignment.centerRight,
+                          child: FxText.bodyMedium(
+                            // '\$' + controller.order.precise,
+                            "30 days single entry tourist visa",
+                            fontWeight: 700,
+                            textAlign: TextAlign.left,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  FxSpacing.height(4),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      FxText.bodyMedium(
+                        'Transfer',
+                        fontWeight: 600,
+                      ),
+                      // widget.selectedtourOption[index].isSharing == null
+                      //     ? FxText.bodyMedium(
+                      //         // '\$' + controller.order.precise,
+                      //         'without',
+                      //         fontWeight: 700,
+                      //       )
+                      //     : FxText.bodyMedium(
+                      //         widget.Transfer.toString(),
+                      //         fontWeight: 700,
+                      //       ),
+
+                      FxText.bodyMedium(
+                        "without",
+                        fontWeight: 700,
+                      ),
+                    ],
+                  ),
+                  FxSpacing.height(4),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      FxText.bodyMedium(
+                        'Date',
+                        fontWeight: 600,
+                      ),
+                      FxText.bodyMedium(
+                        controller.fromDateTE.text,
+                        fontWeight: 700,
+                      ),
+                      // widget.textdate.isEmpty
+                      //     ? FxText.bodyMedium(
+                      //         'select Date',
+                      //         fontWeight: 700,
+                      //       )
+                      //     : FxText.bodyMedium(
+                      //         // widget.textdate.toString(),
+                      //         widget.selectedtourOption[index].selectedDate
+                      //             .toString(),
+                      //         fontWeight: 700,
+                      //       ),
+                    ],
+                  ),
+                  FxSpacing.height(4),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      FxText.bodyMedium(
+                        'Traveller',
+                        fontWeight: 600,
+                      ),
+                      Expanded(child: Container()),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          FxContainer(
+                            padding: FxSpacing.fromLTRB(8, 6, 8, 6),
+                            color: const Color(0xff1529e8).withAlpha(40),
+                            child: Row(
+                              children: [
+                                FxText.bodyMedium(
+                                    controller.selectedTraveller.toString(),
+                                    color: const Color(0xff1529e8),
+                                    // color: customTheme.groceryPrimary,
+                                    fontWeight: 500,
+                                    letterSpacing: -0.2),
+                                FxSpacing.width(4),
+                                // FxText.bodyMedium('Adult',
+                                //     color: const Color(0xff1529e8),
+                                //     // color: customTheme.groceryPrimary,
+                                //     fontWeight: 500,
+                                //     letterSpacing: -0.2),
+                              ],
+                            ),
+                          ),
+                          // FxSpacing.width(10),
+                          // FxContainer(
+                          //   padding: FxSpacing.fromLTRB(8, 6, 8, 6),
+                          //   color: const Color(0xff1529e8).withAlpha(40),
+                          //   child: Row(
+                          //     children: [
+                          //       FxText.bodyMedium(
+                          //           "0",
+                          //           color: const Color(0xff1529e8),
+                          //           // color: customTheme.groceryPrimary,
+                          //           fontWeight: 500,
+                          //           letterSpacing: -0.2),
+                          //       FxSpacing.width(4),
+                          //       FxText.bodyMedium('child',
+                          //           color: const Color(0xff1529e8),
+                          //           // color: customTheme.groceryPrimary,
+                          //           fontWeight: 500,
+                          //           letterSpacing: -0.2),
+                          //     ],
+                          //   ),
+                          // ),
+                          // FxSpacing.width(10),
+                          // FxContainer(
+                          //   padding: FxSpacing.fromLTRB(8, 6, 8, 6),
+                          //   color: const Color(0xff1529e8).withAlpha(40),
+                          //   child: Row(
+                          //     children: [
+                          //       FxText.bodyMedium(
+                          //           "0",
+                          //           color: const Color(0xff1529e8),
+                          //           // color: customTheme.groceryPrimary,
+                          //           fontWeight: 500,
+                          //           letterSpacing: -0.2),
+                          //       FxSpacing.width(4),
+                          //       FxText.bodyMedium('Infant',
+                          //           color: const Color(0xff1529e8),
+                          //           // color: customTheme.groceryPrimary,
+                          //           fontWeight: 500,
+                          //           letterSpacing: -0.2),
+                          //     ],
+                          //   ),
+                          // )
+                        ],
+                      )
+                    ],
+                  ),
+                  FxSpacing.height(4),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      FxText.bodyMedium(
+                        'Amount',
+                        fontWeight: 600,
+                      ),
+                      FxText.bodyLarge(
+                        "${controller.selectedTraveller! * widget.visa!.visaType.first.visaPrice} "
+                            "${widget.visa!.visa.country.currencySymbol}",
+                        color:  Colors.black,
+                      ),
+                    ],
+                  ),
+                  FxSpacing.height(12),
+                  Row(
+                    children: [
+                      Expanded(
+                        flex: 2,
+                        child: Container(),
+                      ),
+                      Expanded(
+                        child: FxDashedDivider(
+                          dashSpace: 4,
+                          dashWidth: 8,
+                          color: theme.colorScheme.onBackground.withAlpha(180),
+                          height: 1.2,
+                        ),
+                      )
+                    ],
+                  ),
+                  FxSpacing.height(12),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      FxText.bodyMedium(
+                        'Grand Total',
+                        fontWeight: 700,
+                        color: const Color(0xff1529e8),
+                      ),
+                       FxText.bodyLarge(
+                        "${controller.selectedTraveller! * widget.visa!.visaType.first.visaPrice} "
+                            "${widget.visa!.visa.country.currencySymbol}",
+                        color: Color(0xff1529e8)
+                      ),
+                      // FxText.bodyMedium(
+                      //   // '\$' + controller.total.precise,
+                      //   "AED",
+                      //   fontWeight: 800,
+                      //   color: const Color(0xff1529e8),
+                      // ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          );
+        },
+        separatorBuilder: (context, index) {
+          return FxSpacing.height(10);
+        },
+      ),
+    );
+
+    // for (var dataselect in controller1.selectedtour.length) {
+    //   list.add(FadeTransition);
+    // }
+    // return Column(
+    //   children: list,
+    // );
+  }
+
+  Widget placedInfo() {
+    return Container(
+      height: MediaQuery.of(context).size.height * 0.4,
+      child: Padding(
+        padding: FxSpacing.x(20),
+        child: Column(
+          // physics: const BouncingScrollPhysics(),
+          children: [
+
+            Lottie.asset('assets/lottie/confirmation.json',
+                height: 150, width: 200),
+            FxSpacing.height(20),
+            FxText.titleLarge(
+              'Booking Success!!',
+              fontWeight: 700,
+              textAlign: TextAlign.center,
+            ),
+            FxSpacing.height(8),
+            FxText.labelLarge(
+              'Enjoy Your \nVaccation, thanks for Booking',
+              textAlign: TextAlign.center,
+              xMuted: true,
+            ),
+            FxSpacing.height(24),
+            FxButton.block(
+              onPressed: () {
+                controller.goBack();
+              },
+              borderRadiusAll: 4,
+              elevation: 0,
+              splashColor: const Color(0xff1529e8).withAlpha(30),
+              backgroundColor: const Color(0xff1529e8),
+              child: FxText.labelLarge(
+                'Back',
+                color: theme.colorScheme.onPrimary,
+                fontWeight: 600,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
   Widget payments() {
     return Padding(
         padding: FxSpacing.x(20),
@@ -1567,142 +1851,143 @@ String userName = "";
             ),
           ),
           SizedBox(height: 20,),
-          FxText.labelLarge(
-            'Select payment method',
-            fontWeight: 600,
-          ),
-          FxSpacing.height(20),
-          FxContainer.bordered(
-            onTap: () {
-              controller.selectPaymentMethod(1);
-            },
-            borderRadiusAll: 10,
-            // margin: FxSpacing.bottom(20),
-            border: Border.all(
-                color: controller.paymentMethodSelected == 1
-                    ? const Color(0xff1529e8)
-                    : theme.colorScheme.onBackground),
-            color: controller.paymentMethodSelected == 1
-                ? const Color(0xff1529e8).withAlpha(20)
-                : theme.scaffoldBackgroundColor,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    Icon(
-                      FeatherIcons.creditCard,
-                      size: 20,
-                      color: theme.colorScheme.onBackground.withAlpha(220),
-                    ),
-                    FxSpacing.width(8),
-                    FxText.bodyMedium(
-                      'XYZ Bank Credit Card',
-                      fontWeight: 700,
-                    ),
-                    // controller.paymentMethodSelected == 1
-                    //     ? Expanded(
-                    //       child: Align(
-                    //         alignment:
-                    //         Language.autoDirection<AlignmentGeometry>(
-                    //             Alignment.centerRight,
-                    //             Alignment.centerLeft)!,
-                    //         child: const Icon(
-                    //           Icons.radio_button_checked,
-                    //           color: Color(0xff1529e8),
-                    //           size: 20,
-                    //         ),
-                    //       ),
-                    // )
-                    //     : Container(),
-                  ],
-                ),
-                FxSpacing.height(8),
-                FxText.bodySmall(
-                  'Abrar Ahmed',
-                  fontWeight: 600,
-                ),
-                FxSpacing.height(5),
-                FxText.bodySmall(
-                  '**** **** **** 7865',
-                  fontWeight: 600,
-                ),
-                FxSpacing.height(5),
-                FxText.bodySmall(
-                  'VALID THRU 12/27',
-                  fontWeight: 600,
-                ),
-                FxSpacing.height(10),
-
-              ],
-            ),
-          ),
-          FxSpacing.height(20),
-          FxContainer.bordered(
-            onTap: () {
-              controller.selectPaymentMethod(2);
-            },
-            borderRadiusAll: 10,
-            // margin: FxSpacing.bottom(20),
-            border: Border.all(
-                color: controller.paymentMethodSelected == 2
-                    ? const Color(0xff1529e8)
-                    : theme.colorScheme.onBackground),
-            color: controller.paymentMethodSelected == 2
-                ? const Color(0xff1529e8).withAlpha(20)
-                : theme.scaffoldBackgroundColor,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    Icon(
-                      FeatherIcons.creditCard,
-                      size: 20,
-                      color: theme.colorScheme.onBackground.withAlpha(220),
-                    ),
-                    FxSpacing.width(8),
-                    FxText.bodyMedium(
-                      'ABC Bank Debit Card',
-                      fontWeight: 700,
-                    ),
-                    // controller.paymentMethodSelected == 1
-                    //     ? Expanded(
-                    //       child: Align(
-                    //         alignment:
-                    //         Language.autoDirection<AlignmentGeometry>(
-                    //             Alignment.centerRight,
-                    //             Alignment.centerLeft)!,
-                    //         child: const Icon(
-                    //           Icons.radio_button_checked,
-                    //           color: Color(0xff1529e8),
-                    //           size: 20,
-                    //         ),
-                    //       ),
-                    // )
-                    //     : Container(),
-                  ],
-                ),
-                FxSpacing.height(8),
-                FxText.bodySmall(
-                  'Britto John',
-                  fontWeight: 600,
-                ),
-                FxSpacing.height(5),
-                FxText.bodySmall(
-                  '**** **** **** 3214',
-                  fontWeight: 600,
-                ),
-                FxSpacing.height(5),
-                FxText.bodySmall(
-                  'VALID THRU 06/25',
-                  fontWeight: 600,
-                ),
-                FxSpacing.height(10),
-
-              ],
-            ),
-          ),
+          _billingWidget(),
+          // FxText.labelLarge(
+          //   'Select payment method',
+          //   fontWeight: 600,
+          // ),
+          // FxSpacing.height(20),
+          // FxContainer.bordered(
+          //   onTap: () {
+          //     controller.selectPaymentMethod(1);
+          //   },
+          //   borderRadiusAll: 10,
+          //   // margin: FxSpacing.bottom(20),
+          //   border: Border.all(
+          //       color: controller.paymentMethodSelected == 1
+          //           ? const Color(0xff1529e8)
+          //           : theme.colorScheme.onBackground),
+          //   color: controller.paymentMethodSelected == 1
+          //       ? const Color(0xff1529e8).withAlpha(20)
+          //       : theme.scaffoldBackgroundColor,
+          //   child: Column(
+          //     crossAxisAlignment: CrossAxisAlignment.start,
+          //     children: [
+          //       Row(
+          //         children: [
+          //           Icon(
+          //             FeatherIcons.creditCard,
+          //             size: 20,
+          //             color: theme.colorScheme.onBackground.withAlpha(220),
+          //           ),
+          //           FxSpacing.width(8),
+          //           FxText.bodyMedium(
+          //             'XYZ Bank Credit Card',
+          //             fontWeight: 700,
+          //           ),
+          //           // controller.paymentMethodSelected == 1
+          //           //     ? Expanded(
+          //           //       child: Align(
+          //           //         alignment:
+          //           //         Language.autoDirection<AlignmentGeometry>(
+          //           //             Alignment.centerRight,
+          //           //             Alignment.centerLeft)!,
+          //           //         child: const Icon(
+          //           //           Icons.radio_button_checked,
+          //           //           color: Color(0xff1529e8),
+          //           //           size: 20,
+          //           //         ),
+          //           //       ),
+          //           // )
+          //           //     : Container(),
+          //         ],
+          //       ),
+          //       FxSpacing.height(8),
+          //       FxText.bodySmall(
+          //         'Abrar Ahmed',
+          //         fontWeight: 600,
+          //       ),
+          //       FxSpacing.height(5),
+          //       FxText.bodySmall(
+          //         '**** **** **** 7865',
+          //         fontWeight: 600,
+          //       ),
+          //       FxSpacing.height(5),
+          //       FxText.bodySmall(
+          //         'VALID THRU 12/27',
+          //         fontWeight: 600,
+          //       ),
+          //       FxSpacing.height(10),
+          //
+          //     ],
+          //   ),
+          // ),
+          // FxSpacing.height(20),
+          // FxContainer.bordered(
+          //   onTap: () {
+          //     controller.selectPaymentMethod(2);
+          //   },
+          //   borderRadiusAll: 10,
+          //   // margin: FxSpacing.bottom(20),
+          //   border: Border.all(
+          //       color: controller.paymentMethodSelected == 2
+          //           ? const Color(0xff1529e8)
+          //           : theme.colorScheme.onBackground),
+          //   color: controller.paymentMethodSelected == 2
+          //       ? const Color(0xff1529e8).withAlpha(20)
+          //       : theme.scaffoldBackgroundColor,
+          //   child: Column(
+          //     crossAxisAlignment: CrossAxisAlignment.start,
+          //     children: [
+          //       Row(
+          //         children: [
+          //           Icon(
+          //             FeatherIcons.creditCard,
+          //             size: 20,
+          //             color: theme.colorScheme.onBackground.withAlpha(220),
+          //           ),
+          //           FxSpacing.width(8),
+          //           FxText.bodyMedium(
+          //             'ABC Bank Debit Card',
+          //             fontWeight: 700,
+          //           ),
+          //           // controller.paymentMethodSelected == 1
+          //           //     ? Expanded(
+          //           //       child: Align(
+          //           //         alignment:
+          //           //         Language.autoDirection<AlignmentGeometry>(
+          //           //             Alignment.centerRight,
+          //           //             Alignment.centerLeft)!,
+          //           //         child: const Icon(
+          //           //           Icons.radio_button_checked,
+          //           //           color: Color(0xff1529e8),
+          //           //           size: 20,
+          //           //         ),
+          //           //       ),
+          //           // )
+          //           //     : Container(),
+          //         ],
+          //       ),
+          //       FxSpacing.height(8),
+          //       FxText.bodySmall(
+          //         'Britto John',
+          //         fontWeight: 600,
+          //       ),
+          //       FxSpacing.height(5),
+          //       FxText.bodySmall(
+          //         '**** **** **** 3214',
+          //         fontWeight: 600,
+          //       ),
+          //       FxSpacing.height(5),
+          //       FxText.bodySmall(
+          //         'VALID THRU 06/25',
+          //         fontWeight: 600,
+          //       ),
+          //       FxSpacing.height(10),
+          //
+          //     ],
+          //   ),
+          // ),
 
           FxSpacing.height(20),
 
@@ -1710,6 +1995,15 @@ String userName = "";
           FxButton.block(
             onPressed: () {
 
+              showDialog(
+                context: context,
+                builder: (BuildContext context){
+                  return AlertDialog(
+                    content: placedInfo(),
+                  );
+                },
+
+              );
               setState(() {
                 // isFinished2 = true;
               });
