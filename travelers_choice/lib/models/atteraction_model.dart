@@ -41,6 +41,7 @@ class DetailattractionModal {
   dynamic averageRating;
   List<Activity>? activities;
 
+
   DetailattractionModal(
       {this.sId,
       this.destination,
@@ -80,7 +81,8 @@ class DetailattractionModal {
       this.markup,
       this.totalRating,
       this.averageRating,
-      this.activities});
+      this.activities,
+      });
 
   DetailattractionModal.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
@@ -160,6 +162,7 @@ class DetailattractionModal {
         activities!.add(Activity.fromJson(v));
       });
     }
+   
   }
 
   Map<String, dynamic> toJson() {
@@ -499,6 +502,7 @@ class Activity {
   int? sharedTransferCost;
   int? lowPrice;
   String? selectedDate;
+   double GrandTotalAmount = 0.0;
 
   Activity({
     this.sId,
@@ -540,6 +544,7 @@ class Activity {
     this.sharedTransferCost,
     this.lowPrice,
     this.selectedDate,
+    this.GrandTotalAmount = 0.0
   });
 
   Activity.fromJson(Map<String, dynamic> json) {
@@ -584,6 +589,7 @@ class Activity {
     sharedTransferCost = json["sharedTransferCost"];
     lowPrice = json['lowPrice'];
     selectedDate = json['selectedDate'];
+     GrandTotalAmount = 0.0;
   }
 
   Map<String, dynamic> toJson() {

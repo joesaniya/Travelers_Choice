@@ -476,7 +476,8 @@ class _DetailScreenState extends State<DetailScreen>
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           FxText.bodyMedium("Price", fontWeight: 500),
-                          FxText.bodyMedium("350 \$",
+                          FxText.bodyMedium(
+                              // "350 \$",
                               // controller.detailattraction!.first.activities!
                               //             .first.privateTransfers ==
                               //         null
@@ -484,7 +485,7 @@ class _DetailScreenState extends State<DetailScreen>
                               //     // ? '${controller.detailattraction!.first.activities!.first.adultPrice} AED'
                               //     : '${controller.detailattraction!.first.activities!.first.privateTransfers!.first.price} AED',
                               // // '${controller.detailattraction.first.activities.first.adultPrice} ${controller.currency() ?? '\$'}',
-                              // // '${controller.detailattraction!.first.activities!.first.privateTransfers!.first.price} AED',
+                              '${controller.detailattraction!.first.activities!.first.lowPrice} AED',
                               // controller.product.price.toString(),
                               fontWeight: 700)
                         ],

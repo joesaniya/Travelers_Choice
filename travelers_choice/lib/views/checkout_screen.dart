@@ -232,11 +232,16 @@ class _CheckOutScreenState extends State<CheckOutScreen>
                         fontWeight: 600,
                       ),
                       FxSpacing.width(20),
+                      // Expanded(child: Container()),
                       Expanded(
-                        child: FxText.bodyMedium(
-                          // '\$' + controller.order.precise,
-                          widget.selectedtourOption[index].name.toString(),
-                          fontWeight: 700,
+                        child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: FxText.bodyMedium(
+                            // '\$' + controller.order.precise,
+                            widget.selectedtourOption[index].name.toString(),
+                            fontWeight: 700,
+                            textAlign: TextAlign.left,
+                          ),
                         ),
                       ),
                     ],
@@ -1648,6 +1653,7 @@ class _CheckOutScreenState extends State<CheckOutScreen>
                 ),
                 FxText.bodyMedium(
                   // '\$ 251.55',
+                  // '${widget.selectedtourOption.first.GrandTotalAmount}',
                   '${widget.totalAmount} AED',
                   // widget.finalAmount.toString(),
                   // widget.TotalCalculation.toString(),

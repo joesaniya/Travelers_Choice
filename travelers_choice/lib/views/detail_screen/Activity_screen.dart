@@ -92,6 +92,7 @@ class _ActivityScreenState extends State<ActivityScreen>
                     color: const Color(0xff1529e8),
                   ),
                   FxText.bodyLarge(
+                    // controller.selectedtour.first.GrandTotalAmount.toString(),
                     controller.grandSelectedTourAmount().toString(),
                     fontWeight: 700,
                     color: const Color(0xff1529e8),
@@ -156,6 +157,7 @@ class _ActivityScreenState extends State<ActivityScreen>
                     color: const Color(0xff1529e8),
                   ),
                   FxText.bodyLarge(
+                    // controller.selectedtour.first.GrandTotalAmount.toString(),
                     controller.grandSelectedTourAmount().toString(),
                     fontWeight: 700,
                     color: const Color(0xff1529e8),
