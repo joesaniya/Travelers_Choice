@@ -589,7 +589,8 @@ class Activity {
     lowPrice = json['lowPrice'];
     selectedDate = json['selectedDate'];
     GrandTotalAmount = 0.0;
-    transferType = json['transferType'];
+    transferType = 'private';
+    // transferType = json['transferType'] ?? 'private';
   }
 
   Map<String, dynamic> toJson() {
