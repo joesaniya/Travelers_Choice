@@ -65,12 +65,7 @@ class _SearchVisaState extends State<SearchVisa>
     _btnText = "Search";
   }
 
-  @override
-  void dispose(){
-    fetchData();
 
-    dispose();
-  }
 
   double? _width;
   String? _btnText;
