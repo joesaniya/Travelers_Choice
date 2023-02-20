@@ -5,6 +5,9 @@ import '../../controllers/checkout_controller.dart';
 import '../../controllers/payment_Selection_Controller.dart';
 import '../../localizations/language.dart';
 import '../../theme/app_theme.dart';
+import 'dart:developer';
+
+import '../detail_screen/booking_Success.dart';
 
 class paymentSelection extends StatefulWidget {
   const paymentSelection({Key? key}) : super(key: key);
@@ -87,13 +90,32 @@ class _paymentSelectionState extends State<paymentSelection>
                 FxSpacing.height(20),
                 FxContainer.none(
                   borderRadiusAll: 9,
-                  onTap: () async {
+                  onTap: () {
                     // Navigator.pop(context);
-                    await controller1.pageController.animateToPage(
-                      controller1.currentPage + 1,
-                      duration: const Duration(milliseconds: 600),
-                      curve: Curves.ease,
-                    );
+                    log('pay clicked');
+                    Navigator.of(context, rootNavigator: true).push(
+                        PageRouteBuilder(
+                            transitionDuration:
+                                const Duration(milliseconds: 500),
+                            transitionsBuilder: (
+                              BuildContext context,
+                              Animation<double> animation,
+                              Animation<double> secondaryAnimation,
+                              Widget child,
+                            ) =>
+                                FadeTransition(
+                                  opacity: animation,
+                                  child: child,
+                                ),
+                            // pageBuilder: (_, __, ___) =>Container()
+                            pageBuilder: (_, __, ___) =>
+                                const BookingSuccess()));
+                    // await controller1.pageController.animateToPage(
+                    //   // controller1.currentPage + 1,
+                    //   controller1.currentPage = 2,
+                    //   duration: const Duration(milliseconds: 600),
+                    //   curve: Curves.ease,
+                    // );
                   },
                   padding: FxSpacing.xy(10, 12),
                   // color: theme.colorScheme.primary,

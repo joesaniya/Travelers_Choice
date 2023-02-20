@@ -11,11 +11,6 @@ class payemtSelectionController extends FxController {
 
   bool selected = true;
 
-  @override
-  void dispose() {
-    super.dispose();
-  }
-
   // void goToSingleProduct(Product product) {
   //   Navigator.of(context, rootNavigator: true).push(
   //     PageRouteBuilder(
