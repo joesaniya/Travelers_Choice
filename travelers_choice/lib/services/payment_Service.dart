@@ -13,13 +13,31 @@ class PaymentService {
       List SelectedActivities) async {
     log('Activities data');
     // log('Activities:$SelectedActivities');
+    List<Map<String, dynamic>> ActivityList = [];
     for (var element in SelectedActivities) {
-      log('Element:${element.sId}');
-      log('Element Date:${element.selectedDate}');
-      log('Element Type:${element.transferType}');
-      log('Adult Count:${element.adultCount}');
-      log('child Count:${element.childCount}');
-      log('Infant Count:${element.infantCount}');
+      print('Element:${element.sId}');
+      print('Element Date:${element.selectedDate}');
+      print('Element Type:${element.transferType}');
+      print('Adult Count:${element.adultCount}');
+      print('child Count:${element.childCount}');
+      print('Infant Count:${element.infantCount}');
+      var datas = {
+        // "activity": element.sId,
+        // "date": "2023-02-21T09:40:14.078Z",
+        // // "date": element.selectedDate,
+        // "adultsCount": element.adultCount,
+        // "childrenCount": element.childCount,
+        // "infantCount": element.infantCount,
+        // "transferType": "private"
+        "activity": "63e6317d20e0e01648630e6a",
+        "date": "2023-02-21T09:40:14.078Z",
+        "adultsCount": 19,
+        "childrenCount": 0,
+        "infantCount": 1,
+        "transferType": "private"
+      };
+      ActivityList.add(datas);
+      print('Data-->$datas');
     }
     SelectedActivities.map((e) =>
         // e,
@@ -32,9 +50,10 @@ class PaymentService {
         "phoneNumber": phoneNumber,
         "country": countryId,
         "paymentProcessor": paymentProcessor,
-        "SelectedActivities": SelectedActivities
+        "SelectedActivities": jsonEncode(ActivityList)
       };
       log(body.toString());
+      print('Body:${body.toString()}');
       var response = await http.post(
           Uri.parse(
             'https://secure.mytravellerschoice.com/api/v1/attractions/orders/create',
@@ -49,6 +68,7 @@ class PaymentService {
       } else {
         var jsondata = jsonDecode(response.body);
         log(jsondata['error']);
+        print(jsondata['error']);
         //snackbar
         // ScaffoldMessenger.of(context)
         //     .showSnackBar(SnackBar(content: Text(jsondata['error'])));

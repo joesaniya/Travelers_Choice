@@ -355,44 +355,45 @@ class CheckOutController extends FxController {
 
     if (currentPage == 0) {
       log('selected page 0');
-      if (selectedname == null || selectedname!.isEmpty) {
-        ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text("Please Select Mr/Ms/Mrs")));
-      } else if (FnameTE.text.isEmpty) {
-        ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text("Please Enter First Name")));
-      } else if (LnameTE.text.isEmpty) {
-        ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text("Please Enter Last Name")));
-      } else if (emailTE.text.isEmpty) {
-        ScaffoldMessenger.of(context)
-            .showSnackBar(const SnackBar(content: Text("Please Enter Email")));
-      } else if (selectedcountry == null || selectedcountry!.isEmpty) {
-        ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text("Please Select Country")));
-      } else if (selectedCountryCode == null || selectedCountryCode!.isEmpty) {
-        ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text("Please Select Phone Code")));
-      } else if (phoneTE.text.isEmpty || phoneTE.text.length != 10) {
-        ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text("Please Enter Phone Number")));
-      } else if (reqTE.text.isEmpty) {
-        ScaffoldMessenger.of(context)
-            .showSnackBar(const SnackBar(content: Text("Enter Request")));
-      } else {
-        await pageController.animateToPage(
-          currentPage + 1,
-          duration: const Duration(milliseconds: 600),
-          curve: Curves.ease,
-        );
-      }
-      // await pageController.animateToPage(
-      //   currentPage + 1,
-      //   duration: const Duration(milliseconds: 600),
-      //   curve: Curves.ease,
-      // );
+      // if (selectedname == null || selectedname!.isEmpty) {
+      //   ScaffoldMessenger.of(context).showSnackBar(
+      //       const SnackBar(content: Text("Please Select Mr/Ms/Mrs")));
+      // } else if (FnameTE.text.isEmpty) {
+      //   ScaffoldMessenger.of(context).showSnackBar(
+      //       const SnackBar(content: Text("Please Enter First Name")));
+      // } else if (LnameTE.text.isEmpty) {
+      //   ScaffoldMessenger.of(context).showSnackBar(
+      //       const SnackBar(content: Text("Please Enter Last Name")));
+      // } else if (emailTE.text.isEmpty) {
+      //   ScaffoldMessenger.of(context)
+      //       .showSnackBar(const SnackBar(content: Text("Please Enter Email")));
+      // } else if (selectedcountry == null || selectedcountry!.isEmpty) {
+      //   ScaffoldMessenger.of(context).showSnackBar(
+      //       const SnackBar(content: Text("Please Select Country")));
+      // } else if (selectedCountryCode == null || selectedCountryCode!.isEmpty) {
+      //   ScaffoldMessenger.of(context).showSnackBar(
+      //       const SnackBar(content: Text("Please Select Phone Code")));
+      // } else if (phoneTE.text.isEmpty || phoneTE.text.length != 10) {
+      //   ScaffoldMessenger.of(context).showSnackBar(
+      //       const SnackBar(content: Text("Please Enter Phone Number")));
+      // } else if (reqTE.text.isEmpty) {
+      //   ScaffoldMessenger.of(context)
+      //       .showSnackBar(const SnackBar(content: Text("Enter Request")));
+      // } else {
+      //   await pageController.animateToPage(
+      //     currentPage + 1,
+      //     duration: const Duration(milliseconds: 600),
+      //     curve: Curves.ease,
+      //   );
+      // }
+      await pageController.animateToPage(
+        currentPage + 1,
+        duration: const Duration(milliseconds: 600),
+        curve: Curves.ease,
+      );
     } else if (currentPage == 1) {
       log('selected page 1');
+
       await PaymentController()
           // .PersonalInfo(nameTE.text, emailTE.text, selectedCountryCode.toString(),
           //     phoneTE.text, passwordTE.text, context)
