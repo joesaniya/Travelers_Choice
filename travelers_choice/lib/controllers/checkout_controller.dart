@@ -9,7 +9,7 @@ import 'package:iconsax/iconsax.dart';
 
 import '../models/product.dart';
 import '../models/shipping_address.dart';
-import 'attraction_payment_Controller/payment_Controller.dart';
+import '../views/bottomSheet/payment_Selection.dart';
 
 class Tab {
   String name;
@@ -392,21 +392,34 @@ class CheckOutController extends FxController {
       // );
     } else if (currentPage == 1) {
       log('selected page 1');
-      await PaymentController()
-          // .PersonalInfo(nameTE.text, emailTE.text, selectedCountryCode.toString(),
-          //     phoneTE.text, passwordTE.text, context)
-          .PersonalInfo('jeni', 'jeni@gmail.com', '6098754321',
-              '63db60f9f926b340dbb3f446', 'razorpay', selectedExcursionsDatas)
-          .then((value) {
-        if (value) {
-          log('Value:$value');
-          pageController.animateToPage(
-            currentPage + 1,
-            duration: const Duration(milliseconds: 600),
-            curve: Curves.ease,
-          );
-        }
-      });
+      // await PaymentController()
+      //     // .PersonalInfo(nameTE.text, emailTE.text, selectedCountryCode.toString(),
+      //     //     phoneTE.text, passwordTE.text, context)
+      //     .PersonalInfo('jeni', 'jeni@gmail.com', '6098754321',
+      //         '63db60f9f926b340dbb3f446', 'razorpay', selectedExcursionsDatas)
+      //     .then((value) {
+      //   if (value) {
+      //     log('Value:$value');
+
+      //     pageController.animateToPage(
+      //       currentPage + 1,
+      //       duration: const Duration(milliseconds: 600),
+      //       curve: Curves.ease,
+      //     );
+      //   }
+      // });
+      showModalBottomSheet(
+        context: context,
+        backgroundColor: Colors.transparent,
+        // backgroundColor: const Color(0xff1529e8).withAlpha(40),
+        shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(20), topRight: Radius.circular(20))),
+        isScrollControlled: true,
+        builder: (context) {
+          return const paymentSelection();
+        },
+      );
     } else {
       log('selected page final');
       await pageController.animateToPage(

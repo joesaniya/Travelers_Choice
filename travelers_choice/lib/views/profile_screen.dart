@@ -40,8 +40,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
             sharedPrefValue.getString(AppConstants.KEY_ACCESS_TOKEN_Email);
         log(profileController.email.toString());
         log('username');
-        profileController.balanceamount = sharedPrefValue
-            .getString(AppConstants.KEY_ACCESS_BALANCE) as double?;
+        profileController.balanceamount =
+            sharedPrefValue.getInt(AppConstants.KEY_ACCESS_BALANCE) as double?;
         log('Balance:${profileController.balanceamount == null ? 0.0 : 2440}');
       });
     });

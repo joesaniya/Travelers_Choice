@@ -4,13 +4,26 @@ import 'dart:developer';
 import 'package:http/http.dart' as http;
 
 class PaymentService {
-  Future PersonalInfo(String name, String email, String phoneNumber,
-      String countryId,String paymentProcessor, List SelectedActivities) async {
+  Future PersonalInfo(
+      String name,
+      String email,
+      String phoneNumber,
+      String countryId,
+      String paymentProcessor,
+      List SelectedActivities) async {
     log('Activities data');
     // log('Activities:$SelectedActivities');
     for (var element in SelectedActivities) {
       log('Element:${element.sId}');
+      log('Element Date:${element.selectedDate}');
+      log('Element Type:${element.transferType}');
+      log('Adult Count:${element.adultCount}');
+      log('child Count:${element.childCount}');
+      log('Infant Count:${element.infantCount}');
     }
+    SelectedActivities.map((e) =>
+        // e,
+        log('selected Activites:$e'));
     // return;
     try {
       var body = {
@@ -18,7 +31,7 @@ class PaymentService {
         "email": email,
         "phoneNumber": phoneNumber,
         "country": countryId,
-        "paymentProcessor":paymentProcessor,
+        "paymentProcessor": paymentProcessor,
         "SelectedActivities": SelectedActivities
       };
       log(body.toString());

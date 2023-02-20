@@ -13,8 +13,10 @@ class PaymentController {
     try {
       var data = PaymentService().PersonalInfo(name, email, phoneNumber,
           countryId, paymentProcessor, SelectedActivities);
+
       if (data != null) {
-        log(data.toString());
+        log('Payment Data:${data.toString()}');
+
         return true;
       } else {
         return false;

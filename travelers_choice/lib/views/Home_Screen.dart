@@ -36,7 +36,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
 
   late HomeController controller;
   String _tabbed = '1';
-  String? name;
+  String? name, flagname;
   SharedPreferences? sharedPreferences;
 
   bool isLoading = true;
@@ -58,6 +58,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
           setState(() {
             controller.countryCode = sharedPreferences!
                 .getString(AppConstants.KEY_ACCESS_TOKEN_countryId);
+            log('CountryCode:${controller.countryCode}');
             controller.currencies = sharedPreferences!
                 .getString(AppConstants.KEY_ACCESS_TOKEN_CurrenciesList);
           });
@@ -104,6 +105,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         name = sharedPrefValue.getString(AppConstants.KEY_ACCESS_TOKEN_Name);
         log(name.toString());
         log('username');
+        flagname = sharedPrefValue
+            .getString(AppConstants.KEY_ACCESS_TOKEN_CountryFlag);
+        log('Country Flag:$flagname');
       });
     });
     controller = FxControllerStore.put(HomeController(this));
@@ -787,22 +791,22 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                 iconSize: 0.0,
                                 hint: Row(
                                   children: [
-                                    Expanded(
-                                      child: FxText.labelLarge(
-                                        "Code",
-                                        fontWeight: 600,
-                                        color: Colors.black,
-                                        // color: theme.colorScheme.onPrimary,
-                                        letterSpacing: 0.4,
-                                      ),
-                                    ),
                                     // Expanded(
-                                    //   child: SvgPicture.network(
-                                    //     controller.selectedCountryCode![5],
-                                    //     width: 16,
-                                    //     height: 16,
+                                    //   child: FxText.labelLarge(
+                                    //     "Code",
+                                    //     fontWeight: 600,
+                                    //     color: Colors.black,
+                                    //     // color: theme.colorScheme.onPrimary,
+                                    //     letterSpacing: 0.4,
                                     //   ),
                                     // ),
+                                    Expanded(
+                                      child: SvgPicture.network(
+                                        'https://cdn.jsdelivr.net/npm/svg-country-flags@1.2.10/svg/in.svg',
+                                        width: 16,
+                                        height: 16,
+                                      ),
+                                    ),
                                   ],
                                 ),
                                 items: countryList.isNotEmpty &&
