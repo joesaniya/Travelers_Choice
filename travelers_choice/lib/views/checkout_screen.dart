@@ -1634,6 +1634,22 @@ class _CheckOutScreenState extends State<CheckOutScreen>
           //bill
           _billingWidget(),
           FxSpacing.height(20),
+          FxText.bodyLarge(
+            'Select Payment Method',
+            fontWeight: 800,
+          ),
+          FxSpacing.height(12),
+          FxDashedDivider(
+            dashSpace: 4,
+            dashWidth: 8,
+            color: theme.colorScheme.onBackground.withAlpha(180),
+            height: 1.2,
+          ),
+          FxSpacing.height(20),
+          payment(
+              "assets/images/apps/shopping2/icons/razor_logo.png", "RazorPay"),
+
+          FxSpacing.height(20),
           FxButton.block(
             onPressed: () {
               controller.nextPage(selectedExcursions);
@@ -1713,5 +1729,51 @@ class _CheckOutScreenState extends State<CheckOutScreen>
         ],
       ),
     );
+  }
+
+  Widget payment(String image, String title) {
+    return FxContainer.bordered(
+        paddingAll: 12,
+        // color: Colors.white,
+        color: controller.selected
+            ? theme.colorScheme.primary.withAlpha(40)
+            : Colors.white,
+        child: controller.selected
+            ? Row(
+                children: [
+                  Image(
+                    height: 24,
+                    image: AssetImage(image),
+                  ),
+                  FxSpacing.height(8),
+                  FxText.bodySmall(title),
+                  Expanded(
+                    child: Align(
+                      alignment: Language.autoDirection<AlignmentGeometry>(
+                          Alignment.centerRight, Alignment.centerLeft)!,
+                      child: FxContainer.roundBordered(
+                        paddingAll: 4,
+                        border: Border.all(color: theme.colorScheme.primary),
+                        color: theme.colorScheme.primary.withAlpha(40),
+                        child: Icon(
+                          Icons.check,
+                          color: theme.colorScheme.primary,
+                          size: 10,
+                        ),
+                      ),
+                    ),
+                  )
+                ],
+              )
+            : Row(
+                children: [
+                  Image(
+                    height: 24,
+                    image: AssetImage(image),
+                  ),
+                  FxSpacing.height(8),
+                  FxText.bodySmall(title),
+                ],
+              ));
   }
 }

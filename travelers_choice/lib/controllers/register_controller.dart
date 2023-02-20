@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutx/flutx.dart';
 
+import '../models/Country_modal.dart';
 import '../views/login_Screens/login_screen.dart';
 import '../views/splash_screens/splash_screen2.dart';
 import 'auth_controller.dart';
@@ -211,6 +212,7 @@ class RegisterController extends FxController {
   }
 
   Future<void> register() async {
+    
     passwordCounter = 0;
     nameCounter = 0;
     emailCounter = 0;
@@ -252,7 +254,6 @@ class RegisterController extends FxController {
     //       const SnackBar(content: Text("please select country code")));
     // }
     else if (selectedCountryCode == null || selectedCountryCode!.isEmpty) {
-      
       ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text("please select country code")));
     } else if (phoneTE.text.isEmpty

@@ -496,7 +496,7 @@ class Activity {
   bool? isSharedTransferAvailable;
   bool? isPrivateTransferAvailable;
   List<PrivateTransfers>? privateTransfers;
-  String? transferType;
+  String? transferType = 'private';
 
   int? sharedTransferCost;
   int? lowPrice;
@@ -544,7 +544,7 @@ class Activity {
       this.lowPrice,
       this.selectedDate,
       this.GrandTotalAmount = 0.0,
-      this.transferType});
+      this.transferType = 'private'});
 
   Activity.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];

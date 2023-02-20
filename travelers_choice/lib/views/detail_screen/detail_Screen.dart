@@ -12,6 +12,7 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 import '../../loading_effect.dart';
 import '../../theme/app_theme.dart';
 import '../full_app.dart';
+import 'package:share_plus/share_plus.dart';
 
 class DetailScreen extends StatefulWidget {
   final String productid;
@@ -165,7 +166,7 @@ class _DetailScreenState extends State<DetailScreen>
                                         MediaQuery.of(context).size.height / 3,
                                     width: MediaQuery.of(context).size.width,
                                     imageUrl:
-                                        'https://a.walletbot.online${controller.detailattraction!.first.images![index]}',
+                                        'https://secure.mytravellerschoice.com${controller.detailattraction!.first.images![index]}',
                                     imageBuilder: (context, imageProvider) =>
                                         Container(
                                       decoration: BoxDecoration(
@@ -350,7 +351,15 @@ class _DetailScreenState extends State<DetailScreen>
                                       color: const Color(0xff1529e8)
                                           .withAlpha(240),
                                     )),
-                                onTap: () {},
+                                onTap: () async {
+                                  log('Share Button clicked');
+                                  final urlPreview =
+                                      "https://secure.mytravellerschoice.com/${widget.productid}";
+                                  final title =
+                                      '${controller.detailattraction!.first.title}';
+                                  await Share.share(
+                                      'Share Excursions\n\n $title \n\n$urlPreview');
+                                },
                               ),
                             ),
                           ),

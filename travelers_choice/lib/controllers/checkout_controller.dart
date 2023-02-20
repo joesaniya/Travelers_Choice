@@ -31,6 +31,7 @@ class CheckOutController extends FxController {
   List<Product>? products;
   bool addCart = false;
   String? selectedCountryCode;
+  bool selected = true;
 
   List<Tab> tabs = [];
 //form
@@ -351,73 +352,56 @@ class CheckOutController extends FxController {
   //next button
   nextPage(selectedExcursionsDatas) async {
     log('Page Number:$currentPage ');
-    // if (currentPage == 1) {
-    //   log('First Page');
-    //   await pageController.animateToPage(
-    //     currentPage + 1,
-    //     duration: const Duration(milliseconds: 600),
-    //     curve: Curves.ease,
-    //   );
-    // } else if (currentPage == 2) {
-    //   log('second page');
-    //   await pageController.animateToPage(
-    //     currentPage + 1,
-    //     duration: const Duration(milliseconds: 600),
-    //     curve: Curves.ease,
-    //   );
-    // } else {
-    //   log('final page');
-    //   log('final page:$currentPage');
-    //   if (currentPage == 1) {
-    //     log('1st screen');
-    //     await pageController.animateToPage(
-    //       currentPage + 1,
-    //       duration: const Duration(milliseconds: 600),
-    //       curve: Curves.ease,
-    //     );
-    //   } else if (currentPage == 2) {
-    //     log('2nd Screen');
-    //     await PaymentController()
-    //         // .PersonalInfo(nameTE.text, emailTE.text, selectedCountryCode.toString(),
-    //         //     phoneTE.text, passwordTE.text, context)
-    //         .PersonalInfo('jeni', 'jeni@gmail.com', '6098754321',
-    //             '63db60f9f926b340dbb3f446', selectedExcursionsDatas)
-    //         .then((value) {
-    //       if (value) {
-    //         log('Value:$value');
-    //         pageController.animateToPage(
-    //           currentPage + 1,
-    //           duration: const Duration(milliseconds: 600),
-    //           curve: Curves.ease,
-    //         );
-    //       }
-    //     });
-    //   } else {
-    //     log('final');
-    //     //   await pageController.animateToPage(
-    //     //   currentPage + 1,
-    //     //   duration: const Duration(milliseconds: 600),
-    //     //   curve: Curves.ease,
-    //     // );
-    //   }
-    // }
+
     if (currentPage == 0) {
       log('selected page 0');
-      await pageController.animateToPage(
-        currentPage + 1,
-        duration: const Duration(milliseconds: 600),
-        curve: Curves.ease,
-      );
+      if (selectedname == null || selectedname!.isEmpty) {
+        ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text("Please Select Mr/Ms/Mrs")));
+      } else if (FnameTE.text.isEmpty) {
+        ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text("Please Enter First Name")));
+      } else if (LnameTE.text.isEmpty) {
+        ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text("Please Enter Last Name")));
+      } else if (emailTE.text.isEmpty) {
+        ScaffoldMessenger.of(context)
+            .showSnackBar(const SnackBar(content: Text("Please Enter Email")));
+      } else if (selectedcountry == null || selectedcountry!.isEmpty) {
+        ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text("Please Select Country")));
+      } else if (selectedCountryCode == null || selectedCountryCode!.isEmpty) {
+        ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text("Please Select Phone Code")));
+      } else if (phoneTE.text.isEmpty || phoneTE.text.length != 10) {
+        ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text("Please Enter Phone Number")));
+      } else if (reqTE.text.isEmpty) {
+        ScaffoldMessenger.of(context)
+            .showSnackBar(const SnackBar(content: Text("Enter Request")));
+      } else {
+        await pageController.animateToPage(
+          currentPage + 1,
+          duration: const Duration(milliseconds: 600),
+          curve: Curves.ease,
+        );
+      }
+      // await pageController.animateToPage(
+      //   currentPage + 1,
+      //   duration: const Duration(milliseconds: 600),
+      //   curve: Curves.ease,
+      // );
     } else if (currentPage == 1) {
       log('selected page 1');
       await PaymentController()
           // .PersonalInfo(nameTE.text, emailTE.text, selectedCountryCode.toString(),
           //     phoneTE.text, passwordTE.text, context)
           .PersonalInfo('jeni', 'jeni@gmail.com', '6098754321',
-              '63db60f9f926b340dbb3f446', selectedExcursionsDatas)
+              '63db60f9f926b340dbb3f446', 'razorpay', selectedExcursionsDatas)
           .then((value) {
         if (value) {
           log('Value:$value');
+
           pageController.animateToPage(
             currentPage + 1,
             duration: const Duration(milliseconds: 600),
@@ -425,6 +409,18 @@ class CheckOutController extends FxController {
           );
         }
       });
+      // showModalBottomSheet(
+      //   context: context,
+      //   backgroundColor: Colors.transparent,
+      //   // backgroundColor: const Color(0xff1529e8).withAlpha(40),
+      //   shape: const RoundedRectangleBorder(
+      //       borderRadius: BorderRadius.only(
+      //           topLeft: Radius.circular(20), topRight: Radius.circular(20))),
+      //   isScrollControlled: true,
+      //   builder: (context) {
+      //     return const paymentSelection();
+      //   },
+      // );
     } else {
       log('selected page final');
       await pageController.animateToPage(
