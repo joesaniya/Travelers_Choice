@@ -48,7 +48,7 @@ class AuthService {
         sharedPreferences.setString("token", jsondata['jwtToken']);
         sharedPreferences.setString("username", jsondata['newUser']['name']);
         sharedPreferences.setString("useremail", jsondata['newUser']['email']);
-        sharedPreferences.setString("flagSymbol", jsondata['countries']['flag']);
+        // sharedPreferences.setString("flagSymbol", jsondata['countries']['flag']);
         sharedPreferences.setInt("balance", jsondata['newUser']['balance']);
         sharedPreferences.setString(AppConstants.KEY_ACCESS_TOKEN_countryId,
             jsondata['newUser']['country']);
@@ -136,8 +136,8 @@ class AuthService {
         sharedPreferences.setString("token", jsondata['jwtToken']);
         sharedPreferences.setString("username", jsondata['user']['name']);
         sharedPreferences.setString("useremail", jsondata['user']['email']);
-        sharedPreferences.setString(
-            "flagSymbol", jsondata['countries']['flag']);
+        // sharedPreferences.setString(
+        //     "flagSymbol", jsondata['countries']['flag']);
         sharedPreferences.setInt("balance", jsondata['user']['balance']);
         sharedPreferences.setString(AppConstants.KEY_ACCESS_TOKEN_countryId,
             jsondata['user']['country']);
