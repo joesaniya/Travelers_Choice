@@ -130,11 +130,11 @@ class ApplyVisaController extends FxController {
   List<String> selectedTitle=[];
   final List<String> titleCodes = ['Mr.','Ms.', 'Mrs.','Mstr.'];
   String? selectedVisa;
-  final List<String> visaTypes =
-  [
-    '30 day single entry tourist visa',
-    '60 days single entry tourist visa',
-    '12 days work visa'];
+  // final List<String> visaTypes =
+  // [
+  //   '30 day single entry tourist visa',
+  //   '60 days single entry tourist visa',
+  //   '12 days work visa'];
   List<List<String>>selectCountry = [];
   List<String> selectedCountry=[];
   final List<String> countryCodes = ['India',

@@ -73,7 +73,6 @@ dependencies:
   cc_avenue: ^1.0.3
   lottie: ^1.4.2
   cached_network_image: ^3.2.1
-
   tab_indicator_styler: ^2.0.0
   carousel_slider: ^4.2.1
   expandable: ^5.0.1
@@ -84,6 +83,7 @@ dependencies:
   image_picker: ^0.8.6+1
   flutter_svg: ^0.23.0+1
   share_plus: ^6.3.1
+
 
 
 

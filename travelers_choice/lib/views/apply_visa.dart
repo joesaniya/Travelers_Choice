@@ -253,40 +253,43 @@ String userName = "";
                               ),
                             ),
                             items:
-                            // widget.visa!.visaType.isNotEmpty ? widget.visa!.visaType
-                            //     .map((value) {
-                            //   return DropdownMenuItem<String>(
-                            //       value: value.visaName.toString(),
-                            //       child: Center(
-                            //         child: Text(
-                            //           value.visa.toString(),
-                            //           style: FxTextStyle
-                            //               .bodyMedium(),
-                            //         ),
-                            //       ));
-                            // }).toList() :  [].map((value) {
-                            //   return DropdownMenuItem<String>(
-                            //       value: value,
-                            //       child: Center(
-                            //         child: Text(
-                            //           value,
-                            //           style: FxTextStyle
-                            //               .bodyMedium(),
-                            //         ),
-                            //       ));
-                            // }).toList(),
-                            controller.visaTypes.map((String value) {
+                            widget.visa!.visaType.isNotEmpty ? widget.visa!.visaType
+                                .map((value) {
+                              return DropdownMenuItem<String>(
+                                  value: value.id.toString(),
+                                  child: Center(
+                                    child: Text(
+                                      value.visaName,
+                                      style: FxTextStyle
+                                          .bodyMedium(),
+                                    ),
+                                  ));
+                            }).toList() :  [].map((value) {
                               return DropdownMenuItem<String>(
                                   value: value,
                                   child: Center(
                                     child: Text(
                                       value,
-                                      style: FxTextStyle.bodyMedium(),
+                                      style: FxTextStyle
+                                          .bodyMedium(),
                                     ),
                                   ));
                             }).toList(),
+
+                            // controller.visaTypes.map((String value) {
+                            //   return DropdownMenuItem<String>(
+                            //       value: value,
+                            //       child: Center(
+                            //         child: Text(
+                            //           value,
+                            //           style: FxTextStyle.bodyMedium(),
+                            //         ),
+                            //       ));
+                            // }).toList(),
                             onChanged: (value) {
                               setState(() {
+                                // print(value.toString());
+                                // print(controller.selectedVisa.toString());
                                 controller.selectedVisa = value.toString();
                               });
                             },
@@ -486,20 +489,28 @@ String userName = "";
             FxButton(
               padding: FxSpacing.y(12),
               onPressed: () {
-                print(controller.selectedVisa);
-                print(controller.selectedTraveller);
-                print(controller.fromDateTE.text);
-                print(controller.toDateTE.text);
-                 if(controller.selectedTraveller == null){
-                  var snackBar = SnackBar(content: Text('Select no of travellers'));
-                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                }else {
-                  setState(() {
-                    controller.currentPage++;
-                    // isFinished0 = true;
-                  });
-                }
 
+                  if(controller.selectedVisa == null || controller.selectedVisa!.isEmpty){
+                    ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text("Please Select Visa type")));
+                  }
+                 else if(controller.fromDateTE.text.isEmpty ){
+                    ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text("Please Select From date")));
+                  }
+                 else if(controller.toDateTE.text.isEmpty){
+                    ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text("Please Select To date")));
+                  }
+                  else if(controller.selectedTraveller == null){
+                    ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('Select no of travellers')));
+                  }else {
+                    setState(() {
+                      controller.currentPage++;
+                      // isFinished0 = true;
+                    });
+                  }
               },
               borderRadiusAll: 4,
               elevation: 0,
@@ -565,7 +576,7 @@ String userName = "";
                       controller.expiryControllers.add(TextEditingController());
                     }
 
-                    print(controller.selectTitle);
+                    // print(controller.selectTitle);
                   return  Container(
                     padding: EdgeInsets.all(10),
                     color: Colors.white,
@@ -1021,22 +1032,32 @@ String userName = "";
             FxButton(
               padding: FxSpacing.y(12),
               onPressed: () {
+                if(controller.selectedTitle.isEmpty){
+                  ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text("Please Select Visa type")));
+                }else if(controller.firstNameControllers[0].text == null ){
+                  ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text("Please enter first name")));
+                }else{
+                  setState(() {
+                    controller.currentPage++;
+                    // isFinished0 = true;
+                  });
+                }
+
                 // if(controller.formKey.currentState!.validate()){
                 //   controller.formKey.currentState!.save();
+                //
+                //     if(
+                //     controllers.text.isNotEmpty
+                //         // controller.LnameTE.text.isNotEmpty &&
+                //         // controller.emailTE.text.isNotEmpty &&
+                //         // controller.phoneTE.text.isNotEmpty &&
+                //         // controller.passportTE.text.isNotEmpty &&
+                //         // controller.addressTE.text.isNotEmpty
+                //     )
 
-                    // if(
-                    // controllers.text.isNotEmpty
-                    //     // controller.LnameTE.text.isNotEmpty &&
-                    //     // controller.emailTE.text.isNotEmpty &&
-                    //     // controller.phoneTE.text.isNotEmpty &&
-                    //     // controller.passportTE.text.isNotEmpty &&
-                    //     // controller.addressTE.text.isNotEmpty
-                    // )
 
-                      setState(() {
-                        controller.currentPage++;
-                        // isFinished0 = true;
-                      });
 
                   //
                   // }
