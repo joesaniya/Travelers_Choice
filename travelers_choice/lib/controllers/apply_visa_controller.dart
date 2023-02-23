@@ -4,6 +4,8 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutx/flutx.dart';
+import 'package:hotel_travel/models/Country_modal.dart';
+import 'package:hotel_travel/services/visa_service.dart';
 import 'package:intl/intl.dart';
 
 import '../models/atteraction_model.dart';
@@ -128,17 +130,16 @@ class ApplyVisaController extends FxController {
 
   List<List<String>>selectTitle = [];
   List<String> selectedTitle=[];
-  final List<String> titleCodes = ['Mr.','Ms.', 'Mrs.','Mstr.'];
+  final List<String> titleCodes = ['Mr','Ms', 'Mrs','Mstr'];
   String? selectedVisa;
   // final List<String> visaTypes =
   // [
   //   '30 day single entry tourist visa',
   //   '60 days single entry tourist visa',
   //   '12 days work visa'];
-  List<List<String>>selectCountry = [];
-  List<String> selectedCountry=[];
-  final List<String> countryCodes = ['India',
-    'United Arab Emirates', 'France', 'United States of America','England'];
+  List<List<CountryElement>>selectCountry = [];
+  List<CountryElement> selectedCountry=[];
+  List<CountryElement> countryCodes = [];
   int? selectedTraveller ;
   final List<int> travellerNumber = [1,2,3,4,5,6,7,8,9];
   late AnimationController arrowController,
@@ -148,7 +149,9 @@ class ApplyVisaController extends FxController {
       emailController,
       phoneController,
       addressController,
-      passportController;
+      passportController,
+      dobController,
+      expiryController;
 
   late Animation<Offset> arrowAnimation,
       firstnameAnimation,
@@ -231,6 +234,11 @@ class ApplyVisaController extends FxController {
         vsync: ticker, duration: const Duration(milliseconds: 500));
 
     addressController = AnimationController(
+        vsync: ticker, duration: const Duration(milliseconds: 500));
+
+    dobController = AnimationController(
+        vsync: ticker, duration: const Duration(milliseconds: 500));
+    expiryController = AnimationController(
         vsync: ticker, duration: const Duration(milliseconds: 500));
 
     //animation
@@ -424,6 +432,27 @@ class ApplyVisaController extends FxController {
     }
     return null;
   }
+  String? validateDOB(String? text) {
+    if (text == null || text.isEmpty) {
+      dobController.forward();
+      return "Please choose date";
+    }
+    return null;
+  }
+
+ String? validateCountry(String? text){
+    if(text == null || text.isEmpty){
+      return "Please Choose Nationality";
+    }
+ }
+
+  String? validateExpiry(String? text) {
+    if (text == null || text.isEmpty) {
+      expiryController.forward();
+      return "Please choose date";
+    }
+    return null;
+  }
 
   void fetchData() async {
     products = HotelTravelCache.products;
@@ -501,6 +530,7 @@ class ApplyVisaController extends FxController {
       print("Date is not selected");
     }
   }
+
 
   // void toggleFavorite() {
   //   product.favorite = !product.favorite;
@@ -593,14 +623,47 @@ class ApplyVisaController extends FxController {
     emailController.dispose();
     addressController.dispose();
     phoneController.dispose();
+    dobController.dispose();
+    expiryController.dispose();
     animationController.dispose();
     super.dispose();
+  }
+
+
+  // Future<void> createVisa() async {
+  //
+  //
+  //     await AuthController()
+  //         .register(nameTE.text, emailTE.text, selectedCountryCode.toString(),
+  //         phoneTE.text, passwordTE.text, context)
+  //         .then((value) {
+  //     });
+  //   }
+  Future<bool> postCreateVisa(
+    Map map
+      ) async {
+    try {
+      var data = await VisaService()
+          .postCreateVisa(map,
+
+      );
+      if (data != null) {
+        log(data);
+        return true;
+      } else {
+        return false;
+      }
+    } catch (e) {
+      rethrow;
+    }
   }
 
   @override
   String getTag() {
     return "checkout_controller";
   }
+
+
   // uploadFile(List<File> files) async {
   //
   //   var postUri = Uri.parse("url here");

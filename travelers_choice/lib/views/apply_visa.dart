@@ -22,6 +22,9 @@ import 'package:lottie/lottie.dart';
 import '../controllers/apply_visa_controller.dart';
 import '../images.dart';
 import '../localizations/language.dart';
+import '../models/Country_modal.dart';
+import '../services/app_constants.dart';
+import '../services/auth_service.dart';
 import '../theme/app_theme.dart';
 
 class ApplyVisa extends StatefulWidget {
@@ -46,6 +49,7 @@ class _ApplyVisaState extends State<ApplyVisa>  with TickerProviderStateMixin{
   List<String> _fileName2 = [];
   List<String> _fileName3 = [];
   List<String> _fileName4 = [];
+  int price = 0;
   final ImagePicker _picker = ImagePicker();
 
   _ApplyVisaState(SelectVisaModal? visa);
@@ -59,13 +63,38 @@ class _ApplyVisaState extends State<ApplyVisa>  with TickerProviderStateMixin{
       // _imageFile = pickedFile;
     });
   }
-
+  bool isLoading = true;
   late FocusNode nameNode;
 
   late OutlineInputBorder outlineInputBorderenable;
   late OutlineInputBorder outlineInputBorderfocus;
 
 String userName = "";
+
+  CountryModal? countryList;
+  bool isCountryListLoading = true;
+  Future getCountryList() async {
+    isCountryListLoading = true;
+    try {
+      var data = await AuthService().getCountry();
+
+      if (data != null) {
+        setState(() {});
+        countryList = data;
+        countryList!.countries.forEach((element) {
+          controller.countryCodes.add(element);
+
+        });
+        isCountryListLoading = false;
+        return true;
+      } else {
+        return false;
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
+
 
 
   @override
@@ -74,20 +103,34 @@ String userName = "";
    controller = FxControllerStore.put(ApplyVisaController(this));
 
     super.initState();
+    fetchData();
+
     outlineInputBorderenable = const OutlineInputBorder(
-      borderRadius: BorderRadius.all(Radius.circular(15)),
+      borderRadius: BorderRadius.all(Radius.circular(4)),
       borderSide: BorderSide(width: 1, color: Colors.black),
     );
     outlineInputBorderfocus = const OutlineInputBorder(
-      borderRadius: BorderRadius.all(Radius.circular(15)),
+      borderRadius: BorderRadius.all(Radius.circular(4)),
       borderSide: BorderSide(width: 1, color: Color(0xff1529e8)),
     );
 
   }
 
+
+  fetchData() {
+    Future.delayed(Duration.zero, () async {
+      await getCountryList().then((value) {
+        if (value) {
+          isLoading = false;
+          setState(() {});
+        }
+      });
+    });
+  }
   @override
   Widget build(BuildContext context){
     // print(widget.visa!.visa.country);
+    print(countryList);
     print(widget.visa!.visa.country.countryName);
     return FxBuilder<ApplyVisaController>(
         controller: controller,
@@ -226,11 +269,12 @@ String userName = "";
 
                     Container(
                       decoration: BoxDecoration(
-                          border: Border.all(width: 1, color: Colors.black),
                           color: Colors.white,
-                          borderRadius: BorderRadius.circular(15)),
+                          border: Border.all(width: 1, color: Colors.black),
+                          // color: const Color(0xff1529e8),
+                          borderRadius: BorderRadius.circular(4)),
                       height: 50,
-                      width: MediaQuery.of(context).size.width,
+                      width: MediaQuery.of(context).size.width*0.9,
                       child:
 
                       DropdownButtonHideUnderline(
@@ -256,6 +300,7 @@ String userName = "";
                             widget.visa!.visaType.isNotEmpty ? widget.visa!.visaType
                                 .map((value) {
                               return DropdownMenuItem<String>(
+
                                   value: value.id.toString(),
                                   child: Center(
                                     child: Text(
@@ -267,6 +312,7 @@ String userName = "";
                             }).toList() :  [].map((value) {
                               return DropdownMenuItem<String>(
                                   value: value,
+
                                   child: Center(
                                     child: Text(
                                       value,
@@ -276,21 +322,11 @@ String userName = "";
                                   ));
                             }).toList(),
 
-                            // controller.visaTypes.map((String value) {
-                            //   return DropdownMenuItem<String>(
-                            //       value: value,
-                            //       child: Center(
-                            //         child: Text(
-                            //           value,
-                            //           style: FxTextStyle.bodyMedium(),
-                            //         ),
-                            //       ));
-                            // }).toList(),
-                            onChanged: (value) {
+                            onChanged: (String? value) {
                               setState(() {
-                                // print(value.toString());
-                                // print(controller.selectedVisa.toString());
-                                controller.selectedVisa = value.toString();
+                                controller.selectedVisa = value;
+                                price = widget.visa!.visaType.firstWhere((element) => element.id==value).visaPrice;
+
                               });
                             },
                             style: FxTextStyle.bodyMedium(),
@@ -300,7 +336,88 @@ String userName = "";
                     ),
 
                     FxSpacing.height(20),
+                    Container(
+                      child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: FxText.bodyLarge(
+                          'Email',
+                          // textAlign: TextAlign.left,
+                          letterSpacing: 0,
+                          fontWeight: 600,
+                        ),
+                      ),
 
+                    ),
+                    FxSpacing.height(10),
+
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width*0.9,
+                      child: TextFormField(
+                        style: FxTextStyle.bodyMedium(),
+                        decoration: InputDecoration(
+                            floatingLabelBehavior: FloatingLabelBehavior.never,
+                            filled: true,
+                            isDense: true,
+                            fillColor: Colors.white,
+                            prefixIcon: Icon(
+                              Icons.email_outlined,
+                              color: theme.colorScheme.onBackground,
+                            ),
+                            hintText: "Email",
+                            enabledBorder: outlineInputBorderenable,
+                            focusedBorder: outlineInputBorderfocus,
+                            border: outlineInputBorderenable,
+                            contentPadding: FxSpacing.all(16),
+                            hintStyle: FxTextStyle.bodyMedium(),
+                            isCollapsed: true),
+                        maxLines: 1,
+                        controller: controller.emailTE,
+                        validator: controller.validateEmail,
+                        cursorColor: theme.colorScheme.onBackground,
+                      ),
+                    ),
+                    FxSpacing.height(20),
+                    Container(
+                      child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: FxText.bodyLarge(
+                          'Contact No',
+                          // textAlign: TextAlign.left,
+                          letterSpacing: 0,
+                          fontWeight: 600,
+                        ),
+                      ),
+
+                    ),
+                    FxSpacing.height(10),
+
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width*0.9,
+                      child: TextFormField(
+                        style: FxTextStyle.bodyMedium(),
+                        decoration: InputDecoration(
+                            floatingLabelBehavior: FloatingLabelBehavior.never,
+                            filled: true,
+                            isDense: true,
+                            fillColor: Colors.white,
+                            prefixIcon: Icon(
+                              Icons.phone,
+                              color: theme.colorScheme.onBackground,
+                            ),
+                            hintText: "Contact No",
+                            enabledBorder: outlineInputBorderenable,
+                            focusedBorder: outlineInputBorderfocus,
+                            border: outlineInputBorderenable,
+                            contentPadding: FxSpacing.all(16),
+                            hintStyle: FxTextStyle.bodyMedium(),
+                            isCollapsed: true),
+                        maxLines: 1,
+                        controller: controller.phoneTE,
+                        validator: controller.validatePhone,
+                        cursorColor: theme.colorScheme.onBackground,
+                      ),
+                    ),
+                    FxSpacing.height(20),
                     Container(
                       child: Align(
                         alignment: Alignment.centerLeft,
@@ -313,41 +430,44 @@ String userName = "";
                     ),
                     FxSpacing.height(10),
 
-                    TextFormField(
-                      style: FxTextStyle.bodyMedium(),
-                      decoration: InputDecoration(
-                          floatingLabelBehavior: FloatingLabelBehavior.never,
-                          filled: true,
-                          isDense: true,
-                          fillColor: Colors.white,
-                          prefixIcon: Icon(
-                            FeatherIcons.calendar,
-                            color: theme.colorScheme.onBackground,
-                          ),
-                          hintText: "dd/mm/yy",
-                          enabledBorder: outlineInputBorderenable,
-                          focusedBorder: outlineInputBorderfocus,
-                          border: outlineInputBorderenable,
-                          contentPadding: FxSpacing.all(16),
-                          hintStyle: FxTextStyle.bodyMedium(),
-                          isCollapsed: true),
-                      maxLines: 1,
-                      controller: controller.fromDateTE,
-                      validator: controller.validateFromDate,
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width*0.9,
+                      child: TextFormField(
+                        style: FxTextStyle.bodyMedium(),
+                        decoration: InputDecoration(
+                            floatingLabelBehavior: FloatingLabelBehavior.never,
+                            filled: true,
+                            isDense: true,
+                            fillColor: Colors.white,
+                            prefixIcon: Icon(
+                              FeatherIcons.calendar,
+                              color: theme.colorScheme.onBackground,
+                            ),
+                            hintText: "dd/mm/yy",
+                            enabledBorder: outlineInputBorderenable,
+                            focusedBorder: outlineInputBorderfocus,
+                            border: outlineInputBorderenable,
+                            contentPadding: FxSpacing.all(16),
+                            hintStyle: FxTextStyle.bodyMedium(),
+                            isCollapsed: true),
+                        maxLines: 1,
+                        controller: controller.fromDateTE,
+                        validator: controller.validateFromDate,
 
-                      // validator: controller.validateFirstName,
-                      cursorColor: theme.colorScheme.onBackground,
-                      onTap: ()async{
-                        DateTime? pickedDate = await showDatePicker(
-                            context: context,
-                            initialDate: DateTime.now(), firstDate: DateTime(2000), lastDate: DateTime(2100));
+                        // validator: controller.validateFirstName,
+                        cursorColor: theme.colorScheme.onBackground,
+                        onTap: ()async{
+                          DateTime? pickedDate = await showDatePicker(
+                              context: context,
+                              initialDate: DateTime.now(), firstDate: DateTime(2000), lastDate: DateTime(2100));
 
-                        if(pickedDate != null){
-                          setState(() {
-                            controller.fromDateTE.text = DateFormat("dd/MM/yyy").format(pickedDate);
-                          });
-                        }
-                      },
+                          if(pickedDate != null){
+                            setState(() {
+                              controller.fromDateTE.text = DateFormat("dd/MM/yyy").format(pickedDate);
+                            });
+                          }
+                        },
+                      ),
                     ),
 
                     FxSpacing.height(20),
@@ -366,42 +486,45 @@ String userName = "";
 
                     FxSpacing.height(10),
 
-                    TextFormField(
-                      style: FxTextStyle.bodyMedium(),
-                      keyboardType: TextInputType.datetime,
-                      decoration: InputDecoration(
-                          floatingLabelBehavior: FloatingLabelBehavior.never,
-                          filled: true,
-                          isDense: true,
-                          fillColor: Colors.white,
-                          prefixIcon: Icon(
-                            FeatherIcons.calendar,
-                            color: theme.colorScheme.onBackground,
-                          ),
-                          hintText: "dd/mm/yyyy",
-                          enabledBorder: outlineInputBorderenable,
-                          focusedBorder: outlineInputBorderfocus,
-                          border: outlineInputBorderenable,
-                          contentPadding: FxSpacing.all(16),
-                          hintStyle: FxTextStyle.bodyMedium(),
-                          isCollapsed: true),
-                      maxLines: 1,
-                      controller: controller.toDateTE,
-                      // validator: controller.validateLastName,
-                      validator: controller.validateToDate,
-                      cursorColor: theme.colorScheme.onBackground,
-                      onTap: ()async{
-                        DateTime? pickedDate = await showDatePicker(
-                            context: context,
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width*0.9,
+                      child: TextFormField(
+                        style: FxTextStyle.bodyMedium(),
+                        keyboardType: TextInputType.datetime,
+                        decoration: InputDecoration(
+                            floatingLabelBehavior: FloatingLabelBehavior.never,
+                            filled: true,
+                            isDense: true,
+                            fillColor: Colors.white,
+                            prefixIcon: Icon(
+                              FeatherIcons.calendar,
+                              color: theme.colorScheme.onBackground,
+                            ),
+                            hintText: "dd/mm/yyyy",
+                            enabledBorder: outlineInputBorderenable,
+                            focusedBorder: outlineInputBorderfocus,
+                            border: outlineInputBorderenable,
+                            contentPadding: FxSpacing.all(16),
+                            hintStyle: FxTextStyle.bodyMedium(),
+                            isCollapsed: true),
+                        maxLines: 1,
+                        controller: controller.toDateTE,
+                        // validator: controller.validateLastName,
+                        validator: controller.validateToDate,
+                        cursorColor: theme.colorScheme.onBackground,
+                        onTap: ()async{
+                          DateTime? pickedDate = await showDatePicker(
+                              context: context,
 
-                            initialDate: DateTime.now(), firstDate: DateTime(2000), lastDate: DateTime(2100));
+                              initialDate: DateTime.now(), firstDate: DateTime(2000), lastDate: DateTime(2100));
 
-                        if(pickedDate != null){
-                          setState(() {
-                            controller.toDateTE.text = DateFormat("dd/MM/yyy").format(pickedDate);
-                          });
-                        }
-                      },
+                          if(pickedDate != null){
+                            setState(() {
+                              controller.toDateTE.text = DateFormat("dd/MM/yyy").format(pickedDate);
+                            });
+                          }
+                        },
+                      ),
                     ),
 
                     FxSpacing.height(20),
@@ -423,7 +546,8 @@ String userName = "";
                       decoration: BoxDecoration(
                           color: Colors.white,
                           border: Border.all(width: 1, color: Colors.black),
-                          borderRadius: BorderRadius.circular(15)),
+                          // color: const Color(0xff1529e8),
+                          borderRadius: BorderRadius.circular(4)),
                       height: 50,
                       width: MediaQuery.of(context).size.width,
                       child: DropdownButtonHideUnderline(
@@ -473,8 +597,8 @@ String userName = "";
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
                        controller.selectedTraveller == null ? Text(""): FxText.bodyLarge(
-                            "${controller.selectedTraveller! * widget.visa!.visaType.first.visaPrice} "
-                                "${widget.visa!.visa.country.currencySymbol}",
+
+                         "${controller.selectedTraveller! * price} ${widget.visa!.visa.country.currencySymbol}",
                         color:  const Color(0xff1529e8),
                           decoration: TextDecoration.underline,
                         ),
@@ -493,6 +617,14 @@ String userName = "";
                   if(controller.selectedVisa == null || controller.selectedVisa!.isEmpty){
                     ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(content: Text("Please Select Visa type")));
+                  }
+                  else if(controller.emailTE.text.isEmpty ){
+                    ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text("Please enter email")));
+                  }
+                  else if(controller.phoneTE.text.isEmpty ){
+                    ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text("Please enter Contact no")));
                   }
                  else if(controller.fromDateTE.text.isEmpty ){
                     ScaffoldMessenger.of(context).showSnackBar(
@@ -522,6 +654,7 @@ String userName = "";
                 fontWeight: 600,
               ),
             ),
+            FxSpacing.height(15),
           ]),
     );
   }
@@ -535,496 +668,589 @@ String userName = "";
           children: [
             Form(
                 key: controller.formKey,
-                child: ListView.separated(
-                  physics: const NeverScrollableScrollPhysics(),
-                  shrinkWrap: true,
-                  itemBuilder:(BuildContext context, int index){
-                    if (index >= controller.selectTitle.length) {
-                      controller.selectTitle.add(controller.titleCodes);
-                      
-                      // adding first item to display in the dropdown
-                      controller.selectedTitle.add(controller.titleCodes[0]);
-                    }
-                    if (index >= controller.selectCountry.length) {
-                      controller.selectCountry.add(controller.countryCodes);
+                child: Column(
+                  children: [
+                    FxText.bodyLarge("Travellers Details",
+                    fontWeight:600),
+                    ListView.separated(
+                      physics: const NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      itemBuilder:(BuildContext context, int index){
+                        if (index >= controller.selectTitle.length) {
+                          controller.selectTitle.add(controller.titleCodes);
 
-                      // adding first item to display in the dropdown
-                      controller.selectedCountry.add(controller.countryCodes[0]);
-                    }
-                    if (index >= controller.firstNameControllers.length) {
-                      controller.firstNameControllers.add(TextEditingController());
-                    }
-                    if (index >= controller.lastNameControllers.length) {
-                      controller.lastNameControllers.add(TextEditingController());
-                    }
-                    if (index >= controller.emailControllers.length) {
-                      controller.emailControllers.add(TextEditingController());
-                    }
-                    // if (index >= controller.nationalityControllers.length) {
-                    //   controller.nationalityControllers.add(TextEditingController());
-                    // }
-                    if (index >= controller.contactControllers.length) {
-                      controller.contactControllers.add(TextEditingController());
-                    }
-                    if (index >= controller.passportControllers.length) {
-                      controller.passportControllers.add(TextEditingController());
-                    }
-                    if (index >= controller.dobControllers.length) {
-                      controller.dobControllers.add(TextEditingController());
-                    }
-                    if (index >= controller.expiryControllers.length) {
-                      controller.expiryControllers.add(TextEditingController());
-                    }
+                          // adding first item to display in the dropdown
+                          controller.selectedTitle.add(controller.titleCodes[0]);
+                        }
+                        if (index >= controller.selectCountry.length) {
 
-                    // print(controller.selectTitle);
-                  return  Container(
-                    padding: EdgeInsets.all(10),
-                    color: Colors.white,
-                    child: Column(
-                      children: [
-                        Container(
-                          child: Align(
-                            alignment: Alignment.center,
-                            child:   controller.selectedTraveller ==1 ? FxText.bodyLarge(
-                              "Traveller Details",
-                              letterSpacing: 0,
-                              fontWeight: 600,
-                            ) : controller.travellerNumber[index]>= 1? FxText.bodyLarge(
-                            "Passenger ${controller.travellerNumber[index]}" ,
-                              letterSpacing: 0,
-                              fontWeight: 600,
-                            ):  Text(""),
+
+
+                          controller.selectCountry.add(controller.countryCodes);
+
+                          // adding first item to display in the dropdown
+                          controller.selectedCountry.add(controller.countryCodes[0]);
+                        }
+                        if (index >= controller.firstNameControllers.length) {
+                          controller.firstNameControllers.add(TextEditingController());
+                        }
+                        if (index >= controller.lastNameControllers.length) {
+                          controller.lastNameControllers.add(TextEditingController());
+                        }
+                        if (index >= controller.emailControllers.length) {
+                          controller.emailControllers.add(TextEditingController());
+                        }
+                        // if (index >= controller.nationalityControllers.length) {
+                        //   controller.nationalityControllers.add(TextEditingController());
+                        // }
+                        if (index >= controller.contactControllers.length) {
+                          controller.contactControllers.add(TextEditingController());
+                        }
+                        if (index >= controller.passportControllers.length) {
+                          controller.passportControllers.add(TextEditingController());
+                        }
+                        if (index >= controller.dobControllers.length) {
+                          controller.dobControllers.add(TextEditingController());
+                        }
+                        if (index >= controller.expiryControllers.length) {
+                          controller.expiryControllers.add(TextEditingController());
+                        }
+
+                        // print(controller.selectTitle);
+                      return  Container(
+                        padding: EdgeInsets.all(10),
+                        // color: Colors.white,
+                        child: Column(
+                          children: [
+                            // Container(
+                            //   child: Align(
+                            //     alignment: Alignment.center,
+                            //     child:   controller.selectedTraveller ==1 ? FxText.bodyLarge(
+                            //       "Traveller Details",
+                            //       letterSpacing: 0,
+                            //       fontWeight: 600,
+                            //     ) : controller.travellerNumber[index]>= 1? FxText.bodyLarge(
+                            //     "Passenger ${controller.travellerNumber[index]}" ,
+                            //       letterSpacing: 0,
+                            //       fontWeight: 600,
+                            //     ):  Text(""),
+                            //     // ),
+                            //   ),
                             // ),
-                          ),
-                        ),
-                        SizedBox(height: 10,),
-                        Container(
-                          child: Align(
-                            alignment: Alignment.centerLeft,
-                            child: FxText.bodyLarge(
-                              'Mr/Mrs',
-                              // textAlign: TextAlign.left,
-                              letterSpacing: 0,
-                              fontWeight: 600,
-                            ),
-                            // ),
-                          ),
-                        ),
-
-                        FxSpacing.height(10),
-
-                        Container(
-                          decoration: BoxDecoration(
-                              border: Border.all(width: 1, color: Colors.black),
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(15)),
-                          height: 50,
-                          width: MediaQuery.of(context).size.width,
-                          child: DropdownButtonHideUnderline(
-
-                            child: ButtonTheme(
-                              alignedDropdown: true,
-                              child: DropdownButton(
-                                iconSize: 25.0,
-                                dropdownColor: Colors.white,
-                                icon: const Icon(
-                                  Icons.arrow_drop_down,
-                                  color: Colors.black,
+                            SizedBox(height: 10,),
+                            Container(
+                              child: Align(
+                                alignment: Alignment.centerLeft,
+                                child: FxText.bodyLarge(
+                                  'Mr/Mrs',
+                                  // textAlign: TextAlign.left,
+                                  letterSpacing: 0,
+                                  fontWeight: 600,
                                 ),
-                                value: controller.selectedTitle[index],
-                                hint: Center(
-                                  child: FxText.labelLarge(
-                                    "Choose title",
-                                    fontWeight: 600,
-                                    color: Colors.black54,
-                                    letterSpacing: 0.4,
+                                // ),
+                              ),
+                            ),
+
+                            FxSpacing.height(10),
+
+                            Container(
+                              decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  border: Border.all(width: 1, color: Colors.black),
+                                  // color: const Color(0xff1529e8),
+                                  borderRadius: BorderRadius.circular(4)),
+                              height: 50.0,
+                              width: MediaQuery.of(context).size.width*0.9,
+                              child: DropdownButtonHideUnderline(
+
+                                child: ButtonTheme(
+                                  alignedDropdown: true,
+                                  child: DropdownButton(
+                                    iconSize: 25.0,
+                                    dropdownColor: Colors.white,
+                                    icon: const Icon(
+                                      Icons.arrow_drop_down,
+                                      color: Colors.black,
+                                    ),
+                                    value: controller.selectedTitle[index],
+                                    hint: Center(
+                                      child: FxText.labelLarge(
+                                        "Choose title",
+                                        fontWeight: 600,
+                                        color: Colors.black54,
+                                        letterSpacing: 0.4,
+                                      ),
+                                    ),
+                                    items: controller.selectTitle[index].map((String value) {
+                                      return DropdownMenuItem<String>(
+                                          value: value,
+                                          child: Center(
+                                            child: Text(
+                                              value,
+                                              style: FxTextStyle.bodyMedium(),
+                                            ),
+                                          ));
+                                    }).toList(),
+                                    onChanged: (value) {
+                                      setState(() {
+                                        controller.selectedTitle[index]= value.toString();
+                                      });
+                                    },
+                                    style: FxTextStyle.bodyMedium(),
                                   ),
                                 ),
-                                items: controller.selectTitle[index].map((String value) {
-                                  return DropdownMenuItem<String>(
-                                      value: value,
-                                      child: Center(
-                                        child: Text(
-                                          value,
-                                          style: FxTextStyle.bodyMedium(),
-                                        ),
-                                      ));
-                                }).toList(),
-                                onChanged: (value) {
-                                  setState(() {
-                                    controller.selectedTitle[index]= value.toString();
-                                  });
-                                },
-                                style: FxTextStyle.bodyMedium(),
                               ),
                             ),
-                          ),
-                        ),
-                        FxSpacing.height(20),
+                            FxSpacing.height(20),
 
-                        Container(
-                          child: Align(
-                            alignment: Alignment.centerLeft,
-                            child: FxText.bodyLarge(
-                              'First Name',
-                              fontWeight: 600,
-                            ),
-                            // ),
-                          ),
-                        ),
-                        FxSpacing.height(10),
-
-                        TextFormField(
-                          style: FxTextStyle.bodyMedium(),
-                          decoration: InputDecoration(
-                              floatingLabelBehavior: FloatingLabelBehavior.never,
-                              filled: true,
-                              isDense: true,
-                              fillColor: Colors.white,
-                              prefixIcon: Icon(
-                                FeatherIcons.user,
-                                color: theme.colorScheme.onBackground,
-                              ),
-                              hintText: "First Name",
-
-                              enabledBorder: outlineInputBorderenable,
-                              focusedBorder: outlineInputBorderfocus,
-                              border: outlineInputBorderenable,
-                              contentPadding: FxSpacing.all(16),
-                              hintStyle: FxTextStyle.bodyMedium(),
-                              isCollapsed: true),
-                          maxLines: 1,
-                          controller: controller.firstNameControllers[index],
-                          validator: controller.validateFirstName,
-                          cursorColor: theme.colorScheme.onBackground,
-                        ),
-
-                        FxSpacing.height(20),
-
-                        Container(
-                          child: Align(
-                            alignment: Alignment.centerLeft,
-                            child: FxText.bodyLarge(
-                              'Last Name',
-                              letterSpacing: 0,
-                              fontWeight: 600,
-                            ),
-                          ),
-
-                        ),
-                        FxSpacing.height(10),
-
-                        TextFormField(
-                          style: FxTextStyle.bodyMedium(),
-                          decoration: InputDecoration(
-                              floatingLabelBehavior: FloatingLabelBehavior.never,
-                              filled: true,
-                              isDense: true,
-                              fillColor: Colors.white,
-                              prefixIcon: Icon(
-                                FeatherIcons.user,
-                                color: theme.colorScheme.onBackground,
-                              ),
-                              hintText: "Last Name",
-                              enabledBorder: outlineInputBorderenable,
-                              focusedBorder: outlineInputBorderfocus,
-                              border: outlineInputBorderenable,
-                              contentPadding: FxSpacing.all(16),
-                              hintStyle: FxTextStyle.bodyMedium(),
-                              isCollapsed: true),
-                          maxLines: 1,
-                          controller: controller.lastNameControllers[index],
-                          validator: controller.validateLastName,
-                          cursorColor: theme.colorScheme.onBackground,
-                        ),
-
-                        FxSpacing.height(20),
-
-                        Container(
-                          child: Align(
-                            alignment: Alignment.centerLeft,
-                            child: FxText.bodyLarge(
-                              'Email',
-                              // textAlign: TextAlign.left,
-                              letterSpacing: 0,
-                              fontWeight: 600,
-                            ),
-                          ),
-
-                        ),
-                        FxSpacing.height(10),
-
-                        TextFormField(
-                          style: FxTextStyle.bodyMedium(),
-                          decoration: InputDecoration(
-                              floatingLabelBehavior: FloatingLabelBehavior.never,
-                              filled: true,
-                              isDense: true,
-                              fillColor: Colors.white,
-                              prefixIcon: Icon(
-                                Icons.email_outlined,
-                                color: theme.colorScheme.onBackground,
-                              ),
-                              hintText: "Email",
-                              enabledBorder: outlineInputBorderenable,
-                              focusedBorder: outlineInputBorderfocus,
-                              border: outlineInputBorderenable,
-                              contentPadding: FxSpacing.all(16),
-                              hintStyle: FxTextStyle.bodyMedium(),
-                              isCollapsed: true),
-                          maxLines: 1,
-                          controller: controller.emailControllers[index],
-                          validator: controller.validateEmail,
-                          cursorColor: theme.colorScheme.onBackground,
-                        ),
-
-                        FxSpacing.height(20),
-
-                        Container(
-                          child: Align(
-                            alignment: Alignment.centerLeft,
-                            child: FxText.bodyLarge(
-                              'Nationality',
-                              // textAlign: TextAlign.left,
-                              letterSpacing: 0,
-                              fontWeight: 600,
-                            ),
-                          ),
-
-                        ),
-                        FxSpacing.height(10),
-                        Container(
-                          decoration: BoxDecoration(
-                              color: Colors.white,
-                              border: Border.all(width: 1, color: Colors.black),
-                              borderRadius: BorderRadius.circular(15)),
-                          height: 50,
-                          width: MediaQuery.of(context).size.width,
-                          child: DropdownButtonHideUnderline(
-                            child: ButtonTheme(
-                              alignedDropdown: true,
-                              child: DropdownButton(
-                                iconSize: 25.0,
-                                dropdownColor: Colors.white,
-                                icon: const Icon(
-                                  Icons.arrow_drop_down,
-                                  color: Colors.black,
+                            Container(
+                              child: Align(
+                                alignment: Alignment.centerLeft,
+                                child: FxText.bodyLarge(
+                                  'First Name',
+                                  fontWeight: 600,
                                 ),
-                                value: controller.selectedCountry[index],
-                                hint: Center(
-                                  child: FxText.labelLarge(
-                                    "Choose country",
-                                    fontWeight: 600,
-                                    color: Colors.black54,
-                                    // color: theme.colorScheme.onPrimary,
-                                    letterSpacing: 0.4,
+                                // ),
+                              ),
+                            ),
+                            FxSpacing.height(10),
+
+                            SizedBox(
+                              width: MediaQuery.of(context).size.width* 0.9,
+                              height: 50,
+                              child: TextFormField(
+                                style: FxTextStyle.bodyMedium(),
+                                decoration: InputDecoration(
+                                    floatingLabelBehavior: FloatingLabelBehavior.never,
+                                    filled: true,
+                                    isDense: true,
+                                    fillColor: Colors.white,
+                                    prefixIcon: Icon(
+                                      FeatherIcons.user,
+                                      color: theme.colorScheme.onBackground,
+                                    ),
+                                    hintText: "First Name",
+
+                                    enabledBorder: outlineInputBorderenable,
+                                    focusedBorder: outlineInputBorderfocus,
+                                    border: outlineInputBorderenable,
+                                    contentPadding: FxSpacing.all(16),
+                                    hintStyle: FxTextStyle.bodyMedium(),
+                                    isCollapsed: true),
+                                maxLines: 1,
+                                controller: controller.firstNameControllers[index],
+                                validator: controller.validateFirstName,
+                                cursorColor: theme.colorScheme.onBackground,
+                              ),
+                            ),
+
+                            FxSpacing.height(20),
+
+                            Container(
+                              child: Align(
+                                alignment: Alignment.centerLeft,
+                                child: FxText.bodyLarge(
+                                  'Last Name',
+                                  letterSpacing: 0,
+                                  fontWeight: 600,
+                                ),
+                              ),
+
+                            ),
+                            FxSpacing.height(10),
+
+                            SizedBox(
+                              width: MediaQuery.of(context).size.width* 0.9,
+                              height: 50,
+                              child: TextFormField(
+                                style: FxTextStyle.bodyMedium(),
+                                decoration: InputDecoration(
+                                    floatingLabelBehavior: FloatingLabelBehavior.never,
+                                    filled: true,
+                                    isDense: true,
+                                    fillColor: Colors.white,
+                                    prefixIcon: Icon(
+                                      FeatherIcons.user,
+                                      color: theme.colorScheme.onBackground,
+                                    ),
+                                    hintText: "Last Name",
+                                    enabledBorder: outlineInputBorderenable,
+                                    focusedBorder: outlineInputBorderfocus,
+                                    border: outlineInputBorderenable,
+                                    contentPadding: FxSpacing.all(16),
+                                    hintStyle: FxTextStyle.bodyMedium(),
+                                    isCollapsed: true),
+                                maxLines: 1,
+                                controller: controller.lastNameControllers[index],
+                                validator: controller.validateLastName,
+                                cursorColor: theme.colorScheme.onBackground,
+                              ),
+                            ),
+
+                            FxSpacing.height(20),
+
+                            Container(
+                              child: Align(
+                                alignment: Alignment.centerLeft,
+                                child: FxText.bodyLarge(
+                                  'Email',
+                                  // textAlign: TextAlign.left,
+                                  letterSpacing: 0,
+                                  fontWeight: 600,
+                                ),
+                              ),
+
+                            ),
+                            FxSpacing.height(10),
+
+                            SizedBox(
+                              width: MediaQuery.of(context).size.width* 0.9,
+                              height: 50,
+                              child: TextFormField(
+                                style: FxTextStyle.bodyMedium(),
+                                decoration: InputDecoration(
+                                    floatingLabelBehavior: FloatingLabelBehavior.never,
+                                    filled: true,
+                                    isDense: true,
+                                    fillColor: Colors.white,
+                                    prefixIcon: Icon(
+                                      Icons.email_outlined,
+                                      color: theme.colorScheme.onBackground,
+                                    ),
+                                    hintText: "Email",
+                                    enabledBorder: outlineInputBorderenable,
+                                    focusedBorder: outlineInputBorderfocus,
+                                    border: outlineInputBorderenable,
+                                    contentPadding: FxSpacing.all(16),
+                                    hintStyle: FxTextStyle.bodyMedium(),
+                                    isCollapsed: true),
+                                maxLines: 1,
+                                controller: controller.emailControllers[index],
+                                validator: controller.validateEmail,
+                                cursorColor: theme.colorScheme.onBackground,
+                              ),
+                            ),
+
+                            FxSpacing.height(20),
+
+                            Container(
+                              child: Align(
+                                alignment: Alignment.centerLeft,
+                                child: FxText.bodyLarge(
+                                  'Nationality',
+                                  // textAlign: TextAlign.left,
+                                  letterSpacing: 0,
+                                  fontWeight: 600,
+                                ),
+                              ),
+
+                            ),
+                            FxSpacing.height(10),
+                            Container(
+                              decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  border: Border.all(width: 1, color: Colors.black),
+                                  // color: const Color(0xff1529e8),
+                                  borderRadius: BorderRadius.circular(4)),
+                              height: 50.0,
+                              width: MediaQuery.of(context).size.width* 0.9,
+                              child:
+                              // DropdownButtonHideUnderline(
+                              //   child: ButtonTheme(
+                              //     alignedDropdown: true,
+                              //     child: DropdownButton(
+                              //       iconSize: 25.0,
+                              //       dropdownColor: Colors.white,
+                              //       icon: const Icon(
+                              //         Icons.arrow_drop_down,
+                              //         color: Colors.black,
+                              //       ),
+                              //       value: controller.selectedVisa,
+                              //       hint: Center(
+                              //         child: FxText.labelLarge(
+                              //           "Choose Nationality",
+                              //           fontWeight: 600,
+                              //           color: Colors.black54,
+                              //           letterSpacing: 0.4,
+                              //         ),
+                              //       ),
+                              //       items:
+                              //       countryList.first.countries.isNotEmpty ? countryList.first.countries
+                              //           .map((value) {
+                              //         return DropdownMenuItem<String>(
+                              //             value: value.id[index].toString(),
+                              //             child: Center(
+                              //               child: Text(
+                              //                 value.countryName[index],
+                              //                 style: FxTextStyle
+                              //                     .bodyMedium(),
+                              //               ),
+                              //             ));
+                              //       }).toList() :  [].map((value) {
+                              //         return DropdownMenuItem<String>(
+                              //             value: value,
+                              //             child: Center(
+                              //               child: Text(
+                              //                 value,
+                              //                 style: FxTextStyle
+                              //                     .bodyMedium(),
+                              //               ),
+                              //             ));
+                              //       }).toList(),
+                              //       onChanged: (value) {
+                              //         setState(() {
+                              //           // print(value.toString());
+                              //           // print(controller.selectedVisa.toString());
+                              //           controller.selectedCountry[index] = value.toString() ;
+                              //         });
+                              //       },
+                              //       style: FxTextStyle.bodyMedium(),
+                              //     ),
+                              //   ),
+                              // ),
+                              DropdownButtonHideUnderline(
+                                child: ButtonTheme(
+                                  alignedDropdown: true,
+                                  child: DropdownButton(
+                                    iconSize: 25.0,
+                                    dropdownColor: Colors.white,
+                                    icon: const Icon(
+                                      Icons.arrow_drop_down,
+                                      color: Colors.black,
+                                    ),
+                                    value: controller.selectedCountry[index],
+                                    hint: Center(
+                                      child: FxText.labelLarge(
+                                        "Choose country",
+                                        fontWeight: 600,
+                                        color: Colors.black54,
+                                        // color: theme.colorScheme.onPrimary,
+                                        letterSpacing: 0.4,
+                                      ),
+                                    ),
+                                    items: controller.selectCountry[index].map((CountryElement value) {
+                                      return DropdownMenuItem<CountryElement>(
+                                          value: value,
+                                          child: Center(
+                                            child: Text(
+                                              value.countryName,
+                                              style: FxTextStyle.bodyMedium(),
+                                            ),
+                                          ));
+                                    }).toList(),
+                                    onChanged: ( CountryElement? value) {
+                                      setState(() {
+                                        controller.selectedCountry[index] = value!;
+                                      });
+                                    },
+                                    style: FxTextStyle.bodyMedium(),
                                   ),
                                 ),
-                                items: controller.selectCountry[index].map((String value) {
-                                  return DropdownMenuItem<String>(
-                                      value: value,
-                                      child: Center(
-                                        child: Text(
-                                          value,
-                                          style: FxTextStyle.bodyMedium(),
-                                        ),
-                                      ));
-                                }).toList(),
-                                onChanged: (value) {
-                                  setState(() {
-                                    controller.selectedCountry[index] = value.toString();
-                                  });
-                                },
+                              ),
+                            ),
+                            FxSpacing.height(20),
+
+                            Container(
+                              child: Align(
+                                alignment: Alignment.centerLeft,
+                                child: FxText.bodyLarge(
+                                  'Contact Number',
+                                  letterSpacing: 0,
+                                  fontWeight: 600,
+                                ),
+                              ),
+
+                            ),
+                            FxSpacing.height(10),
+
+                            SizedBox(
+                              width: MediaQuery.of(context).size.width* 0.9,
+                              height: 50,
+                              child: TextFormField(
                                 style: FxTextStyle.bodyMedium(),
+                                decoration: InputDecoration(
+                                    floatingLabelBehavior: FloatingLabelBehavior.never,
+                                    filled: true,
+                                    isDense: true,
+                                    fillColor: Colors.white,
+                                    prefixIcon: Icon(
+                                      FeatherIcons.phone,
+                                      color: theme.colorScheme.onBackground,
+                                    ),
+                                    hintText: "Contact Number",
+                                    enabledBorder: outlineInputBorderenable,
+                                    focusedBorder: outlineInputBorderfocus,
+                                    border: outlineInputBorderenable,
+                                    contentPadding: FxSpacing.all(16),
+                                    hintStyle: FxTextStyle.bodyMedium(),
+                                    isCollapsed: true),
+                                maxLines: 1,
+                                controller: controller.contactControllers[index],
+                                validator: controller.validatePhone,
+                                cursorColor: theme.colorScheme.onBackground,
                               ),
                             ),
-                          ),
-                        ),
-                        FxSpacing.height(20),
 
-                        Container(
-                          child: Align(
-                            alignment: Alignment.centerLeft,
-                            child: FxText.bodyLarge(
-                              'Contact Number',
-                              letterSpacing: 0,
-                              fontWeight: 600,
-                            ),
-                          ),
+                            FxSpacing.height(20),
 
-                        ),
-                        FxSpacing.height(10),
-
-                        TextFormField(
-                          style: FxTextStyle.bodyMedium(),
-                          decoration: InputDecoration(
-                              floatingLabelBehavior: FloatingLabelBehavior.never,
-                              filled: true,
-                              isDense: true,
-                              fillColor: Colors.white,
-                              prefixIcon: Icon(
-                                FeatherIcons.phone,
-                                color: theme.colorScheme.onBackground,
+                            Container(
+                              child: Align(
+                                alignment: Alignment.centerLeft,
+                                child: FxText.bodyLarge(
+                                  'Passport Number',
+                                  letterSpacing: 0,
+                                  fontWeight: 600,
+                                ),
                               ),
-                              hintText: "Contact Number",
-                              enabledBorder: outlineInputBorderenable,
-                              focusedBorder: outlineInputBorderfocus,
-                              border: outlineInputBorderenable,
-                              contentPadding: FxSpacing.all(16),
-                              hintStyle: FxTextStyle.bodyMedium(),
-                              isCollapsed: true),
-                          maxLines: 1,
-                          controller: controller.contactControllers[index],
-                          validator: controller.validatePhone,
-                          cursorColor: theme.colorScheme.onBackground,
-                        ),
 
-                        FxSpacing.height(20),
-
-                        Container(
-                          child: Align(
-                            alignment: Alignment.centerLeft,
-                            child: FxText.bodyLarge(
-                              'Passport Number',
-                              letterSpacing: 0,
-                              fontWeight: 600,
                             ),
-                          ),
+                            FxSpacing.height(10),
 
-                        ),
-                        FxSpacing.height(10),
-
-                        TextFormField(
-                          style: FxTextStyle.bodyMedium(),
-                          decoration: InputDecoration(
-                              floatingLabelBehavior: FloatingLabelBehavior.never,
-                              filled: true,
-                              isDense: true,
-                              fillColor: Colors.white,
-                              prefixIcon: Icon(
-                                FeatherIcons.fileText,
-                                color: theme.colorScheme.onBackground,
+                            SizedBox(
+                              width: MediaQuery.of(context).size.width* 0.9,
+                              height: 50,
+                              child: TextFormField(
+                                style: FxTextStyle.bodyMedium(),
+                                decoration: InputDecoration(
+                                    floatingLabelBehavior: FloatingLabelBehavior.never,
+                                    filled: true,
+                                    isDense: true,
+                                    fillColor: Colors.white,
+                                    prefixIcon: Icon(
+                                      FeatherIcons.fileText,
+                                      color: theme.colorScheme.onBackground,
+                                    ),
+                                    hintText: "Passport Number",
+                                    enabledBorder: outlineInputBorderenable,
+                                    focusedBorder: outlineInputBorderfocus,
+                                    border: outlineInputBorderenable,
+                                    contentPadding: FxSpacing.all(16),
+                                    hintStyle: FxTextStyle.bodyMedium(),
+                                    isCollapsed: true),
+                                maxLines: 1,
+                                controller: controller.passportControllers[index],
+                                validator: controller.validatePassport,
+                                cursorColor: theme.colorScheme.onBackground,
                               ),
-                              hintText: "Passport Number",
-                              enabledBorder: outlineInputBorderenable,
-                              focusedBorder: outlineInputBorderfocus,
-                              border: outlineInputBorderenable,
-                              contentPadding: FxSpacing.all(16),
-                              hintStyle: FxTextStyle.bodyMedium(),
-                              isCollapsed: true),
-                          maxLines: 1,
-                          controller: controller.passportControllers[index],
-                          validator: controller.validatePassport,
-                          cursorColor: theme.colorScheme.onBackground,
-                        ),
-
-                        FxSpacing.height(20),
-
-                        Container(
-                          child: Align(
-                            alignment: Alignment.centerLeft,
-                            child: FxText.bodyLarge(
-                              'Date of Birth',
-                              letterSpacing: 0,
-                              fontWeight: 600,
                             ),
-                          ),
-                        ),
-                        FxSpacing.height(10),
 
-                        TextFormField(
-                          style: FxTextStyle.bodyMedium(),
-                          decoration: InputDecoration(
-                              floatingLabelBehavior: FloatingLabelBehavior.never,
-                              filled: true,
-                              isDense: true,
-                              fillColor: Colors.white,
-                              prefixIcon: Icon(
-                                Icons.calendar_month,
-                                color: theme.colorScheme.onBackground,
+                            FxSpacing.height(20),
+
+                            Container(
+                              child: Align(
+                                alignment: Alignment.centerLeft,
+                                child: FxText.bodyLarge(
+                                  'Date of Birth',
+                                  letterSpacing: 0,
+                                  fontWeight: 600,
+                                ),
                               ),
-                              hintText: "dd/mm/yyyy",
-                              enabledBorder: outlineInputBorderenable,
-                              focusedBorder: outlineInputBorderfocus,
-                              border: outlineInputBorderenable,
-                              contentPadding: FxSpacing.all(16),
-                              hintStyle: FxTextStyle.bodyMedium(),
-                              isCollapsed: true),
-                          // maxLines: 1,
-                          controller: controller.dobControllers[index],
-                          // validator: controller.validateAddress,
-                          cursorColor: theme.colorScheme.onBackground,
-                          onTap: ()async{
-                            DateTime? pickedDate = await showDatePicker(
-                                context: context,
-                                initialDate: DateTime.now(), firstDate: DateTime(1900), lastDate: DateTime.now());
-
-                            if(pickedDate != null){
-                              setState(() {
-                                controller.dobControllers[index].text = DateFormat("dd/MM/yyy").format(pickedDate);
-                              });
-                            }
-                          },
-                        ),
-
-                        FxSpacing.height(10),
-
-                        Container(
-                          child: Align(
-                            alignment: Alignment.centerLeft,
-                            child: FxText.bodyLarge(
-                              'Passport Expiry',
-                              letterSpacing: 0,
-                              fontWeight: 600,
                             ),
-                          ),
-                        ),
-                        FxSpacing.height(10),
+                            FxSpacing.height(10),
 
-                        TextFormField(
-                          style: FxTextStyle.bodyMedium(),
-                          decoration: InputDecoration(
-                              floatingLabelBehavior: FloatingLabelBehavior.never,
-                              filled: true,
-                              isDense: true,
-                              fillColor: Colors.white,
-                              prefixIcon: Icon(
-                                Icons.calendar_month,
-                                color: theme.colorScheme.onBackground,
+                            SizedBox(
+                              width: MediaQuery.of(context).size.width* 0.9,
+                              height: 50,
+                              child: TextFormField(
+                                style: FxTextStyle.bodyMedium(),
+                                decoration: InputDecoration(
+                                    floatingLabelBehavior: FloatingLabelBehavior.never,
+                                    filled: true,
+                                    isDense: true,
+                                    fillColor: Colors.white,
+                                    prefixIcon: Icon(
+                                      Icons.calendar_month,
+                                      color: theme.colorScheme.onBackground,
+                                    ),
+                                    hintText: "dd/mm/yyyy",
+                                    enabledBorder: outlineInputBorderenable,
+                                    focusedBorder: outlineInputBorderfocus,
+                                    border: outlineInputBorderenable,
+                                    contentPadding: FxSpacing.all(16),
+                                    hintStyle: FxTextStyle.bodyMedium(),
+                                    isCollapsed: true),
+                                // maxLines: 1,
+                                controller: controller.dobControllers[index],
+                                validator: controller.validateDOB,
+                                cursorColor: theme.colorScheme.onBackground,
+                                onTap: ()async{
+                                  DateTime? pickedDate = await showDatePicker(
+                                      context: context,
+                                      initialDate: DateTime.now(), firstDate: DateTime(1900), lastDate: DateTime.now());
+
+                                  if(pickedDate != null){
+                                    setState(() {
+                                      controller.dobControllers[index].text = DateFormat("dd/MM/yyy").format(pickedDate);
+                                    });
+                                  }
+                                },
                               ),
-                              hintText: "dd/mm/yyyy",
-                              enabledBorder: outlineInputBorderenable,
-                              focusedBorder: outlineInputBorderfocus,
-                              border: outlineInputBorderenable,
-                              contentPadding: FxSpacing.all(16),
-                              hintStyle: FxTextStyle.bodyMedium(),
-                              isCollapsed: true),
-                          // maxLines: 1,
-                          controller: controller.expiryControllers[index],
-                          // validator: controller.validateAddress,
-                          cursorColor: theme.colorScheme.onBackground,
-                          onTap: ()async{
-                            DateTime? pickedDate = await showDatePicker(
-                                context: context,
-                                initialDate: DateTime.now(), firstDate: DateTime(2000), lastDate: DateTime(2100));
+                            ),
 
-                            if(pickedDate != null){
-                              setState(() {
-                                controller.expiryControllers[index].text = DateFormat("dd/MM/yyy").format(pickedDate);
-                              });
-                            }
-                          },
+                            FxSpacing.height(10),
+
+                            Container(
+                              child: Align(
+                                alignment: Alignment.centerLeft,
+                                child: FxText.bodyLarge(
+                                  'Passport Expiry',
+                                  letterSpacing: 0,
+                                  fontWeight: 600,
+                                ),
+                              ),
+                            ),
+                            FxSpacing.height(10),
+
+                            SizedBox(
+                              width: MediaQuery.of(context).size.width* 0.9,
+                              height: 50,
+                              child: TextFormField(
+                                style: FxTextStyle.bodyMedium(),
+                                decoration: InputDecoration(
+                                    floatingLabelBehavior: FloatingLabelBehavior.never,
+                                    filled: true,
+                                    isDense: true,
+                                    fillColor: Colors.white,
+                                    prefixIcon: Icon(
+                                      Icons.calendar_month,
+                                      color: theme.colorScheme.onBackground,
+                                    ),
+                                    hintText: "dd/mm/yyyy",
+                                    enabledBorder: outlineInputBorderenable,
+                                    focusedBorder: outlineInputBorderfocus,
+                                    border: outlineInputBorderenable,
+                                    contentPadding: FxSpacing.all(16),
+                                    hintStyle: FxTextStyle.bodyMedium(),
+                                    isCollapsed: true),
+                                // maxLines: 1,
+                                controller: controller.expiryControllers[index],
+                                validator: controller.validateExpiry,
+                                cursorColor: theme.colorScheme.onBackground,
+                                onTap: ()async{
+                                  DateTime? pickedDate = await showDatePicker(
+                                      context: context,
+                                      initialDate: DateTime.now(), firstDate: DateTime(2000), lastDate: DateTime(2100));
+
+                                  if(pickedDate != null){
+                                    setState(() {
+                                      controller.expiryControllers[index].text = DateFormat("dd/MM/yyy").format(pickedDate);
+                                    });
+                                  }
+                                },
+                              ),
+                            ),
+                            FxSpacing.height(5),
+                          ],
                         ),
-                        FxSpacing.height(5),
-                      ],
+                      );
+                    },
+                    itemCount: controller.selectedTraveller!,
+
+                      separatorBuilder: (BuildContext context, int index) {
+                        return SizedBox(height: 10,);
+                      },
                     ),
-                  );
-                },
-                itemCount: controller.selectedTraveller!,
-
-                  separatorBuilder: (BuildContext context, int index) {
-                    return SizedBox(height: 10,);
-                  },
+                  ],
                 ) ,
 
             ),
@@ -1032,35 +1258,82 @@ String userName = "";
             FxButton(
               padding: FxSpacing.y(12),
               onPressed: () {
-                if(controller.selectedTitle.isEmpty){
-                  ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text("Please Select Visa type")));
-                }else if(controller.firstNameControllers[0].text == null ){
-                  ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text("Please enter first name")));
-                }else{
+                print(controller.selectedTitle.first);
+                if(controller.formKey.currentState!.validate()) {
+                  // controller.formKey.currentState!.save();
+
                   setState(() {
                     controller.currentPage++;
-                    // isFinished0 = true;
                   });
+
+                  List<Map> travellersList = [];
+                  for (int i = 0; i <= controller.selectedTraveller! - 1; i++) {
+                    var inputFormat = DateFormat('dd/MM/yyyy');
+                    var date1 = inputFormat.parse(
+                        controller.expiryControllers[i].text);
+                    var date2 = inputFormat.parse(
+                        controller.dobControllers[i].text);
+
+                    var outputFormat = DateFormat('yyyy-MM-dd');
+                    int expiryDay = DateTime
+                        .parse(outputFormat.parse(date1.toString()).toString())
+                        .day;
+                    int expiryMonth = DateTime
+                        .parse(outputFormat.parse(date1.toString()).toString())
+                        .month;
+                    int expiryYear = DateTime
+                        .parse(outputFormat.parse(date1.toString()).toString())
+                        .year;
+                    int dobDay = DateTime
+                        .parse(outputFormat.parse(date2.toString()).toString())
+                        .day;
+                    int dobMonth = DateTime
+                        .parse(outputFormat.parse(date2.toString()).toString())
+                        .month;
+                    int dobYear = DateTime
+                        .parse(outputFormat.parse(date2.toString()).toString())
+                        .year;
+
+
+                    travellersList.add(
+                        {
+                          "title": controller.selectedTitle[i].toLowerCase(),
+                          "firstName": controller.firstNameControllers[i].text,
+                          "lastName": controller.lastNameControllers[i].text,
+                          "expiryDate": {
+                            "day": expiryDay,
+                            "month": expiryMonth,
+                            "year": expiryYear
+                          },
+                          "dateOfBirth": {
+                            "day": dobDay,
+                            "month": dobMonth,
+                            "year": dobYear
+                          },
+                          "country": controller.selectedCountry[i].id,
+                          "passportNo": controller.passportControllers[i].text,
+                          "contactNo": controller.contactControllers[i].text,
+                          "email": controller.emailControllers[i].text
+                        }
+                    );
+                  }
+                  Map body = {
+                    "visaType": controller.selectedVisa,
+                    "email": controller.emailTE.text,
+                    "contactNo": controller.phoneTE.text,
+                    "onwardDate": controller.fromDateTE.text,
+                    "returnDate": controller.toDateTE.text,
+                    "noOfTravellers": controller.selectedTraveller,
+                    "travellers": travellersList,
+                    "country": "63db60f9f926b340dbb3f446"
+                  };
+
+
+                  print(body);
+                  controller.postCreateVisa(
+                      body
+                  );
                 }
-
-                // if(controller.formKey.currentState!.validate()){
-                //   controller.formKey.currentState!.save();
-                //
-                //     if(
-                //     controllers.text.isNotEmpty
-                //         // controller.LnameTE.text.isNotEmpty &&
-                //         // controller.emailTE.text.isNotEmpty &&
-                //         // controller.phoneTE.text.isNotEmpty &&
-                //         // controller.passportTE.text.isNotEmpty &&
-                //         // controller.addressTE.text.isNotEmpty
-                //     )
-
-
-
-                  //
-                  // }
 
               },
               borderRadiusAll: 4,
@@ -1079,488 +1352,506 @@ String userName = "";
   }
 
   Widget uploadDetails() {
-    return Container(
-      padding: FxSpacing.x(15),
-      child: ListView(
-        // crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            child: Align(
-              alignment: Alignment.center,
-              child: FxText.bodyLarge(
-                'Upload Details',
-                // textAlign: TextAlign.left,
-                letterSpacing: 0,
-                fontWeight: 600,
+    return Form(
+      key: controller.formKey,
+      child: Container(
+        padding: FxSpacing.x(15),
+        child: ListView(
+          // crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              child: Align(
+                alignment: Alignment.center,
+                child: FxText.bodyLarge(
+                  'Upload Details',
+                  // textAlign: TextAlign.left,
+                  letterSpacing: 0,
+                  fontWeight: 600,
 
+                ),
+                // ),
               ),
-              // ),
             ),
-          ),
-          SizedBox(height: 20,),
+            SizedBox(height: 20,),
 
-          ListView.separated(
-            shrinkWrap: true,
-              physics: NeverScrollableScrollPhysics(),
-              itemBuilder: (BuildContext context, int index){
+            ListView.separated(
+              shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(),
+                itemBuilder: (BuildContext context, int index){
 
-              _fileName.add("");
-              _fileName2.add("");
-              _fileName3.add("");
-              _fileName4.add("");
-              _imageFile.add(null);
-                return  Container(
-                  padding: EdgeInsets.all(10),
-                  color: Colors.white,
-                  child: Column(
-                    children: [
-                      Align(
-                        alignment: Alignment.center,
-                        child:   controller.selectedTraveller ==1 ? FxText.bodyLarge(
-                          "",
-                          // textAlign: TextAlign.left,
-                          letterSpacing: 0,
-                          fontWeight: 600,
-                        ) : controller.travellerNumber[index]>= 1? FxText.bodyLarge(
-                          "Passenger ${controller.travellerNumber[index]}" ,
-                          // textAlign: TextAlign.left,
-                          letterSpacing: 0,
-                          fontWeight: 600,
-                        ):  const Text(""),
-                        // ),
-                      ),
-
-                      const SizedBox(height: 5,),
-
-                      Card(
-                        elevation:2,
-                        shape:RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(15),
+                _fileName.add("");
+                _fileName2.add("");
+                _fileName3.add("");
+                _fileName4.add("");
+                _imageFile.add(null);
+                  return  Container(
+                    padding: EdgeInsets.all(10),
+                    color: Colors.white,
+                    child: Column(
+                      children: [
+                        Align(
+                          alignment: Alignment.center,
+                          child:   controller.selectedTraveller ==1 ? FxText.bodyLarge(
+                            "",
+                            // textAlign: TextAlign.left,
+                            letterSpacing: 0,
+                            fontWeight: 600,
+                          ) : controller.travellerNumber[index]>= 1? FxText.bodyLarge(
+                            "Passenger ${controller.travellerNumber[index]}" ,
+                            // textAlign: TextAlign.left,
+                            letterSpacing: 0,
+                            fontWeight: 600,
+                          ):  const Text(""),
+                          // ),
                         ),
 
-                        child: Container(
-                          decoration:BoxDecoration(
-                            color: Colors.grey.withAlpha(10),
+                        const SizedBox(height: 5,),
+
+                        Card(
+                          elevation:2,
+                          shape:RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(15),
                           ),
-                          padding:EdgeInsets.all(10),
-                          child: Column(
-                            children: [
-                              Container(
-                                width: MediaQuery.of(context).size.width*0.9,
-                                child: Row(
-                                  // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    FittedBox(
-                                        fit:BoxFit.fitWidth,
-                                        child:RichText(
-                                          text: TextSpan(
-                                            text: 'First name: ',
-                                            style: TextStyle(fontSize: 16,color: Colors.black),
-                                            children: <TextSpan>[
-                                              TextSpan(
-                                                  text: '${controller.firstNameControllers[index].text}',
-                                                  style: TextStyle(fontSize: 16,color: Color(0xff1529e8))
-                                              ),
-                                            ],
-                                          ),
-                                        )
-                                    ),
-                                    SizedBox(width: 10,),
-                                    FittedBox(
-                                        fit: BoxFit.fitWidth,
-                                        child:RichText(
-                                          text: TextSpan(
-                                            text: 'Last name: ',
-                                            style: TextStyle(fontSize: 16,color: Colors.black),
-                                            children: <TextSpan>[
-                                              TextSpan(
-                                                  text: '${controller.lastNameControllers[index].text}',
-                                                  style: TextStyle(fontSize: 16,color: Color(0xff1529e8))
-                                              ),
-                                            ],
-                                          ),
-                                        )
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              SizedBox(height: 5,),
-                              Container(
-                                width: MediaQuery.of(context).size.width*0.9,
-                                child: Row(
-                                  children: [
-                                    FittedBox(
-                                        fit:BoxFit.fitWidth,
-                                        child: RichText(
-                                          text: TextSpan(
-                                            text: 'DOB: ',
-                                            style: TextStyle(fontSize: 16,color: Colors.black),
-                                            children: <TextSpan>[
-                                              TextSpan(
-                                                  text: '${controller.dobControllers[index].text}',
-                                                  style: TextStyle(fontSize: 16,color:  Color(0xff1529e8))
-                                              ),
-                                            ],
-                                          ),
-                                        )
 
-                              ),
-                                    SizedBox(width: 10,),
-                                    FittedBox(
-                                        fit: BoxFit.fitWidth,
-                                        child:RichText(
-                                          text: TextSpan(
-                                            text: 'Visit Date: ',
-                                            style: TextStyle(fontSize: 16,color: Colors.black),
-                                            children: <TextSpan>[
-                                              TextSpan(
-                                                  text: '${controller.fromDateTE.text}',
-                                                  style: TextStyle(fontSize: 16,color:  Color(0xff1529e8))
-                                              ),
-                                            ],
-                                          ),
-                                        )
-                                    ),
-                                  ],
+                          child: Container(
+                            decoration:BoxDecoration(
+                              color: Colors.grey.withAlpha(10),
+                              borderRadius: BorderRadius.circular(15),
+                            ),
+                            padding:EdgeInsets.all(10),
+                            child: Column(
+                              children: [
+                                Container(
+                                  width: MediaQuery.of(context).size.width*0.9,
+                                  child: Row(
+                                    // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      FittedBox(
+                                          fit:BoxFit.fitWidth,
+                                          child:RichText(
+                                            text: TextSpan(
+                                              text: 'First name: ',
+                                              style: TextStyle(fontSize: 16,color: Colors.black),
+                                              children: <TextSpan>[
+                                                TextSpan(
+                                                    text: '${controller.firstNameControllers[index].text}',
+                                                    style: TextStyle(fontSize: 16,color: Color(0xff1529e8))
+                                                ),
+                                              ],
+                                            ),
+                                          )
+                                      ),
+                                      SizedBox(width: 10,),
+                                      FittedBox(
+                                          fit: BoxFit.fitWidth,
+                                          child:RichText(
+                                            text: TextSpan(
+                                              text: 'Last name: ',
+                                              style: TextStyle(fontSize: 16,color: Colors.black),
+                                              children: <TextSpan>[
+                                                TextSpan(
+                                                    text: '${controller.lastNameControllers[index].text}',
+                                                    style: TextStyle(fontSize: 16,color: Color(0xff1529e8))
+                                                ),
+                                              ],
+                                            ),
+                                          )
+                                      ),
+                                    ],
+                                  ),
                                 ),
-                              ),
-                              SizedBox(height: 5,),
-                              Container(
-                                width: MediaQuery.of(context).size.width*0.9,
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    FittedBox(
-                                        fit:BoxFit.fitWidth,
-                                        child: RichText(
-                                          text: TextSpan(
-                                            text: 'Passport number: ',
-                                            style: TextStyle(fontSize: 16,color: Colors.black),
-                                            children: <TextSpan>[
-                                              TextSpan(
-                                                  text: '${controller.passportControllers[index].text}',
-                                                  style: TextStyle(fontSize: 16,color: Color(0xff1529e8))
-                                              ),
-                                            ],
-                                          ),
-                                        )
-                                    ),
-                                    SizedBox(height: 5,),
-                                    FittedBox(
-                                        fit: BoxFit.fitWidth,
-                                        child: RichText(
-                                          text: TextSpan(
-                                            text: 'Passport expiry: ',
-                                            style: TextStyle(fontSize: 16,color: Colors.black),
-                                            children: <TextSpan>[
-                                              TextSpan(
-                                                  text: '${controller.expiryControllers[index].text}',
-                                                  style: TextStyle(fontSize: 16,color:  Color(0xff1529e8))
-                                              ),
-                                            ],
-                                          ),
-                                        )
-                                    ),
-                                  ],
+                                SizedBox(height: 5,),
+                                Container(
+                                  width: MediaQuery.of(context).size.width*0.9,
+                                  child: Row(
+                                    children: [
+                                      FittedBox(
+                                          fit:BoxFit.fitWidth,
+                                          child: RichText(
+                                            text: TextSpan(
+                                              text: 'DOB: ',
+                                              style: TextStyle(fontSize: 16,color: Colors.black),
+                                              children: <TextSpan>[
+                                                TextSpan(
+                                                    text: '${controller.dobControllers[index].text}',
+                                                    style: TextStyle(fontSize: 16,color:  Color(0xff1529e8))
+                                                ),
+                                              ],
+                                            ),
+                                          )
+
                                 ),
-                              ),
+                                      SizedBox(width: 10,),
+                                      FittedBox(
+                                          fit: BoxFit.fitWidth,
+                                          child:RichText(
+                                            text: TextSpan(
+                                              text: 'Visit Date: ',
+                                              style: TextStyle(fontSize: 16,color: Colors.black),
+                                              children: <TextSpan>[
+                                                TextSpan(
+                                                    text: '${controller.fromDateTE.text}',
+                                                    style: TextStyle(fontSize: 16,color:  Color(0xff1529e8))
+                                                ),
+                                              ],
+                                            ),
+                                          )
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                SizedBox(height: 5,),
+                                Container(
+                                  width: MediaQuery.of(context).size.width*0.9,
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      FittedBox(
+                                          fit:BoxFit.fitWidth,
+                                          child: RichText(
+                                            text: TextSpan(
+                                              text: 'Passport number: ',
+                                              style: TextStyle(fontSize: 16,color: Colors.black),
+                                              children: <TextSpan>[
+                                                TextSpan(
+                                                    text: '${controller.passportControllers[index].text}',
+                                                    style: TextStyle(fontSize: 16,color: Color(0xff1529e8))
+                                                ),
+                                              ],
+                                            ),
+                                          )
+                                      ),
+                                      SizedBox(height: 5,),
+                                      FittedBox(
+                                          fit: BoxFit.fitWidth,
+                                          child: RichText(
+                                            text: TextSpan(
+                                              text: 'Passport expiry: ',
+                                              style: TextStyle(fontSize: 16,color: Colors.black),
+                                              children: <TextSpan>[
+                                                TextSpan(
+                                                    text: '${controller.expiryControllers[index].text}',
+                                                    style: TextStyle(fontSize: 16,color:  Color(0xff1529e8))
+                                                ),
+                                              ],
+                                            ),
+                                          )
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+
+                        const SizedBox(height: 10,),
+
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: FxText.bodyLarge(
+                            'Passport First Page',
+                            // textAlign: TextAlign.left,
+                            letterSpacing: 0,
+                            fontWeight: 600,
+                          ),
+                          // ),
+                        ),
+
+                        const SizedBox(height: 10,),
+
+                        Container(
+                          alignment: Alignment.topCenter,
+                          padding: EdgeInsets.all(5),
+                          width: MediaQuery.of(context).size.width *0.9,
+                          height: MediaQuery.of(context).size.height *0.05,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              border: Border.all(width: 1,color: Colors.black54),
+                              color: Colors.transparent
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(_fileName[index]),
+                              ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: const Color(0xff1529e8),
+                                ),
+                                  onPressed: (){
+                                    upLoadFile(index);
+                                    },
+                                  child: Text("Choose File"))
+                              // GestureDetector(
+                              //   onTap:  ()async{
+                              //     final result = await FilePicker.platform.pickFiles();
+                              //     if (result == null) return;
+                              //     files = result.files;
+                              //     setState((){});
+                              //   },
+                              //   child: Row(
+                              //     children: [
+                              //       Icon(Icons.upload_outlined,color: Colors.grey,),
+                              //
+                              //       Text("Choose File",style: TextStyle(color: Colors.black54),),
+                              //     ],
+                              //   ),
+                              // ),
                             ],
                           ),
                         ),
-                      ),
+                        const SizedBox(height: 10,),
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: FxText.bodyLarge(
+                            'Passport Second Page',
+                            // textAlign: TextAlign.left,
+                            letterSpacing: 0,
+                            fontWeight: 600,
+                          ),
+                          // ),
+                        ),
 
-                      const SizedBox(height: 10,),
-
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        child: FxText.bodyLarge(
-                          'Passport First Page',
-                          // textAlign: TextAlign.left,
-                          letterSpacing: 0,
-                          fontWeight: 600,
-                        ),
-                        // ),
-                      ),
-
-                      const SizedBox(height: 10,),
-
-                      Container(
-                        alignment: Alignment.topCenter,
-                        padding: EdgeInsets.all(5),
-                        width: MediaQuery.of(context).size.width *0.9,
-                        height: MediaQuery.of(context).size.height *0.05,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            border: Border.all(width: 1,color: Colors.black54),
-                            color: Colors.transparent
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(_fileName[index]),
-                            ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: const Color(0xff1529e8),
-                              ),
-                                onPressed: (){
-                                  upLoadFile(index);
-                                  },
-                                child: Text("Choose File"))
-                            // GestureDetector(
-                            //   onTap:  ()async{
-                            //     final result = await FilePicker.platform.pickFiles();
-                            //     if (result == null) return;
-                            //     files = result.files;
-                            //     setState((){});
-                            //   },
-                            //   child: Row(
-                            //     children: [
-                            //       Icon(Icons.upload_outlined,color: Colors.grey,),
-                            //
-                            //       Text("Choose File",style: TextStyle(color: Colors.black54),),
-                            //     ],
-                            //   ),
-                            // ),
-                          ],
-                        ),
-                      ),
-                      const SizedBox(height: 10,),
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        child: FxText.bodyLarge(
-                          'Passport Second Page',
-                          // textAlign: TextAlign.left,
-                          letterSpacing: 0,
-                          fontWeight: 600,
-                        ),
-                        // ),
-                      ),
-
-                      const SizedBox(height: 10,),
-                      Container(
-                        alignment: Alignment.topCenter,
-                        padding: EdgeInsets.all(5),
-                        width: MediaQuery.of(context).size.width *0.9,
-                        height: MediaQuery.of(context).size.height *0.05,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            border: Border.all(width: 1,color: Colors.black54),
-                            color: Colors.transparent
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(_fileName2[index]),
-                            ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: const Color(0xff1529e8),
-                                ),
-                                onPressed: (){
-                                  upLoadFile2(index);
-                                },
-                                child: Text("Choose File"))
-                            // GestureDetector(
-                            //   onTap:  ()async{
-                            //     final result = await FilePicker.platform.pickFiles();
-                            //     if (result == null) return;
-                            //     files = result.files;
-                            //     setState((){});
-                            //   },
-                            //   child: Row(
-                            //     children: [
-                            //       Icon(Icons.upload_outlined,color: Colors.grey,),
-                            //
-                            //       Text("Choose File",style: TextStyle(color: Colors.black54),),
-                            //     ],
-                            //   ),
-                            // ),
-                          ],
-                        ),
-                      ),
-                      const SizedBox(height: 10,),
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        child: FxText.bodyLarge(
-                          'Passport Size Photo',
-                          // textAlign: TextAlign.left,
-                          letterSpacing: 0,
-                          fontWeight: 600,
-                        ),
-                        // ),
-                      ),
-                      const SizedBox(height: 10,),
-                      Container(
-                        padding:EdgeInsets.all(5),
-                        width: MediaQuery.of(context).size.width *0.9,
-                        height: (_imageFile[index] == null) ?MediaQuery.of(context).size.height *0.05:
-                        MediaQuery.of(context).size.height *0.08 ,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            border: Border.all(width: 1,color: Colors.black54),
-                            color: Colors.transparent
-                        ),
-                        child: Center(
+                        const SizedBox(height: 10,),
+                        Container(
+                          alignment: Alignment.topCenter,
+                          padding: EdgeInsets.all(5),
+                          width: MediaQuery.of(context).size.width *0.9,
+                          height: MediaQuery.of(context).size.height *0.05,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              border: Border.all(width: 1,color: Colors.black54),
+                              color: Colors.transparent
+                          ),
                           child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                (_imageFile[index] == null)? Container(): Container(
-                                  width:100,
-                                  height:70,
-                                  child: (_imageFile[index] != null)? Image.file(
-                                      File( _imageFile[index]?.path ?? "" )) : Container()),
-                                ElevatedButton(
-                                    style: ElevatedButton.styleFrom(
-                                      backgroundColor: const Color(0xff1529e8),
-                                    ),
-                                    onPressed: ()async{
-                                  takePhoto(ImageSource.gallery, index);
-                                }, child: Text("Choose File"))
-                              ]
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(_fileName2[index]),
+                              ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: const Color(0xff1529e8),
+                                  ),
+                                  onPressed: (){
+                                    upLoadFile2(index);
+                                  },
+                                  child: Text("Choose File"))
+                              // GestureDetector(
+                              //   onTap:  ()async{
+                              //     final result = await FilePicker.platform.pickFiles();
+                              //     if (result == null) return;
+                              //     files = result.files;
+                              //     setState((){});
+                              //   },
+                              //   child: Row(
+                              //     children: [
+                              //       Icon(Icons.upload_outlined,color: Colors.grey,),
+                              //
+                              //       Text("Choose File",style: TextStyle(color: Colors.black54),),
+                              //     ],
+                              //   ),
+                              // ),
+                            ],
                           ),
                         ),
-                      ),
-                      SizedBox(height: 10,),
-                      Container(
-                        child: Align(
+                        const SizedBox(height: 10,),
+                        Align(
                           alignment: Alignment.centerLeft,
                           child: FxText.bodyLarge(
-                            'Supportive Documents 1',
+                            'Passport Size Photo',
                             // textAlign: TextAlign.left,
                             letterSpacing: 0,
                             fontWeight: 600,
                           ),
                           // ),
                         ),
-                      ),
-                      SizedBox(height: 10,),
-                      Container(
-                        alignment: Alignment.topCenter,
-                        padding: EdgeInsets.all(5),
-                        width: MediaQuery.of(context).size.width *0.9,
-                        height: MediaQuery.of(context).size.height *0.05,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            border: Border.all(width: 1,color: Colors.black54),
-                            color: Colors.transparent
+                        const SizedBox(height: 10,),
+                        Container(
+                          padding:EdgeInsets.all(5),
+                          width: MediaQuery.of(context).size.width *0.9,
+                          height: (_imageFile[index] == null) ?MediaQuery.of(context).size.height *0.05:
+                          MediaQuery.of(context).size.height *0.08 ,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              border: Border.all(width: 1,color: Colors.black54),
+                              color: Colors.transparent
+                          ),
+                          child: Center(
+                            child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  (_imageFile[index] == null)? Container(): Container(
+                                    width:100,
+                                    height:70,
+                                    child: (_imageFile[index] != null)? Image.file(
+                                        File( _imageFile[index]?.path ?? "" )) : Container()),
+                                  ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor: const Color(0xff1529e8),
+                                      ),
+                                      onPressed: ()async{
+                                    takePhoto(ImageSource.gallery, index);
+                                  }, child: Text("Choose File"))
+                                ]
+                            ),
+                          ),
                         ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(_fileName3[index]),
-                            ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: const Color(0xff1529e8),
-                                ),
-                                onPressed: (){
-                                  upLoadFile3(index);
-                                },
-                                child: Text("Choose File"))
-                            // GestureDetector(
-                            //   onTap:  ()async{
-                            //     final result = await FilePicker.platform.pickFiles();
-                            //     if (result == null) return;
-                            //     files = result.files;
-                            //     setState((){});
-                            //   },
-                            //   child: Row(
-                            //     children: [
-                            //       Icon(Icons.upload_outlined,color: Colors.grey,),
-                            //
-                            //       Text("Choose File",style: TextStyle(color: Colors.black54),),
-                            //     ],
-                            //   ),
+                        SizedBox(height: 10,),
+                        Container(
+                          child: Align(
+                            alignment: Alignment.centerLeft,
+                            child: FxText.bodyLarge(
+                              'Supportive Document 1',
+                              // textAlign: TextAlign.left,
+                              letterSpacing: 0,
+                              fontWeight: 600,
+                            ),
                             // ),
-                          ],
-                        ),
-                      ),
-                      SizedBox(height: 10,),
-                      Container(
-                        child: Align(
-                          alignment: Alignment.centerLeft,
-                          child: FxText.bodyLarge(
-                            'Supportive Documents 2 (optional)',
-                            // textAlign: TextAlign.left,
-                            letterSpacing: 0,
-                            fontWeight: 600,
                           ),
-                          // ),
                         ),
-                      ),
+                        SizedBox(height: 10,),
+                        Container(
+                          alignment: Alignment.topCenter,
+                          padding: EdgeInsets.all(5),
+                          width: MediaQuery.of(context).size.width *0.9,
+                          height: MediaQuery.of(context).size.height *0.05,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              border: Border.all(width: 1,color: Colors.black54),
+                              color: Colors.transparent
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(_fileName3[index]),
+                              ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: const Color(0xff1529e8),
+                                  ),
+                                  onPressed: (){
+                                    upLoadFile3(index);
+                                  },
+                                  child: Text("Choose File"))
+                              // GestureDetector(
+                              //   onTap:  ()async{
+                              //     final result = await FilePicker.platform.pickFiles();
+                              //     if (result == null) return;
+                              //     files = result.files;
+                              //     setState((){});
+                              //   },
+                              //   child: Row(
+                              //     children: [
+                              //       Icon(Icons.upload_outlined,color: Colors.grey,),
+                              //
+                              //       Text("Choose File",style: TextStyle(color: Colors.black54),),
+                              //     ],
+                              //   ),
+                              // ),
+                            ],
+                          ),
+                        ),
+                        SizedBox(height: 10,),
+                        Container(
+                          child: Align(
+                            alignment: Alignment.centerLeft,
+                            child: FxText.bodyLarge(
+                              'Supportive Document 2',
+                              // textAlign: TextAlign.left,
+                              letterSpacing: 0,
+                              fontWeight: 600,
+                            ),
+                            // ),
+                          ),
+                        ),
 
-                      SizedBox(height: 10,),
-                      Container(
-                        alignment: Alignment.topCenter,
-                        padding: EdgeInsets.all(5),
-                        width: MediaQuery.of(context).size.width *0.9,
-                        height: MediaQuery.of(context).size.height *0.05,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            border: Border.all(width: 1,color: Colors.black54),
-                            color: Colors.transparent
+                        SizedBox(height: 10,),
+                        Container(
+                          alignment: Alignment.topCenter,
+                          padding: EdgeInsets.all(5),
+                          width: MediaQuery.of(context).size.width *0.9,
+                          height: MediaQuery.of(context).size.height *0.05,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              border: Border.all(width: 1,color: Colors.black54),
+                              color: Colors.transparent
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(_fileName4[index]),
+                              ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: const Color(0xff1529e8),
+                                  ),
+                                  onPressed: (){
+                                    upLoadFile4(index);
+                                  },
+                                  child: Text("Choose File"))
+                              // GestureDetector(
+                              //   onTap:  ()async{
+                              //     final result = await FilePicker.platform.pickFiles();
+                              //     if (result == null) return;
+                              //     files = result.files;
+                              //     setState((){});
+                              //   },
+                              //   child: Row(
+                              //     children: [
+                              //       Icon(Icons.upload_outlined,color: Colors.grey,),
+                              //
+                              //       Text("Choose File",style: TextStyle(color: Colors.black54),),
+                              //     ],
+                              //   ),
+                              // ),
+                            ],
+                          ),
                         ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(_fileName4[index]),
-                            ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: const Color(0xff1529e8),
-                                ),
-                                onPressed: (){
-                                  upLoadFile4(index);
-                                },
-                                child: Text("Choose File"))
-                            // GestureDetector(
-                            //   onTap:  ()async{
-                            //     final result = await FilePicker.platform.pickFiles();
-                            //     if (result == null) return;
-                            //     files = result.files;
-                            //     setState((){});
-                            //   },
-                            //   child: Row(
-                            //     children: [
-                            //       Icon(Icons.upload_outlined,color: Colors.grey,),
-                            //
-                            //       Text("Choose File",style: TextStyle(color: Colors.black54),),
-                            //     ],
-                            //   ),
-                            // ),
-                          ],
-                        ),
-                      ),
-                      SizedBox(height: 10,),
-                    ],
-                  ),
-                );
-              },
-              separatorBuilder:  (BuildContext context, int index) {
-                return SizedBox(height:10);
-              },
-              itemCount: controller.selectedTraveller!
-          ),
-          SizedBox(height: 10,),
-          FxButton.block(
-            onPressed: () {
-              // controller.nextPage();
-              setState(() {
-                controller.currentPage++;
-                // isFinished1 = true;
-              });
-            },
-            borderRadiusAll: 4,
-            elevation: 0,
-            splashColor: const Color(0xff1529e8).withAlpha(40),
-            backgroundColor: const Color(0xff1529e8),
-            child: FxText.bodyMedium(
-              'Proceed Payment',
-              fontWeight: 600,
-              color: theme.colorScheme.onPrimary,
+                        SizedBox(height: 10,),
+                      ],
+                    ),
+                  );
+                },
+                separatorBuilder:  (BuildContext context, int index) {
+                  return SizedBox(height:10);
+                },
+                itemCount: controller.selectedTraveller!
             ),
-          ),
-          SizedBox(height: 20,),
+            SizedBox(height: 10,),
+            FxButton.block(
+              onPressed: () {
+                // controller.nextPage();
+                if( _fileName.first.isEmpty){
+                  ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text("Please Upload Passport First Page")));
+                }else if(_fileName2.first.isEmpty){
+                  ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text("Please Upload Passport Second Page")));
+                }else if(_imageFile.first == null){
+                  ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text("Please Upload Passport Image")));
+                }else if(_fileName3.first.isEmpty){
+                  ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text("Please Upload Supportive Documents")));
+                }else{
+                  setState(() {
+                    controller.currentPage++;
+                    // isFinished1 = true;
+                  });
+                }
 
-        ],
+              },
+              borderRadiusAll: 4,
+              elevation: 0,
+              splashColor: const Color(0xff1529e8).withAlpha(40),
+              backgroundColor: const Color(0xff1529e8),
+              child: FxText.bodyMedium(
+                'Proceed Payment',
+                fontWeight: 600,
+                color: theme.colorScheme.onPrimary,
+              ),
+            ),
+            SizedBox(height: 20,),
+
+          ],
+        ),
       ),
     );
   }

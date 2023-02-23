@@ -141,6 +141,7 @@ class AuthService {
         sharedPreferences.setInt("balance", jsondata['user']['balance']);
         sharedPreferences.setString(AppConstants.KEY_ACCESS_TOKEN_countryId,
             jsondata['user']['country']);
+
         return response.body;
 
         // //todo
