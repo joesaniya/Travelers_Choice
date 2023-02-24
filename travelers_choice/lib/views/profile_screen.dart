@@ -31,20 +31,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   void initState() {
     super.initState();
-    SharedPreferences.getInstance().then((sharedPrefValue) {
-      setState(() {
-        profileController.name =
-            sharedPrefValue.getString(AppConstants.KEY_ACCESS_TOKEN_Name);
-        log(profileController.name.toString());
-        profileController.email =
-            sharedPrefValue.getString(AppConstants.KEY_ACCESS_TOKEN_Email);
-        log(profileController.email.toString());
-        log('username');
-        profileController.balanceamount =
-            sharedPrefValue.getInt(AppConstants.KEY_ACCESS_BALANCE) as double?;
-        log('Balance:${profileController.balanceamount == null ? 0.0 : 2440}');
-      });
-    });
+
+    initializingData();
     profileController =
         FxControllerStore.putOrFind<ProfileController>(ProfileController());
     theme = AppTheme.theme;
@@ -54,8 +42,29 @@ class _ProfileScreenState extends State<ProfileScreen> {
         // code that updates state
       });
     });
+
   }
 
+  void initializingData(){
+    SharedPreferences.getInstance().then((sharedPrefValue) {
+      setState(() {
+        profileController.name =
+            sharedPrefValue.getString(AppConstants.KEY_ACCESS_TOKEN_Name);
+        log(profileController.name.toString());
+        profileController.email =
+            sharedPrefValue.getString(AppConstants.KEY_ACCESS_TOKEN_Email);
+        log(profileController.email.toString());
+        log('username');
+        profileController.token =
+        sharedPrefValue.getString(AppConstants.KEY_ACCESS_TOKEN)!;
+        log(profileController.token!);
+        // profileController.balanceamount =
+        // sharedPrefValue.getInt(AppConstants.KEY_ACCESS_BALANCE) as double?;
+        log('Balance:${profileController.balanceamount == null ? 0.0 : 2440}');
+      });
+    });
+
+  }
   @override
   Widget build(BuildContext context) {
     return FxBuilder<ProfileController>(
@@ -124,9 +133,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             ),
                             FxSpacing.height(8),
                             FxButton.outlined(
-                                onPressed: () {
-                                  profileController.EditProfile();
-                                  // profileController.goToEditProfile();
+                                onPressed: () async{
+                                 bool result =  await profileController.EditProfile();
+                                 if(result){
+                                   print("resultresultresultresult $result");
+
+                                   initializingData();
+                                 }
                                 },
                                 splashColor:
                                     const Color(0xff1529e8).withAlpha(40),
@@ -341,15 +354,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           ),
                         ),
                         ListTile(
-                          onTap: () {
+                          onTap: ()  {
                             log('update password clicked');
-                            // Navigator.of(context, rootNavigator: true).push(
-                            //   PageRouteBuilder(
-                            //       transitionDuration:
-                            //           const Duration(seconds: 1),
-                            //       pageBuilder: (_, __, ___) =>
-                            //           const UpdatePasswordScreen()),
-                            // );
+
                             Navigator.of(context, rootNavigator: true).push(
                                 PageRouteBuilder(
                                     transitionDuration:
@@ -365,14 +372,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                           child: child,
                                         ),
                                     pageBuilder: (_, __, ___) =>
-                                        const UpdatePasswordScreen()));
-                            // Navigator.of(context, rootNavigator: true)
-                            //     .pushReplacement(
-                            //   MaterialPageRoute(
-                            //     builder: (context) =>
-                            //         const UpdatePasswordScreen(),
-                            //   ),
-                            // );
+                                         UpdatePasswordScreen(profileController.token)));
+
                           },
                           dense: true,
                           contentPadding: FxSpacing.zero,

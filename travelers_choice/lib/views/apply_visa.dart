@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 import 'dart:math';
 
@@ -18,6 +19,7 @@ import 'package:im_stepper/stepper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../controllers/apply_visa_controller.dart';
 import '../images.dart';
@@ -35,7 +37,43 @@ class ApplyVisa extends StatefulWidget {
   @override
   State<ApplyVisa> createState() => _ApplyVisaState(visa);
 }
+enum Event { increment, decrement }
 
+class CounterController {
+  int counter = 1;
+  int minQty = 1;
+  int discount = 1000;
+  final StreamController<int> _counterController = StreamController<int>();
+  StreamSink<int> get counterSink => _counterController.sink;
+  Stream<int> get counterStream => _counterController.stream;
+
+  final StreamController<Event> _eventController = StreamController<Event>();
+  StreamSink<Event> get eventSink => _eventController.sink;
+  Stream<Event> get eventStream => _eventController.stream;
+
+  StreamSubscription? listener;
+
+  CounterController() {
+    listener = eventStream.listen((Event event) {
+      switch (event) {
+        case Event.increment:
+          counter++;
+
+          break;
+        case Event.decrement:
+          if (counter > minQty) counter--;
+          break;
+        default:
+      }
+      counterSink.add(counter);
+    });
+  }
+  dispose() {
+    listener?.cancel();
+    _counterController.close();
+    _eventController.close();
+  }
+}
 class _ApplyVisaState extends State<ApplyVisa>  with TickerProviderStateMixin{
 
   List<PlatformFile> files = [];
@@ -44,6 +82,7 @@ class _ApplyVisaState extends State<ApplyVisa>  with TickerProviderStateMixin{
   TextEditingController nameController = TextEditingController();
   int activeIndex = 0;
   int totalIndex = 3;
+  late CounterController _counterController;
   List<PickedFile?> _imageFile=[];
   List<String> _fileName = [];
   List<String> _fileName2 = [];
@@ -101,7 +140,15 @@ String userName = "";
   void initState() {
     theme = AppTheme.shoppingTheme;
    controller = FxControllerStore.put(ApplyVisaController(this));
+    _counterController = CounterController();
+    SharedPreferences.getInstance().then((sharedPrefValue) {
+      setState(() {
+        controller.countryId =
+            sharedPrefValue.getString(AppConstants.KEY_ACCESS_TOKEN_countryId)!;
+        log(controller.countryId as num);
 
+      });
+    });
     super.initState();
     fetchData();
 
@@ -114,6 +161,13 @@ String userName = "";
       borderSide: BorderSide(width: 1, color: Color(0xff1529e8)),
     );
 
+  }
+
+  @override
+  void dispose() {
+    _counterController.dispose();
+
+    super.dispose();
   }
 
 
@@ -166,47 +220,53 @@ String userName = "";
                 ),
               ),
               body:
-              Column(
-                children: [
-                  FxSpacing.height(8),
-                  Center(
-                    child: DotStepper(
-                      dotCount: 4,
-                      activeStep: controller.currentPage,
-                      dotRadius: 20.0,
-                      tappingEnabled: false,
-                      shape: Shape.pipe,
-                      indicator: Indicator.slide,
-                      indicatorDecoration: IndicatorDecoration(color: Color(0xff1529e8)),
-                      // fixedDotDecoration: FixedDotDecoration(color: Color(0xff1529e8).withAlpha(20)),
-                      spacing: 20.0,
-                    ),
-                  ),
-                  Text(
-                    "Step ${controller.currentPage + 1} of ${controller.numPages}",
-                    style: const TextStyle(
-                      fontSize: 16.0,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                  FxSpacing.height(10),
-                  Expanded(
-                    child: bodyBuilder(widget.visa),
-                  )
-                  // Expanded(
-                  //   child: PageView(
-                  //     allowImplicitScrolling: true,
-                  //     pageSnapping: true,
-                  //     physics: const NeverScrollableScrollPhysics(),
-                  //     // physics: const ClampingScrollPhysics(),
-                  //     controller: controller.pageController,
-                  //     onPageChanged: (int page) {
-                  //       controller.onPageChanged(page);
-                  //     },
-                  //     children: [travellerDetails(), makePayment(), uploadDetails()],
-                  //   ),
-                  // ),
-                ],
+              StreamBuilder<int>(
+                stream: _counterController.counterStream,
+                builder: (context, snapshot,){
+                  return  Column(
+                    children: [
+                      FxSpacing.height(8),
+                      Center(
+                        child: DotStepper(
+                          dotCount: 4,
+                          activeStep: controller.currentPage,
+                          dotRadius: 20.0,
+                          tappingEnabled: false,
+                          shape: Shape.pipe,
+                          indicator: Indicator.slide,
+                          indicatorDecoration: IndicatorDecoration(color: Color(0xff1529e8)),
+                          // fixedDotDecoration: FixedDotDecoration(color: Color(0xff1529e8).withAlpha(20)),
+                          spacing: 20.0,
+                        ),
+                      ),
+                      Text(
+                        "Step ${controller.currentPage + 1} of ${controller.numPages}",
+                        style: const TextStyle(
+                          fontSize: 16.0,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                      FxSpacing.height(10),
+                      Expanded(
+                        child: bodyBuilder(widget.visa),
+                      )
+                      // Expanded(
+                      //   child: PageView(
+                      //     allowImplicitScrolling: true,
+                      //     pageSnapping: true,
+                      //     physics: const NeverScrollableScrollPhysics(),
+                      //     // physics: const ClampingScrollPhysics(),
+                      //     controller: controller.pageController,
+                      //     onPageChanged: (int page) {
+                      //       controller.onPageChanged(page);
+                      //     },
+                      //     children: [travellerDetails(), makePayment(), uploadDetails()],
+                      //   ),
+                      // ),
+                    ],
+                  );
+                },
+
               ),
           ));
         });
@@ -220,9 +280,9 @@ String userName = "";
         case 1:
         return travellerDetails();
       case 2:
-        return uploadDetails();
-        case 3:
         return payments();
+        case 3:
+          return uploadDetails();
 
       default:
         return itenaryDetails();
@@ -542,70 +602,129 @@ String userName = "";
 
                     ),
                     FxSpacing.height(10),
+                    // Container(
+                    //   decoration: BoxDecoration(
+                    //       color: Colors.white,
+                    //       border: Border.all(width: 1, color: Colors.black),
+                    //       // color: const Color(0xff1529e8),
+                    //       borderRadius: BorderRadius.circular(4)),
+                    //   height: 50,
+                    //   width: MediaQuery.of(context).size.width,
+                    //   child: DropdownButtonHideUnderline(
+                    //     child: ButtonTheme(
+                    //       alignedDropdown: true,
+                    //       child: DropdownButton(
+                    //         iconSize: 25.0,
+                    //         dropdownColor: Colors.white,
+                    //         icon: const Icon(
+                    //           Icons.arrow_drop_down,
+                    //           color: Colors.black,
+                    //         ),
+                    //         value: controller.selectedTraveller,
+                    //         hint: Center(
+                    //           child: FxText.labelLarge(
+                    //             "Choose travellers",
+                    //             fontWeight: 600,
+                    //             color: Colors.black54,
+                    //             // color: theme.colorScheme.onPrimary,
+                    //             letterSpacing: 0.4,
+                    //           ),
+                    //         ),
+                    //         items: controller.travellerNumber.map((int value) {
+                    //           return DropdownMenuItem<int>(
+                    //               value: value,
+                    //               child: Center(
+                    //                 child: Text(
+                    //                   value.toString(),
+                    //                   style: FxTextStyle.bodyMedium(),
+                    //                 ),
+                    //               ));
+                    //         }).toList(),
+                    //         onChanged: (value) {
+                    //           setState(() {
+                    //             controller.selectedTraveller = value as int?;
+                    //           });
+                    //           // log(controller.selectedTraveller!.toInt());
+                    //         },
+                    //         style: FxTextStyle.bodyMedium(),
+                    //       ),
+                    //     ),
+                    //   ),
+                    // ),
+                    // FxSpacing.height(10),
+
                     Container(
+                      padding: EdgeInsets.only(left: 10),
                       decoration: BoxDecoration(
                           color: Colors.white,
                           border: Border.all(width: 1, color: Colors.black),
                           // color: const Color(0xff1529e8),
                           borderRadius: BorderRadius.circular(4)),
                       height: 50,
-                      width: MediaQuery.of(context).size.width,
-                      child: DropdownButtonHideUnderline(
-                        child: ButtonTheme(
-                          alignedDropdown: true,
-                          child: DropdownButton(
-                            iconSize: 25.0,
-                            dropdownColor: Colors.white,
-                            icon: const Icon(
-                              Icons.arrow_drop_down,
-                              color: Colors.black,
-                            ),
-                            value: controller.selectedTraveller,
-                            hint: Center(
-                              child: FxText.labelLarge(
-                                "Choose travellers",
-                                fontWeight: 600,
-                                color: Colors.black54,
-                                // color: theme.colorScheme.onPrimary,
-                                letterSpacing: 0.4,
+                      width: MediaQuery.of(context).size.width*0.9,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+
+                          FxText.bodyLarge("Choose travellers"),
+                          Row(
+                            children: [
+                              ElevatedButton(
+                                  style: ButtonStyle(
+                                      elevation: MaterialStateProperty.all(0),
+                                      backgroundColor:
+                                      MaterialStateProperty.all(Colors.grey),
+                                      shape: MaterialStateProperty.all(
+                                          const CircleBorder(side: BorderSide.none)),
+                                      minimumSize: MaterialStateProperty.all(
+                                          const Size(20, 20))),
+                                  onPressed: () {
+                                    _counterController.eventSink.add(Event.decrement);
+                                  },
+                                  child: const Icon(
+                                    Icons.remove,
+                                    color: Colors.black,
+                                  )),
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Container(
+                                    width: 25,
+                                    color: Colors.transparent,
+                                    child: FxText.bodyLarge(' ${_counterController.counter}',
+                                    )),
                               ),
-                            ),
-                            items: controller.travellerNumber.map((int value) {
-                              return DropdownMenuItem<int>(
-                                  value: value,
-                                  child: Center(
-                                    child: Text(
-                                      value.toString(),
-                                      style: FxTextStyle.bodyMedium(),
-                                    ),
-                                  ));
-                            }).toList(),
-                            onChanged: (value) {
-                              setState(() {
-                                controller.selectedTraveller = value as int?;
-                              });
-                              // log(controller.selectedTraveller!.toInt());
-                            },
-                            style: FxTextStyle.bodyMedium(),
-                          ),
-                        ),
+                              ElevatedButton(
+                                style: ButtonStyle(
+                                    elevation: MaterialStateProperty.all(0),
+                                    backgroundColor: MaterialStateProperty.all(
+                                        const Color(0xff1529e8)),
+                                    shape: MaterialStateProperty.all(
+                                        const CircleBorder(side: BorderSide.none)),
+                                    minimumSize:
+                                    MaterialStateProperty.all(const Size(20, 20))),
+                                onPressed: () {
+                                  _counterController.eventSink.add(Event.increment);
+                                },
+                                child: const Icon(Icons.add),
+                              ),
+                            ],
+                          )
+
+                        ],
                       ),
                     ),
-                    FxSpacing.height(10),
-
+                    SizedBox(height: 10,),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
-                       controller.selectedTraveller == null ? Text(""): FxText.bodyLarge(
+                        FxText.bodyLarge(
 
-                         "${controller.selectedTraveller! * price} ${widget.visa!.visa.country.currencySymbol}",
-                        color:  const Color(0xff1529e8),
+                          "${_counterController.counter * price} ${widget.visa!.visa.country.currencySymbol}",
+                          color:  const Color(0xff1529e8),
                           decoration: TextDecoration.underline,
                         ),
-                      SizedBox(width: 10,)
                       ],
                     ),
-
                   ],
                 )
             ),
@@ -634,10 +753,11 @@ String userName = "";
                     ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(content: Text("Please Select To date")));
                   }
-                  else if(controller.selectedTraveller == null){
-                    ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Select no of travellers')));
-                  }else {
+                  // else if(controller.selectedTraveller == null){
+                  //   ScaffoldMessenger.of(context).showSnackBar(
+                  //       const SnackBar(content: Text('Select no of travellers')));
+                  // }
+                  else {
                     setState(() {
                       controller.currentPage++;
                       // isFinished0 = true;
@@ -1244,7 +1364,7 @@ String userName = "";
                         ),
                       );
                     },
-                    itemCount: controller.selectedTraveller!,
+                    itemCount: _counterController.counter,
 
                       separatorBuilder: (BuildContext context, int index) {
                         return SizedBox(height: 10,);
@@ -1267,12 +1387,14 @@ String userName = "";
                   });
 
                   List<Map> travellersList = [];
-                  for (int i = 0; i <= controller.selectedTraveller! - 1; i++) {
+                  for (int i = 0; i <= _counterController.counter - 1; i++) {
                     var inputFormat = DateFormat('dd/MM/yyyy');
                     var date1 = inputFormat.parse(
                         controller.expiryControllers[i].text);
                     var date2 = inputFormat.parse(
                         controller.dobControllers[i].text);
+
+
 
                     var outputFormat = DateFormat('yyyy-MM-dd');
                     int expiryDay = DateTime
@@ -1293,6 +1415,7 @@ String userName = "";
                     int dobYear = DateTime
                         .parse(outputFormat.parse(date2.toString()).toString())
                         .year;
+
 
 
                     travellersList.add(
@@ -1317,15 +1440,23 @@ String userName = "";
                         }
                     );
                   }
+                  var inputFormat = DateFormat('dd/MM/yyyy');
+                  var fromDate = inputFormat.parse(
+                      controller.fromDateTE.text);
+                  var toDate = inputFormat.parse(
+                      controller.toDateTE.text);
+                  var dateFormat = DateFormat('MM-dd-yyyy');
+                  var onwardDate = dateFormat.format(fromDate).toString();
+                  var returnDate = dateFormat.format(toDate).toString();
                   Map body = {
                     "visaType": controller.selectedVisa,
                     "email": controller.emailTE.text,
                     "contactNo": controller.phoneTE.text,
-                    "onwardDate": controller.fromDateTE.text,
-                    "returnDate": controller.toDateTE.text,
-                    "noOfTravellers": controller.selectedTraveller,
+                    "onwardDate": onwardDate,
+                    "returnDate": returnDate,
+                    "noOfTravellers": _counterController.counter,
                     "travellers": travellersList,
-                    "country": "63db60f9f926b340dbb3f446"
+                    "country": controller.countryId
                   };
 
 
@@ -1341,7 +1472,7 @@ String userName = "";
               splashColor: theme.colorScheme.onPrimary.withAlpha(30),
               backgroundColor: const Color(0xff1529e8),
               child: FxText.labelMedium(
-                'Upload Details',
+                'Proceed Payment',
                 color: theme.colorScheme.onPrimary,
                 fontWeight: 600,
               ),
@@ -1386,24 +1517,24 @@ String userName = "";
                 _imageFile.add(null);
                   return  Container(
                     padding: EdgeInsets.all(10),
-                    color: Colors.white,
+                    // color: Colors.white,
                     child: Column(
                       children: [
-                        Align(
-                          alignment: Alignment.center,
-                          child:   controller.selectedTraveller ==1 ? FxText.bodyLarge(
-                            "",
-                            // textAlign: TextAlign.left,
-                            letterSpacing: 0,
-                            fontWeight: 600,
-                          ) : controller.travellerNumber[index]>= 1? FxText.bodyLarge(
-                            "Passenger ${controller.travellerNumber[index]}" ,
-                            // textAlign: TextAlign.left,
-                            letterSpacing: 0,
-                            fontWeight: 600,
-                          ):  const Text(""),
-                          // ),
-                        ),
+                        // Align(
+                        //   alignment: Alignment.center,
+                        //   child:   _counterController.counter == 1 ? FxText.bodyLarge(
+                        //     "",
+                        //     // textAlign: TextAlign.left,
+                        //     letterSpacing: 0,
+                        //     fontWeight: 600,
+                        //   ) : controller.travellerNumber[index]>= 1? FxText.bodyLarge(
+                        //     "Passenger ${controller.travellerNumber[index]}" ,
+                        //     // textAlign: TextAlign.left,
+                        //     letterSpacing: 0,
+                        //     fontWeight: 600,
+                        //   ):  const Text(""),
+                        //   // ),
+                        // ),
 
                         const SizedBox(height: 5,),
 
@@ -1415,7 +1546,7 @@ String userName = "";
 
                           child: Container(
                             decoration:BoxDecoration(
-                              color: Colors.grey.withAlpha(10),
+                              color: Colors.white,
                               borderRadius: BorderRadius.circular(15),
                             ),
                             padding:EdgeInsets.all(10),
@@ -1563,13 +1694,13 @@ String userName = "";
                         Container(
                           alignment: Alignment.topCenter,
                           padding: EdgeInsets.all(5),
-                          width: MediaQuery.of(context).size.width *0.9,
-                          height: MediaQuery.of(context).size.height *0.05,
                           decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              border: Border.all(width: 1,color: Colors.black54),
-                              color: Colors.transparent
-                          ),
+                              color: Colors.white,
+                              border: Border.all(width: 1, color: Colors.black),
+                              // color: const Color(0xff1529e8),
+                              borderRadius: BorderRadius.circular(4)),
+                          height: 50.0,
+                          width: MediaQuery.of(context).size.width*0.9,
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
@@ -1582,21 +1713,6 @@ String userName = "";
                                     upLoadFile(index);
                                     },
                                   child: Text("Choose File"))
-                              // GestureDetector(
-                              //   onTap:  ()async{
-                              //     final result = await FilePicker.platform.pickFiles();
-                              //     if (result == null) return;
-                              //     files = result.files;
-                              //     setState((){});
-                              //   },
-                              //   child: Row(
-                              //     children: [
-                              //       Icon(Icons.upload_outlined,color: Colors.grey,),
-                              //
-                              //       Text("Choose File",style: TextStyle(color: Colors.black54),),
-                              //     ],
-                              //   ),
-                              // ),
                             ],
                           ),
                         ),
@@ -1616,13 +1732,13 @@ String userName = "";
                         Container(
                           alignment: Alignment.topCenter,
                           padding: EdgeInsets.all(5),
-                          width: MediaQuery.of(context).size.width *0.9,
-                          height: MediaQuery.of(context).size.height *0.05,
                           decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              border: Border.all(width: 1,color: Colors.black54),
-                              color: Colors.transparent
-                          ),
+                              color: Colors.white,
+                              border: Border.all(width: 1, color: Colors.black),
+                              // color: const Color(0xff1529e8),
+                              borderRadius: BorderRadius.circular(4)),
+                          height: 50.0,
+                          width: MediaQuery.of(context).size.width*0.9,
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
@@ -1635,21 +1751,6 @@ String userName = "";
                                     upLoadFile2(index);
                                   },
                                   child: Text("Choose File"))
-                              // GestureDetector(
-                              //   onTap:  ()async{
-                              //     final result = await FilePicker.platform.pickFiles();
-                              //     if (result == null) return;
-                              //     files = result.files;
-                              //     setState((){});
-                              //   },
-                              //   child: Row(
-                              //     children: [
-                              //       Icon(Icons.upload_outlined,color: Colors.grey,),
-                              //
-                              //       Text("Choose File",style: TextStyle(color: Colors.black54),),
-                              //     ],
-                              //   ),
-                              // ),
                             ],
                           ),
                         ),
@@ -1671,10 +1772,10 @@ String userName = "";
                           height: (_imageFile[index] == null) ?MediaQuery.of(context).size.height *0.05:
                           MediaQuery.of(context).size.height *0.08 ,
                           decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              border: Border.all(width: 1,color: Colors.black54),
-                              color: Colors.transparent
-                          ),
+                              color: Colors.white,
+                              border: Border.all(width: 1, color: Colors.black),
+                              // color: const Color(0xff1529e8),
+                              borderRadius: BorderRadius.circular(4)),
                           child: Center(
                             child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -1715,10 +1816,10 @@ String userName = "";
                           width: MediaQuery.of(context).size.width *0.9,
                           height: MediaQuery.of(context).size.height *0.05,
                           decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              border: Border.all(width: 1,color: Colors.black54),
-                              color: Colors.transparent
-                          ),
+                              color: Colors.white,
+                              border: Border.all(width: 1, color: Colors.black),
+                              // color: const Color(0xff1529e8),
+                              borderRadius: BorderRadius.circular(4)),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
@@ -1731,21 +1832,6 @@ String userName = "";
                                     upLoadFile3(index);
                                   },
                                   child: Text("Choose File"))
-                              // GestureDetector(
-                              //   onTap:  ()async{
-                              //     final result = await FilePicker.platform.pickFiles();
-                              //     if (result == null) return;
-                              //     files = result.files;
-                              //     setState((){});
-                              //   },
-                              //   child: Row(
-                              //     children: [
-                              //       Icon(Icons.upload_outlined,color: Colors.grey,),
-                              //
-                              //       Text("Choose File",style: TextStyle(color: Colors.black54),),
-                              //     ],
-                              //   ),
-                              // ),
                             ],
                           ),
                         ),
@@ -1770,10 +1856,10 @@ String userName = "";
                           width: MediaQuery.of(context).size.width *0.9,
                           height: MediaQuery.of(context).size.height *0.05,
                           decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              border: Border.all(width: 1,color: Colors.black54),
-                              color: Colors.transparent
-                          ),
+                              color: Colors.white,
+                              border: Border.all(width: 1, color: Colors.black),
+                              // color: const Color(0xff1529e8),
+                              borderRadius: BorderRadius.circular(4)),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
@@ -1786,21 +1872,6 @@ String userName = "";
                                     upLoadFile4(index);
                                   },
                                   child: Text("Choose File"))
-                              // GestureDetector(
-                              //   onTap:  ()async{
-                              //     final result = await FilePicker.platform.pickFiles();
-                              //     if (result == null) return;
-                              //     files = result.files;
-                              //     setState((){});
-                              //   },
-                              //   child: Row(
-                              //     children: [
-                              //       Icon(Icons.upload_outlined,color: Colors.grey,),
-                              //
-                              //       Text("Choose File",style: TextStyle(color: Colors.black54),),
-                              //     ],
-                              //   ),
-                              // ),
                             ],
                           ),
                         ),
@@ -1812,7 +1883,7 @@ String userName = "";
                 separatorBuilder:  (BuildContext context, int index) {
                   return SizedBox(height:10);
                 },
-                itemCount: controller.selectedTraveller!
+                itemCount: _counterController.counter
             ),
             SizedBox(height: 10,),
             FxButton.block(
@@ -1966,7 +2037,7 @@ String userName = "";
                             child: Row(
                               children: [
                                 FxText.bodyMedium(
-                                    controller.selectedTraveller.toString(),
+                                    _counterController.counter.toString(),
                                     color: const Color(0xff1529e8),
                                     // color: customTheme.groceryPrimary,
                                     fontWeight: 500,
@@ -2035,7 +2106,7 @@ String userName = "";
                         fontWeight: 600,
                       ),
                       FxText.bodyLarge(
-                        "${controller.selectedTraveller! * widget.visa!.visaType.first.visaPrice} "
+                        "${_counterController.counter * widget.visa!.visaType.first.visaPrice} "
                             "${widget.visa!.visa.country.currencySymbol}",
                         color:  Colors.black,
                       ),
@@ -2068,7 +2139,7 @@ String userName = "";
                         color: const Color(0xff1529e8),
                       ),
                        FxText.bodyLarge(
-                        "${controller.selectedTraveller! * widget.visa!.visaType.first.visaPrice} "
+                        "${_counterController.counter * widget.visa!.visaType.first.visaPrice} "
                             "${widget.visa!.visa.country.currencySymbol}",
                         color: Color(0xff1529e8)
                       ),
@@ -2317,7 +2388,8 @@ String userName = "";
 
               );
               setState(() {
-                // isFinished2 = true;
+                controller.currentPage++;
+                // isFinished1 = true;
               });
 
             },

@@ -33,6 +33,7 @@ class ApplyVisaController extends FxController {
   //tab
   late TabController tabController;
   late ScrollController scrollController;
+  String? countryId;
   //
   List<Tab> tabs = [];
 //  late  Product product;
@@ -648,7 +649,7 @@ class ApplyVisaController extends FxController {
 
       );
       if (data != null) {
-        log(data);
+        // log(data);
         return true;
       } else {
         return false;
