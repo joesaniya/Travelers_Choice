@@ -32,9 +32,9 @@ class CheckOutScreen extends StatefulWidget {
   // double grandTotal;
   String textdate;
   String? Transfer;
-  // double? totalAmount;
+  double? totalAmount;
   // double? TotalCalculation;
-  final VoidCallback onButtonTap;
+  // final VoidCallback onButtonTap;
   @override
   Key? key;
   // VoidCallback finalAmount;
@@ -51,9 +51,9 @@ class CheckOutScreen extends StatefulWidget {
       // // this.finalAmount,
       this.textdate,
       this.Transfer,
-      this.onButtonTap,
+      // this.onButtonTap,
       // this.TotalCalculation,
-      // this.totalAmount,
+      this.totalAmount,
       {super.key});
 
   @override
@@ -75,8 +75,8 @@ class _CheckOutScreenState extends State<CheckOutScreen>
     super.initState();
     selectedExcursions = widget.selectedtourOption;
     log('Selected Tour length:${widget.selectedtourOption.first.sId}');
-    // log('Selected Total Amount:${widget.totalAmount}');
-    log('Selected Total Amount:${widget.onButtonTap}');
+    log('Selected Total Amount:${widget.totalAmount}');
+    // log('Selected Total Amount:${widget.onButtonTap}');
     fetchlog();
     log('Selected Final Amount:${widget.selectedtourOption.first.grandTotal}');
     // log('Adult Count:${widget.adultCount}');
@@ -1513,7 +1513,7 @@ class _CheckOutScreenState extends State<CheckOutScreen>
                   color: theme.colorScheme.onPrimary,
                 ),
                 FxText.bodyMedium(
-                  '\$ 251.55',
+                  '\$ ${widget.totalAmount}',
                   // '${widget.selectedtourOption.first.GrandTotalAmount}',
                   // '${widget.totalAmount} AED',
                   // widget.finalAmount.toString(),

@@ -65,7 +65,6 @@ class ActivityController extends FxController {
       if (selectedtour.contains(person_count[index])) {
         selectedtour.remove(person_count[index]);
       } else {
-        person_count[index].grandTotal = tour.adultPrice!.toDouble();
         selectedtour.add(person_count[index]);
       }
 
@@ -251,13 +250,23 @@ class ActivityController extends FxController {
 
   double getGrandTotal(Activity tour) {
     log(getTotal(tour).toString());
+
+    List<Activity> value =
+        person_count.where((element) => element.sId == tour.sId).toList();
+    log("Current Tour => ${value.length}");
+    if (value.isEmpty) {
+    } else {
+      tour = value[0];
+    }
     double amount = double.parse(getTotal(tour).toString());
+
     if (tour.isPrivate) {
       amount = amount + tour.privateTransferPrice!;
     }
     if (tour.isSharing) {
       amount = amount + tour.sharedTransferPrice!;
     }
+    log("Current Grand Total => $amount");
     return amount;
     update();
   }
@@ -465,7 +474,7 @@ class ActivityController extends FxController {
 
               // excursions.activities!
               // amount
-              grandSelectedTourAmount)));
+              grandSelectedTourAmount())));
     }
   }
 

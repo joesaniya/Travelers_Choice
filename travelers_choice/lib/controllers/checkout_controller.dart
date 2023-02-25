@@ -674,7 +674,7 @@ class CheckOutController extends FxController {
   openGateway(String orderId) {
     var options = {
       'key': razorCredentials.keyId,
-      'amount': 100, //in the smallest currency sub-unit.
+      'amount': 10000, //in the smallest currency sub-unit.
       'name': 'Acme Corp.',
       'order_id': orderId, // Generate order_id using Orders API
       'description': 'Tours',
