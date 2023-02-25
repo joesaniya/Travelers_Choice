@@ -1,16 +1,18 @@
 import 'dart:convert';
 import 'dart:developer';
 
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 class PaymentService {
-  Future PersonalInfo(
+  Future PersonalInformation(
       String name,
       String email,
       String phoneNumber,
       String countryId,
       String paymentProcessor,
-      List SelectedActivities) async {
+      List SelectedActivities,
+       BuildContext context) async {
     log('Activities data');
     // log('Activities:$SelectedActivities');
     List<Map<String, dynamic>> ActivityList = [];
@@ -23,14 +25,14 @@ class PaymentService {
       print('Infant Count:${element.infantCount}');
       var datas = {
         // "activity": element.sId,
-        // "date": "2023-02-21T09:40:14.078Z",
+        // "date": "2023-02-28",
         // // "date": element.selectedDate,
         // "adultsCount": element.adultCount,
         // "childrenCount": element.childCount,
         // "infantCount": element.infantCount,
         // "transferType": "private"
         "activity": "63e6317d20e0e01648630e6a",
-        "date": "2023-02-21T09:40:14.078Z",
+        "date": "2023-02-28",
         "adultsCount": 19,
         "childrenCount": 0,
         "infantCount": 1,
@@ -50,7 +52,8 @@ class PaymentService {
         "phoneNumber": phoneNumber,
         "country": countryId,
         "paymentProcessor": paymentProcessor,
-        "SelectedActivities": jsonEncode(ActivityList)
+        // "selectedActivities": jsonEncode(ActivityList)
+        "selectedActivities": ActivityList
       };
       log(body.toString());
       print('Body:${body.toString()}');
@@ -70,8 +73,8 @@ class PaymentService {
         log(jsondata['error']);
         print(jsondata['error']);
         //snackbar
-        // ScaffoldMessenger.of(context)
-        //     .showSnackBar(SnackBar(content: Text(jsondata['error'])));
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text(jsondata['error'])));
         return null;
       }
     } catch (e) {

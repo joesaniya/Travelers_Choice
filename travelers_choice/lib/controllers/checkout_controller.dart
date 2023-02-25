@@ -355,37 +355,7 @@ class CheckOutController extends FxController {
 
     if (currentPage == 0) {
       log('selected page 0');
-      // if (selectedname == null || selectedname!.isEmpty) {
-      //   ScaffoldMessenger.of(context).showSnackBar(
-      //       const SnackBar(content: Text("Please Select Mr/Ms/Mrs")));
-      // } else if (FnameTE.text.isEmpty) {
-      //   ScaffoldMessenger.of(context).showSnackBar(
-      //       const SnackBar(content: Text("Please Enter First Name")));
-      // } else if (LnameTE.text.isEmpty) {
-      //   ScaffoldMessenger.of(context).showSnackBar(
-      //       const SnackBar(content: Text("Please Enter Last Name")));
-      // } else if (emailTE.text.isEmpty) {
-      //   ScaffoldMessenger.of(context)
-      //       .showSnackBar(const SnackBar(content: Text("Please Enter Email")));
-      // } else if (selectedcountry == null || selectedcountry!.isEmpty) {
-      //   ScaffoldMessenger.of(context).showSnackBar(
-      //       const SnackBar(content: Text("Please Select Country")));
-      // } else if (selectedCountryCode == null || selectedCountryCode!.isEmpty) {
-      //   ScaffoldMessenger.of(context).showSnackBar(
-      //       const SnackBar(content: Text("Please Select Phone Code")));
-      // } else if (phoneTE.text.isEmpty || phoneTE.text.length != 10) {
-      //   ScaffoldMessenger.of(context).showSnackBar(
-      //       const SnackBar(content: Text("Please Enter Phone Number")));
-      // } else if (reqTE.text.isEmpty) {
-      //   ScaffoldMessenger.of(context)
-      //       .showSnackBar(const SnackBar(content: Text("Enter Request")));
-      // } else {
-      //   await pageController.animateToPage(
-      //     currentPage + 1,
-      //     duration: const Duration(milliseconds: 600),
-      //     curve: Curves.ease,
-      //   );
-      // }
+
       await pageController.animateToPage(
         currentPage + 1,
         duration: const Duration(milliseconds: 600),
@@ -393,23 +363,55 @@ class CheckOutController extends FxController {
       );
     } else if (currentPage == 1) {
       log('selected page 1');
+      if (selectedname == null || selectedname!.isEmpty) {
+        ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text("Please Select Mr/Ms/Mrs")));
+      } else if (FnameTE.text.isEmpty) {
+        ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text("Please Enter First Name")));
+      } else if (LnameTE.text.isEmpty) {
+        ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text("Please Enter Last Name")));
+      } else if (emailTE.text.isEmpty) {
+        ScaffoldMessenger.of(context)
+            .showSnackBar(const SnackBar(content: Text("Please Enter Email")));
+      } else if (selectedcountry == null || selectedcountry!.isEmpty) {
+        ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text("Please Select Country")));
+      } else if (selectedCountryCode == null || selectedCountryCode!.isEmpty) {
+        ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text("Please Select Phone Code")));
+      } else if (phoneTE.text.isEmpty || phoneTE.text.length != 10) {
+        ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text("Please Enter Phone Number")));
+      } else if (reqTE.text.isEmpty) {
+        ScaffoldMessenger.of(context)
+            .showSnackBar(const SnackBar(content: Text("Enter Request")));
+      } else {
+        await PaymentController()
+            // .PersonalInfo(nameTE.text, emailTE.text, selectedCountryCode.toString(),
+            //     phoneTE.text, passwordTE.text, context)
+            .PersonalInfo(
+                FnameTE.text,
+                emailTE.text,
+                phoneTE.text,
+                selectedCountryCode.toString(),
+                'razorpay',
+                selectedExcursionsDatas,
+                context)
+            .then((value) {
+          if (value) {
+            log('Value:$value');
 
-      await PaymentController()
-          // .PersonalInfo(nameTE.text, emailTE.text, selectedCountryCode.toString(),
-          //     phoneTE.text, passwordTE.text, context)
-          .PersonalInfo('jeni', 'jeni@gmail.com', '6098754321',
-              '63db60f9f926b340dbb3f446', 'razorpay', selectedExcursionsDatas)
-          .then((value) {
-        if (value) {
-          log('Value:$value');
+            pageController.animateToPage(
+              currentPage + 1,
+              duration: const Duration(milliseconds: 600),
+              curve: Curves.ease,
+            );
+          }
+        });
+      }
 
-          pageController.animateToPage(
-            currentPage + 1,
-            duration: const Duration(milliseconds: 600),
-            curve: Curves.ease,
-          );
-        }
-      });
       // showModalBottomSheet(
       //   context: context,
       //   backgroundColor: Colors.transparent,
