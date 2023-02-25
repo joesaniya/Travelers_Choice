@@ -13,7 +13,7 @@ import '../views/checkout_screen.dart';
 import '../views/hotel_travel_constants.dart';
 
 List<TextEditingController> controllerTE = [];
-double amount = 0;
+// double amount = 0;
 
 class ActivityController extends FxController {
   TickerProvider ticker;
@@ -50,6 +50,7 @@ class ActivityController extends FxController {
     if (value.isEmpty) {
       double val = getGrandTotal(tour);
       tour.grandTotal = val;
+      log('Value Total:$val');
 
       if (selectedtour.contains(tour)) {
         selectedtour.remove(tour);
@@ -77,7 +78,7 @@ class ActivityController extends FxController {
   // double amount = 0;
 
   grandSelectedTourAmount() {
-    // double amount = 0;
+    double amount = 0;
 
     for (Activity tour in selectedtour) {
       log('tour.grandTotal:${tour.grandTotal}');
@@ -91,29 +92,7 @@ class ActivityController extends FxController {
     // log('Amount:$amount');
   }
 
-  // bool increaseAble(Product product) {
-  //   return product.person < 9;
-  //   // return product.person < product.person;
-  //   // return cart.quantity < cart.product.quantity;
-  // }
-
-  // bool decreaseAble(Product product) {
-  //   return product.person > 1;
-  // }
-
-  // void increment(Product product) {
-  //   if (!increaseAble(product)) return;
-  //   product.person++;
-  //   // calculateBilling();
-  //   update();
-  // }
-
-  // void decrement(Product product) {
-  //   if (!decreaseAble(product)) return;
-  //   product.person--;
-  //   // calculateBilling();
-  //   update();
-  // }
+  void Total(Activity tour) {}
 
   //todo
   void incrementperson(personCount) {
@@ -481,18 +460,12 @@ class ActivityController extends FxController {
               selectedtour.length,
               // selectedtours,
               selectedtour,
-              // selectedtour.first.name,
-              // selectedtour.first.adultCount,
-              // selectedtour.first.childCount,
-              // selectedtour.first.infantCount,
-              selectedtour.first.grandTotal,
               dateTE.text,
               selectedtransfer,
-              amount
+
               // excursions.activities!
               // amount
-              // grandSelectedTourAmount()
-              )));
+              grandSelectedTourAmount)));
     }
   }
 

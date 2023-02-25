@@ -3,6 +3,8 @@
 * Version : 1.0.0
 * */
 
+import 'dart:io';
+
 import 'package:hotel_travel/views/apply_visa.dart';
 import 'package:hotel_travel/views/auth_container.dart';
 import 'package:hotel_travel/views/payment_screen.dart';
@@ -17,6 +19,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutx/themes/app_theme_notifier.dart';
 import 'package:provider/provider.dart';
+import 'package:razorpay_flutter/razorpay_flutter.dart';
+import 'package:http/http.dart' as http;
 
 Future<void> main() async {
   //You will need to initialize AppThemeNotifier class for theme changes.
@@ -25,17 +29,28 @@ Future<void> main() async {
   AppTheme.init();
 
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
-
+  HttpOverrides.global = MyHttpOverrides();
   runApp(ChangeNotifierProvider<AppNotifier>(
     create: (context) => AppNotifier(),
     child: ChangeNotifierProvider<FxAppThemeNotifier>(
       create: (context) => FxAppThemeNotifier(),
-      child: MyApp(),
+      child: const MyApp(),
     ),
   ));
 }
 
+class MyHttpOverrides extends HttpOverrides {
+  @override
+  HttpClient createHttpClient(SecurityContext? context) {
+    return super.createHttpClient(context)
+      ..badCertificateCallback =
+          (X509Certificate cert, String host, int port) => true;
+  }
+}
+
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Consumer<AppNotifier>(
@@ -62,7 +77,6 @@ class MyApp extends StatelessWidget {
           // home: const FullApp(),
           // home: MyHomePage(),
           // home: YourPage(),
-
         );
       },
     );
