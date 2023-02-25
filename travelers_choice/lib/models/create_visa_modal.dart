@@ -9,45 +9,46 @@ CreateVisaApplication createVisaApplicationFromJson(String str) => CreateVisaApp
 String createVisaApplicationToJson(CreateVisaApplication data) => json.encode(data.toJson());
 
 class CreateVisaApplication {
+
   CreateVisaApplication({
-    required this.visaType,
-    required this.visaPrice,
-    required this.clientMarkup,
-    required this.profit,
-    required this.totalAmount,
-    required this.email,
-    required this.contactNo,
-    required this.onwardDate,
-    required this.returnDate,
-    required this.noOfTravellers,
-    required this.travellers,
-    required this.user,
-    required this.status,
-    required this.referenceNumber,
-    required this.id,
-    required this.createdAt,
-    required this.updatedAt,
-    required this.v,
+     this.visaType,
+     this.visaPrice,
+     this.clientMarkup,
+     this.profit,
+     this.totalAmount,
+     this.email,
+     this.contactNo,
+     this.onwardDate,
+     this.returnDate,
+     this.noOfTravellers,
+     this.travellers,
+     this.user,
+     this.status,
+     this.referenceNumber,
+     this.id,
+     this.createdAt,
+     this.updatedAt,
+     this.v,
   });
 
-  String visaType;
-  int visaPrice;
-  int clientMarkup;
-  int profit;
-  int totalAmount;
-  String email;
-  int contactNo;
-  DateTime onwardDate;
-  DateTime returnDate;
-  int noOfTravellers;
-  List<Traveller> travellers;
-  String user;
-  String status;
-  String referenceNumber;
-  String id;
-  DateTime createdAt;
-  DateTime updatedAt;
-  int v;
+  String? visaType;
+  int? visaPrice;
+  int? clientMarkup;
+  int? profit;
+  int? totalAmount;
+  String? email;
+  int? contactNo;
+  DateTime? onwardDate;
+  DateTime? returnDate;
+  int? noOfTravellers;
+  List<Traveller>? travellers;
+  String? user;
+  String? status;
+  String? referenceNumber;
+  String? id;
+  DateTime? createdAt;
+  DateTime? updatedAt;
+  int? v;
 
   factory CreateVisaApplication.fromJson(Map<String, dynamic> json) => CreateVisaApplication(
     visaType: json["visaType"],
@@ -78,16 +79,16 @@ class CreateVisaApplication {
     "totalAmount": totalAmount,
     "email": email,
     "contactNo": contactNo,
-    "onwardDate": onwardDate.toIso8601String(),
-    "returnDate": returnDate.toIso8601String(),
+    "onwardDate": onwardDate!.toIso8601String(),
+    "returnDate": returnDate!.toIso8601String(),
     "noOfTravellers": noOfTravellers,
-    "travellers": List<dynamic>.from(travellers.map((x) => x.toJson())),
+    "travellers": List<dynamic>.from(travellers!.map((x) => x.toJson())),
     "user": user,
     "status": status,
     "referenceNumber": referenceNumber,
     "_id": id,
-    "createdAt": createdAt.toIso8601String(),
-    "updatedAt": updatedAt.toIso8601String(),
+    "createdAt": createdAt!.toIso8601String(),
+    "updatedAt": updatedAt!.toIso8601String(),
     "__v": v,
   };
 }

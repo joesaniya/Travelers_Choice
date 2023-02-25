@@ -5,6 +5,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutx/flutx.dart';
 import 'package:hotel_travel/models/Country_modal.dart';
+import 'package:hotel_travel/models/create_visa_modal.dart';
 import 'package:hotel_travel/services/visa_service.dart';
 import 'package:intl/intl.dart';
 
@@ -60,6 +61,7 @@ class ApplyVisaController extends FxController {
   bool showcode = false;
   List<Product>? products;
   bool addCart = false;
+
 
 
 
@@ -168,6 +170,7 @@ class ApplyVisaController extends FxController {
   int addressCounter = 0;
   int phoneCounter = 0;
   int passportCounter = 0;
+  List<String> visaApplication = [];
 
   List<TextEditingController> firstNameControllers = [];
   List<TextEditingController> lastNameControllers = [];
@@ -177,11 +180,12 @@ class ApplyVisaController extends FxController {
   List<TextEditingController> dobControllers = [];
   List<TextEditingController> expiryControllers = [];
 
-
   @override
   initState() {
     super.initState();
     fetchData();
+    // print("erfdv fervf $visaApplication");
+    fetchloader();
     currentPage = 0;
     addressList = ShippingAddress.shipping();
     addressSelected = addressList!.first;
@@ -190,6 +194,8 @@ class ApplyVisaController extends FxController {
       Tab('Upload Details', Icons.paste_sharp),
       Tab('Make Payment',Icons.payment ),
     ];
+
+    // visaApplication.add();
     FnameTE = TextEditingController();
     LnameTE = TextEditingController();
     emailTE = TextEditingController();
@@ -463,6 +469,7 @@ class ApplyVisaController extends FxController {
     update();
   }
 
+
   onPageChanged(int page, {bool fromUser = false}) async {
     if (!fromUser) currentPage = page;
     update();
@@ -640,7 +647,7 @@ class ApplyVisaController extends FxController {
   //         .then((value) {
   //     });
   //   }
-  Future<bool> postCreateVisa(
+  Future<CreateVisaApplication> postCreateVisa(
     Map map
       ) async {
     try {
@@ -650,9 +657,9 @@ class ApplyVisaController extends FxController {
       );
       if (data != null) {
         // log(data);
-        return true;
+        return data;
       } else {
-        return false;
+        return data;
       }
     } catch (e) {
       rethrow;

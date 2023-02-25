@@ -25,6 +25,7 @@ import '../controllers/apply_visa_controller.dart';
 import '../images.dart';
 import '../localizations/language.dart';
 import '../models/Country_modal.dart';
+import '../models/create_visa_modal.dart';
 import '../services/app_constants.dart';
 import '../services/auth_service.dart';
 import '../theme/app_theme.dart';
@@ -91,6 +92,7 @@ class _ApplyVisaState extends State<ApplyVisa>  with TickerProviderStateMixin{
   int price = 0;
   final ImagePicker _picker = ImagePicker();
 
+  bool isLoading = false;
   _ApplyVisaState(SelectVisaModal? visa);
 
 
@@ -102,13 +104,14 @@ class _ApplyVisaState extends State<ApplyVisa>  with TickerProviderStateMixin{
       // _imageFile = pickedFile;
     });
   }
-  bool isLoading = true;
   late FocusNode nameNode;
 
   late OutlineInputBorder outlineInputBorderenable;
   late OutlineInputBorder outlineInputBorderfocus;
 
 String userName = "";
+
+   CreateVisaApplication? createdVisaOrder;
 
   CountryModal? countryList;
   bool isCountryListLoading = true;
@@ -134,6 +137,8 @@ String userName = "";
     }
   }
 
+  List? data;
+
 
 
   @override
@@ -141,11 +146,12 @@ String userName = "";
     theme = AppTheme.shoppingTheme;
    controller = FxControllerStore.put(ApplyVisaController(this));
     _counterController = CounterController();
+    data = controller.visaApplication;
     SharedPreferences.getInstance().then((sharedPrefValue) {
       setState(() {
         controller.countryId =
             sharedPrefValue.getString(AppConstants.KEY_ACCESS_TOKEN_countryId)!;
-        log(controller.countryId as num);
+        // log(controller.countryId);
 
       });
     });
@@ -588,20 +594,20 @@ String userName = "";
                     ),
 
                     FxSpacing.height(20),
-
-                    Container(
-                      child: Align(
-                        alignment: Alignment.centerLeft,
-                        child: FxText.bodyLarge(
-                          'Travellers',
-                          // textAlign: TextAlign.left,
-                          letterSpacing: 0,
-                          fontWeight: 600,
-                        ),
-                      ),
-
-                    ),
-                    FxSpacing.height(10),
+                    //
+                    // Container(
+                    //   child: Align(
+                    //     alignment: Alignment.centerLeft,
+                    //     child: FxText.bodyLarge(
+                    //       'Travellers',
+                    //       // textAlign: TextAlign.left,
+                    //       letterSpacing: 0,
+                    //       fontWeight: 600,
+                    //     ),
+                    //   ),
+                    //
+                    // ),
+                    // FxSpacing.height(10),
                     // Container(
                     //   decoration: BoxDecoration(
                     //       color: Colors.white,
@@ -654,77 +660,76 @@ String userName = "";
                     // FxSpacing.height(10),
 
                     Container(
-                      padding: EdgeInsets.only(left: 10),
-                      decoration: BoxDecoration(
-                          color: Colors.white,
-                          border: Border.all(width: 1, color: Colors.black),
-                          // color: const Color(0xff1529e8),
-                          borderRadius: BorderRadius.circular(4)),
-                      height: 50,
-                      width: MediaQuery.of(context).size.width*0.9,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
+                      child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: FxText.bodyLarge(
+                          'Choose Travellers',
+                          letterSpacing: 0,
+                          fontWeight: 600,
+                        ),
+                      ),
 
-                          FxText.bodyLarge("Choose travellers"),
-                          Row(
-                            children: [
-                              ElevatedButton(
-                                  style: ButtonStyle(
-                                      elevation: MaterialStateProperty.all(0),
-                                      backgroundColor:
-                                      MaterialStateProperty.all(Colors.grey),
-                                      shape: MaterialStateProperty.all(
-                                          const CircleBorder(side: BorderSide.none)),
-                                      minimumSize: MaterialStateProperty.all(
-                                          const Size(20, 20))),
-                                  onPressed: () {
-                                    _counterController.eventSink.add(Event.decrement);
-                                  },
-                                  child: const Icon(
-                                    Icons.remove,
-                                    color: Colors.black,
-                                  )),
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Container(
-                                    width: 25,
-                                    color: Colors.transparent,
-                                    child: FxText.bodyLarge(' ${_counterController.counter}',
-                                    )),
-                              ),
-                              ElevatedButton(
+                    ),
+
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
+                          children: [
+                            ElevatedButton(
                                 style: ButtonStyle(
                                     elevation: MaterialStateProperty.all(0),
-                                    backgroundColor: MaterialStateProperty.all(
-                                        const Color(0xff1529e8)),
+                                    backgroundColor:
+                                    MaterialStateProperty.all(Colors.grey),
                                     shape: MaterialStateProperty.all(
                                         const CircleBorder(side: BorderSide.none)),
-                                    minimumSize:
-                                    MaterialStateProperty.all(const Size(20, 20))),
+                                    minimumSize: MaterialStateProperty.all(
+                                        const Size(20, 20))),
                                 onPressed: () {
-                                  _counterController.eventSink.add(Event.increment);
+                                  _counterController.eventSink.add(Event.decrement);
                                 },
-                                child: const Icon(Icons.add),
-                              ),
-                            ],
-                          )
-
-                        ],
-                      ),
-                    ),
-                    SizedBox(height: 10,),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        FxText.bodyLarge(
-
-                          "${_counterController.counter * price} ${widget.visa!.visa.country.currencySymbol}",
-                          color:  const Color(0xff1529e8),
-                          decoration: TextDecoration.underline,
+                                child: const Icon(
+                                  Icons.remove,
+                                  color: Colors.black,
+                                )),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Container(
+                                  width: 25,
+                                  color: Colors.transparent,
+                                  child: FxText.bodyLarge(' ${_counterController.counter}',
+                                  )),
+                            ),
+                            ElevatedButton(
+                              style: ButtonStyle(
+                                  elevation: MaterialStateProperty.all(0),
+                                  backgroundColor: MaterialStateProperty.all(
+                                      const Color(0xff1529e8)),
+                                  shape: MaterialStateProperty.all(
+                                      const CircleBorder(side: BorderSide.none)),
+                                  minimumSize:
+                                  MaterialStateProperty.all(const Size(20, 20))),
+                              onPressed: () {
+                                _counterController.eventSink.add(Event.increment);
+                              },
+                              child: const Icon(Icons.add),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            FxText.bodyLarge(
+                              "${_counterController.counter * price} ${widget.visa!.visa.country.currencySymbol}",
+                              color:  const Color(0xff1529e8),
+                              decoration: TextDecoration.underline,
+                            ),
+                            SizedBox(width: 10,)
+                          ],
                         ),
                       ],
                     ),
+                    SizedBox(height: 10,),
+
                   ],
                 )
             ),
@@ -879,7 +884,7 @@ String userName = "";
                                   border: Border.all(width: 1, color: Colors.black),
                                   // color: const Color(0xff1529e8),
                                   borderRadius: BorderRadius.circular(4)),
-                              height: 50.0,
+                              // height: 50.0,
                               width: MediaQuery.of(context).size.width*0.9,
                               child: DropdownButtonHideUnderline(
 
@@ -935,33 +940,29 @@ String userName = "";
                             ),
                             FxSpacing.height(10),
 
-                            SizedBox(
-                              width: MediaQuery.of(context).size.width* 0.9,
-                              height: 50,
-                              child: TextFormField(
-                                style: FxTextStyle.bodyMedium(),
-                                decoration: InputDecoration(
-                                    floatingLabelBehavior: FloatingLabelBehavior.never,
-                                    filled: true,
-                                    isDense: true,
-                                    fillColor: Colors.white,
-                                    prefixIcon: Icon(
-                                      FeatherIcons.user,
-                                      color: theme.colorScheme.onBackground,
-                                    ),
-                                    hintText: "First Name",
+                            TextFormField(
+                              style: FxTextStyle.bodyMedium(),
+                              decoration: InputDecoration(
+                                  floatingLabelBehavior: FloatingLabelBehavior.never,
+                                  filled: true,
+                                  isDense: true,
+                                  fillColor: Colors.white,
+                                  prefixIcon: Icon(
+                                    FeatherIcons.user,
+                                    color: theme.colorScheme.onBackground,
+                                  ),
+                                  hintText: "First Name",
 
-                                    enabledBorder: outlineInputBorderenable,
-                                    focusedBorder: outlineInputBorderfocus,
-                                    border: outlineInputBorderenable,
-                                    contentPadding: FxSpacing.all(16),
-                                    hintStyle: FxTextStyle.bodyMedium(),
-                                    isCollapsed: true),
-                                maxLines: 1,
-                                controller: controller.firstNameControllers[index],
-                                validator: controller.validateFirstName,
-                                cursorColor: theme.colorScheme.onBackground,
-                              ),
+                                  enabledBorder: outlineInputBorderenable,
+                                  focusedBorder: outlineInputBorderfocus,
+                                  border: outlineInputBorderenable,
+                                  contentPadding: FxSpacing.all(16),
+                                  hintStyle: FxTextStyle.bodyMedium(),
+                                  isCollapsed: true),
+                              maxLines: 1,
+                              controller: controller.firstNameControllers[index],
+                              validator: controller.validateFirstName,
+                              cursorColor: theme.colorScheme.onBackground,
                             ),
 
                             FxSpacing.height(20),
@@ -979,32 +980,28 @@ String userName = "";
                             ),
                             FxSpacing.height(10),
 
-                            SizedBox(
-                              width: MediaQuery.of(context).size.width* 0.9,
-                              height: 50,
-                              child: TextFormField(
-                                style: FxTextStyle.bodyMedium(),
-                                decoration: InputDecoration(
-                                    floatingLabelBehavior: FloatingLabelBehavior.never,
-                                    filled: true,
-                                    isDense: true,
-                                    fillColor: Colors.white,
-                                    prefixIcon: Icon(
-                                      FeatherIcons.user,
-                                      color: theme.colorScheme.onBackground,
-                                    ),
-                                    hintText: "Last Name",
-                                    enabledBorder: outlineInputBorderenable,
-                                    focusedBorder: outlineInputBorderfocus,
-                                    border: outlineInputBorderenable,
-                                    contentPadding: FxSpacing.all(16),
-                                    hintStyle: FxTextStyle.bodyMedium(),
-                                    isCollapsed: true),
-                                maxLines: 1,
-                                controller: controller.lastNameControllers[index],
-                                validator: controller.validateLastName,
-                                cursorColor: theme.colorScheme.onBackground,
-                              ),
+                            TextFormField(
+                              style: FxTextStyle.bodyMedium(),
+                              decoration: InputDecoration(
+                                  floatingLabelBehavior: FloatingLabelBehavior.never,
+                                  filled: true,
+                                  isDense: true,
+                                  fillColor: Colors.white,
+                                  prefixIcon: Icon(
+                                    FeatherIcons.user,
+                                    color: theme.colorScheme.onBackground,
+                                  ),
+                                  hintText: "Last Name",
+                                  enabledBorder: outlineInputBorderenable,
+                                  focusedBorder: outlineInputBorderfocus,
+                                  border: outlineInputBorderenable,
+                                  contentPadding: FxSpacing.all(16),
+                                  hintStyle: FxTextStyle.bodyMedium(),
+                                  isCollapsed: true),
+                              maxLines: 1,
+                              controller: controller.lastNameControllers[index],
+                              validator: controller.validateLastName,
+                              cursorColor: theme.colorScheme.onBackground,
                             ),
 
                             FxSpacing.height(20),
@@ -1023,32 +1020,28 @@ String userName = "";
                             ),
                             FxSpacing.height(10),
 
-                            SizedBox(
-                              width: MediaQuery.of(context).size.width* 0.9,
-                              height: 50,
-                              child: TextFormField(
-                                style: FxTextStyle.bodyMedium(),
-                                decoration: InputDecoration(
-                                    floatingLabelBehavior: FloatingLabelBehavior.never,
-                                    filled: true,
-                                    isDense: true,
-                                    fillColor: Colors.white,
-                                    prefixIcon: Icon(
-                                      Icons.email_outlined,
-                                      color: theme.colorScheme.onBackground,
-                                    ),
-                                    hintText: "Email",
-                                    enabledBorder: outlineInputBorderenable,
-                                    focusedBorder: outlineInputBorderfocus,
-                                    border: outlineInputBorderenable,
-                                    contentPadding: FxSpacing.all(16),
-                                    hintStyle: FxTextStyle.bodyMedium(),
-                                    isCollapsed: true),
-                                maxLines: 1,
-                                controller: controller.emailControllers[index],
-                                validator: controller.validateEmail,
-                                cursorColor: theme.colorScheme.onBackground,
-                              ),
+                            TextFormField(
+                              style: FxTextStyle.bodyMedium(),
+                              decoration: InputDecoration(
+                                  floatingLabelBehavior: FloatingLabelBehavior.never,
+                                  filled: true,
+                                  isDense: true,
+                                  fillColor: Colors.white,
+                                  prefixIcon: Icon(
+                                    Icons.email_outlined,
+                                    color: theme.colorScheme.onBackground,
+                                  ),
+                                  hintText: "Email",
+                                  enabledBorder: outlineInputBorderenable,
+                                  focusedBorder: outlineInputBorderfocus,
+                                  border: outlineInputBorderenable,
+                                  contentPadding: FxSpacing.all(16),
+                                  hintStyle: FxTextStyle.bodyMedium(),
+                                  isCollapsed: true),
+                              maxLines: 1,
+                              controller: controller.emailControllers[index],
+                              validator: controller.validateEmail,
+                              cursorColor: theme.colorScheme.onBackground,
                             ),
 
                             FxSpacing.height(20),
@@ -1183,32 +1176,28 @@ String userName = "";
                             ),
                             FxSpacing.height(10),
 
-                            SizedBox(
-                              width: MediaQuery.of(context).size.width* 0.9,
-                              height: 50,
-                              child: TextFormField(
-                                style: FxTextStyle.bodyMedium(),
-                                decoration: InputDecoration(
-                                    floatingLabelBehavior: FloatingLabelBehavior.never,
-                                    filled: true,
-                                    isDense: true,
-                                    fillColor: Colors.white,
-                                    prefixIcon: Icon(
-                                      FeatherIcons.phone,
-                                      color: theme.colorScheme.onBackground,
-                                    ),
-                                    hintText: "Contact Number",
-                                    enabledBorder: outlineInputBorderenable,
-                                    focusedBorder: outlineInputBorderfocus,
-                                    border: outlineInputBorderenable,
-                                    contentPadding: FxSpacing.all(16),
-                                    hintStyle: FxTextStyle.bodyMedium(),
-                                    isCollapsed: true),
-                                maxLines: 1,
-                                controller: controller.contactControllers[index],
-                                validator: controller.validatePhone,
-                                cursorColor: theme.colorScheme.onBackground,
-                              ),
+                            TextFormField(
+                              style: FxTextStyle.bodyMedium(),
+                              decoration: InputDecoration(
+                                  floatingLabelBehavior: FloatingLabelBehavior.never,
+                                  filled: true,
+                                  isDense: true,
+                                  fillColor: Colors.white,
+                                  prefixIcon: Icon(
+                                    FeatherIcons.phone,
+                                    color: theme.colorScheme.onBackground,
+                                  ),
+                                  hintText: "Contact Number",
+                                  enabledBorder: outlineInputBorderenable,
+                                  focusedBorder: outlineInputBorderfocus,
+                                  border: outlineInputBorderenable,
+                                  contentPadding: FxSpacing.all(16),
+                                  hintStyle: FxTextStyle.bodyMedium(),
+                                  isCollapsed: true),
+                              maxLines: 1,
+                              controller: controller.contactControllers[index],
+                              validator: controller.validatePhone,
+                              cursorColor: theme.colorScheme.onBackground,
                             ),
 
                             FxSpacing.height(20),
@@ -1226,32 +1215,28 @@ String userName = "";
                             ),
                             FxSpacing.height(10),
 
-                            SizedBox(
-                              width: MediaQuery.of(context).size.width* 0.9,
-                              height: 50,
-                              child: TextFormField(
-                                style: FxTextStyle.bodyMedium(),
-                                decoration: InputDecoration(
-                                    floatingLabelBehavior: FloatingLabelBehavior.never,
-                                    filled: true,
-                                    isDense: true,
-                                    fillColor: Colors.white,
-                                    prefixIcon: Icon(
-                                      FeatherIcons.fileText,
-                                      color: theme.colorScheme.onBackground,
-                                    ),
-                                    hintText: "Passport Number",
-                                    enabledBorder: outlineInputBorderenable,
-                                    focusedBorder: outlineInputBorderfocus,
-                                    border: outlineInputBorderenable,
-                                    contentPadding: FxSpacing.all(16),
-                                    hintStyle: FxTextStyle.bodyMedium(),
-                                    isCollapsed: true),
-                                maxLines: 1,
-                                controller: controller.passportControllers[index],
-                                validator: controller.validatePassport,
-                                cursorColor: theme.colorScheme.onBackground,
-                              ),
+                            TextFormField(
+                              style: FxTextStyle.bodyMedium(),
+                              decoration: InputDecoration(
+                                  floatingLabelBehavior: FloatingLabelBehavior.never,
+                                  filled: true,
+                                  isDense: true,
+                                  fillColor: Colors.white,
+                                  prefixIcon: Icon(
+                                    FeatherIcons.fileText,
+                                    color: theme.colorScheme.onBackground,
+                                  ),
+                                  hintText: "Passport Number",
+                                  enabledBorder: outlineInputBorderenable,
+                                  focusedBorder: outlineInputBorderfocus,
+                                  border: outlineInputBorderenable,
+                                  contentPadding: FxSpacing.all(16),
+                                  hintStyle: FxTextStyle.bodyMedium(),
+                                  isCollapsed: true),
+                              maxLines: 1,
+                              controller: controller.passportControllers[index],
+                              validator: controller.validatePassport,
+                              cursorColor: theme.colorScheme.onBackground,
                             ),
 
                             FxSpacing.height(20),
@@ -1268,43 +1253,39 @@ String userName = "";
                             ),
                             FxSpacing.height(10),
 
-                            SizedBox(
-                              width: MediaQuery.of(context).size.width* 0.9,
-                              height: 50,
-                              child: TextFormField(
-                                style: FxTextStyle.bodyMedium(),
-                                decoration: InputDecoration(
-                                    floatingLabelBehavior: FloatingLabelBehavior.never,
-                                    filled: true,
-                                    isDense: true,
-                                    fillColor: Colors.white,
-                                    prefixIcon: Icon(
-                                      Icons.calendar_month,
-                                      color: theme.colorScheme.onBackground,
-                                    ),
-                                    hintText: "dd/mm/yyyy",
-                                    enabledBorder: outlineInputBorderenable,
-                                    focusedBorder: outlineInputBorderfocus,
-                                    border: outlineInputBorderenable,
-                                    contentPadding: FxSpacing.all(16),
-                                    hintStyle: FxTextStyle.bodyMedium(),
-                                    isCollapsed: true),
-                                // maxLines: 1,
-                                controller: controller.dobControllers[index],
-                                validator: controller.validateDOB,
-                                cursorColor: theme.colorScheme.onBackground,
-                                onTap: ()async{
-                                  DateTime? pickedDate = await showDatePicker(
-                                      context: context,
-                                      initialDate: DateTime.now(), firstDate: DateTime(1900), lastDate: DateTime.now());
+                            TextFormField(
+                              style: FxTextStyle.bodyMedium(),
+                              decoration: InputDecoration(
+                                  floatingLabelBehavior: FloatingLabelBehavior.never,
+                                  filled: true,
+                                  isDense: true,
+                                  fillColor: Colors.white,
+                                  prefixIcon: Icon(
+                                    Icons.calendar_month,
+                                    color: theme.colorScheme.onBackground,
+                                  ),
+                                  hintText: "dd/mm/yyyy",
+                                  enabledBorder: outlineInputBorderenable,
+                                  focusedBorder: outlineInputBorderfocus,
+                                  border: outlineInputBorderenable,
+                                  contentPadding: FxSpacing.all(16),
+                                  hintStyle: FxTextStyle.bodyMedium(),
+                                  isCollapsed: true),
+                              // maxLines: 1,
+                              controller: controller.dobControllers[index],
+                              validator: controller.validateDOB,
+                              cursorColor: theme.colorScheme.onBackground,
+                              onTap: ()async{
+                                DateTime? pickedDate = await showDatePicker(
+                                    context: context,
+                                    initialDate: DateTime.now(), firstDate: DateTime(1900), lastDate: DateTime.now());
 
-                                  if(pickedDate != null){
-                                    setState(() {
-                                      controller.dobControllers[index].text = DateFormat("dd/MM/yyy").format(pickedDate);
-                                    });
-                                  }
-                                },
-                              ),
+                                if(pickedDate != null){
+                                  setState(() {
+                                    controller.dobControllers[index].text = DateFormat("dd/MM/yyy").format(pickedDate);
+                                  });
+                                }
+                              },
                             ),
 
                             FxSpacing.height(10),
@@ -1321,43 +1302,39 @@ String userName = "";
                             ),
                             FxSpacing.height(10),
 
-                            SizedBox(
-                              width: MediaQuery.of(context).size.width* 0.9,
-                              height: 50,
-                              child: TextFormField(
-                                style: FxTextStyle.bodyMedium(),
-                                decoration: InputDecoration(
-                                    floatingLabelBehavior: FloatingLabelBehavior.never,
-                                    filled: true,
-                                    isDense: true,
-                                    fillColor: Colors.white,
-                                    prefixIcon: Icon(
-                                      Icons.calendar_month,
-                                      color: theme.colorScheme.onBackground,
-                                    ),
-                                    hintText: "dd/mm/yyyy",
-                                    enabledBorder: outlineInputBorderenable,
-                                    focusedBorder: outlineInputBorderfocus,
-                                    border: outlineInputBorderenable,
-                                    contentPadding: FxSpacing.all(16),
-                                    hintStyle: FxTextStyle.bodyMedium(),
-                                    isCollapsed: true),
-                                // maxLines: 1,
-                                controller: controller.expiryControllers[index],
-                                validator: controller.validateExpiry,
-                                cursorColor: theme.colorScheme.onBackground,
-                                onTap: ()async{
-                                  DateTime? pickedDate = await showDatePicker(
-                                      context: context,
-                                      initialDate: DateTime.now(), firstDate: DateTime(2000), lastDate: DateTime(2100));
+                            TextFormField(
+                              style: FxTextStyle.bodyMedium(),
+                              decoration: InputDecoration(
+                                  floatingLabelBehavior: FloatingLabelBehavior.never,
+                                  filled: true,
+                                  isDense: true,
+                                  fillColor: Colors.white,
+                                  prefixIcon: Icon(
+                                    Icons.calendar_month,
+                                    color: theme.colorScheme.onBackground,
+                                  ),
+                                  hintText: "dd/mm/yyyy",
+                                  enabledBorder: outlineInputBorderenable,
+                                  focusedBorder: outlineInputBorderfocus,
+                                  border: outlineInputBorderenable,
+                                  contentPadding: FxSpacing.all(16),
+                                  hintStyle: FxTextStyle.bodyMedium(),
+                                  isCollapsed: true),
+                              // maxLines: 1,
+                              controller: controller.expiryControllers[index],
+                              validator: controller.validateExpiry,
+                              cursorColor: theme.colorScheme.onBackground,
+                              onTap: ()async{
+                                DateTime? pickedDate = await showDatePicker(
+                                    context: context,
+                                    initialDate: DateTime.now(), firstDate: DateTime(2000), lastDate: DateTime(2100));
 
-                                  if(pickedDate != null){
-                                    setState(() {
-                                      controller.expiryControllers[index].text = DateFormat("dd/MM/yyy").format(pickedDate);
-                                    });
-                                  }
-                                },
-                              ),
+                                if(pickedDate != null){
+                                  setState(() {
+                                    controller.expiryControllers[index].text = DateFormat("dd/MM/yyy").format(pickedDate);
+                                  });
+                                }
+                              },
                             ),
                             FxSpacing.height(5),
                           ],
@@ -1377,14 +1354,13 @@ String userName = "";
             FxSpacing.height(20),
             FxButton(
               padding: FxSpacing.y(12),
-              onPressed: () {
+              onPressed: () async {
+                // setState(() {
+                //   isLoading =true;
+                // });
                 print(controller.selectedTitle.first);
                 if(controller.formKey.currentState!.validate()) {
                   // controller.formKey.currentState!.save();
-
-                  setState(() {
-                    controller.currentPage++;
-                  });
 
                   List<Map> travellersList = [];
                   for (int i = 0; i <= _counterController.counter - 1; i++) {
@@ -1461,9 +1437,42 @@ String userName = "";
 
 
                   print(body);
-                  controller.postCreateVisa(
-                      body
-                  );
+
+                  // controller.visaApplication.add(createdVisaOrder!.totalAmount)
+                  createdVisaOrder = await  controller.postCreateVisa(
+                          body
+                      );
+
+
+                 print("resultresult ======== ${createdVisaOrder!.totalAmount}");
+
+
+                 if(createdVisaOrder!=null && createdVisaOrder!.noOfTravellers!=null){
+                   setState(() {
+                     controller.currentPage++;
+                   });
+                 }
+              // data!.add(controller.visaApplication);
+              //     print("data $data");
+                  //
+                  // await controller.postCreateVisa(
+                  //     body
+                  // ).then((value) {if(value){controller.currentPage++;}});
+
+                    // (visaApplication==null )?print("visaApplication is null"):(visaApplication!= null)?print("visapplication in not null"):print("notinh works");
+
+
+
+                   // if(visaApplication == null){
+                   //
+                   //   controller.currentPage;f
+                   // }else{
+                   //     controller.currentPage++;
+                   // }
+
+
+
+
                 }
 
               },
@@ -1471,11 +1480,11 @@ String userName = "";
               elevation: 0,
               splashColor: theme.colorScheme.onPrimary.withAlpha(30),
               backgroundColor: const Color(0xff1529e8),
-              child: FxText.labelMedium(
+              child:  FxText.labelMedium(
                 'Proceed Payment',
                 color: theme.colorScheme.onPrimary,
                 fontWeight: 600,
-              ),
+              )
             ),
             FxSpacing.height(5),
           ]),
@@ -1691,30 +1700,30 @@ String userName = "";
 
                         const SizedBox(height: 10,),
 
-                        Container(
-                          alignment: Alignment.topCenter,
-                          padding: EdgeInsets.all(5),
-                          decoration: BoxDecoration(
-                              color: Colors.white,
-                              border: Border.all(width: 1, color: Colors.black),
-                              // color: const Color(0xff1529e8),
-                              borderRadius: BorderRadius.circular(4)),
-                          height: 50.0,
-                          width: MediaQuery.of(context).size.width*0.9,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(_fileName[index]),
-                              ElevatedButton(
+                        Row(
+                          children: [
+                            Container(
+                              alignment: Alignment.topCenter,
+                              padding: EdgeInsets.all(5),
+                              decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  border: Border.all(width: 1, color: Colors.black),
+                                  // color: const Color(0xff1529e8),
+                                  borderRadius: BorderRadius.circular(4)),
+                              height: MediaQuery.of(context).size.height *0.05,
+                              width: MediaQuery.of(context).size.width*0.6,
+                              child: Align(alignment:Alignment.centerLeft,child: Text(_fileName[index])),
+                            ),
+                            SizedBox(width:5),
+                            ElevatedButton(
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor: const Color(0xff1529e8),
                                 ),
-                                  onPressed: (){
-                                    upLoadFile(index);
-                                    },
-                                  child: Text("Choose File"))
-                            ],
-                          ),
+                                onPressed: (){
+                                  upLoadFile(index);
+                                },
+                                child: Text("Choose File"))
+                          ],
                         ),
                         const SizedBox(height: 10,),
                         Align(
@@ -1729,30 +1738,30 @@ String userName = "";
                         ),
 
                         const SizedBox(height: 10,),
-                        Container(
-                          alignment: Alignment.topCenter,
-                          padding: EdgeInsets.all(5),
-                          decoration: BoxDecoration(
-                              color: Colors.white,
-                              border: Border.all(width: 1, color: Colors.black),
-                              // color: const Color(0xff1529e8),
-                              borderRadius: BorderRadius.circular(4)),
-                          height: 50.0,
-                          width: MediaQuery.of(context).size.width*0.9,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(_fileName2[index]),
-                              ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor: const Color(0xff1529e8),
-                                  ),
-                                  onPressed: (){
-                                    upLoadFile2(index);
-                                  },
-                                  child: Text("Choose File"))
-                            ],
-                          ),
+                        Row(
+                          children: [
+                            Container(
+                              alignment: Alignment.topCenter,
+                              padding: EdgeInsets.all(5),
+                              decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  border: Border.all(width: 1, color: Colors.black),
+                                  // color: const Color(0xff1529e8),
+                                  borderRadius: BorderRadius.circular(4)),
+                              height: MediaQuery.of(context).size.height *0.05,
+                              width: MediaQuery.of(context).size.width*0.6,
+                              child: Align(alignment:Alignment.centerLeft,child: Text(_fileName2[index])),
+                            ),
+                            SizedBox(width: 5,),
+                            ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: const Color(0xff1529e8),
+                                ),
+                                onPressed: (){
+                                  upLoadFile2(index);
+                                },
+                                child: Text("Choose File"))
+                          ],
                         ),
                         const SizedBox(height: 10,),
                         Align(
@@ -1766,35 +1775,36 @@ String userName = "";
                           // ),
                         ),
                         const SizedBox(height: 10,),
-                        Container(
-                          padding:EdgeInsets.all(5),
-                          width: MediaQuery.of(context).size.width *0.9,
-                          height: (_imageFile[index] == null) ?MediaQuery.of(context).size.height *0.05:
-                          MediaQuery.of(context).size.height *0.08 ,
-                          decoration: BoxDecoration(
-                              color: Colors.white,
-                              border: Border.all(width: 1, color: Colors.black),
-                              // color: const Color(0xff1529e8),
-                              borderRadius: BorderRadius.circular(4)),
-                          child: Center(
-                            child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  (_imageFile[index] == null)? Container(): Container(
-                                    width:100,
-                                    height:70,
-                                    child: (_imageFile[index] != null)? Image.file(
-                                        File( _imageFile[index]?.path ?? "" )) : Container()),
-                                  ElevatedButton(
-                                      style: ElevatedButton.styleFrom(
-                                        backgroundColor: const Color(0xff1529e8),
-                                      ),
-                                      onPressed: ()async{
-                                    takePhoto(ImageSource.gallery, index);
-                                  }, child: Text("Choose File"))
-                                ]
+                        Row(
+                          children: [
+                            Container(
+                              padding:EdgeInsets.all(5),
+                              width: MediaQuery.of(context).size.width *0.6,
+                              height: (_imageFile[index] == null) ?MediaQuery.of(context).size.height *0.05:
+                              MediaQuery.of(context).size.height *0.08 ,
+                              decoration: (_imageFile[index] == null)? BoxDecoration(
+                                  color: Colors.white,
+                                  border: Border.all(width: 1, color: Colors.black),
+                                  // color: const Color(0xff1529e8),
+                                  borderRadius: BorderRadius.circular(4)): BoxDecoration(),
+                              child: (_imageFile[index] == null)? Container(): Align(
+                                alignment: Alignment.centerLeft,
+                                child: Container(
+                                  width:100,
+                                  height:70,
+                                  child: (_imageFile[index] != null)? Image.file(
+                                      File( _imageFile[index]?.path ?? "" )) : Container()),
+                              ),
                             ),
-                          ),
+                            SizedBox(width: 5,),
+                            ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: const Color(0xff1529e8),
+                                ),
+                                onPressed: ()async{
+                                  takePhoto(ImageSource.gallery, index);
+                                }, child: Text("Choose File"))
+                          ],
                         ),
                         SizedBox(height: 10,),
                         Container(
@@ -1810,30 +1820,31 @@ String userName = "";
                           ),
                         ),
                         SizedBox(height: 10,),
-                        Container(
-                          alignment: Alignment.topCenter,
-                          padding: EdgeInsets.all(5),
-                          width: MediaQuery.of(context).size.width *0.9,
-                          height: MediaQuery.of(context).size.height *0.05,
-                          decoration: BoxDecoration(
-                              color: Colors.white,
-                              border: Border.all(width: 1, color: Colors.black),
-                              // color: const Color(0xff1529e8),
-                              borderRadius: BorderRadius.circular(4)),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(_fileName3[index]),
-                              ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor: const Color(0xff1529e8),
-                                  ),
-                                  onPressed: (){
-                                    upLoadFile3(index);
-                                  },
-                                  child: Text("Choose File"))
-                            ],
-                          ),
+                        Row(
+                          children: [
+                            Container(
+                              alignment: Alignment.topCenter,
+                              padding: EdgeInsets.all(5),
+                              width: MediaQuery.of(context).size.width *0.6,
+                              height: MediaQuery.of(context).size.height *0.05,
+                              decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  border: Border.all(width: 1, color: Colors.black),
+                                  // color: const Color(0xff1529e8),
+                                  borderRadius: BorderRadius.circular(4)),
+                              child: Align(alignment:Alignment.centerLeft,child: Text(_fileName3[index])),
+                            ),
+                            SizedBox(width: 5,),
+                            ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: const Color(0xff1529e8),
+                                ),
+                                onPressed: (){
+                                  upLoadFile3(index);
+                                },
+                                child: Text("Choose File"))
+
+                          ],
                         ),
                         SizedBox(height: 10,),
                         Container(
@@ -1850,30 +1861,31 @@ String userName = "";
                         ),
 
                         SizedBox(height: 10,),
-                        Container(
-                          alignment: Alignment.topCenter,
-                          padding: EdgeInsets.all(5),
-                          width: MediaQuery.of(context).size.width *0.9,
-                          height: MediaQuery.of(context).size.height *0.05,
-                          decoration: BoxDecoration(
-                              color: Colors.white,
-                              border: Border.all(width: 1, color: Colors.black),
-                              // color: const Color(0xff1529e8),
-                              borderRadius: BorderRadius.circular(4)),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(_fileName4[index]),
-                              ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor: const Color(0xff1529e8),
-                                  ),
-                                  onPressed: (){
-                                    upLoadFile4(index);
-                                  },
-                                  child: Text("Choose File"))
-                            ],
-                          ),
+                        Row(
+                          children: [
+                            Container(
+                              alignment: Alignment.topCenter,
+                              padding: EdgeInsets.all(5),
+                              width: MediaQuery.of(context).size.width *0.6,
+                              height: MediaQuery.of(context).size.height *0.05,
+                              decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  border: Border.all(width: 1, color: Colors.black),
+                                  // color: const Color(0xff1529e8),
+                                  borderRadius: BorderRadius.circular(4)),
+                              child: Align(alignment:Alignment.centerLeft,child: Text(_fileName4[index])),
+                            ),
+                            SizedBox(width:5),
+                            ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: const Color(0xff1529e8),
+                                ),
+                                onPressed: (){
+                                  upLoadFile4(index);
+                                },
+                                child: Text("Choose File"))
+
+                          ],
                         ),
                         SizedBox(height: 10,),
                       ],
@@ -1929,6 +1941,8 @@ String userName = "";
 
   Widget _billingWidget() {
     List<Widget> list = [];
+   var onwardDateResponse = createdVisaOrder!.onwardDate;
+   var returnDateResponse = createdVisaOrder!.returnDate;
     return SizedBox(
       child: ListView.separated(
         itemCount: 1,
@@ -1951,7 +1965,7 @@ String userName = "";
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       FxText.bodyMedium(
-                        'Option',
+                        'Visa',
                         fontWeight: 600,
                       ),
                       FxSpacing.width(20),
@@ -1961,7 +1975,7 @@ String userName = "";
                           alignment: Alignment.centerRight,
                           child: FxText.bodyMedium(
                             // '\$' + controller.order.precise,
-                            "30 days single entry tourist visa",
+                            createdVisaOrder!.visaType.toString(),
                             fontWeight: 700,
                             textAlign: TextAlign.left,
                           ),
@@ -1969,41 +1983,31 @@ String userName = "";
                       ),
                     ],
                   ),
+                  // FxSpacing.height(4),
+                  // Row(
+                  //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  //   children: [
+                  //     FxText.bodyMedium(
+                  //       'Transfer',
+                  //       fontWeight: 600,
+                  //     ),
+                  //
+                  //     FxText.bodyMedium(
+                  //       "without",
+                  //       fontWeight: 700,
+                  //     ),
+                  //   ],
+                  // ),
                   FxSpacing.height(4),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       FxText.bodyMedium(
-                        'Transfer',
-                        fontWeight: 600,
-                      ),
-                      // widget.selectedtourOption[index].isSharing == null
-                      //     ? FxText.bodyMedium(
-                      //         // '\$' + controller.order.precise,
-                      //         'without',
-                      //         fontWeight: 700,
-                      //       )
-                      //     : FxText.bodyMedium(
-                      //         widget.Transfer.toString(),
-                      //         fontWeight: 700,
-                      //       ),
-
-                      FxText.bodyMedium(
-                        "without",
-                        fontWeight: 700,
-                      ),
-                    ],
-                  ),
-                  FxSpacing.height(4),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      FxText.bodyMedium(
-                        'Date',
+                        'Onward Date',
                         fontWeight: 600,
                       ),
                       FxText.bodyMedium(
-                        controller.fromDateTE.text,
+                        "${onwardDateResponse!.day.toString()}/${onwardDateResponse.month.toString()}/${onwardDateResponse.year.toString()}",
                         fontWeight: 700,
                       ),
                       // widget.textdate.isEmpty
@@ -2024,7 +2028,33 @@ String userName = "";
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       FxText.bodyMedium(
-                        'Traveller',
+                        'Return Date',
+                        fontWeight: 600,
+                      ),
+                      FxText.bodyMedium(
+                        "${returnDateResponse!.day.toString()}/${returnDateResponse.month.toString()}/${returnDateResponse.year.toString()}",
+                        fontWeight: 700,
+                      ),
+                      // widget.textdate.isEmpty
+                      //     ? FxText.bodyMedium(
+                      //         'select Date',
+                      //         fontWeight: 700,
+                      //       )
+                      //     : FxText.bodyMedium(
+                      //         // widget.textdate.toString(),
+                      //         widget.selectedtourOption[index].selectedDate
+                      //             .toString(),
+                      //         fontWeight: 700,
+                      //       ),
+                    ],
+                  ),
+                  FxSpacing.height(4),
+
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      FxText.bodyMedium(
+                        'Travellers',
                         fontWeight: 600,
                       ),
                       Expanded(child: Container()),
@@ -2037,7 +2067,7 @@ String userName = "";
                             child: Row(
                               children: [
                                 FxText.bodyMedium(
-                                    _counterController.counter.toString(),
+                                    createdVisaOrder!.noOfTravellers.toString(),
                                     color: const Color(0xff1529e8),
                                     // color: customTheme.groceryPrimary,
                                     fontWeight: 500,
@@ -2102,11 +2132,26 @@ String userName = "";
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       FxText.bodyMedium(
+                        'Visa price',
+                        fontWeight: 600,
+                      ),
+                      FxText.bodyLarge(
+                        "${ createdVisaOrder!.visaPrice} "
+                            "${widget.visa!.visa.country.currencySymbol}",
+                        color:  Colors.black,
+                      ),
+                    ],
+                  ),
+                  FxSpacing.height(4),
+                  (createdVisaOrder!.noOfTravellers == 1) ? Container() : Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      FxText.bodyMedium(
                         'Amount',
                         fontWeight: 600,
                       ),
                       FxText.bodyLarge(
-                        "${_counterController.counter * widget.visa!.visaType.first.visaPrice} "
+                        "${createdVisaOrder!.totalAmount.toString()} "
                             "${widget.visa!.visa.country.currencySymbol}",
                         color:  Colors.black,
                       ),
@@ -2139,7 +2184,7 @@ String userName = "";
                         color: const Color(0xff1529e8),
                       ),
                        FxText.bodyLarge(
-                        "${_counterController.counter * widget.visa!.visaType.first.visaPrice} "
+                        "${createdVisaOrder!.totalAmount.toString()} "
                             "${widget.visa!.visa.country.currencySymbol}",
                         color: Color(0xff1529e8)
                       ),

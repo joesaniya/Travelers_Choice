@@ -68,7 +68,7 @@ class VisaService{
   }
 
 
-  Future postCreateVisa(
+  Future<CreateVisaApplication> postCreateVisa(
 
       Map body
       ) async {
@@ -94,11 +94,12 @@ class VisaService{
         // sharedPreferences.setString("countrycode", countryModalFromJson(response.body).toJson() );
         print("jsondata$response");
 
-        return createVisaApplicationFromJson(response.body);
+        var createVisaResponse = createVisaApplicationFromJson(response.body);
+        return createVisaResponse;
       } else {
         var jsondata = jsonDecode(response.body);
         log(jsondata['error']);
-        return null;
+        return  CreateVisaApplication();
       }
     } catch (e) {
       rethrow;
