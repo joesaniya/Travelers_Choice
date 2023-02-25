@@ -600,7 +600,8 @@ class CheckOutController extends FxController {
       print('Adult Count:${element.adultCount}');
       print('child Count:${element.childCount}');
       print('Infant Count:${element.infantCount}');
-      var datas = {
+      // var datas=
+      Map<String, dynamic> datas = {
         // "activity": element.sId,
         // // "date": "2023-02-28",
         // "date": element.selectedDate,
@@ -621,7 +622,8 @@ class CheckOutController extends FxController {
     selectedExcursionsDatas.map((e) =>
         // e,
         log('selected Activites:$e'));
-    var body = {
+    //var body=
+    Map<String, dynamic> body = {
       "name": FnameTE.text,
       "email": emailTE.text,
       "phoneNumber": phoneTE.text,
