@@ -650,7 +650,9 @@ class CheckOutController extends FxController {
       // openGateway(jsonDecode(res.body)['id']);
       // log('Response Id:${jsonDecode(res.body)['id']}');
       log('Response Id:${jsonDecode(res.body)['orderId']}');
-      openGateway(jsonDecode(res.body)['orderId']);
+      log('order Id:${jsondata['order']['id']}');
+      // openGateway(jsonDecode(res.body)['orderId']);
+      openGateway(jsondata['order']['id']);
       // pageController.animateToPage(
       //   currentPage + 1,
       //   duration: const Duration(milliseconds: 600),
