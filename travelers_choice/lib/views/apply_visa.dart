@@ -1492,6 +1492,7 @@ String userName = "";
   }
 
   Widget uploadDetails() {
+    var onwardDateResponse = createdVisaOrder!.onwardDate;
     return Form(
       key: controller.formKey,
       child: Container(
@@ -1574,7 +1575,7 @@ String userName = "";
                                               style: TextStyle(fontSize: 16,color: Colors.black),
                                               children: <TextSpan>[
                                                 TextSpan(
-                                                    text: '${controller.firstNameControllers[index].text}',
+                                                    text: '${createdVisaOrder!.travellers![index].firstName}',
                                                     style: TextStyle(fontSize: 16,color: Color(0xff1529e8))
                                                 ),
                                               ],
@@ -1590,7 +1591,7 @@ String userName = "";
                                               style: TextStyle(fontSize: 16,color: Colors.black),
                                               children: <TextSpan>[
                                                 TextSpan(
-                                                    text: '${controller.lastNameControllers[index].text}',
+                                                    text: '${createdVisaOrder!.travellers![index].lastName}',
                                                     style: TextStyle(fontSize: 16,color: Color(0xff1529e8))
                                                 ),
                                               ],
@@ -1613,7 +1614,8 @@ String userName = "";
                                               style: TextStyle(fontSize: 16,color: Colors.black),
                                               children: <TextSpan>[
                                                 TextSpan(
-                                                    text: '${controller.dobControllers[index].text}',
+                                                    text: '${createdVisaOrder!.travellers![index].dateOfBirth.day}/${createdVisaOrder!.travellers![index].dateOfBirth.month}/'
+                                                        '${createdVisaOrder!.travellers![index].dateOfBirth.year}',
                                                     style: TextStyle(fontSize: 16,color:  Color(0xff1529e8))
                                                 ),
                                               ],
@@ -1630,7 +1632,7 @@ String userName = "";
                                               style: TextStyle(fontSize: 16,color: Colors.black),
                                               children: <TextSpan>[
                                                 TextSpan(
-                                                    text: '${controller.fromDateTE.text}',
+                                                    text: "${onwardDateResponse!.day.toString()}/${onwardDateResponse.month.toString()}/${onwardDateResponse.year.toString()}",
                                                     style: TextStyle(fontSize: 16,color:  Color(0xff1529e8))
                                                 ),
                                               ],
@@ -1654,7 +1656,7 @@ String userName = "";
                                               style: TextStyle(fontSize: 16,color: Colors.black),
                                               children: <TextSpan>[
                                                 TextSpan(
-                                                    text: '${controller.passportControllers[index].text}',
+                                                    text: '${createdVisaOrder!.travellers![index].passportNo}',
                                                     style: TextStyle(fontSize: 16,color: Color(0xff1529e8))
                                                 ),
                                               ],
@@ -1670,7 +1672,7 @@ String userName = "";
                                               style: TextStyle(fontSize: 16,color: Colors.black),
                                               children: <TextSpan>[
                                                 TextSpan(
-                                                    text: '${controller.expiryControllers[index].text}',
+                                                    text: '${createdVisaOrder!.travellers![index].expiryDate.day}/${createdVisaOrder!.travellers![index].expiryDate.month}/${createdVisaOrder!.travellers![index].expiryDate.year}',
                                                     style: TextStyle(fontSize: 16,color:  Color(0xff1529e8))
                                                 ),
                                               ],
@@ -1777,33 +1779,48 @@ String userName = "";
                         const SizedBox(height: 10,),
                         Row(
                           children: [
+                            // Container(
+                            //   padding:EdgeInsets.all(5),
+                            //   width: MediaQuery.of(context).size.width *0.6,
+                            //   height: (_imageFile[index] == null) ?MediaQuery.of(context).size.height *0.05:
+                            //   MediaQuery.of(context).size.height *0.08 ,
+                            //   decoration: (_imageFile[index] == null)? BoxDecoration(
+                            //       color: Colors.white,
+                            //       border: Border.all(width: 1, color: Colors.black),
+                            //       // color: const Color(0xff1529e8),
+                            //       borderRadius: BorderRadius.circular(4)): BoxDecoration(),
+                            //   child: (_imageFile[index] == null)? Container(): Align(
+                            //     alignment: Alignment.centerLeft,
+                            //     child: Container(
+                            //       width:100,
+                            //       height:70,
+                            //       child: (_imageFile[index] != null)? Image.file(
+                            //           File( _imageFile[index]?.path ?? "" )) : Container()),
+                            //   ),
+                            // ),
+                            
                             Container(
-                              padding:EdgeInsets.all(5),
-                              width: MediaQuery.of(context).size.width *0.6,
-                              height: (_imageFile[index] == null) ?MediaQuery.of(context).size.height *0.05:
-                              MediaQuery.of(context).size.height *0.08 ,
-                              decoration: (_imageFile[index] == null)? BoxDecoration(
-                                  color: Colors.white,
-                                  border: Border.all(width: 1, color: Colors.black),
-                                  // color: const Color(0xff1529e8),
-                                  borderRadius: BorderRadius.circular(4)): BoxDecoration(),
-                              child: (_imageFile[index] == null)? Container(): Align(
-                                alignment: Alignment.centerLeft,
-                                child: Container(
-                                  width:100,
-                                  height:70,
-                                  child: (_imageFile[index] != null)? Image.file(
-                                      File( _imageFile[index]?.path ?? "" )) : Container()),
+                              height: 100,
+                              width:100,
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                border: Border.all(width: 1,color: Colors.black),
+                                borderRadius: BorderRadius.circular(4)
                               ),
+                              child: (_imageFile[index] != null)? Image.file(
+                                          File( _imageFile[index]?.path ?? "" ,),fit: BoxFit.fitWidth,) : Container(),
                             ),
-                            SizedBox(width: 5,),
-                            ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: const Color(0xff1529e8),
-                                ),
-                                onPressed: ()async{
-                                  takePhoto(ImageSource.gallery, index);
-                                }, child: Text("Choose File"))
+                            SizedBox(width: 10,),
+                            Align(
+                              alignment: Alignment.centerLeft,
+                              child: ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: const Color(0xff1529e8),
+                                  ),
+                                  onPressed: ()async{
+                                    takePhoto(ImageSource.gallery, index);
+                                  }, child: Text("Upload photo")),
+                            )
                           ],
                         ),
                         SizedBox(height: 10,),
