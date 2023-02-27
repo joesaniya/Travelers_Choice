@@ -41,7 +41,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
         log(profileController.email.toString());
         log('username');
         profileController.balanceamount =
-            sharedPrefValue.getInt(AppConstants.KEY_ACCESS_BALANCE) as double?;
+            sharedPrefValue.getInt(AppConstants.KEY_ACCESS_BALANCE);
+        // profileController.balanceamount =
+        //     sharedPrefValue.getDouble(AppConstants.KEY_ACCESS_BALANCE);
         log('Balance:${profileController.balanceamount == null ? 0.0 : 2440}');
       });
     });
@@ -164,6 +166,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           profileController.balanceamount == null
                               ? FxText.bodyLarge('0 AED', fontWeight: 800)
                               : FxText.bodyLarge(
+                                  // 'E',
                                   '${profileController.balanceamount}AED',
                                   fontWeight: 800)
                         ],

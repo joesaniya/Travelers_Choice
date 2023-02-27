@@ -72,59 +72,60 @@ class CheckOutController extends FxController {
   int phoneCounter = 0;
   int promoCounter = 0;
   List<Map<String, dynamic>> details = [];
-  // void _handlePaymentSuccess(PaymentSuccessResponse response) {
-  //   // Do something when payment succeeds
-  //   print('response Success:$response');
-  //   log('response Success:$response');
-  //   verifySignature(
-  //     signature: response.signature,
-  //     paymentId: response.paymentId,
-  //     orderId: response.orderId,
-  //   );
-  // }
-
-  // void _handlePaymentError(PaymentFailureResponse response) {
-  //   print('responseError:$response');
-  //   log('responseError:$response');
-  //   // Do something when payment fails
-  //   ScaffoldMessenger.of(context).showSnackBar(
-  //     SnackBar(
-  //       content: Text(response.message ?? ''),
-  //     ),
-  //   );
-  // }
-
-  // void _handleExternalWallet(ExternalWalletResponse response) {
-  //   print('responsewallet:$response');
-  //   log('response wallet:$response');
-  //   // Do something when an external wallet is selected
-  //   ScaffoldMessenger.of(context).showSnackBar(
-  //     SnackBar(
-  //       content: Text(response.walletName ?? ''),
-  //     ),
-  //   );
-  // }
-
-  void _handlePaymentSuccess(PaymentSuccessResponse response) async {
-    // Fluttertoast.showToast(msg: " Payment Successfully");
-    ScaffoldMessenger.of(context)
-        .showSnackBar(const SnackBar(content: Text(' Payment Successfully')));
+  void _handlePaymentSuccess(PaymentSuccessResponse response) {
+    // Do something when payment succeeds
+    print('response Success');
+    log('response Success');
+    verifySignature(
+      signature: response.signature,
+      paymentId: response.paymentId,
+      orderId: response.orderId,
+    );
   }
 
   void _handlePaymentError(PaymentFailureResponse response) {
-    ScaffoldMessenger.of(context)
-        .showSnackBar(const SnackBar(content: Text(' Payment Failed')));
+    print('responseError');
+    log('responseError');
+    // Do something when payment fails
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(response.message ?? ''),
+      ),
+    );
   }
 
   void _handleExternalWallet(ExternalWalletResponse response) {
-    ScaffoldMessenger.of(context)
-        .showSnackBar(const SnackBar(content: Text(' External Wallet')));
+    print('responsewallet:');
+    log('response wallet:');
+    // Do something when an external wallet is selected
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(response.walletName ?? ''),
+      ),
+    );
   }
 
+  // void _handlePaymentSuccess(PaymentSuccessResponse response) async {
+  //   // Fluttertoast.showToast(msg: " Payment Successfully");
+  //   ScaffoldMessenger.of(context)
+  //       .showSnackBar(const SnackBar(content: Text(' Payment Successfully')));
+  // }
+
+  // void _handlePaymentError(PaymentFailureResponse response) {
+  //   ScaffoldMessenger.of(context)
+  //       .showSnackBar(const SnackBar(content: Text(' Payment Failed')));
+  // }
+
+  // void _handleExternalWallet(ExternalWalletResponse response) {
+  //   ScaffoldMessenger.of(context)
+  //       .showSnackBar(const SnackBar(content: Text(' External Wallet')));
+  // }
+  final _razorpay = Razorpay();
   @override
   initState() {
     super.initState();
     fetchData();
+
     // details=;
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       _razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS, _handlePaymentSuccess);
@@ -409,7 +410,8 @@ class CheckOutController extends FxController {
       //   }
       // });
       //crt
-      createOrder(selectedExcursionsDatas);
+      // createOrder(selectedExcursionsDatas);
+      createOrderDemo();
 
       //ttodo
       // createOrder1();
@@ -587,12 +589,13 @@ class CheckOutController extends FxController {
     if (res.statusCode == 200) {
       var jsondata = jsonDecode(res.body);
       log('Response:${res.body}');
+      String orderId = jsondata['order']['id'];
       // openGateway(jsonDecode(res.body)['id']);
       // log('Response Id:${jsonDecode(res.body)['id']}');
       log('Response Id:${jsonDecode(res.body)['orderId']}');
       log('order Id:${jsondata['order']['id']}');
       // openGateway(jsonDecode(res.body)['orderId']);
-      openGateway(jsondata['order']['id']);
+      openGateway(orderId);
       // pageController.animateToPage(
       //   currentPage + 1,
       //   duration: const Duration(milliseconds: 600),
@@ -612,22 +615,25 @@ class CheckOutController extends FxController {
     }
   }
 
-  final _razorpay = Razorpay();
   openGateway(String orderId) {
-    var options = {
-      'key': razorCredentials.keyId,
-      'amount': 10000, //in the smallest currency sub-unit.
-      'name': 'Acme Corp.',
-      'order_id': orderId, // Generate order_id using Orders API
-      'description': 'Tours',
-      'timeout': 60 * 5, // in seconds // 5 minutes
-      'prefill': {
-        'contact': phoneTE.text,
-        'email': emailTE.text,
+    log('OrderId:$orderId');
+    log('key:${razorCredentials.keyId}');
+    Map<String, dynamic> options = {
+      "key": razorCredentials.keyId,
+      "amount": 10000, //in the smallest currency sub-unit.
+      "name": "Acme Corp.",
+      "order_id": orderId, // Generate order_id using Orders API
+      "description": "Tours",
+      "timeout": 60 * 5, // in seconds // 5 minutes
+      "prefill": {
+        "contact": phoneTE.text,
+        "email": emailTE.text,
       }
     };
     // _razorpay.open(options);
     try {
+      log('Options:$options');
+
       _razorpay.open(options);
     } catch (e) {
       print('razor error:${e.toString()}');
@@ -679,6 +685,55 @@ class CheckOutController extends FxController {
         ),
       );
     }
+  }
+
+  void createOrderDemo() async {
+    log('CreateOrdeerDemo');
+    String username = razorCredentials.keyId;
+    String password = razorCredentials.keySecret;
+    String basicAuth =
+        'Basic ${base64Encode(utf8.encode('$username:$password'))}';
+
+    Map<String, dynamic> body = {
+      "amount": 100,
+      "currency": "INR",
+      "receipt": "rcptid_11"
+    };
+
+    var res = await http.post(
+      // Uri.parse(
+      //     "https://secure.mytravellerschoice.com/api/v1/attractions/orders/create"),
+      Uri.https(
+          "api.razorpay.com", "v1/orders"), //https://api.razorpay.com/v1/orders
+      headers: <String, String>{
+        "Content-Type": "application/json",
+        'authorization': basicAuth,
+      },
+      body: jsonEncode(body),
+    );
+
+    if (res.statusCode == 200) {
+      openGatewaydemo(jsonDecode(res.body)['id']);
+    }
+    print('Body:${res.body}');
+    log('Body:${res.body}');
+  }
+
+  openGatewaydemo(String orderId) {
+    log('id:$orderId');
+    var options = {
+      'key': razorCredentials.keyId,
+      'amount': 100, //in the smallest currency sub-unit.
+      'name': 'Acme Corp.',
+      'order_id': orderId, // Generate order_id using Orders API
+      'description': 'Fine T-Shirt',
+      'timeout': 60 * 5, // in seconds // 5 minutes
+      'prefill': {
+        'contact': '7639798240',
+        'email': 'ary@example.com',
+      }
+    };
+    _razorpay.open(options);
   }
 
   @override

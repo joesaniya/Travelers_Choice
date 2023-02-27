@@ -499,7 +499,7 @@ class Activity {
   String? transferType = 'private';
 
   int? sharedTransferCost;
-  int? lowPrice;
+  dynamic? lowPrice;
   String? selectedDate;
   double GrandTotalAmount = 0.0;
 
