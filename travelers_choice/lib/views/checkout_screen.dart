@@ -1257,7 +1257,8 @@ class _CheckOutScreenState extends State<CheckOutScreen>
                   child: FxButton(
                     padding: FxSpacing.y(12),
                     onPressed: () {
-                      controller.nextPage(selectedExcursions, context);
+                      controller.nextPage(
+                          selectedExcursions, context, widget.totalAmount);
                     },
                     borderRadiusAll: 4,
                     elevation: 0,
@@ -1497,7 +1498,8 @@ class _CheckOutScreenState extends State<CheckOutScreen>
           FxSpacing.height(20),
           FxButton.block(
             onPressed: () {
-              controller.nextPage(selectedExcursions, context);
+              controller.nextPage(
+                  selectedExcursions, context, widget.totalAmount);
               // controller.initPlatformState();
             },
             borderRadiusAll: 4,
@@ -1513,7 +1515,7 @@ class _CheckOutScreenState extends State<CheckOutScreen>
                   color: theme.colorScheme.onPrimary,
                 ),
                 FxText.bodyMedium(
-                  '\$ ${widget.totalAmount}',
+                  ' ${widget.totalAmount} AED',
                   // '${widget.selectedtourOption.first.GrandTotalAmount}',
                   // '${widget.totalAmount} AED',
                   // widget.finalAmount.toString(),

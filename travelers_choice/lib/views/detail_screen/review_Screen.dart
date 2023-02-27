@@ -1,13 +1,20 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutx/flutx.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 import '../../controllers/review_controller.dart';
 import '../../loading_effect.dart';
+import '../../models/atteraction_model.dart';
 import '../../theme/app_theme.dart';
 import '../../utils/generator.dart';
 
 class ReviewScreen extends StatefulWidget {
+  List<Reviews>? reviews;
+  dynamic rating;
+  int? TotalRatingCount;
+  ReviewScreen({super.key, this.reviews, this.rating, this.TotalRatingCount});
   @override
   _ReviewScreenState createState() => _ReviewScreenState();
 }
@@ -27,6 +34,9 @@ class _ReviewScreenState extends State<ReviewScreen>
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       // addCategories();
     });
+    log('Length:${widget.reviews!.length}');
+    log('Rating:${widget.rating}');
+    log('TotalRating Count:${widget.TotalRatingCount}');
   }
 
   @override
@@ -71,42 +81,102 @@ class _ReviewScreenState extends State<ReviewScreen>
               ),
               title: FxText("Reviews", fontWeight: 600),
             ),
-            body: ListView(
-              padding: FxSpacing.fromLTRB(24, 8, 24, 0),
-              children: <Widget>[
-                _buildRatingWidget(),
-                FxSpacing.height(24),
-                _singleReview(
-                    image: "./assets/images/profile/avatar_4.jpg",
-                    name: "Tegan Payne",
-                    rating: 5,
-                    review: Generator.getDummyText(32),
-                    time: "1 day ago"),
-                _singleReview(
-                    image: "./assets/images/profile/avatar_3.jpg",
-                    name: "Jamal Rossi",
-                    rating: 4,
-                    review: Generator.getDummyText(25),
-                    time: "7 days ago"),
-                _singleReview(
-                    image: "./assets/images/profile/avatar_2.jpg",
-                    name: "Harvie Duncan",
-                    rating: 4,
-                    review: Generator.getDummyText(30),
-                    time: "1 month ago"),
-                // Space.height(8),
-                Center(
-                  child: TextButton(
-                    onPressed: () {},
-                    child: FxText.bodyMedium("Write a Review",
-                        letterSpacing: 0,
-                        color: const Color(0xff1529e8),
-                        // color: customTheme.groceryPrimary,
-                        fontWeight: 600),
-                  ),
-                )
-              ],
-            )),
+            body: widget.reviews!.isEmpty
+                ? Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: const [
+                        // Lottie.asset('assets/lottie/confirmation.json',
+                        //     height: 300, width: 300),
+                        Text('No Reviews!!',
+                            style: TextStyle(
+                                fontFamily: 'inter',
+                                fontWeight: FontWeight.w400,
+                                fontSize: 16))
+                      ],
+                    ),
+                  )
+                : SingleChildScrollView(
+                    physics: const AlwaysScrollableScrollPhysics(),
+                    padding: FxSpacing.fromLTRB(24, 8, 24, 0),
+                    // itemBuilder: (context, index) {
+                    //   return SizedBox(
+                    //     child: Column(
+                    //       children: [
+                    //         _buildRatingWidget(),
+                    //         FxSpacing.height(24),
+                    //         _singleReview(
+                    //             image: "./assets/images/profile/avatar_4.jpg",
+                    //             name: widget.reviews![index].user.toString(),
+                    //             rating:
+                    //                 widget.reviews![index].rating!.toDouble(),
+                    //             review: Generator.getDummyText(32),
+                    //             time: widget.reviews![index].createdAt
+                    //                 .toString()),
+                    //       ],
+                    //     ),
+                    //   );
+                    // },
+                    child: Column(
+                      children: <Widget>[
+                        _buildRatingWidget(widget.rating),
+                        FxSpacing.height(24),
+                        SizedBox(
+                          // height: 200,
+                          width: double.infinity,
+                          child: ListView.builder(
+                            shrinkWrap: true,
+                            itemCount: widget.reviews!.length,
+                            itemBuilder: (context, index) {
+                              return Column(
+                                children: [
+                                  _singleReview(
+                                      image:
+                                          "./assets/images/profile/avatar_4.jpg",
+                                      name: widget.reviews![index].user
+                                          .toString(),
+                                      rating: widget.reviews![index].rating!
+                                          .toDouble(),
+                                      review: Generator.getDummyText(32),
+                                      time: widget.reviews![index].createdAt
+                                          .toString()),
+                                ],
+                              );
+                            },
+                          ),
+                        ),
+                        // _singleReview(
+                        //     image: "./assets/images/profile/avatar_4.jpg",
+                        //     name: "Tegan Payne",
+                        //     rating: 5,
+                        //     review: Generator.getDummyText(32),
+                        //     time: "1 day ago"),
+                        // _singleReview(
+                        //     image: "./assets/images/profile/avatar_3.jpg",
+                        //     name: "Jamal Rossi",
+                        //     rating: 4,
+                        //     review: Generator.getDummyText(25),
+                        //     time: "7 days ago"),
+                        // _singleReview(
+                        //     image: "./assets/images/profile/avatar_2.jpg",
+                        //     name: "Harvie Duncan",
+                        //     rating: 4,
+                        //     review: Generator.getDummyText(30),
+                        //     time: "1 month ago"),
+                        // Space.height(8),
+                        Center(
+                          child: TextButton(
+                            onPressed: () {},
+                            child: FxText.bodyMedium("Write a Review",
+                                letterSpacing: 0,
+                                color: const Color(0xff1529e8),
+                                // color: customTheme.groceryPrimary,
+                                fontWeight: 600),
+                          ),
+                        )
+                      ],
+                    ),
+                  )),
       );
     }
   }
@@ -117,6 +187,11 @@ class _ReviewScreenState extends State<ReviewScreen>
       required double rating,
       required String time,
       required String review}) {
+    String dateString = time;
+    DateTime dateTime = DateTime.parse(dateString);
+    String formattedDate =
+        "${dateTime.year}-${dateTime.month.toString().padLeft(2, '0')}-${dateTime.day.toString().padLeft(2, '0')}";
+    log('Format:$formattedDate');
     return Container(
       margin: FxSpacing.bottom(16),
       child: Column(
@@ -157,7 +232,8 @@ class _ReviewScreenState extends State<ReviewScreen>
                 ),
               ),
               FxText.bodySmall(
-                time,
+                // time,
+                formattedDate,
                 muted: true,
                 fontWeight: 600,
               )
@@ -172,17 +248,21 @@ class _ReviewScreenState extends State<ReviewScreen>
     );
   }
 
-  Widget _buildRatingWidget() {
+  Widget _buildRatingWidget(Totalrate) {
     List<int> ratingList = [0, 1, 2, 3, 4, 5];
     List<Widget> list = [];
     int maxRating = 5;
     for (int i = 5; i > 0; i--) {
+      log('Total:$Totalrate');
       int progress = ((ratingList[i] / maxRating) * 100).ceil();
       list.add(Row(
         children: [
           Container(
-            child: FxText.bodySmall(i.toString(),
-                color: theme.colorScheme.onBackground, fontWeight: 600),
+            child: FxText.bodySmall(
+                // i.toString(),
+                i.toString(),
+                color: theme.colorScheme.onBackground,
+                fontWeight: 600),
           ),
           FxSpacing.width(4),
           Icon(
@@ -248,7 +328,7 @@ class _ReviewScreenState extends State<ReviewScreen>
                           children: [
                             Container(
                               margin: FxSpacing.fromLTRB(0, 4, 2, 0),
-                              child: FxText.titleSmall("4.6",
+                              child: FxText.titleSmall(widget.rating.toString(),
                                   fontWeight: 600, letterSpacing: 0.25),
                             ),
                             Icon(
@@ -261,7 +341,9 @@ class _ReviewScreenState extends State<ReviewScreen>
                       ),
                       Container(
                         margin: FxSpacing.top(4),
-                        child: FxText.bodySmall("15 Ratings", muted: true),
+                        child: FxText.bodySmall(
+                            "${widget.TotalRatingCount.toString()} Ratings",
+                            muted: true),
                       ),
                     ],
                   ),

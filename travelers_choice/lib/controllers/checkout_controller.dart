@@ -343,72 +343,10 @@ class CheckOutController extends FxController {
     update();
   }
 
-  // nextPage1(selectedExcursionsDatas) async {
-  //   if (currentPage == numPages) {
-  //     /*   Navigator.push(
-  //         context, MaterialPageRoute(builder: (context) => FullApp()));*/
-  //   } else {
-  //     // await pageController.animateToPage(
-  //     //   currentPage + 1,
-  //     //   duration: const Duration(milliseconds: 600),
-  //     //   curve: Curves.ease,
-  //     // );
-  //     await PaymentController()
-  //         // .PersonalInfo(nameTE.text, emailTE.text, selectedCountryCode.toString(),
-  //         //     phoneTE.text, passwordTE.text, context)
-  //         .PersonalInfo('jeni', 'jeni@gmail.com', '6098754321',
-  //             '63db60f9f926b340dbb3f446', selectedExcursionsDatas)
-  //         .then((value) {
-  //       if (value) {
-  //         log('Value:$value');
-  //         pageController.animateToPage(
-  //           currentPage + 1,
-  //           duration: const Duration(milliseconds: 600),
-  //           curve: Curves.ease,
-  //         );
-  //       }
-  //     });
-  //     //validation
-  //     // if (selectedname == null || selectedname!.isEmpty) {
-  //     //   ScaffoldMessenger.of(context).showSnackBar(
-  //     //       const SnackBar(content: Text("Please Select Mr/Ms/Mrs")));
-  //     // } else if (FnameTE.text.isEmpty) {
-  //     //   ScaffoldMessenger.of(context).showSnackBar(
-  //     //       const SnackBar(content: Text("Please Enter First Name")));
-  //     // } else if (LnameTE.text.isEmpty) {
-  //     //   ScaffoldMessenger.of(context).showSnackBar(
-  //     //       const SnackBar(content: Text("Please Enter Last Name")));
-  //     // } else if (emailTE.text.isEmpty) {
-  //     //   ScaffoldMessenger.of(context)
-  //     //       .showSnackBar(const SnackBar(content: Text("Please Enter Email")));
-  //     // } else if (selectedcountry == null || selectedcountry!.isEmpty) {
-  //     //   ScaffoldMessenger.of(context).showSnackBar(
-  //     //       const SnackBar(content: Text("Please Select Country")));
-  //     // } else if (selectedCountryCode == null || selectedCountryCode!.isEmpty) {
-  //     //   ScaffoldMessenger.of(context).showSnackBar(
-  //     //       const SnackBar(content: Text("Please Select Phone Code")));
-  //     // } else if (phoneTE.text.isEmpty
-
-  //     //     //  ||phoneTE.length!=10
-  //     //     ) {
-  //     //   ScaffoldMessenger.of(context).showSnackBar(
-  //     //       const SnackBar(content: Text("Please Enter Phone Number")));
-  //     // } else if (reqTE.text.isEmpty) {
-  //     //   ScaffoldMessenger.of(context)
-  //     //       .showSnackBar(const SnackBar(content: Text("Enter Request")));
-  //     // } else {
-  //     //   await pageController.animateToPage(
-  //     //     currentPage + 1,
-  //     //     duration: const Duration(milliseconds: 600),
-  //     //     curve: Curves.ease,
-  //     //   );
-  //     // }
-  //   }
-  // }
-
   //next button
-  nextPage(selectedExcursionsDatas, context) async {
+  nextPage(selectedExcursionsDatas, context, total) async {
     log('Page Number:$currentPage ');
+    log('Total:$total ');
 
     if (currentPage == 0) {
       log('selected page 0');
@@ -610,10 +548,10 @@ class CheckOutController extends FxController {
         // "infantCount": element.infantCount,
         // "transferType": "private"
         "activity": "63e6317d20e0e01648630e6a",
-        "date": "2023-02-28",
-        "adultsCount": 19,
+        "date": "2023-04-5",
+        "adultsCount": 1,
         "childrenCount": 0,
-        "infantCount": 1,
+        "infantCount": 0,
         "transferType": "private"
       };
       ActivityList.add(datas);
@@ -688,7 +626,12 @@ class CheckOutController extends FxController {
         'email': emailTE.text,
       }
     };
-    _razorpay.open(options);
+    // _razorpay.open(options);
+    try {
+      _razorpay.open(options);
+    } catch (e) {
+      print('razor error:${e.toString()}');
+    }
   }
 
   verifySignature({
