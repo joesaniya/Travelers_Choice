@@ -1,6 +1,6 @@
 <?php
 
-$keyId = "rzp_test_gKANZdsNdLqaQs";
-$keySecret = "3UFrNGkdLR9apMa3dOUE1jvh";
+$keyId = "rzp_test_BWkZr1o8p89Ej4";
+$keySecret = "HoKdVl7pkGrCOdkn31JroY4u";
 
 ?>

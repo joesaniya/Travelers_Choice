@@ -478,6 +478,7 @@ class CheckOutController extends FxController {
     //   'description': '',
     //   'order_id': data.order.id,
     // };
+    log('openchk:$data');
     var options = {
       'key': razorCredentials.keyId,
       'amount': 100, //in the smallest currency sub-unit.
@@ -558,6 +559,13 @@ class CheckOutController extends FxController {
       body: jsonEncode(body),
     );
     log('Body Data:${res.body}');
+    // if (res.statusCode == 200) {
+    //   RazorpayOrderResponse1 data =
+    //       RazorpayOrderResponse1.fromJson(json.decode(res.body));
+    //   log('res.body${res.body}');
+    //   openCheckout1(data);
+    // }
+    //todo
 
     if (res.statusCode == 200) {
       var jsondata = jsonDecode(res.body);
@@ -593,7 +601,7 @@ class CheckOutController extends FxController {
   openGateway(String orderId) {
     log('OrderId:$orderId');
     log('key:${razorCredentials.keyId}');
-    Map<String, dynamic> options = {
+    var options = {
       "key": razorCredentials.keyId,
       "amount": 10000, //in the smallest currency sub-unit.
       "name": "Acme Corp.",
@@ -606,9 +614,12 @@ class CheckOutController extends FxController {
       }
     };
     // _razorpay.open(options);
+    // var datavalue = jsonEncode(options);
     try {
-      log('Options:$options');
+      // log('Options:$datavalue');
 
+      // _razorpay.open(datavalue);
+      log('Options:$options');
       _razorpay.open(options);
     } catch (e) {
       print('razor error:${e.toString()}');

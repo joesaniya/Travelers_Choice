@@ -2,6 +2,11 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutx/flutx.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import '../models/get_reviews.dart';
+import '../services/app_constants.dart';
+import '../services/review_Service.dart';
 
 class PostReviewController extends FxController {
   TickerProvider ticker;
@@ -13,9 +18,58 @@ class PostReviewController extends FxController {
   int titleCounter = 0;
   late TextEditingController reqTE, titleTE;
   double? ratingValue;
+  String? token;
+  List<GetReview>? reviewsget;
+
+  Future<GetReview?> ReviewAdd(String place, String title, String description,
+      String rating, String token) async {
+    // isCountryListLoading = true;
+    try {
+      var data = await ReviewService()
+          .ReviewPost(place, title, description, rating, context, token);
+      reviewsget!.clear();
+      if (data != null) {
+        reviewsget!.add(data);
+
+        return data; //removed true
+      } else {
+        return null; //falseremoved
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  //todo
+  List<GetReview> allreview = <GetReview>[];
+  bool isAllAttractionListLoading = true;
+  Future<GetReview?> FilterattractionList(
+      place, title, description, rating, token) async {
+    // isCountryListLoading = true;
+    try {
+      var data = await ReviewService()
+          .ReviewPost(place, title, description, rating, context, token);
+      allreview.clear();
+      if (data != null) {
+        allreview.add(data);
+        // isCountryListLoading = false;
+        log('Controller:$data');
+        return data; //removed true
+      } else {
+        return null; //falseremoved
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
+
   @override
   initState() {
     super.initState();
+    SharedPreferences.getInstance().then((sharedPrefValue) {
+      token = sharedPrefValue.getString(AppConstants.KEY_ACCESS_TOKEN);
+      log(token.toString());
+    });
     reqTE = TextEditingController();
     titleTE = TextEditingController();
     animationController = AnimationController(
@@ -74,6 +128,39 @@ class PostReviewController extends FxController {
     animationController.dispose();
 
     super.dispose();
+  }
+
+  void Upload(Attractionplace) async {
+    log('upload clicked');
+    if (reqTE.text != null || titleTE.text != null || ratingValue != null) {
+      //todo
+      log('not equal');
+      GetReview? temp = await ReviewAdd(
+        Attractionplace.toString(),
+        titleTE.text,
+        reqTE.text,
+        ratingValue.toString(),
+        token.toString(),
+      );
+
+      reviewsget = [];
+
+      reviewsget!.add(temp!);
+
+      Navigator.pop(context, temp);
+      // await ReviewAPIController()
+      //     .postReview(Attractionplace, 'hh', 'hhh', '1', context, token!)
+      //     .then((value) {
+      //   if (value) {
+      //     log('if');
+      //   }
+      // });
+      // Navigator.pop(context);
+    } else {
+      print("Data search Null");
+      ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Please Fill All Fields')));
+    }
   }
 
   @override

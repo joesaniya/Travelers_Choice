@@ -5,6 +5,7 @@ import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutx/flutx.dart';
 
 import '../../controllers/post_review_controller.dart';
+import '../../models/get_reviews.dart';
 import '../../theme/app_theme.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
@@ -255,6 +256,7 @@ class _PostReviewSheetState extends State<PostReviewSheet>
                                     child: FxContainer(
                                   onTap: () {
                                     // controller.closeEndDrawer();
+
                                     Navigator.pop(context);
                                   },
                                   color: Colors.transparent,
@@ -270,7 +272,72 @@ class _PostReviewSheetState extends State<PostReviewSheet>
                                 )),
                                 Expanded(
                                     child: FxContainer.none(
-                                  onTap: () async {},
+                                  onTap: () async {
+                                    //   await ReviewAPIController()
+                                    //     .postReview('hh', 'hhh', '1', context)
+                                    //     .then((value) {
+                                    //   if (value) {
+                                    //     log('if');
+                                    //   }
+                                    // });
+                                    // controller.Upload(widget.reviewplace);
+                                    if (controller.titleTE.text.isEmpty ||
+                                        controller.reqTE.text.isEmpty ||
+                                        controller.ratingValue == null) {
+                                      log('empty');
+                                    } else {
+                                      log('filled');
+
+                                      GetReview? temp =
+                                          // await controller.ReviewAdd
+                                          await controller.FilterattractionList(
+                                              widget.reviewplace.toString(),
+                                              controller.titleTE.text,
+                                              controller.reqTE.text,
+                                              controller.ratingValue.toString(),
+                                              controller.token.toString(),
+                                              );
+
+                                      setState(() {
+                                        controller.reviewsget = [];
+
+                                        controller.reviewsget!.add(temp!);
+                                      });
+
+                                      Navigator.pop(context, temp);
+                                    }
+
+                                    // //d
+                                    // log('filter apply clicked');
+                                    // if (controller.reqTE.text != null ||
+                                    //     controller.titleTE.text != null ||
+                                    //     controller.ratingValue != null) {
+                                    //   //todo
+                                    //   log('not equal');
+                                    //   GetReview? temp =
+                                    //       await controller.ReviewAdd(
+                                    //     widget.reviewplace.toString(),
+                                    //     controller.titleTE.text,
+                                    //     controller.reqTE.text,
+                                    //     controller.ratingValue.toString(),
+                                    //     controller.token.toString(),
+                                    //   );
+
+                                    //   setState(() {
+                                    //     controller.reviewsget = [];
+
+                                    //     controller.reviewsget!.add(temp!);
+                                    //   });
+
+                                    //   Navigator.pop(context, temp);
+                                    // } else {
+                                    //   print("Data search Null");
+                                    //   ScaffoldMessenger.of(context)
+                                    //       .showSnackBar(const SnackBar(
+                                    //           content: Text(
+                                    //               'Please Fill All Fields')));
+                                    // }
+                                  },
                                   padding: FxSpacing.y(12),
                                   // color: theme.colorScheme.primary,
                                   color: const Color(0xff1529e8),

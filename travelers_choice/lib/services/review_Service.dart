@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:developer';
 
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 import '../models/get_reviews.dart';
@@ -24,6 +25,47 @@ class ReviewService {
       } else {
         var jsondata = jsonDecode(response.body);
         log(jsondata['error']);
+        return null;
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future ReviewPost(String place, String title, String description,
+      String rating, BuildContext context, String token) async {
+    String basicAuth = token;
+    try {
+      var body = {
+        {
+          "title": title,
+          "description": description,
+          "rating": rating,
+          "attraction": place
+        }
+      };
+      log('Body Review:${body.toString()}');
+      var response = await http.post(
+          Uri.parse(
+            'https://secure.mytravellerschoice.com/api/v1/attractions/reviews/add',
+          ),
+          headers: {
+            'Content-Type': 'application/json',
+            'authorization': basicAuth,
+          },
+          body: jsonEncode(body));
+
+      if (response.statusCode == 200) {
+        var jsondata = jsonDecode(response.body);
+        print("Review Data => $jsondata");
+
+        return response.body;
+      } else {
+        var jsondata = jsonDecode(response.body);
+        log(jsondata['error']);
+        //snackbar
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text(jsondata['error'])));
         return null;
       }
     } catch (e) {
