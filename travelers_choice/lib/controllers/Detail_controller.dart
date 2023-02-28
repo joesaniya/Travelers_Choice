@@ -378,7 +378,9 @@ Country Code => $countryCode
   }
 
   //revie
-  Future<void> REviewPage(DetailattractionModal review) async {
+  Future<void> REviewPage(
+      // DetailattractionModal review
+      String id) async {
     animationController.forward();
     await Future.delayed(const Duration(seconds: 1));
     Navigator.of(context, rootNavigator: true).push(PageRouteBuilder(
@@ -393,7 +395,10 @@ Country Code => $countryCode
               opacity: animation,
               child: child,
             ),
-        pageBuilder: (_, __, ___) => ReviewScreen(reviews: review.reviews,rating: detailattraction!.first.averageRating,
+        pageBuilder: (_, __, ___) => ReviewScreen(
+            Id: id,
+            // reviews: review.reviews
+            rating: detailattraction!.first.averageRating,
             TotalRatingCount: detailattraction!.first.totalRating)
         // ActivityScreen(
         //   Excursions: widget.detailattraction

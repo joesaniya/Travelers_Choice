@@ -6,15 +6,20 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 
 import '../../controllers/review_controller.dart';
 import '../../loading_effect.dart';
-import '../../models/atteraction_model.dart';
 import '../../theme/app_theme.dart';
-import '../../utils/generator.dart';
+import '../bottomSheet/post_review_screen.dart';
 
 class ReviewScreen extends StatefulWidget {
-  List<Reviews>? reviews;
+  // List<Reviews>? reviews;
   dynamic rating;
+  String? Id;
   int? TotalRatingCount;
-  ReviewScreen({super.key, this.reviews, this.rating, this.TotalRatingCount});
+  ReviewScreen(
+      {super.key,
+      // this.reviews,
+      this.Id,
+      this.rating,
+      this.TotalRatingCount});
   @override
   _ReviewScreenState createState() => _ReviewScreenState();
 }
@@ -28,13 +33,16 @@ class _ReviewScreenState extends State<ReviewScreen>
   @override
   initState() {
     super.initState();
+
     customTheme = AppTheme.customTheme;
     theme = AppTheme.theme;
     controller = FxControllerStore.put(ReviewController(this));
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       // addCategories();
     });
-    log('Length:${widget.reviews!.length}');
+    controller.getReviews(widget.Id, setState);
+    // log('Length:${widget.reviews!.length}');
+    log('Id:${widget.Id}');
     log('Rating:${widget.rating}');
     log('TotalRating Count:${widget.TotalRatingCount}');
   }
@@ -81,7 +89,25 @@ class _ReviewScreenState extends State<ReviewScreen>
               ),
               title: FxText("Reviews", fontWeight: 600),
             ),
-            body: widget.reviews!.isEmpty
+            floatingActionButton: FloatingActionButton.extended(
+              onPressed: () async{
+                 var data = await showModalBottomSheet(
+                    context: context,
+                    builder: (BuildContext buildContext) {
+                      return PostReviewSheet(
+                        reviewplace: widget.Id,
+                      );
+                    });
+                setState(() {
+                  controller.reviewsget  = [];
+                  controller.reviewsget  = [data];
+                });
+              },
+              label: const Text('Write a Review'),
+              icon: const Icon(Icons.edit),
+              backgroundColor: const Color(0xff1529e8),
+            ),
+            body: controller.reviewsget!.first.attractionReviews.isEmpty
                 ? Center(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -126,20 +152,29 @@ class _ReviewScreenState extends State<ReviewScreen>
                           width: double.infinity,
                           child: ListView.builder(
                             shrinkWrap: true,
-                            itemCount: widget.reviews!.length,
+                            itemCount: controller.reviewsget!.length,
+                            // itemCount: widget.reviews!.length,
                             itemBuilder: (context, index) {
                               return Column(
                                 children: [
-                                  _singleReview(
-                                      image:
-                                          "./assets/images/profile/avatar_4.jpg",
-                                      name: widget.reviews![index].user
-                                          .toString(),
-                                      rating: widget.reviews![index].rating!
-                                          .toDouble(),
-                                      review: Generator.getDummyText(32),
-                                      time: widget.reviews![index].createdAt
-                                          .toString()),
+                                  // _singleReview(
+                                  //   image:
+                                  //       "./assets/images/profile/avatar_4.jpg",
+                                  //   // name: widget.reviews![index].user
+                                  //   //     .toString(),
+                                  //   // rating: widget.reviews![index].rating!
+                                  //   //     .toDouble(),
+                                  //   name: controller.reviewsget![index]
+                                  //       .attractionReviews[index].user.name,
+                                  //   rating: controller.reviewsget![index]
+                                  //       .attractionReviews[index].rating,
+                                  //   review: controller.reviewsget![index]
+                                  //       .attractionReviews[index].description,
+                                  //   time: controller.reviewsget![index]
+                                  //       .attractionReviews[index].createdAt
+                                  //       .toString(),
+                                  // )
+                                  _buildCartList(),
                                 ],
                               );
                             },
@@ -358,6 +393,97 @@ class _ReviewScreenState extends State<ReviewScreen>
           ),
         ],
       ),
+    );
+  }
+
+  Widget _buildCartList() {
+    List<Widget> list = [];
+    log('message');
+    log('lendth:${controller.reviewsget!.first.attractionReviews.length}');
+    for (var i = 0;
+        i < controller.reviewsget!.first.attractionReviews.length;
+        i++) {
+      String dateString = controller
+          .reviewsget!.first.attractionReviews[i].createdAt
+          .toString();
+      DateTime dateTime = DateTime.parse(dateString);
+      String formattedDate =
+          "${dateTime.year}-${dateTime.month.toString().padLeft(2, '0')}-${dateTime.day.toString().padLeft(2, '0')}";
+      log('Format:$formattedDate');
+      list.add(FadeTransition(
+        opacity: controller.fadeAnimation,
+        child: Container(
+          margin: FxSpacing.bottom(16),
+          child: Column(
+            children: <Widget>[
+              Row(
+                children: <Widget>[
+                  Container(
+                    width: 36,
+                    height: 36,
+                    decoration: const BoxDecoration(
+                      shape: BoxShape.circle,
+                      image: DecorationImage(
+                          image: AssetImage(
+                              './assets/images/profile/avatar_2.jpg'),
+                          fit: BoxFit.fill),
+                    ),
+                  ),
+                  Expanded(
+                    child: Container(
+                      margin: FxSpacing.left(8),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          FxText.bodyMedium(
+                              controller.reviewsget!.first.attractionReviews[i]
+                                  .user.name
+                                  .toString(),
+                              fontWeight: 600),
+                          Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: <Widget>[
+                              FxStarRating(
+                                  rating: controller.reviewsget!.first
+                                      .attractionReviews[i].rating,
+                                  activeColor: const Color(0xff1529e8),
+                                  // activeColor: customTheme.groceryPrimary,
+                                  showInactive: false,
+                                  spacing: 0),
+                              FxSpacing.width(4),
+                              FxText.bodyMedium(
+                                  controller.reviewsget!.first
+                                      .attractionReviews[i].rating
+                                      .toString(),
+                                  fontWeight: 600)
+                            ],
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                  FxText.bodySmall(
+                    formattedDate,
+                    muted: true,
+                    fontWeight: 600,
+                  )
+                ],
+              ),
+              FxSpacing.height(8),
+              Align(
+                alignment: Alignment.centerLeft,
+                child: FxText.bodyMedium(
+                  controller.reviewsget!.first.attractionReviews[i].description,
+                  // fontSize: 12,
+                ),
+              )
+            ],
+          ),
+        ),
+      ));
+    }
+    return Column(
+      children: list,
     );
   }
 }

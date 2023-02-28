@@ -387,31 +387,9 @@ class CheckOutController extends FxController {
     } else if (currentPage == 1) {
       log('selected page 1');
 
-      // await PaymentController()
-      //     // .PersonalInfo(nameTE.text, emailTE.text, selectedCountryCode.toString(),
-      //     //     phoneTE.text, passwordTE.text, context)
-      //     .PersonalInfo(
-      //         FnameTE.text,
-      //         emailTE.text,
-      //         phoneTE.text,
-      //         selectedCountryCode.toString(),
-      //         'razorpay',
-      //         selectedExcursionsDatas,
-      //         context)
-      //     .then((value) {
-      //   if (value) {
-      //     log('Value:$value');
-
-      //     pageController.animateToPage(
-      //       currentPage + 1,
-      //       duration: const Duration(milliseconds: 600),
-      //       curve: Curves.ease,
-      //     );
-      //   }
-      // });
       //crt
       // createOrder(selectedExcursionsDatas);
-      createOrderDemo();
+      createOrderDemo(total);
 
       //ttodo
       // createOrder1();
@@ -527,11 +505,6 @@ class CheckOutController extends FxController {
     String basicAuth =
         'Basic ${base64Encode(utf8.encode('$username:$password'))}';
 
-    // Map<String, dynamic> body = {
-    //   "amount": 100,
-    //   "currency": "INR",
-    //   "receipt": "rcptid_11"
-    // };
     List<Map<String, dynamic>> ActivityList = [];
     for (var element in selectedExcursionsDatas) {
       print('Element:${element.sId}');
@@ -596,6 +569,7 @@ class CheckOutController extends FxController {
       log('order Id:${jsondata['order']['id']}');
       // openGateway(jsonDecode(res.body)['orderId']);
       openGateway(orderId);
+      // openGateway(jsondata['order']);
       // pageController.animateToPage(
       //   currentPage + 1,
       //   duration: const Duration(milliseconds: 600),
@@ -615,6 +589,7 @@ class CheckOutController extends FxController {
     }
   }
 
+// openGateway(Map<String, dynamic> order)
   openGateway(String orderId) {
     log('OrderId:$orderId');
     log('key:${razorCredentials.keyId}');
@@ -687,16 +662,17 @@ class CheckOutController extends FxController {
     }
   }
 
-  void createOrderDemo() async {
+  void createOrderDemo(total) async {
     log('CreateOrdeerDemo');
+    log('Total Demo:$total');
     String username = razorCredentials.keyId;
     String password = razorCredentials.keySecret;
     String basicAuth =
         'Basic ${base64Encode(utf8.encode('$username:$password'))}';
 
     Map<String, dynamic> body = {
-      "amount": 100,
-      "currency": "INR",
+      "amount": total,
+      "currency": "AED",
       "receipt": "rcptid_11"
     };
 
@@ -713,24 +689,25 @@ class CheckOutController extends FxController {
     );
 
     if (res.statusCode == 200) {
-      openGatewaydemo(jsonDecode(res.body)['id']);
+      openGatewaydemo(jsonDecode(res.body)['id'], total);
     }
     print('Body:${res.body}');
     log('Body:${res.body}');
   }
 
-  openGatewaydemo(String orderId) {
+  openGatewaydemo(String orderId, double total) {
     log('id:$orderId');
+    log('tot:$total');
     var options = {
       'key': razorCredentials.keyId,
-      'amount': 100, //in the smallest currency sub-unit.
+      'amount': total, //in the smallest currency sub-unit.
       'name': 'Acme Corp.',
       'order_id': orderId, // Generate order_id using Orders API
-      'description': 'Fine T-Shirt',
+      'description': 'Tours',
       'timeout': 60 * 5, // in seconds // 5 minutes
       'prefill': {
-        'contact': '7639798240',
-        'email': 'ary@example.com',
+        'contact': phoneTE.text,
+        'email': emailTE.text,
       }
     };
     _razorpay.open(options);

@@ -1,0 +1,33 @@
+import 'dart:convert';
+import 'dart:developer';
+
+import 'package:http/http.dart' as http;
+
+import '../models/get_reviews.dart';
+
+class ReviewService {
+  Future<GetReview?> getRevies({required productid}) async {
+    try {
+      var response = await http.get(
+        Uri.parse(
+          'https://secure.mytravellerschoice.com/api/v1/attractions/reviews/single/$productid',
+        ),
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application / json'
+        },
+      );
+      if (response.statusCode == 200) {
+        log('Review SErvice:${response.body}');
+        return GetReview.fromJson(jsonDecode(response.body));
+        // detailattractionModalFromJson(response.body);
+      } else {
+        var jsondata = jsonDecode(response.body);
+        log(jsondata['error']);
+        return null;
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
+}

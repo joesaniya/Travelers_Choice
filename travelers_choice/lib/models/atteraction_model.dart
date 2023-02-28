@@ -372,7 +372,7 @@ class Reviews {
   String? sId;
   String? title;
   String? description;
-  int? rating;
+  dynamic? rating;
   String? attraction;
   String? user;
   String? createdAt;
@@ -465,12 +465,12 @@ class Activity {
   String? facilities; //no
   int? adultAgeLimit;
   int? adultPrice;
-  int? childAgeLimit;
+  dynamic childAgeLimit;
   int? childPrice;
   dynamic infantAgeLimit;
   int? infantPrice;
   bool? isVat;
-  int? vat;
+  dynamic? vat;
   String? base;
   bool? isTransferAvailable;
   int? privateTransferPrice;

@@ -582,8 +582,10 @@ class _DetailScreenState extends State<DetailScreen>
                       FxContainer(
                         onTap: () {
                           log('review Screen clicked');
+                          // controller.REviewPage(
+                          //     controller.detailattraction!.first);
                           controller.REviewPage(
-                              controller.detailattraction!.first);
+                              widget.productid);
                           // Navigator.push(
                           //     context,
                           //     MaterialPageRoute(

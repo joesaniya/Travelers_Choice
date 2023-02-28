@@ -162,6 +162,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     // for (Product product in controller.products!)
     for (var product in allattractionList!.first.attractions.data) {
       String text = product.category.categoryName.name;
+      // String text = "Theme Park,Theme Park";
 
       text = text.replaceAll("_", " ");
 
@@ -198,217 +199,274 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
             // // color: Colors.green,
             // margin: FxSpacing.bottom(20),
 
-            child: Container(
-              margin: const EdgeInsets.all(8),
-              child: Row(
-                children: [
-                  Container(
-                    // margin: EdgeInsets.all(8),
-                    // paddingAll: 0,
-                    // borderRadiusAll: 4,
-                    // margin: EdgeInsets.all(8),
+            child: ClipRect(
+              child: Banner(
+                textStyle: const TextStyle(color: Colors.white),
+                message: product.bookingType.name[0].toUpperCase() +
+                    product.bookingType.name.substring(1).toLowerCase(),
+                location: BannerLocation.topStart,
+                child: Container(
+                  margin: const EdgeInsets.all(8),
+                  child: Row(
+                    children: [
+                      Container(
+                        // margin: EdgeInsets.all(8),
+                        // paddingAll: 0,
+                        // borderRadiusAll: 4,
+                        // margin: EdgeInsets.all(8),
 
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    clipBehavior: Clip.antiAliasWithSaveLayer,
-                    // child: Image(image: NetworkImage(product.images.first)),
-                    child: Hero(
-                      tag: "product_image_${product.images.first}",
-                      // child: Image(
-                      //   image: NetworkImage(
-                      //       'https://a.walletbot.online${product.images.first}',
-                      //       // product.images.first
-                      //        errorBuilder: (BuildContext context, Object exception,
-                      //         StackTrace stackTrace) {
-                      //       return Text('Your error widget...');
-                      //     },
-                      //       ),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        clipBehavior: Clip.antiAliasWithSaveLayer,
+                        // child: Image(image: NetworkImage(product.images.first)),
+                        child: Hero(
+                          tag: "product_image_${product.images.first}",
+                          // child: Image(
+                          //   image: NetworkImage(
+                          //       'https://a.walletbot.online${product.images.first}',
+                          //       // product.images.first
+                          //        errorBuilder: (BuildContext context, Object exception,
+                          //         StackTrace stackTrace) {
+                          //       return Text('Your error widget...');
+                          //     },
+                          //       ),
 
-                      //   // height: 100,
-                      //   height: 132,
-                      //   width: 150,
-                      //   fit: BoxFit.cover,
-                      // ),
+                          //   // height: 100,
+                          //   height: 132,
+                          //   width: 150,
+                          //   fit: BoxFit.cover,
+                          // ),
 
-                      child: CachedNetworkImage(
-                        height: 132,
-                        width: 150,
-                        fit: BoxFit.cover,
-                        fadeOutDuration: const Duration(seconds: 1),
-                        fadeInDuration: const Duration(seconds: 3),
-                        progressIndicatorBuilder: (context, url, progress) =>
-                            Center(
-                          child: CircularProgressIndicator(
-                            value: progress.progress,
+                          child: CachedNetworkImage(
+                            height: 132,
+                            width: 150,
+                            fit: BoxFit.cover,
+                            fadeOutDuration: const Duration(seconds: 1),
+                            fadeInDuration: const Duration(seconds: 3),
+                            progressIndicatorBuilder:
+                                (context, url, progress) => Center(
+                              child: CircularProgressIndicator(
+                                value: progress.progress,
+                              ),
+                            ),
+                            imageUrl:
+                                'https://a.walletbot.online${product.images.first}',
                           ),
                         ),
-                        imageUrl:
-                            'https://a.walletbot.online${product.images.first}',
                       ),
-                    ),
-                  ),
-                  FxSpacing.width(20),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Row(
+                      FxSpacing.width(20),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            Expanded(
-                              child: FxContainer(
-                                borderRadiusAll: 10,
-                                // padding: FxSpacing.xy(8, 4),
-                                padding: FxSpacing.xy(6, 2),
-                                // color: Color(0xff1529e8),
-                                color: Colors.blueGrey,
-                                child: Center(
-                                  child: FxText.bodySmall(
-                                    overflow: TextOverflow.ellipsis,
-                                    maxLines: 1,
-                                    text,
-                                    // product.category.categoryName.name[0]
-                                    //         .toUpperCase() +
-                                    //     product.category.categoryName.name
-                                    //         .substring(1)
-                                    //         .toLowerCase(),
-                                    fontWeight: 300,
-                                    color: Colors.white,
-                                    // color: theme.colorScheme.onPrimary,
-                                  ),
-                                ),
-                              ),
-                            ),
-                            const SizedBox(
-                              width: 5,
-                            ),
-                            FxContainer(
-                              borderRadiusAll: 10,
-                              // padding: FxSpacing.xy(8, 4),
-                              padding: FxSpacing.xy(6, 2),
-                              // color: Color(0xff1529e8),
-                              color: Colors.blueGrey,
-                              child: Center(
-                                child: FxText.bodySmall(
-                                  // product.bookingType.name,
-                                  product.bookingType.name[0].toUpperCase() +
-                                      product.bookingType.name
-                                          .substring(1)
-                                          .toLowerCase(),
-                                  // 'Ticket',
-                                  fontWeight: 300,
-                                  color: Colors.white,
-                                  // color: theme.colorScheme.onPrimary,
-                                ),
-                              ),
-                            ),
-                            const SizedBox(
-                              width: 5,
-                            ),
-                            // FxContainer(
-                            //   borderRadiusAll: 10,
-                            //   // padding: FxSpacing.xy(8, 4),
-                            //   padding: FxSpacing.xy(6, 2),
-                            //   // color: Color(0xff1529e8),
-                            //   color: Colors.blueGrey,
-                            //   child: FxText.bodySmall(
-                            //     '${product.duration}${product.durationType.name.toString() == "hours" ? 'Hrs' : 'Hrs'}',
-                            //     // 'Offer',
-                            //     fontWeight: 300,
-                            //     color: Colors.white,
-                            //     // color: theme.colorScheme.onPrimary,
+                            // Wrap(spacing: 10, runSpacing: 10, children: [
+                            //   FxContainer(
+                            //     borderRadiusAll: 10,
+                            //     // padding: FxSpacing.xy(8, 4),
+                            //     padding: FxSpacing.xy(6, 2),
+                            //     // color: Color(0xff1529e8),
+                            //     color: Colors.blueGrey,
+                            //     child: Center(
+                            //       child: FxText.bodySmall(
+                            //         text,
+
+                            //         fontWeight: 300,
+                            //         color: Colors.white,
+                            //         // color: theme.colorScheme.onPrimary,
+                            //       ),
+                            //     ),
                             //   ),
-                            // ),
-                            product.isOffer == false
-                                ? Expanded(child: Container())
-                                : FxContainer(
+                            //   const SizedBox(
+                            //     width: 5,
+                            //   ),
+                            //   FxContainer(
+                            //     borderRadiusAll: 10,
+                            //     // padding: FxSpacing.xy(8, 4),
+                            //     padding: FxSpacing.xy(6, 2),
+                            //     // color: Color(0xff1529e8),
+                            //     color: Colors.blueGrey,
+                            //     child: Center(
+                            //       child: FxText.bodySmall(
+                            //         // product.bookingType.name,
+                            //         product.bookingType.name[0].toUpperCase() +
+                            //             product.bookingType.name
+                            //                 .substring(1)
+                            //                 .toLowerCase(),
+                            //         // 'Ticket',
+                            //         fontWeight: 300,
+                            //         color: Colors.white,
+                            //         // color: theme.colorScheme.onPrimary,
+                            //       ),
+                            //     ),
+                            //   ),
+                            //   const SizedBox(
+                            //     width: 5,
+                            //   ),
+                            //   product.isOffer == false
+                            //       ? Expanded(child: Container())
+                            //       : FxContainer(
+                            //           borderRadiusAll: 10,
+                            //           // padding: FxSpacing.xy(8, 4),
+                            //           padding: FxSpacing.xy(6, 2),
+                            //           // color: Color(0xff1529e8),
+                            //           color: Colors.blueGrey,
+                            //           child: FxText.bodySmall(
+                            //             'Offer',
+
+                            //             fontWeight: 300,
+                            //             maxLines: 1,
+                            //             overflow: TextOverflow.ellipsis,
+                            //             color: Colors.white,
+                            //             // color: theme.colorScheme.onPrimary,
+                            //           ),
+                            //         ),
+                            // ]
+                            //     // children: _buildType(),
+                            //     ),
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: FxContainer(
                                     borderRadiusAll: 10,
                                     // padding: FxSpacing.xy(8, 4),
                                     padding: FxSpacing.xy(6, 2),
                                     // color: Color(0xff1529e8),
                                     color: Colors.blueGrey,
-                                    child: FxText.bodySmall(
-                                      'Offer',
+                                    child: Center(
+                                      child: FxText.bodySmall(
+                                        // overflow: TextOverflow.ellipsis,
+                                        // maxLines: 1,
+                                        text,
 
-                                      fontWeight: 300,
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                      color: Colors.white,
-                                      // color: theme.colorScheme.onPrimary,
+                                        fontWeight: 300,
+                                        color: Colors.white,
+                                        // color: theme.colorScheme.onPrimary,
+                                      ),
                                     ),
-                                  )
-                          ],
-                        ),
-                        FxSpacing.height(8),
-                        Hero(
-                          tag: "product_title_${product.title}",
-                          // child: FxText.bodyLarge(
-                          //   product.name,
-                          //   // fontWeight: 500,
-                          // ),
-                          child: FxText.bodyLarge(
-                            product.title[0].toUpperCase() +
-                                product.title.substring(1).toLowerCase(),
-                            fontWeight: 800,
-                            overflow: TextOverflow.ellipsis,
-                            maxLines: 2,
-                          ),
-                        ),
-                        FxSpacing.height(4),
-                        Hero(
-                          tag: "${product.duration}",
-                          child: FxText.labelLarge(
-                            // '${controller.currency() ?? '\$'} ${product.activity.adultPrice.toString()}',
-                            "${product.activity.lowPrice.toString()} AED",
-                            // "\$" + product.price.toString() + "/hour",
-                            fontWeight: 700,
-                          ),
-                        ),
-                        FxSpacing.height(6),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
+                                  ),
+                                ),
+                                const SizedBox(
+                                  width: 5,
+                                ),
+                                // FxContainer(
+                                //   borderRadiusAll: 10,
+                                //   // padding: FxSpacing.xy(8, 4),
+                                //   padding: FxSpacing.xy(6, 2),
+                                //   // color: Color(0xff1529e8),
+                                //   color: Colors.blueGrey,
+                                //   child: Center(
+                                //     child: FxText.bodySmall(
+                                //       // product.bookingType.name,
+                                //       product.bookingType.name[0]
+                                //               .toUpperCase() +
+                                //           product.bookingType.name
+                                //               .substring(1)
+                                //               .toLowerCase(),
+                                //       // 'Ticket',
+                                //       fontWeight: 300,
+                                //       color: Colors.white,
+                                //       // color: theme.colorScheme.onPrimary,
+                                //     ),
+                                //   ),
+                                // ),
+                                // const SizedBox(
+                                //   width: 5,
+                                // ),
+
+                                product.isOffer == false
+                                    ? Container()
+                                    : FxContainer(
+                                        borderRadiusAll: 10,
+                                        // padding: FxSpacing.xy(8, 4),
+                                        padding: FxSpacing.xy(6, 2),
+                                        // color: Color(0xff1529e8),
+                                        color: Colors.blueGrey,
+                                        child: FxText.bodySmall(
+                                          'Offer',
+
+                                          fontWeight: 300,
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                          color: Colors.white,
+                                          // color: theme.colorScheme.onPrimary,
+                                        ),
+                                      )
+                              ],
+                            ),
+                            FxSpacing.height(8),
                             Hero(
-                              tag: "${product.averageRating}",
-                              child: Row(
-                                children: [
-                                  const Icon(
-                                    // FeatherIcons.star,
-                                    Icons.star,
-                                    color: Colors.yellow,
-                                    size: 12,
-                                  ),
-                                  FxSpacing.width(4),
-                                  FxText.bodySmall(
-                                    product.averageRating.toStringAsFixed(1),
-                                    fontWeight: 600,
-                                    color: Colors.black,
-                                  ),
-                                  FxSpacing.width(4),
-                                  FxText.bodySmall(
-                                    "(${product.totalReviews.toStringAsFixed(0)})",
-                                    fontWeight: 600,
-                                    color: Colors.black,
-                                  ),
-                                ],
+                              tag: "product_title_${product.title}",
+                              // child: FxText.bodyLarge(
+                              //   product.name,
+                              //   // fontWeight: 500,
+                              // ),
+                              child: FxText.bodyLarge(
+                                product.title[0].toUpperCase() +
+                                    product.title.substring(1).toLowerCase(),
+                                fontWeight: 800,
+                                overflow: TextOverflow.ellipsis,
+                                maxLines: 2,
                               ),
                             ),
-                            // FxContainer.bordered(
-                            //   paddingAll: 4,
-                            //   borderRadiusAll: 4,
-                            //   child: Icon(
-                            //     FeatherIcons.plus,
-                            //     size: 14,
-                            //     color: theme.colorScheme.onBackground,
-                            //   ),
-                            // ),
+                            FxSpacing.height(4),
+                            Hero(
+                              tag: "${product.duration}",
+                              child: FxText.labelLarge(
+                                // '${controller.currency() ?? '\$'} ${product.activity.adultPrice.toString()}',
+                                "${product.activity.lowPrice.toString()} AED",
+                                // "\$" + product.price.toString() + "/hour",
+                                fontWeight: 700,
+                              ),
+                            ),
+                            FxSpacing.height(6),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Hero(
+                                  tag: "${product.averageRating}",
+                                  child: Row(
+                                    children: [
+                                      const Icon(
+                                        // FeatherIcons.star,
+                                        Icons.star,
+                                        color: Colors.yellow,
+                                        size: 12,
+                                      ),
+                                      FxSpacing.width(4),
+                                      FxText.bodySmall(
+                                        product.averageRating
+                                            .toStringAsFixed(1),
+                                        fontWeight: 600,
+                                        color: Colors.black,
+                                      ),
+                                      FxSpacing.width(4),
+                                      FxText.bodySmall(
+                                        "(${product.totalReviews.toStringAsFixed(0)})",
+                                        fontWeight: 600,
+                                        color: Colors.black,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                // FxContainer.bordered(
+                                //   paddingAll: 4,
+                                //   borderRadiusAll: 4,
+                                //   child: Icon(
+                                //     FeatherIcons.plus,
+                                //     size: 14,
+                                //     color: theme.colorScheme.onBackground,
+                                //   ),
+                                // ),
+                              ],
+                            ),
                           ],
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
-                ],
+                ),
               ),
             ),
           ),
@@ -1257,6 +1315,26 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                     ],
                   ),
                 ),
+
+                //banner
+                // FxSpacing.height(20),
+                // Card(
+                //   elevation: 1.0,
+                //   child: ClipRect(
+                //     child: Banner(
+                //       textStyle: const TextStyle(color: Colors.white),
+                //       message: 'OPEN',
+                //       location: BannerLocation.topEnd,
+                //       color: const Color(0xFF0db3ae),
+                //       child: InkWell(
+                //         child: const Padding(
+                //             padding: EdgeInsets.all(8.0),
+                //             child: Text('......')),
+                //         onTap: () {},
+                //       ),
+                //     ),
+                //   ),
+                // ),
                 FxSpacing.height(20),
                 TopAttraction(),
                 // const TopAttractionCard(),->crt
@@ -1287,4 +1365,105 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       }
     }
   }
+
+  // List<Widget> _buildType() {
+  //   log(
+  //     'category:${controller.categoryattraction.length}',
+  //   );
+  //   List<Widget> choices = [];
+  //   for (SearchCategoriesModal item in controller.categoryattraction) {
+  //     bool selected = controller.selectedChoices == item;
+  //     if (selected) {
+  //       choices.add(FxContainer.none(
+  //         // color: theme.colorScheme.primary.withAlpha(28),
+  //         // color: const Color(0xff1529e8).withAlpha(28),
+  //         color: const Color(0xff1529e8),
+  //         splashColor: Colors.lightBlue,
+
+  //         bordered: true,
+  //         borderRadiusAll: 20,
+  //         paddingAll: 8,
+  //         // border: Border.all(
+  //         //   // color: theme.colorScheme.primary
+  //         //   color: const Color(0xff1529e8),
+  //         // ),
+  //         onTap: () {
+  //           controller.removeChoice(item);
+  //         },
+  //         child: Row(
+  //           mainAxisAlignment: MainAxisAlignment.start,
+  //           crossAxisAlignment: CrossAxisAlignment.center,
+  //           children: [
+  //             Image(
+  //                 height: 24,
+  //                 width: 24,
+  //                 image:
+  //                     NetworkImage('https://a.walletbot.online/${item.icon}')),
+  //             FxSpacing.width(20),
+  //             FxText.bodySmall(
+  //               item.categoryName![0].toUpperCase() +
+  //                   item.categoryName!.substring(1).toLowerCase(),
+  //               // color: theme.colorScheme.onBackground,
+  //               color: Colors.white,
+  //               fontSize: 16,
+  //             ),
+  //           ],
+  //         ),
+  //         // child: Row(
+  //         //   mainAxisSize: MainAxisSize.min,
+  //         //   children: [
+  //         //     const Icon(
+  //         //       Icons.check,
+  //         //       size: 14,
+  //         //       color: Color(0xff1529e8),
+  //         //       // color: theme.colorScheme.primary,
+  //         //     ),
+  //         //     FxSpacing.width(6),
+  //         //     FxText.bodySmall(
+  //         //       item.categoryName.toString(),
+  //         //       fontSize: 11,
+  //         //       color: const Color(0xff1529e8),
+  //         //       // color: theme.colorScheme.primary,
+  //         //     )
+  //         //   ],
+  //         // )
+  //       ));
+  //     } else {
+  //       choices.add(FxContainer.none(
+  //         color: Colors.blueGrey.shade100,
+  //         borderRadiusAll: 20,
+  //         padding: FxSpacing.xy(12, 8),
+  //         onTap: () {
+  //           log('selected id:${item.id}');
+  //           controller.addChoice(item);
+  //         },
+  //         child: Row(
+  //           mainAxisAlignment: MainAxisAlignment.start,
+  //           crossAxisAlignment: CrossAxisAlignment.center,
+  //           children: [
+  //             // ImageIcon(
+  //             //   NetworkImage('https://a.walletbot.online/${item.icon}'),
+  //             //   // color: Colors.red,
+  //             //   size: 24,
+  //             // ),
+
+  //             Image(
+  //                 height: 24,
+  //                 width: 24,
+  //                 image:
+  //                     NetworkImage('https://a.walletbot.online/${item.icon}')),
+  //             FxSpacing.width(20),
+  //             FxText.bodySmall(
+  //               item.categoryName![0].toUpperCase() +
+  //                   item.categoryName!.substring(1).toLowerCase(),
+  //               color: theme.colorScheme.onBackground,
+  //               fontSize: 16,
+  //             ),
+  //           ],
+  //         ),
+  //       ));
+  //     }
+  //   }
+  //   return choices;
+  // }
 }
