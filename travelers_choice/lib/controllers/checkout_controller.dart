@@ -388,8 +388,8 @@ class CheckOutController extends FxController {
       log('selected page 1');
 
       //crt
-      // createOrder(selectedExcursionsDatas);
-      createOrderDemo(total);
+      createOrder(selectedExcursionsDatas);
+      // createOrderDemo(total);
 
       //ttodo
       // createOrder1();
@@ -615,12 +615,16 @@ class CheckOutController extends FxController {
     };
     // _razorpay.open(options);
     // var datavalue = jsonEncode(options);
+    // Map<String, dynamic> map = options;
     try {
       // log('Options:$datavalue');
 
       // _razorpay.open(datavalue);
       log('Options:$options');
       _razorpay.open(options);
+      //todo
+      // log('Options:$map');
+      // _razorpay.open(map);
     } catch (e) {
       print('razor error:${e.toString()}');
     }
