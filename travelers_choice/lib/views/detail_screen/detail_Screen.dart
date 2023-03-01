@@ -6,7 +6,6 @@ import 'package:flutter_html/flutter_html.dart';
 import 'package:flutx/flutx.dart';
 import 'package:hotel_travel/controllers/Detail_controller.dart';
 import 'package:hotel_travel/models/all_attraction_modal.dart';
-import 'package:hotel_travel/views/detail_screen/review_Screen.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import '../../loading_effect.dart';
@@ -584,8 +583,7 @@ class _DetailScreenState extends State<DetailScreen>
                           log('review Screen clicked');
                           // controller.REviewPage(
                           //     controller.detailattraction!.first);
-                          controller.REviewPage(
-                              widget.productid);
+                          controller.REviewPage(widget.productid);
                           // Navigator.push(
                           //     context,
                           //     MaterialPageRoute(

@@ -201,35 +201,38 @@ class _PostReviewSheetState extends State<PostReviewSheet>
                                 ),
                                 FxSpacing.height(10),
                                 // implement the rating bar
-                                RatingBar(
-                                    initialRating: 0,
-                                    direction: Axis.horizontal,
-                                    allowHalfRating: true,
-                                    itemCount: 5,
-                                    ratingWidget: RatingWidget(
-                                        full: const Icon(Icons.star,
-                                            color: Colors.orange),
-                                        half: const Icon(
-                                          Icons.star_half,
-                                          color: Colors.orange,
-                                        ),
-                                        empty: const Icon(
-                                          Icons.star_outline,
-                                          color: Colors.orange,
-                                        )),
-                                    onRatingUpdate: (value) {
-                                      setState(() {
-                                        controller.ratingValue = value;
-                                      });
-                                    }),
-                                FxSpacing.height(20),
-                                Text(
-                                  controller.ratingValue != null
-                                      ? controller.ratingValue.toString()
-                                      : 'Rate it!',
-                                  style: const TextStyle(
-                                      color: Color(0xff1529e8), fontSize: 30),
+                                Center(
+                                  child: RatingBar(
+                                      initialRating: 0,
+                                      direction: Axis.horizontal,
+                                      allowHalfRating: true,
+                                      itemCount: 5,
+                                      ratingWidget: RatingWidget(
+                                          full: const Icon(Icons.star,
+                                              color: Colors.orange),
+                                          half: const Icon(
+                                            Icons.star_half,
+                                            color: Colors.orange,
+                                          ),
+                                          empty: Icon(
+                                            Icons.star_outline,
+                                            color:
+                                                theme.colorScheme.onBackground,
+                                          )),
+                                      onRatingUpdate: (value) {
+                                        setState(() {
+                                          controller.ratingValue = value;
+                                        });
+                                      }),
                                 ),
+                                // FxSpacing.height(20),
+                                // Text(
+                                //   controller.ratingValue != null
+                                //       ? controller.ratingValue.toString()
+                                //       : 'Rate it!',
+                                //   style: const TextStyle(
+                                //       color: Color(0xff1529e8), fontSize: 30),
+                                // ),
                                 // Display the rate in number
                                 // Container(
                                 //   width: 200,
@@ -291,12 +294,12 @@ class _PostReviewSheetState extends State<PostReviewSheet>
                                       GetReview? temp =
                                           // await controller.ReviewAdd
                                           await controller.FilterattractionList(
-                                              widget.reviewplace.toString(),
-                                              controller.titleTE.text,
-                                              controller.reqTE.text,
-                                              controller.ratingValue.toString(),
-                                              controller.token.toString(),
-                                              );
+                                        widget.reviewplace.toString(),
+                                        controller.titleTE.text,
+                                        controller.reqTE.text,
+                                        controller.ratingValue.toString(),
+                                        controller.token.toString(),
+                                      );
 
                                       setState(() {
                                         controller.reviewsget = [];

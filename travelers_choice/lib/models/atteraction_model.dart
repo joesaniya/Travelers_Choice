@@ -37,7 +37,7 @@ class DetailattractionModal {
   List<dynamic>? offDates;
   List<Reviews>? reviews;
   Markup? markup;
-  int? totalRating;
+  dynamic? totalRating;
   dynamic averageRating;
   List<Activity>? activities;
 

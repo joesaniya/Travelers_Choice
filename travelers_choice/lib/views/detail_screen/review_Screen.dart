@@ -13,7 +13,7 @@ class ReviewScreen extends StatefulWidget {
   // List<Reviews>? reviews;
   dynamic rating;
   String? Id;
-  int? TotalRatingCount;
+  dynamic? TotalRatingCount;
   ReviewScreen(
       {super.key,
       // this.reviews,
@@ -90,8 +90,10 @@ class _ReviewScreenState extends State<ReviewScreen>
               title: FxText("Reviews", fontWeight: 600),
             ),
             floatingActionButton: FloatingActionButton.extended(
-              onPressed: () async{
-                 var data = await showModalBottomSheet(
+              hoverColor: Colors.indigoAccent,
+              splashColor: Colors.indigoAccent,
+              onPressed: () async {
+                var data = await showModalBottomSheet(
                     context: context,
                     builder: (BuildContext buildContext) {
                       return PostReviewSheet(
@@ -99,8 +101,8 @@ class _ReviewScreenState extends State<ReviewScreen>
                       );
                     });
                 setState(() {
-                  controller.reviewsget  = [];
-                  controller.reviewsget  = [data];
+                  controller.reviewsget = [];
+                  controller.reviewsget = [data];
                 });
               },
               label: const Text('Write a Review'),
@@ -186,29 +188,18 @@ class _ReviewScreenState extends State<ReviewScreen>
                         //     rating: 5,
                         //     review: Generator.getDummyText(32),
                         //     time: "1 day ago"),
-                        // _singleReview(
-                        //     image: "./assets/images/profile/avatar_3.jpg",
-                        //     name: "Jamal Rossi",
-                        //     rating: 4,
-                        //     review: Generator.getDummyText(25),
-                        //     time: "7 days ago"),
-                        // _singleReview(
-                        //     image: "./assets/images/profile/avatar_2.jpg",
-                        //     name: "Harvie Duncan",
-                        //     rating: 4,
-                        //     review: Generator.getDummyText(30),
-                        //     time: "1 month ago"),
+
                         // Space.height(8),
-                        Center(
-                          child: TextButton(
-                            onPressed: () {},
-                            child: FxText.bodyMedium("Write a Review",
-                                letterSpacing: 0,
-                                color: const Color(0xff1529e8),
-                                // color: customTheme.groceryPrimary,
-                                fontWeight: 600),
-                          ),
-                        )
+                        // Center(
+                        //   child: TextButton(
+                        //     onPressed: () {},
+                        //     child: FxText.bodyMedium("Write a Review",
+                        //         letterSpacing: 0,
+                        //         color: const Color(0xff1529e8),
+                        //         // color: customTheme.groceryPrimary,
+                        //         fontWeight: 600),
+                        //   ),
+                        // )
                       ],
                     ),
                   )),
@@ -363,8 +354,10 @@ class _ReviewScreenState extends State<ReviewScreen>
                           children: [
                             Container(
                               margin: FxSpacing.fromLTRB(0, 4, 2, 0),
-                              child: FxText.titleSmall(widget.rating.toString(),
-                                  fontWeight: 600, letterSpacing: 0.25),
+                              child: FxText.titleSmall(
+                                  widget.rating.toStringAsFixed(1),
+                                  fontWeight: 600,
+                                  letterSpacing: 0.25),
                             ),
                             Icon(
                               MdiIcons.starOutline,
@@ -377,7 +370,7 @@ class _ReviewScreenState extends State<ReviewScreen>
                       Container(
                         margin: FxSpacing.top(4),
                         child: FxText.bodySmall(
-                            "${widget.TotalRatingCount.toString()} Ratings",
+                            "${widget.TotalRatingCount.toStringAsFixed(0)} Ratings",
                             muted: true),
                       ),
                     ],
