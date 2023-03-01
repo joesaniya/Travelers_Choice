@@ -20,6 +20,7 @@ class SearchController extends FxController {
 
   //country
   final focus = FocusNode();
+  final visaFocus = FocusNode();
   // List<AllattractionModal> allattractionList = <AllattractionModal>[];
 
 //ani
@@ -87,6 +88,7 @@ class SearchController extends FxController {
     locationController.dispose();
     dateController.dispose();
     focus.dispose();
+    visaFocus.dispose();
     super.dispose();
   }
 

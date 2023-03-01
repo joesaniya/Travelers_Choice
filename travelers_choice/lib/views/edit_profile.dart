@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutx/flutx.dart';
+import 'package:hotel_travel/controllers/Activity_Controller.dart';
 import 'package:hotel_travel/extensions/extensions.dart';
 import 'package:hotel_travel/localizations/language.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -36,6 +37,12 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             sharedPrefValue.getString(AppConstants.KEY_ACCESS_TOKEN_Email);
         log(controller.email.toString());
         log('username');
+        controller.token =
+        sharedPrefValue.getString(AppConstants.KEY_ACCESS_TOKEN)!;
+        log(controller.token!);
+        controller.countryId =
+        sharedPrefValue.getString(AppConstants.KEY_ACCESS_TOKEN_countryId)!;
+        log(controller.countryId.toString());
       });
     });
     theme = AppTheme.learningTheme;
@@ -71,7 +78,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           automaticallyImplyLeading: false,
           leading: InkWell(
             onTap: () {
-              controller.goBack();
+              controller.goBack(canRefresh: true);
+
+
             },
             child: const Icon(
               FeatherIcons.chevronLeft,
@@ -142,6 +151,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             ),
             FxSpacing.height(8),
             FxTextField(
+              controller: controller.nameTE,
               floatingLabelBehavior: FloatingLabelBehavior.never,
               autoFocusedBorder: true,
               autoIcon: false,
@@ -159,38 +169,16 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               cursorColor: theme.colorScheme.onBackground,
               focusedBorderRadius: Constant.textFieldRadius.medium,
               enabledBorderRadius: Constant.textFieldRadius.medium,
+
             ),
             FxSpacing.height(20),
-            FxText.bodyMedium(
-              'Address',
-            ),
-            FxSpacing.height(8),
-            FxTextField(
-              floatingLabelBehavior: FloatingLabelBehavior.never,
-              autoFocusedBorder: true,
-              autoIcon: false,
-              textFieldStyle: FxTextFieldStyle.outlined,
-              textFieldType: FxTextFieldType.name,
-              filled: true,
-              isDense: true,
-              isCollapsed: true,
-              labelText: 'Address',
-              maxLines: 1,
-              labelStyle: FxTextStyle.bodySmall(xMuted: true),
-              fillColor: theme.colorScheme.primaryContainer,
-              focusedBorderColor: theme.colorScheme.primary,
-              enabledBorderColor: theme.colorScheme.primary,
-              labelTextColor: theme.colorScheme.onBackground,
-              cursorColor: theme.colorScheme.onBackground,
-              focusedBorderRadius: Constant.textFieldRadius.medium,
-              enabledBorderRadius: Constant.textFieldRadius.medium,
-            ),
-            FxSpacing.height(20),
+
             FxText.bodyMedium(
               'Email',
             ),
             FxSpacing.height(8),
             FxTextField(
+              controller: controller.emailTE,
               floatingLabelBehavior: FloatingLabelBehavior.never,
               autoFocusedBorder: true,
               autoIcon: false,
@@ -215,6 +203,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             ),
             FxSpacing.height(8),
             FxTextField(
+              controller: controller.mobileTE,
               floatingLabelBehavior: FloatingLabelBehavior.never,
               autoFocusedBorder: true,
               autoIcon: false,
@@ -224,6 +213,32 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               isDense: true,
               isCollapsed: true,
               labelText: 'Number',
+              maxLines: 1,
+              labelStyle: FxTextStyle.bodySmall(xMuted: true),
+              fillColor: theme.colorScheme.primaryContainer,
+              focusedBorderColor: theme.colorScheme.primary,
+              enabledBorderColor: theme.colorScheme.primary,
+              labelTextColor: theme.colorScheme.onBackground,
+              cursorColor: theme.colorScheme.onBackground,
+              focusedBorderRadius: Constant.textFieldRadius.medium,
+              enabledBorderRadius: Constant.textFieldRadius.medium,
+            ),
+            FxSpacing.height(20),
+            FxText.bodyMedium(
+              'Address',
+            ),
+            FxSpacing.height(8),
+            FxTextField(
+              controller: controller.addressTE,
+              floatingLabelBehavior: FloatingLabelBehavior.never,
+              autoFocusedBorder: true,
+              autoIcon: false,
+              textFieldStyle: FxTextFieldStyle.outlined,
+              textFieldType: FxTextFieldType.name,
+              filled: true,
+              isDense: true,
+              isCollapsed: true,
+              labelText: 'Address',
               maxLines: 1,
               labelStyle: FxTextStyle.bodySmall(xMuted: true),
               fillColor: theme.colorScheme.primaryContainer,
@@ -295,6 +310,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       ),
                       FxSpacing.height(8),
                       FxTextField(
+                        controller: controller.ageTE,
                         floatingLabelBehavior: FloatingLabelBehavior.never,
                         autoFocusedBorder: true,
                         autoIcon: false,
@@ -321,8 +337,19 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             ),
             FxSpacing.height(20),
             FxButton.block(
-              onPressed: () {
-                controller.goBack();
+              onPressed: () async{
+                print(controller.nameTE.text);
+                print(controller.emailTE.text);
+                print(controller.countryId);
+                print(controller.mobileTE.text);
+                print( controller.token);
+                var result = await controller.patchEdit(controller.nameTE.text, controller.emailTE.text, controller.countryId!,
+                controller.mobileTE.text, controller.token!  ,context
+                );
+
+                controller.goBack(canRefresh: result);
+
+
               },
               elevation: 0,
               borderRadiusAll: Constant.buttonRadius.large,

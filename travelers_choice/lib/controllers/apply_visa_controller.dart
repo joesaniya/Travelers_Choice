@@ -4,6 +4,9 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutx/flutx.dart';
+import 'package:hotel_travel/models/Country_modal.dart';
+import 'package:hotel_travel/models/create_visa_modal.dart';
+import 'package:hotel_travel/services/visa_service.dart';
 import 'package:intl/intl.dart';
 
 import '../models/atteraction_model.dart';
@@ -31,6 +34,7 @@ class ApplyVisaController extends FxController {
   //tab
   late TabController tabController;
   late ScrollController scrollController;
+  String? countryId;
   //
   List<Tab> tabs = [];
 //  late  Product product;
@@ -57,6 +61,7 @@ class ApplyVisaController extends FxController {
   bool showcode = false;
   List<Product>? products;
   bool addCart = false;
+
 
 
 
@@ -128,16 +133,17 @@ class ApplyVisaController extends FxController {
 
   List<List<String>>selectTitle = [];
   List<String> selectedTitle=[];
-  final List<String> titleCodes = ['Mr.','Ms.', 'Mrs.','Mstr.'];
+  final List<String> titleCodes = ['Mr','Ms', 'Mrs','Mstr'];
   String? selectedVisa;
-  final List<String> visaTypes = ['30 day single entry tourist visa',
-    '60 days single entry tourist visa',
-    '12 days work visa'];
-  List<List<String>>selectCountry = [];
-  List<String> selectedCountry=[];
-  final List<String> countryCodes = ['India',
-    'United Arab Emirates', 'France', 'United States of America','England'];
-  int? selectedTraveller;
+  // final List<String> visaTypes =
+  // [
+  //   '30 day single entry tourist visa',
+  //   '60 days single entry tourist visa',
+  //   '12 days work visa'];
+  List<List<CountryElement>>selectCountry = [];
+  List<CountryElement> selectedCountry=[];
+  List<CountryElement> countryCodes = [];
+  int? selectedTraveller ;
   final List<int> travellerNumber = [1,2,3,4,5,6,7,8,9];
   late AnimationController arrowController,
 
@@ -146,7 +152,9 @@ class ApplyVisaController extends FxController {
       emailController,
       phoneController,
       addressController,
-      passportController;
+      passportController,
+      dobController,
+      expiryController;
 
   late Animation<Offset> arrowAnimation,
       firstnameAnimation,
@@ -162,6 +170,7 @@ class ApplyVisaController extends FxController {
   int addressCounter = 0;
   int phoneCounter = 0;
   int passportCounter = 0;
+  List<String> visaApplication = [];
 
   List<TextEditingController> firstNameControllers = [];
   List<TextEditingController> lastNameControllers = [];
@@ -171,11 +180,12 @@ class ApplyVisaController extends FxController {
   List<TextEditingController> dobControllers = [];
   List<TextEditingController> expiryControllers = [];
 
-
   @override
   initState() {
     super.initState();
     fetchData();
+    // print("erfdv fervf $visaApplication");
+    fetchloader();
     currentPage = 0;
     addressList = ShippingAddress.shipping();
     addressSelected = addressList!.first;
@@ -184,6 +194,8 @@ class ApplyVisaController extends FxController {
       Tab('Upload Details', Icons.paste_sharp),
       Tab('Make Payment',Icons.payment ),
     ];
+
+    // visaApplication.add();
     FnameTE = TextEditingController();
     LnameTE = TextEditingController();
     emailTE = TextEditingController();
@@ -229,6 +241,11 @@ class ApplyVisaController extends FxController {
         vsync: ticker, duration: const Duration(milliseconds: 500));
 
     addressController = AnimationController(
+        vsync: ticker, duration: const Duration(milliseconds: 500));
+
+    dobController = AnimationController(
+        vsync: ticker, duration: const Duration(milliseconds: 500));
+    expiryController = AnimationController(
         vsync: ticker, duration: const Duration(milliseconds: 500));
 
     //animation
@@ -356,6 +373,19 @@ class ApplyVisaController extends FxController {
     }
     return null;
   }
+  String? validateFromDate(String? text) {
+    if (text == null || text.isEmpty) {
+      firstnameController.forward();
+      return "Please select date";
+    }
+    return null;
+  } String? validateToDate(String? text) {
+    if (text == null || text.isEmpty) {
+      firstnameController.forward();
+      return "Please select date";
+    }
+    return null;
+  }
 
 
   String? validateLastName(String? text) {
@@ -409,6 +439,27 @@ class ApplyVisaController extends FxController {
     }
     return null;
   }
+  String? validateDOB(String? text) {
+    if (text == null || text.isEmpty) {
+      dobController.forward();
+      return "Please choose date";
+    }
+    return null;
+  }
+
+ String? validateCountry(String? text){
+    if(text == null || text.isEmpty){
+      return "Please Choose Nationality";
+    }
+ }
+
+  String? validateExpiry(String? text) {
+    if (text == null || text.isEmpty) {
+      expiryController.forward();
+      return "Please choose date";
+    }
+    return null;
+  }
 
   void fetchData() async {
     products = HotelTravelCache.products;
@@ -417,6 +468,7 @@ class ApplyVisaController extends FxController {
     // uiLoading = false;
     update();
   }
+
 
   onPageChanged(int page, {bool fromUser = false}) async {
     if (!fromUser) currentPage = page;
@@ -486,6 +538,7 @@ class ApplyVisaController extends FxController {
       print("Date is not selected");
     }
   }
+
 
   // void toggleFavorite() {
   //   product.favorite = !product.favorite;
@@ -578,14 +631,47 @@ class ApplyVisaController extends FxController {
     emailController.dispose();
     addressController.dispose();
     phoneController.dispose();
+    dobController.dispose();
+    expiryController.dispose();
     animationController.dispose();
     super.dispose();
+  }
+
+
+  // Future<void> createVisa() async {
+  //
+  //
+  //     await AuthController()
+  //         .register(nameTE.text, emailTE.text, selectedCountryCode.toString(),
+  //         phoneTE.text, passwordTE.text, context)
+  //         .then((value) {
+  //     });
+  //   }
+  Future<CreateVisaApplication> postCreateVisa(
+    Map map
+      ) async {
+    try {
+      var data = await VisaService()
+          .postCreateVisa(map,
+
+      );
+      if (data != null) {
+        // log(data);
+        return data;
+      } else {
+        return data;
+      }
+    } catch (e) {
+      rethrow;
+    }
   }
 
   @override
   String getTag() {
     return "checkout_controller";
   }
+
+
   // uploadFile(List<File> files) async {
   //
   //   var postUri = Uri.parse("url here");

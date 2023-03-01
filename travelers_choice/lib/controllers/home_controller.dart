@@ -172,9 +172,11 @@ Country Code => $countryCode
   //   update();
   // }
 
-  void goToSingleProduct(Datum product) {
+  void goToSingleProduct(Datum product, currencySymbol, conversionRate) {
     log(product.id);
     log('message');
+    print(currencySymbol);
+    print("utfyjhvbn  $conversionRate");
     Navigator.of(context, rootNavigator: true).push(PageRouteBuilder(
         transitionDuration: const Duration(milliseconds: 500),
         transitionsBuilder: (
@@ -190,7 +192,10 @@ Country Code => $countryCode
         pageBuilder: (_, __, ___) =>
             DetailScreen(product.id,
             //  _toggleFavorite, _isMealFavorite,
-              product)
+             product,
+                currencySymbol:currencySymbol,
+              conversionRate: conversionRate
+            )
         // SingleProductScreen(product.id)
         ));
   }

@@ -65,6 +65,8 @@ class _SearchVisaState extends State<SearchVisa>
     _btnText = "Search";
   }
 
+
+
   double? _width;
   String? _btnText;
 
@@ -141,7 +143,6 @@ class _SearchVisaState extends State<SearchVisa>
 
   Widget _searchBox() {
     return Container(
-      // width: kIsWeb ? 450 : double.infinity,
         width: MediaQuery.of(context).size.width,
         padding: const EdgeInsets.fromLTRB(8, 2, 8, 2),
         decoration: BoxDecoration(
@@ -179,6 +180,7 @@ class _SearchVisaState extends State<SearchVisa>
             position: controller.locationAnimation,
             child:
             SearchField(
+                focusNode: controller.visaFocus,
               searchStyle: const TextStyle(color: Colors.white),
               suggestionStyle: FxTextStyle.bodyMedium(),
               controller: controller.visaTE,
@@ -221,7 +223,7 @@ class _SearchVisaState extends State<SearchVisa>
                 // log('value Country-->${value.item!.name}');
 
                 log(value.searchKey.toString());
-                controller.focus.unfocus();
+                controller.visaFocus.unfocus();
                 // setState(() {
                 //   _selectedCountry = controller.visaTE.text;
                 //   // controller.locationTE.text = controller.locationplace!;

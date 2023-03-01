@@ -6,7 +6,8 @@ import '../controllers/update_password_controller.dart';
 import '../theme/app_theme.dart';
 
 class UpdatePasswordScreen extends StatefulWidget {
-  const UpdatePasswordScreen({Key? key}) : super(key: key);
+  String? token;
+   UpdatePasswordScreen(this.token, {Key? key}) : super(key: key);
 
   @override
   _UpdatePasswordScreenState createState() => _UpdatePasswordScreenState();
@@ -279,7 +280,14 @@ class _UpdatePasswordScreenState extends State<UpdatePasswordScreen>
             elevation: 0,
             borderRadiusAll: 4,
             onPressed: () {
+              print(controller.oldpasswordTE.text);
+              print(controller.confirmPasswordTE.text);
+              print(widget.token!);
+
               controller.resetPassword();
+              controller.patchUpdate(controller.oldpasswordTE.text, controller.confirmPasswordTE.text,
+                  widget.token!, context);
+              // controller.goBack();
             },
             splashColor: const Color(0xff1529e8).withAlpha(30),
             backgroundColor: const Color(0xff1529e8),

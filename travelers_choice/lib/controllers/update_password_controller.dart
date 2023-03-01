@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutx/flutx.dart';
 import 'package:hotel_travel/views/full_app.dart';
 
+import '../services/auth_service.dart';
+
 class UpdatePasswordController extends FxController {
   TickerProvider ticker;
   UpdatePasswordController(this.ticker);
@@ -22,9 +24,9 @@ class UpdatePasswordController extends FxController {
   @override
   void initState() {
     super.initState();
-    confirmPasswordTE = TextEditingController(text: 'password123');
-    passwordTE = TextEditingController(text: 'password');
-    oldpasswordTE = TextEditingController(text: 'Shinchan123');
+    confirmPasswordTE = TextEditingController();
+    passwordTE = TextEditingController();
+    oldpasswordTE = TextEditingController();
     oldpasswordController = AnimationController(
         vsync: ticker, duration: const Duration(milliseconds: 50));
     arrowController = AnimationController(
@@ -149,9 +151,34 @@ class UpdatePasswordController extends FxController {
       //     builder: (context) => const FullApp(),
       //   ),
       // );
-      Navigator.pop(context);
+      // Navigator.pop(context);
     }
   }
+
+  void goBack() {
+    Navigator.pop(context);
+  }
+  Future<bool> patchUpdate(
+      String oldPassword,
+      String newPassword,
+      String token,
+      BuildContext context
+      ) async {
+    try {
+      var data = await AuthService()
+          .patchUpdatePassword(oldPassword, newPassword,  token, context
+      );
+      if (data != null) {
+        // log(data);
+        return true;
+      } else {
+        return false;
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
+
 
   @override
   String getTag() {
