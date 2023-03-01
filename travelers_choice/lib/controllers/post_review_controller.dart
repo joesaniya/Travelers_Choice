@@ -43,21 +43,23 @@ class PostReviewController extends FxController {
   //todo
   List<GetReview> allreview = <GetReview>[];
   bool isAllAttractionListLoading = true;
-  Future<GetReview?> FilterattractionList(
+  Future<String?> FilterattractionList(
       place, title, description, rating, token) async {
     // isCountryListLoading = true;
     try {
       var data = await ReviewService()
           .ReviewPost(place, title, description, rating, context, token);
       allreview.clear();
-      if (data != null) {
-        allreview.add(data);
-        // isCountryListLoading = false;
-        log('Controller:$data');
-        return data; //removed true
-      } else {
-        return null; //falseremoved
-      }
+      // if (data != null) {
+
+      //   allreview.add(data);
+      //   // isCountryListLoading = false;
+      //   log('Controller:$data');
+      //   return data; //removed true
+      // } else {
+      //   return null; //falseremoved
+      // }
+      return data;
     } catch (e) {
       rethrow;
     }

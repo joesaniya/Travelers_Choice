@@ -100,10 +100,16 @@ class _ReviewScreenState extends State<ReviewScreen>
                         reviewplace: widget.Id,
                       );
                     });
-                setState(() {
-                  controller.reviewsget = [];
-                  controller.reviewsget = [data];
-                });
+                log("Modal sheet closed with value: " + data);
+                // if (data == 'Success') {
+                //   log('Sucessss1');
+                //   controller.getReviews(widget.Id, setState);
+                // }
+                controller.getReviews(widget.Id, setState);
+                // setState(() {
+                //   controller.reviewsget = [];
+                //   controller.reviewsget = [data];
+                // });
               },
               label: const Text('Write a Review'),
               icon: const Icon(Icons.edit),

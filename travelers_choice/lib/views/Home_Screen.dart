@@ -148,8 +148,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
           controller.countryCode = sharedPreferences!
               .getString(AppConstants.KEY_ACCESS_TOKEN_countryId);
           print("controller.countryCode ${controller.countryCode}");
-          selectedCountry = countryList.first.currencies.firstWhere((element) => element.country.id==controller.countryCode);
-
+          selectedCountry = countryList.first.currencies.firstWhere(
+              (element) => element.country.id == controller.countryCode);
         });
 
         isCountryListLoading = false;
@@ -186,7 +186,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         opacity: controller.fadeAnimation,
         child: InkWell(
           onTap: () {
-            controller.goToSingleProduct(product,currencySymbol,conversionRate);
+            controller.goToSingleProduct(
+                product, currencySymbol, conversionRate);
           },
           child: Container(
             // onTap: () {
@@ -333,131 +334,71 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                             // ]
                             //     // children: _buildType(),
                             //     ),
-                            Row(
-                              children: [
-                                Expanded(
-                                  child: FxContainer(
-                                    borderRadiusAll: 10,
-                                    // padding: FxSpacing.xy(8, 4),
-                                    padding: FxSpacing.xy(6, 2),
-                                    // color: Color(0xff1529e8),
-                                    color: Colors.blueGrey,
-                                    child: Center(
+                            Row(children: [
+                              Expanded(
+                                child: FxContainer(
+                                  borderRadiusAll: 10,
+                                  // padding: FxSpacing.xy(8, 4),
+                                  padding: FxSpacing.xy(6, 2),
+                                  // color: Color(0xff1529e8),
+                                  color: Colors.blueGrey,
+                                  child: Center(
+                                    child: FxText.bodySmall(
+                                      // overflow: TextOverflow.ellipsis,
+                                      // maxLines: 1,
+                                      text,
+
+                                      fontWeight: 300,
+                                      color: Colors.white,
+                                      // color: theme.colorScheme.onPrimary,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              // FxContainer(
+                              //   borderRadiusAll: 10,
+                              //   // padding: FxSpacing.xy(8, 4),
+                              //   padding: FxSpacing.xy(6, 2),
+                              //   // color: Color(0xff1529e8),
+                              //   color: Colors.blueGrey,
+                              //   child: Center(
+                              //     child: FxText.bodySmall(
+                              //       // product.bookingType.name,
+                              //       product.bookingType.name[0]
+                              //               .toUpperCase() +
+                              //           product.bookingType.name
+                              //               .substring(1)
+                              //               .toLowerCase(),
+                              //       // 'Ticket',
+                              //       fontWeight: 300,
+                              //       color: Colors.white,
+                              //       // color: theme.colorScheme.onPrimary,
+                              //     ),
+                              //   ),
+                              // ),
+                              // const SizedBox(
+                              //   width: 5,
+                              // ),
+
+                              product.isOffer == false
+                                  ? Container()
+                                  : FxContainer(
+                                      borderRadiusAll: 10,
+                                      // padding: FxSpacing.xy(8, 4),
+                                      padding: FxSpacing.xy(6, 2),
+                                      // color: Color(0xff1529e8),
+                                      color: Colors.blueGrey,
                                       child: FxText.bodySmall(
-                                        // overflow: TextOverflow.ellipsis,
-                                        // maxLines: 1,
-                                        text,
+                                        'Offer',
 
                                         fontWeight: 300,
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
                                         color: Colors.white,
                                         // color: theme.colorScheme.onPrimary,
                                       ),
-                                    ),
-
-                                  )
-                          ],
-                        ),
-                        FxSpacing.height(8),
-                        Hero(
-                          tag: "product_title_${product.title}",
-                          // child: FxText.bodyLarge(
-                          //   product.name,
-                          //   // fontWeight: 500,
-                          // ),
-                          child: FxText.bodyLarge(
-                            product.title[0].toUpperCase() +
-                                product.title.substring(1).toLowerCase(),
-                            fontWeight: 800,
-                            overflow: TextOverflow.ellipsis,
-                            maxLines: 2,
-                          ),
-                        ),
-                        FxSpacing.height(4),
-                        Hero(
-                          tag: "${product.duration}",
-                          child: FxText.labelLarge(
-                            // '${controller.currency() ?? '\$'} ${product.activity.adultPrice.toString()}',
-                            " ${(selectedCountry!=null ?  "${((product.activity.lowPrice * selectedCountry!.conversionRate) as double).toStringAsFixed(2)} ${selectedCountry!.isocode} "   : "")}",
-                            // "\$" + product.price.toString() + "/hour",
-                            fontWeight: 700,
-                          ),
-                        ),
-                        FxSpacing.height(6),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Hero(
-                              tag: "${product.averageRating}",
-                              child: Row(
-                                children: [
-                                  const Icon(
-                                    // FeatherIcons.star,
-                                    Icons.star,
-                                    color: Colors.yellow,
-                                    size: 12,
-                                  ),
-                                  FxSpacing.width(4),
-                                  FxText.bodySmall(
-                                    product.averageRating.toStringAsFixed(1),
-                                    fontWeight: 600,
-                                    color: Colors.black,
-                                  ),
-                                  FxSpacing.width(4),
-                                  FxText.bodySmall(
-                                    "(${product.totalReviews.toStringAsFixed(0)})",
-                                    fontWeight: 600,
-                                    color: Colors.black,
-
-                                  ),
-                                ),
-                                const SizedBox(
-                                  width: 5,
-                                ),
-                                // FxContainer(
-                                //   borderRadiusAll: 10,
-                                //   // padding: FxSpacing.xy(8, 4),
-                                //   padding: FxSpacing.xy(6, 2),
-                                //   // color: Color(0xff1529e8),
-                                //   color: Colors.blueGrey,
-                                //   child: Center(
-                                //     child: FxText.bodySmall(
-                                //       // product.bookingType.name,
-                                //       product.bookingType.name[0]
-                                //               .toUpperCase() +
-                                //           product.bookingType.name
-                                //               .substring(1)
-                                //               .toLowerCase(),
-                                //       // 'Ticket',
-                                //       fontWeight: 300,
-                                //       color: Colors.white,
-                                //       // color: theme.colorScheme.onPrimary,
-                                //     ),
-                                //   ),
-                                // ),
-                                // const SizedBox(
-                                //   width: 5,
-                                // ),
-
-                                product.isOffer == false
-                                    ? Container()
-                                    : FxContainer(
-                                        borderRadiusAll: 10,
-                                        // padding: FxSpacing.xy(8, 4),
-                                        padding: FxSpacing.xy(6, 2),
-                                        // color: Color(0xff1529e8),
-                                        color: Colors.blueGrey,
-                                        child: FxText.bodySmall(
-                                          'Offer',
-
-                                          fontWeight: 300,
-                                          maxLines: 1,
-                                          overflow: TextOverflow.ellipsis,
-                                          color: Colors.white,
-                                          // color: theme.colorScheme.onPrimary,
-                                        ),
-                                      )
-                              ],
-                            ),
+                                    )
+                            ]),
                             FxSpacing.height(8),
                             Hero(
                               tag: "product_title_${product.title}",
@@ -478,19 +419,19 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                               tag: "${product.duration}",
                               child: FxText.labelLarge(
                                 // '${controller.currency() ?? '\$'} ${product.activity.adultPrice.toString()}',
-                                "${product.activity.lowPrice.toString()} AED",
+                                " ${(selectedCountry != null ? "${((product.activity.lowPrice * selectedCountry!.conversionRate) as double).toStringAsFixed(2)} ${selectedCountry!.isocode} " : "")}",
                                 // "\$" + product.price.toString() + "/hour",
                                 fontWeight: 700,
                               ),
                             ),
                             FxSpacing.height(6),
                             Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Hero(
-                                  tag: "${product.averageRating}",
-                                  child: Row(
-                                    children: [
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Hero(
+                                    tag: "${product.averageRating}",
+                                    child: Row(children: [
                                       const Icon(
                                         // FeatherIcons.star,
                                         Icons.star,
@@ -510,20 +451,79 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                         fontWeight: 600,
                                         color: Colors.black,
                                       ),
-                                    ],
-                                  ),
-                                ),
-                                // FxContainer.bordered(
-                                //   paddingAll: 4,
-                                //   borderRadiusAll: 4,
-                                //   child: Icon(
-                                //     FeatherIcons.plus,
-                                //     size: 14,
-                                //     color: theme.colorScheme.onBackground,
-                                //   ),
-                                // ),
-                              ],
-                            ),
+                                    ]),
+                                  )
+                                ]),
+                            // const SizedBox(
+                            //   width: 5,
+                            // ),
+                            //
+                            // FxSpacing.height(8),
+                            // Hero(
+                            //   tag: "product_title_${product.title}",
+                            //   // child: FxText.bodyLarge(
+                            //   //   product.name,
+                            //   //   // fontWeight: 500,
+                            //   // ),
+                            //   child: FxText.bodyLarge(
+                            //     product.title[0].toUpperCase() +
+                            //         product.title.substring(1).toLowerCase(),
+                            //     fontWeight: 800,
+                            //     overflow: TextOverflow.ellipsis,
+                            //     maxLines: 2,
+                            //   ),
+                            // ),
+                            // FxSpacing.height(4),
+                            // Hero(
+                            //   tag: "${product.duration}",
+                            //   child: FxText.labelLarge(
+                            //     // '${controller.currency() ?? '\$'} ${product.activity.adultPrice.toString()}',
+                            //     "${product.activity.lowPrice.toString()} AED",
+                            //     // "\$" + product.price.toString() + "/hour",
+                            //     fontWeight: 700,
+                            //   ),
+                            // ),
+                            // FxSpacing.height(6),
+                            // Row(
+                            //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            //   children: [
+                            //     Hero(
+                            //       tag: "${product.averageRating}",
+                            //       child: Row(
+                            //         children: [
+                            //           const Icon(
+                            //             // FeatherIcons.star,
+                            //             Icons.star,
+                            //             color: Colors.yellow,
+                            //             size: 12,
+                            //           ),
+                            //           FxSpacing.width(4),
+                            //           FxText.bodySmall(
+                            //             product.averageRating
+                            //                 .toStringAsFixed(1),
+                            //             fontWeight: 600,
+                            //             color: Colors.black,
+                            //           ),
+                            //           FxSpacing.width(4),
+                            //           FxText.bodySmall(
+                            //             "(${product.totalReviews.toStringAsFixed(0)})",
+                            //             fontWeight: 600,
+                            //             color: Colors.black,
+                            //           ),
+                            //         ],
+                            //       ),
+                            //     ),
+                            //     // FxContainer.bordered(
+                            //     //   paddingAll: 4,
+                            //     //   borderRadiusAll: 4,
+                            //     //   child: Icon(
+                            //     //     FeatherIcons.plus,
+                            //     //     size: 14,
+                            //     //     color: theme.colorScheme.onBackground,
+                            //     //   ),
+                            //     // ),
+                            //   ],
+                            // ),
                           ],
                         ),
                       ),
@@ -583,7 +583,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
           // car(controller.products![i])
           InkWell(
         onTap: () {
-          controller.goToSingleProduct(product,currencySymbol,conversionRate);
+          controller.goToSingleProduct(product, currencySymbol, conversionRate);
         },
         child: Container(
           margin: const EdgeInsets.all(5.0),
@@ -837,9 +837,10 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                         // ),
                       ],
                     ),
+                    //currencyChange
                     FxText(
                       // "${product.activity.adultPrice.toString()} AED",,
-                      " ${(selectedCountry!=null ?  "${((product.activity.lowPrice * selectedCountry!.conversionRate) as double).toStringAsFixed(2)} ${selectedCountry!.isocode} "   : "")}",
+                      " ${(selectedCountry != null ? "${((product.activity.lowPrice * selectedCountry!.conversionRate) as double).toStringAsFixed(2)} ${selectedCountry!.isocode} " : "")}",
                       // "${product.activity.lowPrice.toString()} AED",
                       // '${controller.currency() ?? '\$'} ${product.activity.adultPrice.toString()}',
                       color: const Color(0xff1529e8),
@@ -898,7 +899,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                       child: FxText.titleLarge(
                         // 'Hey Nency,',
                         // name.toString(),
-                        'Hey ${name![0].toUpperCase()+name!.substring(1).toLowerCase()}',
+                        'Hey ${name![0].toUpperCase() + name!.substring(1).toLowerCase()}',
                         fontWeight: 700,
                       ),
                     ),
@@ -910,14 +911,14 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                             width: 50,
                             // decoration: const BoxDecoration(color: Colors.white),
                             child:
-                            // AppConstants.KEY_ACCESS_TOKEN_countryId == countryList?
-                            // SvgPicture.network(
-                            //   "https://cdn.jsdelivr.net/npm/svg-country-flags@1.2.10/svg/in.svg",
-                            //   // "63db60f9f926b340dbb3f446",
-                            //   width: 16,
-                            //   height: 16,
-                            // ),
-                            DropdownButtonHideUnderline(
+                                // AppConstants.KEY_ACCESS_TOKEN_countryId == countryList?
+                                // SvgPicture.network(
+                                //   "https://cdn.jsdelivr.net/npm/svg-country-flags@1.2.10/svg/in.svg",
+                                //   // "63db60f9f926b340dbb3f446",
+                                //   width: 16,
+                                //   height: 16,
+                                // ),
+                                DropdownButtonHideUnderline(
                               child: DropdownButton2(
                                 isExpanded: true,
                                 iconSize: 0.0,
@@ -973,7 +974,11 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
 
                                 onChanged: (value) {
                                   setState(() {
-                                     selectedCountry = countryList.first.currencies.firstWhere((element) => element.country.id==value.toString());
+                                    selectedCountry = countryList
+                                        .first.currencies
+                                        .firstWhere((element) =>
+                                            element.country.id ==
+                                            value.toString());
 
                                     log("Abbrar ${selectedCountry!.currencySymbol}");
                                     controller.selectedCountryCode =
@@ -1392,25 +1397,6 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                   ),
                 ),
 
-                //banner
-                // FxSpacing.height(20),
-                // Card(
-                //   elevation: 1.0,
-                //   child: ClipRect(
-                //     child: Banner(
-                //       textStyle: const TextStyle(color: Colors.white),
-                //       message: 'OPEN',
-                //       location: BannerLocation.topEnd,
-                //       color: const Color(0xFF0db3ae),
-                //       child: InkWell(
-                //         child: const Padding(
-                //             padding: EdgeInsets.all(8.0),
-                //             child: Text('......')),
-                //         onTap: () {},
-                //       ),
-                //     ),
-                //   ),
-                // ),
                 FxSpacing.height(20),
                 TopAttraction(),
                 // const TopAttractionCard(),->crt
@@ -1441,105 +1427,4 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       }
     }
   }
-
-  // List<Widget> _buildType() {
-  //   log(
-  //     'category:${controller.categoryattraction.length}',
-  //   );
-  //   List<Widget> choices = [];
-  //   for (SearchCategoriesModal item in controller.categoryattraction) {
-  //     bool selected = controller.selectedChoices == item;
-  //     if (selected) {
-  //       choices.add(FxContainer.none(
-  //         // color: theme.colorScheme.primary.withAlpha(28),
-  //         // color: const Color(0xff1529e8).withAlpha(28),
-  //         color: const Color(0xff1529e8),
-  //         splashColor: Colors.lightBlue,
-
-  //         bordered: true,
-  //         borderRadiusAll: 20,
-  //         paddingAll: 8,
-  //         // border: Border.all(
-  //         //   // color: theme.colorScheme.primary
-  //         //   color: const Color(0xff1529e8),
-  //         // ),
-  //         onTap: () {
-  //           controller.removeChoice(item);
-  //         },
-  //         child: Row(
-  //           mainAxisAlignment: MainAxisAlignment.start,
-  //           crossAxisAlignment: CrossAxisAlignment.center,
-  //           children: [
-  //             Image(
-  //                 height: 24,
-  //                 width: 24,
-  //                 image:
-  //                     NetworkImage('https://a.walletbot.online/${item.icon}')),
-  //             FxSpacing.width(20),
-  //             FxText.bodySmall(
-  //               item.categoryName![0].toUpperCase() +
-  //                   item.categoryName!.substring(1).toLowerCase(),
-  //               // color: theme.colorScheme.onBackground,
-  //               color: Colors.white,
-  //               fontSize: 16,
-  //             ),
-  //           ],
-  //         ),
-  //         // child: Row(
-  //         //   mainAxisSize: MainAxisSize.min,
-  //         //   children: [
-  //         //     const Icon(
-  //         //       Icons.check,
-  //         //       size: 14,
-  //         //       color: Color(0xff1529e8),
-  //         //       // color: theme.colorScheme.primary,
-  //         //     ),
-  //         //     FxSpacing.width(6),
-  //         //     FxText.bodySmall(
-  //         //       item.categoryName.toString(),
-  //         //       fontSize: 11,
-  //         //       color: const Color(0xff1529e8),
-  //         //       // color: theme.colorScheme.primary,
-  //         //     )
-  //         //   ],
-  //         // )
-  //       ));
-  //     } else {
-  //       choices.add(FxContainer.none(
-  //         color: Colors.blueGrey.shade100,
-  //         borderRadiusAll: 20,
-  //         padding: FxSpacing.xy(12, 8),
-  //         onTap: () {
-  //           log('selected id:${item.id}');
-  //           controller.addChoice(item);
-  //         },
-  //         child: Row(
-  //           mainAxisAlignment: MainAxisAlignment.start,
-  //           crossAxisAlignment: CrossAxisAlignment.center,
-  //           children: [
-  //             // ImageIcon(
-  //             //   NetworkImage('https://a.walletbot.online/${item.icon}'),
-  //             //   // color: Colors.red,
-  //             //   size: 24,
-  //             // ),
-
-  //             Image(
-  //                 height: 24,
-  //                 width: 24,
-  //                 image:
-  //                     NetworkImage('https://a.walletbot.online/${item.icon}')),
-  //             FxSpacing.width(20),
-  //             FxText.bodySmall(
-  //               item.categoryName![0].toUpperCase() +
-  //                   item.categoryName!.substring(1).toLowerCase(),
-  //               color: theme.colorScheme.onBackground,
-  //               fontSize: 16,
-  //             ),
-  //           ],
-  //         ),
-  //       ));
-  //     }
-  //   }
-  //   return choices;
-  // }
 }

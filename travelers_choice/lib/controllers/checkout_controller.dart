@@ -615,16 +615,20 @@ class CheckOutController extends FxController {
     };
     // _razorpay.open(options);
     // var datavalue = jsonEncode(options);
-    // Map<String, dynamic> map = options;
+    String encodedMap = jsonEncode(options);
+
+    Map<String, dynamic> user = jsonDecode(encodedMap ?? '');
+    // Map<String, dynamic> map =
+    //     json.decode(options as String) as Map<String, dynamic>;
     try {
       // log('Options:$datavalue');
 
       // _razorpay.open(datavalue);
-      log('Options:$options');
-      _razorpay.open(options);
+      // log('Options:$options');
+      // _razorpay.open(options);
       //todo
-      // log('Options:$map');
-      // _razorpay.open(map);
+      log('Options:$user');
+      _razorpay.open(user);
     } catch (e) {
       print('razor error:${e.toString()}');
     }

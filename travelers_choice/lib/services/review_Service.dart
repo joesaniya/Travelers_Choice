@@ -62,14 +62,14 @@ class ReviewService {
         var jsondata = jsonDecode(response.body);
         print("Review Data => $jsondata");
 
-        return response.body;
+        return 'Success';
       } else {
         var jsondata = jsonDecode(response.body);
         log(jsondata['error']);
         //snackbar
         ScaffoldMessenger.of(context)
             .showSnackBar(SnackBar(content: Text(jsondata['error'])));
-        return null;
+        return 'Failure';
       }
     } catch (e) {
       rethrow;

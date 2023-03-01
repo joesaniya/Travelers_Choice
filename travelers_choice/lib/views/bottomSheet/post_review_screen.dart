@@ -5,7 +5,6 @@ import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutx/flutx.dart';
 
 import '../../controllers/post_review_controller.dart';
-import '../../models/get_reviews.dart';
 import '../../theme/app_theme.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
@@ -291,7 +290,7 @@ class _PostReviewSheetState extends State<PostReviewSheet>
                                     } else {
                                       log('filled');
 
-                                      GetReview? temp =
+                                      String? temp =
                                           // await controller.ReviewAdd
                                           await controller.FilterattractionList(
                                         widget.reviewplace.toString(),
@@ -300,11 +299,14 @@ class _PostReviewSheetState extends State<PostReviewSheet>
                                         controller.ratingValue.toString(),
                                         controller.token.toString(),
                                       );
+                                      if (temp != null) {
+                                        if (temp == 'Success') {}
+                                      }
 
                                       setState(() {
                                         controller.reviewsget = [];
 
-                                        controller.reviewsget!.add(temp!);
+                                        // controller.reviewsget!.add(temp!);
                                       });
 
                                       Navigator.pop(context, temp);

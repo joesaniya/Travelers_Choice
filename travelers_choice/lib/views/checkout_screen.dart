@@ -1496,6 +1496,12 @@ class _CheckOutScreenState extends State<CheckOutScreen>
               "assets/images/apps/shopping2/icons/razor_logo.png", "RazorPay"),
 
           FxSpacing.height(20),
+          MaterialButton(
+              onPressed: () {
+                controller.nextPage(
+                    selectedExcursions, context, widget.totalAmount);
+              },
+              child: const Text('Button')),
           FxButton.block(
             onPressed: () {
               controller.nextPage(
