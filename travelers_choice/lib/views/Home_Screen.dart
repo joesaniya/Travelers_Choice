@@ -133,7 +133,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     });
   }
 
-  String? _selectedCountry;
+  Currency? selectedCountry;
 
   List<CountryModal> countryList = <CountryModal>[];
   bool isCountryListLoading = true;
@@ -143,8 +143,15 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       var data = await AuthService().getCountry();
       countryList.clear();
       if (data != null) {
-        setState(() {});
-        countryList.add(data);
+        setState(() {
+          countryList.add(data);
+          controller.countryCode = sharedPreferences!
+              .getString(AppConstants.KEY_ACCESS_TOKEN_countryId);
+          print("controller.countryCode ${controller.countryCode}");
+          selectedCountry = countryList.first.currencies.firstWhere((element) => element.country.id==controller.countryCode);
+
+        });
+
         isCountryListLoading = false;
         return true;
       } else {
@@ -167,7 +174,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       text = text.replaceAll("_", " ");
 
       List<String> words = text.split(" ");
-
+      var currencySymbol = selectedCountry!.isocode;
+      var conversionRate = selectedCountry!.conversionRate;
       for (int i = 0; i < words.length; i++) {
         words[i] =
             words[i][0].toUpperCase() + words[i].substring(1).toLowerCase();
@@ -178,7 +186,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         opacity: controller.fadeAnimation,
         child: InkWell(
           onTap: () {
-            controller.goToSingleProduct(product);
+            controller.goToSingleProduct(product,currencySymbol,conversionRate);
           },
           child: Container(
             // onTap: () {
@@ -345,6 +353,61 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                         // color: theme.colorScheme.onPrimary,
                                       ),
                                     ),
+
+                                  )
+                          ],
+                        ),
+                        FxSpacing.height(8),
+                        Hero(
+                          tag: "product_title_${product.title}",
+                          // child: FxText.bodyLarge(
+                          //   product.name,
+                          //   // fontWeight: 500,
+                          // ),
+                          child: FxText.bodyLarge(
+                            product.title[0].toUpperCase() +
+                                product.title.substring(1).toLowerCase(),
+                            fontWeight: 800,
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 2,
+                          ),
+                        ),
+                        FxSpacing.height(4),
+                        Hero(
+                          tag: "${product.duration}",
+                          child: FxText.labelLarge(
+                            // '${controller.currency() ?? '\$'} ${product.activity.adultPrice.toString()}',
+                            " ${(selectedCountry!=null ?  "${((product.activity.lowPrice * selectedCountry!.conversionRate) as double).toStringAsFixed(2)} ${selectedCountry!.isocode} "   : "")}",
+                            // "\$" + product.price.toString() + "/hour",
+                            fontWeight: 700,
+                          ),
+                        ),
+                        FxSpacing.height(6),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Hero(
+                              tag: "${product.averageRating}",
+                              child: Row(
+                                children: [
+                                  const Icon(
+                                    // FeatherIcons.star,
+                                    Icons.star,
+                                    color: Colors.yellow,
+                                    size: 12,
+                                  ),
+                                  FxSpacing.width(4),
+                                  FxText.bodySmall(
+                                    product.averageRating.toStringAsFixed(1),
+                                    fontWeight: 600,
+                                    color: Colors.black,
+                                  ),
+                                  FxSpacing.width(4),
+                                  FxText.bodySmall(
+                                    "(${product.totalReviews.toStringAsFixed(0)})",
+                                    fontWeight: 600,
+                                    color: Colors.black,
+
                                   ),
                                 ),
                                 const SizedBox(
@@ -513,12 +576,14 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
 
       text = words.join(" ");
 
+      var currencySymbol = selectedCountry!.isocode;
+      var conversionRate = selectedCountry!.conversionRate;
       print(text);
       list.add(
           // car(controller.products![i])
           InkWell(
         onTap: () {
-          controller.goToSingleProduct(product);
+          controller.goToSingleProduct(product,currencySymbol,conversionRate);
         },
         child: Container(
           margin: const EdgeInsets.all(5.0),
@@ -774,7 +839,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                     ),
                     FxText(
                       // "${product.activity.adultPrice.toString()} AED",,
-                      "${product.activity.lowPrice.toString()} AED",
+                      " ${(selectedCountry!=null ?  "${((product.activity.lowPrice * selectedCountry!.conversionRate) as double).toStringAsFixed(2)} ${selectedCountry!.isocode} "   : "")}",
+                      // "${product.activity.lowPrice.toString()} AED",
                       // '${controller.currency() ?? '\$'} ${product.activity.adultPrice.toString()}',
                       color: const Color(0xff1529e8),
                     ),
@@ -832,7 +898,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                       child: FxText.titleLarge(
                         // 'Hey Nency,',
                         // name.toString(),
-                        'Hey $name',
+                        'Hey ${name![0].toUpperCase()+name!.substring(1).toLowerCase()}',
                         fontWeight: 700,
                       ),
                     ),
@@ -843,7 +909,15 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                             height: 30,
                             width: 50,
                             // decoration: const BoxDecoration(color: Colors.white),
-                            child: DropdownButtonHideUnderline(
+                            child:
+                            // AppConstants.KEY_ACCESS_TOKEN_countryId == countryList?
+                            // SvgPicture.network(
+                            //   "https://cdn.jsdelivr.net/npm/svg-country-flags@1.2.10/svg/in.svg",
+                            //   // "63db60f9f926b340dbb3f446",
+                            //   width: 16,
+                            //   height: 16,
+                            // ),
+                            DropdownButtonHideUnderline(
                               child: DropdownButton2(
                                 isExpanded: true,
                                 iconSize: 0.0,
@@ -868,17 +942,17 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                   ],
                                 ),
                                 items: countryList.isNotEmpty &&
-                                        countryList.first.countries.isNotEmpty
-                                    ? countryList.first.countries.map((value) {
+                                        countryList.first.currencies.isNotEmpty
+                                    ? countryList.first.currencies.map((value) {
                                         return DropdownMenuItem<String>(
-                                            value: value.id.toString(),
+                                            value: value.country.id.toString(),
                                             child: Center(
                                               // child: Text(
                                               //   value.flag.toString(),
                                               //   style: FxTextStyle.bodyMedium(),
                                               // ),
                                               child: SvgPicture.network(
-                                                value.flag,
+                                                value.country.flag,
                                                 width: 16,
                                                 height: 16,
                                               ),
@@ -899,7 +973,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
 
                                 onChanged: (value) {
                                   setState(() {
-                                    log(value.toString());
+                                     selectedCountry = countryList.first.currencies.firstWhere((element) => element.country.id==value.toString());
+
+                                    log("Abbrar ${selectedCountry!.currencySymbol}");
                                     controller.selectedCountryCode =
                                         value.toString();
                                     // _selectedCountryCode = value.toString();

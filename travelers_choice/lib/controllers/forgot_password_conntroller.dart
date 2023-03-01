@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutx/flutx.dart';
 
+import '../views/login_Screens/confrim_password.dart';
 import '../views/register_screen/register_screen.dart';
 
 class ForgotPasswordController extends FxController {
@@ -15,7 +16,7 @@ class ForgotPasswordController extends FxController {
   @override
   void initState() {
     super.initState();
-    this.emailTE = TextEditingController(text: 'shinchan@gmail.com');
+    emailTE = TextEditingController();
     arrowController = AnimationController(
         vsync: ticker, duration: Duration(milliseconds: 500));
     emailController = AnimationController(
@@ -66,11 +67,11 @@ class ForgotPasswordController extends FxController {
     if (formKey.currentState!.validate()) {
       arrowController.forward();
       await Future.delayed(Duration(milliseconds: 500));
-      // Navigator.of(context, rootNavigator: true).pushReplacement(
-      //   MaterialPageRoute(
-      //     builder: (context) => ResetPasswordScreen(),
-      //   ),
-      // );
+      Navigator.of(context, rootNavigator: true).pushReplacement(
+        MaterialPageRoute(
+          builder: (context) => ConfirmPasswordScreen(emailTE.text),
+        ),
+      );
     }
   }
 

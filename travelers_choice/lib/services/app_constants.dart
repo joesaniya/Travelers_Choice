@@ -8,8 +8,10 @@ class AppConstants {
   static const String KEY_ACCESS_TOKEN = 'token';
   static const String KEY_ACCESS_TOKEN_Name = 'username';
   static const String KEY_ACCESS_TOKEN_Email = 'useremail';
+  static const String KEY_ACCESS_TOKEN_Phone = 'phoneNumber';
   static const String KEY_ACCESS_TOKEN_countryId = 'countrycode';
   static const String KEY_ACCESS_TOKEN_CurrenciesList = 'currencies';
   static const String KEY_ACCESS_BALANCE = 'balance';
    static const String KEY_ACCESS_TOKEN_CountryFlag = 'flag';
+
 }

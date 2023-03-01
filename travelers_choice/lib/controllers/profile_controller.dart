@@ -13,8 +13,13 @@ class ProfileController extends FxController {
   bool notification = true, offlineReading = false;
   late User user;
   String? name, email;
+
   // double? balanceamount;
   int? balanceamount;
+
+//   double? balanceamount;
+  String? token;
+
 
   @override
   initState() {
@@ -55,8 +60,8 @@ class ProfileController extends FxController {
   //   });
   // }
 
-  void EditProfile() {
-    Navigator.of(context, rootNavigator: true).push(PageRouteBuilder(
+  Future<bool> EditProfile() async{
+    var result = await Navigator.of(context, rootNavigator: true).push(PageRouteBuilder(
         transitionDuration: const Duration(milliseconds: 500),
         transitionsBuilder: (
           BuildContext context,
@@ -69,6 +74,13 @@ class ProfileController extends FxController {
               child: child,
             ),
         pageBuilder: (_, __, ___) => EditProfileScreen()));
+
+    if(result == null){
+
+      return false;
+
+    }
+    return result;
   }
 
   void goToEditProfile() {

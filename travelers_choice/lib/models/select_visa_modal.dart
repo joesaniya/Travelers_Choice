@@ -42,6 +42,7 @@ class Visa {
     required this.createdAt,
     required this.updatedAt,
     required this.v,
+    required this.termsAndConditions,
   });
 
   String id;
@@ -56,6 +57,7 @@ class Visa {
   DateTime createdAt;
   DateTime updatedAt;
   int v;
+  String termsAndConditions;
 
   factory Visa.fromJson(Map<String, dynamic> json) => Visa(
     id: json["_id"],
@@ -70,6 +72,7 @@ class Visa {
     createdAt: DateTime.parse(json["createdAt"]),
     updatedAt: DateTime.parse(json["updatedAt"]),
     v: json["__v"],
+    termsAndConditions: json["termsAndConditions"],
   );
 
   Map<String, dynamic> toJson() => {
@@ -85,6 +88,7 @@ class Visa {
     "createdAt": createdAt.toIso8601String(),
     "updatedAt": updatedAt.toIso8601String(),
     "__v": v,
+    "termsAndConditions": termsAndConditions,
   };
 }
 

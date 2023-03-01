@@ -4,6 +4,7 @@ import 'package:flutx/flutx.dart';
 import 'package:hotel_travel/models/all_attraction_modal.dart';
 import 'package:hotel_travel/views/Home_Screen.dart';
 import 'package:hotel_travel/views/Cart_Screen.dart';
+import 'package:hotel_travel/views/history_page.dart';
 import 'package:hotel_travel/views/profile_screen.dart';
 
 import '../controllers/full_app_conrtoller.dart';
@@ -107,7 +108,8 @@ class _FullAppState extends State<FullApp> with SingleTickerProviderStateMixin {
 
                     // const Center(child: Text('Saved')),
                     SavedScreen(widget.favouriteMeal),
-                    const CartScreen(),
+                    const HistoryScreen(),
+                    // CartScreen(),
                     const ProfileScreen()
                   ],
                 ),
@@ -146,9 +148,9 @@ class _FullAppState extends State<FullApp> with SingleTickerProviderStateMixin {
                                 index: 2,
                                 // activeIconData: Icons.luggage,
                                 // iconData: Icons.luggage,
-                                activeIconData: FeatherIcons.shoppingCart,
-                                iconData: FeatherIcons.shoppingCart,
-                                title: "Cart"),
+                                activeIconData: FeatherIcons.clock,
+                                iconData: FeatherIcons.clock,
+                                title: "History"),
                             singleItem(
                                 index: 3,
                                 iconData: FeatherIcons.user,

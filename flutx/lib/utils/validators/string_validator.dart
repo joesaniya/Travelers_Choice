@@ -214,6 +214,11 @@ class FxStringValidator {
     RegExp regex = new RegExp(pattern as String);
     return (!regex.hasMatch(phone));
   }
+  static bool isOTP(String otp) {
+    Pattern pattern = ("(\\d{4})");
+    RegExp regex = new RegExp(pattern as String);
+    return (!regex.hasMatch(otp));
+  }
   static bool isPassport(String passport) {
     Pattern pattern =
     (r'^[A-Z]{1}[0-9]{7}$');
