@@ -6,10 +6,14 @@ import 'package:flutter/services.dart';
 import 'package:flutx/flutx.dart';
 import 'package:hotel_travel/views/hotel_travel_constants.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:razorpay_flutter/razorpay_flutter.dart';
 
 import '../models/product.dart';
+import '../models/razor_response.dart';
 import '../models/shipping_address.dart';
-import 'attraction_payment_Controller/payment_Controller.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'razor_credentials.dart' as razorCredentials;
 
 class Tab {
   String name;
@@ -68,12 +72,66 @@ class CheckOutController extends FxController {
   int phoneCounter = 0;
   int promoCounter = 0;
   List<Map<String, dynamic>> details = [];
+  void _handlePaymentSuccess(PaymentSuccessResponse response) {
+    // Do something when payment succeeds
+    print('response Success');
+    log('response Success');
+    verifySignature(
+      signature: response.signature,
+      paymentId: response.paymentId,
+      orderId: response.orderId,
+    );
+  }
 
+  void _handlePaymentError(PaymentFailureResponse response) {
+    print('responseError');
+    log('responseError');
+    // Do something when payment fails
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(response.message ?? ''),
+      ),
+    );
+  }
+
+  void _handleExternalWallet(ExternalWalletResponse response) {
+    print('responsewallet:');
+    log('response wallet:');
+    // Do something when an external wallet is selected
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(response.walletName ?? ''),
+      ),
+    );
+  }
+
+  // void _handlePaymentSuccess(PaymentSuccessResponse response) async {
+  //   // Fluttertoast.showToast(msg: " Payment Successfully");
+  //   ScaffoldMessenger.of(context)
+  //       .showSnackBar(const SnackBar(content: Text(' Payment Successfully')));
+  // }
+
+  // void _handlePaymentError(PaymentFailureResponse response) {
+  //   ScaffoldMessenger.of(context)
+  //       .showSnackBar(const SnackBar(content: Text(' Payment Failed')));
+  // }
+
+  // void _handleExternalWallet(ExternalWalletResponse response) {
+  //   ScaffoldMessenger.of(context)
+  //       .showSnackBar(const SnackBar(content: Text(' External Wallet')));
+  // }
+  final _razorpay = Razorpay();
   @override
   initState() {
     super.initState();
     fetchData();
+
     // details=;
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      _razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS, _handlePaymentSuccess);
+      _razorpay.on(Razorpay.EVENT_PAYMENT_ERROR, _handlePaymentError);
+      _razorpay.on(Razorpay.EVENT_EXTERNAL_WALLET, _handleExternalWallet);
+    });
     currentPage = 0;
     addressList = ShippingAddress.shipping();
     addressSelected = addressList!.first;
@@ -286,72 +344,10 @@ class CheckOutController extends FxController {
     update();
   }
 
-  // nextPage1(selectedExcursionsDatas) async {
-  //   if (currentPage == numPages) {
-  //     /*   Navigator.push(
-  //         context, MaterialPageRoute(builder: (context) => FullApp()));*/
-  //   } else {
-  //     // await pageController.animateToPage(
-  //     //   currentPage + 1,
-  //     //   duration: const Duration(milliseconds: 600),
-  //     //   curve: Curves.ease,
-  //     // );
-  //     await PaymentController()
-  //         // .PersonalInfo(nameTE.text, emailTE.text, selectedCountryCode.toString(),
-  //         //     phoneTE.text, passwordTE.text, context)
-  //         .PersonalInfo('jeni', 'jeni@gmail.com', '6098754321',
-  //             '63db60f9f926b340dbb3f446', selectedExcursionsDatas)
-  //         .then((value) {
-  //       if (value) {
-  //         log('Value:$value');
-  //         pageController.animateToPage(
-  //           currentPage + 1,
-  //           duration: const Duration(milliseconds: 600),
-  //           curve: Curves.ease,
-  //         );
-  //       }
-  //     });
-  //     //validation
-  //     // if (selectedname == null || selectedname!.isEmpty) {
-  //     //   ScaffoldMessenger.of(context).showSnackBar(
-  //     //       const SnackBar(content: Text("Please Select Mr/Ms/Mrs")));
-  //     // } else if (FnameTE.text.isEmpty) {
-  //     //   ScaffoldMessenger.of(context).showSnackBar(
-  //     //       const SnackBar(content: Text("Please Enter First Name")));
-  //     // } else if (LnameTE.text.isEmpty) {
-  //     //   ScaffoldMessenger.of(context).showSnackBar(
-  //     //       const SnackBar(content: Text("Please Enter Last Name")));
-  //     // } else if (emailTE.text.isEmpty) {
-  //     //   ScaffoldMessenger.of(context)
-  //     //       .showSnackBar(const SnackBar(content: Text("Please Enter Email")));
-  //     // } else if (selectedcountry == null || selectedcountry!.isEmpty) {
-  //     //   ScaffoldMessenger.of(context).showSnackBar(
-  //     //       const SnackBar(content: Text("Please Select Country")));
-  //     // } else if (selectedCountryCode == null || selectedCountryCode!.isEmpty) {
-  //     //   ScaffoldMessenger.of(context).showSnackBar(
-  //     //       const SnackBar(content: Text("Please Select Phone Code")));
-  //     // } else if (phoneTE.text.isEmpty
-
-  //     //     //  ||phoneTE.length!=10
-  //     //     ) {
-  //     //   ScaffoldMessenger.of(context).showSnackBar(
-  //     //       const SnackBar(content: Text("Please Enter Phone Number")));
-  //     // } else if (reqTE.text.isEmpty) {
-  //     //   ScaffoldMessenger.of(context)
-  //     //       .showSnackBar(const SnackBar(content: Text("Enter Request")));
-  //     // } else {
-  //     //   await pageController.animateToPage(
-  //     //     currentPage + 1,
-  //     //     duration: const Duration(milliseconds: 600),
-  //     //     curve: Curves.ease,
-  //     //   );
-  //     // }
-  //   }
-  // }
-
   //next button
-  nextPage(selectedExcursionsDatas) async {
+  nextPage(selectedExcursionsDatas, context, total) async {
     log('Page Number:$currentPage ');
+    log('Total:$total ');
 
     if (currentPage == 0) {
       log('selected page 0');
@@ -373,7 +369,9 @@ class CheckOutController extends FxController {
       } else if (selectedCountryCode == null || selectedCountryCode!.isEmpty) {
         ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text("Please Select Phone Code")));
-      } else if (phoneTE.text.isEmpty || phoneTE.text.length != 10) {
+      } else if (phoneTE.text.isEmpty
+          // || phoneTE.text.length != 10
+          ) {
         ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text("Please Enter Phone Number")));
       } else if (reqTE.text.isEmpty) {
@@ -386,29 +384,18 @@ class CheckOutController extends FxController {
           curve: Curves.ease,
         );
       }
-      // await pageController.animateToPage(
-      //   currentPage + 1,
-      //   duration: const Duration(milliseconds: 600),
-      //   curve: Curves.ease,
-      // );
     } else if (currentPage == 1) {
       log('selected page 1');
-      await PaymentController()
-          // .PersonalInfo(nameTE.text, emailTE.text, selectedCountryCode.toString(),
-          //     phoneTE.text, passwordTE.text, context)
-          .PersonalInfo('jeni', 'jeni@gmail.com', '6098754321',
-              '63db60f9f926b340dbb3f446', 'razorpay', selectedExcursionsDatas)
-          .then((value) {
-        if (value) {
-          log('Value:$value');
 
-          pageController.animateToPage(
-            currentPage + 1,
-            duration: const Duration(milliseconds: 600),
-            curve: Curves.ease,
-          );
-        }
-      });
+      //crt
+      createOrder(selectedExcursionsDatas);
+      // createOrderDemo(total);
+
+      //ttodo
+      // createOrder1();
+
+      //
+
       // showModalBottomSheet(
       //   context: context,
       //   backgroundColor: Colors.transparent,
@@ -456,6 +443,291 @@ class CheckOutController extends FxController {
     }
   }
 
+  Future<dynamic> createOrder1() async {
+    var mapHeader = <String, String>{};
+    mapHeader['Authorization'] =
+        "Basic cnpwX3Rlc3RfU2RHQmFoV3RsS1dNd2I6Mlh2WElOSDlMcG9xTHdyU3F5cDFzam5y";
+    mapHeader['Accept'] = "application/json";
+    mapHeader['Content-Type'] = "application/x-www-form-urlencoded";
+    var map = <String, String>{};
+
+    map['amount'] = "${(num.parse(phoneTE.text) * 100)}";
+    // map['amount'] = "${(num.parse(200 as S) * 100)}";
+
+    map['currency'] = "INR";
+    map['receipt'] = "receipt1";
+    print("map $map");
+    var response = await http.post(Uri.https("api.razorpay.com", "/v1/orders"),
+        headers: mapHeader, body: map);
+    print("....${response.body}");
+    if (response.statusCode == 200) {
+      RazorpayOrderResponse1 data =
+          RazorpayOrderResponse1.fromJson(json.decode(response.body));
+      openCheckout1(data);
+    } else {
+      log('Error');
+      // Fluttertoast.showToast(msg: "Something went wrong!");
+    }
+  }
+
+  void openCheckout1(RazorpayOrderResponse1 data) async {
+    // var options = {
+    //   'key': razorCredentials.keyId,
+    //   'amount': "${(num.parse(phoneTE.text) * 100)}",
+    //   'name': 'Razorpay Test',
+    //   'description': '',
+    //   'order_id': data.order.id,
+    // };
+    log('openchk:$data');
+    var options = {
+      'key': razorCredentials.keyId,
+      'amount': 100, //in the smallest currency sub-unit.
+      'name': 'Acme Corp.',
+      'order_id': data.order.id, // Generate order_id using Orders API
+      'description': 'Tours',
+      'timeout': 60 * 5, // in seconds // 5 minutes
+      'prefill': {
+        // 'contact': phoneTE.text,
+        'contact': '7639798240',
+        'email': emailTE.text,
+      }
+    };
+
+    try {
+      _razorpay.open(options);
+    } catch (e) {
+      debugPrint('Error: $e');
+    }
+  }
+
+  void createOrder(selectedExcursionsDatas) async {
+    String username = razorCredentials.keyId;
+    String password = razorCredentials.keySecret;
+    String basicAuth =
+        'Basic ${base64Encode(utf8.encode('$username:$password'))}';
+
+    List<Map<String, dynamic>> ActivityList = [];
+    for (var element in selectedExcursionsDatas) {
+      print('Element:${element.sId}');
+      print('Element Date:${element.selectedDate}');
+      print('Element Type:${element.transferType}');
+      print('Adult Count:${element.adultCount}');
+      print('child Count:${element.childCount}');
+      print('Infant Count:${element.infantCount}');
+      // var datas=
+      Map<String, dynamic> datas = {
+        // "activity": element.sId,
+        // // "date": "2023-02-28",
+        // "date": element.selectedDate,
+        // "adultsCount": element.adultCount,
+        // "childrenCount": element.childCount,
+        // "infantCount": element.infantCount,
+        // "transferType": "private"
+        "activity": "63e6317d20e0e01648630e6a",
+        "date": "2023-04-5",
+        "adultsCount": 1,
+        "childrenCount": 0,
+        "infantCount": 0,
+        "transferType": "private"
+      };
+      ActivityList.add(datas);
+      print('Data-->$datas');
+    }
+    selectedExcursionsDatas.map((e) =>
+        // e,
+        log('selected Activites:$e'));
+    //var body=
+    Map<String, dynamic> body = {
+      "name": FnameTE.text,
+      "email": emailTE.text,
+      "phoneNumber": phoneTE.text,
+      "country": selectedCountryCode,
+      "paymentProcessor": "razorpay",
+      // "selectedActivities": jsonEncode(ActivityList)
+      "selectedActivities": ActivityList
+    };
+    var res = await http.post(
+      Uri.parse(
+          // "api.razorpay.com", "v1/orders"
+          "https://secure.mytravellerschoice.com/api/v1/attractions/orders/create"), //https://api.razorpay.com/v1/orders
+      //https://secure.mytravellerschoice.com/api/v1/attractions/orders/create
+
+      headers: <String, String>{
+        "Content-Type": "application/json",
+        // 'authorization': basicAuth,
+      },
+      body: jsonEncode(body),
+    );
+    log('Body Data:${res.body}');
+    // if (res.statusCode == 200) {
+    //   RazorpayOrderResponse1 data =
+    //       RazorpayOrderResponse1.fromJson(json.decode(res.body));
+    //   log('res.body${res.body}');
+    //   openCheckout1(data);
+    // }
+    //todo
+
+    if (res.statusCode == 200) {
+      var jsondata = jsonDecode(res.body);
+      log('Response:${res.body}');
+      String orderId = jsondata['order']['id'];
+      // openGateway(jsonDecode(res.body)['id']);
+      // log('Response Id:${jsonDecode(res.body)['id']}');
+      log('Response Id:${jsonDecode(res.body)['orderId']}');
+      log('order Id:${jsondata['order']['id']}');
+      // openGateway(jsonDecode(res.body)['orderId']);
+      openGateway(orderId);
+      // openGateway(jsondata['order']);
+      // pageController.animateToPage(
+      //   currentPage + 1,
+      //   duration: const Duration(milliseconds: 600),
+      //   curve: Curves.ease,
+      // );
+    }
+    // print('Body:${res.body}');
+    // log('Body:${res.body}');
+    else {
+      var jsondata = jsonDecode(res.body);
+      log(jsondata['error']);
+      print(jsondata['error']);
+      //snackbar
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(jsondata['error'])));
+      return null;
+    }
+  }
+
+// openGateway(Map<String, dynamic> order)
+  openGateway(String orderId) {
+    log('OrderId:$orderId');
+    log('key:${razorCredentials.keyId}');
+    var options = {
+      "key": razorCredentials.keyId,
+      "amount": 10000, //in the smallest currency sub-unit.
+      "name": "Acme Corp.",
+      "order_id": orderId, // Generate order_id using Orders API
+      "description": "Tours",
+      "timeout": 60 * 5, // in seconds // 5 minutes
+      "prefill": {
+        "contact": phoneTE.text,
+        "email": emailTE.text,
+      }
+    };
+    // _razorpay.open(options);
+    // var datavalue = jsonEncode(options);
+    // Map<String, dynamic> map = options;
+    try {
+      // log('Options:$datavalue');
+
+      // _razorpay.open(datavalue);
+      log('Options:$options');
+      _razorpay.open(options);
+      //todo
+      // log('Options:$map');
+      // _razorpay.open(map);
+    } catch (e) {
+      print('razor error:${e.toString()}');
+    }
+  }
+
+  verifySignature({
+    String? signature,
+    String? paymentId,
+    String? orderId,
+    //  String? razorpayorderid,
+    // String? transactionid,
+    // String? signature,
+    // String? orderId,
+  }) async {
+    Map<String, dynamic> body = {
+      'razorpay_signature': signature,
+      'razorpay_payment_id': paymentId,
+      'razorpay_order_id': orderId,
+      // 'razorpay_order_id': razorpayorderid,
+      // 'transactionid': transactionid,
+      // 'razorpay_signature': signature,
+      // 'orderId': orderId,
+    };
+
+    var parts = [];
+    body.forEach((key, value) {
+      parts.add('${Uri.encodeQueryComponent(key)}='
+          '${Uri.encodeQueryComponent(value)}');
+    });
+    var formData = parts.join('&');
+    var res = await http.post(
+      Uri.https(
+        "10.0.2.2", // my ip address , localhost
+        "razorpay_signature_verify.php",
+      ),
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded", // urlencoded
+      },
+      body: formData,
+    );
+
+    print('sign:${res.body}');
+    log('sign:${res.body}');
+    if (res.statusCode == 200) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(res.body),
+        ),
+      );
+    }
+  }
+
+  void createOrderDemo(total) async {
+    log('CreateOrdeerDemo');
+    log('Total Demo:$total');
+    String username = razorCredentials.keyId;
+    String password = razorCredentials.keySecret;
+    String basicAuth =
+        'Basic ${base64Encode(utf8.encode('$username:$password'))}';
+
+    Map<String, dynamic> body = {
+      "amount": total,
+      "currency": "AED",
+      "receipt": "rcptid_11"
+    };
+
+    var res = await http.post(
+      // Uri.parse(
+      //     "https://secure.mytravellerschoice.com/api/v1/attractions/orders/create"),
+      Uri.https(
+          "api.razorpay.com", "v1/orders"), //https://api.razorpay.com/v1/orders
+      headers: <String, String>{
+        "Content-Type": "application/json",
+        'authorization': basicAuth,
+      },
+      body: jsonEncode(body),
+    );
+
+    if (res.statusCode == 200) {
+      openGatewaydemo(jsonDecode(res.body)['id'], total);
+    }
+    print('Body:${res.body}');
+    log('Body:${res.body}');
+  }
+
+  openGatewaydemo(String orderId, double total) {
+    log('id:$orderId');
+    log('tot:$total');
+    var options = {
+      'key': razorCredentials.keyId,
+      'amount': total, //in the smallest currency sub-unit.
+      'name': 'Acme Corp.',
+      'order_id': orderId, // Generate order_id using Orders API
+      'description': 'Tours',
+      'timeout': 60 * 5, // in seconds // 5 minutes
+      'prefill': {
+        'contact': phoneTE.text,
+        'email': emailTE.text,
+      }
+    };
+    _razorpay.open(options);
+  }
+
   @override
   void dispose() {
     if (pageController.hasClients) pageController.dispose();
@@ -467,6 +739,7 @@ class CheckOutController extends FxController {
     reqController.dispose();
     promoController.dispose();
     animationController.dispose();
+    _razorpay.clear();
     super.dispose();
   }
 

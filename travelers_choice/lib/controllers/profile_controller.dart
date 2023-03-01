@@ -13,8 +13,13 @@ class ProfileController extends FxController {
   bool notification = true, offlineReading = false;
   late User user;
   String? name, email;
-  double? balanceamount;
+
+  // double? balanceamount;
+  int? balanceamount;
+
+//   double? balanceamount;
   String? token;
+
 
   @override
   initState() {

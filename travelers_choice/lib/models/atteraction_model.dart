@@ -465,12 +465,12 @@ class Activity {
   String? facilities; //no
   int? adultAgeLimit;
   int? adultPrice;
-  int? childAgeLimit;
+  dynamic childAgeLimit;
   int? childPrice;
   dynamic infantAgeLimit;
   int? infantPrice;
   bool? isVat;
-  int? vat;
+  dynamic? vat;
   String? base;
   bool? isTransferAvailable;
   int? privateTransferPrice;

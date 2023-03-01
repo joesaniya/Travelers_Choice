@@ -1,5 +1,7 @@
 import 'dart:developer';
 
+import 'package:flutter/material.dart';
+
 import '../../services/payment_Service.dart';
 
 class PaymentController {
@@ -9,10 +11,11 @@ class PaymentController {
       String phoneNumber,
       String countryId,
       String paymentProcessor,
-      List SelectedActivities) async {
+      List SelectedActivities,
+       BuildContext context) async {
     try {
-      var data = PaymentService().PersonalInfo(name, email, phoneNumber,
-          countryId, paymentProcessor, SelectedActivities);
+      var data = PaymentService().PersonalInformation(name, email, phoneNumber,
+          countryId, paymentProcessor, SelectedActivities,context);
 
       if (data != null) {
         log('Payment Data:${data.toString()}');

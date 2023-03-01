@@ -29,11 +29,12 @@ class CheckOutScreen extends StatefulWidget {
   // int adultCount;
   // int childCount;
   // int infantCount;
-  double grandTotal;
+  // double grandTotal;
   String textdate;
   String? Transfer;
   double? totalAmount;
   // double? TotalCalculation;
+  // final VoidCallback onButtonTap;
   @override
   Key? key;
   // VoidCallback finalAmount;
@@ -46,10 +47,11 @@ class CheckOutScreen extends StatefulWidget {
       // this.adultCount,
       // this.childCount,
       // this.infantCount,
-      this.grandTotal,
+      // this.grandTotal,
       // // this.finalAmount,
       this.textdate,
       this.Transfer,
+      // this.onButtonTap,
       // this.TotalCalculation,
       this.totalAmount,
       {super.key});
@@ -74,7 +76,9 @@ class _CheckOutScreenState extends State<CheckOutScreen>
     selectedExcursions = widget.selectedtourOption;
     log('Selected Tour length:${widget.selectedtourOption.first.sId}');
     log('Selected Total Amount:${widget.totalAmount}');
+    // log('Selected Total Amount:${widget.onButtonTap}');
     fetchlog();
+    log('Selected Final Amount:${widget.selectedtourOption.first.grandTotal}');
     // log('Adult Count:${widget.adultCount}');
     // log('date:${widget.textdate}');
     // log('Transfer:${widget.Transfer}');
@@ -448,165 +452,6 @@ class _CheckOutScreenState extends State<CheckOutScreen>
     //   children: list,
     // );
   }
-
-  // Widget _billingWidget() {
-  //   return FadeTransition(
-  //     opacity: controller.fadeAnimation,
-  //     child: FxContainer(
-  //       borderRadiusAll: 4,
-  //       child: Column(
-  //         crossAxisAlignment: CrossAxisAlignment.start,
-  //         children: [
-  //           FxText.bodyMedium(
-  //             'Billing Information',
-  //             muted: true,
-  //             fontWeight: 700,
-  //           ),
-  //           FxSpacing.height(20),
-  //           Row(
-  //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //             children: [
-  //               FxText.bodyMedium(
-  //                 'Option',
-  //                 fontWeight: 600,
-  //               ),
-  //               FxText.bodyMedium(
-  //                 // '\$' + controller.order.precise,
-  //                 'IMG Worlds of Adventure',
-  //                 fontWeight: 700,
-  //               ),
-  //             ],
-  //           ),
-  //           FxSpacing.height(4),
-  //           Row(
-  //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //             children: [
-  //               FxText.bodyMedium(
-  //                 'Transfer',
-  //                 fontWeight: 600,
-  //               ),
-  //               FxText.bodyMedium(
-  //                 // '\$' + controller.order.precise,
-  //                 'without',
-  //                 fontWeight: 700,
-  //               ),
-  //             ],
-  //           ),
-  //           FxSpacing.height(4),
-  //           Row(
-  //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //             children: [
-  //               FxText.bodyMedium(
-  //                 'Date',
-  //                 fontWeight: 600,
-  //               ),
-  //               FxText.bodyMedium(
-  //                 // '\$' + controller.order.precise,
-  //                 '2023-01-31',
-  //                 fontWeight: 700,
-  //               ),
-  //             ],
-  //           ),
-  //           FxSpacing.height(4),
-  //           Row(
-  //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //             children: [
-  //               FxText.bodyMedium(
-  //                 'Pax',
-  //                 fontWeight: 600,
-  //               ),
-  //               FxText.bodyMedium(
-  //                 // '\$' + controller.order.precise,
-  //                 '1 adult',
-  //                 fontWeight: 700,
-  //               ),
-  //             ],
-  //           ),
-  //           FxSpacing.height(4),
-  //           Row(
-  //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //             children: [
-  //               FxText.bodyMedium(
-  //                 'Amount',
-  //                 fontWeight: 600,
-  //               ),
-  //               FxText.bodyMedium(
-  //                 '345.00 AED',
-  //                 // 'IMG Worlds of Adventure',
-  //                 fontWeight: 700,
-  //               ),
-  //             ],
-  //           ),
-  //           FxSpacing.height(4),
-  //           Row(
-  //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //             children: [
-  //               FxText.bodyMedium(
-  //                 'Tax',
-  //                 fontWeight: 600,
-  //               ),
-  //               FxText.bodyMedium(
-  //                 // '\$' + controller.tax.precise,
-  //                 '\$ 33',
-  //                 fontWeight: 700,
-  //               ),
-  //             ],
-  //           ),
-  //           FxSpacing.height(4),
-  //           Row(
-  //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //             children: [
-  //               FxText.bodyMedium(
-  //                 'Offer',
-  //                 fontWeight: 600,
-  //               ),
-  //               FxText.bodyMedium(
-  //                 // '- \$' + controller.offer.precise,
-  //                 '- \$ 50',
-  //                 fontWeight: 700,
-  //               ),
-  //             ],
-  //           ),
-  //           FxSpacing.height(12),
-  //           Row(
-  //             children: [
-  //               Expanded(
-  //                 flex: 2,
-  //                 child: Container(),
-  //               ),
-  //               Expanded(
-  //                 child: FxDashedDivider(
-  //                   dashSpace: 4,
-  //                   dashWidth: 8,
-  //                   color: theme.colorScheme.onBackground.withAlpha(180),
-  //                   height: 1.2,
-  //                 ),
-  //               )
-  //             ],
-  //           ),
-  //           FxSpacing.height(12),
-  //           Row(
-  //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //             children: [
-  //               FxText.bodyMedium(
-  //                 'Grand Total',
-  //                 fontWeight: 700,
-  //                 color: const Color(0xff1529e8),
-  //               ),
-  //               FxText.bodyMedium(
-  //                 // '\$' + controller.total.precise,
-  //                 '345.00 AED',
-  //                 // controller.products.
-  //                 fontWeight: 800,
-  //                 color: const Color(0xff1529e8),
-  //               ),
-  //             ],
-  //           ),
-  //         ],
-  //       ),
-  //     ),
-  //   );
-  // }
 
   Widget _buildSingleShippingAddress(ShippingAddress shippingAddress) {
     bool selected = controller.addressSelected == shippingAddress;
@@ -1412,7 +1257,8 @@ class _CheckOutScreenState extends State<CheckOutScreen>
                   child: FxButton(
                     padding: FxSpacing.y(12),
                     onPressed: () {
-                      controller.nextPage(selectedExcursions);
+                      controller.nextPage(
+                          selectedExcursions, context, widget.totalAmount);
                     },
                     borderRadiusAll: 4,
                     elevation: 0,
@@ -1652,7 +1498,8 @@ class _CheckOutScreenState extends State<CheckOutScreen>
           FxSpacing.height(20),
           FxButton.block(
             onPressed: () {
-              controller.nextPage(selectedExcursions);
+              controller.nextPage(
+                  selectedExcursions, context, widget.totalAmount);
               // controller.initPlatformState();
             },
             borderRadiusAll: 4,
@@ -1668,9 +1515,9 @@ class _CheckOutScreenState extends State<CheckOutScreen>
                   color: theme.colorScheme.onPrimary,
                 ),
                 FxText.bodyMedium(
-                  // '\$ 251.55',
+                  ' ${widget.totalAmount} AED',
                   // '${widget.selectedtourOption.first.GrandTotalAmount}',
-                  '${widget.totalAmount} AED',
+                  // '${widget.totalAmount} AED',
                   // widget.finalAmount.toString(),
                   // widget.TotalCalculation.toString(),
                   // controller1.grandSelectedTourAmount().toString(),
@@ -1736,7 +1583,7 @@ class _CheckOutScreenState extends State<CheckOutScreen>
         paddingAll: 12,
         // color: Colors.white,
         color: controller.selected
-            ? theme.colorScheme.primary.withAlpha(40)
+            ? const Color(0xff1529e8).withAlpha(40)
             : Colors.white,
         child: controller.selected
             ? Row(
@@ -1753,11 +1600,16 @@ class _CheckOutScreenState extends State<CheckOutScreen>
                           Alignment.centerRight, Alignment.centerLeft)!,
                       child: FxContainer.roundBordered(
                         paddingAll: 4,
-                        border: Border.all(color: theme.colorScheme.primary),
-                        color: theme.colorScheme.primary.withAlpha(40),
-                        child: Icon(
+                        border: Border.all(
+                          // color: theme.colorScheme.primary
+                          color: const Color(0xff1529e8),
+                        ),
+                        color: const Color(0xff1529e8).withAlpha(40),
+                        // color: theme.colorScheme.primary.withAlpha(40),
+                        child: const Icon(
                           Icons.check,
-                          color: theme.colorScheme.primary,
+                          color: Color(0xff1529e8),
+                          // color: theme.colorScheme.primary,
                           size: 10,
                         ),
                       ),

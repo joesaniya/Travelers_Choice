@@ -8,7 +8,7 @@ import 'package:hotel_travel/controllers/Detail_controller.dart';
 import 'package:hotel_travel/models/all_attraction_modal.dart';
 import 'package:hotel_travel/views/detail_screen/review_Screen.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import '../../loading_effect.dart';
 import '../../theme/app_theme.dart';
 import '../full_app.dart';
@@ -44,6 +44,55 @@ class _DetailScreenState extends State<DetailScreen>
   // List<DetailattractionModal> detailattraction = <DetailattractionModal>[];
   bool isSelected = false;
   List<Datum> tempFavouriteList = favouriteList.map((e) => e).toList();
+  //map
+  late GoogleMapController mapController; //contrller for Google map
+  final Set<Marker> markers = {}; //markers for google map
+  static const LatLng showLocation =
+      LatLng(27.7089427, 85.3086209); //location to show in map
+
+  Set<Marker> getmarkers() {
+    //markers to place on map
+
+    markers.add(Marker(
+      //add first marker
+      markerId: MarkerId(showLocation.toString()),
+      position: showLocation, //position of marker
+      infoWindow: const InfoWindow(
+        //popup info
+        title: 'Marker Title First ',
+        snippet: 'My Custom Subtitle',
+      ),
+      icon: BitmapDescriptor.defaultMarker, //Icon for Marker
+    ));
+
+    markers.add(Marker(
+      //add second marker
+      markerId: MarkerId(showLocation.toString()),
+      position: const LatLng(27.7099116, 85.3132343), //position of marker
+      infoWindow: const InfoWindow(
+        //popup info
+        title: 'Marker Title Second ',
+        snippet: 'My Custom Subtitle',
+      ),
+      icon: BitmapDescriptor.defaultMarker, //Icon for Marker
+    ));
+
+    markers.add(Marker(
+      //add third marker
+      markerId: MarkerId(showLocation.toString()),
+      position: const LatLng(27.7137735, 85.315626), //position of marker
+      infoWindow: const InfoWindow(
+        //popup info
+        title: 'Marker Title Third ',
+        snippet: 'My Custom Subtitle',
+      ),
+      icon: BitmapDescriptor.defaultMarker, //Icon for Marker
+    ));
+
+    //add more markers here
+
+    return markers;
+  }
 
 
   @override
@@ -539,10 +588,14 @@ class _DetailScreenState extends State<DetailScreen>
                       FxContainer(
                         onTap: () {
                           log('review Screen clicked');
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => ReviewScreen()));
+                          // controller.REviewPage(
+                          //     controller.detailattraction!.first);
+                          controller.REviewPage(
+                              widget.productid);
+                          // Navigator.push(
+                          //     context,
+                          //     MaterialPageRoute(
+                          //         builder: (context) => ReviewScreen()));
                         },
                         padding: FxSpacing.fromLTRB(8, 6, 8, 6),
                         color: const Color(0xff1529e8).withAlpha(40),
@@ -590,6 +643,29 @@ class _DetailScreenState extends State<DetailScreen>
                     crossAxisAlignment: CrossAxisAlignment.start,
                     // mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
+                      // Container(
+                      //   height: 300,
+                      //   width: MediaQuery.of(context).size.width,
+                      //   color: Colors.red,
+                      //   child: GoogleMap(
+                      //     //Map widget from google_maps_flutter package
+                      //     zoomGesturesEnabled:
+                      //         true, //enable Zoom in, out on map
+                      //     initialCameraPosition: const CameraPosition(
+                      //       //innital position in map
+                      //       target: showLocation, //initial position
+                      //       zoom: 15.0, //initial zoom level
+                      //     ),
+                      //     markers: getmarkers(), //markers to show on map
+                      //     mapType: MapType.normal, //map type
+                      //     onMapCreated: (controller) {
+                      //       //method called when map is created
+                      //       setState(() {
+                      //         mapController = controller;
+                      //       });
+                      //     },
+                      //   ),
+                      // ),
                       //tabbar
                       Container(
                         // height: 60,
@@ -629,12 +705,23 @@ class _DetailScreenState extends State<DetailScreen>
                       IndexedStack(
                         index: controller.tabController.index,
                         children: [
-                          ListView.builder(
+                          ListView.separated(
                             shrinkWrap: true,
                             padding: EdgeInsets.zero,
-                            itemCount: 1,
+                            // itemCount: 1,
+                            itemCount: controller
+                                .detailattraction!.first.sections!.length,
                             // itemCount: controller.product.description.length,
                             physics: const NeverScrollableScrollPhysics(),
+                            separatorBuilder: (context, index) {
+                              return FxDashedDivider(
+                                dashSpace: 4,
+                                dashWidth: 8,
+                                color: theme.colorScheme.onBackground
+                                    .withAlpha(180),
+                                height: 1.2,
+                              );
+                            },
                             itemBuilder: (context, index) {
                               // return Html(
                               //   data: controller
@@ -645,25 +732,73 @@ class _DetailScreenState extends State<DetailScreen>
                               //     'h4': Style(color: Colors.redAccent)
                               //   },
                               // );
-                              return SizedBox(
-                                  child: controller.detailattraction!.first
-                                          .category!.description!.isEmpty
-                                      ? FxText.bodyMedium(
-                                          'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.',
-                                          // color: theme.colorScheme.onPrimary,
-                                          // color: Colors.black,
-                                          letterSpacing: 0.4,
-                                          fontSize: 11,
-                                        )
-                                      : Html(
-                                          data: controller.detailattraction!
-                                              .first.category!.description
+                              // return SizedBox(
+                              //     // child: controller.detailattraction!.first
+                              //     //         .category!.description!.isEmpty
+                              //     child: controller.detailattraction!.first
+                              //             .sections![index].body!.isEmpty
+                              //         // child: controller
+                              //         //         .detailattraction!
+                              //         //         .first
+                              //         //         .activities!
+                              //         //         .first
+                              //         //         .description!
+                              //         //         .isEmpty
+                              //         ? FxText.bodyMedium(
+                              //             'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.',
+                              //             // color: theme.colorScheme.onPrimary,
+                              //             // color: Colors.black,
+                              //             letterSpacing: 0.4,
+                              //             fontSize: 11,
+                              //           )
+                              //         : Html(
+                              //             // data: controller.detailattraction!
+                              //             // .first.category!.description
+                              //             // .toString(),
+                              //             data: controller.detailattraction!
+                              //                 .first.sections![index].body!,
+                              //             // data: controller
+                              //             //     .detailattraction!
+                              //             //     .first
+                              //             //     .activities!
+                              //             //     .first
+                              //             //     .description
+                              //             //     .toString(),
+                              //             // style: {
+                              //             //   'p': Style(color: Colors.grey),
+                              //             //   'h4': Style(color: Colors.redAccent)
+                              //             // },
+                              //           ));
+                              return controller
+                                      .detailattraction!.first.sections!.isEmpty
+                                  ? FxText.bodyMedium(
+                                      'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.',
+                                      // color: theme.colorScheme.onPrimary,
+                                      // color: Colors.black,
+                                      letterSpacing: 0.4,
+                                      fontSize: 11,
+                                    )
+                                  : SizedBox(
+                                      child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        FxText.bodyLarge(
+                                          controller.detailattraction!.first
+                                              .sections![index].title
                                               .toString(),
-                                          style: {
-                                            'p': Style(color: Colors.grey),
-                                            'h4': Style(color: Colors.redAccent)
-                                          },
-                                        ));
+                                          color: Colors.indigo,
+                                          fontWeight: 900,
+                                          textAlign: TextAlign.left,
+                                        ),
+                                        // Html(
+                                        //     data: controller.detailattraction!
+                                        //         .first.sections![index].title),
+                                        Html(
+                                            data: controller.detailattraction!
+                                                .first.sections![index].body),
+                                      ],
+                                    ));
                             },
                           ),
                           ListView.builder(
