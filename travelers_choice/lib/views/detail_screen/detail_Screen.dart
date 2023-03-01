@@ -20,12 +20,15 @@ class DetailScreen extends StatefulWidget {
 
   // final Function isFavourite;
   final Datum productdatum;
+   String? currencySymbol;
+   double? conversionRate;
 
-  const DetailScreen(
+   DetailScreen(
       this.productid,
       // this.toggleFavourite, this.isFavourite,
       this.productdatum,
-      {super.key});
+
+      {super.key,this.currencySymbol,this.conversionRate});
 
   @override
   State<DetailScreen> createState() => _DetailScreenState();
@@ -41,6 +44,7 @@ class _DetailScreenState extends State<DetailScreen>
   // List<DetailattractionModal> detailattraction = <DetailattractionModal>[];
   bool isSelected = false;
   List<Datum> tempFavouriteList = favouriteList.map((e) => e).toList();
+
 
   @override
   void initState() {
@@ -78,6 +82,8 @@ class _DetailScreenState extends State<DetailScreen>
     // log('buildnew');
     // log(controller.detailattraction.toString());
     // final mealId = ModalRoute.of(context)!.settings.arguments;
+    print("currencysymbol ${widget.currencySymbol}");
+    print("currencysymbol ${widget.conversionRate}");
     final mealId = widget.productid;
     // log('Meal Id:${widget.productid}');
     final selectedMeal = controller.allattractionList
@@ -494,7 +500,7 @@ class _DetailScreenState extends State<DetailScreen>
                               //     // ? '${controller.detailattraction!.first.activities!.first.adultPrice} AED'
                               //     : '${controller.detailattraction!.first.activities!.first.privateTransfers!.first.price} AED',
                               // // '${controller.detailattraction.first.activities.first.adultPrice} ${controller.currency() ?? '\$'}',
-                              '${controller.detailattraction!.first.activities!.first.lowPrice} AED',
+                              '${((controller.detailattraction!.first.activities!.first.lowPrice * widget.conversionRate) as double).toStringAsFixed(2)} ${widget.currencySymbol}',
                               // controller.product.price.toString(),
                               fontWeight: 700)
                         ],

@@ -372,7 +372,7 @@ class Reviews {
   String? sId;
   String? title;
   String? description;
-  int? rating;
+  dynamic? rating;
   String? attraction;
   String? user;
   String? createdAt;
@@ -499,7 +499,7 @@ class Activity {
   String? transferType = 'private';
 
   int? sharedTransferCost;
-  int? lowPrice;
+  dynamic? lowPrice;
   String? selectedDate;
   double GrandTotalAmount = 0.0;
 

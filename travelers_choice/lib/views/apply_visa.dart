@@ -1146,7 +1146,7 @@ String userName = "";
                                           value: value,
                                           child: Center(
                                             child: Text(
-                                              value.countryName,
+                                              value.countryName[0].toUpperCase()+value.countryName.substring(1).toLowerCase(),
                                               style: FxTextStyle.bodyMedium(),
                                             ),
                                           ));
