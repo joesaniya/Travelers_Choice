@@ -353,65 +353,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                         // color: theme.colorScheme.onPrimary,
                                       ),
                                     ),
-
-                                  )
-                          ],
-                        ),
-                        FxSpacing.height(8),
-                        Hero(
-                          tag: "product_title_${product.title}",
-                          // child: FxText.bodyLarge(
-                          //   product.name,
-                          //   // fontWeight: 500,
-                          // ),
-                          child: FxText.bodyLarge(
-                            product.title[0].toUpperCase() +
-                                product.title.substring(1).toLowerCase(),
-                            fontWeight: 800,
-                            overflow: TextOverflow.ellipsis,
-                            maxLines: 2,
-                          ),
-                        ),
-                        FxSpacing.height(4),
-                        Hero(
-                          tag: "${product.duration}",
-                          child: FxText.labelLarge(
-                            // '${controller.currency() ?? '\$'} ${product.activity.adultPrice.toString()}',
-                            " ${(selectedCountry!=null ?  "${((product.activity.lowPrice * selectedCountry!.conversionRate) as double).toStringAsFixed(2)} ${selectedCountry!.isocode} "   : "")}",
-                            // "\$" + product.price.toString() + "/hour",
-                            fontWeight: 700,
-                          ),
-                        ),
-                        FxSpacing.height(6),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Hero(
-                              tag: "${product.averageRating}",
-                              child: Row(
-                                children: [
-                                  const Icon(
-                                    // FeatherIcons.star,
-                                    Icons.star,
-                                    color: Colors.yellow,
-                                    size: 12,
                                   ),
-                                  FxSpacing.width(4),
-                                  FxText.bodySmall(
-                                    product.averageRating.toStringAsFixed(1),
-                                    fontWeight: 600,
-                                    color: Colors.black,
-                                  ),
-                                  FxSpacing.width(4),
-                                  FxText.bodySmall(
-                                    "(${product.totalReviews.toStringAsFixed(0)})",
-                                    fontWeight: 600,
-                                    color: Colors.black,
-
-                                  ),
-                                ),
-                                const SizedBox(
-                                  width: 5,
                                 ),
                                 // FxContainer(
                                 //   borderRadiusAll: 10,
@@ -441,89 +383,150 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                 product.isOffer == false
                                     ? Container()
                                     : FxContainer(
-                                        borderRadiusAll: 10,
-                                        // padding: FxSpacing.xy(8, 4),
-                                        padding: FxSpacing.xy(6, 2),
-                                        // color: Color(0xff1529e8),
-                                        color: Colors.blueGrey,
-                                        child: FxText.bodySmall(
-                                          'Offer',
+                                  borderRadiusAll: 10,
+                                  // padding: FxSpacing.xy(8, 4),
+                                  padding: FxSpacing.xy(6, 2),
+                                  // color: Color(0xff1529e8),
+                                  color: Colors.blueGrey,
+                                  child: FxText.bodySmall(
+                                    'Offer',
 
-                                          fontWeight: 300,
-                                          maxLines: 1,
-                                          overflow: TextOverflow.ellipsis,
-                                          color: Colors.white,
-                                          // color: theme.colorScheme.onPrimary,
-                                        ),
-                                      )
-                              ],
+                                    fontWeight: 300,
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    color: Colors.white,
+                                    // color: theme.colorScheme.onPrimary,
+                                  ),
+                                )
+                                ]
                             ),
                             FxSpacing.height(8),
                             Hero(
-                              tag: "product_title_${product.title}",
-                              // child: FxText.bodyLarge(
-                              //   product.name,
-                              //   // fontWeight: 500,
-                              // ),
-                              child: FxText.bodyLarge(
-                                product.title[0].toUpperCase() +
-                                    product.title.substring(1).toLowerCase(),
-                                fontWeight: 800,
-                                overflow: TextOverflow.ellipsis,
-                                maxLines: 2,
-                              ),
-                            ),
+                          tag: "product_title_${product.title}",
+                          // child: FxText.bodyLarge(
+                          //   product.name,
+                          //   // fontWeight: 500,
+                          // ),
+                          child: FxText.bodyLarge(
+                            product.title[0].toUpperCase() +
+                                product.title.substring(1).toLowerCase(),
+                            fontWeight: 800,
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 2,
+                          ),
+                        ),
                             FxSpacing.height(4),
                             Hero(
-                              tag: "${product.duration}",
-                              child: FxText.labelLarge(
-                                // '${controller.currency() ?? '\$'} ${product.activity.adultPrice.toString()}',
-                                "${product.activity.lowPrice.toString()} AED",
-                                // "\$" + product.price.toString() + "/hour",
-                                fontWeight: 700,
-                              ),
-                            ),
+                          tag: "${product.duration}",
+                          child: FxText.labelLarge(
+                            // '${controller.currency() ?? '\$'} ${product.activity.adultPrice.toString()}',
+                            " ${(selectedCountry!=null ?  "${((product.activity.lowPrice * selectedCountry!.conversionRate) as double).toStringAsFixed(2)} ${selectedCountry!.isocode} "   : "")}",
+                            // "\$" + product.price.toString() + "/hour",
+                            fontWeight: 700,
+                          ),
+                        ),
                             FxSpacing.height(6),
                             Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Hero(
-                                  tag: "${product.averageRating}",
-                                  child: Row(
-                                    children: [
-                                      const Icon(
-                                        // FeatherIcons.star,
-                                        Icons.star,
-                                        color: Colors.yellow,
-                                        size: 12,
-                                      ),
-                                      FxSpacing.width(4),
-                                      FxText.bodySmall(
-                                        product.averageRating
-                                            .toStringAsFixed(1),
-                                        fontWeight: 600,
-                                        color: Colors.black,
-                                      ),
-                                      FxSpacing.width(4),
-                                      FxText.bodySmall(
-                                        "(${product.totalReviews.toStringAsFixed(0)})",
-                                        fontWeight: 600,
-                                        color: Colors.black,
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                // FxContainer.bordered(
-                                //   paddingAll: 4,
-                                //   borderRadiusAll: 4,
-                                //   child: Icon(
-                                //     FeatherIcons.plus,
-                                //     size: 14,
-                                //     color: theme.colorScheme.onBackground,
-                                //   ),
-                                // ),
-                              ],
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Hero(
+                                    tag: "${product.averageRating}",
+                                    child: Row(
+                                        children: [
+                                          const Icon(
+                                            // FeatherIcons.star,
+                                            Icons.star,
+                                            color: Colors.yellow,
+                                            size: 12,
+                                          ),
+                                          FxSpacing.width(4),
+                                          FxText.bodySmall(
+                                            product.averageRating.toStringAsFixed(1),
+                                            fontWeight: 600,
+                                            color: Colors.black,
+                                          ),
+                                          FxSpacing.width(4),
+                                          FxText.bodySmall(
+                                            "(${product.totalReviews.toStringAsFixed(0)})",
+                                            fontWeight: 600,
+                                            color: Colors.black,
+
+                                          ),
+                                        ]
+                                    ),
+                                  )
+                                ]
                             ),
+                            // const SizedBox(
+                            //   width: 5,
+                            // ),
+                            //
+                            // FxSpacing.height(8),
+                            // Hero(
+                            //   tag: "product_title_${product.title}",
+                            //   // child: FxText.bodyLarge(
+                            //   //   product.name,
+                            //   //   // fontWeight: 500,
+                            //   // ),
+                            //   child: FxText.bodyLarge(
+                            //     product.title[0].toUpperCase() +
+                            //         product.title.substring(1).toLowerCase(),
+                            //     fontWeight: 800,
+                            //     overflow: TextOverflow.ellipsis,
+                            //     maxLines: 2,
+                            //   ),
+                            // ),
+                            // FxSpacing.height(4),
+                            // Hero(
+                            //   tag: "${product.duration}",
+                            //   child: FxText.labelLarge(
+                            //     // '${controller.currency() ?? '\$'} ${product.activity.adultPrice.toString()}',
+                            //     "${product.activity.lowPrice.toString()} AED",
+                            //     // "\$" + product.price.toString() + "/hour",
+                            //     fontWeight: 700,
+                            //   ),
+                            // ),
+                            // FxSpacing.height(6),
+                            // Row(
+                            //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            //   children: [
+                            //     Hero(
+                            //       tag: "${product.averageRating}",
+                            //       child: Row(
+                            //         children: [
+                            //           const Icon(
+                            //             // FeatherIcons.star,
+                            //             Icons.star,
+                            //             color: Colors.yellow,
+                            //             size: 12,
+                            //           ),
+                            //           FxSpacing.width(4),
+                            //           FxText.bodySmall(
+                            //             product.averageRating
+                            //                 .toStringAsFixed(1),
+                            //             fontWeight: 600,
+                            //             color: Colors.black,
+                            //           ),
+                            //           FxSpacing.width(4),
+                            //           FxText.bodySmall(
+                            //             "(${product.totalReviews.toStringAsFixed(0)})",
+                            //             fontWeight: 600,
+                            //             color: Colors.black,
+                            //           ),
+                            //         ],
+                            //       ),
+                            //     ),
+                            //     // FxContainer.bordered(
+                            //     //   paddingAll: 4,
+                            //     //   borderRadiusAll: 4,
+                            //     //   child: Icon(
+                            //     //     FeatherIcons.plus,
+                            //     //     size: 14,
+                            //     //     color: theme.colorScheme.onBackground,
+                            //     //   ),
+                            //     // ),
+                            //   ],
+                            // ),
                           ],
                         ),
                       ),

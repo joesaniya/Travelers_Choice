@@ -2277,6 +2277,8 @@ String userName = "";
   }
 
   Widget payments() {
+    String? visaOrderId = createdVisaOrder!.id;
+
     return Padding(
         padding: FxSpacing.x(20),
         child:
@@ -2297,142 +2299,20 @@ String userName = "";
           ),
           SizedBox(height: 20,),
           _billingWidget(),
-          // FxText.labelLarge(
-          //   'Select payment method',
-          //   fontWeight: 600,
-          // ),
-          // FxSpacing.height(20),
-          // FxContainer.bordered(
-          //   onTap: () {
-          //     controller.selectPaymentMethod(1);
-          //   },
-          //   borderRadiusAll: 10,
-          //   // margin: FxSpacing.bottom(20),
-          //   border: Border.all(
-          //       color: controller.paymentMethodSelected == 1
-          //           ? const Color(0xff1529e8)
-          //           : theme.colorScheme.onBackground),
-          //   color: controller.paymentMethodSelected == 1
-          //       ? const Color(0xff1529e8).withAlpha(20)
-          //       : theme.scaffoldBackgroundColor,
-          //   child: Column(
-          //     crossAxisAlignment: CrossAxisAlignment.start,
-          //     children: [
-          //       Row(
-          //         children: [
-          //           Icon(
-          //             FeatherIcons.creditCard,
-          //             size: 20,
-          //             color: theme.colorScheme.onBackground.withAlpha(220),
-          //           ),
-          //           FxSpacing.width(8),
-          //           FxText.bodyMedium(
-          //             'XYZ Bank Credit Card',
-          //             fontWeight: 700,
-          //           ),
-          //           // controller.paymentMethodSelected == 1
-          //           //     ? Expanded(
-          //           //       child: Align(
-          //           //         alignment:
-          //           //         Language.autoDirection<AlignmentGeometry>(
-          //           //             Alignment.centerRight,
-          //           //             Alignment.centerLeft)!,
-          //           //         child: const Icon(
-          //           //           Icons.radio_button_checked,
-          //           //           color: Color(0xff1529e8),
-          //           //           size: 20,
-          //           //         ),
-          //           //       ),
-          //           // )
-          //           //     : Container(),
-          //         ],
-          //       ),
-          //       FxSpacing.height(8),
-          //       FxText.bodySmall(
-          //         'Abrar Ahmed',
-          //         fontWeight: 600,
-          //       ),
-          //       FxSpacing.height(5),
-          //       FxText.bodySmall(
-          //         '**** **** **** 7865',
-          //         fontWeight: 600,
-          //       ),
-          //       FxSpacing.height(5),
-          //       FxText.bodySmall(
-          //         'VALID THRU 12/27',
-          //         fontWeight: 600,
-          //       ),
-          //       FxSpacing.height(10),
-          //
-          //     ],
-          //   ),
-          // ),
-          // FxSpacing.height(20),
-          // FxContainer.bordered(
-          //   onTap: () {
-          //     controller.selectPaymentMethod(2);
-          //   },
-          //   borderRadiusAll: 10,
-          //   // margin: FxSpacing.bottom(20),
-          //   border: Border.all(
-          //       color: controller.paymentMethodSelected == 2
-          //           ? const Color(0xff1529e8)
-          //           : theme.colorScheme.onBackground),
-          //   color: controller.paymentMethodSelected == 2
-          //       ? const Color(0xff1529e8).withAlpha(20)
-          //       : theme.scaffoldBackgroundColor,
-          //   child: Column(
-          //     crossAxisAlignment: CrossAxisAlignment.start,
-          //     children: [
-          //       Row(
-          //         children: [
-          //           Icon(
-          //             FeatherIcons.creditCard,
-          //             size: 20,
-          //             color: theme.colorScheme.onBackground.withAlpha(220),
-          //           ),
-          //           FxSpacing.width(8),
-          //           FxText.bodyMedium(
-          //             'ABC Bank Debit Card',
-          //             fontWeight: 700,
-          //           ),
-          //           // controller.paymentMethodSelected == 1
-          //           //     ? Expanded(
-          //           //       child: Align(
-          //           //         alignment:
-          //           //         Language.autoDirection<AlignmentGeometry>(
-          //           //             Alignment.centerRight,
-          //           //             Alignment.centerLeft)!,
-          //           //         child: const Icon(
-          //           //           Icons.radio_button_checked,
-          //           //           color: Color(0xff1529e8),
-          //           //           size: 20,
-          //           //         ),
-          //           //       ),
-          //           // )
-          //           //     : Container(),
-          //         ],
-          //       ),
-          //       FxSpacing.height(8),
-          //       FxText.bodySmall(
-          //         'Britto John',
-          //         fontWeight: 600,
-          //       ),
-          //       FxSpacing.height(5),
-          //       FxText.bodySmall(
-          //         '**** **** **** 3214',
-          //         fontWeight: 600,
-          //       ),
-          //       FxSpacing.height(5),
-          //       FxText.bodySmall(
-          //         'VALID THRU 06/25',
-          //         fontWeight: 600,
-          //       ),
-          //       FxSpacing.height(10),
-          //
-          //     ],
-          //   ),
-          // ),
+          FxText.bodyLarge(
+            'Select Payment Method',
+            fontWeight: 800,
+          ),
+          FxSpacing.height(12),
+          FxDashedDivider(
+            dashSpace: 4,
+            dashWidth: 8,
+            color: theme.colorScheme.onBackground.withAlpha(180),
+            height: 1.2,
+          ),
+          FxSpacing.height(20),
+          payment(
+              "assets/images/apps/shopping2/icons/razor_logo.png", "RazorPay"),
 
           FxSpacing.height(20),
 
@@ -2440,19 +2320,20 @@ String userName = "";
           FxButton.block(
             onPressed: () {
 
-              showDialog(
-                context: context,
-                builder: (BuildContext context){
-                  return AlertDialog(
-                    content: placedInfo(),
-                  );
-                },
-
-              );
-              setState(() {
-                controller.currentPage++;
-                // isFinished1 = true;
-              });
+              // showDialog(
+              //   context: context,
+              //   builder: (BuildContext context){
+              //     return AlertDialog(
+              //       content: placedInfo(),
+              //     );
+              //   },
+              //
+              // );
+              controller.openGateway(visaOrderId!);
+              // setState(() {
+              //   controller.currentPage++;
+              //   // isFinished1 = true;
+              // });
 
             },
             borderRadiusAll: 4,
@@ -2468,6 +2349,57 @@ String userName = "";
         ],
       ),
     );
+  }
+
+  Widget payment(String image, String title) {
+    return FxContainer.bordered(
+        paddingAll: 12,
+        // color: Colors.white,
+        color: controller.selected
+            ? const Color(0xff1529e8).withAlpha(40)
+            : Colors.white,
+        child: controller.selected
+            ? Row(
+          children: [
+            Image(
+              height: 24,
+              image: AssetImage(image),
+            ),
+            FxSpacing.height(8),
+            FxText.bodySmall(title),
+            Expanded(
+              child: Align(
+                alignment: Language.autoDirection<AlignmentGeometry>(
+                    Alignment.centerRight, Alignment.centerLeft)!,
+                child: FxContainer.roundBordered(
+                  paddingAll: 4,
+                  border: Border.all(
+                    // color: theme.colorScheme.primary
+                    color: const Color(0xff1529e8),
+                  ),
+                  color: const Color(0xff1529e8).withAlpha(40),
+                  // color: theme.colorScheme.primary.withAlpha(40),
+                  child: const Icon(
+                    Icons.check,
+                    color: Color(0xff1529e8),
+                    // color: theme.colorScheme.primary,
+                    size: 10,
+                  ),
+                ),
+              ),
+            )
+          ],
+        )
+            : Row(
+          children: [
+            Image(
+              height: 24,
+              image: AssetImage(image),
+            ),
+            FxSpacing.height(8),
+            FxText.bodySmall(title),
+          ],
+        ));
   }
 
   // void openFiles(List<PlatformFile> files) {
