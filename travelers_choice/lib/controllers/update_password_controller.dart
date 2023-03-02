@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutx/flutx.dart';
-import 'package:hotel_travel/views/full_app.dart';
 
 import '../services/auth_service.dart';
 
@@ -158,18 +157,15 @@ class UpdatePasswordController extends FxController {
   void goBack() {
     Navigator.pop(context);
   }
-  Future<bool> patchUpdate(
-      String oldPassword,
-      String newPassword,
-      String token,
-      BuildContext context
-      ) async {
+
+  Future<bool> patchUpdate(String oldPassword, String newPassword, String token,
+      BuildContext context) async {
     try {
       var data = await AuthService()
-          .patchUpdatePassword(oldPassword, newPassword,  token, context
-      );
+          .patchUpdatePassword(oldPassword, newPassword, token, context);
       if (data != null) {
         // log(data);
+        // Navigator.pop(context);
         return true;
       } else {
         return false;
@@ -178,7 +174,6 @@ class UpdatePasswordController extends FxController {
       rethrow;
     }
   }
-
 
   @override
   String getTag() {
