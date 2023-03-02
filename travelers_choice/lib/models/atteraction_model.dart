@@ -37,7 +37,11 @@ class DetailattractionModal {
   List<dynamic>? offDates;
   List<Reviews>? reviews;
   Markup? markup;
+// <<<<<<< HEAD
   dynamic totalRating;
+// =======
+//   dynamic? totalRating;
+// >>>>>>> fbbb748cc95e63646309c21ad393ab877c48ed96
   dynamic averageRating;
   List<Activity>? activities;
 
