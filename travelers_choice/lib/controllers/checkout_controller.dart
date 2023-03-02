@@ -29,6 +29,7 @@ class CheckOutController extends FxController {
   int currentPage = 0;
   int numPages = 3;
   int paymentMethodSelected = 1;
+  int? selectedPayment = 0;
   ShippingAddress? addressSelected;
   List<ShippingAddress>? addressList;
   bool showcode = false;
@@ -332,7 +333,7 @@ class CheckOutController extends FxController {
           redirectUrl: 'http://122.182.6.216/merchant/ccavResponseHandler.jsp',
           rsaKeyUrl: 'https://secure.ccavenue.com/transaction/jsp/GetRSA.jsp');
     } on PlatformException {
-      print('PlatformException');
+      log('PlatformException');
     }
   }
 
@@ -386,9 +387,17 @@ class CheckOutController extends FxController {
       }
     } else if (currentPage == 1) {
       log('selected page 1');
+      if (selectedPayment == 1) {
+        log('1');
+        createOrderccAvenue(selectedExcursionsDatas);
+      } else {
+        log('2');
+        createOrder(selectedExcursionsDatas);
+      }
 
       //crt
-      createOrder(selectedExcursionsDatas);
+      // createOrder(selectedExcursionsDatas);
+
       // createOrderDemo(total);
 
       //ttodo
@@ -543,6 +552,7 @@ class CheckOutController extends FxController {
       "phoneNumber": phoneTE.text,
       "country": selectedCountryCode,
       "paymentProcessor": "razorpay",
+      // "paymentProcessor": selectedPayment == 1 ? "ccavenue" : "razorpay",
       // "selectedActivities": jsonEncode(ActivityList)
       "selectedActivities": ActivityList
     };
@@ -678,6 +688,90 @@ class CheckOutController extends FxController {
           content: Text(res.body),
         ),
       );
+    }
+  }
+
+  //ccavenue
+  void createOrderccAvenue(selectedExcursionsDatas) async {
+    String username = razorCredentials.keyId;
+    String password = razorCredentials.keySecret;
+    String basicAuth =
+        'Basic ${base64Encode(utf8.encode('$username:$password'))}';
+
+    List<Map<String, dynamic>> ActivityList = [];
+    for (var element in selectedExcursionsDatas) {
+      print('Element:${element.sId}');
+      print('Element Date:${element.selectedDate}');
+      print('Element Type:${element.transferType}');
+      print('Adult Count:${element.adultCount}');
+      print('child Count:${element.childCount}');
+      print('Infant Count:${element.infantCount}');
+      // var datas=
+      Map<String, dynamic> datas = {
+        // "activity": element.sId,
+        // // "date": "2023-02-28",
+        // "date": element.selectedDate,
+        // "adultsCount": element.adultCount,
+        // "childrenCount": element.childCount,
+        // "infantCount": element.infantCount,
+        // "transferType": "private"
+        "activity": "63e6317d20e0e01648630e6a",
+        "date": "2023-04-5",
+        "adultsCount": 1,
+        "childrenCount": 0,
+        "infantCount": 0,
+        "transferType": "private"
+      };
+      ActivityList.add(datas);
+      print('Data-->$datas');
+    }
+    selectedExcursionsDatas.map((e) =>
+        // e,
+        log('selected Activites:$e'));
+    //var body=
+    Map<String, dynamic> body = {
+      "name": FnameTE.text,
+      "email": emailTE.text,
+      "phoneNumber": phoneTE.text,
+      "country": selectedCountryCode,
+      "paymentProcessor": "ccavenue",
+      // "paymentProcessor": selectedPayment == 1 ? "ccavenue" : "razorpay",
+      // "selectedActivities": jsonEncode(ActivityList)
+      "selectedActivities": ActivityList
+    };
+    var res = await http.post(
+      Uri.parse(
+          // "api.razorpay.com", "v1/orders"
+          "https://secure.mytravellerschoice.com/api/v1/attractions/orders/create"), //https://api.razorpay.com/v1/orders
+      //https://secure.mytravellerschoice.com/api/v1/attractions/orders/create
+
+      headers: <String, String>{
+        "Content-Type": "application/json",
+        "Accept": "application/json"
+        // 'authorization': basicAuth,
+      },
+      body: jsonEncode(body),
+    );
+    log('Body Data:${res.body}');
+
+    //todo
+
+    if (res.statusCode == 200) {
+      // var jsondata = jsonDecode(res.body);
+      // log('Response:${res.body}');
+      log('Response cc:${res.body}');
+      // String htmlToParse = res.body;
+      // print(htmlToParse);
+      // log('Html:$htmlToParse');
+      initPlatformState();
+    } else {
+      var jsondata = jsonDecode(res.body);
+      log(jsondata['error']);
+      print(jsondata['error']);
+      //snackbar
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(jsondata['error'])));
+      return null;
     }
   }
 

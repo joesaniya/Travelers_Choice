@@ -63,6 +63,7 @@ class CheckOutScreen extends StatefulWidget {
 class _CheckOutScreenState extends State<CheckOutScreen>
     with TickerProviderStateMixin {
   late ThemeData theme;
+  late CustomTheme customTheme;
 
   late CheckOutController controller;
   late ActivityController controller1;
@@ -73,6 +74,7 @@ class _CheckOutScreenState extends State<CheckOutScreen>
   @override
   void initState() {
     super.initState();
+    customTheme = AppTheme.customTheme;
     selectedExcursions = widget.selectedtourOption;
     log('Selected Tour length:${widget.selectedtourOption.first.sId}');
     log('Selected Total Amount:${widget.totalAmount}');
@@ -463,74 +465,42 @@ class _CheckOutScreenState extends State<CheckOutScreen>
       margin: FxSpacing.bottom(20),
       border: Border.all(
           color: selected
-              ? theme.colorScheme.primary
+              ? const Color(0xff1529e8)
               : theme.colorScheme.onBackground),
       color: selected
-          ? theme.colorScheme.primary.withAlpha(40)
+          ? const Color(0xff1529e8).withAlpha(40)
           : theme.scaffoldBackgroundColor,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      child: Row(
         children: [
-          Row(
-            children: [
-              Icon(
-                shippingAddress.icon,
-                size: 20,
-                color: theme.colorScheme.onBackground.withAlpha(220),
-              ),
-              FxSpacing.width(12),
-              FxText.bodyMedium(
-                shippingAddress.type,
-                fontWeight: 700,
-              ),
-              FxSpacing.width(12),
-              shippingAddress.isDefault
-                  ? FxContainer(
-                      borderRadiusAll: 4,
-                      padding: FxSpacing.xy(8, 4),
-                      color: theme.colorScheme.primary,
-                      child: FxText.bodySmall(
-                        'Default',
-                        color: theme.colorScheme.onPrimary,
-                        fontSize: 11,
-                      ),
-                    )
-                  : Container(),
-              selected
-                  ? Expanded(
-                      child: Align(
-                        alignment: Language.autoDirection<AlignmentGeometry>(
-                            Alignment.centerRight, Alignment.centerLeft)!,
-                        child: FxContainer.roundBordered(
-                          paddingAll: 4,
-                          border: Border.all(color: theme.colorScheme.primary),
-                          color: theme.colorScheme.primary.withAlpha(40),
-                          child: Icon(
-                            Icons.check,
-                            color: theme.colorScheme.primary,
-                            size: 10,
-                          ),
-                        ),
-                      ),
-                    )
-                  : Container(),
-            ],
-          ),
+          // Image(
+          //   height: 24,
+          //   image: AssetImage(image),
+          // ),
           FxSpacing.height(8),
           FxText.bodySmall(
             shippingAddress.name,
-            fontWeight: 600,
           ),
-          FxSpacing.height(4),
-          FxText.bodySmall(
-            shippingAddress.number,
-            fontWeight: 600,
-          ),
-          FxSpacing.height(8),
-          FxText.bodySmall(
-            shippingAddress.address,
-            muted: true,
-          ),
+          Expanded(
+            child: Align(
+              alignment: Language.autoDirection<AlignmentGeometry>(
+                  Alignment.centerRight, Alignment.centerLeft)!,
+              child: FxContainer.roundBordered(
+                paddingAll: 4,
+                border: Border.all(
+                  // color: theme.colorScheme.primary
+                  color: const Color(0xff1529e8),
+                ),
+                color: const Color(0xff1529e8).withAlpha(40),
+                // color: theme.colorScheme.primary.withAlpha(40),
+                child: const Icon(
+                  Icons.check,
+                  color: Color(0xff1529e8),
+                  // color: theme.colorScheme.primary,
+                  size: 10,
+                ),
+              ),
+            ),
+          )
         ],
       ),
     );
@@ -626,7 +596,6 @@ class _CheckOutScreenState extends State<CheckOutScreen>
                     ),
                     FxSpacing.height(10),
 
-                    //todo
                     Container(
                       decoration: BoxDecoration(
                           borderRadius:
@@ -1492,16 +1461,42 @@ class _CheckOutScreenState extends State<CheckOutScreen>
             height: 1.2,
           ),
           FxSpacing.height(20),
-          payment(
-              "assets/images/apps/shopping2/icons/razor_logo.png", "RazorPay"),
+          //delivery
+          // ...controller.addressList!
+          //     .map((shippingAddress) =>
+          //         _buildSingleShippingAddress(shippingAddress))
+          //     .toList(),
 
+          //tpdo
+          getSinglePayment(
+              index: 1,
+              method: "CCavenue",
+              image: 'assets/images/apps/shopping2/icons/cc-avenue.png'),
+          getSinglePayment(
+              index: 2,
+              method: "RazorPay",
+              image: 'assets/images/apps/shopping2/icons/razor_logo.png'),
+
+          //demo
+//           payment(
+//               "assets/images/apps/shopping2/icons/razor_logo.png", "RazorPay"),
+// //cc
+//           payment(
+//               "assets/images/apps/shopping2/icons/razor_logo.png", "CCavenue"),
           FxSpacing.height(20),
           MaterialButton(
-              onPressed: () {
-                controller.nextPage(
-                    selectedExcursions, context, widget.totalAmount);
-              },
-              child: const Text('Button')),
+            onPressed: () {
+              controller.initPlatformState();
+              // controller.nextPage(
+              //     selectedExcursions, context, widget.totalAmount);
+            },
+            // child: const Text('Button')
+            child: controller.selectedPayment == 1
+                ? const Text('ccavenue')
+                : controller.selectedPayment == 2
+                    ? const Text('razor')
+                    : const Text('select'),
+          ),
           FxButton.block(
             onPressed: () {
               controller.nextPage(
@@ -1633,5 +1628,73 @@ class _CheckOutScreenState extends State<CheckOutScreen>
                   FxText.bodySmall(title),
                 ],
               ));
+  }
+
+  Widget getSinglePayment(
+      {int? index, required String image, required String method}) {
+    log('method:$method');
+    log('index:$index');
+    bool isSelected = index == controller.selectedPayment;
+
+    return FxContainer(
+      onTap: () {
+        setState(() {
+          controller.selectedPayment = index;
+        });
+      },
+      margin: FxSpacing.bottom(16),
+      padding: FxSpacing.all(16),
+      bordered: !isSelected,
+      border: Border.all(color: customTheme.border),
+      color: isSelected ? Colors.white : Colors.transparent,
+      // color: isSelected ? customTheme.card : theme.scaffoldBackgroundColor,
+      borderRadiusAll: 8,
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          SizedBox(
+            width: 48,
+            height: 36,
+            child: Image.asset(
+              image,
+            ),
+          ),
+          FxSpacing.width(16),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                FxText.bodyMedium(method, fontWeight: 600),
+                // FxSpacing.height(8),
+                // FxText.labelSmall(
+                //     "8765  \u2022\u2022\u2022\u2022  \u2022\u2022\u2022\u2022  7983",
+                //     muted: true,
+                //     letterSpacing: 0)
+              ],
+            ),
+          ),
+          // isSelected ? Space.width(16) : Space.width(20),
+          isSelected
+              ? Container(
+                  padding: FxSpacing.all(8),
+                  decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: const Color(0xff1529e8).withAlpha(40)),
+                  child: const Icon(
+                    FeatherIcons.check,
+                    color: Color(0xff1529e8),
+                    size: 14,
+                  ),
+                )
+              : Container(
+                  height: 26,
+                  width: 26,
+                  decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      border: Border.all(color: const Color(0xff1529e8))),
+                ),
+        ],
+      ),
+    );
   }
 }
