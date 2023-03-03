@@ -1484,23 +1484,36 @@ class _CheckOutScreenState extends State<CheckOutScreen>
 //           payment(
 //               "assets/images/apps/shopping2/icons/razor_logo.png", "CCavenue"),
           FxSpacing.height(20),
-          MaterialButton(
-            onPressed: () {
-              controller.initPlatformState();
-              // controller.nextPage(
-              //     selectedExcursions, context, widget.totalAmount);
-            },
-            // child: const Text('Button')
-            child: controller.selectedPayment == 1
-                ? const Text('ccavenue')
-                : controller.selectedPayment == 2
-                    ? const Text('razor')
-                    : const Text('select'),
-          ),
+          // MaterialButton(
+          //   onPressed: () {
+          //     controller.initPlatformState();
+          //     // controller.nextPage(
+          //     //     selectedExcursions, context, widget.totalAmount);
+          //   },
+          //   // child: const Text('Button')
+          //   child: controller.selectedPayment == 1
+          //       ? const Text('ccavenue')
+          //       : controller.selectedPayment == 2
+          //           ? const Text('razor')
+          //           : const Text('select'),
+          // ),
           FxButton.block(
             onPressed: () {
-              controller.nextPage(
-                  selectedExcursions, context, widget.totalAmount);
+              // controller.selectedPayment == 1
+              //     ? controller.nextPage(
+              //         selectedExcursions, context, widget.totalAmount)
+              //     : ScaffoldMessenger.of(context).showSnackBar(
+              //         const SnackBar(content: Text('Select payment method')));
+              controller.selectedPayment == 1
+                  ? controller.nextPage(
+                      selectedExcursions, context, widget.totalAmount)
+                  : controller.selectedPayment == 2
+                      ? controller.nextPage(
+                          selectedExcursions, context, widget.totalAmount)
+                      : ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                              content: Text('Select payment method')));
+
               // controller.initPlatformState();
             },
             borderRadiusAll: 4,
@@ -1645,7 +1658,9 @@ class _CheckOutScreenState extends State<CheckOutScreen>
       margin: FxSpacing.bottom(16),
       padding: FxSpacing.all(16),
       bordered: !isSelected,
-      border: Border.all(color: customTheme.border),
+      border: Border.all(
+          // color: customTheme.border
+          color: Colors.indigo),
       color: isSelected ? Colors.white : Colors.transparent,
       // color: isSelected ? customTheme.card : theme.scaffoldBackgroundColor,
       borderRadiusAll: 8,

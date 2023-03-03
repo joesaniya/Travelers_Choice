@@ -19,15 +19,16 @@ class DetailScreen extends StatefulWidget {
 
   // final Function isFavourite;
   final Datum productdatum;
-   String? currencySymbol;
-   double? conversionRate;
+  String? currencySymbol;
+  double? conversionRate;
 
-   DetailScreen(
+  DetailScreen(
       this.productid,
       // this.toggleFavourite, this.isFavourite,
       this.productdatum,
-
-      {super.key,this.currencySymbol,this.conversionRate});
+      {super.key,
+      this.currencySymbol,
+      this.conversionRate});
 
   @override
   State<DetailScreen> createState() => _DetailScreenState();
@@ -51,7 +52,7 @@ class _DetailScreenState extends State<DetailScreen>
 
   Set<Marker> getmarkers() {
     //markers to place on map
-
+    log('Get Mare');
     markers.add(Marker(
       //add first marker
       markerId: MarkerId(showLocation.toString()),
@@ -92,7 +93,6 @@ class _DetailScreenState extends State<DetailScreen>
 
     return markers;
   }
-
 
   @override
   void initState() {
@@ -644,7 +644,7 @@ class _DetailScreenState extends State<DetailScreen>
                       // Container(
                       //   height: 300,
                       //   width: MediaQuery.of(context).size.width,
-                      //   color: Colors.red,
+                      //   color: Colors.white,
                       //   child: GoogleMap(
                       //     //Map widget from google_maps_flutter package
                       //     zoomGesturesEnabled:

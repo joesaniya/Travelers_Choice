@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutx/flutx.dart';
 
 import '../views/login_Screens/forgot_password_screen.dart';
+import '../views/payment_cc.dart';
 import '../views/register_screen/register_screen.dart';
 import '../views/splash_screens/splash_screen2.dart';
 import 'auth_controller.dart';
@@ -164,6 +165,15 @@ class LogInController extends FxController {
         builder: (context) => const RegisterScreen(),
       ),
     );
+  }
+
+
+   void redirect() {
+    // Navigator.of(context, rootNavigator: true).pushReplacement(
+    //   MaterialPageRoute(
+    //     builder: (context) =>  PaymentCC(),
+    //   ),
+    // );
   }
 
   @override

@@ -148,8 +148,10 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
           controller.countryCode = sharedPreferences!
               .getString(AppConstants.KEY_ACCESS_TOKEN_countryId);
           print("controller.countryCode ${controller.countryCode}");
+          log("controller.countryCode ${controller.countryCode}");
           selectedCountry = countryList.first.currencies.firstWhere(
               (element) => element.country.id == controller.countryCode);
+          log("selected Country:$selectedCountry");
         });
 
         isCountryListLoading = false;
