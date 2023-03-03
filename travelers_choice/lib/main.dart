@@ -5,12 +5,6 @@
 
 import 'dart:io';
 
-import 'package:hotel_travel/views/apply_visa.dart';
-import 'package:hotel_travel/views/auth_container.dart';
-import 'package:hotel_travel/views/payment_screen.dart';
-import 'package:hotel_travel/views/register_screen/register_screen.dart';
-import 'package:hotel_travel/views/visa_screen.dart';
-
 import '/localizations/app_localization_delegate.dart';
 import '/localizations/language.dart';
 import '/theme/app_notifier.dart';
@@ -20,8 +14,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutx/themes/app_theme_notifier.dart';
 import 'package:provider/provider.dart';
-import 'package:razorpay_flutter/razorpay_flutter.dart';
-import 'package:http/http.dart' as http;
+
+import 'views/auth_container.dart';
 
 Future<void> main() async {
   //You will need to initialize AppThemeNotifier class for theme changes.
@@ -75,6 +69,7 @@ class MyApp extends StatelessWidget {
           supportedLocales: Language.getLocales(),
           // home: const LogInScreen(),
           home: AuthContainer(),
+
           // home:  RegisterScreen(),
           // home: MyHomePage(),
           // home: YourPage(),

@@ -13,6 +13,7 @@ import '../models/razor_response.dart';
 import '../models/shipping_address.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import '../views/payment_cc.dart';
 import 'razor_credentials.dart' as razorCredentials;
 
 class Tab {
@@ -387,9 +388,11 @@ class CheckOutController extends FxController {
       }
     } else if (currentPage == 1) {
       log('selected page 1');
+
       if (selectedPayment == 1) {
         log('1');
         createOrderccAvenue(selectedExcursionsDatas);
+        // redirect();
       } else {
         log('2');
         createOrder(selectedExcursionsDatas);
@@ -451,6 +454,8 @@ class CheckOutController extends FxController {
       );
     }
   }
+
+  //redirect
 
   Future<dynamic> createOrder1() async {
     var mapHeader = <String, String>{};
@@ -708,19 +713,19 @@ class CheckOutController extends FxController {
       print('Infant Count:${element.infantCount}');
       // var datas=
       Map<String, dynamic> datas = {
-        // "activity": element.sId,
-        // // "date": "2023-02-28",
-        // "date": element.selectedDate,
-        // "adultsCount": element.adultCount,
-        // "childrenCount": element.childCount,
-        // "infantCount": element.infantCount,
-        // "transferType": "private"
-        "activity": "63e6317d20e0e01648630e6a",
-        "date": "2023-04-5",
-        "adultsCount": 1,
-        "childrenCount": 0,
-        "infantCount": 0,
+        "activity": element.sId,
+        // "date": "2023-02-28",
+        "date": element.selectedDate,
+        "adultsCount": element.adultCount,
+        "childrenCount": element.childCount,
+        "infantCount": element.infantCount,
         "transferType": "private"
+        // "activity": "63e6317d20e0e01648630e6a",
+        // "date": "2023-04-5",
+        // "adultsCount": 1,
+        // "childrenCount": 0,
+        // "infantCount": 0,
+        // "transferType": "private"
       };
       ActivityList.add(datas);
       print('Data-->$datas');
@@ -763,7 +768,14 @@ class CheckOutController extends FxController {
       // String htmlToParse = res.body;
       // print(htmlToParse);
       // log('Html:$htmlToParse');
-      initPlatformState();
+      // initPlatformState();
+      var paymentdata = res.body;
+      log('Payment data:$paymentdata');
+      Navigator.of(context, rootNavigator: true).pushReplacement(
+        MaterialPageRoute(
+          builder: (context) => PaymentCC(paymentdata: paymentdata),
+        ),
+      );
     } else {
       var jsondata = jsonDecode(res.body);
       log(jsondata['error']);
