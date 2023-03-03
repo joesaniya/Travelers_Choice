@@ -116,7 +116,7 @@ class AllBookingController extends FxController {
   void fetchData() {
     categories = HotelTravelCache.categories;
     products = HotelTravelCache.products;
-    selectedCategory = categories!.first;
+    // selectedCategory = categories!.first;
     // uiLoading = false;
     // log(uiLoading.toString());
     update();

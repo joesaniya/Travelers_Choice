@@ -72,7 +72,8 @@ class _AllBookingsState extends State<AllBookings>
           padding: FxSpacing.fromLTRB(
               20,
               // FxSpacing.safeAreaTop(context) + 20,
-              FxSpacing.safeAreaTop(context) + 5,
+              // FxSpacing.safeAreaTop(context) + 5,
+              0,
               20,
               0),
           child: SingleChildScrollView(

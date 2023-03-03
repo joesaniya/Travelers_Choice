@@ -3,9 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutx/flutx.dart';
-import 'package:hotel_travel/controllers/Activity_Controller.dart';
 import 'package:hotel_travel/extensions/extensions.dart';
-import 'package:hotel_travel/localizations/language.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../theme/constant.dart';
@@ -38,10 +36,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         log(controller.email.toString());
         log('username');
         controller.token =
-        sharedPrefValue.getString(AppConstants.KEY_ACCESS_TOKEN)!;
+            sharedPrefValue.getString(AppConstants.KEY_ACCESS_TOKEN)!;
         log(controller.token!);
         controller.countryId =
-        sharedPrefValue.getString(AppConstants.KEY_ACCESS_TOKEN_countryId)!;
+            sharedPrefValue.getString(AppConstants.KEY_ACCESS_TOKEN_countryId)!;
         log(controller.countryId.toString());
       });
     });
@@ -79,8 +77,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           leading: InkWell(
             onTap: () {
               controller.goBack(canRefresh: true);
-
-
             },
             child: const Icon(
               FeatherIcons.chevronLeft,
@@ -97,51 +93,70 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 paddingAll: 0,
                 height: 100,
                 width: 100,
-                child: Stack(
-                  clipBehavior: Clip.none,
-                  children: [
-                    ClipRRect(
-                      clipBehavior: Clip.antiAliasWithSaveLayer,
-                      borderRadius: const BorderRadius.all(Radius.circular(60)),
-                      // child: Image(
-                      //   height: 100,
-                      //   width: 100,
-                      //   image: AssetImage(Images.learningProfile),
-                      //   fit: BoxFit.cover,
-                      // ),
-                      child: SizedBox(
-                        height: 100,
-                        width: 100,
-                        child: CircleAvatar(
-                          backgroundColor:
-                              theme.colorScheme.primary.withAlpha(28),
-                          child: FxText.bodyLarge(controller.name![0],
-                              color: theme.colorScheme.primary,
-                              fontWeight: 600),
-                        ),
+                // child: Stack(
+                //   clipBehavior: Clip.none,
+                //   children: [
+                //     ClipRRect(
+                //       clipBehavior: Clip.antiAliasWithSaveLayer,
+                //       borderRadius: const BorderRadius.all(Radius.circular(60)),
+                //       // child: Image(
+                //       //   height: 100,
+                //       //   width: 100,
+                //       //   image: AssetImage(Images.learningProfile),
+                //       //   fit: BoxFit.cover,
+                //       // ),
+                //       child: SizedBox(
+                //         height: 100,
+                //         width: 100,
+                //         child: CircleAvatar(
+                //           backgroundColor:
+                //               theme.colorScheme.primary.withAlpha(28),
+                //           child: FxText.bodyLarge(controller.name![0],
+                //               color: theme.colorScheme.primary,
+                //               fontWeight: 600),
+                //         ),
+                //       ),
+                //     ),
+                //     Positioned(
+                //       bottom: 0,
+                //       left: Language.autoDirection(null, 0),
+                //       right: Language.autoDirection(0),
+                //       child: FxCard(
+                //         paddingAll: 2,
+                //         borderRadiusAll: 4,
+                //         clipBehavior: Clip.none,
+                //         child: FxContainer(
+                //           paddingAll: 4,
+                //           borderRadiusAll: 4,
+                //           color: theme.colorScheme.primaryContainer,
+                //           child: Icon(
+                //             Icons.camera_alt,
+                //             size: 16,
+                //             color: theme.colorScheme.primary,
+                //           ),
+                //         ),
+                //       ),
+                //     ),
+                //   ],
+                // ),
+
+                //todo
+                child: ClipRRect(
+                  clipBehavior: Clip.antiAliasWithSaveLayer,
+                  borderRadius: const BorderRadius.all(Radius.circular(60)),
+                  child: SizedBox(
+                    height: 100,
+                    width: 100,
+                    child: CircleAvatar(
+                      backgroundColor: theme.colorScheme.primary.withAlpha(28),
+                      child: FxText.bodyLarge(
+                        controller.name![0],
+                        color: theme.colorScheme.primary,
+                        fontWeight: 600,
+                        fontSize: 30,
                       ),
                     ),
-                    Positioned(
-                      bottom: 0,
-                      left: Language.autoDirection(null, 0),
-                      right: Language.autoDirection(0),
-                      child: FxCard(
-                        paddingAll: 2,
-                        borderRadiusAll: 4,
-                        clipBehavior: Clip.none,
-                        child: FxContainer(
-                          paddingAll: 4,
-                          borderRadiusAll: 4,
-                          color: theme.colorScheme.primaryContainer,
-                          child: Icon(
-                            Icons.camera_alt,
-                            size: 16,
-                            color: theme.colorScheme.primary,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
+                  ),
                 ),
               ),
             ),
@@ -169,10 +184,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               cursorColor: theme.colorScheme.onBackground,
               focusedBorderRadius: Constant.textFieldRadius.medium,
               enabledBorderRadius: Constant.textFieldRadius.medium,
-
             ),
             FxSpacing.height(20),
-
             FxText.bodyMedium(
               'Email',
             ),
@@ -337,19 +350,21 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             ),
             FxSpacing.height(20),
             FxButton.block(
-              onPressed: () async{
+              onPressed: () async {
                 print(controller.nameTE.text);
                 print(controller.emailTE.text);
                 print(controller.countryId);
                 print(controller.mobileTE.text);
-                print( controller.token);
-                var result = await controller.patchEdit(controller.nameTE.text, controller.emailTE.text, controller.countryId!,
-                controller.mobileTE.text, controller.token!  ,context
-                );
+                print(controller.token);
+                var result = await controller.patchEdit(
+                    controller.nameTE.text,
+                    controller.emailTE.text,
+                    controller.countryId!,
+                    controller.mobileTE.text,
+                    controller.token!,
+                    context);
 
                 controller.goBack(canRefresh: result);
-
-
               },
               elevation: 0,
               borderRadiusAll: Constant.buttonRadius.large,
