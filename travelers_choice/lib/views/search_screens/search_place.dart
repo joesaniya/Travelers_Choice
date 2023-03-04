@@ -11,7 +11,9 @@ import '../../services/auth_service.dart';
 import '../../theme/app_theme.dart';
 
 class SearchPlace extends StatefulWidget {
-  const SearchPlace({Key? key}) : super(key: key);
+  String isocode;
+  double conversionRate;
+  SearchPlace({super.key, required this.isocode, required this.conversionRate});
 
   @override
   State<SearchPlace> createState() => _SearchPlaceState();
@@ -53,6 +55,8 @@ class _SearchPlaceState extends State<SearchPlace>
   @override
   void initState() {
     super.initState();
+    log('ConversionRate111:${widget.isocode}');
+    log('ConversionSymbol111:${widget.conversionRate}');
     customTheme = AppTheme.customTheme;
     theme = AppTheme.theme;
     controller = FxControllerStore.put(SearchController(this));
@@ -73,6 +77,9 @@ class _SearchPlaceState extends State<SearchPlace>
     controller.searchbtn(
       // controller.locationTE.text
       _selectedCountry!,
+      widget.isocode,
+      widget.conversionRate,
+
       // controller.allattractionList.first
     );
     setState(() {
@@ -119,7 +126,6 @@ class _SearchPlaceState extends State<SearchPlace>
       rethrow;
     }
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -545,7 +551,7 @@ class _SearchPlaceState extends State<SearchPlace>
         child: ElevatedButton(
           style: ElevatedButton.styleFrom(
               padding: const EdgeInsets.fromLTRB(4, 10, 4, 10),
-              primary: Colors.white,
+              backgroundColor: Colors.white,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(40))),
           child: _btnText == "" ? _loadingBox() : _btnTextWidget(),

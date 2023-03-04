@@ -216,67 +216,124 @@ class _ActivityScreenState extends State<ActivityScreen>
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            FxSpacing.height(20),
-            Row(
-              children: [
-                Expanded(child: Container()),
-                InkWell(
-                  // onTap: () {
-                  //   clickedExcursion = !clickedExcursion;
-                  //   controller.updateTours(cart);
+            // FxSpacing.height(20),
+            // Row(
+            //   children: [
+            //     Expanded(child: Container()),
+            //     GestureDetector(
+            //       onTap: () {
+            //         clickedExcursion = !clickedExcursion;
 
-                  //   setState(() {});
-                  //   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                  //       content: !clickedExcursion
-                  //           ? const Text("Added this Excursion!!")
-                  //           : const Text("Removed this Excursion!!")));
-                  //   // Navigator.pop(context);
-                  // },
-                  onTap: () {
-                    clickedExcursion = !clickedExcursion;
-                    // if (controller.dateTE.text.isEmpty) {
-                    //   ScaffoldMessenger.of(context).showSnackBar(
-                    //       const SnackBar(content: Text("Select Your Date")));
-                    // } else {
-                    //   controller.updateTours(cart);
-                    // }
+            //         setState(() {});
+            //         if (controllerTE[i].text.isEmpty) {
+            //           ScaffoldMessenger.of(context).showSnackBar(
+            //               const SnackBar(content: Text("Select Your Date")));
+            //         } else {
+            //           controller.updateTours(widget.excursions[i]);
+            //           log('Count:${widget.excursions[i].adultCount}${widget.excursions[i].childCount}${widget.excursions[i].infantCount}');
 
-                    setState(() {});
-                    if (controllerTE[i].text.isEmpty) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text("Select Your Date")));
-                    } else {
-                      controller.updateTours(widget.excursions[i]);
-                      log('Count:${widget.excursions[i].adultCount}${widget.excursions[i].childCount}${widget.excursions[i].infantCount}');
+            //           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            //               content: !clickedExcursion
+            //                   ? const Text("Added this Excursion!!")
+            //                   : const Text("Removed this Excursion!!")));
+            //         }
 
-                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                          content: !clickedExcursion
-                              ? const Text("Added this Excursion!!")
-                              : const Text("Removed this Excursion!!")));
-                    }
+            //         // Navigator.pop(context);
+            //       },
+            //       child: AnimatedContainer(
+            //         // height: 40 ?? 28,
+            //         // width: 40 ?? 28,
+            //         height: 20,
+            //         width: 20,
+            //         duration: const Duration(milliseconds: 500),
+            //         curve: Curves.fastLinearToSlowEaseIn,
+            //         decoration: BoxDecoration(
+            //             borderRadius: BorderRadius.circular(2.0),
+            //             color: controller.selectedtour
+            //                     .contains(widget.excursions[i])
+            //                 ? Colors.indigo
+            //                 : Colors.white,
+            //             border: Border.all(
+            //               color: controller.selectedtour
+            //                       .contains(widget.excursions[i])
+            //                   ? Colors.transparent
+            //                   : Colors.black,
+            //             )),
+            //         child:
+            //             !controller.selectedtour.contains(widget.excursions[i])
+            //                 ? null
+            //                 : Icon(
+            //                     FeatherIcons.check,
+            //                     color: Colors.white.withAlpha(200),
+            //                     size: 20,
+            //                   ),
+            //       ),
+            //     ),
 
-                    // Navigator.pop(context);
-                  },
-                  child: FxContainer.bordered(
-                    paddingAll: 4,
-                    color: theme.colorScheme.onPrimary,
-                    borderColor: Colors.black,
-                    child:
-                        !controller.selectedtour.contains(widget.excursions[i])
-                            ? Icon(
-                                FeatherIcons.plus,
-                                color: Colors.indigo.withAlpha(200),
-                                size: 12,
-                              )
-                            : Icon(
-                                FeatherIcons.minus,
-                                color: Colors.red.withAlpha(200),
-                                size: 12,
-                              ),
-                  ),
-                ),
-              ],
-            ),
+            //     //todo
+            //     // Checkbox(
+            //     //   checkColor: Colors.white,
+            //     //   value: controller.selectedtour.contains(widget.excursions[i]),
+            //     //   onChanged: (bool? value) {
+            //     //     setState(() {
+            //     //       clickedExcursion = value!;
+            //     //     });
+            //     //     if (controllerTE[i].text.isEmpty) {
+            //     //       ScaffoldMessenger.of(context).showSnackBar(
+            //     //           const SnackBar(content: Text("Select Your Date")));
+            //     //     } else {
+            //     //       controller.updateTours(widget.excursions[i]);
+            //     //       log('Count:${widget.excursions[i].adultCount}${widget.excursions[i].childCount}${widget.excursions[i].infantCount}');
+
+            //     //       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            //     //           content: !clickedExcursion
+            //     //               ? const Text("Added this Excursion!!")
+            //     //               : const Text("Removed this Excursion!!")));
+            //     //     }
+            //     //   },
+            //     // ),
+
+            //     //plus
+            //     // InkWell(
+            //     //   onTap: () {
+            //     //     clickedExcursion = !clickedExcursion;
+
+            //     //     setState(() {});
+            //     //     if (controllerTE[i].text.isEmpty) {
+            //     //       ScaffoldMessenger.of(context).showSnackBar(
+            //     //           const SnackBar(content: Text("Select Your Date")));
+            //     //     } else {
+            //     //       controller.updateTours(widget.excursions[i]);
+            //     //       log('Count:${widget.excursions[i].adultCount}${widget.excursions[i].childCount}${widget.excursions[i].infantCount}');
+
+            //     //       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            //     //           content: !clickedExcursion
+            //     //               ? const Text("Added this Excursion!!")
+            //     //               : const Text("Removed this Excursion!!")));
+            //     //     }
+
+            //     //     // Navigator.pop(context);
+            //     //   },
+            //     //   child: FxContainer.bordered(
+            //     //     paddingAll: 4,
+            //     //     color: theme.colorScheme.onPrimary,
+            //     //     borderColor: Colors.black,
+            //     //     child:
+            //     //         !controller.selectedtour.contains(widget.excursions[i])
+            //     //             ? Icon(
+            //     //                 FeatherIcons.plus,
+            //     //                 color: Colors.indigo.withAlpha(200),
+            //     //                 size: 12,
+            //     //               )
+            //     //             : Icon(
+            //     //                 FeatherIcons.minus,
+            //     //                 color: Colors.red.withAlpha(200),
+            //     //                 size: 12,
+            //     //               ),
+            //     //   ),
+            //     // ),
+            //   ],
+            // ),
             FxSpacing.height(10),
             Container(
               decoration: BoxDecoration(
@@ -290,56 +347,293 @@ class _ActivityScreenState extends State<ActivityScreen>
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     // FxSpacing.height(10),
-                    FxText.bodyLarge(
-                      'Tour Options',
-                      muted: true,
-                      fontWeight: 900,
-                    ),
-                    FxSpacing.height(20),
+                    // FxText.bodyLarge(
+                    //   widget.excursions[i].name ?? '',
+                    //   muted: true,
+                    //   fontWeight: 900,
+                    // ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        FxText.bodyMedium(
-                          'Tour : ',
-                          fontWeight: 600,
-                        ),
-                        FxSpacing.width(30),
                         Expanded(
                           child: Align(
-                            alignment: Alignment.centerRight,
-                            child: FxText.bodyMedium(
+                            alignment: Alignment.centerLeft,
+                            child: FxText.bodyLarge(
                               widget.excursions[i].name ?? '',
-                              fontWeight: 700,
+                              muted: true,
+                              fontWeight: 900,
                             ),
+                          ),
+                        ),
+                        FxSpacing.width(30),
+                        GestureDetector(
+                          onTap: () {
+                            clickedExcursion = !clickedExcursion;
+
+                            setState(() {});
+                            if (controllerTE[i].text.isEmpty) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                      content: Text("Select Your Date")));
+                            } else {
+                              controller.updateTours(widget.excursions[i]);
+                              log('Count:${widget.excursions[i].adultCount}${widget.excursions[i].childCount}${widget.excursions[i].infantCount}');
+
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                      content: !clickedExcursion
+                                          ? const Text("Added this Excursion!!")
+                                          : const Text(
+                                              "Removed this Excursion!!")));
+                            }
+
+                            // Navigator.pop(context);
+                          },
+                          child: AnimatedContainer(
+                            // height: 40 ?? 28,
+                            // width: 40 ?? 28,
+                            height: 20,
+                            width: 20,
+                            duration: const Duration(milliseconds: 500),
+                            curve: Curves.fastLinearToSlowEaseIn,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(2.0),
+                                color: controller.selectedtour
+                                        .contains(widget.excursions[i])
+                                    ? Colors.indigo
+                                    : Colors.white,
+                                border: Border.all(
+                                  color: controller.selectedtour
+                                          .contains(widget.excursions[i])
+                                      ? Colors.transparent
+                                      : Colors.black,
+                                )),
+                            child: !controller.selectedtour
+                                    .contains(widget.excursions[i])
+                                ? null
+                                : Icon(
+                                    FeatherIcons.check,
+                                    color: Colors.white.withAlpha(200),
+                                    size: 20,
+                                  ),
                           ),
                         ),
                       ],
                     ),
-                    FxSpacing.height(4),
+                    FxSpacing.height(20),
+                    // Row(
+                    //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    //   children: [
+                    //     FxText.bodyMedium(
+                    //       'Tour : ',
+                    //       fontWeight: 600,
+                    //     ),
+                    //     FxSpacing.width(30),
+                    //     Expanded(
+                    //       child: Align(
+                    //         alignment: Alignment.centerRight,
+                    //         child: FxText.bodyMedium(
+                    //           widget.excursions[i].name ?? '',
+                    //           fontWeight: 700,
+                    //         ),
+                    //       ),
+                    //     ),
+                    //   ],
+                    // ),
+                    // FxSpacing.height(4),
+                    // Row(
+                    //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    //   children: [
+                    //     FxText.bodyMedium(
+                    //       'Transfer',
+                    //       fontWeight: 600,
+                    //     ),
+                    //     // FxText.bodyMedium(
+                    //     //   // '\$' + controller.order.precise,
+                    //     //   'without',
+                    //     //   fontWeight: 700,
+                    //     // ),
+                    //     Expanded(child: Container()),
+                    //     GestureDetector(
+                    //       onTap: () {
+                    //         log('transfer clicked');
+                    //         log(controller.selectedtransfer == 'private'
+                    //                 ? widget.excursions[i].privateTransferPrice
+                    //                     .toString()
+                    //                 : widget.excursions[i].sharedTransferPrice
+                    //                     .toString()
+                    //             // controller.selectedtransfer=='Without'?0:controller.selectedtransfer=='private'?widget.excursions[i].privateTransferPrice:controller.selectedtransfer=='shared'?widget.excursions[i].sharedTransferPrice:0
+                    //             // widget.excursions[i].privateTransferPrice.toString()
+                    //             );
+                    //         setState(() {});
+                    //       },
+                    //       child: Container(
+                    //         decoration: BoxDecoration(
+                    //             color: theme.cardTheme.color,
+                    //             // color: const Color(0xff1529e8),
+                    //             borderRadius: BorderRadius.circular(8)),
+                    //         height: 50,
+                    //         width: 150,
+                    //         child: DropdownButtonHideUnderline(
+                    //           child: DropdownButton2(
+                    //             isExpanded: true,
+                    //             hint: Row(
+                    //               children: [
+                    //                 Expanded(
+                    //                   child: FxText.labelLarge(
+                    //                     // "Code",
+                    //                     controller.TransferCodes[0],
+                    //                     // controller.selectedtransfer![0],
+                    //                     fontWeight: 600,
+                    //                     color: Colors.black,
+                    //                     // color: theme.colorScheme.onPrimary,
+                    //                     letterSpacing: 0.4,
+                    //                   ),
+                    //                 ),
+                    //               ],
+                    //             ),
+                    //             value: widget.excursions[i].isSharing
+                    //                 ? controller.TransferCodes[2]
+                    //                 : widget.excursions[i].isPrivate
+                    //                     ? controller.TransferCodes[1]
+                    //                     : controller.TransferCodes[0],
+
+                    //             // items: widget.excursions.first
+                    //             //             .isSharedTransferAvailable ==
+                    //             //         false
+                    //             //     ? controller.SharedwithoutCodes.map(
+                    //             //         (String value) {
+                    //             //         return DropdownMenuItem<String>(
+                    //             //             value: value,
+                    //             //             child: Center(
+                    //             //               child: Text(
+                    //             //                 value,
+                    //             //                 style: FxTextStyle.bodyMedium(),
+                    //             //               ),
+                    //             //             ));
+                    //             //       }).toList()
+                    //             //     : widget.excursions.first
+                    //             //                 .isPrivateTransferAvailable ==
+                    //             //             false
+                    //             //         ? controller.withoutPrivateCodes
+                    //             //             .map((String value) {
+                    //             //             return DropdownMenuItem<String>(
+                    //             //                 value: value,
+                    //             //                 child: Center(
+                    //             //                   child: Text(
+                    //             //                     value,
+                    //             //                     style: FxTextStyle
+                    //             //                         .bodyMedium(),
+                    //             //                   ),
+                    //             //                 ));
+                    //             //           }).toList()
+                    //             //         : widget.excursions.first
+                    //             //                         .isPrivateTransferAvailable ==
+                    //             //                     false ||
+                    //             //                 widget.excursions.first
+                    //             //                         .isSharedTransferAvailable ==
+                    //             //                     false
+                    //             //             ? controller.withoutcodes
+                    //             //                 .map((String value) {
+                    //             //                 return DropdownMenuItem<String>(
+                    //             //                     value: value,
+                    //             //                     child: Center(
+                    //             //                       child: Text(
+                    //             //                         value,
+                    //             //                         style: FxTextStyle
+                    //             //                             .bodyMedium(),
+                    //             //                       ),
+                    //             //                     ));
+                    //             //               }).toList()
+                    //             //             : controller.TransferCodes.map(
+                    //             //                 (String value) {
+                    //             //                 return DropdownMenuItem<String>(
+                    //             //                     value: value,
+                    //             //                     child: Center(
+                    //             //                       child: Text(
+                    //             //                         value,
+                    //             //                         style: FxTextStyle
+                    //             //                             .bodyMedium(),
+                    //             //                       ),
+                    //             //                     ));
+                    //             //               }).toList(),
+
+                    //             items: controller.TransferCodes.map(
+                    //                 (String value) {
+                    //               return DropdownMenuItem<String>(
+                    //                   value: value,
+                    //                   child: Center(
+                    //                     child: Text(
+                    //                       value,
+                    //                       style: FxTextStyle.bodyMedium(),
+                    //                     ),
+                    //                   ));
+                    //             }).toList(),
+                    //             onChanged: (value) {
+                    //               setState(() {
+                    //                 controller.selectedtransfer =
+                    //                     value.toString();
+                    //               });
+                    //               controller.addisPrivateORsharing(
+                    //                   widget.excursions[i],
+                    //                   isPrivate: controller.selectedtransfer ==
+                    //                       controller.TransferCodes[1],
+                    //                   isSharing: controller.selectedtransfer ==
+                    //                       controller.TransferCodes[2]);
+                    //             },
+
+                    //             icon: const Icon(Icons.arrow_drop_down),
+                    //             iconSize: 20,
+                    //             iconEnabledColor: Colors.black,
+                    //             iconDisabledColor: Colors.black,
+                    //             buttonHeight: 30,
+                    //             buttonWidth: 200,
+                    //             buttonPadding: const EdgeInsets.only(
+                    //                 left: 14, right: 14, top: 4, bottom: 4),
+                    //             dropdownDecoration: BoxDecoration(
+                    //               borderRadius: BorderRadius.circular(4),
+                    //               color: Colors.white,
+                    //             ),
+                    //             buttonDecoration: BoxDecoration(
+                    //               borderRadius: BorderRadius.circular(10),
+                    //               // border: Border.all(
+                    //               //     color: AppColor
+                    //               //         .Secondary1,
+                    //               //     width: 1),
+                    //               // color: const Color(0xff2C2138),
+                    //               color: theme.cardTheme.color,
+                    //             ),
+
+                    //             itemHeight: 40,
+
+                    //             itemPadding:
+                    //                 const EdgeInsets.only(left: 14, right: 14),
+                    //             dropdownMaxHeight: 200,
+                    //             dropdownPadding: null,
+
+                    //             scrollbarRadius: const Radius.circular(40),
+                    //             scrollbarThickness: 2,
+                    //             scrollbarAlwaysShow: true,
+                    //             offset: const Offset(0, 0),
+                    //           ),
+                    //         ),
+                    //       ),
+                    //     ),
+                    //   ],
+                    // ),
+
+                    //ttransfer
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        FxText.bodyMedium(
-                          'Transfer',
-                          fontWeight: 600,
-                        ),
-                        // FxText.bodyMedium(
-                        //   // '\$' + controller.order.precise,
-                        //   'without',
-                        //   fontWeight: 700,
-                        // ),
-                        Expanded(child: Container()),
                         GestureDetector(
                           onTap: () {
                             log('transfer clicked');
                             log(controller.selectedtransfer == 'private'
-                                    ? widget.excursions[i].privateTransferPrice
-                                        .toString()
-                                    : widget.excursions[i].sharedTransferPrice
-                                        .toString()
-                                // controller.selectedtransfer=='Without'?0:controller.selectedtransfer=='private'?widget.excursions[i].privateTransferPrice:controller.selectedtransfer=='shared'?widget.excursions[i].sharedTransferPrice:0
-                                // widget.excursions[i].privateTransferPrice.toString()
-                                );
+                                ? widget.excursions[i].privateTransferPrice
+                                    .toString()
+                                : widget.excursions[i].sharedTransferPrice
+                                    .toString());
                             setState(() {});
                           },
                           child: Container(
@@ -372,67 +666,6 @@ class _ActivityScreenState extends State<ActivityScreen>
                                     : widget.excursions[i].isPrivate
                                         ? controller.TransferCodes[1]
                                         : controller.TransferCodes[0],
-
-                                // items: widget.excursions.first
-                                //             .isSharedTransferAvailable ==
-                                //         false
-                                //     ? controller.SharedwithoutCodes.map(
-                                //         (String value) {
-                                //         return DropdownMenuItem<String>(
-                                //             value: value,
-                                //             child: Center(
-                                //               child: Text(
-                                //                 value,
-                                //                 style: FxTextStyle.bodyMedium(),
-                                //               ),
-                                //             ));
-                                //       }).toList()
-                                //     : widget.excursions.first
-                                //                 .isPrivateTransferAvailable ==
-                                //             false
-                                //         ? controller.withoutPrivateCodes
-                                //             .map((String value) {
-                                //             return DropdownMenuItem<String>(
-                                //                 value: value,
-                                //                 child: Center(
-                                //                   child: Text(
-                                //                     value,
-                                //                     style: FxTextStyle
-                                //                         .bodyMedium(),
-                                //                   ),
-                                //                 ));
-                                //           }).toList()
-                                //         : widget.excursions.first
-                                //                         .isPrivateTransferAvailable ==
-                                //                     false ||
-                                //                 widget.excursions.first
-                                //                         .isSharedTransferAvailable ==
-                                //                     false
-                                //             ? controller.withoutcodes
-                                //                 .map((String value) {
-                                //                 return DropdownMenuItem<String>(
-                                //                     value: value,
-                                //                     child: Center(
-                                //                       child: Text(
-                                //                         value,
-                                //                         style: FxTextStyle
-                                //                             .bodyMedium(),
-                                //                       ),
-                                //                     ));
-                                //               }).toList()
-                                //             : controller.TransferCodes.map(
-                                //                 (String value) {
-                                //                 return DropdownMenuItem<String>(
-                                //                     value: value,
-                                //                     child: Center(
-                                //                       child: Text(
-                                //                         value,
-                                //                         style: FxTextStyle
-                                //                             .bodyMedium(),
-                                //                       ),
-                                //                     ));
-                                //               }).toList(),
-
                                 items: controller.TransferCodes.map(
                                     (String value) {
                                   return DropdownMenuItem<String>(
@@ -456,7 +689,6 @@ class _ActivityScreenState extends State<ActivityScreen>
                                       isSharing: controller.selectedtransfer ==
                                           controller.TransferCodes[2]);
                                 },
-
                                 icon: const Icon(Icons.arrow_drop_down),
                                 iconSize: 20,
                                 iconEnabledColor: Colors.black,
@@ -471,27 +703,89 @@ class _ActivityScreenState extends State<ActivityScreen>
                                 ),
                                 buttonDecoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(10),
-                                  // border: Border.all(
-                                  //     color: AppColor
-                                  //         .Secondary1,
-                                  //     width: 1),
-                                  // color: const Color(0xff2C2138),
                                   color: theme.cardTheme.color,
                                 ),
-
                                 itemHeight: 40,
-
                                 itemPadding:
                                     const EdgeInsets.only(left: 14, right: 14),
                                 dropdownMaxHeight: 200,
                                 dropdownPadding: null,
-
                                 scrollbarRadius: const Radius.circular(40),
                                 scrollbarThickness: 2,
                                 scrollbarAlwaysShow: true,
                                 offset: const Offset(0, 0),
                               ),
                             ),
+                          ),
+                        ),
+                        Container(
+                          decoration: BoxDecoration(
+                              color: theme.cardTheme.color,
+                              // color: const Color(0xff1529e8),
+                              borderRadius: BorderRadius.circular(8)),
+                          height: 50,
+                          width: 150,
+                          child: TextFormField(
+                            style: FxTextStyle.bodyMedium(),
+                            // controller: controller.dateTE,
+                            // controller: controllers[i],
+                            controller: controllerTE[i],
+                            readOnly:
+                                true, //set it true, so that user will not able to edit text
+
+                            onTap: () async {
+                              DateTime? pickedDate = await showDatePicker(
+                                  context: context,
+                                  initialDate: DateTime.now(),
+                                  firstDate: DateTime(
+                                      1900), //DateTime.now() - not to allow to choose before today.
+                                  lastDate: DateTime(2101));
+
+                              if (pickedDate != null) {
+                                print(
+                                    pickedDate); //pickedDate output format => 2021-03-10 00:00:00.000
+                                String formattedDate =
+                                    DateFormat('yyyy-MM-dd').format(pickedDate);
+                                print(formattedDate);
+                                // dateTE.text = formattedDate;
+                                controllerTE[i].text = formattedDate;
+                                widget.excursions[i].selectedDate =
+                                    formattedDate;
+
+                                // setState(() {
+                                //   dateinput.text = formattedDate; //set output date to TextField value.
+                                // });
+                              } else {
+                                print("Date is not selected");
+                              }
+                            },
+                            decoration: InputDecoration(
+                                floatingLabelBehavior:
+                                    FloatingLabelBehavior.never,
+                                filled: true,
+                                isDense: true,
+                                fillColor: theme.cardTheme.color,
+                                // suffixIcon: Icon(
+                                //   FeatherIcons.calendar,
+                                //   color: theme.colorScheme.onBackground,
+                                // ),
+                                hintText: "yyyy-mm-dd",
+                                border: InputBorder.none,
+                                enabledBorder: InputBorder.none,
+                                focusedBorder: InputBorder.none,
+                                // enabledBorder: outlineInputBorder,
+                                // focusedBorder: outlineInputBorder,
+                                // border: outlineInputBorder,
+                                contentPadding: FxSpacing.all(16),
+                                hintStyle: const TextStyle(
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.black,
+                                  letterSpacing: 0.4,
+                                ),
+                                // hintStyle: FxTextStyle.bodyMedium(),
+                                isCollapsed: true),
+                            autofocus: false,
+                            keyboardType: TextInputType.datetime,
                           ),
                         ),
                       ],
@@ -697,7 +991,10 @@ class _ActivityScreenState extends State<ActivityScreen>
         ),
       ));
     }
-    return Column(
+    return ListView(
+      physics: const AlwaysScrollableScrollPhysics(),
+      // padding: FxSpacing.nTop(20),
+      padding: const EdgeInsets.only(top: 20, right: 20, left: 20, bottom: 140),
       children: list,
     );
   }
@@ -943,77 +1240,126 @@ class _ActivityScreenState extends State<ActivityScreen>
           elevation: 0,
           automaticallyImplyLeading: false,
           title: FxText.titleMedium(
-            'select Your Tour',
+            'Tour Options',
             fontWeight: 700,
           ),
           centerTitle: true,
         ),
         backgroundColor: const Color(0xfff5f5f5),
-        // bottomNavigationBar: Padding(
-        //   padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 15),
-        //   child: FxButton.block(
-        //     onPressed: () {
-        //       // controller.bookNow();
-        //       // cartController.carts.add(Cart());
-        //     },
-        //     backgroundColor: const Color(0xff1529e8),
-        //     // backgroundColor: customTheme.estatePrimary,
-        //     borderRadiusAll: 12,
-
-        //     elevation: 0,
-        //     child: FxText.bodyMedium(
-        //       'Add to Cart',
-        //       color: Colors.white,
-        //       // color: customTheme.estateOnPrimary,
-        //       fontWeight: 700,
-        //     ),
-        //   ),
-        // ),
-        body: ListView(
-          padding: FxSpacing.nTop(20),
+        body: Stack(
           children: [
-            //todo
-            // _billingWidget(),
             _buildCartList(),
-            FxSpacing.height(20),
-            _buildSelect1(),
-            FadeTransition(
-              opacity: controller.fadeAnimation,
-              child: FxButton.block(
-                  onPressed: () {
-                    controller.goToCheckout();
-                  },
-                  backgroundColor: const Color(0xff1529e8),
-                  // backgroundColor: theme.colorScheme.primary,
-                  elevation: 0,
-                  borderRadiusAll: 4,
-                  child: Row(
-                    children: [
-                      SlideTransition(
-                        position: controller.animation,
-                        child: Image(
-                          height: 22,
-                          width: 22,
-                          color: theme.colorScheme.onPrimary,
-                          image: const AssetImage(
-                              'assets/images/apps/shopping2/icons/clear_cart_outline.png'),
+            // FxSpacing.height(20),
+            Positioned(
+              bottom: 0,
+              left: 0,
+              right: 0,
+              child: Container(
+                padding: FxSpacing.xy(12, 8),
+                child: PhysicalModel(
+                  color: theme.cardTheme.color!.withAlpha(200),
+                  elevation: 12,
+                  borderRadius: const BorderRadius.all(Radius.circular(32)),
+                  shadowColor: theme.colorScheme.onBackground.withAlpha(12),
+                  shape: BoxShape.rectangle,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: theme.cardTheme.color!.withAlpha(200),
+                      borderRadius: const BorderRadius.all(Radius.circular(32)),
+                    ),
+                    padding: FxSpacing.xy(16, 12),
+                    child: Column(
+                      children: <Widget>[
+                        _buildSelect1(),
+                        FadeTransition(
+                          opacity: controller.fadeAnimation,
+                          child: FxButton.block(
+                              onPressed: () {
+                                controller.goToCheckout();
+                              },
+                              backgroundColor: const Color(0xff1529e8),
+                              // backgroundColor: theme.colorScheme.primary,
+                              elevation: 0,
+                              borderRadiusAll: 4,
+                              child: Row(
+                                children: [
+                                  SlideTransition(
+                                    position: controller.animation,
+                                    child: Image(
+                                      height: 22,
+                                      width: 22,
+                                      color: theme.colorScheme.onPrimary,
+                                      image: const AssetImage(
+                                          'assets/images/apps/shopping2/icons/clear_cart_outline.png'),
+                                    ),
+                                  ),
+                                  Expanded(
+                                    child: Center(
+                                      child: FxText.bodyMedium(
+                                        'Checkout',
+                                        fontWeight: 600,
+                                        color: theme.colorScheme.onPrimary,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              )),
                         ),
-                      ),
-                      Expanded(
-                        child: Center(
-                          child: FxText.bodyMedium(
-                            'Checkout',
-                            fontWeight: 600,
-                            color: theme.colorScheme.onPrimary,
-                          ),
-                        ),
-                      ),
-                    ],
-                  )),
-            ),
-            FxSpacing.height(80),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            )
           ],
         ),
+
+        //todo
+        // body: ListView(
+        //   padding: FxSpacing.nTop(20),
+        //   children: [
+        //     //todo
+        //     // _billingWidget(),
+        //     _buildCartList(),
+        //     FxSpacing.height(20),
+        //     _buildSelect1(),
+        //     FadeTransition(
+        //       opacity: controller.fadeAnimation,
+        //       child: FxButton.block(
+        //           onPressed: () {
+        //             controller.goToCheckout();
+        //           },
+        //           backgroundColor: const Color(0xff1529e8),
+        //           // backgroundColor: theme.colorScheme.primary,
+        //           elevation: 0,
+        //           borderRadiusAll: 4,
+        //           child: Row(
+        //             children: [
+        //               SlideTransition(
+        //                 position: controller.animation,
+        //                 child: Image(
+        //                   height: 22,
+        //                   width: 22,
+        //                   color: theme.colorScheme.onPrimary,
+        //                   image: const AssetImage(
+        //                       'assets/images/apps/shopping2/icons/clear_cart_outline.png'),
+        //                 ),
+        //               ),
+        //               Expanded(
+        //                 child: Center(
+        //                   child: FxText.bodyMedium(
+        //                     'Checkout',
+        //                     fontWeight: 600,
+        //                     color: theme.colorScheme.onPrimary,
+        //                   ),
+        //                 ),
+        //               ),
+        //             ],
+        //           )),
+        //     ),
+        //     FxSpacing.height(80),
+        //   ],
+        // ),
       );
     }
   }

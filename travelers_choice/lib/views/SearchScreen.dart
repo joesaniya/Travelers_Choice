@@ -19,11 +19,12 @@ class SearchScreen extends StatefulWidget {
   final Destination place;
   // List<Datum> searchdata;
   // final BuildContext rootContext;
-  const SearchScreen({
-    super.key,
-    required this.place,
-    // required this.searchdata
-  });
+  String? currencySymbol;
+  double? conversionRate;
+  SearchScreen(
+      {super.key, required this.place, this.currencySymbol, this.conversionRate
+      // required this.searchdata
+      });
 
   @override
   State<SearchScreen> createState() => _SearchScreenState();
@@ -144,6 +145,8 @@ class _SearchScreenState extends State<SearchScreen>
   @override
   void initState() {
     super.initState();
+    log('Currency SymbolSearch:${widget.currencySymbol}');
+    log('RateSearch:${widget.conversionRate}');
     controller = FxControllerStore.put(HomeSearchController(this));
     // log('${widget.place.name}Place Search1');
     temp = [];
@@ -587,7 +590,7 @@ class _SearchScreenState extends State<SearchScreen>
             child: InkWell(
               onTap: () {
                 log('clicked');
-                controller.goToSingleProduct(product);
+                controller.goToSingleProduct(product, widget.currencySymbol, widget.conversionRate);
               },
               child: Container(
                 // onTap: () {

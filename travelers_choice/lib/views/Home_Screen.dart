@@ -997,7 +997,11 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                 //   ],
                 // ),
 
-                _tabbed == '1' ? const SearchPlace() : const SearchVisa(),
+                _tabbed == '1'
+                    ? SearchPlace(
+                        isocode: selectedCountry!.isocode,
+                        conversionRate: selectedCountry!.conversionRate)
+                    : const SearchVisa(),
 
                 // GestureDetector(
                 //   onTap: () {},
