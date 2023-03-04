@@ -414,7 +414,7 @@ class ActivityController extends FxController {
   }
 
   void fetchloader() async {
-    await Future.delayed(const Duration(seconds: 4));
+    await Future.delayed(const Duration(seconds: 1));
 
     uiLoading = false;
     log('fetchloader');

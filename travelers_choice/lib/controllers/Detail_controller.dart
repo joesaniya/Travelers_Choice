@@ -359,7 +359,9 @@ Country Code => $countryCode
     animationController.forward();
     await Future.delayed(const Duration(seconds: 1));
     Navigator.of(context, rootNavigator: true).push(PageRouteBuilder(
-        transitionDuration: const Duration(milliseconds: 500),
+        transitionDuration: const Duration(microseconds: 0
+            // milliseconds: 500
+            ),
         transitionsBuilder: (
           BuildContext context,
           Animation<double> animation,
