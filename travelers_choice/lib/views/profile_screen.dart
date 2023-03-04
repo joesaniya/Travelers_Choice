@@ -3,11 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutx/flutx.dart';
 import 'package:hotel_travel/views/all_bookings.dart';
-import 'package:hotel_travel/views/bottomSheet/add_money.dart';
-import 'package:hotel_travel/views/bottomSheet/withdraw_money.dart';
 import 'package:hotel_travel/views/update_Password.dart';
-import 'package:line_icons/line_icons.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../controllers/profile_controller.dart';
@@ -166,115 +162,117 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ),
                 ),
                 FxSpacing.height(24),
-                FxContainer.bordered(
-                  // margin: FxSpacing.fromLTRB(24, 24, 24, 0),
-                  padding: FxSpacing.all(24),
-                  color: Colors.white,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Column(
-                        children: [
-                          FxText.bodySmall("My balance".toUpperCase(),
-                              fontSize: 12, fontWeight: 600, xMuted: true),
-                          // FxText.bodyLarge(
-                          //     // "\$ 24",
-                          //     // '24 AED',
-                          //     profileController.balanceamount == null ? 0.0 : 2440,
-                          //     fontWeight: 800),
-                          profileController.balanceamount == null
-                              ? FxText.bodyLarge('0 AED', fontWeight: 800)
-                              : FxText.bodyLarge(
-                                  // 'E',
-                                  '${profileController.balanceamount}AED',
-                                  fontWeight: 800)
-                        ],
-                      ),
-                      Column(
-                        children: [
-                          FxContainer(
-                            onTap: () {
-                              showModalBottomSheet(
-                                context: context,
-                                backgroundColor: Colors.white,
-                                shape: const RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.only(
-                                        topLeft: Radius.circular(20),
-                                        topRight: Radius.circular(20))),
-                                isScrollControlled: true,
-                                builder: (context) {
-                                  return const addMoney();
-                                },
-                              );
-                              // showModalBottomSheet(
-                              //     context: context,
-                              //     builder: (BuildContext buildContext) {
-                              //       return const addMoney();
-                              //     });
-                            },
-                            padding: FxSpacing.fromLTRB(16, 8, 16, 8),
-                            color: theme.colorScheme.primary.withAlpha(28),
-                            borderRadiusAll: 4,
-                            child: Row(
-                              children: [
-                                Icon(
-                                  MdiIcons.plus,
-                                  color: theme.colorScheme.primary,
-                                  size: 20,
-                                ),
-                                Container(
-                                    margin: FxSpacing.left(8),
-                                    child: FxText.bodyMedium("Add Money",
-                                        color: theme.colorScheme.primary,
-                                        fontWeight: 600))
-                              ],
-                            ),
-                          ),
-                          FxSpacing.height(20),
-                          FxContainer(
-                            onTap: () {
-                              // showModalBottomSheet(
-                              //     context: context,
-                              //     builder: (BuildContext buildContext) {
-                              //       return const withdrawMoney();
-                              //     });
-                              showModalBottomSheet(
-                                context: context,
-                                backgroundColor: Colors.white,
-                                shape: const RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.only(
-                                        topLeft: Radius.circular(20),
-                                        topRight: Radius.circular(20))),
-                                isScrollControlled: true,
-                                builder: (context) {
-                                  return const withdrawMoney();
-                                },
-                              );
-                            },
-                            padding: FxSpacing.fromLTRB(21, 8, 21, 8),
-                            color: theme.colorScheme.primary.withAlpha(28),
-                            borderRadiusAll: 4,
-                            child: Row(
-                              children: [
-                                Icon(
-                                  LineIcons.download,
-                                  color: theme.colorScheme.primary,
-                                  size: 20,
-                                ),
-                                Container(
-                                    margin: FxSpacing.left(8),
-                                    child: FxText.bodyMedium("Withdraw",
-                                        color: theme.colorScheme.primary,
-                                        fontWeight: 600))
-                              ],
-                            ),
-                          )
-                        ],
-                      )
-                    ],
-                  ),
-                ),
-                FxSpacing.height(24),
+
+                //wallet
+                // FxContainer.bordered(
+                //   // margin: FxSpacing.fromLTRB(24, 24, 24, 0),
+                //   padding: FxSpacing.all(24),
+                //   color: Colors.white,
+                //   child: Row(
+                //     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                //     children: [
+                //       Column(
+                //         children: [
+                //           FxText.bodySmall("My balance".toUpperCase(),
+                //               fontSize: 12, fontWeight: 600, xMuted: true),
+                //           // FxText.bodyLarge(
+                //           //     // "\$ 24",
+                //           //     // '24 AED',
+                //           //     profileController.balanceamount == null ? 0.0 : 2440,
+                //           //     fontWeight: 800),
+                //           profileController.balanceamount == null
+                //               ? FxText.bodyLarge('0 AED', fontWeight: 800)
+                //               : FxText.bodyLarge(
+                //                   // 'E',
+                //                   '${profileController.balanceamount}AED',
+                //                   fontWeight: 800)
+                //         ],
+                //       ),
+                //       Column(
+                //         children: [
+                //           FxContainer(
+                //             onTap: () {
+                //               showModalBottomSheet(
+                //                 context: context,
+                //                 backgroundColor: Colors.white,
+                //                 shape: const RoundedRectangleBorder(
+                //                     borderRadius: BorderRadius.only(
+                //                         topLeft: Radius.circular(20),
+                //                         topRight: Radius.circular(20))),
+                //                 isScrollControlled: true,
+                //                 builder: (context) {
+                //                   return const addMoney();
+                //                 },
+                //               );
+                //               // showModalBottomSheet(
+                //               //     context: context,
+                //               //     builder: (BuildContext buildContext) {
+                //               //       return const addMoney();
+                //               //     });
+                //             },
+                //             padding: FxSpacing.fromLTRB(16, 8, 16, 8),
+                //             color: theme.colorScheme.primary.withAlpha(28),
+                //             borderRadiusAll: 4,
+                //             child: Row(
+                //               children: [
+                //                 Icon(
+                //                   MdiIcons.plus,
+                //                   color: theme.colorScheme.primary,
+                //                   size: 20,
+                //                 ),
+                //                 Container(
+                //                     margin: FxSpacing.left(8),
+                //                     child: FxText.bodyMedium("Add Money",
+                //                         color: theme.colorScheme.primary,
+                //                         fontWeight: 600))
+                //               ],
+                //             ),
+                //           ),
+                //           FxSpacing.height(20),
+                //           FxContainer(
+                //             onTap: () {
+                //               // showModalBottomSheet(
+                //               //     context: context,
+                //               //     builder: (BuildContext buildContext) {
+                //               //       return const withdrawMoney();
+                //               //     });
+                //               showModalBottomSheet(
+                //                 context: context,
+                //                 backgroundColor: Colors.white,
+                //                 shape: const RoundedRectangleBorder(
+                //                     borderRadius: BorderRadius.only(
+                //                         topLeft: Radius.circular(20),
+                //                         topRight: Radius.circular(20))),
+                //                 isScrollControlled: true,
+                //                 builder: (context) {
+                //                   return const withdrawMoney();
+                //                 },
+                //               );
+                //             },
+                //             padding: FxSpacing.fromLTRB(21, 8, 21, 8),
+                //             color: theme.colorScheme.primary.withAlpha(28),
+                //             borderRadiusAll: 4,
+                //             child: Row(
+                //               children: [
+                //                 Icon(
+                //                   LineIcons.download,
+                //                   color: theme.colorScheme.primary,
+                //                   size: 20,
+                //                 ),
+                //                 Container(
+                //                     margin: FxSpacing.left(8),
+                //                     child: FxText.bodyMedium("Withdraw",
+                //                         color: theme.colorScheme.primary,
+                //                         fontWeight: 600))
+                //               ],
+                //             ),
+                //           )
+                //         ],
+                //       )
+                //     ],
+                //   ),
+                // ),
+                // FxSpacing.height(24),
                 FxContainer(
                     color: Colors.white,
                     child: Column(

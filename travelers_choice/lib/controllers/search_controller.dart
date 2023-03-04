@@ -12,7 +12,7 @@ import '../views/SearchScreen.dart';
 class SearchController extends FxController {
   TickerProvider ticker;
   SearchController(this.ticker);
-  late TextEditingController locationTE, dateTE,visaTE;
+  late TextEditingController locationTE, dateTE, visaTE;
   String? locationplace;
   GlobalKey<FormState> formKey = GlobalKey();
 
@@ -28,7 +28,6 @@ class SearchController extends FxController {
   late Animation<Offset> searchAnimation, locationAnimation, dateAnimation;
   int locationCounter = 0;
   int dateCounter = 0;
-
 
   @override
   void initState() {
@@ -115,11 +114,16 @@ class SearchController extends FxController {
   }
 
   Future<void> searchbtn(
-      // Destination locationplace
-      Destination selectedCountry) async {
+    // Destination locationplace
+    Destination selectedCountry,
+    String code,
+    double Currencyvalue
+  ) async {
     log('search btn');
     locationCounter = 0;
     dateCounter = 0;
+    // log('Currency Symbol:$currencySymbol');
+    // log('Rate:$conversionRate');
 
     if (locationTE.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -148,9 +152,13 @@ class SearchController extends FxController {
                 child: child,
               ),
           pageBuilder: (_, __, ___) => SearchScreen(
-              // place: Destination.fromJson(jsonDecode(selectedCountry)),
-              place: selectedCountry
-              // place:locationTE.text
+                // place: Destination.fromJson(jsonDecode(selectedCountry)),
+                place: selectedCountry,
+                currencySymbol: code,
+                conversionRate: Currencyvalue,
+                // currencySymbol: currencySymbol,
+                // conversionRate: conversionRate
+                // place:locationTE.text
               )));
     }
   }
@@ -171,26 +179,24 @@ class SearchController extends FxController {
     //       .showSnackBar(const SnackBar(content: Text("Please select date")));
     // }
     else {
-
       Navigator.of(context, rootNavigator: true).push(PageRouteBuilder(
           transitionDuration: const Duration(milliseconds: 500),
           transitionsBuilder: (
-              BuildContext context,
-              Animation<double> animation,
-              Animation<double> secondaryAnimation,
-              Widget child,
-              ) =>
+            BuildContext context,
+            Animation<double> animation,
+            Animation<double> secondaryAnimation,
+            Widget child,
+          ) =>
               FadeTransition(
                 opacity: animation,
                 child: child,
               ),
           // pageBuilder: (_, __, ___) =>Container()
           pageBuilder: (_, __, ___) => VisaScreen(
-            // place: Destination.fromJson(jsonDecode(selectedCountry)),
+              // place: Destination.fromJson(jsonDecode(selectedCountry)),
               place: selectedVisaCountry
-            // place:locationTE.text
-          )
-      ));
+              // place:locationTE.text
+              )));
     }
   }
 

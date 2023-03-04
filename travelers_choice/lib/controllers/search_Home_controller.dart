@@ -240,7 +240,7 @@ class HomeSearchController extends FxController {
     }
   }
 
-  void goToSingleProduct(Datum product) {
+  void goToSingleProduct(Datum product, currencySymbol, conversionRate) {
     Navigator.of(context, rootNavigator: true).push(PageRouteBuilder(
         transitionDuration: const Duration(milliseconds: 500),
         transitionsBuilder: (
@@ -255,8 +255,11 @@ class HomeSearchController extends FxController {
             ),
         pageBuilder: (_, __, ___) => DetailScreen(
             product.id,
+
             //  _toggleFavorite, _isMealFavorite,
-            product)));
+            product,
+            currencySymbol: currencySymbol,
+            conversionRate: conversionRate)));
   }
 
   final List<AllattractionModal> _favouriteMeals = [];
