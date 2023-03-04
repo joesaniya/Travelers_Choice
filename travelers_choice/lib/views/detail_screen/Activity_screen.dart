@@ -384,25 +384,26 @@ class _ActivityScreenState extends State<ActivityScreen>
                               clickedExcursion = !clickedExcursion;
 
                               setState(() {});
-                              controller.updateTours(widget.excursions[i]);
-                              controller1.addCart
-                                  ? controller1.cartController.reverse()
-                                  : controller1.cartController.forward();
-                              // if (controllerTE[i].text.isEmpty) {
-                              //   ScaffoldMessenger.of(context).showSnackBar(
-                              //       const SnackBar(
-                              //           content: Text("Select Your Date")));
-                              // } else {
-                              //   controller.updateTours(widget.excursions[i]);
-                              //   log('Count:${widget.excursions[i].adultCount}${widget.excursions[i].childCount}${widget.excursions[i].infantCount}');
+                              // controller.updateTours(widget.excursions[i]);
+                              // controller1.addCart
+                              //     ? controller1.cartController.reverse()
+                              //     : controller1.cartController.forward();
+                              if (controllerTE[i].text.isEmpty) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                        content: Text("Select Your Date")));
+                              } else {
+                                controller.updateTours(widget.excursions[i]);
+                                log('Count:${widget.excursions[i].adultCount}${widget.excursions[i].childCount}${widget.excursions[i].infantCount}');
 
-                              //   ScaffoldMessenger.of(context).showSnackBar(
-                              //       SnackBar(
-                              //           content: !clickedExcursion
-                              //               ? const Text("Added this Excursion!!")
-                              //               : const Text(
-                              //                   "Removed this Excursion!!")));
-                              // }
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                        content: !clickedExcursion
+                                            ? const Text(
+                                                "Added this Excursion!!")
+                                            : const Text(
+                                                "Removed this Excursion!!")));
+                              }
 
                               // Navigator.pop(context);
                             },

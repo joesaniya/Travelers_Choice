@@ -13,6 +13,7 @@ import '../models/razor_response.dart';
 import '../models/shipping_address.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import '../views/booking_success.dart';
 import '../views/payment_cc.dart';
 import 'razor_credentials.dart' as razorCredentials;
 
@@ -392,7 +393,6 @@ class CheckOutController extends FxController {
       if (selectedPayment == 1) {
         log('1');
         createOrderccAvenue(selectedExcursionsDatas);
-        // redirect();
       } else {
         log('2');
         createOrder(selectedExcursionsDatas);
@@ -746,14 +746,10 @@ class CheckOutController extends FxController {
     };
     var res = await http.post(
       Uri.parse(
-          // "api.razorpay.com", "v1/orders"
-          "https://secure.mytravellerschoice.com/api/v1/attractions/orders/create"), //https://api.razorpay.com/v1/orders
-      //https://secure.mytravellerschoice.com/api/v1/attractions/orders/create
-
+          "https://secure.mytravellerschoice.com/api/v1/attractions/orders/create"),
       headers: <String, String>{
         "Content-Type": "application/json",
         "Accept": "application/json"
-        // 'authorization': basicAuth,
       },
       body: jsonEncode(body),
     );
@@ -762,20 +758,32 @@ class CheckOutController extends FxController {
     //todo
 
     if (res.statusCode == 200) {
-      // var jsondata = jsonDecode(res.body);
-      // log('Response:${res.body}');
       log('Response cc:${res.body}');
-      // String htmlToParse = res.body;
-      // print(htmlToParse);
-      // log('Html:$htmlToParse');
-      // initPlatformState();
+
       var paymentdata = res.body;
       log('Payment data:$paymentdata');
-      Navigator.of(context, rootNavigator: true).pushReplacement(
+      Navigator.of(context, rootNavigator: true)
+          .pushReplacement(
         MaterialPageRoute(
           builder: (context) => PaymentCC(paymentdata: paymentdata),
         ),
-      );
+      )
+          .then((value) {
+        log('message');
+        Navigator.of(context, rootNavigator: true).pushReplacement(
+          MaterialPageRoute(
+            builder: (context) => const BookingSuccess(),
+          ),
+        );
+      });
+      //     .whenComplete(() {
+      //   log('complete');
+      //   Navigator.of(context, rootNavigator: true).pushReplacement(
+      //     MaterialPageRoute(
+      //       builder: (context) => const BookingSuccess(),
+      //     ),
+      //   );
+      // });
     } else {
       var jsondata = jsonDecode(res.body);
       log(jsondata['error']);

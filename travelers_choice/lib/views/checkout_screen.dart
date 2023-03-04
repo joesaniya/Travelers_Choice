@@ -1472,10 +1472,10 @@ class _CheckOutScreenState extends State<CheckOutScreen>
               index: 1,
               method: "CCavenue",
               image: 'assets/images/apps/shopping2/icons/cc-avenue.png'),
-          getSinglePayment(
-              index: 2,
-              method: "RazorPay",
-              image: 'assets/images/apps/shopping2/icons/razor_logo.png'),
+          // getSinglePayment(
+          //     index: 2,
+          //     method: "RazorPay",
+          //     image: 'assets/images/apps/shopping2/icons/razor_logo.png'),
 
           //demo
 //           payment(

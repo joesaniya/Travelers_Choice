@@ -93,10 +93,10 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
-
+    getCountryList();
     getAttraction(context);
     getVisa(context);
-    fetchData();
+    // fetchData();
     log('All Data:$allattractionList');
     theme = AppTheme.shoppingTheme;
     theme1 = AppTheme.learningTheme;
