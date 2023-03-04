@@ -6,6 +6,7 @@ import 'package:hotel_travel/models/all_attraction_modal.dart';
 import 'package:http/http.dart' as http;
 
 import '../models/atteraction_model.dart';
+import '../models/order_attraction_modal.dart';
 
 class AttractionService {
 //getattraction
@@ -92,6 +93,8 @@ class AttractionService {
       rethrow;
     }
 
+
+
     // Future<DetailattractionModal?> getdetailAttraction() async {
     //   try {
     //     var response = await http.get(
@@ -113,4 +116,32 @@ class AttractionService {
     //     rethrow;
     //   }
   }
+
+  Future<AllAttractionOrders?> getAttractionOrders(String token) async {
+    try {
+      var response = await http.get(
+        Uri.parse(
+          // 'https://a.walletbot.online/api/v1/attractions/all',
+            'https://secure.mytravellerschoice.com/api/v1/attractions/orders/all'
+          //
+        ),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+      );
+      if (response.statusCode == 200 ) {
+        log(response.body);
+
+        return allAttractionOrdersFromJson(response.body);
+      } else {
+        var jsondata = jsonDecode(response.body);
+        log(jsondata['error']);
+        return null;
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
+
 }
