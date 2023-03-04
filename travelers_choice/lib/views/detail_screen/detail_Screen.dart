@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:ui';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -6,8 +7,11 @@ import 'package:flutter_html/flutter_html.dart';
 import 'package:flutx/flutx.dart';
 import 'package:hotel_travel/controllers/Detail_controller.dart';
 import 'package:hotel_travel/models/all_attraction_modal.dart';
+import 'package:line_icons/line_icons.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../../loading_effect.dart';
 import '../../theme/app_theme.dart';
 import '../full_app.dart';
@@ -43,6 +47,7 @@ class _DetailScreenState extends State<DetailScreen>
 
   // List<DetailattractionModal> detailattraction = <DetailattractionModal>[];
   bool isSelected = false;
+  String stringValue = "No value";
   List<Datum> tempFavouriteList = favouriteList.map((e) => e).toList();
   //map
   late GoogleMapController mapController; //contrller for Google map
@@ -94,10 +99,22 @@ class _DetailScreenState extends State<DetailScreen>
     return markers;
   }
 
+  void launchMap(String? urllocation) async {
+    String? maplink = urllocation;
+    // Uri googleUrl =
+    //     Uri.parse('https://www.google.com/maps/search/?api=1&query=Googleplex');
+    Uri googleUrl = Uri.parse(maplink!);
+    log('Map:$maplink');
+
+    if (await canLaunchUrl(googleUrl)) {
+      await launchUrl(googleUrl, mode: LaunchMode.externalApplication);
+    }
+  }
+
   @override
   void initState() {
     super.initState();
-
+    getAllSavedData();
     favouriteListCheck();
     log('isSelected555');
     controller = FxControllerStore.put(DetailController(
@@ -447,7 +464,7 @@ class _DetailScreenState extends State<DetailScreen>
                                               // size: 20,
                                               // color: const Color(0xff1529e8),
                                             )),
-                                        onTap: () {
+                                        onTap: () async {
                                           bool existing = false;
                                           // controller.isFav
                                           //     ? controller.animationController
@@ -509,6 +526,10 @@ class _DetailScreenState extends State<DetailScreen>
                                           //   //api
                                           //   log('Excursion Id Else:$mealId');
                                           // }
+                                          SharedPreferences prefs =
+                                              await SharedPreferences
+                                                  .getInstance();
+                                          prefs.setBool("youKey", isSelected);
                                           setState(() {
                                             favouriteList;
                                             isSelected = !isSelected;
@@ -647,6 +668,17 @@ class _DetailScreenState extends State<DetailScreen>
                     // mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
                       // Container(
+                      //     height: 300,
+                      //     width: MediaQuery.of(context).size.width,
+                      //     color: Colors.blueGrey,
+                      //     child: const GoogleMap(
+                      //         initialCameraPosition: CameraPosition(
+                      //             target: LatLng(25.229584, 55.3156746),
+                      //             zoom: 15))),
+                      // const SizedBox(
+                      //   height: 30,
+                      // ),
+                      // Container(
                       //   height: 300,
                       //   width: MediaQuery.of(context).size.width,
                       //   color: Colors.white,
@@ -669,6 +701,7 @@ class _DetailScreenState extends State<DetailScreen>
                       //     },
                       //   ),
                       // ),
+
                       //tabbar
                       Container(
                         // height: 60,
@@ -693,8 +726,8 @@ class _DetailScreenState extends State<DetailScreen>
                               text: 'Description',
                             ),
                             Tab(
-                              text: 'Overview',
-                            ),
+                                // text: 'Overview',
+                                text: 'Directions'),
                             Tab(
                               text: 'Highlights',
                             ),
@@ -807,19 +840,22 @@ class _DetailScreenState extends State<DetailScreen>
                           ListView.builder(
                             shrinkWrap: true,
                             padding: EdgeInsets.zero,
-                            // itemCount: controller.detailattraction.first.sections
-                            //     .first.body.length,
                             itemCount: 1,
-                            // itemCount: controller.product.description.length,
                             physics: const NeverScrollableScrollPhysics(),
                             itemBuilder: (context, index) {
-                              return Html(
-                                data: controller.detailattraction!.first
-                                    .sections!.first.body,
-                                style: {
-                                  'p': Style(color: Colors.black),
-                                },
-                              );
+                              // return Html(
+                              //   data: controller.detailattraction!.first
+                              //       .sections!.first.body,
+                              //   style: {
+                              //     'p': Style(color: Colors.black),
+                              //   },
+                              // );
+
+                              //maptodo
+                              return buildBlurredImage(
+                                  controller.detailattraction!.first.mapLink);
+
+                              //to
 
                               // return StepTile(
                               //   // data: widget.data.tutorial[index],
@@ -830,26 +866,20 @@ class _DetailScreenState extends State<DetailScreen>
                           ListView.builder(
                             shrinkWrap: true,
                             padding: EdgeInsets.zero,
-                            // itemCount: controller
-                            //     .detailattraction.first.highlights.length,
                             itemCount: 1,
                             physics: const NeverScrollableScrollPhysics(),
                             itemBuilder: (context, index) {
                               return Html(
                                 data: controller
-                                    .detailattraction!.first.highlights
-                                    .toString(),
+                                    .detailattraction!.first.highlights,
+                                //  controller
+                                //     .detailattraction!.first.highlights
+                                //     .toString(),
                                 style: {
                                   'p': Style(color: Colors.black),
                                   'h4': Style(color: Colors.redAccent)
                                 },
                               );
-                              // return Html(
-                              //   data: ${controller
-                              //     .detailattraction.first.highlights
-                              //     .toString()};,
-                              //   tagsList: Html.tags..addAll(["bird", "flutter"]),
-                              // );
                             },
                           ),
                         ],
@@ -906,4 +936,67 @@ class _DetailScreenState extends State<DetailScreen>
     });
     log('Fav List Check:$isSelected');
   }
+
+  getAllSavedData() async {
+    log('get saved data');
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    bool? value = prefs.getBool("youKey");
+
+    // For first time you get null data so no value
+    // is assigned so it will not assign anything
+    if (value != null) stringValue = value.toString();
+
+    setState(() {});
+  }
+
+  Widget buildBlurredImage(String? locationmapurl) => GestureDetector(
+        onTap: () {
+          log('open map');
+          launchMap(locationmapurl);
+        },
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(24),
+          child: Stack(children: [
+            Image.asset(
+              'assets/images/apps/shopping2/images/location_direction.png',
+              fit: BoxFit.cover,
+            ),
+            Positioned.fill(
+                child: BackdropFilter(
+                    filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+                    child: Container(
+                        color: Colors.black.withOpacity(0.2),
+                        //  color: Colors.white.withOpacity(0.5),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              FxText.titleMedium(
+                                  controller.detailattraction!.first.title![0]
+                                              .toUpperCase() +
+                                          controller
+                                              .detailattraction!.first.title!
+                                              .substring(1)
+                                              .toLowerCase() ??
+                                      '',
+                                  // 'Yas',
+                                  fontWeight: 600,
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                  color: const Color(0xff1529e8).withAlpha(240),
+                                  // color: const Color(0xff16A34A),
+                                  letterSpacing: 0),
+                              const Icon(
+                                LineIcons.shareSquare,
+                                color: Color(0xff16A34A),
+                              )
+                            ],
+                          ),
+                        ))))
+          ]),
+        ),
+      );
 }

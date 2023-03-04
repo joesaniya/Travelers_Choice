@@ -713,19 +713,19 @@ class CheckOutController extends FxController {
       print('Infant Count:${element.infantCount}');
       // var datas=
       Map<String, dynamic> datas = {
-        "activity": element.sId,
-        // "date": "2023-02-28",
-        "date": element.selectedDate,
-        "adultsCount": element.adultCount,
-        "childrenCount": element.childCount,
-        "infantCount": element.infantCount,
-        "transferType": "private"
-        // "activity": "63e6317d20e0e01648630e6a",
-        // "date": "2023-04-5",
-        // "adultsCount": 1,
-        // "childrenCount": 0,
-        // "infantCount": 0,
+        // "activity": element.sId,
+        // // "date": "2023-02-28",
+        // "date": element.selectedDate,
+        // "adultsCount": element.adultCount,
+        // "childrenCount": element.childCount,
+        // "infantCount": element.infantCount,
         // "transferType": "private"
+        "activity": "63e6317d20e0e01648630e6a",
+        "date": "2023-04-5",
+        "adultsCount": 1,
+        "childrenCount": 0,
+        "infantCount": 0,
+        "transferType": "private"
       };
       ActivityList.add(datas);
       print('Data-->$datas');

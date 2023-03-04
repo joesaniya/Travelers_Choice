@@ -42,10 +42,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
         // code that updates state
       });
     });
-
   }
 
-  void initializingData(){
+  void initializingData() {
     SharedPreferences.getInstance().then((sharedPrefValue) {
       setState(() {
         profileController.name =
@@ -62,7 +61,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         //     sharedPrefValue.getDouble(AppConstants.KEY_ACCESS_BALANCE);
 
         profileController.token =
-        sharedPrefValue.getString(AppConstants.KEY_ACCESS_TOKEN)!;
+            sharedPrefValue.getString(AppConstants.KEY_ACCESS_TOKEN)!;
         log(profileController.token!);
         // profileController.balanceamount =
         // sharedPrefValue.getInt(AppConstants.KEY_ACCESS_BALANCE) as double?;
@@ -70,8 +69,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
         log('Balance:${profileController.balanceamount == null ? 0.0 : 2440}');
       });
     });
-
   }
+
   @override
   Widget build(BuildContext context) {
     return FxBuilder<ProfileController>(
@@ -120,6 +119,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 theme.colorScheme.primary.withAlpha(28),
                             child: FxText.bodyLarge(profileController.name![0],
                                 color: theme.colorScheme.primary,
+                                fontSize: 30,
                                 fontWeight: 600),
                           ),
                         ),
@@ -140,13 +140,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             ),
                             FxSpacing.height(8),
                             FxButton.outlined(
-                                onPressed: () async{
-                                 bool result =  await profileController.EditProfile();
-                                 if(result){
-                                   print("resultresultresultresult $result");
+                                onPressed: () async {
+                                  bool result =
+                                      await profileController.EditProfile();
+                                  if (result) {
+                                    print("resultresultresultresult $result");
 
-                                   initializingData();
-                                 }
+                                    initializingData();
+                                  }
                                 },
                                 splashColor:
                                     const Color(0xff1529e8).withAlpha(40),
@@ -362,7 +363,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           ),
                         ),
                         ListTile(
-                          onTap: ()  {
+                          onTap: () {
                             log('update password clicked');
 
                             Navigator.of(context, rootNavigator: true).push(
@@ -380,8 +381,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                           child: child,
                                         ),
                                     pageBuilder: (_, __, ___) =>
-                                         UpdatePasswordScreen(profileController.token)));
-
+                                        UpdatePasswordScreen(
+                                            profileController.token)));
                           },
                           dense: true,
                           contentPadding: FxSpacing.zero,

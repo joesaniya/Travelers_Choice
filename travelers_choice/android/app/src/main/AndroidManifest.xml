@@ -4,6 +4,8 @@
         android:label="hotel_travel"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
+        <meta-data android:name="com.google.android.geo.API_KEY"  
+             android:value="AIzaSyC2eZhJvTpXLaPGkr5Oon6spGvVGHo5jAE"/>
         <activity
             android:name=".MainActivity"
             android:exported="true"
