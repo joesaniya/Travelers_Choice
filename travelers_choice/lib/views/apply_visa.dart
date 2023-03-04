@@ -15,6 +15,7 @@ import 'package:flutx/widgets/dashed_divider/dashed_divider.dart';
 import 'package:flutx/widgets/text/text.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:hotel_travel/models/select_visa_modal.dart';
+import 'package:hotel_travel/views/payment_screen.dart';
 import 'package:im_stepper/stepper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
@@ -2312,7 +2313,7 @@ String userName = "";
           ),
           FxSpacing.height(20),
           payment(
-              "assets/images/apps/shopping2/icons/razor_logo.png", "RazorPay"),
+              "assets/images/apps/shopping2/icons/cc-avenue.png", "CCavenue"),
 
           FxSpacing.height(20),
 
@@ -2329,8 +2330,11 @@ String userName = "";
               //   },
               //
               // );
-              controller.openGateway(visaOrderId!);
+              // controller.openGateway(visaOrderId!);
+              // controller.initPlatformState();
               // setState(() {
+              print(visaOrderId);
+              controller.createVisaOrderccAvenue(visaOrderId!);
               //   controller.currentPage++;
               //   // isFinished1 = true;
               // });
@@ -2351,6 +2355,75 @@ String userName = "";
     );
   }
 
+  // Widget getSinglePayment(
+  //     {int? index, required String image, required String method}) {
+  //   log('method:$method');
+  //   log('index:$index');
+  //   bool isSelected = index == controller.selectedPayment;
+  //
+  //   return FxContainer(
+  //     onTap: () {
+  //       setState(() {
+  //         controller.selectedPayment = index;
+  //       });
+  //     },
+  //     margin: FxSpacing.bottom(16),
+  //     padding: FxSpacing.all(16),
+  //     bordered: !isSelected,
+  //     border: Border.all(
+  //       // color: customTheme.border
+  //         color: Colors.indigo),
+  //     color: isSelected ? Colors.white : Colors.transparent,
+  //     // color: isSelected ? customTheme.card : theme.scaffoldBackgroundColor,
+  //     borderRadiusAll: 8,
+  //     child: Row(
+  //       crossAxisAlignment: CrossAxisAlignment.center,
+  //       children: [
+  //         SizedBox(
+  //           width: 48,
+  //           height: 36,
+  //           child: Image.asset(
+  //             image,
+  //           ),
+  //         ),
+  //         FxSpacing.width(16),
+  //         Expanded(
+  //           child: Column(
+  //             crossAxisAlignment: CrossAxisAlignment.start,
+  //             children: [
+  //               FxText.bodyMedium(method, fontWeight: 600),
+  //               // FxSpacing.height(8),
+  //               // FxText.labelSmall(
+  //               //     "8765  \u2022\u2022\u2022\u2022  \u2022\u2022\u2022\u2022  7983",
+  //               //     muted: true,
+  //               //     letterSpacing: 0)
+  //             ],
+  //           ),
+  //         ),
+  //         // isSelected ? Space.width(16) : Space.width(20),
+  //         isSelected
+  //             ? Container(
+  //           padding: FxSpacing.all(8),
+  //           decoration: BoxDecoration(
+  //               shape: BoxShape.circle,
+  //               color: const Color(0xff1529e8).withAlpha(40)),
+  //           child: const Icon(
+  //             FeatherIcons.check,
+  //             color: Color(0xff1529e8),
+  //             size: 14,
+  //           ),
+  //         )
+  //             : Container(
+  //           height: 26,
+  //           width: 26,
+  //           decoration: BoxDecoration(
+  //               shape: BoxShape.circle,
+  //               border: Border.all(color: const Color(0xff1529e8))),
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
   Widget payment(String image, String title) {
     return FxContainer.bordered(
         paddingAll: 12,

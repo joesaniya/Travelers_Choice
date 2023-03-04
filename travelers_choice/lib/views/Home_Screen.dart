@@ -176,8 +176,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       text = text.replaceAll("_", " ");
 
       List<String> words = text.split(" ");
-      var currencySymbol = selectedCountry!.isocode;
-      var conversionRate = selectedCountry!.conversionRate;
+      // var currencySymbol = selectedCountry!.isocode;
+      // var conversionRate = selectedCountry!.conversionRate;
       for (int i = 0; i < words.length; i++) {
         words[i] =
             words[i][0].toUpperCase() + words[i].substring(1).toLowerCase();
@@ -189,7 +189,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         child: InkWell(
           onTap: () {
             controller.goToSingleProduct(
-                product, currencySymbol, conversionRate);
+                product,
+                // currencySymbol, conversionRate
+            );
           },
           child: Container(
             // onTap: () {
@@ -393,9 +395,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                             Hero(
 // <<<<<<< HEAD
                           tag: "${product.duration}",
-                          child: FxText.labelLarge(
+                          child: FxText.labelLarge("65",
                             // '${controller.currency() ?? '\$'} ${product.activity.adultPrice.toString()}',
-                            " ${(selectedCountry!=null ?  "${((product.activity.lowPrice * selectedCountry!.conversionRate) as double).toStringAsFixed(2)} ${selectedCountry!.isocode} "   : "")}",
+                            // " ${(selectedCountry!=null ?  "${((product.activity.lowPrice * selectedCountry!.conversionRate) as double).toStringAsFixed(2)} ${selectedCountry!.isocode} "   : "")}",
                             // "\$" + product.price.toString() + "/hour",
                             fontWeight: 700,
                           ),
@@ -485,14 +487,16 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
 
       text = words.join(" ");
 
-      var currencySymbol = selectedCountry!.isocode;
-      var conversionRate = selectedCountry!.conversionRate;
+      // var currencySymbol = selectedCountry!.isocode;
+      // var conversionRate = selectedCountry!.conversionRate;
       print(text);
       list.add(
           // car(controller.products![i])
           InkWell(
         onTap: () {
-          controller.goToSingleProduct(product, currencySymbol, conversionRate);
+          controller.goToSingleProduct(product,
+              // currencySymbol, conversionRate
+          );
         },
         child: Container(
           margin: const EdgeInsets.all(5.0),
@@ -748,8 +752,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                     ),
                     //currencyChange
                     FxText(
+                      "76",
                       // "${product.activity.adultPrice.toString()} AED",,
-                      " ${(selectedCountry != null ? "${((product.activity.lowPrice * selectedCountry!.conversionRate) as double).toStringAsFixed(2)} ${selectedCountry!.isocode} " : "")}",
+                      // " ${(selectedCountry != null ? "${((product.activity.lowPrice * selectedCountry!.conversionRate) as double).toStringAsFixed(2)} ${selectedCountry!.isocode} " : "")}",
                       // "${product.activity.lowPrice.toString()} AED",
                       // '${controller.currency() ?? '\$'} ${product.activity.adultPrice.toString()}',
                       color: const Color(0xff1529e8),

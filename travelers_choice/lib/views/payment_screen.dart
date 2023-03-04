@@ -1,175 +1,108 @@
-// import 'package:flutter/material.dart';
-// import 'package:flutter/services.dart';
+import 'dart:developer';
 
-// import '../card_widgets/input_fields.dart';
+import 'package:cc_avenue/cc_avenue.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutx/flutx.dart';
+import '/theme/app_theme.dart';
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+import '/controllers/login_controller.dart';
 
-// class Palette {
-//   static const Color blueDark = Color(0xFF0a1d38);
-//   static const Color blueMedium = Color(0xFF0848ef);
-//   static const Color blue = Color(0xFF3395ff);
-// }
+class PaymentCCVisa extends StatefulWidget {
+  String visaPaymentData;
+  PaymentCCVisa({super.key, required this.visaPaymentData});
+  // const PaymentCCVisa({Key? key}) : super(key: key);
 
-// class Validator {
-//   static String? amount(String? input) {
-//     if (input == null || input.isEmpty) {
-//       return 'Please enter an amount';
-//     }
+  @override
+  _PaymentCCVisaState createState() => _PaymentCCVisaState();
+}
 
-//     final value = double.tryParse(input) ?? 0.0;
-//     if (value <= 0.0) {
-//       return 'Enter an amount greater than 0';
-//     }
+class _PaymentCCVisaState extends State<PaymentCCVisa> with TickerProviderStateMixin {
+  late ThemeData theme;
+  late LogInController controller;
+  late InAppWebViewController _webViewController;
 
-//     return null;
-//   }
-// }
+  @override
+  void initState() {
+    super.initState();
+    theme = AppTheme.shoppingTheme;
+    log('Payment cc:${widget.visaPaymentData}');
+    controller = FxControllerStore.put(LogInController(this));
+  }
 
-// class PaymentScreen extends StatefulWidget {
-//   const PaymentScreen({Key? key}) : super(key: key);
+  /// [initPlatformState] this calls the [cCAvenueInit]
+  // Platform messages are asynchronous, so we initialize in an async method.
+  Future<void> initPlatformState() async {
+    log('initPlatformState');
+    // Platform messages may fail, so we use a try/catch PlatformException.
+    try {
+      await CcAvenue.cCAvenueInit(
+          transUrl: 'https://secure.ccavenue.com/transaction/initTrans',
+          accessCode: '4YRUXLSRO20O8NIH',
+          amount: '10',
+          cancelUrl: 'http://122.182.6.216/merchant/ccavResponseHandler.jsp',
+          currencyType: 'INR',
+          merchantId: '2',
+          orderId: '519',
+          redirectUrl: 'http://122.182.6.216/merchant/ccavResponseHandler.jsp',
+          rsaKeyUrl: 'https://secure.ccavenue.com/transaction/jsp/GetRSA.jsp');
+    } on PlatformException {
+      log('PlatformException');
+    }
+  }
 
-//   @override
-//   State<PaymentScreen> createState() => _PaymentScreenState();
-// }
+  @override
+  Widget build(BuildContext context) {
+    return FxBuilder<LogInController>(
+        controller: controller,
+        builder: (controller) {
+          return Scaffold(
+            body: Container(
+                child: Column(children: <Widget>[
+                  Expanded(
+                    child: InAppWebView(
+                      initialData: InAppWebViewInitialData(data: """
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    </head>
+    <body>
+      
+      ${widget.visaPaymentData}
+    </body>
+</html>
+                  """),
+                      initialOptions: InAppWebViewGroupOptions(
+                          crossPlatform: InAppWebViewOptions(
+                            // debuggingEnabled: true,
+                          )),
+                      onWebViewCreated: (InAppWebViewController controller) {
+                        _webViewController = controller;
 
-// class _PaymentScreenState extends State<PaymentScreen> {
-//   final currencies = {
-//     'USD': '\$',
-//     'SGD': 'S\$',
-//     'AUD': 'A\$',
-//     'CAD': 'C\$',
-//     'EUR': '€',
-//     'GBP': '£',
-//     'HKD': 'HK\$',
-//     'INR': '₹',
-//     'MYR': 'RM',
-//   };
+                        _webViewController.addJavaScriptHandler(
+                            handlerName: 'handlerFoo',
+                            callback: (args) {
+                              // return data to JavaScript side!
+                              return {'bar': 'bar_value', 'baz': 'baz_value'};
+                            });
 
-//   final int _choiceChipValue = 7;
-//   @override
-//   late final TextEditingController _amountController;
-//   late final TextEditingController _businessNameController;
-//   late final TextEditingController _receiptController;
-//   late final TextEditingController _descriptionController;
-//   late final TextEditingController _userNameController;
-//   late final TextEditingController _userEmailController;
-//   late final TextEditingController _userContactController;
-
-//   @override
-//   void initState() {
-//     _amountController = TextEditingController();
-//     _businessNameController = TextEditingController();
-//     _receiptController = TextEditingController(text: 'receipt#001');
-//     _descriptionController = TextEditingController();
-//     _userNameController = TextEditingController();
-//     _userEmailController = TextEditingController();
-//     _userContactController = TextEditingController();
-//     super.initState();
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return GestureDetector(
-//       onTap: () => FocusScope.of(context).unfocus(),
-//       child: Scaffold(
-//         backgroundColor: Colors.white,
-//         appBar: AppBar(
-//           elevation: 0,
-//           backgroundColor: Colors.white,
-//           title: Row(
-//             children: [
-//               Image.asset(
-//                 'assets/images/full_apps/shopping/razorpay_logo.png',
-//                 height: 36,
-//               ),
-//               const SizedBox(width: 6),
-//               const Text(
-//                 'Demo',
-//                 style: TextStyle(
-//                   color: Palette.blueDark,
-//                   fontSize: 32,
-//                   fontStyle: FontStyle.italic,
-//                   fontWeight: FontWeight.w600,
-//                 ),
-//               )
-//             ],
-//           ),
-//         ),
-//         body: Stack(
-//           children: [
-//             Padding(
-//               padding: const EdgeInsets.symmetric(horizontal: 16.0),
-//               child: ListView(
-//                 physics: const BouncingScrollPhysics(),
-//                 children: [
-//                   const SizedBox(height: 8),
-//                   // Amount field
-//                   InputField(
-//                     controller: _amountController,
-//                     label: 'Amount',
-//                     hintText: 'Enter amount',
-//                     inputType: TextInputType.number,
-//                     inputAction: TextInputAction.next,
-//                     leading: Text(
-//                       currencies.values.elementAt(_choiceChipValue),
-//                       style: const TextStyle(
-//                         color: Palette.blueMedium,
-//                         fontSize: 24,
-//                         fontWeight: FontWeight.w500,
-//                       ),
-//                     ),
-//                     // Allow only two decimals digits
-//                     textInputFormatter: FilteringTextInputFormatter.allow(
-//                       RegExp(r'^\d+\.?\d{0,2}'),
-//                     ),
-//                     validator: Validator.amount,
-//                   ),
-
-//                   // // Business Name field
-//                   // InputField(...),
-//                   // // Receipt field
-//                   // InputField(...),
-//                   // // Description field
-//                   // InputField(...),
-//                   // // User detail Inputs: Name, Email, Contact
-//                   Container(
-//                     decoration: BoxDecoration(
-//                       borderRadius: BorderRadius.circular(12),
-//                       color: Palette.blueDark,
-//                     ),
-//                     child: Padding(
-//                       padding: const EdgeInsets.symmetric(
-//                         horizontal: 24.0,
-//                         vertical: 16.0,
-//                       ),
-//                       child: Column(
-//                         crossAxisAlignment: CrossAxisAlignment.start,
-//                         children: const [
-//                           Text(
-//                             'User details',
-//                             style: TextStyle(
-//                               color: Colors.white,
-//                               fontSize: 18,
-//                               fontWeight: FontWeight.w500,
-//                               letterSpacing: 0.6,
-//                             ),
-//                           ),
-//                           // // User Name field
-//                           // InputField(...),
-//                           // // User Email field
-//                           // InputField(...),
-//                           // // User Contact field
-//                           // InputField(...),
-//                         ],
-//                       ),
-//                     ),
-//                   ),
-//                   // TODO: Add "Checkout" button
-//                 ],
-//               ),
-//             ),
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-// }
+                        _webViewController.addJavaScriptHandler(
+                            handlerName: 'handlerFooWithArgs',
+                            callback: (args) {
+                              print(args);
+                              // it will print: [1, true, [bar, 5], {foo: baz}, {bar: bar_value, baz: baz_value}]
+                            });
+                      },
+                      onConsoleMessage: (controller, consoleMessage) {
+                        print(consoleMessage);
+                        // it will print: {message: {"bar":"bar_value","baz":"baz_value"}, messageLevel: 1}
+                      },
+                    ),
+                  ),
+                ])),
+          );
+        });
+  }
+}

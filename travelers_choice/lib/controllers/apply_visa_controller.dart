@@ -1,12 +1,15 @@
 
 import 'dart:async';
+import 'dart:convert';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutx/flutx.dart';
 import 'package:hotel_travel/models/Country_modal.dart';
 import 'package:hotel_travel/models/create_visa_modal.dart';
 import 'package:hotel_travel/services/visa_service.dart';
+import 'package:hotel_travel/views/payment_screen.dart';
 import 'package:intl/intl.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
 import 'package:http/http.dart' as http;
@@ -14,6 +17,8 @@ import '../models/atteraction_model.dart';
 import '../models/product.dart';
 import '../models/shipping_address.dart';
 import 'razor_credentials.dart' as razorCredentials;
+import 'package:cc_avenue/cc_avenue.dart';
+import '../views/payment_cc.dart';
 import '../views/checkout_screen.dart';
 import '../../controllers/attraction_Controller.dart';
 
@@ -35,6 +40,7 @@ class ApplyVisaController extends FxController {
   bool showLoading = true, uiLoading = true;
 
   //tab
+  int? selectedPayment = 0;
   late TabController tabController;
   late ScrollController scrollController;
   String? countryId;
@@ -407,6 +413,61 @@ class ApplyVisaController extends FxController {
         addressCounter++;
       }
     });
+  }
+
+
+  // Future<void> initPlatformState() async {
+  //   // Platform messages may fail, so we use a try/catch PlatformException.
+  //   try {
+  //     await CcAvenue.cCAvenueInit(
+  //         transUrl: 'https://secure.ccavenue.com/transaction/initTrans',
+  //         accessCode: '4YRUXLSRO20O8NIH',
+  //         amount: '10',
+  //         cancelUrl: 'http://122.182.6.216/merchant/ccavResponseHandler.jsp',
+  //         currencyType: 'INR',
+  //         merchantId: '2',
+  //         orderId: '6401ce6c913789806d34a7fd',
+  //         redirectUrl: 'http://122.182.6.216/merchant/ccavResponseHandler.jsp',
+  //         rsaKeyUrl: 'https://secure.ccavenue.com/transaction/jsp/GetRSA.jsp');
+  //   } on PlatformException {
+  //     log('PlatformException');
+  //   }
+  // }
+
+  void createVisaOrderccAvenue(visaOrderId) async {
+
+print(visaOrderId);
+
+    var res = await http.post(
+      Uri.parse(
+          "https://secure.mytravellerschoice.com/api/v1/visa/application/initiate/$visaOrderId"),
+      body: {
+        "paymentProcessor": "ccavenue"
+      },
+    );
+    log('Body Data:${res.body}');
+
+    //todo
+
+    if (res.statusCode == 200) {
+
+      log('Response cc:${res.body}');
+      var visaPaymentData = res.body;
+      log('Payment data:$visaPaymentData');
+      Navigator.of(context, rootNavigator: true).pushReplacement(
+        MaterialPageRoute(
+          builder: (context) => PaymentCCVisa(visaPaymentData: visaPaymentData),
+        ),
+      );
+    } else {
+      var jsondata = jsonDecode(res.body);
+      log(jsondata['error']);
+      print(jsondata['error']);
+      //snackbar
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(jsondata['error'])));
+      return null;
+    }
   }
 
   String? validateFirstName(String? text) {
