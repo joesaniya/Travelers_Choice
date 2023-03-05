@@ -172,11 +172,13 @@ Country Code => $countryCode
   //   update();
   // }
 
-  void goToSingleProduct(Datum product, currencySymbol, conversionRate) {
+  void goToSingleProduct(Datum product,
+      // currencySymbol, conversionRate
+      ) {
     log(product.id);
     log('message');
-    print(currencySymbol);
-    print("utfyjhvbn  $conversionRate");
+    // print(currencySymbol);
+    // print("utfyjhvbn  $conversionRate");
     Navigator.of(context, rootNavigator: true).push(PageRouteBuilder(
         transitionDuration: const Duration(milliseconds: 500),
         transitionsBuilder: (
@@ -193,8 +195,8 @@ Country Code => $countryCode
             DetailScreen(product.id,
             //  _toggleFavorite, _isMealFavorite,
              product,
-                currencySymbol:currencySymbol,
-              conversionRate: conversionRate
+              //   currencySymbol:currencySymbol,
+              // conversionRate: conversionRate
             )
         // SingleProductScreen(product.id)
         ));

@@ -20,6 +20,7 @@ class HistoryController extends FxController {
   //tab
   late TabController tabController;
   late ScrollController scrollController;
+  String? token;
   //
 
 //  late  Product product;
@@ -150,12 +151,12 @@ class HistoryController extends FxController {
       } else {
         currentPage = 0;
       }
-
-      pageController.animateToPage(
-        currentPage,
-        duration: const Duration(milliseconds: 800),
-        curve: Curves.ease,
-      );
+      //
+      // pageController.animateToPage(
+      //   currentPage,
+      //   duration: const Duration(milliseconds: 800),
+      //   curve: Curves.ease,
+      // );
     });
     dateAnimation =
         Tween<Offset>(begin: const Offset(-0.01, 0), end: const Offset(0.01, 0))

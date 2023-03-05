@@ -15,6 +15,7 @@ import 'package:flutx/widgets/dashed_divider/dashed_divider.dart';
 import 'package:flutx/widgets/text/text.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:hotel_travel/models/select_visa_modal.dart';
+import 'package:hotel_travel/views/payment_screen.dart';
 import 'package:im_stepper/stepper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
@@ -2277,6 +2278,8 @@ String userName = "";
   }
 
   Widget payments() {
+    String? visaOrderId = createdVisaOrder!.id;
+
     return Padding(
         padding: FxSpacing.x(20),
         child:
@@ -2297,142 +2300,20 @@ String userName = "";
           ),
           SizedBox(height: 20,),
           _billingWidget(),
-          // FxText.labelLarge(
-          //   'Select payment method',
-          //   fontWeight: 600,
-          // ),
-          // FxSpacing.height(20),
-          // FxContainer.bordered(
-          //   onTap: () {
-          //     controller.selectPaymentMethod(1);
-          //   },
-          //   borderRadiusAll: 10,
-          //   // margin: FxSpacing.bottom(20),
-          //   border: Border.all(
-          //       color: controller.paymentMethodSelected == 1
-          //           ? const Color(0xff1529e8)
-          //           : theme.colorScheme.onBackground),
-          //   color: controller.paymentMethodSelected == 1
-          //       ? const Color(0xff1529e8).withAlpha(20)
-          //       : theme.scaffoldBackgroundColor,
-          //   child: Column(
-          //     crossAxisAlignment: CrossAxisAlignment.start,
-          //     children: [
-          //       Row(
-          //         children: [
-          //           Icon(
-          //             FeatherIcons.creditCard,
-          //             size: 20,
-          //             color: theme.colorScheme.onBackground.withAlpha(220),
-          //           ),
-          //           FxSpacing.width(8),
-          //           FxText.bodyMedium(
-          //             'XYZ Bank Credit Card',
-          //             fontWeight: 700,
-          //           ),
-          //           // controller.paymentMethodSelected == 1
-          //           //     ? Expanded(
-          //           //       child: Align(
-          //           //         alignment:
-          //           //         Language.autoDirection<AlignmentGeometry>(
-          //           //             Alignment.centerRight,
-          //           //             Alignment.centerLeft)!,
-          //           //         child: const Icon(
-          //           //           Icons.radio_button_checked,
-          //           //           color: Color(0xff1529e8),
-          //           //           size: 20,
-          //           //         ),
-          //           //       ),
-          //           // )
-          //           //     : Container(),
-          //         ],
-          //       ),
-          //       FxSpacing.height(8),
-          //       FxText.bodySmall(
-          //         'Abrar Ahmed',
-          //         fontWeight: 600,
-          //       ),
-          //       FxSpacing.height(5),
-          //       FxText.bodySmall(
-          //         '**** **** **** 7865',
-          //         fontWeight: 600,
-          //       ),
-          //       FxSpacing.height(5),
-          //       FxText.bodySmall(
-          //         'VALID THRU 12/27',
-          //         fontWeight: 600,
-          //       ),
-          //       FxSpacing.height(10),
-          //
-          //     ],
-          //   ),
-          // ),
-          // FxSpacing.height(20),
-          // FxContainer.bordered(
-          //   onTap: () {
-          //     controller.selectPaymentMethod(2);
-          //   },
-          //   borderRadiusAll: 10,
-          //   // margin: FxSpacing.bottom(20),
-          //   border: Border.all(
-          //       color: controller.paymentMethodSelected == 2
-          //           ? const Color(0xff1529e8)
-          //           : theme.colorScheme.onBackground),
-          //   color: controller.paymentMethodSelected == 2
-          //       ? const Color(0xff1529e8).withAlpha(20)
-          //       : theme.scaffoldBackgroundColor,
-          //   child: Column(
-          //     crossAxisAlignment: CrossAxisAlignment.start,
-          //     children: [
-          //       Row(
-          //         children: [
-          //           Icon(
-          //             FeatherIcons.creditCard,
-          //             size: 20,
-          //             color: theme.colorScheme.onBackground.withAlpha(220),
-          //           ),
-          //           FxSpacing.width(8),
-          //           FxText.bodyMedium(
-          //             'ABC Bank Debit Card',
-          //             fontWeight: 700,
-          //           ),
-          //           // controller.paymentMethodSelected == 1
-          //           //     ? Expanded(
-          //           //       child: Align(
-          //           //         alignment:
-          //           //         Language.autoDirection<AlignmentGeometry>(
-          //           //             Alignment.centerRight,
-          //           //             Alignment.centerLeft)!,
-          //           //         child: const Icon(
-          //           //           Icons.radio_button_checked,
-          //           //           color: Color(0xff1529e8),
-          //           //           size: 20,
-          //           //         ),
-          //           //       ),
-          //           // )
-          //           //     : Container(),
-          //         ],
-          //       ),
-          //       FxSpacing.height(8),
-          //       FxText.bodySmall(
-          //         'Britto John',
-          //         fontWeight: 600,
-          //       ),
-          //       FxSpacing.height(5),
-          //       FxText.bodySmall(
-          //         '**** **** **** 3214',
-          //         fontWeight: 600,
-          //       ),
-          //       FxSpacing.height(5),
-          //       FxText.bodySmall(
-          //         'VALID THRU 06/25',
-          //         fontWeight: 600,
-          //       ),
-          //       FxSpacing.height(10),
-          //
-          //     ],
-          //   ),
-          // ),
+          FxText.bodyLarge(
+            'Select Payment Method',
+            fontWeight: 800,
+          ),
+          FxSpacing.height(12),
+          FxDashedDivider(
+            dashSpace: 4,
+            dashWidth: 8,
+            color: theme.colorScheme.onBackground.withAlpha(180),
+            height: 1.2,
+          ),
+          FxSpacing.height(20),
+          payment(
+              "assets/images/apps/shopping2/icons/cc-avenue.png", "CCavenue"),
 
           FxSpacing.height(20),
 
@@ -2440,19 +2321,23 @@ String userName = "";
           FxButton.block(
             onPressed: () {
 
-              showDialog(
-                context: context,
-                builder: (BuildContext context){
-                  return AlertDialog(
-                    content: placedInfo(),
-                  );
-                },
-
-              );
-              setState(() {
-                controller.currentPage++;
-                // isFinished1 = true;
-              });
+              // showDialog(
+              //   context: context,
+              //   builder: (BuildContext context){
+              //     return AlertDialog(
+              //       content: placedInfo(),
+              //     );
+              //   },
+              //
+              // );
+              // controller.openGateway(visaOrderId!);
+              // controller.initPlatformState();
+              // setState(() {
+              print(visaOrderId);
+              controller.createVisaOrderccAvenue(visaOrderId!);
+              //   controller.currentPage++;
+              //   // isFinished1 = true;
+              // });
 
             },
             borderRadiusAll: 4,
@@ -2468,6 +2353,126 @@ String userName = "";
         ],
       ),
     );
+  }
+
+  // Widget getSinglePayment(
+  //     {int? index, required String image, required String method}) {
+  //   log('method:$method');
+  //   log('index:$index');
+  //   bool isSelected = index == controller.selectedPayment;
+  //
+  //   return FxContainer(
+  //     onTap: () {
+  //       setState(() {
+  //         controller.selectedPayment = index;
+  //       });
+  //     },
+  //     margin: FxSpacing.bottom(16),
+  //     padding: FxSpacing.all(16),
+  //     bordered: !isSelected,
+  //     border: Border.all(
+  //       // color: customTheme.border
+  //         color: Colors.indigo),
+  //     color: isSelected ? Colors.white : Colors.transparent,
+  //     // color: isSelected ? customTheme.card : theme.scaffoldBackgroundColor,
+  //     borderRadiusAll: 8,
+  //     child: Row(
+  //       crossAxisAlignment: CrossAxisAlignment.center,
+  //       children: [
+  //         SizedBox(
+  //           width: 48,
+  //           height: 36,
+  //           child: Image.asset(
+  //             image,
+  //           ),
+  //         ),
+  //         FxSpacing.width(16),
+  //         Expanded(
+  //           child: Column(
+  //             crossAxisAlignment: CrossAxisAlignment.start,
+  //             children: [
+  //               FxText.bodyMedium(method, fontWeight: 600),
+  //               // FxSpacing.height(8),
+  //               // FxText.labelSmall(
+  //               //     "8765  \u2022\u2022\u2022\u2022  \u2022\u2022\u2022\u2022  7983",
+  //               //     muted: true,
+  //               //     letterSpacing: 0)
+  //             ],
+  //           ),
+  //         ),
+  //         // isSelected ? Space.width(16) : Space.width(20),
+  //         isSelected
+  //             ? Container(
+  //           padding: FxSpacing.all(8),
+  //           decoration: BoxDecoration(
+  //               shape: BoxShape.circle,
+  //               color: const Color(0xff1529e8).withAlpha(40)),
+  //           child: const Icon(
+  //             FeatherIcons.check,
+  //             color: Color(0xff1529e8),
+  //             size: 14,
+  //           ),
+  //         )
+  //             : Container(
+  //           height: 26,
+  //           width: 26,
+  //           decoration: BoxDecoration(
+  //               shape: BoxShape.circle,
+  //               border: Border.all(color: const Color(0xff1529e8))),
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
+  Widget payment(String image, String title) {
+    return FxContainer.bordered(
+        paddingAll: 12,
+        // color: Colors.white,
+        color: controller.selected
+            ? const Color(0xff1529e8).withAlpha(40)
+            : Colors.white,
+        child: controller.selected
+            ? Row(
+          children: [
+            Image(
+              height: 24,
+              image: AssetImage(image),
+            ),
+            FxSpacing.height(8),
+            FxText.bodySmall(title),
+            Expanded(
+              child: Align(
+                alignment: Language.autoDirection<AlignmentGeometry>(
+                    Alignment.centerRight, Alignment.centerLeft)!,
+                child: FxContainer.roundBordered(
+                  paddingAll: 4,
+                  border: Border.all(
+                    // color: theme.colorScheme.primary
+                    color: const Color(0xff1529e8),
+                  ),
+                  color: const Color(0xff1529e8).withAlpha(40),
+                  // color: theme.colorScheme.primary.withAlpha(40),
+                  child: const Icon(
+                    Icons.check,
+                    color: Color(0xff1529e8),
+                    // color: theme.colorScheme.primary,
+                    size: 10,
+                  ),
+                ),
+              ),
+            )
+          ],
+        )
+            : Row(
+          children: [
+            Image(
+              height: 24,
+              image: AssetImage(image),
+            ),
+            FxSpacing.height(8),
+            FxText.bodySmall(title),
+          ],
+        ));
   }
 
   // void openFiles(List<PlatformFile> files) {

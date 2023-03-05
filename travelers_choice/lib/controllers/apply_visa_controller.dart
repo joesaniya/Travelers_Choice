@@ -1,19 +1,27 @@
 
 import 'dart:async';
+import 'dart:convert';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutx/flutx.dart';
 import 'package:hotel_travel/models/Country_modal.dart';
 import 'package:hotel_travel/models/create_visa_modal.dart';
 import 'package:hotel_travel/services/visa_service.dart';
+import 'package:hotel_travel/views/payment_screen.dart';
 import 'package:intl/intl.dart';
-
+import 'package:razorpay_flutter/razorpay_flutter.dart';
+import 'package:http/http.dart' as http;
 import '../models/atteraction_model.dart';
 import '../models/product.dart';
 import '../models/shipping_address.dart';
+import 'razor_credentials.dart' as razorCredentials;
+import 'package:cc_avenue/cc_avenue.dart';
+import '../views/payment_cc.dart';
 import '../views/checkout_screen.dart';
 import '../../controllers/attraction_Controller.dart';
+
 import '../views/hotel_travel_constants.dart';
 
 class Tab {
@@ -32,11 +40,46 @@ class ApplyVisaController extends FxController {
   bool showLoading = true, uiLoading = true;
 
   //tab
+  int? selectedPayment = 0;
   late TabController tabController;
   late ScrollController scrollController;
   String? countryId;
+  bool selected = true;
   //
   List<Tab> tabs = [];
+
+  void _handlePaymentSuccess(PaymentSuccessResponse response) {
+    // Do something when payment succeeds
+    print('response Success');
+    log('response Success');
+    verifySignature(
+      signature: response.signature,
+      paymentId: response.paymentId,
+      orderId: response.orderId,
+    );
+  }
+
+  void _handlePaymentError(PaymentFailureResponse response) {
+    print('responseError');
+    log('responseError');
+    // Do something when payment fails
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(response.message ?? ''),
+      ),
+    );
+  }
+
+  void _handleExternalWallet(ExternalWalletResponse response) {
+    print('responsewallet:');
+    log('response wallet:');
+    // Do something when an external wallet is selected
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(response.walletName ?? ''),
+      ),
+    );
+  }
 //  late  Product product;
   // late DetailattractionModal product;
 
@@ -62,7 +105,7 @@ class ApplyVisaController extends FxController {
   List<Product>? products;
   bool addCart = false;
 
-
+  final _razorpay = Razorpay();
 
 
   // late AnimationController animationController;
@@ -206,6 +249,12 @@ class ApplyVisaController extends FxController {
     toDateTE = TextEditingController();
     dobTE = TextEditingController();
     expiryTE = TextEditingController();
+
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      _razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS, _handlePaymentSuccess);
+      _razorpay.on(Razorpay.EVENT_PAYMENT_ERROR, _handlePaymentError);
+      _razorpay.on(Razorpay.EVENT_EXTERNAL_WALLET, _handleExternalWallet);
+    });
 
     animationController = AnimationController(
       duration: const Duration(seconds: 1),
@@ -366,6 +415,61 @@ class ApplyVisaController extends FxController {
     });
   }
 
+
+  // Future<void> initPlatformState() async {
+  //   // Platform messages may fail, so we use a try/catch PlatformException.
+  //   try {
+  //     await CcAvenue.cCAvenueInit(
+  //         transUrl: 'https://secure.ccavenue.com/transaction/initTrans',
+  //         accessCode: '4YRUXLSRO20O8NIH',
+  //         amount: '10',
+  //         cancelUrl: 'http://122.182.6.216/merchant/ccavResponseHandler.jsp',
+  //         currencyType: 'INR',
+  //         merchantId: '2',
+  //         orderId: '6401ce6c913789806d34a7fd',
+  //         redirectUrl: 'http://122.182.6.216/merchant/ccavResponseHandler.jsp',
+  //         rsaKeyUrl: 'https://secure.ccavenue.com/transaction/jsp/GetRSA.jsp');
+  //   } on PlatformException {
+  //     log('PlatformException');
+  //   }
+  // }
+
+  void createVisaOrderccAvenue(visaOrderId) async {
+
+print(visaOrderId);
+
+    var res = await http.post(
+      Uri.parse(
+          "https://secure.mytravellerschoice.com/api/v1/visa/application/initiate/$visaOrderId"),
+      body: {
+        "paymentProcessor": "ccavenue"
+      },
+    );
+    log('Body Data:${res.body}');
+
+    //todo
+
+    if (res.statusCode == 200) {
+
+      log('Response cc:${res.body}');
+      var visaPaymentData = res.body;
+      log('Payment data:$visaPaymentData');
+      Navigator.of(context, rootNavigator: true).pushReplacement(
+        MaterialPageRoute(
+          builder: (context) => PaymentCCVisa(visaPaymentData: visaPaymentData),
+        ),
+      );
+    } else {
+      var jsondata = jsonDecode(res.body);
+      log(jsondata['error']);
+      print(jsondata['error']);
+      //snackbar
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(jsondata['error'])));
+      return null;
+    }
+  }
+
   String? validateFirstName(String? text) {
     if (text == null || text.isEmpty) {
       firstnameController.forward();
@@ -478,6 +582,53 @@ class ApplyVisaController extends FxController {
         page,
         duration: const Duration(milliseconds: 600),
         curve: Curves.ease,
+      );
+    }
+  }
+
+  verifySignature({
+    String? signature,
+    String? paymentId,
+    String? orderId,
+    //  String? razorpayorderid,
+    // String? transactionid,
+    // String? signature,
+    // String? orderId,
+  }) async {
+    Map<String, dynamic> body = {
+      'razorpay_signature': signature,
+      'razorpay_payment_id': paymentId,
+      'razorpay_order_id': orderId,
+      // 'razorpay_order_id': razorpayorderid,
+      // 'transactionid': transactionid,
+      // 'razorpay_signature': signature,
+      // 'orderId': orderId,
+    };
+
+    var parts = [];
+    body.forEach((key, value) {
+      parts.add('${Uri.encodeQueryComponent(key)}='
+          '${Uri.encodeQueryComponent(value)}');
+    });
+    var formData = parts.join('&');
+    var res = await http.post(
+      Uri.https(
+        "10.0.2.2", // my ip address , localhost
+        "razorpay_signature_verify.php",
+      ),
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded", // urlencoded
+      },
+      body: formData,
+    );
+
+    print('sign:${res.body}');
+    log('sign:${res.body}');
+    if (res.statusCode == 200) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(res.body),
+        ),
       );
     }
   }
@@ -619,7 +770,37 @@ class ApplyVisaController extends FxController {
     }
   }
 
+  openGateway(String orderId) {
+    log('OrderId:$orderId');
+    // log('key:${razorCredentials.keyId}');
+    var options = {
+      "key": razorCredentials.keyId,
+      "amount": 10000, //in the smallest currency sub-unit.
+      "name": "Acme Corp.",
+      "order_id": orderId, // Generate order_id using Orders API
+      "description": "Visa",
+      "timeout": 60 * 5, // in seconds // 5 minutes
+      "prefill": {
+        "contact": "7894561234",
+        "email": "abrar@gmail.com",
+      }
+    };
+    // _razorpay.open(options);
+    // var datavalue = jsonEncode(options);
+    // Map<String, dynamic> map = options;
+    try {
+      // log('Options:$datavalue');
 
+      // _razorpay.open(datavalue);
+      log('Options:$options');
+      _razorpay.open(options);
+      //todo
+      // log('Options:$map');
+      // _razorpay.open(map);
+    } catch (e) {
+      print('razor error:${e.toString()}');
+    }
+  }
 
   @override
   void dispose() {
@@ -634,6 +815,8 @@ class ApplyVisaController extends FxController {
     dobController.dispose();
     expiryController.dispose();
     animationController.dispose();
+    _razorpay.clear();
+
     super.dispose();
   }
 

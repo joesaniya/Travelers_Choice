@@ -569,7 +569,12 @@ class _DetailScreenState extends State<DetailScreen>
                               //     // ? '${controller.detailattraction!.first.activities!.first.adultPrice} AED'
                               //     : '${controller.detailattraction!.first.activities!.first.privateTransfers!.first.price} AED',
                               // // '${controller.detailattraction.first.activities.first.adultPrice} ${controller.currency() ?? '\$'}',
-                              '${((controller.detailattraction!.first.activities!.first.lowPrice * widget.conversionRate) as double).toStringAsFixed(2)} ${widget.currencySymbol}',
+                              '${(
+                                  controller.detailattraction!.first.activities!.first.lowPrice
+                                      // * widget.conversionRate
+                              )}'
+                              // as double).toStringAsFixed(2)} ${widget.currencySymbol}'
+                                  ,
                               // controller.product.price.toString(),
                               fontWeight: 700)
                         ],
