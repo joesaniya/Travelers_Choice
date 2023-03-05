@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutx/core/state_management/controller.dart';
-import 'package:hotel_travel/models/cart.dart';
 
 import '../models/all_attraction_modal.dart';
-import '../models/product.dart';
 import '../views/full_app.dart';
-import '../views/hotel_travel_constants.dart';
 
 class BookingSuccessController extends FxController {
   @override
@@ -23,13 +20,11 @@ class BookingSuccessController extends FxController {
     if (existingIndex >= 0) {
       _favouriteMeals.removeAt(existingIndex);
       update();
-     
     } else {
       _favouriteMeals.add(
         _availableMeals
             .firstWhere((meal) => meal.attractions.data.first.id == mealId),
       );
-     
     }
   }
 
@@ -38,8 +33,7 @@ class BookingSuccessController extends FxController {
   }
 
   goToFullApp() async {
-    
-    await Future.delayed(const Duration(seconds: 1));
+    await Future.delayed(const Duration(seconds: 15));
 
     Navigator.of(context, rootNavigator: true).pushReplacement(
       PageRouteBuilder(

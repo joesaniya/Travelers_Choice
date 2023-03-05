@@ -137,7 +137,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
 
   List<CountryModal> countryList = <CountryModal>[];
   bool isCountryListLoading = true;
-  Future getCountryList() async {
+  getCountryList() async {
     isCountryListLoading = true;
     try {
       var data = await AuthService().getCountry();

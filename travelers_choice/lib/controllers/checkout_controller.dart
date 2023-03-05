@@ -13,7 +13,6 @@ import '../models/razor_response.dart';
 import '../models/shipping_address.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import '../views/booking_success.dart';
 import '../views/payment_cc.dart';
 import 'razor_credentials.dart' as razorCredentials;
 
@@ -762,20 +761,11 @@ class CheckOutController extends FxController {
 
       var paymentdata = res.body;
       log('Payment data:$paymentdata');
-      Navigator.of(context, rootNavigator: true)
-          .pushReplacement(
+      Navigator.of(context, rootNavigator: true).pushReplacement(
         MaterialPageRoute(
           builder: (context) => PaymentCC(paymentdata: paymentdata),
         ),
-      )
-          .then((value) {
-        log('message');
-        Navigator.of(context, rootNavigator: true).pushReplacement(
-          MaterialPageRoute(
-            builder: (context) => const BookingSuccess(),
-          ),
-        );
-      });
+      );
       //     .whenComplete(() {
       //   log('complete');
       //   Navigator.of(context, rootNavigator: true).pushReplacement(
