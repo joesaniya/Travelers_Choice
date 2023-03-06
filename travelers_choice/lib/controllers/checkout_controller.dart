@@ -8,11 +8,13 @@ import 'package:hotel_travel/views/hotel_travel_constants.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
 
+import '../models/atteraction_model.dart';
 import '../models/product.dart';
 import '../models/razor_response.dart';
 import '../models/shipping_address.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import '../views/checkout_screen.dart';
 import '../views/payment_cc.dart';
 import 'razor_credentials.dart' as razorCredentials;
 
@@ -344,6 +346,51 @@ class CheckOutController extends FxController {
     // showLoading = false;
     // uiLoading = false;
     update();
+  }
+
+  List<Activity> selectedtour = [];
+  grandSelectedTourAmount() {
+    double amount = 0;
+
+    for (Activity tour in selectedtour) {
+      log('tour.grandTotal:${tour.grandTotal}');
+
+      amount = amount + (tour.grandTotal);
+      log('amount:$amount');
+    }
+
+    return amount;
+    // update();
+    // log('Amount:$amount');
+  }
+
+  late TextEditingController dateTE = TextEditingController();
+  String? selectedtransfer;
+
+  Cartnext(selectedExcursionsDatas, context, total) async {
+    log('cartnext');
+    Navigator.of(context, rootNavigator: true).push(PageRouteBuilder(
+        transitionDuration: const Duration(milliseconds: 500),
+        transitionsBuilder: (
+          BuildContext context,
+          Animation<double> animation,
+          Animation<double> secondaryAnimation,
+          Widget child,
+        ) =>
+            FadeTransition(
+              opacity: animation,
+              child: child,
+            ),
+        pageBuilder: (_, __, ___) => CheckOutScreen(
+            selectedtour.length,
+            // selectedtours,
+            selectedtour,
+            dateTE.text,
+            selectedtransfer,
+
+            // excursions.activities!
+            // amount
+            grandSelectedTourAmount())));
   }
 
   //next button

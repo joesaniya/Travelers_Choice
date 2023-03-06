@@ -77,7 +77,7 @@ class _CheckOutScreenState extends State<CheckOutScreen>
     super.initState();
     customTheme = AppTheme.customTheme;
     selectedExcursions = widget.selectedtourOption;
-    log('Selected Tour length:${widget.selectedtourOption.first.sId}');
+    // log('Selected Tour length:${widget.selectedtourOption.first.sId}');
     log('Selected Total Amount:${widget.totalAmount}');
     // log('Selected Total Amount:${widget.onButtonTap}');
     fetchlog();

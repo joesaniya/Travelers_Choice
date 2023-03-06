@@ -16,10 +16,13 @@ import '../loading_effect.dart';
 
 import '../models/Country_modal.dart';
 import '../models/all_attraction_modal.dart';
+import '../models/atteraction_model.dart';
 import '../services/app_constants.dart';
 import '../theme/app_theme.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+
+import 'checkout_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -118,6 +121,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       // addCategories();
     });
   }
+  List<Activity> selectedtour = [];
 
   fetchData() {
     Future.delayed(Duration.zero, () async {
@@ -942,6 +946,41 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                             ),
                           ),
                           FxSpacing.width(20),
+                          IconButton(
+                            icon: Icon(Icons.carpenter),
+                            onPressed: (){
+                              //  Navigator.of(context, rootNavigator: true).push(
+                              //     PageRouteBuilder(
+                              //         transitionDuration:
+                              //             const Duration(milliseconds: 500),
+                              //         transitionsBuilder: (
+                              //           BuildContext context,
+                              //           Animation<double> animation,
+                              //           Animation<double> secondaryAnimation,
+                              //           Widget child,
+                              //         ) =>
+                              //             FadeTransition(
+                              //               opacity: animation,
+                              //               child: child,
+                              //             ),
+                              //         pageBuilder: (_, __, ___) =>
+                              //             // CheckOutScreen(
+                              //             //     selectedtour.length,
+                              //             //     // selectedtours,
+                              //             //     selectedtour,
+                              //             //     dateTE.text,
+                              //             //     selectedtransfer,
+
+                              //             //     // excursions.activities!
+                              //             //     // amount
+                              //             //     grandSelectedTourAmount()
+                              //             //     )
+                              //                 ));
+                            },
+                          ),
+                          FxSpacing.width(20),
+
+                          //bell
                           RotationTransition(
                             turns: controller.bellAnimation,
                             // key: controller.intro.keys[0],
