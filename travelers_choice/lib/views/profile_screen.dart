@@ -316,27 +316,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             color: theme.colorScheme.onBackground,
                           ),
                         ),
-                        // SwitchListTile(
-                        //   dense: true,
-                        //   contentPadding: FxSpacing.zero,
-                        //   inactiveTrackColor:
-                        //       const Color(0xff1529e8).withAlpha(100),
-                        //   activeTrackColor:
-                        //       const Color(0xff1529e8).withAlpha(150),
-                        //   activeColor: const Color(0xff1529e8),
-                        //   title: FxText.bodyMedium(
-                        //     "Offline Reading",
-                        //     letterSpacing: 0,
-                        //   ),
-                        //   onChanged: (value) {
-                        //     setState(() {
-                        //       // offlineReading = value;
-                        //       profileController.notification = value;
-                        //     });
-                        //   },
-                        //   // value: offlineReading,
-                        //   value: profileController.notification,
-                        // ),
+
                         const Divider(
                           thickness: 0.8,
                         ),

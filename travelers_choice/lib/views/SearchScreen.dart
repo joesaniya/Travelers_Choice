@@ -6,7 +6,6 @@ import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutx/flutx.dart';
 import 'package:hotel_travel/views/bottomSheet/Filter_Sheet.dart';
 import 'package:hotel_travel/views/bottomSheet/categories_Sheet.dart';
-import 'package:iconsax/iconsax.dart';
 
 import '../controllers/attraction_Controller.dart';
 import '../controllers/search_Home_controller.dart';
@@ -567,51 +566,53 @@ class _SearchScreenState extends State<SearchScreen>
     List<Widget> list = [];
 
     // for (Product product in controller.products!)
+    for (var product in controller.allattractionList!.first.attractions.data) {
+      String text = product.category.categoryName.name;
+      // String text = "Theme Park,Theme Park";
 
-    // for (AllattractionModal val incontroller.allattractionList)
-    {
-      for (Datum product in controller.allattractionList![0].attractions.data) {
-        String text = product.category.categoryName.name;
+      text = text.replaceAll("_", " ");
 
-        text = text.replaceAll("_", " ");
+      List<String> words = text.split(" ");
+      // var currencySymbol = selectedCountry!.isocode;
+      // var conversionRate = selectedCountry!.conversionRate;
+      for (int i = 0; i < words.length; i++) {
+        words[i] =
+            words[i][0].toUpperCase() + words[i].substring(1).toLowerCase();
+      }
 
-        List<String> words = text.split(" ");
+      text = words.join(" ");
+      list.add(FadeTransition(
+        opacity: controller.fadeAnimation,
+        child: InkWell(
+          onTap: () {
+            controller.goToSingleProduct(
+                product, widget.currencySymbol, widget.conversionRate);
+          },
+          child: Container(
+            // onTap: () {
+            //   controller.goToSingleProduct(product);
+            // },
+            // borderRadiusAll: 4,
+            // // paddingAll: 16,
+            // height: 120,
+            height: 132,
+            decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: const BorderRadius.all(Radius.circular(10)),
+                border: Border.all(color: Colors.grey.shade300, width: 1)),
+            margin: const EdgeInsets.only(
+              bottom: 20,
+            ),
+            // //margin: EdgeInsets.all(8),
+            // // color: Colors.green,
+            // margin: FxSpacing.bottom(20),
 
-        for (int i = 0; i < words.length; i++) {
-          words[i] =
-              words[i][0].toUpperCase() + words[i].substring(1).toLowerCase();
-        }
-        text = words.join(" ");
-
-        if (product.destination.name == widget.place.name) {
-          print("Selected place=> ${widget.place.name}");
-          list.add(FadeTransition(
-            opacity: controller.fadeAnimation,
-            child: InkWell(
-              onTap: () {
-                log('clicked');
-                controller.goToSingleProduct(product, widget.currencySymbol, widget.conversionRate);
-              },
-              child: Container(
-                // onTap: () {
-                //   controller.goToSingleProduct(product);
-                // },
-                // borderRadiusAll: 4,
-                // // paddingAll: 16,
-                // height: 120,
-                // height: 132,
-                height: 155,
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: const BorderRadius.all(Radius.circular(10)),
-                    border: Border.all(color: Colors.grey.shade300, width: 1)),
-                margin: const EdgeInsets.only(
-                  bottom: 20,
-                ),
-                // //margin: EdgeInsets.all(8),
-                // // color: Colors.green,
-                // margin: FxSpacing.bottom(20),
-
+            child: ClipRect(
+              child: Banner(
+                textStyle: const TextStyle(color: Colors.white),
+                message: product.bookingType.name[0].toUpperCase() +
+                    product.bookingType.name.substring(1).toLowerCase(),
+                location: BannerLocation.topStart,
                 child: Container(
                   margin: const EdgeInsets.all(8),
                   child: Row(
@@ -628,17 +629,7 @@ class _SearchScreenState extends State<SearchScreen>
                         clipBehavior: Clip.antiAliasWithSaveLayer,
                         // child: Image(image: NetworkImage(product.images.first)),
                         child: Hero(
-                          tag: "product_image_${product.images}",
-                          // child: Image(
-                          //   // image: AssetImage(product.image),
-                          //   image: NetworkImage(
-                          //       'https://a.walletbot.online${product.images.first}'),
-                          //   // image: AssetImage(product.images.first),
-                          //   // height: 100,
-                          //   height: 132,
-                          //   width: 150,
-                          //   fit: BoxFit.cover,
-                          // ),
+                          tag: "product_image_${product.images.first}",
                           child: CachedNetworkImage(
                             height: 132,
                             width: 150,
@@ -659,74 +650,67 @@ class _SearchScreenState extends State<SearchScreen>
                       FxSpacing.width(20),
                       Expanded(
                         child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Row(
-                              children: [
-                                Expanded(
-                                  child: FxContainer(
-                                    borderRadiusAll: 10,
-                                    // padding: FxSpacing.xy(8, 4),
-                                    padding: FxSpacing.xy(6, 2),
-                                    // color: Color(0xff1529e8),
-                                    color: Colors.blueGrey,
-                                    child: Center(
-                                      child: FxText.bodySmall(
-                                        overflow: TextOverflow.ellipsis,
-                                        maxLines: 1,
-                                        // 'Theme Park',
-                                        text,
-                                        // product.category.categoryName.name[0]
-                                        //         .toUpperCase() +
-                                        //     product.category.categoryName.name
-                                        //         .substring(1)
-                                        //         .toLowerCase(),
-                                        fontWeight: 300,
-                                        color: Colors.white,
-                                        // color: theme.colorScheme.onPrimary,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Row(
+                                children: [
+                                  Expanded(
+                                    child: FxContainer(
+                                      borderRadiusAll: 10,
+                                      // padding: FxSpacing.xy(8, 4),
+                                      padding: FxSpacing.xy(6, 2),
+                                      // color: Color(0xff1529e8),
+                                      color: Colors.blueGrey,
+                                      child: Center(
+                                        child: FxText.bodySmall(
+                                          // overflow: TextOverflow.ellipsis,
+                                          // maxLines: 1,
+                                          text,
+
+                                          fontWeight: 300,
+                                          color: Colors.white,
+                                          // color: theme.colorScheme.onPrimary,
+                                        ),
                                       ),
                                     ),
                                   ),
-                                ),
-                                const SizedBox(
-                                  width: 5,
-                                ),
-                                FxContainer(
-                                  borderRadiusAll: 10,
-                                  // padding: FxSpacing.xy(8, 4),
-                                  padding: FxSpacing.xy(6, 2),
-                                  // color: Color(0xff1529e8),
-                                  color: Colors.blueGrey,
-                                  child: Center(
-                                    child: FxText.bodySmall(
-                                      textAlign: TextAlign.center,
-                                      // text,
-                                      product.bookingType.name[0]
-                                              .toUpperCase() +
-                                          product.bookingType.name
-                                              .substring(1)
-                                              .toLowerCase(),
-                                      fontWeight: 300,
-                                      color: Colors.white,
-                                      // color: theme.colorScheme.onPrimary,
-                                    ),
-                                  ),
-                                ),
-                                const SizedBox(
-                                  width: 5,
-                                ),
-                                product.isOffer == false
-                                    ? Expanded(child: Container())
-                                    : FxContainer(
-                                        borderRadiusAll: 10,
-                                        // padding: FxSpacing.xy(8, 4),
-                                        padding: FxSpacing.xy(6, 2),
-                                        // color: Color(0xff1529e8),
-                                        color: Colors.blueGrey,
-                                        child: Center(
+                                  // FxContainer(
+                                  //   borderRadiusAll: 10,
+                                  //   // padding: FxSpacing.xy(8, 4),
+                                  //   padding: FxSpacing.xy(6, 2),
+                                  //   // color: Color(0xff1529e8),
+                                  //   color: Colors.blueGrey,
+                                  //   child: Center(
+                                  //     child: FxText.bodySmall(
+                                  //       // product.bookingType.name,
+                                  //       product.bookingType.name[0]
+                                  //               .toUpperCase() +
+                                  //           product.bookingType.name
+                                  //               .substring(1)
+                                  //               .toLowerCase(),
+                                  //       // 'Ticket',
+                                  //       fontWeight: 300,
+                                  //       color: Colors.white,
+                                  //       // color: theme.colorScheme.onPrimary,
+                                  //     ),
+                                  //   ),
+                                  // ),
+                                  // const SizedBox(
+                                  //   width: 5,
+                                  // ),
+
+                                  product.isOffer == false
+                                      ? Container()
+                                      : FxContainer(
+                                          borderRadiusAll: 10,
+                                          // padding: FxSpacing.xy(8, 4),
+                                          padding: FxSpacing.xy(6, 2),
+                                          // color: Color(0xff1529e8),
+                                          color: Colors.blueGrey,
                                           child: FxText.bodySmall(
                                             'Offer',
+
                                             fontWeight: 300,
                                             maxLines: 1,
                                             overflow: TextOverflow.ellipsis,
@@ -734,120 +718,129 @@ class _SearchScreenState extends State<SearchScreen>
                                             // color: theme.colorScheme.onPrimary,
                                           ),
                                         ),
-                                      ),
-                              ],
-                            ),
-                            FxSpacing.height(8),
-                            Hero(
-                              tag: "product_${product.title}",
-                              // child: FxText.bodyLarge(
-                              //   product.name,
-                              //   // fontWeight: 500,
-                              // ),
-                              child: FxText.bodyLarge(
-                                product.title[0].toUpperCase() +
-                                    product.title.substring(1).toLowerCase(),
-                                fontWeight: 800,
-                                overflow: TextOverflow.ellipsis,
-                                maxLines: 2,
-                              ),
-                            ),
-                            FxSpacing.height(4),
-                            Hero(
-                              tag: "${product.duration}",
-                              // _${product.durationType}
-                              // ",
-                              child: FxText.labelLarge(
-                                // '\$' + product.price.toString(),
-                                //  " ${(selectedCountry != null ? "${((product.activity.lowPrice * widget.conversionRate) as double).toStringAsFixed(2)} ${widget.currencySymbol} " : "")}",
-                                "${product.activity.lowPrice.toString()} AED",
-                                // "\$" + product.price.toString() + "/hour",
-                                fontWeight: 700,
-                              ),
-                            ),
-                            FxSpacing.height(6),
-                            FxContainer(
-                              borderRadiusAll: 8,
-                              padding: FxSpacing.xy(
-                                  //8
-                                  0,
-                                  4),
-
-                              //color: Colors.yellow.shade400,
-                              color: Colors.white,
-                              child: Row(
-                                children: [
-                                  const Icon(
-                                    Iconsax.location,
-                                    color: Colors.black,
-                                    // color: theme.colorScheme.onPrimary,
-                                    size: 12,
-                                  ),
-                                  FxSpacing.width(4),
-                                  FxText.labelSmall(
-                                    // '\$' + product.price.toString(),
-                                    product.destination.name[0].toUpperCase() +
-                                        product.destination.name
-                                            .substring(1)
-                                            .toLowerCase(),
-                                    // product.price.toString() + " " + "AED",
-                                    // "\$" + product.price.toString() + "/hour",
-                                    // fontWeight: 700,
-                                  ),
+// <<<<<<< HEAD
+//                                     ),
+//                                   ),
+//                                 ),
+//                                 // FxContainer(
+//                                 //   borderRadiusAll: 10,
+//                                 //   // padding: FxSpacing.xy(8, 4),
+//                                 //   padding: FxSpacing.xy(6, 2),
+//                                 //   // color: Color(0xff1529e8),
+//                                 //   color: Colors.blueGrey,
+//                                 //   child: Center(
+//                                 //     child: FxText.bodySmall(
+//                                 //       // product.bookingType.name,
+//                                 //       product.bookingType.name[0]
+//                                 //               .toUpperCase() +
+//                                 //           product.bookingType.name
+//                                 //               .substring(1)
+//                                 //               .toLowerCase(),
+//                                 //       // 'Ticket',
+//                                 //       fontWeight: 300,
+//                                 //       color: Colors.white,
+//                                 //       // color: theme.colorScheme.onPrimary,
+//                                 //     ),
+//                                 //   ),
+//                                 // ),
+//                                 // const SizedBox(
+//                                 //   width: 5,
+//                                 // ),
+//
+//                                 product.isOffer == false
+//                                     ? Container()
+//                                     : FxContainer(
+//                                   borderRadiusAll: 10,
+//                                   // padding: FxSpacing.xy(8, 4),
+//                                   padding: FxSpacing.xy(6, 2),
+//                                   // color: Color(0xff1529e8),
+//                                   color: Colors.blueGrey,
+//                                   child: FxText.bodySmall(
+//                                     'Offer',
+//
+//                                     fontWeight: 300,
+//                                     maxLines: 1,
+//                                     overflow: TextOverflow.ellipsis,
+//                                     color: Colors.white,
+//                                     // color: theme.colorScheme.onPrimary,
+//                                   ),
+//                                 )
+//                                 ]
+//                             ),
+// =======
+//                                     )
+//                             ]),
+// >>>>>>> fbbb748cc95e63646309c21ad393ab877c48ed96,
                                 ],
                               ),
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Hero(
-                                  tag:
-                                      "${product.averageRating}_${product.totalReviews}",
-                                  child: Row(
-                                    children: [
-                                      const Icon(
-                                        // FeatherIcons.star,
-                                        Icons.star,
-                                        color: Colors.yellow,
-                                        size: 12,
-                                      ),
-                                      FxSpacing.width(4),
-                                      FxText.bodySmall(
-                                        '4.5',
-                                        fontWeight: 600,
-                                        color: Colors.black,
-                                      ),
-                                      FxSpacing.width(4),
-                                      FxText.bodySmall(
-                                        "(${product.totalReviews})",
-                                        fontWeight: 600,
-                                        color: Colors.black,
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                // FxContainer.bordered(
-                                //   paddingAll: 4,
-                                //   borderRadiusAll: 4,
-                                //   child: Icon(
-                                //     FeatherIcons.plus,
-                                //     size: 14,
-                                //     color: theme.colorScheme.onBackground,
-                                //   ),
+                              FxSpacing.height(8),
+                              Hero(
+                                tag: "product_title_${product.title}",
+                                // child: FxText.bodyLarge(
+                                //   product.name,
+                                //   // fontWeight: 500,
                                 // ),
-                              ],
-                            ),
-                          ],
-                        ),
+                                child: FxText.bodyLarge(
+                                  product.title[0].toUpperCase() +
+                                      product.title.substring(1).toLowerCase(),
+                                  fontWeight: 800,
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 2,
+                                ),
+                              ),
+                              FxSpacing.height(4),
+                              Hero(
+// <<<<<<< HEAD
+                                tag: "${product.duration}",
+                                child: FxText.labelLarge(
+                                  // "65",
+                                  // '${controller.currency() ?? '\$'} ${product.activity.adultPrice.toString()}',
+                                  // " ${(selectedCountry != null ? "${((product.activity.lowPrice * selectedCountry!.conversionRate) as double).toStringAsFixed(2)} ${selectedCountry!.isocode} " : "")}",
+                                  '${product.activity.lowPrice} AED',
+
+                                  fontWeight: 700,
+                                ),
+                              ),
+                              FxSpacing.height(6),
+                              Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Hero(
+                                      tag: "${product.averageRating}",
+                                      child: Row(children: [
+                                        const Icon(
+                                          // FeatherIcons.star,
+                                          Icons.star,
+                                          color: Colors.yellow,
+                                          size: 12,
+                                        ),
+                                        FxSpacing.width(4),
+                                        FxText.bodySmall(
+                                          product.averageRating
+                                              .toStringAsFixed(1),
+                                          fontWeight: 600,
+                                          color: Colors.black,
+                                        ),
+                                        FxSpacing.width(4),
+                                        FxText.bodySmall(
+                                          "(${product.totalReviews.toStringAsFixed(0)})",
+                                          fontWeight: 600,
+                                          color: Colors.black,
+                                        ),
+                                      ]),
+                                    )
+                                  ]),
+                            ]),
                       ),
                     ],
                   ),
                 ),
               ),
             ),
-          ));
-        }
-      }
+          ),
+        ),
+      ));
     }
 
     return Column(
