@@ -42,6 +42,14 @@ class BookingSuccessController extends FxController {
     );
   }
 
+  goBack() async {
+    Navigator.of(context, rootNavigator: true).pushReplacement(
+      PageRouteBuilder(
+          transitionDuration: const Duration(seconds: 2),
+          pageBuilder: (_, __, ___) => FullApp(_favouriteMeals)),
+    );
+  }
+
   @override
   String getTag() {
     return "booking_sucess_controller";

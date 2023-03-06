@@ -376,10 +376,12 @@ class CheckOutController extends FxController {
           ) {
         ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text("Please Enter Phone Number")));
-      } else if (reqTE.text.isEmpty) {
-        ScaffoldMessenger.of(context)
-            .showSnackBar(const SnackBar(content: Text("Enter Request")));
-      } else {
+      }
+      // else if (reqTE.text.isEmpty) {
+      //   ScaffoldMessenger.of(context)
+      //       .showSnackBar(const SnackBar(content: Text("Enter Request")));
+      // }
+      else {
         await pageController.animateToPage(
           currentPage + 1,
           duration: const Duration(milliseconds: 600),
@@ -712,19 +714,19 @@ class CheckOutController extends FxController {
       print('Infant Count:${element.infantCount}');
       // var datas=
       Map<String, dynamic> datas = {
-        // "activity": element.sId,
-        // // "date": "2023-02-28",
-        // "date": element.selectedDate,
-        // "adultsCount": element.adultCount,
-        // "childrenCount": element.childCount,
-        // "infantCount": element.infantCount,
-        // "transferType": "private"
-        "activity": "63e6317d20e0e01648630e6a",
-        "date": "2023-04-5",
-        "adultsCount": 1,
-        "childrenCount": 0,
-        "infantCount": 0,
+        "activity": element.sId,
+        // "date": "2023-02-28",
+        "date": element.selectedDate,
+        "adultsCount": element.adultCount,
+        "childrenCount": element.childCount,
+        "infantCount": element.infantCount,
         "transferType": "private"
+        // "activity": "63e6317d20e0e01648630e6a",
+        // "date": "2023-04-5",
+        // "adultsCount": 1,
+        // "childrenCount": 0,
+        // "infantCount": 0,
+        // "transferType": "private"
       };
       ActivityList.add(datas);
       print('Data-->$datas');

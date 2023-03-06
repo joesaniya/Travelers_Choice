@@ -255,58 +255,42 @@ class AuthService {
     }
   }
 
-  Future patchUpdateProfile(String name, String email, String country, String phoneNumber, String token, BuildContext context) async {
+  Future patchUpdateProfile(String name, String email, String country,
+      String phoneNumber, String token, BuildContext context) async {
     try {
       var body = {
-        "name":name,
-        "email":email,
-        "country":country,
-        "phoneNumber":phoneNumber
+        "name": name,
+        "email": email,
+        "country": country,
+        "phoneNumber": phoneNumber
       };
       var response = await http.patch(
           Uri.parse(
             'https://secure.mytravellerschoice.com/api/v1/users/update',
           ),
-
-          headers: {'Content-Type': 'application/json',
+          headers: {
+            'Content-Type': 'application/json',
             'Authorization': 'Bearer $token',
           },
           body: jsonEncode(body));
-
 
       if (response.statusCode == 200) {
         var jsondata = jsonDecode(response.body);
         print('Response => ${response.body}');
         SharedPreferences sharedPreferences =
-        await SharedPreferences.getInstance();
+            await SharedPreferences.getInstance();
         // sharedPreferences.setString("token", jsondata['jwtToken']);
-        sharedPreferences.setString(AppConstants.KEY_ACCESS_TOKEN_Name, updateProfileModalFromJson(response.body).name);
-        sharedPreferences.setString(AppConstants.KEY_ACCESS_TOKEN_Email, updateProfileModalFromJson(response.body).email);
+        sharedPreferences.setString(AppConstants.KEY_ACCESS_TOKEN_Name,
+            updateProfileModalFromJson(response.body).name);
+        sharedPreferences.setString(AppConstants.KEY_ACCESS_TOKEN_Email,
+            updateProfileModalFromJson(response.body).email);
         // sharedPreferences.setString(
         //     "flagSymbol", jsondata['countries']['flag']);
-        sharedPreferences.setString(AppConstants.KEY_ACCESS_TOKEN_Phone, updateProfileModalFromJson(response.body).phoneNumber);
+        sharedPreferences.setString(AppConstants.KEY_ACCESS_TOKEN_Phone,
+            updateProfileModalFromJson(response.body).phoneNumber);
 
         return updateProfileModalFromJson(response.body);
-
-
-        // //todo
-        // var body = jsonDecode(response.body);
-        // // print(body);
-        // var data = body['user'];
-        // // print(data);
-        // LoginModal loginuser = LoginModal.fromJson(data);
-        // log(loginuser.jwtToken);
-        // log('jwttoken');
-        // await _saveUser(int.parse(loginuser.jwtToken).toString());
-        // // await _saveUser(int.parse(loginuser.jwtToken), loginuser.user);
-        // return loginuser;
-      }
-      //  else if (response.statusCode == 400) {
-      //   log('else if');
-      //   return response.body;
-      // }
-
-      else {
+      } else {
         var jsondata = jsonDecode(response.body);
         log(jsondata['error']);
         ScaffoldMessenger.of(context)
@@ -317,54 +301,28 @@ class AuthService {
     }
   }
 
-
-
-  Future patchUpdatePassword(String oldPassword, String newPassword,String token, BuildContext context) async {
+  Future patchUpdatePassword(String oldPassword, String newPassword,
+      String token, BuildContext context) async {
     try {
-      var body = {
-        "oldPassword":oldPassword,
-        "newPassword": newPassword
-      };
+      var body = {"oldPassword": oldPassword, "newPassword": newPassword};
       var response = await http.patch(
           Uri.parse(
             'https://secure.mytravellerschoice.com/api/v1/users/update/password',
           ),
-
-          headers: {'Content-Type': 'application/json',
+          headers: {
+            'Content-Type': 'application/json',
             'Authorization': 'Bearer $token',
           },
           body: jsonEncode(body));
 
-
       if (response.statusCode == 200) {
         var jsondata = jsonDecode(response.body);
         print('Response => ${response.body}');
-        // SharedPreferences sharedPreferences =
-        // await SharedPreferences.getInstance();
-        // // sharedPreferences.setString("token", jsondata['jwtToken']);
-        // sharedPreferences.setString(AppConstants.KEY_ACCESS_TOKEN_Name, updateProfileModalFromJson(response.body).name);
-        // sharedPreferences.setString(AppConstants.KEY_ACCESS_TOKEN_Email, updateProfileModalFromJson(response.body).email);
-        // // sharedPreferences.setString(
-        // //     "flagSymbol", jsondata['countries']['flag']);
-        // sharedPreferences.setString(AppConstants.KEY_ACCESS_TOKEN_Phone, updateProfileModalFromJson(response.body).phoneNumber);
+
         ScaffoldMessenger.of(context)
             .showSnackBar(SnackBar(content: Text(jsondata['message'])));
         return response.body;
-
-
-        // //todo
-        // var body = jsonDecode(response.body);
-        // // print(body);
-        // var data = body['user'];
-        // // print(data);
-        // LoginModal loginuser = LoginModal.fromJson(data);
-        // log(loginuser.jwtToken);
-        // log('jwttoken');
-        // await _saveUser(int.parse(loginuser.jwtToken).toString());
-        // // await _saveUser(int.parse(loginuser.jwtToken), loginuser.user);
-        // return loginuser;
-      }
-      else {
+      } else {
         var jsondata = jsonDecode(response.body);
         log(jsondata['error']);
         ScaffoldMessenger.of(context)
@@ -374,6 +332,4 @@ class AuthService {
       rethrow;
     }
   }
-
-
 }

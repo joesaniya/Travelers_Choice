@@ -5,6 +5,8 @@ import '/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutx/flutx.dart';
 
+import 'full_app.dart';
+
 class BookingSuccess extends StatefulWidget {
   const BookingSuccess({Key? key}) : super(key: key);
 
@@ -31,39 +33,43 @@ class _BookingSuccessState extends State<BookingSuccess> {
         controller: controller,
         builder: (controller) {
           return Scaffold(
-            body: ListView(
-              physics: const BouncingScrollPhysics(),
-              children: [
-                Lottie.asset('assets/lottie/confirmation.json',
-                    height: 300, width: 300),
-                FxSpacing.height(20),
-                FxText.titleLarge(
-                  'Booking Success!!',
-                  fontWeight: 700,
-                  textAlign: TextAlign.center,
-                ),
-                FxSpacing.height(8),
-                FxText.labelLarge(
-                  'Enjoy Your \nVaccation, thanks for Booking',
-                  textAlign: TextAlign.center,
-                  xMuted: true,
-                ),
-                FxSpacing.height(24),
-                FxButton.block(
-                  onPressed: () {
-                    //  controller.goBack();
-                  },
-                  borderRadiusAll: 4,
-                  elevation: 0,
-                  splashColor: const Color(0xff1529e8).withAlpha(30),
-                  backgroundColor: const Color(0xff1529e8),
-                  child: FxText.labelLarge(
-                    'Back To Home',
-                    color: theme.colorScheme.onPrimary,
-                    fontWeight: 600,
+            body: Padding(
+              padding: FxSpacing.x(20),
+              child: ListView(
+                physics: const BouncingScrollPhysics(),
+                children: [
+                  Lottie.asset('assets/lottie/confirmation.json',
+                      height: 300, width: 300),
+                  FxSpacing.height(20),
+                  FxText.titleLarge(
+                    'Booking Success!!',
+                    fontWeight: 700,
+                    textAlign: TextAlign.center,
                   ),
-                ),
-              ],
+                  FxSpacing.height(8),
+                  FxText.labelLarge(
+                    'Enjoy Your \nVaccation, thanks for Booking',
+                    textAlign: TextAlign.center,
+                    xMuted: true,
+                  ),
+                  FxSpacing.height(24),
+                  FxButton.block(
+                    onPressed: () {
+                   controller.goBack();
+                    
+                    },
+                    borderRadiusAll: 4,
+                    elevation: 0,
+                    splashColor: const Color(0xff1529e8).withAlpha(30),
+                    backgroundColor: const Color(0xff1529e8),
+                    child: FxText.labelLarge(
+                      'Back To Home',
+                      color: theme.colorScheme.onPrimary,
+                      fontWeight: 600,
+                    ),
+                  ),
+                ],
+              ),
             ),
           );
         });

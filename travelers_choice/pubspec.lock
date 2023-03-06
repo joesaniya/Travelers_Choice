@@ -217,14 +217,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "5.2.5"
-  flare_flutter:
-    dependency: "direct main"
+  flare_dart:
+    dependency: transitive
     description:
-      name: flare_flutter
-      sha256: "99d63c60f00fac81249ce6410ee015d7b125c63d8278a30da81edf3317a1f6a0"
+      name: flare_dart
+      sha256: "55a2cfa73b781c9399d515d23ba95821fb08e7aaaef9fc29c5752cc5e7be1fa8"
       url: "https://pub.dev"
     source: hosted
-    version: "3.0.2"
+    version: "2.3.4"
+  flare_flutter:
+    dependency: transitive
+    description:
+      name: flare_flutter
+      sha256: "08929d7fde576b9c319af34f7632815aed7dba30ae1d8c46cec642acec730994"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.6"
   flutter:
     dependency: "direct main"
     description: flutter
@@ -945,6 +953,14 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.99"
+  slimy_card:
+    dependency: "direct main"
+    description:
+      name: slimy_card
+      sha256: "759a1dad787c1b056270c7e6c3e08649440df56188b46ea4163c91a86b82856b"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.4"
   source_span:
     dependency: transitive
     description:

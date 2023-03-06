@@ -8,6 +8,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../services/app_constants.dart';
 
 class AuthContainer extends StatefulWidget {
+  const AuthContainer({super.key});
+
   @override
   _AuthContainerState createState() => _AuthContainerState();
 }

@@ -6,6 +6,7 @@ import 'package:flutter_intro/flutter_intro.dart';
 import 'package:flutx/flutx.dart';
 
 import '../models/category.dart';
+import '../models/order_attraction_modal.dart';
 import '../models/product.dart';
 import '../views/hotel_travel_constants.dart';
 
@@ -14,6 +15,7 @@ class AllBookingController extends FxController {
   AllBookingController(this.ticker);
   List<Category>? categories;
   List<Product>? products;
+  // List<AllAttractionOrders>? products;
   bool uiLoading = true;
   late Category selectedCategory;
   late AnimationController animationController;
@@ -26,6 +28,7 @@ class AllBookingController extends FxController {
   final GlobalKey<AnimatedListState> listKey = GlobalKey<AnimatedListState>();
   List<Widget> newCategories = [];
   late Intro intro;
+  String? token;
 
   @override
   void initState() {

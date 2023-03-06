@@ -759,6 +759,7 @@ class _SearchScreenState extends State<SearchScreen>
                               // ",
                               child: FxText.labelLarge(
                                 // '\$' + product.price.toString(),
+                                //  " ${(selectedCountry != null ? "${((product.activity.lowPrice * widget.conversionRate) as double).toStringAsFixed(2)} ${widget.currencySymbol} " : "")}",
                                 "${product.activity.lowPrice.toString()} AED",
                                 // "\$" + product.price.toString() + "/hour",
                                 fontWeight: 700,

@@ -5,6 +5,8 @@
 
 import 'dart:io';
 
+import 'package:hotel_travel/views/splash_screens/splash_screen2.dart';
+
 import '/localizations/app_localization_delegate.dart';
 import '/localizations/language.dart';
 import '/theme/app_notifier.dart';
@@ -68,8 +70,9 @@ class MyApp extends StatelessWidget {
           ],
           supportedLocales: Language.getLocales(),
           // home: const LogInScreen(),
-          home: AuthContainer(),
-
+          // home: SplashScreen2(),
+          home: const AuthContainer(),
+          // home: const BookingSuccess(),
           // home:  RegisterScreen(),
           // home: MyHomePage(),
           // home: YourPage(),
