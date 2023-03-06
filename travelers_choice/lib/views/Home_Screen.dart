@@ -36,7 +36,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
 
   late HomeController controller;
   String _tabbed = '1';
-  String? name, flagname;
+  String? name, flagname, token;
   SharedPreferences? sharedPreferences;
 
   bool isLoading = true;
@@ -100,16 +100,19 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     log('All Data:$allattractionList');
     theme = AppTheme.shoppingTheme;
     theme1 = AppTheme.learningTheme;
-    SharedPreferences.getInstance().then((sharedPrefValue) {
-      setState(() {
-        name = sharedPrefValue.getString(AppConstants.KEY_ACCESS_TOKEN_Name);
-        log(name.toString());
-        log('username');
-        // flagname = sharedPrefValue
-        //     .getString(AppConstants.KEY_ACCESS_TOKEN_CountryFlag);
-        // log('Country Flag:$flagname');
-      });
-    });
+    // SharedPreferences.getInstance().then((sharedPrefValue) {
+    //   setState(() {
+    //     name = sharedPrefValue.getString(AppConstants.KEY_ACCESS_TOKEN_Name);
+    //     log(name.toString());
+    //     log('username');
+    //     token = sharedPrefValue.getString(AppConstants.KEY_ACCESS_TOKEN);
+    //     log('Token home:${token.toString()}');
+
+    //     // flagname = sharedPrefValue
+    //     //     .getString(AppConstants.KEY_ACCESS_TOKEN_CountryFlag);
+    //     // log('Country Flag:$flagname');
+    //   });
+    // });
     controller = FxControllerStore.put(HomeController(this));
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       // addCategories();
@@ -148,8 +151,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         log('getcountry set');
         setState(() {
           countryList.add(data);
-          controller.countryCode = sharedPreferences!
-              .getString(AppConstants.KEY_ACCESS_TOKEN_countryId);
+          controller.countryCode = '63db60f9f926b340dbb3f446';
+          // controller.countryCode = sharedPreferences!
+          //     .getString(AppConstants.KEY_ACCESS_TOKEN_countryId);
           print("controller.countryCode ${controller.countryCode}");
           log("controller.countryCode ${controller.countryCode}");
           selectedCountry = countryList.first.currencies.firstWhere(
@@ -816,7 +820,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                       child: FxText.titleLarge(
                         // 'Hey Nency,',
                         // name.toString(),
-                        'Hey ${name![0].toUpperCase() + name!.substring(1).toLowerCase()}',
+                        token == null
+                            ? 'Welcome back!!'
+                            : 'Hey ${name![0].toUpperCase() + name!.substring(1).toLowerCase()}',
                         fontWeight: 700,
                       ),
                     ),

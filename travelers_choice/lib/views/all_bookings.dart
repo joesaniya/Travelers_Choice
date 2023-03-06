@@ -385,6 +385,43 @@ class _AllBookingsState extends State<AllBookings>
                           ],
                         ),
                       ),
+                      Row(
+                        children: [
+                          Container(
+                            margin: const EdgeInsets.symmetric(horizontal: 5),
+                            decoration: BoxDecoration(
+                                color: const Color(0xff919EB0),
+                                borderRadius:
+                                    const BorderRadius.all(Radius.circular(10)),
+                                border: Border.all(
+                                    color: Colors.grey.shade300, width: 1)),
+                            child: Row(
+                              children: [
+                                FxSpacing.width(10),
+                                FxText.bodyLarge('Ref No:',
+
+                                    // textAlign: TextAlign.left,
+                                    letterSpacing: 0,
+                                    fontWeight: 600,
+                                    color: Colors.white),
+                                FxSpacing.width(10),
+                                FxText.bodyLarge(
+                                  orders!.result!.data![index].referenceNumber
+                                      .toString(),
+                                  color: Colors.white,
+
+                                  fontWeight: 600,
+                                  // color: const Color(0xff1529e8),
+                                ),
+                                const SizedBox(
+                                  width: 10,
+                                )
+                              ],
+                            ),
+                          ),
+                          Expanded(child: Container())
+                        ],
+                      ),
                       Container(
                         margin: const EdgeInsets.all(8),
                         child: Row(
@@ -503,6 +540,12 @@ class _AllBookingsState extends State<AllBookings>
                           ],
                         ),
                       ),
+
+
+                      //details
+                      Row(children: [
+                        
+                      ],)
                     ],
                   ),
                 );

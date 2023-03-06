@@ -71,6 +71,7 @@ class _CheckOutScreenState extends State<CheckOutScreen>
   late OutlineInputBorder outlineInputBorderenable;
   late OutlineInputBorder outlineInputBorderfocus;
   List? selectedExcursions;
+  String? token;
   @override
   void initState() {
     super.initState();

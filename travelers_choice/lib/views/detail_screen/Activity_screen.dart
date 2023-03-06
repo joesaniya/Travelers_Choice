@@ -6,11 +6,13 @@ import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutx/flutx.dart';
 import 'package:hotel_travel/extensions/extensions.dart';
 import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../controllers/Activity_controller.dart';
 import '../../controllers/checkout_controller.dart';
 import '../../loading_effect.dart';
 import '../../models/atteraction_model.dart';
+import '../../services/app_constants.dart';
 import '../../theme/app_theme.dart';
 
 class ActivityScreen extends StatefulWidget {
@@ -37,15 +39,26 @@ class _ActivityScreenState extends State<ActivityScreen>
   late CheckOutController controller1;
   bool clickedExcursion = true;
   List<TextEditingController> controllerTE = [];
-
+  String? token;
   @override
   void initState() {
     super.initState();
+
+    initializingData();
     theme = AppTheme.shoppingTheme;
 
     controller = FxControllerStore.put(ActivityController(this));
     controller1 = FxControllerStore.put(CheckOutController(this));
     print(controller.person_count);
+  }
+
+  void initializingData() {
+    SharedPreferences.getInstance().then((sharedPrefValue) {
+      setState(() {
+        token = sharedPrefValue.getString(AppConstants.KEY_ACCESS_TOKEN)!;
+        log('Profile Toen:${token!}');
+      });
+    });
   }
 
   @override
@@ -344,7 +357,8 @@ class _ActivityScreenState extends State<ActivityScreen>
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(15),
               ),
-              color: const Color(0xff5c69e0),
+              // color: const Color(0xff5c69e0),
+              color: Colors.transparent,
               child: Container(
                 margin: const EdgeInsets.only(
                   top: 8,
@@ -672,16 +686,31 @@ class _ActivityScreenState extends State<ActivityScreen>
                                       hint: Row(
                                         children: [
                                           Expanded(
-                                            child: FxText.labelLarge(
-                                              // "Code",
-                                              controller.TransferCodes[0],
-                                              // controller.selectedtransfer![0],
-                                              fontWeight: 600,
-                                              color: Colors.black,
-                                              // color: theme.colorScheme.onPrimary,
-                                              letterSpacing: 0.4,
-                                            ),
-                                          ),
+                                              child:
+                                                  controller.TransferCodes[0] ==
+                                                          'without'
+                                                      ? FxText.labelLarge(
+                                                          // "Code",
+                                                          // "Without Transfer",
+                                                          controller
+                                                              .TransferCodes[0],
+                                                          // controller.selectedtransfer![0],
+                                                          fontWeight: 600,
+                                                          color: Colors.black,
+                                                          // color: theme.colorScheme.onPrimary,
+                                                          letterSpacing: 0.4,
+                                                        )
+                                                      : FxText.labelLarge(
+                                                          // "Code",
+                                                          // "Without Transfer",
+                                                          controller
+                                                              .TransferCodes[0],
+                                                          // controller.selectedtransfer![0],
+                                                          fontWeight: 600,
+                                                          color: Colors.black,
+                                                          // color: theme.colorScheme.onPrimary,
+                                                          letterSpacing: 0.4,
+                                                        )),
                                         ],
                                       ),
                                       value: widget.excursions[i].isSharing
@@ -1313,6 +1342,9 @@ class _ActivityScreenState extends State<ActivityScreen>
                           opacity: controller.fadeAnimation,
                           child: FxButton.block(
                               onPressed: () {
+                                // token == null
+                                //     ? controller.Login()
+                                //     :
                                 controller.goToCheckout();
                               },
                               backgroundColor: const Color(0xff1529e8),

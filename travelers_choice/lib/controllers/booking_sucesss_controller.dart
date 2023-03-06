@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutx/core/state_management/controller.dart';
 
 import '../models/all_attraction_modal.dart';
-import '../views/full_app.dart';
+import '../views/all_bookings.dart';
 
 class BookingSuccessController extends FxController {
   @override
@@ -38,7 +38,7 @@ class BookingSuccessController extends FxController {
     Navigator.of(context, rootNavigator: true).pushReplacement(
       PageRouteBuilder(
           transitionDuration: const Duration(seconds: 2),
-          pageBuilder: (_, __, ___) => FullApp(_favouriteMeals)),
+          pageBuilder: (_, __, ___) => const AllBookings()),
     );
   }
 
@@ -46,7 +46,7 @@ class BookingSuccessController extends FxController {
     Navigator.of(context, rootNavigator: true).pushReplacement(
       PageRouteBuilder(
           transitionDuration: const Duration(seconds: 2),
-          pageBuilder: (_, __, ___) => FullApp(_favouriteMeals)),
+          pageBuilder: (_, __, ___) => const AllBookings()),
     );
   }
 

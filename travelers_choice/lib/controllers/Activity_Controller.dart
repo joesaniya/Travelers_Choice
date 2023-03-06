@@ -11,6 +11,7 @@ import 'package:intl/intl.dart';
 import '../models/cart.dart';
 import '../views/checkout_screen.dart';
 import '../views/hotel_travel_constants.dart';
+import '../views/login_Screens/login_screen.dart';
 
 List<TextEditingController> controllerTE = [];
 // double amount = 0;
@@ -442,6 +443,15 @@ class ActivityController extends FxController {
     } on PlatformException {
       print('PlatformException');
     }
+  }
+
+  void Login() {
+    log('calling login....');
+    Navigator.of(context, rootNavigator: true).pushReplacement(
+      MaterialPageRoute(
+        builder: (context) => const LogInScreen(),
+      ),
+    );
   }
 
   Future<void> goToCheckout() async {

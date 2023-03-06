@@ -10,6 +10,8 @@ import '../controllers/profile_controller.dart';
 import '../loading_effect.dart';
 import '../services/app_constants.dart';
 import '../theme/app_theme.dart';
+import 'login_Screens/login_screen.dart';
+import 'register_screen/register_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key? key}) : super(key: key);
@@ -58,7 +60,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
         profileController.token =
             sharedPrefValue.getString(AppConstants.KEY_ACCESS_TOKEN)!;
-        log(profileController.token!);
+        log('Profile Toen:${profileController.token!}');
         // profileController.balanceamount =
         // sharedPrefValue.getInt(AppConstants.KEY_ACCESS_BALANCE) as double?;
 
@@ -96,54 +98,34 @@ class _ProfileScreenState extends State<ProfileScreen> {
             body: ListView(
               padding: FxSpacing.fromLTRB(24, 36, 24, 24),
               children: [
-                FxContainer(
-                  color: Colors.white,
-                  child: Row(
-                    children: [
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(50),
-                        // child: Image(
-                        //   image: AssetImage(profileController.user.url),
-                        //   height: 100,
-                        //   width: 100,
-                        // ),
-                        child: SizedBox(
-                          height: 100,
-                          width: 100,
-                          child: CircleAvatar(
-                            backgroundColor:
-                                theme.colorScheme.primary.withAlpha(28),
-                            child: FxText.bodyLarge(profileController.name![0],
-                                color: theme.colorScheme.primary,
-                                fontSize: 30,
-                                fontWeight: 600),
-                          ),
-                        ),
-                      ),
-                      FxSpacing.width(16),
-                      Expanded(
+                profileController.token == null
+                    ? FxContainer(
+                        color: Colors.white,
                         child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            FxText.bodyLarge(
-                                // profileController.user.name,
-                                profileController.name.toString(),
-                                fontWeight: 700),
-                            FxSpacing.width(8),
-                            FxText.bodyMedium(
-                              // profileController.email.toString()
-                              profileController.email.toString(),
+                            GestureDetector(
+                              onTap: () {
+                                Navigator.of(context, rootNavigator: true)
+                                    .pushReplacement(
+                                  MaterialPageRoute(
+                                    builder: (context) => const LogInScreen(),
+                                  ),
+                                );
+                              },
+                              child: FxText.bodyMedium(
+                                'Sign In',
+                              ),
                             ),
                             FxSpacing.height(8),
                             FxButton.outlined(
-                                onPressed: () async {
-                                  bool result =
-                                      await profileController.EditProfile();
-                                  if (result) {
-                                    print("resultresultresultresult $result");
-
-                                    initializingData();
-                                  }
+                                onPressed: () {
+                                  Navigator.of(context, rootNavigator: true)
+                                      .pushReplacement(
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          const RegisterScreen(),
+                                    ),
+                                  );
                                 },
                                 splashColor:
                                     const Color(0xff1529e8).withAlpha(40),
@@ -151,16 +133,80 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 padding: FxSpacing.xy(16, 4),
                                 borderRadiusAll: 32,
                                 child: FxText.bodySmall(
-                                  "Edit profile",
+                                  "Sign Up",
                                   // color: customTheme.cookifyPrimary
                                   color: const Color(0xff1529e8),
                                 ))
                           ],
                         ),
+                      )
+                    : FxContainer(
+                        color: Colors.white,
+                        child: Row(
+                          children: [
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(50),
+                              // child: Image(
+                              //   image: AssetImage(profileController.user.url),
+                              //   height: 100,
+                              //   width: 100,
+                              // ),
+                              child: SizedBox(
+                                height: 100,
+                                width: 100,
+                                child: CircleAvatar(
+                                  backgroundColor:
+                                      theme.colorScheme.primary.withAlpha(28),
+                                  child: FxText.bodyLarge(
+                                      profileController.name![0],
+                                      color: theme.colorScheme.primary,
+                                      fontSize: 30,
+                                      fontWeight: 600),
+                                ),
+                              ),
+                            ),
+                            FxSpacing.width(16),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  FxText.bodyLarge(
+                                      // profileController.user.name,
+                                      profileController.name.toString(),
+                                      fontWeight: 700),
+                                  FxSpacing.width(8),
+                                  FxText.bodyMedium(
+                                    // profileController.email.toString()
+                                    profileController.email.toString(),
+                                  ),
+                                  FxSpacing.height(8),
+                                  FxButton.outlined(
+                                      onPressed: () async {
+                                        bool result = await profileController
+                                            .EditProfile();
+                                        if (result) {
+                                          print(
+                                              "resultresultresultresult $result");
+
+                                          initializingData();
+                                        }
+                                      },
+                                      splashColor:
+                                          const Color(0xff1529e8).withAlpha(40),
+                                      borderColor: const Color(0xff1529e8),
+                                      padding: FxSpacing.xy(16, 4),
+                                      borderRadiusAll: 32,
+                                      child: FxText.bodySmall(
+                                        "Edit profile",
+                                        // color: customTheme.cookifyPrimary
+                                        color: const Color(0xff1529e8),
+                                      ))
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
-                    ],
-                  ),
-                ),
                 FxSpacing.height(24),
 
                 //wallet
@@ -316,160 +362,173 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             color: theme.colorScheme.onBackground,
                           ),
                         ),
+                        profileController.token == null
+                            ? const SizedBox()
+                            : Column(
+                                children: [
+                                  const Divider(
+                                    thickness: 0.8,
+                                  ),
+                                  FxSpacing.height(8),
+                                  Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: FxText.titleMedium(
+                                      "Account",
+                                      fontWeight: 700,
+                                    ),
+                                  ),
+                                  FxSpacing.height(8),
+                                  ListTile(
+                                    dense: true,
+                                    contentPadding: FxSpacing.zero,
+                                    visualDensity: VisualDensity.compact,
+                                    title: FxText.bodyMedium(
+                                      "Personal Information",
+                                      letterSpacing: 0,
+                                    ),
+                                    trailing: Icon(
+                                      Icons.chevron_right,
+                                      size: 20,
+                                      color: theme.colorScheme.onBackground,
+                                    ),
+                                  ),
+                                  ListTile(
+                                    onTap: () {
+                                      log('update password clicked');
 
-                        const Divider(
-                          thickness: 0.8,
-                        ),
-                        FxSpacing.height(8),
-                        FxText.titleMedium(
-                          "Account",
-                          fontWeight: 700,
-                        ),
-                        FxSpacing.height(8),
-                        ListTile(
-                          dense: true,
-                          contentPadding: FxSpacing.zero,
-                          visualDensity: VisualDensity.compact,
-                          title: FxText.bodyMedium(
-                            "Personal Information",
-                            letterSpacing: 0,
-                          ),
-                          trailing: Icon(
-                            Icons.chevron_right,
-                            size: 20,
-                            color: theme.colorScheme.onBackground,
-                          ),
-                        ),
-                        ListTile(
-                          onTap: () {
-                            log('update password clicked');
+                                      Navigator.of(context, rootNavigator: true)
+                                          .push(PageRouteBuilder(
+                                              transitionDuration:
+                                                  const Duration(
+                                                      milliseconds: 500),
+                                              transitionsBuilder: (
+                                                BuildContext context,
+                                                Animation<double> animation,
+                                                Animation<double>
+                                                    secondaryAnimation,
+                                                Widget child,
+                                              ) =>
+                                                  FadeTransition(
+                                                    opacity: animation,
+                                                    child: child,
+                                                  ),
+                                              pageBuilder: (_, __, ___) =>
+                                                  UpdatePasswordScreen(
+                                                      profileController
+                                                          .token)));
+                                    },
+                                    dense: true,
+                                    contentPadding: FxSpacing.zero,
+                                    visualDensity: VisualDensity.compact,
+                                    title: FxText.bodyMedium(
+                                      "Update Password",
+                                      letterSpacing: 0,
+                                    ),
+                                    trailing: Icon(
+                                      Icons.chevron_right,
+                                      size: 20,
+                                      color: theme.colorScheme.onBackground,
+                                    ),
+                                  ),
+                                  ListTile(
+                                    onTap: () {
+                                      log('all bookings clicked');
 
-                            Navigator.of(context, rootNavigator: true).push(
-                                PageRouteBuilder(
-                                    transitionDuration:
-                                        const Duration(milliseconds: 500),
-                                    transitionsBuilder: (
-                                      BuildContext context,
-                                      Animation<double> animation,
-                                      Animation<double> secondaryAnimation,
-                                      Widget child,
-                                    ) =>
-                                        FadeTransition(
-                                          opacity: animation,
-                                          child: child,
-                                        ),
-                                    pageBuilder: (_, __, ___) =>
-                                        UpdatePasswordScreen(
-                                            profileController.token)));
-                          },
-                          dense: true,
-                          contentPadding: FxSpacing.zero,
-                          visualDensity: VisualDensity.compact,
-                          title: FxText.bodyMedium(
-                            "Update Password",
-                            letterSpacing: 0,
-                          ),
-                          trailing: Icon(
-                            Icons.chevron_right,
-                            size: 20,
-                            color: theme.colorScheme.onBackground,
-                          ),
-                        ),
-                        ListTile(
-                          onTap: () {
-                            log('all bookings clicked');
-
-                            Navigator.of(context, rootNavigator: true).push(
-                                PageRouteBuilder(
-                                    transitionDuration:
-                                        const Duration(milliseconds: 500),
-                                    transitionsBuilder: (
-                                      BuildContext context,
-                                      Animation<double> animation,
-                                      Animation<double> secondaryAnimation,
-                                      Widget child,
-                                    ) =>
-                                        FadeTransition(
-                                          opacity: animation,
-                                          child: child,
-                                        ),
-                                    pageBuilder: (_, __, ___) =>
-                                        const AllBookings()));
-                          },
-                          dense: true,
-                          contentPadding: FxSpacing.zero,
-                          visualDensity: VisualDensity.compact,
-                          title: FxText.bodyMedium(
-                            "All Bookings",
-                            letterSpacing: 0,
-                          ),
-                          trailing: Icon(
-                            Icons.chevron_right,
-                            size: 20,
-                            color: theme.colorScheme.onBackground,
-                          ),
-                        ),
-                        ListTile(
-                          dense: true,
-                          contentPadding: FxSpacing.zero,
-                          visualDensity: VisualDensity.compact,
-                          title: FxText.bodyMedium(
-                            "Bookings Confirmed",
-                            letterSpacing: 0,
-                          ),
-                          trailing: Icon(
-                            Icons.chevron_right,
-                            size: 20,
-                            color: theme.colorScheme.onBackground,
-                          ),
-                        ),
-                        ListTile(
-                          dense: true,
-                          contentPadding: FxSpacing.zero,
-                          visualDensity: VisualDensity.compact,
-                          title: FxText.bodyMedium(
-                            "Bookings Cancelled",
-                            letterSpacing: 0,
-                          ),
-                          trailing: Icon(
-                            Icons.chevron_right,
-                            size: 20,
-                            color: theme.colorScheme.onBackground,
-                          ),
-                        ),
-                        ListTile(
-                          dense: true,
-                          contentPadding: FxSpacing.zero,
-                          visualDensity: VisualDensity.compact,
-                          title: FxText.bodyMedium(
-                            "Transaction History",
-                            letterSpacing: 0,
-                          ),
-                          trailing: Icon(
-                            Icons.chevron_right,
-                            size: 20,
-                            color: theme.colorScheme.onBackground,
-                          ),
-                        ),
-                        FxSpacing.height(16),
-                        Center(
-                            child: FxButton.rounded(
-                          onPressed: () {
-                            // logout(context);
-                            log('logout clicked');
-                            profileController.logout(context);
-                            // Navigator.of(context, rootNavigator: true).push(
-                            //   MaterialPageRoute(
-                            //       builder: (context) => CookifySplashScreen()),
-                            // );
-                          },
-                          elevation: 2,
-                          backgroundColor: const Color(0xff1529e8),
-                          child: FxText.labelLarge(
-                            "LOGOUT",
-                            color: customTheme.cookifyOnPrimary,
-                          ),
-                        ))
+                                      Navigator.of(context, rootNavigator: true)
+                                          .push(PageRouteBuilder(
+                                              transitionDuration:
+                                                  const Duration(
+                                                      milliseconds: 500),
+                                              transitionsBuilder: (
+                                                BuildContext context,
+                                                Animation<double> animation,
+                                                Animation<double>
+                                                    secondaryAnimation,
+                                                Widget child,
+                                              ) =>
+                                                  FadeTransition(
+                                                    opacity: animation,
+                                                    child: child,
+                                                  ),
+                                              pageBuilder: (_, __, ___) =>
+                                                  const AllBookings()));
+                                    },
+                                    dense: true,
+                                    contentPadding: FxSpacing.zero,
+                                    visualDensity: VisualDensity.compact,
+                                    title: FxText.bodyMedium(
+                                      "All Bookings",
+                                      letterSpacing: 0,
+                                    ),
+                                    trailing: Icon(
+                                      Icons.chevron_right,
+                                      size: 20,
+                                      color: theme.colorScheme.onBackground,
+                                    ),
+                                  ),
+                                  ListTile(
+                                    dense: true,
+                                    contentPadding: FxSpacing.zero,
+                                    visualDensity: VisualDensity.compact,
+                                    title: FxText.bodyMedium(
+                                      "Bookings Confirmed",
+                                      letterSpacing: 0,
+                                    ),
+                                    trailing: Icon(
+                                      Icons.chevron_right,
+                                      size: 20,
+                                      color: theme.colorScheme.onBackground,
+                                    ),
+                                  ),
+                                  ListTile(
+                                    dense: true,
+                                    contentPadding: FxSpacing.zero,
+                                    visualDensity: VisualDensity.compact,
+                                    title: FxText.bodyMedium(
+                                      "Bookings Cancelled",
+                                      letterSpacing: 0,
+                                    ),
+                                    trailing: Icon(
+                                      Icons.chevron_right,
+                                      size: 20,
+                                      color: theme.colorScheme.onBackground,
+                                    ),
+                                  ),
+                                  ListTile(
+                                    dense: true,
+                                    contentPadding: FxSpacing.zero,
+                                    visualDensity: VisualDensity.compact,
+                                    title: FxText.bodyMedium(
+                                      "Transaction History",
+                                      letterSpacing: 0,
+                                    ),
+                                    trailing: Icon(
+                                      Icons.chevron_right,
+                                      size: 20,
+                                      color: theme.colorScheme.onBackground,
+                                    ),
+                                  ),
+                                  FxSpacing.height(16),
+                                  Center(
+                                      child: FxButton.rounded(
+                                    onPressed: () {
+                                      // logout(context);
+                                      log('logout clicked');
+                                      profileController.logout(context);
+                                      // Navigator.of(context, rootNavigator: true).push(
+                                      //   MaterialPageRoute(
+                                      //       builder: (context) => CookifySplashScreen()),
+                                      // );
+                                    },
+                                    elevation: 2,
+                                    backgroundColor: const Color(0xff1529e8),
+                                    child: FxText.labelLarge(
+                                      "LOGOUT",
+                                      color: customTheme.cookifyOnPrimary,
+                                    ),
+                                  ))
+                                ],
+                              )
                       ],
                     )),
                 FxSpacing.height(24),

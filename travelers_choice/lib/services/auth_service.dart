@@ -182,6 +182,7 @@ class AuthService {
   //getcountry
 
   Future<CountryModal?> getCountry() async {
+    log('get Country Api');
     try {
       var response = await http.get(
         Uri.parse(
@@ -197,8 +198,10 @@ class AuthService {
         sharedPreferences.setString(
             AppConstants.KEY_ACCESS_TOKEN_CurrenciesList,
             jsonEncode(jsondata['currencies']));
+        sharedPreferences.setString(AppConstants.KEY_ACCESS_TOKEN_countryId,
+            jsonEncode(jsondata['countries']));
         // sharedPreferences.setString("countrycode", countryModalFromJson(response.body).toJson() );
-
+        log('currencies:${AppConstants.KEY_ACCESS_TOKEN_CurrenciesList}');
         print("new response ${countryModalFromJson(response.body)}");
         return countryModalFromJson(response.body);
       } else {
