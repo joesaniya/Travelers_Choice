@@ -29,7 +29,7 @@ class DetailattractionModal {
   dynamic? cancelBeforeTime;
   dynamic? cancellationFee;
   String? cancellationType;
-  List<dynamic>? faqs;
+  List<Faqs>? faqs;
   bool? isApiConnected;
   bool? isCombo;
   bool? isCustomDate;
@@ -39,9 +39,7 @@ class DetailattractionModal {
   Markup? markup;
 // <<<<<<< HEAD
   dynamic totalRating;
-// =======
-//   dynamic? totalRating;
-// >>>>>>> fbbb748cc95e63646309c21ad393ab877c48ed96
+
   dynamic averageRating;
   List<Activity>? activities;
 
@@ -135,9 +133,9 @@ class DetailattractionModal {
     cancellationFee = json['cancellationFee'] ?? '';
     cancellationType = json['cancellationType'];
     if (json['faqs'] != null) {
-      faqs = <dynamic>[];
+      faqs = <Faqs>[];
       json['faqs'].forEach((v) {
-        // faqs!.add(new Null.fromJson(v));
+        faqs!.add(new Faqs.fromJson(v));
       });
     }
     isApiConnected = json['isApiConnected'];
@@ -207,8 +205,8 @@ class DetailattractionModal {
     data['cancelBeforeTime'] = cancelBeforeTime;
     data['cancellationFee'] = cancellationFee;
     data['cancellationType'] = cancellationType;
-    if (faqs != null) {
-      data['faqs'] = faqs!.map((v) => v!.toJson()).toList();
+     if (this.faqs != null) {
+      data['faqs'] = this.faqs!.map((v) => v.toJson()).toList();
     }
     data['isApiConnected'] = isApiConnected;
     data['isCombo'] = isCombo;
@@ -228,6 +226,28 @@ class DetailattractionModal {
     if (activities != null) {
       data['activities'] = activities!.map((v) => v.toJson()).toList();
     }
+    return data;
+  }
+}
+
+class Faqs {
+  String? question;
+  String? answer;
+  String? sId;
+
+  Faqs({this.question, this.answer, this.sId});
+
+  Faqs.fromJson(Map<String, dynamic> json) {
+    question = json['question'];
+    answer = json['answer'];
+    sId = json['_id'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['question'] = this.question;
+    data['answer'] = this.answer;
+    data['_id'] = this.sId;
     return data;
   }
 }

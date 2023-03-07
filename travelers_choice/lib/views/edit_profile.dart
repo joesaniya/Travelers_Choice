@@ -263,92 +263,92 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               enabledBorderRadius: Constant.textFieldRadius.medium,
             ),
             FxSpacing.height(20),
-            Row(
-              children: [
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      FxText.bodyMedium(
-                        'Gender',
-                      ),
-                      FxSpacing.height(8),
-                      Row(
-                        children: [
-                          FxContainer.rounded(
-                            onTap: () {
-                              controller.changeGender(Gender.male);
-                            },
-                            paddingAll: 12,
-                            color: controller.gender == Gender.male
-                                ? theme.colorScheme.primary
-                                : theme.colorScheme.primaryContainer,
-                            child: Icon(
-                              Icons.male,
-                              color: controller.gender == Gender.male
-                                  ? theme.colorScheme.onPrimary
-                                  : theme.colorScheme.onBackground
-                                      .withAlpha(150),
-                            ),
-                          ),
-                          FxSpacing.width(20),
-                          FxContainer.rounded(
-                            onTap: () {
-                              controller.changeGender(Gender.female);
-                            },
-                            paddingAll: 12,
-                            color: controller.gender == Gender.female
-                                ? theme.colorScheme.primary
-                                : theme.colorScheme.primaryContainer,
-                            child: Icon(
-                              Icons.female,
-                              color: controller.gender == Gender.female
-                                  ? theme.colorScheme.onPrimary
-                                  : theme.colorScheme.onBackground
-                                      .withAlpha(150),
-                            ),
-                          ),
-                        ],
-                      )
-                    ],
-                  ),
-                ),
-                FxSpacing.width(20),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      FxText.bodyMedium(
-                        'Age',
-                      ),
-                      FxSpacing.height(8),
-                      FxTextField(
-                        controller: controller.ageTE,
-                        floatingLabelBehavior: FloatingLabelBehavior.never,
-                        autoFocusedBorder: true,
-                        autoIcon: false,
-                        textFieldStyle: FxTextFieldStyle.outlined,
-                        textFieldType: FxTextFieldType.mobileNumber,
-                        filled: true,
-                        isDense: true,
-                        isCollapsed: true,
-                        labelText: 'Age',
-                        maxLines: 1,
-                        labelStyle: FxTextStyle.bodySmall(xMuted: true),
-                        fillColor: theme.colorScheme.primaryContainer,
-                        focusedBorderColor: theme.colorScheme.primary,
-                        enabledBorderColor: theme.colorScheme.primary,
-                        labelTextColor: theme.colorScheme.onBackground,
-                        cursorColor: theme.colorScheme.onBackground,
-                        focusedBorderRadius: Constant.textFieldRadius.medium,
-                        enabledBorderRadius: Constant.textFieldRadius.medium,
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-            FxSpacing.height(20),
+            // Row(
+            //   children: [
+            //     Expanded(
+            //       child: Column(
+            //         crossAxisAlignment: CrossAxisAlignment.start,
+            //         children: [
+            //           FxText.bodyMedium(
+            //             'Gender',
+            //           ),
+            //           FxSpacing.height(8),
+            //           Row(
+            //             children: [
+            //               FxContainer.rounded(
+            //                 onTap: () {
+            //                   controller.changeGender(Gender.male);
+            //                 },
+            //                 paddingAll: 12,
+            //                 color: controller.gender == Gender.male
+            //                     ? theme.colorScheme.primary
+            //                     : theme.colorScheme.primaryContainer,
+            //                 child: Icon(
+            //                   Icons.male,
+            //                   color: controller.gender == Gender.male
+            //                       ? theme.colorScheme.onPrimary
+            //                       : theme.colorScheme.onBackground
+            //                           .withAlpha(150),
+            //                 ),
+            //               ),
+            //               FxSpacing.width(20),
+            //               FxContainer.rounded(
+            //                 onTap: () {
+            //                   controller.changeGender(Gender.female);
+            //                 },
+            //                 paddingAll: 12,
+            //                 color: controller.gender == Gender.female
+            //                     ? theme.colorScheme.primary
+            //                     : theme.colorScheme.primaryContainer,
+            //                 child: Icon(
+            //                   Icons.female,
+            //                   color: controller.gender == Gender.female
+            //                       ? theme.colorScheme.onPrimary
+            //                       : theme.colorScheme.onBackground
+            //                           .withAlpha(150),
+            //                 ),
+            //               ),
+            //             ],
+            //           )
+            //         ],
+            //       ),
+            //     ),
+            //     FxSpacing.width(20),
+            //     Expanded(
+            //       child: Column(
+            //         crossAxisAlignment: CrossAxisAlignment.start,
+            //         children: [
+            //           FxText.bodyMedium(
+            //             'Age',
+            //           ),
+            //           FxSpacing.height(8),
+            //           FxTextField(
+            //             controller: controller.ageTE,
+            //             floatingLabelBehavior: FloatingLabelBehavior.never,
+            //             autoFocusedBorder: true,
+            //             autoIcon: false,
+            //             textFieldStyle: FxTextFieldStyle.outlined,
+            //             textFieldType: FxTextFieldType.mobileNumber,
+            //             filled: true,
+            //             isDense: true,
+            //             isCollapsed: true,
+            //             labelText: 'Age',
+            //             maxLines: 1,
+            //             labelStyle: FxTextStyle.bodySmall(xMuted: true),
+            //             fillColor: theme.colorScheme.primaryContainer,
+            //             focusedBorderColor: theme.colorScheme.primary,
+            //             enabledBorderColor: theme.colorScheme.primary,
+            //             labelTextColor: theme.colorScheme.onBackground,
+            //             cursorColor: theme.colorScheme.onBackground,
+            //             focusedBorderRadius: Constant.textFieldRadius.medium,
+            //             enabledBorderRadius: Constant.textFieldRadius.medium,
+            //           ),
+            //         ],
+            //       ),
+            //     ),
+            //   ],
+            // ),
+            // FxSpacing.height(20),
             FxButton.block(
               onPressed: () async {
                 print(controller.nameTE.text);

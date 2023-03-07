@@ -53,7 +53,7 @@ class _HistoryScreenState extends State<HistoryScreen>
 
   fetchData() {
     Future.delayed(Duration.zero, () async {
-      await getOrder().then((value) {
+      await getOrder(context).then((value) {
         if (value) {
           isLoading = false;
           setState(() {});
@@ -64,11 +64,11 @@ class _HistoryScreenState extends State<HistoryScreen>
 
   AllAttractionOrders? orders;
   bool isOrdersLoading = true;
-  Future getOrder() async {
+  Future getOrder(context) async {
     isOrdersLoading = true;
     try {
-      var data =
-          await AttractionService().getAttractionOrders(controller.token!);
+      var data = await AttractionService()
+          .getAttractionOrders(controller.token!, context);
       if (data != null) {
         setState(() {});
         // countryList.add(data);
@@ -92,6 +92,15 @@ class _HistoryScreenState extends State<HistoryScreen>
     "About"
   ];
   String searchText = "";
+
+//   Widget attrctionHistory(){
+// if(controller.token==null){
+
+// }
+// else{
+//   return
+// }
+//   }
 
   Widget attractionList() {
     if (orders == null) {
@@ -427,38 +436,6 @@ class _HistoryScreenState extends State<HistoryScreen>
           padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
           child: Column(
             children: [
-              // Container(
-              //   height: 45,
-              //   decoration: BoxDecoration(
-              //     color:Colors.white,
-              //     borderRadius: BorderRadius.circular(
-              //       25.0,
-              //     ),
-              //   ),
-              //   child: TabBar(
-              //     labelColor: Colors.white,
-              //     unselectedLabelColor: Colors.black,
-              //     controller: controller.tabController,
-              //     indicatorSize: TabBarIndicatorSize.tab,
-              //     indicator: BoxDecoration(
-              //         color: Color(0xff1529e8),
-              //         borderRadius: BorderRadius.circular(25)
-              //     ),
-              //
-              //     // labelStyle: TextStyle(color: Colors.white) ,
-              //     //   unselectedLabelColor: Colors.black,
-              //     tabs:  [
-              //       Tab(
-              //         // text: "credits",
-              //         child: Text("Attraction order",
-              //         )
-              //       ),
-              //       Tab(
-              //         child: Text("Visa order"),
-              //       ),
-              //     ],
-              //   ),
-              // ),
               const SizedBox(
                 height: 10,
               ),

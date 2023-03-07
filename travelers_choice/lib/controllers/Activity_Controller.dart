@@ -22,7 +22,7 @@ class ActivityController extends FxController {
   TickerProvider ticker;
   ActivityController(this.ticker);
   bool showLoading = true, uiLoading = true;
-  final List<String> TransferCodes = ['without', 'private', 'shared'];
+  final List<String> TransferCodes = ['Wthout Transfer', 'private', 'shared'];
   final List<String> SharedwithoutCodes = [
     'without',
     'private',
