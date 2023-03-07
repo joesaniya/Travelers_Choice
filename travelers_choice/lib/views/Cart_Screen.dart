@@ -1485,12 +1485,13 @@ class _NewCartState extends State<NewCart>
         )
             :
 
-            Stack(
+            ListView(
+              physics: AlwaysScrollableScrollPhysics(),
               children: [
                 ListView.builder(
                   scrollDirection: Axis.vertical,
                   padding: EdgeInsets.all(5),
-                  physics: const AlwaysScrollableScrollPhysics(),
+                  physics: const NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
                   itemCount: favouriteListCart.length,
                   itemBuilder: (BuildContext context, int index) {

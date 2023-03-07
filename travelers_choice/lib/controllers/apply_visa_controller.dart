@@ -528,7 +528,7 @@ print(visaOrderId);
       return "Please enter Passport Number";
     } else if (FxStringValidator.isPassport(text)) {
       passportController.forward();
-      return "Please enter valid Number";
+      return "Enter min 1 alphabet & Number";
     }
     return null;
   }
