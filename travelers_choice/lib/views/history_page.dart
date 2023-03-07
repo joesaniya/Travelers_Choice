@@ -129,12 +129,12 @@ class _HistoryScreenState extends State<HistoryScreen>
                     FxContainer(
                       paddingAll: 0,
                       borderRadiusAll: 4,
-                      height: 100,
-                      width: 100,
+                      height: MediaQuery.of(context).size.height * 0.11,
+                      width: MediaQuery.of(context).size.width * 0.2,
                       clipBehavior: Clip.antiAliasWithSaveLayer,
                       child: CachedNetworkImage(
-                        height: 100,
-                        width: 100,
+                        height: MediaQuery.of(context).size.height * 0.11,
+                        width: MediaQuery.of(context).size.width * 0.2,
                         fit: BoxFit.cover,
                         progressIndicatorBuilder: (context, url, progress) =>
                             Center(
@@ -146,7 +146,7 @@ class _HistoryScreenState extends State<HistoryScreen>
                             'https://a.walletbot.online${orders!.result!.data![index].attraction!.images!.first}',
                       ),
                     ),
-                    FxSpacing.width(16),
+                    FxSpacing.width(10),
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -164,19 +164,20 @@ class _HistoryScreenState extends State<HistoryScreen>
                           ),
                           FxSpacing.height(8),
                           Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               FxText.bodyMedium(
                                 'Pax',
                                 fontWeight: 600,
                               ),
+                              FxSpacing.width(7),
                               Expanded(
                                 child: Row(
                                   crossAxisAlignment: CrossAxisAlignment.end,
                                   children: [
                                     Expanded(
                                       child: FxContainer(
-                                        padding: FxSpacing.fromLTRB(8, 6, 8, 6),
+                                        padding: FxSpacing.fromLTRB(5, 6, 1, 6),
                                         color: const Color(0xff1529e8)
                                             .withAlpha(40),
                                         child: Row(
@@ -185,11 +186,12 @@ class _HistoryScreenState extends State<HistoryScreen>
                                                 orders!.result!.data![index]
                                                     .activities!.adultsCount!
                                                     .toString(),
+
                                                 color: const Color(0xff1529e8),
                                                 // color: customTheme.groceryPrimary,
                                                 fontWeight: 500,
                                                 letterSpacing: -0.2),
-                                            FxSpacing.width(4),
+                                            FxSpacing.width(2),
                                             FxText.bodyMedium('Adult',
                                                 color: const Color(0xff1529e8),
                                                 // color: customTheme.groceryPrimary,
@@ -199,10 +201,10 @@ class _HistoryScreenState extends State<HistoryScreen>
                                         ),
                                       ),
                                     ),
-                                    FxSpacing.width(10),
+                                    FxSpacing.width(8),
                                     Expanded(
                                       child: FxContainer(
-                                        padding: FxSpacing.fromLTRB(8, 6, 8, 6),
+                                        padding: FxSpacing.fromLTRB(5, 6, 1, 6),
                                         color: const Color(0xff1529e8)
                                             .withAlpha(40),
                                         child: Row(
@@ -211,12 +213,13 @@ class _HistoryScreenState extends State<HistoryScreen>
                                                 orders!.result!.data![index]
                                                     .activities!.childrenCount!
                                                     .toString(),
+
                                                 color: const Color(0xff1529e8),
                                                 // color: customTheme.groceryPrimary,
                                                 fontWeight: 500,
                                                 letterSpacing: -0.2),
-                                            FxSpacing.width(4),
-                                            FxText.bodyMedium('child',
+                                            FxSpacing.width(2),
+                                            FxText.bodyMedium('Child',
                                                 color: const Color(0xff1529e8),
                                                 // color: customTheme.groceryPrimary,
                                                 fontWeight: 500,
@@ -225,10 +228,10 @@ class _HistoryScreenState extends State<HistoryScreen>
                                         ),
                                       ),
                                     ),
-                                    FxSpacing.width(10),
+                                    FxSpacing.width(8),
                                     Expanded(
                                       child: FxContainer(
-                                        padding: FxSpacing.fromLTRB(8, 6, 8, 6),
+                                        padding: FxSpacing.fromLTRB(5, 6, 1, 6),
                                         color: const Color(0xff1529e8)
                                             .withAlpha(40),
                                         child: Row(
@@ -241,7 +244,7 @@ class _HistoryScreenState extends State<HistoryScreen>
                                                 // color: customTheme.groceryPrimary,
                                                 fontWeight: 500,
                                                 letterSpacing: -0.2),
-                                            FxSpacing.width(4),
+                                            FxSpacing.width(2),
                                             FxText.bodyMedium('Infant',
                                                 color: const Color(0xff1529e8),
                                                 // color: customTheme.groceryPrimary,

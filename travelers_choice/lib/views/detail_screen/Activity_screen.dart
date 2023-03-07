@@ -33,6 +33,7 @@ class ActivityScreen extends StatefulWidget {
 class _ActivityScreenState extends State<ActivityScreen>
     with TickerProviderStateMixin {
   late ThemeData theme;
+  bool isSelected = false;
 
   late ActivityController controller;
   late CheckOutController controller1;
@@ -43,7 +44,7 @@ class _ActivityScreenState extends State<ActivityScreen>
   @override
   void initState() {
     super.initState();
-
+    favouriteListCheck();
     // initializingData();
     theme = AppTheme.shoppingTheme;
 
@@ -68,6 +69,15 @@ class _ActivityScreenState extends State<ActivityScreen>
         builder: (controller) {
           return _buildBody();
         });
+  }
+
+  favouriteListCheck() async {
+    isSelected =
+        favouriteList.any((e) => e.activity.sId == widget.excursions.first.sId);
+    setState(() {
+      isSelected;
+    });
+    log('Fav List Check:$isSelected');
   }
 
   Widget _buildSelect1() {
