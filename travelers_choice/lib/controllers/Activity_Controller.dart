@@ -9,8 +9,10 @@ import 'package:hotel_travel/models/atteraction_model.dart';
 import 'package:intl/intl.dart';
 
 import '../models/cart.dart';
+import '../views/Cart_Screen.dart';
 import '../views/checkout_screen.dart';
 import '../views/hotel_travel_constants.dart';
+import '../views/login_Screens/login_screen.dart';
 
 List<TextEditingController> controllerTE = [];
 // double amount = 0;
@@ -414,7 +416,7 @@ class ActivityController extends FxController {
   }
 
   void fetchloader() async {
-    await Future.delayed(const Duration(seconds: 4));
+    await Future.delayed(const Duration(seconds: 1));
 
     uiLoading = false;
     log('fetchloader');
@@ -444,6 +446,41 @@ class ActivityController extends FxController {
     }
   }
 
+  void Login() {
+    log('calling login....');
+    Navigator.of(context, rootNavigator: true).pushReplacement(
+      MaterialPageRoute(
+        builder: (context) => const LogInScreen(),
+      ),
+    );
+  }
+
+  Future<void> goToCheckout1() async {
+    await Future.delayed(const Duration(seconds: 1));
+
+    log(selectedtour.length.toString());
+    log(selectedtour.first.name.toString());
+    log(selectedtour.first.adultCount.toString());
+    Navigator.of(context, rootNavigator: true).push(PageRouteBuilder(
+        transitionDuration: const Duration(milliseconds: 500),
+        transitionsBuilder: (
+          BuildContext context,
+          Animation<double> animation,
+          Animation<double> secondaryAnimation,
+          Widget child,
+        ) =>
+            FadeTransition(
+              opacity: animation,
+              child: child,
+            ),
+        pageBuilder: (_, __, ___) => CheckOutScreen(
+            selectedtour.length,
+            selectedtour,
+            dateTE.text,
+            selectedtransfer,
+            grandSelectedTourAmount())));
+  }
+
   Future<void> goToCheckout() async {
     await Future.delayed(const Duration(seconds: 1));
     if (selectedtour.isEmpty) {
@@ -465,7 +502,7 @@ class ActivityController extends FxController {
                 opacity: animation,
                 child: child,
               ),
-          pageBuilder: (_, __, ___) => CheckOutScreen(
+          pageBuilder: (_, __, ___) => AttractionCartPage(
               selectedtour.length,
               // selectedtours,
               selectedtour,
@@ -474,7 +511,19 @@ class ActivityController extends FxController {
 
               // excursions.activities!
               // amount
-              grandSelectedTourAmount())));
+              grandSelectedTourAmount())
+
+          // CheckOutScreen(
+          //     selectedtour.length,
+          //     // selectedtours,
+          //     selectedtour,
+          //     dateTE.text,
+          //     selectedtransfer,
+
+          //     // excursions.activities!
+          //     // amount
+          //     grandSelectedTourAmount())
+          ));
     }
   }
 

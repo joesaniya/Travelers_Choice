@@ -121,9 +121,9 @@ class AttractionService {
     try {
       var response = await http.get(
         Uri.parse(
-          // 'https://a.walletbot.online/api/v1/attractions/all',
+         
             'https://secure.mytravellerschoice.com/api/v1/attractions/orders/all'
-          //
+          
         ),
         headers: {
           'Content-Type': 'application/json',

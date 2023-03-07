@@ -376,7 +376,7 @@ class _ReviewScreenState extends State<ReviewScreen>
                       Container(
                         margin: FxSpacing.top(4),
                         child: FxText.bodySmall(
-                            "${widget.TotalRatingCount.toStringAsFixed(0)} Ratings",
+                            "${controller.reviewsget!.first.totalAttractionReviews} Ratings",
                             muted: true),
                       ),
                     ],

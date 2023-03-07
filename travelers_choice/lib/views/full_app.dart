@@ -8,10 +8,12 @@ import 'package:hotel_travel/views/history_page.dart';
 import 'package:hotel_travel/views/profile_screen.dart';
 
 import '../controllers/full_app_conrtoller.dart';
+import '../models/atteraction_model.dart';
 import '../theme/app_theme.dart';
 import 'Saved_Screen.dart';
 
 List<Datum> favouriteList = <Datum>[];
+List<Activity> favouriteListCart = <Activity>[];
 
 class FullApp extends StatefulWidget {
   List<AllattractionModal> favouriteMeal;

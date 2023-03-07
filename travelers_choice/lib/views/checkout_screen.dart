@@ -71,12 +71,13 @@ class _CheckOutScreenState extends State<CheckOutScreen>
   late OutlineInputBorder outlineInputBorderenable;
   late OutlineInputBorder outlineInputBorderfocus;
   List? selectedExcursions;
+  String? token;
   @override
   void initState() {
     super.initState();
     customTheme = AppTheme.customTheme;
     selectedExcursions = widget.selectedtourOption;
-    log('Selected Tour length:${widget.selectedtourOption.first.sId}');
+    // log('Selected Tour length:${widget.selectedtourOption.first.sId}');
     log('Selected Total Amount:${widget.totalAmount}');
     // log('Selected Total Amount:${widget.onButtonTap}');
     fetchlog();
@@ -1472,10 +1473,10 @@ class _CheckOutScreenState extends State<CheckOutScreen>
               index: 1,
               method: "CCavenue",
               image: 'assets/images/apps/shopping2/icons/cc-avenue.png'),
-          getSinglePayment(
-              index: 2,
-              method: "RazorPay",
-              image: 'assets/images/apps/shopping2/icons/razor_logo.png'),
+          // getSinglePayment(
+          //     index: 2,
+          //     method: "RazorPay",
+          //     image: 'assets/images/apps/shopping2/icons/razor_logo.png'),
 
           //demo
 //           payment(

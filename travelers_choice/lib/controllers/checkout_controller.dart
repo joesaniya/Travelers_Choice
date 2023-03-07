@@ -8,11 +8,13 @@ import 'package:hotel_travel/views/hotel_travel_constants.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
 
+import '../models/atteraction_model.dart';
 import '../models/product.dart';
 import '../models/razor_response.dart';
 import '../models/shipping_address.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import '../views/checkout_screen.dart';
 import '../views/payment_cc.dart';
 import 'razor_credentials.dart' as razorCredentials;
 
@@ -346,6 +348,51 @@ class CheckOutController extends FxController {
     update();
   }
 
+  List<Activity> selectedtour = [];
+  grandSelectedTourAmount() {
+    double amount = 0;
+
+    for (Activity tour in selectedtour) {
+      log('tour.grandTotal:${tour.grandTotal}');
+
+      amount = amount + (tour.grandTotal);
+      log('amount:$amount');
+    }
+
+    return amount;
+    // update();
+    // log('Amount:$amount');
+  }
+
+  late TextEditingController dateTE = TextEditingController();
+  String? selectedtransfer;
+
+  Cartnext(selectedExcursionsDatas, context, total) async {
+    log('cartnext');
+    Navigator.of(context, rootNavigator: true).push(PageRouteBuilder(
+        transitionDuration: const Duration(milliseconds: 500),
+        transitionsBuilder: (
+          BuildContext context,
+          Animation<double> animation,
+          Animation<double> secondaryAnimation,
+          Widget child,
+        ) =>
+            FadeTransition(
+              opacity: animation,
+              child: child,
+            ),
+        pageBuilder: (_, __, ___) => CheckOutScreen(
+            selectedtour.length,
+            // selectedtours,
+            selectedtour,
+            dateTE.text,
+            selectedtransfer,
+
+            // excursions.activities!
+            // amount
+            grandSelectedTourAmount())));
+  }
+
   //next button
   nextPage(selectedExcursionsDatas, context, total) async {
     log('Page Number:$currentPage ');
@@ -376,10 +423,12 @@ class CheckOutController extends FxController {
           ) {
         ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text("Please Enter Phone Number")));
-      } else if (reqTE.text.isEmpty) {
-        ScaffoldMessenger.of(context)
-            .showSnackBar(const SnackBar(content: Text("Enter Request")));
-      } else {
+      }
+      // else if (reqTE.text.isEmpty) {
+      //   ScaffoldMessenger.of(context)
+      //       .showSnackBar(const SnackBar(content: Text("Enter Request")));
+      // }
+      else {
         await pageController.animateToPage(
           currentPage + 1,
           duration: const Duration(milliseconds: 600),
@@ -392,7 +441,6 @@ class CheckOutController extends FxController {
       if (selectedPayment == 1) {
         log('1');
         createOrderccAvenue(selectedExcursionsDatas);
-        // redirect();
       } else {
         log('2');
         createOrder(selectedExcursionsDatas);
@@ -713,19 +761,19 @@ class CheckOutController extends FxController {
       print('Infant Count:${element.infantCount}');
       // var datas=
       Map<String, dynamic> datas = {
-        // "activity": element.sId,
-        // // "date": "2023-02-28",
-        // "date": element.selectedDate,
-        // "adultsCount": element.adultCount,
-        // "childrenCount": element.childCount,
-        // "infantCount": element.infantCount,
-        // "transferType": "private"
-        "activity": "63e6317d20e0e01648630e6a",
-        "date": "2023-04-5",
-        "adultsCount": 1,
-        "childrenCount": 0,
-        "infantCount": 0,
+        "activity": element.sId,
+        // "date": "2023-02-28",
+        "date": element.selectedDate,
+        "adultsCount": element.adultCount,
+        "childrenCount": element.childCount,
+        "infantCount": element.infantCount,
         "transferType": "private"
+        // "activity": "63e6317d20e0e01648630e6a",
+        // "date": "2023-04-5",
+        // "adultsCount": 1,
+        // "childrenCount": 0,
+        // "infantCount": 0,
+        // "transferType": "private"
       };
       ActivityList.add(datas);
       print('Data-->$datas');
@@ -746,14 +794,10 @@ class CheckOutController extends FxController {
     };
     var res = await http.post(
       Uri.parse(
-          // "api.razorpay.com", "v1/orders"
-          "https://secure.mytravellerschoice.com/api/v1/attractions/orders/create"), //https://api.razorpay.com/v1/orders
-      //https://secure.mytravellerschoice.com/api/v1/attractions/orders/create
-
+          "https://secure.mytravellerschoice.com/api/v1/attractions/orders/create"),
       headers: <String, String>{
         "Content-Type": "application/json",
         "Accept": "application/json"
-        // 'authorization': basicAuth,
       },
       body: jsonEncode(body),
     );
@@ -762,13 +806,8 @@ class CheckOutController extends FxController {
     //todo
 
     if (res.statusCode == 200) {
-      // var jsondata = jsonDecode(res.body);
-      // log('Response:${res.body}');
       log('Response cc:${res.body}');
-      // String htmlToParse = res.body;
-      // print(htmlToParse);
-      // log('Html:$htmlToParse');
-      // initPlatformState();
+
       var paymentdata = res.body;
       log('Payment data:$paymentdata');
       Navigator.of(context, rootNavigator: true).pushReplacement(
@@ -776,6 +815,14 @@ class CheckOutController extends FxController {
           builder: (context) => PaymentCC(paymentdata: paymentdata),
         ),
       );
+      //     .whenComplete(() {
+      //   log('complete');
+      //   Navigator.of(context, rootNavigator: true).pushReplacement(
+      //     MaterialPageRoute(
+      //       builder: (context) => const BookingSuccess(),
+      //     ),
+      //   );
+      // });
     } else {
       var jsondata = jsonDecode(res.body);
       log(jsondata['error']);
