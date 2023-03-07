@@ -6,7 +6,6 @@ import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutx/flutx.dart';
 import 'package:hotel_travel/extensions/extensions.dart';
 import 'package:intl/intl.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../controllers/Activity_controller.dart';
 import '../../controllers/checkout_controller.dart';
@@ -73,12 +72,14 @@ class _ActivityScreenState extends State<ActivityScreen>
   }
 
   favouriteListCheck() async {
-    isSelected = favouriteList.any((e) => e.activity.sId == widget.excursions.first.sId);
+    isSelected =
+        favouriteList.any((e) => e.activity.sId == widget.excursions.first.sId);
     setState(() {
       isSelected;
     });
     log('Fav List Check:$isSelected');
   }
+
   Widget _buildSelect1() {
     if (controller.selectedtour.isNotEmpty) {
       return Container(
@@ -1380,122 +1381,90 @@ class _ActivityScreenState extends State<ActivityScreen>
                     child: Column(
                       children: <Widget>[
                         _buildSelect1(),
-                        FadeTransition(
-                          opacity: controller.fadeAnimation,
-                          child: FxButton.block(
-                              onPressed:
-                                  () async {
-                                bool existing = false;
-                                // controller.isFav
-                                //     ? controller.animationController
-                                //         .reverse()
-                                //     : controller.animationController
-                                //         .forward();
-                                log('Fav Item:${favouriteListCart.map((e) => e.sId)}');
-                                log('Sel Id:${widget.excursions.first.sId}');
-                                if (favouriteListCart.isNotEmpty) {
-                                  for (var i = 0;
-                                  i < favouriteListCart.length;
-                                  i++) {
-                                    if (favouriteListCart.first.sId ==
-                                        widget.excursions.first.sId) {
-                                      // favouriteList
-                                      //     .remove(favouriteList[i]);
-                                      existing = true;
-                                    } else {
-                                      existing = false;
-                                      // favouriteList
-                                      //     .add(widget.productdatum);
-                                    }
-                                  }
-                                  log('Existing:$existing');
-                                  if (existing) {
-                                    favouriteListCart
-                                        .remove(widget.excursions.first);
-                                  } else {
-                                    favouriteListCart
-                                        .add(widget.excursions.first);
-                                  }
-                                  // tempFavouriteList.map((e) {
-                                  //   if (e.id ==
-                                  //       widget.productdatum.id) {
-                                  //     favouriteList.remove(e);
-                                  //   } else {
-                                  //     favouriteList
-                                  //         .add(widget.productdatum);
-                                  //   }
-                                  // }).toList();
-                                } else {
-                                  favouriteListCart
-                                      .add(widget.excursions.first);
-                                }
-
-                                // if (isSelected) {
-                                //   // widget.productdatum.favourite =
-                                //   //     false;
-                                //   favouriteList
-                                //       .remove(widget.productdatum);
-
-                                //   //api
-                                // } else {
-                                //   // widget.productdatum.favourite =
-                                //   //     true;
-                                //   favouriteList
-                                //       .add(widget.productdatum);
-                                //   log('Fav Item:${favouriteList.first.id}');
-                                //   //api
-                                //   log('Excursion Id Else:$mealId');
-                                // }
-                                SharedPreferences prefs =
-                                await SharedPreferences
-                                    .getInstance();
-                                prefs.setBool("youKey", isSelected);
-                                setState(() {
-                                  favouriteListCart;
-                                  isSelected = !isSelected;
-
-                                  // widget.toggleFavourite(mealId);
-                                });
-
-                                log('Detail:${favouriteListCart.map((e) => e.sId)}');
-                                controller.goToCheckout();
-
-                                  },
-                              //     () {
-                              //   // token == null
-                              //   //     ? controller.Login()
-                              //   //     :
-                              //
-                              //   // favouriteListCart
-                              //   //     .add(controller.selectedtour as Activity);
-                              // },
-                              backgroundColor: const Color(0xff1529e8),
-                              // backgroundColor: theme.colorScheme.primary,
-                              elevation: 0,
-                              borderRadiusAll: 4,
-                              child: Row(
-                                children: [
-                                  SlideTransition(
-                                    position: controller.animation,
-                                    child: Image(
-                                      height: 22,
-                                      width: 22,
-                                      color: theme.colorScheme.onPrimary,
-                                      image: const AssetImage(
-                                          'assets/images/apps/shopping2/icons/clear_cart_outline.png'),
-                                    ),
-                                  ),
-                                  Expanded(
-                                    child: Center(
-                                      child: FxText.bodyMedium(
-                                        'Checkout',
-                                        fontWeight: 600,
-                                        color: theme.colorScheme.onPrimary,
+                        Row(
+                          children: [
+                            AnimatedBuilder(
+                              animation: controller.cartController,
+                              builder: (BuildContext context, _) {
+                                return Stack(
+                                  children: [
+                                    FxContainer(
+                                      color:
+                                          const Color(0xff1529e8).withAlpha(40),
+                                      paddingAll:
+                                          controller.paddingAnimation.value,
+                                      child: Icon(
+                                        FeatherIcons.shoppingBag,
+                                        color: const Color(0xff1529e8),
+                                        size: controller.cartAnimation.value,
                                       ),
                                     ),
-                                  ),
-                                ],
-                              )),
+                                    // controller.addCart
+                                    //     ?
+                                    Positioned(
+                                      right: 10,
+                                      top: 8,
+                                      child: FxContainer.rounded(
+                                        color: const Color(0xff1529e8),
+                                        paddingAll: 4,
+                                        child: FxText.bodySmall(
+                                          controller.selectedtour.length
+                                              .toString(),
+                                          color: theme.colorScheme.onPrimary,
+                                          fontSize: 8,
+                                          fontWeight: 700,
+                                        ),
+                                      ),
+                                    )
+                                    // : Container(),
+                                  ],
+                                );
+                              },
+                            ),
+                            FxSpacing.width(20),
+                            Expanded(
+                              child: FadeTransition(
+                                opacity: controller.fadeAnimation,
+                                child: FxButton.block(
+                                    onPressed: () {
+                                      // token == null
+                                      //     ? controller.Login()
+                                      //     :
+                                      controller.goToCheckout();
+                                      // favouriteListCart
+                                      //     .add(controller.selectedtour as Activity);
+                                    },
+                                    backgroundColor: const Color(0xff1529e8),
+                                    // backgroundColor: theme.colorScheme.primary,
+                                    elevation: 0,
+                                    borderRadiusAll: 4,
+                                    child: Row(
+                                      children: [
+                                        SlideTransition(
+                                          position: controller.animation,
+                                          child: Image(
+                                            height: 22,
+                                            width: 22,
+                                            color: theme.colorScheme.onPrimary,
+                                            image: const AssetImage(
+                                                'assets/images/apps/shopping2/icons/clear_cart_outline.png'),
+                                          ),
+                                        ),
+                                        Expanded(
+                                          child: Center(
+                                            child: FxText.bodyMedium(
+                                              'Checkout',
+                                              fontWeight: 600,
+                                              color:
+                                                  theme.colorScheme.onPrimary,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    )),
+                              ),
+                            ),
+                          ],
                         ),
                       ],
                     ),

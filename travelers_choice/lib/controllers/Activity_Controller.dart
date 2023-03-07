@@ -357,6 +357,12 @@ class ActivityController extends FxController {
         curve: Curves.easeIn,
       ),
     );
+    paddingAnimation = TweenSequence(<TweenSequenceItem<double>>[
+      TweenSequenceItem<double>(
+          tween: Tween<double>(begin: 16, end: 14), weight: 50),
+      TweenSequenceItem<double>(
+          tween: Tween<double>(begin: 14, end: 16), weight: 50)
+    ]).animate(cartController);
     fadeController.forward();
     cartController.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
