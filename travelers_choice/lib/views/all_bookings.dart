@@ -4,6 +4,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutx/flutx.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../controllers/all_bookings.dart';
 import '../loading_effect.dart';
@@ -591,10 +592,176 @@ class _AllBookingsState extends State<AllBookings>
                                   ),
                                 ),
 
+                                //personal details
+                                FxContainer(
+                                  margin: const EdgeInsets.all(8),
+                                  padding: FxSpacing.fromLTRB(8, 6, 8, 6),
+                                  color: const Color(0xfff5f5f5),
+                                  // color: const Color(0xff1529e8).withAlpha(40),
+                                  child: Column(
+                                    children: [
+                                      Row(
+                                        children: [
+                                          Row(
+                                            children: [
+                                              FxText.bodySmall(
+                                                'Name:',
+                                                fontWeight: 900,
+                                                color: Colors.black,
+                                              ),
+                                              FxSpacing.width(10),
+                                              FxText.bodySmall(
+                                                orders!
+                                                    .result!.data![index].name
+                                                    .toString(),
+                                                fontWeight: 600,
+                                                color: Colors.black,
+                                              ),
+                                            ],
+                                          ),
+                                          // FxSpacing.width(20),
+                                          //3
+                                          Expanded(
+                                              child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              FxText.bodySmall(
+                                                'Email:',
+                                                fontWeight: 900,
+                                                color: Colors.black,
+                                              ),
+                                              FxSpacing.width(10),
+                                              Expanded(
+                                                child: FxText.bodySmall(
+                                                  orders!.result!.data![index]
+                                                      .email
+                                                      .toString(),
+                                                  fontWeight: 600,
+                                                  color: Colors.black,
+                                                ),
+                                              ),
+                                            ],
+                                          ))
+                                        ],
+                                      ),
+                                      //2
+                                      FxSpacing.height(10),
+                                      Row(
+                                        children: [
+                                          Row(
+                                            children: [
+                                              FxText.bodySmall(
+                                                'Country:',
+                                                fontWeight: 900,
+                                                color: Colors.black,
+                                              ),
+                                              FxSpacing.width(10),
+                                              FxText.bodySmall(
+                                                orders!.result!.data![index]
+                                                    .country!.countryName
+                                                    .toString(),
+                                                fontWeight: 600,
+                                                color: Colors.black,
+                                              ),
+                                            ],
+                                          ),
+                                          //3
+                                          Expanded(
+                                              child: Row(
+                                            children: [
+                                              FxText.bodySmall(
+                                                'Phone:',
+                                                fontWeight: 900,
+                                                color: Colors.black,
+                                              ),
+                                              FxSpacing.width(10),
+                                              FxText.bodySmall(
+                                                orders!.result!.data![index]
+                                                    .phoneNumber
+                                                    .toString(),
+                                                fontWeight: 600,
+                                                color: Colors.black,
+                                              ),
+                                            ],
+                                          ))
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
+
                                 //details
                                 Row(
-                                  children: const [],
-                                )
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    FxContainer(
+                                      onTap: () {
+                                        log('review Screen clicked');
+                                        log('id:${orders!.result!.data![index].id}');
+
+                                        // controller.VewPage(orders!
+                                        //     .result!.data![index].id
+                                        //     .toString(),orders!.result!.data[index]);
+                                        // Navigator.push(
+                                        //     context,
+                                        //     MaterialPageRoute(
+                                        //         builder: (context) => ReviewScreen()));
+                                      },
+                                      padding: FxSpacing.fromLTRB(8, 6, 8, 6),
+                                      color:
+                                          const Color(0xff1529e8).withAlpha(40),
+                                      // color:Color(0xff6874E8),
+                                      // customTheme.groceryPrimary.withAlpha(40),
+                                      child: Row(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          FxText.bodyMedium("View",
+                                              color: const Color(0xff1529e8),
+                                              // color: customTheme.groceryPrimary,
+                                              fontWeight: 500,
+                                              letterSpacing: -0.2),
+                                          const Icon(
+                                            MdiIcons.eye,
+                                            size: 14,
+                                            color: Color(0xff1529e8),
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                    FxSpacing.width(10),
+                                    FxContainer(
+                                      onTap: () {
+                                        log('download clicked');
+                                      },
+                                      padding: FxSpacing.fromLTRB(8, 6, 8, 6),
+                                      color:
+                                          const Color(0xff1529e8).withAlpha(40),
+                                      // color:Color(0xff6874E8),
+                                      // customTheme.groceryPrimary.withAlpha(40),
+                                      child: Row(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          FxText.bodyMedium("Download",
+                                              color: const Color(0xff1529e8),
+                                              // color: customTheme.groceryPrimary,
+                                              fontWeight: 500,
+                                              letterSpacing: -0.2),
+                                          const Icon(
+                                            MdiIcons.download,
+                                            size: 14,
+                                            color: Color(0xff1529e8),
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                    FxSpacing.width(10),
+                                  ],
+                                ),
+                                FxSpacing.height(15)
                               ],
                             ),
                           );
