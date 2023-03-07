@@ -1371,44 +1371,90 @@ class _ActivityScreenState extends State<ActivityScreen>
                     child: Column(
                       children: <Widget>[
                         _buildSelect1(),
-                        FadeTransition(
-                          opacity: controller.fadeAnimation,
-                          child: FxButton.block(
-                              onPressed: () {
-                                // token == null
-                                //     ? controller.Login()
-                                //     :
-                                controller.goToCheckout();
-                                // favouriteListCart
-                                //     .add(controller.selectedtour as Activity);
-                              },
-                              backgroundColor: const Color(0xff1529e8),
-                              // backgroundColor: theme.colorScheme.primary,
-                              elevation: 0,
-                              borderRadiusAll: 4,
-                              child: Row(
-                                children: [
-                                  SlideTransition(
-                                    position: controller.animation,
-                                    child: Image(
-                                      height: 22,
-                                      width: 22,
-                                      color: theme.colorScheme.onPrimary,
-                                      image: const AssetImage(
-                                          'assets/images/apps/shopping2/icons/clear_cart_outline.png'),
-                                    ),
-                                  ),
-                                  Expanded(
-                                    child: Center(
-                                      child: FxText.bodyMedium(
-                                        'Checkout',
-                                        fontWeight: 600,
-                                        color: theme.colorScheme.onPrimary,
+                        Row(
+                          children: [
+                            AnimatedBuilder(
+                              animation: controller.cartController,
+                              builder: (BuildContext context, _) {
+                                return Stack(
+                                  children: [
+                                    FxContainer(
+                                      color:
+                                          const Color(0xff1529e8).withAlpha(40),
+                                      paddingAll:
+                                          controller.paddingAnimation.value,
+                                      child: Icon(
+                                        FeatherIcons.shoppingBag,
+                                        color: const Color(0xff1529e8),
+                                        size: controller.cartAnimation.value,
                                       ),
                                     ),
-                                  ),
-                                ],
-                              )),
+                                    // controller.addCart
+                                    //     ?
+                                    Positioned(
+                                      right: 10,
+                                      top: 8,
+                                      child: FxContainer.rounded(
+                                        color: const Color(0xff1529e8),
+                                        paddingAll: 4,
+                                        child: FxText.bodySmall(
+                                          controller.selectedtour.length
+                                              .toString(),
+                                          color: theme.colorScheme.onPrimary,
+                                          fontSize: 8,
+                                          fontWeight: 700,
+                                        ),
+                                      ),
+                                    )
+                                    // : Container(),
+                                  ],
+                                );
+                              },
+                            ),
+                            FxSpacing.width(20),
+                            Expanded(
+                              child: FadeTransition(
+                                opacity: controller.fadeAnimation,
+                                child: FxButton.block(
+                                    onPressed: () {
+                                      // token == null
+                                      //     ? controller.Login()
+                                      //     :
+                                      controller.goToCheckout();
+                                      // favouriteListCart
+                                      //     .add(controller.selectedtour as Activity);
+                                    },
+                                    backgroundColor: const Color(0xff1529e8),
+                                    // backgroundColor: theme.colorScheme.primary,
+                                    elevation: 0,
+                                    borderRadiusAll: 4,
+                                    child: Row(
+                                      children: [
+                                        SlideTransition(
+                                          position: controller.animation,
+                                          child: Image(
+                                            height: 22,
+                                            width: 22,
+                                            color: theme.colorScheme.onPrimary,
+                                            image: const AssetImage(
+                                                'assets/images/apps/shopping2/icons/clear_cart_outline.png'),
+                                          ),
+                                        ),
+                                        Expanded(
+                                          child: Center(
+                                            child: FxText.bodyMedium(
+                                              'Checkout',
+                                              fontWeight: 600,
+                                              color:
+                                                  theme.colorScheme.onPrimary,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    )),
+                              ),
+                            ),
+                          ],
                         ),
                       ],
                     ),

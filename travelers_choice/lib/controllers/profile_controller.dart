@@ -7,6 +7,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/user.dart';
 import '../views/edit_profile.dart';
+import '../views/splash_screens/splash_screen2.dart';
 
 class ProfileController extends FxController {
   bool showLoading = true, uiLoading = true;
@@ -19,7 +20,6 @@ class ProfileController extends FxController {
 
 //   double? balanceamount;
   String? token;
-
 
   @override
   initState() {
@@ -43,6 +43,11 @@ class ProfileController extends FxController {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.clear().then((value) {
       log('log then');
+      ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text("Successfully logged Out!!")));
+      // Navigator.of(context).pushAndRemoveUntil(
+      //     MaterialPageRoute(builder: (context) => const SplashScreen2()),
+      //     (route) => false);
       Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(builder: (context) => const LogInScreen()),
           (route) => false);
@@ -60,25 +65,24 @@ class ProfileController extends FxController {
   //   });
   // }
 
-  Future<bool> EditProfile() async{
-    var result = await Navigator.of(context, rootNavigator: true).push(PageRouteBuilder(
-        transitionDuration: const Duration(milliseconds: 500),
-        transitionsBuilder: (
-          BuildContext context,
-          Animation<double> animation,
-          Animation<double> secondaryAnimation,
-          Widget child,
-        ) =>
-            FadeTransition(
-              opacity: animation,
-              child: child,
-            ),
-        pageBuilder: (_, __, ___) => EditProfileScreen()));
+  Future<bool> EditProfile() async {
+    var result =
+        await Navigator.of(context, rootNavigator: true).push(PageRouteBuilder(
+            transitionDuration: const Duration(milliseconds: 500),
+            transitionsBuilder: (
+              BuildContext context,
+              Animation<double> animation,
+              Animation<double> secondaryAnimation,
+              Widget child,
+            ) =>
+                FadeTransition(
+                  opacity: animation,
+                  child: child,
+                ),
+            pageBuilder: (_, __, ___) => const EditProfileScreen()));
 
-    if(result == null){
-
+    if (result == null) {
       return false;
-
     }
     return result;
   }

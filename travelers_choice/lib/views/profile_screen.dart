@@ -30,6 +30,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   void initState() {
     super.initState();
 
+    // profileController.token == null ? Null :
     initializingData();
     profileController =
         FxControllerStore.putOrFind<ProfileController>(ProfileController());
