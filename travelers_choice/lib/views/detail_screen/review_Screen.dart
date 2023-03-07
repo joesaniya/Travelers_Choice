@@ -230,13 +230,24 @@ class _ReviewScreenState extends State<ReviewScreen>
         children: <Widget>[
           Row(
             children: <Widget>[
-              Container(
-                width: 36,
+              // Container(
+              //   width: 36,
+              //   height: 36,
+              //   decoration: BoxDecoration(
+              //     shape: BoxShape.circle,
+              //     image: DecorationImage(
+              //         image: AssetImage(image), fit: BoxFit.fill),
+              //   ),
+              // ),
+              SizedBox(
                 height: 36,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  image: DecorationImage(
-                      image: AssetImage(image), fit: BoxFit.fill),
+                width: 36,
+                child: CircleAvatar(
+                  backgroundColor: theme.colorScheme.primary.withAlpha(28),
+                  child: FxText.bodyLarge(name[0],
+                      color: theme.colorScheme.primary,
+                      fontSize: 30,
+                      fontWeight: 600),
                 ),
               ),
               Expanded(
@@ -417,15 +428,31 @@ class _ReviewScreenState extends State<ReviewScreen>
             children: <Widget>[
               Row(
                 children: <Widget>[
-                  Container(
-                    width: 36,
+                  // Container(
+                  //   width: 36,
+                  //   height: 36,
+                  //   decoration: const BoxDecoration(
+                  //     shape: BoxShape.circle,
+                  //     image: DecorationImage(
+                  //         image: AssetImage(
+                  //             './assets/images/profile/avatar_2.jpg'),
+                  //         fit: BoxFit.fill),
+                  //   ),
+                  // ),
+                  SizedBox(
                     height: 36,
-                    decoration: const BoxDecoration(
-                      shape: BoxShape.circle,
-                      image: DecorationImage(
-                          image: AssetImage(
-                              './assets/images/profile/avatar_2.jpg'),
-                          fit: BoxFit.fill),
+                    width: 36,
+                    child: CircleAvatar(
+                      backgroundColor: theme.colorScheme.primary.withAlpha(28),
+                      child: Center(
+                        child: FxText.bodyLarge(
+                            controller.reviewsget!.first.attractionReviews[i]
+                                .user.name[0]
+                                .toUpperCase(),
+                            color: theme.colorScheme.primary,
+                            fontSize: 15,
+                            fontWeight: 600),
+                      ),
                     ),
                   ),
                   Expanded(
