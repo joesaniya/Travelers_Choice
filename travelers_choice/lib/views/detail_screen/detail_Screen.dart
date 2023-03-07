@@ -730,6 +730,9 @@ class _DetailScreenState extends State<DetailScreen>
                             Tab(
                               text: 'Highlights',
                             ),
+                            Tab(
+                              text: 'FAQ\'s',
+                            ),
                           ],
                         ),
                       ),
@@ -881,6 +884,55 @@ class _DetailScreenState extends State<DetailScreen>
                               );
                             },
                           ),
+                          //faq
+                          controller.detailattraction!.first.faqs!.isEmpty
+                              ? Center(
+                                  child: FxText.bodyLarge(
+                                    'No FaQ\'s',
+                                    color: Colors.black,
+                                    fontWeight: 900,
+                                    textAlign: TextAlign.left,
+                                  ),
+                                )
+                              : ListView.separated(
+                                  shrinkWrap: true,
+                                  itemBuilder: (context, index) {
+                                    return SizedBox(
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          FxText.bodyLarge(
+                                            controller.detailattraction!.first
+                                                .faqs![index].question
+                                                .toString(),
+                                            color: Colors.black,
+                                            fontWeight: 900,
+                                            textAlign: TextAlign.left,
+                                          ),
+                                          FxText.bodyMedium(
+                                            controller.detailattraction!.first
+                                                .faqs![index].answer
+                                                .toString(),
+                                            color: Colors.black,
+                                            fontWeight: 500,
+                                            textAlign: TextAlign.left,
+                                          ),
+                                        ],
+                                      ),
+                                    );
+                                  },
+                                  separatorBuilder: (context, index) {
+                                    return Divider(
+                                      color: theme.colorScheme.onBackground
+                                          .withAlpha(180),
+                                      height: 1.2,
+                                    );
+                                  },
+                                  itemCount: controller
+                                      .detailattraction!.first.faqs!.length)
                         ],
                       ),
 

@@ -163,7 +163,7 @@ Country Code => $countryCode
   void initState() {
     super.initState();
     //new
-    tabController = TabController(length: 3, vsync: ticker);
+    tabController = TabController(length: 4, vsync: ticker);
     scrollController = ScrollController(initialScrollOffset: 0.0);
     scrollController.addListener(() {
       changeAppBarColor(scrollController);
