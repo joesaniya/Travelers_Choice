@@ -3,6 +3,7 @@ import 'package:flutx/core/state_management/controller.dart';
 import 'package:hotel_travel/models/cart.dart';
 
 import '../models/all_attraction_modal.dart';
+import '../models/atteraction_model.dart';
 import '../models/product.dart';
 import '../views/full_app.dart';
 import '../views/hotel_travel_constants.dart';
@@ -15,6 +16,7 @@ class SplashScreen2Controller extends FxController {
   }
 
   final List<AllattractionModal> _favouriteMeals = [];
+  final List<Activity> _cartMeal = [];
   final List<AllattractionModal> _availableMeals = <AllattractionModal>[];
 
   void _toggleFavorite(String mealId) {
@@ -53,7 +55,7 @@ class SplashScreen2Controller extends FxController {
     Navigator.of(context, rootNavigator: true).pushReplacement(
       PageRouteBuilder(
           transitionDuration: const Duration(seconds: 2),
-          pageBuilder: (_, __, ___) => FullApp(_favouriteMeals)),
+          pageBuilder: (_, __, ___) => FullApp(_favouriteMeals, _cartMeal)),
     );
   }
 

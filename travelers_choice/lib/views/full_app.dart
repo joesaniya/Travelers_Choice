@@ -17,7 +17,8 @@ List<Activity> favouriteListCart = <Activity>[];
 
 class FullApp extends StatefulWidget {
   List<AllattractionModal> favouriteMeal;
-  FullApp(this.favouriteMeal);
+  List<Activity> cartMeal;
+  FullApp(this.favouriteMeal,this.cartMeal, {super.key});
 
   @override
   _FullAppState createState() => _FullAppState();
@@ -105,7 +106,7 @@ class _FullAppState extends State<FullApp> with SingleTickerProviderStateMixin {
                 TabBarView(
                   controller: controller.tabController,
                   children: <Widget>[
-                    HomeScreen(),
+                    HomeScreen(widget.cartMeal),
                     // HomeScreen(size: size),
 
                     // const Center(child: Text('Saved')),

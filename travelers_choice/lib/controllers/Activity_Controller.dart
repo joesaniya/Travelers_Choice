@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:flutx/flutx.dart';
 
 import 'package:hotel_travel/models/atteraction_model.dart';
+import 'package:hotel_travel/views/new_cart.dart';
 import 'package:intl/intl.dart';
 
 import '../models/cart.dart';
@@ -455,20 +456,52 @@ class ActivityController extends FxController {
     );
   }
 
+  // Future<void> goToCheckout1() async {
+  //   await Future.delayed(const Duration(seconds: 1));
+  //
+  //   log(selectedtour.length.toString());
+  //   log(selectedtour.first.name.toString());
+  //   log(selectedtour.first.adultCount.toString());
+  //   Navigator.of(context, rootNavigator: true).push(PageRouteBuilder(
+  //       transitionDuration: const Duration(milliseconds: 500),
+  //       transitionsBuilder: (
+  //         BuildContext context,
+  //         Animation<double> animation,
+  //         Animation<double> secondaryAnimation,
+  //         Widget child,
+  //       ) =>
+  //           FadeTransition(
+  //             opacity: animation,
+  //             child: child,
+  //           ),
+  //       pageBuilder: (_, __, ___) => CheckOutScreen(
+  //           selectedtour.length,
+  //           selectedtour,
+  //           dateTE.text,
+  //           selectedtransfer,
+  //           grandSelectedTourAmount())));
+  // }
+
+
   Future<void> goToCheckout1() async {
     await Future.delayed(const Duration(seconds: 1));
 
-    log(selectedtour.length.toString());
-    log(selectedtour.first.name.toString());
-    log(selectedtour.first.adultCount.toString());
+    // log(selectedtour.length.toString());
+    // log(selectedtour.first.name.toString());
+    // log(selectedtour.first.adultCount.toString());
+    print(selectedtour.length);
+    print(selectedtour);
+    print(dateTE.text);
+    print(selectedtransfer);
+
     Navigator.of(context, rootNavigator: true).push(PageRouteBuilder(
         transitionDuration: const Duration(milliseconds: 500),
         transitionsBuilder: (
-          BuildContext context,
-          Animation<double> animation,
-          Animation<double> secondaryAnimation,
-          Widget child,
-        ) =>
+            BuildContext context,
+            Animation<double> animation,
+            Animation<double> secondaryAnimation,
+            Widget child,
+            ) =>
             FadeTransition(
               opacity: animation,
               child: child,
@@ -478,7 +511,8 @@ class ActivityController extends FxController {
             selectedtour,
             dateTE.text,
             selectedtransfer,
-            grandSelectedTourAmount())));
+            grandSelectedTourAmount()))
+    );
   }
 
   Future<void> goToCheckout() async {
@@ -487,9 +521,14 @@ class ActivityController extends FxController {
       ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text("Select Your Tour Option")));
     } else {
-      log(selectedtour.length.toString());
-      log(selectedtour.first.name.toString());
-      log(selectedtour.first.adultCount.toString());
+      // log(selectedtour.length.toString());
+      // log(selectedtour.first.name.toString());
+      // log(selectedtour.first.adultCount.toString());
+      print( selectedtour.length);
+      print(selectedtour);
+      print( dateTE.text);
+      print(selectedtransfer);
+      print(grandSelectedTourAmount());
       Navigator.of(context, rootNavigator: true).push(PageRouteBuilder(
           transitionDuration: const Duration(milliseconds: 500),
           transitionsBuilder: (
@@ -502,7 +541,18 @@ class ActivityController extends FxController {
                 opacity: animation,
                 child: child,
               ),
-          pageBuilder: (_, __, ___) => AttractionCartPage(
+          // pageBuilder: (_, __, ___) => AttractionCartPage(
+          //     selectedtour.length,
+          //     // selectedtours,
+          //     selectedtour,
+          //     dateTE.text,
+          //     selectedtransfer,
+          //
+          //     // excursions.activities!
+          //     // amount
+          //     grandSelectedTourAmount())
+
+          pageBuilder: (_, __, ___) => NewCartPage(
               selectedtour.length,
               // selectedtours,
               selectedtour,
@@ -524,6 +574,52 @@ class ActivityController extends FxController {
           //     // amount
           //     grandSelectedTourAmount())
           ));
+    }
+  }
+
+  Future<void> goToCheckoutFromCart() async {
+    await Future.delayed(const Duration(seconds: 1));
+    if (selectedtour.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text("Select Your Tour Option")));
+    } else {
+      log(selectedtour.length.toString());
+      log(selectedtour.first.name.toString());
+      log(selectedtour.first.adultCount.toString());
+      Navigator.of(context, rootNavigator: true).push(PageRouteBuilder(
+          transitionDuration: const Duration(milliseconds: 500),
+          transitionsBuilder: (
+              BuildContext context,
+              Animation<double> animation,
+              Animation<double> secondaryAnimation,
+              Widget child,
+              ) =>
+              FadeTransition(
+                opacity: animation,
+                child: child,
+              ),
+          pageBuilder: (_, __, ___) => NewCartPage(
+              selectedtour.length,
+              // selectedtours,
+              selectedtour,
+              dateTE.text,
+              selectedtransfer,
+
+              // excursions.activities!
+              // amount
+              grandSelectedTourAmount())
+
+        // CheckOutScreen(
+        //     selectedtour.length,
+        //     // selectedtours,
+        //     selectedtour,
+        //     dateTE.text,
+        //     selectedtransfer,
+
+        //     // excursions.activities!
+        //     // amount
+        //     grandSelectedTourAmount())
+      ));
     }
   }
 

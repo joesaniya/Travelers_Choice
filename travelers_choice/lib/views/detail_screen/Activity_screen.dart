@@ -6,6 +6,7 @@ import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutx/flutx.dart';
 import 'package:hotel_travel/extensions/extensions.dart';
 import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../controllers/Activity_controller.dart';
 import '../../controllers/checkout_controller.dart';
@@ -33,6 +34,7 @@ class ActivityScreen extends StatefulWidget {
 class _ActivityScreenState extends State<ActivityScreen>
     with TickerProviderStateMixin {
   late ThemeData theme;
+  bool isSelected = false;
 
   late ActivityController controller;
   late CheckOutController controller1;
@@ -43,7 +45,7 @@ class _ActivityScreenState extends State<ActivityScreen>
   @override
   void initState() {
     super.initState();
-
+    favouriteListCheck();
     // initializingData();
     theme = AppTheme.shoppingTheme;
 
@@ -70,6 +72,13 @@ class _ActivityScreenState extends State<ActivityScreen>
         });
   }
 
+  favouriteListCheck() async {
+    isSelected = favouriteList.any((e) => e.activity.sId == widget.excursions.first.sId);
+    setState(() {
+      isSelected;
+    });
+    log('Fav List Check:$isSelected');
+  }
   Widget _buildSelect1() {
     if (controller.selectedtour.isNotEmpty) {
       return Container(
@@ -1351,14 +1360,92 @@ class _ActivityScreenState extends State<ActivityScreen>
                         FadeTransition(
                           opacity: controller.fadeAnimation,
                           child: FxButton.block(
-                              onPressed: () {
-                                // token == null
-                                //     ? controller.Login()
-                                //     :
+                              onPressed:
+                                  () async {
+                                bool existing = false;
+                                // controller.isFav
+                                //     ? controller.animationController
+                                //         .reverse()
+                                //     : controller.animationController
+                                //         .forward();
+                                log('Fav Item:${favouriteListCart.map((e) => e.sId)}');
+                                log('Sel Id:${widget.excursions.first.sId}');
+                                if (favouriteListCart.isNotEmpty) {
+                                  for (var i = 0;
+                                  i < favouriteListCart.length;
+                                  i++) {
+                                    if (favouriteListCart.first.sId ==
+                                        widget.excursions.first.sId) {
+                                      // favouriteList
+                                      //     .remove(favouriteList[i]);
+                                      existing = true;
+                                    } else {
+                                      existing = false;
+                                      // favouriteList
+                                      //     .add(widget.productdatum);
+                                    }
+                                  }
+                                  log('Existing:$existing');
+                                  if (existing) {
+                                    favouriteListCart
+                                        .remove(widget.excursions.first);
+                                  } else {
+                                    favouriteListCart
+                                        .add(widget.excursions.first);
+                                  }
+                                  // tempFavouriteList.map((e) {
+                                  //   if (e.id ==
+                                  //       widget.productdatum.id) {
+                                  //     favouriteList.remove(e);
+                                  //   } else {
+                                  //     favouriteList
+                                  //         .add(widget.productdatum);
+                                  //   }
+                                  // }).toList();
+                                } else {
+                                  favouriteListCart
+                                      .add(widget.excursions.first);
+                                }
+
+                                // if (isSelected) {
+                                //   // widget.productdatum.favourite =
+                                //   //     false;
+                                //   favouriteList
+                                //       .remove(widget.productdatum);
+
+                                //   //api
+                                // } else {
+                                //   // widget.productdatum.favourite =
+                                //   //     true;
+                                //   favouriteList
+                                //       .add(widget.productdatum);
+                                //   log('Fav Item:${favouriteList.first.id}');
+                                //   //api
+                                //   log('Excursion Id Else:$mealId');
+                                // }
+                                SharedPreferences prefs =
+                                await SharedPreferences
+                                    .getInstance();
+                                prefs.setBool("youKey", isSelected);
+                                setState(() {
+                                  favouriteListCart;
+                                  isSelected = !isSelected;
+
+                                  // widget.toggleFavourite(mealId);
+                                });
+
+                                log('Detail:${favouriteListCart.map((e) => e.sId)}');
                                 controller.goToCheckout();
-                                // favouriteListCart
-                                //     .add(controller.selectedtour as Activity);
-                              },
+
+                                  },
+                              //     () {
+                              //   // token == null
+                              //   //     ? controller.Login()
+                              //   //     :
+                              //
+                              //   // favouriteListCart
+                              //   //     .add(controller.selectedtour as Activity);
+                              // },
                               backgroundColor: const Color(0xff1529e8),
                               // backgroundColor: theme.colorScheme.primary,
                               elevation: 0,

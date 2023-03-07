@@ -454,7 +454,7 @@ print(visaOrderId);
       log('Response cc:${res.body}');
       var visaPaymentData = res.body;
       log('Payment data:$visaPaymentData');
-      Navigator.of(context, rootNavigator: true).pushReplacement(
+      Navigator.of(context, rootNavigator: true).push(
         MaterialPageRoute(
           builder: (context) => PaymentCCVisa(visaPaymentData: visaPaymentData),
         ),

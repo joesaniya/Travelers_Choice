@@ -22,10 +22,12 @@ import '../theme/app_theme.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
+import 'Cart_Screen.dart';
 import 'checkout_screen.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+  List<Activity> cartMeal;
+   HomeScreen(this.cartMeal, {super.key});
 
   // const HomeScreen({required this.size});
   // final Size size;
@@ -187,8 +189,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       text = text.replaceAll("_", " ");
 
       List<String> words = text.split(" ");
-      // var currencySymbol = selectedCountry!.isocode;
-      // var conversionRate = selectedCountry!.conversionRate;
+      var currencySymbol = selectedCountry!.isocode;
+      var conversionRate = selectedCountry!.conversionRate;
       for (int i = 0; i < words.length; i++) {
         words[i] =
             words[i][0].toUpperCase() + words[i].substring(1).toLowerCase();
@@ -947,35 +949,25 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                           ),
                           FxSpacing.width(20),
                           IconButton(
-                            icon: Icon(Icons.carpenter),
+                            icon: Icon(Icons.shopping_cart),
                             onPressed: (){
-                              //  Navigator.of(context, rootNavigator: true).push(
-                              //     PageRouteBuilder(
-                              //         transitionDuration:
-                              //             const Duration(milliseconds: 500),
-                              //         transitionsBuilder: (
-                              //           BuildContext context,
-                              //           Animation<double> animation,
-                              //           Animation<double> secondaryAnimation,
-                              //           Widget child,
-                              //         ) =>
-                              //             FadeTransition(
-                              //               opacity: animation,
-                              //               child: child,
-                              //             ),
-                              //         pageBuilder: (_, __, ___) =>
-                              //             // CheckOutScreen(
-                              //             //     selectedtour.length,
-                              //             //     // selectedtours,
-                              //             //     selectedtour,
-                              //             //     dateTE.text,
-                              //             //     selectedtransfer,
-
-                              //             //     // excursions.activities!
-                              //             //     // amount
-                              //             //     grandSelectedTourAmount()
-                              //             //     )
-                              //                 ));
+                               Navigator.of(context, rootNavigator: true).push(
+                                  PageRouteBuilder(
+                                      transitionDuration:
+                                          const Duration(milliseconds: 500),
+                                      transitionsBuilder: (
+                                        BuildContext context,
+                                        Animation<double> animation,
+                                        Animation<double> secondaryAnimation,
+                                        Widget child,
+                                      ) =>
+                                          FadeTransition(
+                                            opacity: animation,
+                                            child: child,
+                                          ),
+                                      pageBuilder: (_, __, ___) =>
+                                          NewCart(widget.cartMeal)
+                                              ));
                             },
                           ),
                           FxSpacing.width(20),
