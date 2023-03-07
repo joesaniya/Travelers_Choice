@@ -144,63 +144,63 @@ class CartController extends FxController {
   //   //   ),
   //   // );
   // }
-  Future<void> goToCheckout() async {
-    await Future.delayed(const Duration(seconds: 1));
-
-      // log(selectedtour.length.toString());
-      // log(selectedtour.first.name.toString());
-      // log(selectedtour.first.adultCount.toString());
-      print( selectedtour.length);
-      print(selectedtour);
-      print( dateTE.text);
-      print(selectedtransfer);
-      print(grandSelectedTourAmount());
-      Navigator.of(context, rootNavigator: true).push(PageRouteBuilder(
-          transitionDuration: const Duration(milliseconds: 500),
-          transitionsBuilder: (
-              BuildContext context,
-              Animation<double> animation,
-              Animation<double> secondaryAnimation,
-              Widget child,
-              ) =>
-              FadeTransition(
-                opacity: animation,
-                child: child,
-              ),
-          // pageBuilder: (_, __, ___) => AttractionCartPage(
-          //     selectedtour.length,
-          //     // selectedtours,
-          //     selectedtour,
-          //     dateTE.text,
-          //     selectedtransfer,
-          //
-          //     // excursions.activities!
-          //     // amount
-          //     grandSelectedTourAmount())
-
-          pageBuilder: (_, __, ___) => NewCartPage(
-              selectedtour.length,
-              // selectedtours,
-              selectedtour,
-              dateTE.text,
-              selectedtransfer,
-
-              // excursions.activities!
-              // amount
-              grandSelectedTourAmount())
-
-        // CheckOutScreen(
-        //     selectedtour.length,
-        //     // selectedtours,
-        //     selectedtour,
-        //     dateTE.text,
-        //     selectedtransfer,
-
-        //     // excursions.activities!
-        //     // amount
-        //     grandSelectedTourAmount())
-      ));
-    }
+  // Future<void> goToCheckout() async {
+  //   await Future.delayed(const Duration(seconds: 1));
+  //
+  //     // log(selectedtour.length.toString());
+  //     // log(selectedtour.first.name.toString());
+  //     // log(selectedtour.first.adultCount.toString());
+  //     print( selectedtour.length);
+  //     print(selectedtour);
+  //     print( dateTE.text);
+  //     print(selectedtransfer);
+  //     print(grandSelectedTourAmount());
+  //     Navigator.of(context, rootNavigator: true).push(PageRouteBuilder(
+  //         transitionDuration: const Duration(milliseconds: 500),
+  //         transitionsBuilder: (
+  //             BuildContext context,
+  //             Animation<double> animation,
+  //             Animation<double> secondaryAnimation,
+  //             Widget child,
+  //             ) =>
+  //             FadeTransition(
+  //               opacity: animation,
+  //               child: child,
+  //             ),
+  //         // pageBuilder: (_, __, ___) => AttractionCartPage(
+  //         //     selectedtour.length,
+  //         //     // selectedtours,
+  //         //     selectedtour,
+  //         //     dateTE.text,
+  //         //     selectedtransfer,
+  //         //
+  //         //     // excursions.activities!
+  //         //     // amount
+  //         //     grandSelectedTourAmount())
+  //
+  //         pageBuilder: (_, __, ___) => NewCartPage(
+  //             selectedtour.length,
+  //             // selectedtours,
+  //             selectedtour,
+  //             dateTE.text,
+  //             selectedtransfer,
+  //
+  //             // excursions.activities!
+  //             // amount
+  //             grandSelectedTourAmount())
+  //
+  //       // CheckOutScreen(
+  //       //     selectedtour.length,
+  //       //     // selectedtours,
+  //       //     selectedtour,
+  //       //     dateTE.text,
+  //       //     selectedtransfer,
+  //
+  //       //     // excursions.activities!
+  //       //     // amount
+  //       //     grandSelectedTourAmount())
+  //     ));
+  //   }
 
 
   @override
