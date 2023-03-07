@@ -221,7 +221,7 @@ class FxStringValidator {
   }
   static bool isPassport(String passport) {
     Pattern pattern =
-    (r'^[A-Z]{1}[0-9]{7}$');
+    (r'^(?=.?\d)(?=.?[a-zA-Z])[a-zA-Z\d]+$');
     RegExp regex = new RegExp(pattern as String);
     return (!regex.hasMatch(passport));
   }
