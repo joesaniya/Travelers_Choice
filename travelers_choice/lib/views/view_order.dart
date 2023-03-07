@@ -1,15 +1,18 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutx/flutx.dart';
-import 'package:hotel_travel/models/all_attraction_modal.dart';
+
+import 'package:hotel_travel/models/order_attraction_modal.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 import '../controllers/view_controller.dart';
 
 class ViewOrder extends StatefulWidget {
-  String? Id;
-  ViewOrder({super.key, this.Id});
+  // String? Id;
+  List<Datum>? bookingorders;
+  ViewOrder(Datum ordermodal,
+      {super.key,
+      // this.Id
+      this.bookingorders});
 
   @override
   State<ViewOrder> createState() => _ViewOrderState();
@@ -20,7 +23,7 @@ class _ViewOrderState extends State<ViewOrder> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
-    log('Order Id:$Id');
+    // log('Order Id:$Id');
     controller = FxControllerStore.put(ViewOrderController(
       this,
       //  widget.productid

@@ -30,6 +30,7 @@ class AllBookingController extends FxController {
   List<Widget> newCategories = [];
   late Intro intro;
   String? token;
+  AllAttractionOrders? orders;
 
   @override
   void initState() {
@@ -135,14 +136,16 @@ class AllBookingController extends FxController {
     update();
   }
 
-  Future<void> VewPage(
-      // DetailattractionModal review
-      String id,
-      AllAttractionOrders ordermodal) async {
+  Future<void> bookNow(
+      // String id,
+      Datum ordermodal) async {
     animationController.forward();
+    log('Order attraction');
     await Future.delayed(const Duration(seconds: 1));
     Navigator.of(context, rootNavigator: true).push(PageRouteBuilder(
-        transitionDuration: const Duration(milliseconds: 500),
+        transitionDuration: const Duration(microseconds: 0
+            // milliseconds: 500
+            ),
         transitionsBuilder: (
           BuildContext context,
           Animation<double> animation,
@@ -153,12 +156,35 @@ class AllBookingController extends FxController {
               opacity: animation,
               child: child,
             ),
-        pageBuilder: (_, __, ___) => ViewOrder(Id:id)
-        // ActivityScreen(
-        //   Excursions: widget.detailattraction
-        //   )
-        ));
+        pageBuilder: (_, __, ___) => ViewOrder(
+            // Id: id
+            ordermodal)));
   }
+
+  // Future<void> VewPage(
+  //     // DetailattractionModal review
+  //     String id,
+  //     AllAttractionOrders ordermodal) async {
+  //   animationController.forward();
+  //   await Future.delayed(const Duration(seconds: 1));
+  //   Navigator.of(context, rootNavigator: true).push(PageRouteBuilder(
+  //       transitionDuration: const Duration(milliseconds: 500),
+  //       transitionsBuilder: (
+  //         BuildContext context,
+  //         Animation<double> animation,
+  //         Animation<double> secondaryAnimation,
+  //         Widget child,
+  //       ) =>
+  //           FadeTransition(
+  //             opacity: animation,
+  //             child: child,
+  //           ),
+  //       pageBuilder: (_, __, ___) => ViewOrder(Id:id)
+  //       // ActivityScreen(
+  //       //   Excursions: widget.detailattraction
+  //       //   )
+  //       ));
+  // }
 
   void changeSelectedCategory(Category category) {
     selectedCategory = category;

@@ -56,7 +56,7 @@ class _AllBookingsState extends State<AllBookings>
     });
   }
 
-  AllAttractionOrders? orders;
+  
   bool isOrdersLoading = true;
   Future getOrder(context) async {
     isOrdersLoading = true;
@@ -66,7 +66,7 @@ class _AllBookingsState extends State<AllBookings>
       if (data != null) {
         setState(() {});
         // countryList.add(data);
-        orders = data;
+       controller. orders = data;
 
         isOrdersLoading = false;
         return true;
@@ -79,18 +79,18 @@ class _AllBookingsState extends State<AllBookings>
   }
 
   Widget attractionList() {
-    if (orders == null) {
+    if (controller.orders == null) {
       log('loading..');
       return const Text("Loading....!");
     } else {
-      if (orders!.result!.data!.isEmpty) {
+      if (controller.orders!.result!.data!.isEmpty) {
         log('You have no attractions');
         return const Text("You have no attractions");
       }
       return ListView.builder(
-        itemCount: orders!.result!.totalOrders,
+        itemCount: controller.orders!.result!.totalOrders,
         itemBuilder: (BuildContext context, int index) {
-          var date = orders!.result!.data![index].activities!.date;
+          var date = controller.orders!.result!.data![index].activities!.date;
           var newDate = date!.toLocal().toString().substring(0, 10);
           print(newDate);
           return FxContainer(
@@ -119,7 +119,7 @@ class _AllBookingsState extends State<AllBookings>
                           ),
                         ),
                         imageUrl:
-                            'https://a.walletbot.online${orders!.result!.data![index].attraction!.images!.first}',
+                            'https://a.walletbot.online${controller.orders!.result!.data![index].attraction!.images!.first}',
                       ),
                     ),
                     FxSpacing.width(16),
@@ -129,13 +129,13 @@ class _AllBookingsState extends State<AllBookings>
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           FxText.titleMedium(
-                            orders!.result!.data![index].activities!.activity!
+                            controller.orders!.result!.data![index].activities!.activity!
                                 .name!,
                             fontWeight: 700,
                           ),
                           FxSpacing.height(8),
                           FxText.bodyMedium(
-                            '${orders!.result!.data![index].totalAmount.toString()} AED',
+                            '${controller.orders!.result!.data![index].totalAmount.toString()} AED',
                             fontWeight: 700,
                           ),
                           FxSpacing.height(8),
@@ -157,7 +157,7 @@ class _AllBookingsState extends State<AllBookings>
                                     child: Row(
                                       children: [
                                         FxText.bodyMedium(
-                                            orders!.result!.data![index]
+                                            controller.orders!.result!.data![index]
                                                 .activities!.adultsCount!
                                                 .toString(),
                                             color: const Color(0xff1529e8),
@@ -181,7 +181,7 @@ class _AllBookingsState extends State<AllBookings>
                                     child: Row(
                                       children: [
                                         FxText.bodyMedium(
-                                            orders!.result!.data![index]
+                                            controller.orders!.result!.data![index]
                                                 .activities!.childrenCount!
                                                 .toString(),
                                             color: const Color(0xff1529e8),
@@ -205,7 +205,7 @@ class _AllBookingsState extends State<AllBookings>
                                     child: Row(
                                       children: [
                                         FxText.bodyMedium(
-                                            orders!.result!.data![index]
+                                            controller.orders!.result!.data![index]
                                                 .activities!.infantCount
                                                 .toString(),
                                             color: const Color(0xff1529e8),
@@ -278,7 +278,7 @@ class _AllBookingsState extends State<AllBookings>
         ),
         body: controller.token == null
             ? const Text('Login or signup')
-            : orders!.result == null
+            : controller.orders!.result == null
                 ? Center(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -313,12 +313,12 @@ class _AllBookingsState extends State<AllBookings>
                             height: 10,
                           );
                         },
-                        itemCount: orders!.result!.totalOrders!.toInt(),
+                        itemCount: controller.orders!.result!.totalOrders!.toInt(),
                         itemBuilder: (BuildContext context, int index) {
                           var date =
-                              orders!.result!.data![index].activities!.date;
+                             controller. orders!.result!.data![index].activities!.date;
                           String createdatae =
-                              orders!.result!.data![index].createdAt.toString();
+                              controller.orders!.result!.data![index].createdAt.toString();
                           log('Created Date:$createdatae');
                           DateTime dateTime = DateTime.parse(createdatae);
                           String formattedDatecreate =
@@ -359,11 +359,11 @@ class _AllBookingsState extends State<AllBookings>
                                               ),
                                               FxSpacing.width(10),
                                               FxText.bodyLarge(
-                                                orders!.result!.data![index]
+                                                controller.orders!.result!.data![index]
                                                     .orderStatus
                                                     .toString(),
 
-                                                color: orders!
+                                                color:controller. orders!
                                                             .result!
                                                             .data![index]
                                                             .orderStatus ==
@@ -438,7 +438,7 @@ class _AllBookingsState extends State<AllBookings>
                                               color: Colors.white),
                                           FxSpacing.width(10),
                                           FxText.bodyLarge(
-                                            orders!.result!.data![index]
+                                            controller.orders!.result!.data![index]
                                                 .referenceNumber
                                                 .toString(),
                                             color: Colors.white,
@@ -478,7 +478,7 @@ class _AllBookingsState extends State<AllBookings>
                                             ),
                                           ),
                                           imageUrl:
-                                              'https://a.walletbot.online${orders!.result!.data![index].attraction!.images!.first}',
+                                              'https://a.walletbot.online${controller.orders!.result!.data![index].attraction!.images!.first}',
                                         ),
                                       ),
                                       FxSpacing.width(20),
@@ -491,13 +491,13 @@ class _AllBookingsState extends State<AllBookings>
                                           children: [
                                             Hero(
                                               tag:
-                                                  "product_${orders!.result!.data![index].activities!.activity!.name!}",
+                                                  "product_${controller.orders!.result!.data![index].activities!.activity!.name!}",
                                               // child: FxText.bodyLarge(
                                               //   product.name,
                                               //   // fontWeight: 500,
                                               // ),
                                               child: FxText.bodyLarge(
-                                                orders!
+                                               controller. orders!
                                                     .result!
                                                     .data![index]
                                                     .activities!
@@ -521,7 +521,7 @@ class _AllBookingsState extends State<AllBookings>
                                                       ),
                                                       FxSpacing.width(10),
                                                       FxText.bodySmall(
-                                                        orders!
+                                                       controller. orders!
                                                             .result!
                                                             .data![index]
                                                             .activities!
@@ -541,7 +541,7 @@ class _AllBookingsState extends State<AllBookings>
                                                       ),
                                                       FxSpacing.width(10),
                                                       FxText.bodySmall(
-                                                        orders!
+                                                        controller.orders!
                                                             .result!
                                                             .data![index]
                                                             .activities!
@@ -561,7 +561,7 @@ class _AllBookingsState extends State<AllBookings>
                                                       ),
                                                       FxSpacing.width(10),
                                                       FxText.bodySmall(
-                                                        orders!
+                                                       controller. orders!
                                                             .result!
                                                             .data![index]
                                                             .activities!
@@ -578,9 +578,9 @@ class _AllBookingsState extends State<AllBookings>
                                             FxSpacing.height(4),
                                             Hero(
                                               tag:
-                                                  "${orders!.result!.data![index].activities!.activity!.name!}_${orders!.result!.data![index].totalAmount}",
+                                                  "${controller.orders!.result!.data![index].activities!.activity!.name!}_${controller.orders!.result!.data![index].totalAmount}",
                                               child: FxText.labelLarge(
-                                                "${orders!.result!.data![index].totalAmount} AED",
+                                                "${controller.orders!.result!.data![index].totalAmount} AED",
                                                 // "\$" + product.price.toString() + "/hour",
                                                 fontWeight: 700,
                                               ),
@@ -611,7 +611,7 @@ class _AllBookingsState extends State<AllBookings>
                                               ),
                                               FxSpacing.width(10),
                                               FxText.bodySmall(
-                                                orders!
+                                               controller. orders!
                                                     .result!.data![index].name
                                                     .toString(),
                                                 fontWeight: 600,
@@ -636,7 +636,7 @@ class _AllBookingsState extends State<AllBookings>
                                               FxSpacing.width(10),
                                               Expanded(
                                                 child: FxText.bodySmall(
-                                                  orders!.result!.data![index]
+                                                 controller. orders!.result!.data![index]
                                                       .email
                                                       .toString(),
                                                   fontWeight: 600,
@@ -660,7 +660,7 @@ class _AllBookingsState extends State<AllBookings>
                                               ),
                                               FxSpacing.width(10),
                                               FxText.bodySmall(
-                                                orders!.result!.data![index]
+                                                controller.orders!.result!.data![index]
                                                     .country!.countryName
                                                     .toString(),
                                                 fontWeight: 600,
@@ -679,7 +679,7 @@ class _AllBookingsState extends State<AllBookings>
                                               ),
                                               FxSpacing.width(10),
                                               FxText.bodySmall(
-                                                orders!.result!.data![index]
+                                               controller. orders!.result!.data![index]
                                                     .phoneNumber
                                                     .toString(),
                                                 fontWeight: 600,
@@ -701,7 +701,12 @@ class _AllBookingsState extends State<AllBookings>
                                     FxContainer(
                                       onTap: () {
                                         log('review Screen clicked');
-                                        log('id:${orders!.result!.data![index].id}');
+                                        log('id:${controller.orders!.result!.data![index].id}');
+                                         controller.bookNow(
+                                            controller.orders!.result!.data as Datum
+                                            // ,controller.orders!.result!
+                                            //     .data![index].id
+                                                );
 
                                         // controller.VewPage(orders!
                                         //     .result!.data![index].id
