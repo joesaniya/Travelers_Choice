@@ -666,7 +666,7 @@ class _ActivityScreenState extends State<ActivityScreen>
                       // controller1.addCart
                       //     ?
                       !controller.selectedtour.contains(widget.excursions[i])
-                          ? const SizedBox()
+                          ? const SizedBox(height: 0)
                           : Column(
                               children: [
                                 // selectedIndex == i

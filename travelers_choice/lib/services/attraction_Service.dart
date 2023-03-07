@@ -87,13 +87,12 @@ class AttractionService {
       } else {
         var jsondata = jsonDecode(response.body);
         log(jsondata['error']);
+
         return null;
       }
     } catch (e) {
       rethrow;
     }
-
-
 
     // Future<DetailattractionModal?> getdetailAttraction() async {
     //   try {
@@ -117,31 +116,30 @@ class AttractionService {
     //   }
   }
 
-  Future<AllAttractionOrders?> getAttractionOrders(String token) async {
+  Future<AllAttractionOrders?> getAttractionOrders(
+      String token, context) async {
     try {
       var response = await http.get(
         Uri.parse(
-         
-            'https://secure.mytravellerschoice.com/api/v1/attractions/orders/all'
-          
-        ),
+            'https://secure.mytravellerschoice.com/api/v1/attractions/orders/all'),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer $token',
         },
       );
-      if (response.statusCode == 200 ) {
+      if (response.statusCode == 200) {
         log(response.body);
 
         return allAttractionOrdersFromJson(response.body);
       } else {
         var jsondata = jsonDecode(response.body);
         log(jsondata['error']);
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text(jsondata['error'])));
         return null;
       }
     } catch (e) {
       rethrow;
     }
   }
-
 }
