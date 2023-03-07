@@ -5,12 +5,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutx/flutx.dart';
 import 'package:hotel_travel/controllers/Activity_Controller.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../controllers/checkout_controller.dart';
 import '../localizations/language.dart';
 import '../models/Country_modal.dart';
 import '../models/atteraction_model.dart';
 import '../models/shipping_address.dart';
+import '../services/app_constants.dart';
 import '../services/auth_service.dart';
 import '../theme/app_theme.dart';
 import 'package:lottie/lottie.dart';
@@ -75,6 +77,7 @@ class _CheckOutScreenState extends State<CheckOutScreen>
   @override
   void initState() {
     super.initState();
+    initializingData();
     customTheme = AppTheme.customTheme;
     selectedExcursions = widget.selectedtourOption;
     // log('Selected Tour length:${widget.selectedtourOption.first.sId}');
@@ -107,6 +110,15 @@ class _CheckOutScreenState extends State<CheckOutScreen>
       borderRadius: BorderRadius.all(Radius.circular(4)),
       borderSide: BorderSide(width: 1, color: Color(0xff1529e8)),
     );
+  }
+
+  void initializingData() {
+    SharedPreferences.getInstance().then((sharedPrefValue) {
+      setState(() {
+        token = sharedPrefValue.getString(AppConstants.KEY_ACCESS_TOKEN)!;
+        log('checkout Toen:${token!}');
+      });
+    });
   }
 
   fetchlog() async {
@@ -1505,15 +1517,27 @@ class _CheckOutScreenState extends State<CheckOutScreen>
               //         selectedExcursions, context, widget.totalAmount)
               //     : ScaffoldMessenger.of(context).showSnackBar(
               //         const SnackBar(content: Text('Select payment method')));
-              controller.selectedPayment == 1
-                  ? controller.nextPage(
-                      selectedExcursions, context, widget.totalAmount)
-                  : controller.selectedPayment == 2
+              // controller.selectedPayment == 1
+              //     ? controller.nextPage(
+              //         selectedExcursions, context, widget.totalAmount)
+              //     : controller.selectedPayment == 2
+              //         ? controller.nextPage(
+              //             selectedExcursions, context, widget.totalAmount)
+              //         : ScaffoldMessenger.of(context).showSnackBar(
+              //             const SnackBar(
+              //                 content: Text('Select payment method')));
+              //todo
+              token == null
+                  ? controller.Login()
+                  : controller.selectedPayment == 1
                       ? controller.nextPage(
                           selectedExcursions, context, widget.totalAmount)
-                      : ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                              content: Text('Select payment method')));
+                      : controller.selectedPayment == 2
+                          ? controller.nextPage(
+                              selectedExcursions, context, widget.totalAmount)
+                          : ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                  content: Text('Select payment method')));
 
               // controller.initPlatformState();
             },

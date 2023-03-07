@@ -97,7 +97,7 @@ class _ActivityScreenState extends State<ActivityScreen>
                   children: [
                     Expanded(child: Text(tour.name.toString())),
                     FxSpacing.width(20),
-                    Text(tour.grandTotal.toString()),
+                    Text('${tour.grandTotal.toString()} AED'),
                   ],
                 );
               }).toList()),
@@ -119,7 +119,7 @@ class _ActivityScreenState extends State<ActivityScreen>
                   ),
                   FxText.bodyLarge(
                     // controller.selectedtour.first.GrandTotalAmount.toString(),
-                    controller.grandSelectedTourAmount().toString(),
+                    '${controller.grandSelectedTourAmount().toString()} AED',
                     fontWeight: 700,
                     color: const Color(0xff1529e8),
                   ),
@@ -1006,9 +1006,7 @@ class _ActivityScreenState extends State<ActivityScreen>
                                       fontWeight: 600,
                                     ),
                                     FxText.bodyMedium(
-                                      controller
-                                          .getTotal(widget.excursions[i])
-                                          .toString(),
+                                      '${controller.getTotal(widget.excursions[i]).toString()} AED',
                                       // 'IMG Worlds of Adventure',
                                       fontWeight: 700,
                                     ),
@@ -1080,9 +1078,7 @@ class _ActivityScreenState extends State<ActivityScreen>
                                     ),
                                     FxText.bodyMedium(
                                       // '\$' + controller.total.precise,
-                                      controller
-                                          .getGrandTotal(widget.excursions[i])
-                                          .toString(),
+                                      '${controller.getGrandTotal(widget.excursions[i]).toString()} AED',
                                       // controller.products.
                                       fontWeight: 800,
                                       color: const Color(0xff1529e8),

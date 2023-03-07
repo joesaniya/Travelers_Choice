@@ -15,6 +15,7 @@ import '../models/shipping_address.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import '../views/checkout_screen.dart';
+import '../views/login_Screens/login_screen.dart';
 import '../views/payment_cc.dart';
 import 'razor_credentials.dart' as razorCredentials;
 
@@ -338,6 +339,20 @@ class CheckOutController extends FxController {
     } on PlatformException {
       log('PlatformException');
     }
+  }
+
+  void Login() {
+    log('calling login....');
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('Please Login Your account'),
+      ),
+    );
+    Navigator.of(context, rootNavigator: true).pushReplacement(
+      MaterialPageRoute(
+        builder: (context) => const LogInScreen(),
+      ),
+    );
   }
 
   void fetchData() async {
