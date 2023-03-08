@@ -42,13 +42,6 @@ class CheckOutScreen extends StatefulWidget {
   CheckOutScreen(
       this.length,
       this.selectedtourOption,
-      // this.selectedtours,
-      // this.name,
-      // this.adultCount,
-      // this.childCount,
-      // this.infantCount,
-      // this.grandTotal,
-      // // this.finalAmount,
       this.textdate,
       this.Transfer,
       // this.onButtonTap,

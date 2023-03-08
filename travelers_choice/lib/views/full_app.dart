@@ -13,6 +13,7 @@ import '../theme/app_theme.dart';
 import 'Saved_Screen.dart';
 
 List<Datum> favouriteList = <Datum>[];
+
 List<Activity> favouriteListCart = <Activity>[];
 
 class FullApp extends StatefulWidget {

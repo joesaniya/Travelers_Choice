@@ -155,6 +155,7 @@ class _NewCartPageState extends State<NewCartPage>
     log(widget.length.toString());
     return SizedBox(
       child: ListView.separated(
+        physics: NeverScrollableScrollPhysics(),
         itemCount: widget.length,
         shrinkWrap: true,
         itemBuilder: (context, index) {

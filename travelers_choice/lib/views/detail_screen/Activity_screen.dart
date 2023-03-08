@@ -22,6 +22,8 @@ class ActivityScreen extends StatefulWidget {
   // List<DetailattractionModal> Excursions;
   // final String excursions;
   List<Activity> excursions;
+
+
   ActivityScreen(
       // this.Excursions,
       this.excursions,
@@ -52,6 +54,7 @@ class _ActivityScreenState extends State<ActivityScreen>
     favouriteListCheck();
     // initializingData();
     theme = AppTheme.shoppingTheme;
+    var selectedData = widget.excursions;
 
     controller = FxControllerStore.put(ActivityController(this));
     controller1 = FxControllerStore.put(CheckOutController(this));
@@ -78,7 +81,7 @@ class _ActivityScreenState extends State<ActivityScreen>
 
   favouriteListCheck() async {
     isSelected =
-        favouriteList.any((e) => e.activity.sId == widget.excursions.first.sId);
+        favouriteListCart.any((e) => e.sId == widget.excursions.first.sId);
     setState(() {
       isSelected;
     });
@@ -1408,29 +1411,37 @@ class _ActivityScreenState extends State<ActivityScreen>
                                           //         .forward();
                                           log('Fav Item:${favouriteListCart.map((e) => e.sId)}');
                                           log('Sel Id:${widget.excursions.first.sId}');
-                                          if (favouriteListCart.isNotEmpty) {
-                                            for (var i = 0;
-                                            i < favouriteListCart.length;
-                                            i++) {
-                                              if (favouriteListCart.first.sId ==
-                                                  widget.excursions.first.sId) {
-                                                // favouriteList
-                                                //     .remove(favouriteList[i]);
-                                                existing = true;
-                                              } else {
-                                                existing = false;
-                                                // favouriteList
-                                                //     .add(widget.productdatum);
-                                              }
-                                            }
-                                            log('Existing:$existing');
-                                            if (existing) {
-                                              favouriteListCart
-                                                  .remove(widget.excursions.first);
-                                            } else {
-                                              favouriteListCart
-                                                  .add(widget.excursions.first);
-                                            }
+
+
+                                          // favouriteListCart.forEach((element) {
+                                          //
+                                          // });
+
+                                          // if (favouriteListCart.isNotEmpty) {
+                                          //   for (var i = 0;
+                                          //   i < favouriteListCart.length;
+                                          //   i++) {
+                                          //     if (favouriteListCart[i].sId ==
+                                          //         widget.excursions[i].sId) {
+                                          //       // favouriteList
+                                          //       //     .remove(favouriteList[i]);
+                                          //       existing = true;
+                                          //     } else {
+                                          //       existing = false;
+                                          //       // favouriteList
+                                          //       //     .add(widget.productdatum);
+                                          //     }
+                                          //   }
+                                          //   log('Existing:$existing');
+                                          //   if (existing) {
+                                          //     favouriteListCart
+                                          //         .remove(widget.excursions.first);
+                                          //   } else {
+                                          //     favouriteListCart
+                                          //         .add(widget.excursions.first);
+                                          //   }
+
+
                                             // tempFavouriteList.map((e) {
                                             //   if (e.id ==
                                             //       widget.productdatum.id) {
@@ -1440,10 +1451,10 @@ class _ActivityScreenState extends State<ActivityScreen>
                                             //         .add(widget.productdatum);
                                             //   }
                                             // }).toList();
-                                          } else {
-                                            favouriteListCart
-                                                .add(widget.excursions.first);
-                                          }
+                                          // } else {
+                                          //   favouriteListCart
+                                          //       .add(widget.excursions.first);
+                                          // }
 
                                           // if (isSelected) {
                                           //   // widget.productdatum.favourite =
@@ -1461,6 +1472,14 @@ class _ActivityScreenState extends State<ActivityScreen>
                                           //   //api
                                           //   log('Excursion Id Else:$mealId');
                                           // }
+
+                                          print("controller.selectedtour ${controller.selectedtour}");
+
+                                          favouriteListCart.addAll(controller.selectedtour);
+                                          // controller.selectedtour.addAll((element) {
+                                          //
+                                          //   favouriteListCart.add(element);
+                                          // });
                                           SharedPreferences prefs =
                                           await SharedPreferences
                                               .getInstance();
