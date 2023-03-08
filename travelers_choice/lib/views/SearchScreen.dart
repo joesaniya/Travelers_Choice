@@ -6,7 +6,6 @@ import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutx/flutx.dart';
 import 'package:hotel_travel/views/bottomSheet/Filter_Sheet.dart';
 import 'package:hotel_travel/views/bottomSheet/categories_Sheet.dart';
-import 'package:lottie/lottie.dart';
 
 import '../controllers/attraction_Controller.dart';
 import '../controllers/search_Home_controller.dart';
@@ -416,8 +415,20 @@ class _SearchScreenState extends State<SearchScreen>
                   ],
                 ),
 
-                Lottie.asset('assets/lottie/search_lottie.json',
-                    height: 300, width: 300),
+                // Lottie.asset('assets/lottie/search_lottie.json',
+                //     height: 300, width: 300),
+                // Container(
+                //     margin: FxSpacing.all(20),
+                //     child: const Image(
+                //       image: AssetImage(
+                //           'assets/images/apps/shopping2/images/nodata_search.jpg'),
+                //     )),
+                Container(
+                    margin: FxSpacing.all(20),
+                    child: const Image(
+                      image: AssetImage(
+                          'assets/images/apps/shopping2/images/empty.png'),
+                    )),
                 Align(
                   alignment: Alignment.center,
                   child: FxText.bodyLarge(
@@ -430,9 +441,7 @@ class _SearchScreenState extends State<SearchScreen>
       } else {
         return Scaffold(
           backgroundColor: const Color(0xfff5f5f5),
-          //   backgroundColor: Colors.red,
           key: controller.scaffoldKey,
-          // endDrawer: endDrawer(),
           body: controller.allattractionList!.first.attractions == null
               ? const Text('No Data')
               : ListView(
