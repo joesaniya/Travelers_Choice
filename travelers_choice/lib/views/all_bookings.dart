@@ -8,7 +8,6 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 import 'package:shared_preferences/shared_preferences.dart';
 import '../controllers/all_bookings.dart';
 import '../loading_effect.dart';
-import '../models/order_attraction_modal.dart';
 import '../models/product.dart';
 import '../services/app_constants.dart';
 import '../services/attraction_Service.dart';
@@ -56,7 +55,6 @@ class _AllBookingsState extends State<AllBookings>
     });
   }
 
-  
   bool isOrdersLoading = true;
   Future getOrder(context) async {
     isOrdersLoading = true;
@@ -66,7 +64,7 @@ class _AllBookingsState extends State<AllBookings>
       if (data != null) {
         setState(() {});
         // countryList.add(data);
-       controller. orders = data;
+        controller.orders = data;
 
         isOrdersLoading = false;
         return true;
@@ -129,8 +127,8 @@ class _AllBookingsState extends State<AllBookings>
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           FxText.titleMedium(
-                            controller.orders!.result!.data![index].activities!.activity!
-                                .name!,
+                            controller.orders!.result!.data![index].activities!
+                                .activity!.name!,
                             fontWeight: 700,
                           ),
                           FxSpacing.height(8),
@@ -157,8 +155,12 @@ class _AllBookingsState extends State<AllBookings>
                                     child: Row(
                                       children: [
                                         FxText.bodyMedium(
-                                            controller.orders!.result!.data![index]
-                                                .activities!.adultsCount!
+                                            controller
+                                                .orders!
+                                                .result!
+                                                .data![index]
+                                                .activities!
+                                                .adultsCount!
                                                 .toString(),
                                             color: const Color(0xff1529e8),
                                             // color: customTheme.groceryPrimary,
@@ -181,8 +183,12 @@ class _AllBookingsState extends State<AllBookings>
                                     child: Row(
                                       children: [
                                         FxText.bodyMedium(
-                                            controller.orders!.result!.data![index]
-                                                .activities!.childrenCount!
+                                            controller
+                                                .orders!
+                                                .result!
+                                                .data![index]
+                                                .activities!
+                                                .childrenCount!
                                                 .toString(),
                                             color: const Color(0xff1529e8),
                                             // color: customTheme.groceryPrimary,
@@ -205,8 +211,12 @@ class _AllBookingsState extends State<AllBookings>
                                     child: Row(
                                       children: [
                                         FxText.bodyMedium(
-                                            controller.orders!.result!.data![index]
-                                                .activities!.infantCount
+                                            controller
+                                                .orders!
+                                                .result!
+                                                .data![index]
+                                                .activities!
+                                                .infantCount
                                                 .toString(),
                                             color: const Color(0xff1529e8),
                                             // color: customTheme.groceryPrimary,
@@ -313,12 +323,14 @@ class _AllBookingsState extends State<AllBookings>
                             height: 10,
                           );
                         },
-                        itemCount: controller.orders!.result!.totalOrders!.toInt(),
+                        itemCount:
+                            controller.orders!.result!.totalOrders!.toInt(),
                         itemBuilder: (BuildContext context, int index) {
-                          var date =
-                             controller. orders!.result!.data![index].activities!.date;
-                          String createdatae =
-                              controller.orders!.result!.data![index].createdAt.toString();
+                          var date = controller
+                              .orders!.result!.data![index].activities!.date;
+                          String createdatae = controller
+                              .orders!.result!.data![index].createdAt
+                              .toString();
                           log('Created Date:$createdatae');
                           DateTime dateTime = DateTime.parse(createdatae);
                           String formattedDatecreate =
@@ -359,11 +371,12 @@ class _AllBookingsState extends State<AllBookings>
                                               ),
                                               FxSpacing.width(10),
                                               FxText.bodyLarge(
-                                                controller.orders!.result!.data![index]
-                                                    .orderStatus
+                                                controller.orders!.result!
+                                                    .data![index].orderStatus
                                                     .toString(),
 
-                                                color:controller. orders!
+                                                color: controller
+                                                            .orders!
                                                             .result!
                                                             .data![index]
                                                             .orderStatus ==
@@ -438,8 +451,8 @@ class _AllBookingsState extends State<AllBookings>
                                               color: Colors.white),
                                           FxSpacing.width(10),
                                           FxText.bodyLarge(
-                                            controller.orders!.result!.data![index]
-                                                .referenceNumber
+                                            controller.orders!.result!
+                                                .data![index].referenceNumber
                                                 .toString(),
                                             color: Colors.white,
 
@@ -497,7 +510,8 @@ class _AllBookingsState extends State<AllBookings>
                                               //   // fontWeight: 500,
                                               // ),
                                               child: FxText.bodyLarge(
-                                               controller. orders!
+                                                controller
+                                                    .orders!
                                                     .result!
                                                     .data![index]
                                                     .activities!
@@ -521,7 +535,8 @@ class _AllBookingsState extends State<AllBookings>
                                                       ),
                                                       FxSpacing.width(10),
                                                       FxText.bodySmall(
-                                                       controller. orders!
+                                                        controller
+                                                            .orders!
                                                             .result!
                                                             .data![index]
                                                             .activities!
@@ -541,7 +556,8 @@ class _AllBookingsState extends State<AllBookings>
                                                       ),
                                                       FxSpacing.width(10),
                                                       FxText.bodySmall(
-                                                        controller.orders!
+                                                        controller
+                                                            .orders!
                                                             .result!
                                                             .data![index]
                                                             .activities!
@@ -561,7 +577,8 @@ class _AllBookingsState extends State<AllBookings>
                                                       ),
                                                       FxSpacing.width(10),
                                                       FxText.bodySmall(
-                                                       controller. orders!
+                                                        controller
+                                                            .orders!
                                                             .result!
                                                             .data![index]
                                                             .activities!
@@ -611,8 +628,8 @@ class _AllBookingsState extends State<AllBookings>
                                               ),
                                               FxSpacing.width(10),
                                               FxText.bodySmall(
-                                               controller. orders!
-                                                    .result!.data![index].name
+                                                controller.orders!.result!
+                                                    .data![index].name
                                                     .toString(),
                                                 fontWeight: 600,
                                                 color: Colors.black,
@@ -636,8 +653,8 @@ class _AllBookingsState extends State<AllBookings>
                                               FxSpacing.width(10),
                                               Expanded(
                                                 child: FxText.bodySmall(
-                                                 controller. orders!.result!.data![index]
-                                                      .email
+                                                  controller.orders!.result!
+                                                      .data![index].email
                                                       .toString(),
                                                   fontWeight: 600,
                                                   color: Colors.black,
@@ -660,8 +677,12 @@ class _AllBookingsState extends State<AllBookings>
                                               ),
                                               FxSpacing.width(10),
                                               FxText.bodySmall(
-                                                controller.orders!.result!.data![index]
-                                                    .country!.countryName
+                                                controller
+                                                    .orders!
+                                                    .result!
+                                                    .data![index]
+                                                    .country!
+                                                    .countryName
                                                     .toString(),
                                                 fontWeight: 600,
                                                 color: Colors.black,
@@ -679,8 +700,8 @@ class _AllBookingsState extends State<AllBookings>
                                               ),
                                               FxSpacing.width(10),
                                               FxText.bodySmall(
-                                               controller. orders!.result!.data![index]
-                                                    .phoneNumber
+                                                controller.orders!.result!
+                                                    .data![index].phoneNumber
                                                     .toString(),
                                                 fontWeight: 600,
                                                 color: Colors.black,
@@ -698,45 +719,47 @@ class _AllBookingsState extends State<AllBookings>
                                   crossAxisAlignment: CrossAxisAlignment.end,
                                   mainAxisAlignment: MainAxisAlignment.end,
                                   children: [
-                                    FxContainer(
-                                      onTap: () {
-                                        log('review Screen clicked');
-                                        log('id:${controller.orders!.result!.data![index].id}');
-                                         controller.bookNow(
-                                            controller.orders!.result!.data as Datum
-                                            // ,controller.orders!.result!
-                                            //     .data![index].id
-                                                );
+                                    // FxContainer(
+                                    //   onTap: () {
+                                    //     log('review Screen clicked');
+                                    //     log('id:${controller.orders!.result!.data![index].id}');
+                                    //     controller.bookNow(controller
+                                    //             .orders!.result!.data as Datum
+                                    //         // ,controller.orders!.result!
+                                    //         //     .data![index].id
+                                    //         );
+                                    //     // controller.bookNow(controller.orders!.result.data);
 
-                                        // controller.VewPage(orders!
-                                        //     .result!.data![index].id
-                                        //     .toString(),orders!.result!.data[index]);
-                                        // Navigator.push(
-                                        //     context,
-                                        //     MaterialPageRoute(
-                                        //         builder: (context) => ReviewScreen()));
-                                      },
-                                      padding: FxSpacing.fromLTRB(8, 6, 8, 6),
-                                      color:
-                                          const Color(0xff1529e8).withAlpha(40),
-                                      // color:Color(0xff6874E8),
-                                      // customTheme.groceryPrimary.withAlpha(40),
-                                      child: Row(
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: [
-                                          FxText.bodyMedium("View",
-                                              color: const Color(0xff1529e8),
-                                              // color: customTheme.groceryPrimary,
-                                              fontWeight: 500,
-                                              letterSpacing: -0.2),
-                                          const Icon(
-                                            MdiIcons.eye,
-                                            size: 14,
-                                            color: Color(0xff1529e8),
-                                          )
-                                        ],
-                                      ),
-                                    ),
+                                    //     // controller.VewPage(orders!
+                                    //     //     .result!.data![index].id
+                                    //     //     .toString(),orders!.result!.data[index]);
+                                    //     // Navigator.push(
+                                    //     //     context,
+                                    //     //     MaterialPageRoute(
+                                    //     //         builder: (context) => ReviewScreen()));
+                                    //   },
+                                    //   padding: FxSpacing.fromLTRB(8, 6, 8, 6),
+                                    //   color:
+                                    //       const Color(0xff1529e8).withAlpha(40),
+                                    //   // color:Color(0xff6874E8),
+                                    //   // customTheme.groceryPrimary.withAlpha(40),
+                                    //   child: Row(
+                                    //     mainAxisSize: MainAxisSize.min,
+                                    //     children: [
+                                    //       FxText.bodyMedium("View",
+                                    //           color: const Color(0xff1529e8),
+                                    //           // color: customTheme.groceryPrimary,
+                                    //           fontWeight: 500,
+                                    //           letterSpacing: -0.2),
+                                    //       const Icon(
+                                    //         MdiIcons.eye,
+                                    //         size: 14,
+                                    //         color: Color(0xff1529e8),
+                                    //       )
+                                    //     ],
+                                    //   ),
+                                    // ),
+
                                     FxSpacing.width(10),
                                     FxContainer(
                                       onTap: () {

@@ -8,8 +8,10 @@ import '../controllers/view_controller.dart';
 
 class ViewOrder extends StatefulWidget {
   // String? Id;
-  List<Datum>? bookingorders;
-  ViewOrder(Datum ordermodal,
+  // List<Datum>? bookingorders;
+  AllAttractionOrders? bookingorders;
+  ViewOrder(
+      Datum ordermodal,
       {super.key,
       // this.Id
       this.bookingorders});

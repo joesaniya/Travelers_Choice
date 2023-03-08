@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutx/flutx.dart';
 import 'package:hotel_travel/extensions/extensions.dart';
-import 'package:hotel_travel/views/new_cart.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -14,7 +13,6 @@ import '../../controllers/checkout_controller.dart';
 import '../../loading_effect.dart';
 import '../../models/atteraction_model.dart';
 import '../../theme/app_theme.dart';
-import '../Cart_Screen.dart';
 import '../full_app.dart';
 
 class ActivityScreen extends StatefulWidget {
@@ -44,7 +42,6 @@ class _ActivityScreenState extends State<ActivityScreen>
   List<TextEditingController> controllerTE = [];
   String? token;
   List<Activity> tempFavouriteList = favouriteListCart.map((e) => e).toList();
-
 
   @override
   void initState() {
@@ -95,58 +92,75 @@ class _ActivityScreenState extends State<ActivityScreen>
               border: Border.all(color: Colors.grey.shade300, width: 1)),
           child: Column(
             children: [
-              Column(
-                  children: controller.selectedtour.map((Activity tour) {
-                return Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Expanded(child: Text(tour.name.toString())),
-                    FxSpacing.width(20),
-                    Text('${tour.grandTotal.toString()} AED'),
-                  ],
-                );
-              }).toList()),
-              FxSpacing.height(20),
-              FxDashedDivider(
-                dashSpace: 4,
-                dashWidth: 8,
-                color: theme.colorScheme.onBackground.withAlpha(180),
-                height: 1.2,
-              ),
-              FxSpacing.height(20),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  FxText.bodyLarge(
-                    'Total Amount',
+                  FxText.bodyMedium(
+                    '${controller.selectedtour.length} Selected',
                     fontWeight: 700,
-                    color: const Color(0xff1529e8),
+                    color: Colors.black,
+                    // color: const Color(0xff1529e8),
                   ),
                   FxText.bodyLarge(
-                    // controller.selectedtour.first.GrandTotalAmount.toString(),
                     '${controller.grandSelectedTourAmount().toString()} AED',
                     fontWeight: 700,
                     color: const Color(0xff1529e8),
                   ),
                 ],
               )
+              // Column(
+              //     children: controller.selectedtour.map((Activity tour) {
+              //   return Row(
+              //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //     children: [
+              //       Expanded(child: Text(tour.name.toString())),
+              //       FxSpacing.width(20),
+              //       Text('${tour.grandTotal.toString()} AED'),
+              //     ],
+              //   );
+              // }).toList()),
+              // FxSpacing.height(20),
+              // FxDashedDivider(
+              //   dashSpace: 4,
+              //   dashWidth: 8,
+              //   color: theme.colorScheme.onBackground.withAlpha(180),
+              //   height: 1.2,
+              // ),
+              // FxSpacing.height(20),
+              // Row(
+              //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //   children: [
+              //     FxText.bodyLarge(
+              //       'Total Amount',
+              //       fontWeight: 700,
+              //       color: const Color(0xff1529e8),
+              //     ),
+              //     FxText.bodyLarge(
+              //       // controller.selectedtour.first.GrandTotalAmount.toString(),
+              //       '${controller.grandSelectedTourAmount().toString()} AED',
+              //       fontWeight: 700,
+              //       color: const Color(0xff1529e8),
+              //     ),
+              //   ],
+              // )
             ],
           ));
     } else {
-      return Container(
-        padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 20),
-        decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: const BorderRadius.all(Radius.circular(10)),
-            border: Border.all(color: Colors.grey.shade300, width: 1)),
-        child: Center(
-          child: FxText.bodyMedium(
-            'No Tour Option Selected!!',
-            muted: true,
-            fontWeight: 700,
-          ),
-        ),
-      );
+      return const SizedBox();
+      // return Container(
+      //   padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 20),
+      //   decoration: BoxDecoration(
+      //       color: Colors.white,
+      //       borderRadius: const BorderRadius.all(Radius.circular(10)),
+      //       border: Border.all(color: Colors.grey.shade300, width: 1)),
+      //   child: Center(
+      //     child: FxText.bodyMedium(
+      //       'No Tour Option Selected!!',
+      //       muted: true,
+      //       fontWeight: 700,
+      //     ),
+      //   ),
+      // );
     }
   }
 
@@ -1387,117 +1401,206 @@ class _ActivityScreenState extends State<ActivityScreen>
                             AnimatedBuilder(
                               animation: controller.cartController,
                               builder: (BuildContext context, _) {
-                                return Stack(
-                                  children: [
-                                    FxContainer(
-                                      color:
-                                          const Color(0xff1529e8).withAlpha(40),
-                                      paddingAll:
-                                          controller.paddingAnimation.value,
-                                      child: IconButton(
-                                        onPressed:()async{
-                                          bool existing = false;
-                                          // controller.isFav
-                                          //     ? controller.animationController
-                                          //         .reverse()
-                                          //     : controller.animationController
-                                          //         .forward();
-                                          log('Fav Item:${favouriteListCart.map((e) => e.sId)}');
-                                          log('Sel Id:${widget.excursions.first.sId}');
-                                          if (favouriteListCart.isNotEmpty) {
-                                            for (var i = 0;
-                                            i < favouriteListCart.length;
-                                            i++) {
-                                              if (favouriteListCart.first.sId ==
-                                                  widget.excursions.first.sId) {
-                                                // favouriteList
-                                                //     .remove(favouriteList[i]);
-                                                existing = true;
-                                              } else {
-                                                existing = false;
-                                                // favouriteList
-                                                //     .add(widget.productdatum);
-                                              }
-                                            }
-                                            log('Existing:$existing');
-                                            if (existing) {
-                                              favouriteListCart
-                                                  .remove(widget.excursions.first);
-                                            } else {
-                                              favouriteListCart
-                                                  .add(widget.excursions.first);
-                                            }
-                                            // tempFavouriteList.map((e) {
-                                            //   if (e.id ==
-                                            //       widget.productdatum.id) {
-                                            //     favouriteList.remove(e);
-                                            //   } else {
-                                            //     favouriteList
-                                            //         .add(widget.productdatum);
-                                            //   }
-                                            // }).toList();
-                                          } else {
-                                            favouriteListCart
-                                                .add(widget.excursions.first);
-                                          }
+                                return GestureDetector(
+                                  onTap: () async {
+                                    bool existing = false;
+                                    // controller.isFav
+                                    //     ? controller.animationController
+                                    //         .reverse()
+                                    //     : controller.animationController
+                                    //         .forward();
+                                    log('Fav Item:${favouriteListCart.map((e) => e.sId)}');
+                                    log('Sel Id:${widget.excursions.first.sId}');
+                                    if (favouriteListCart.isNotEmpty) {
+                                      for (var i = 0;
+                                          i < favouriteListCart.length;
+                                          i++) {
+                                        if (favouriteListCart.first.sId ==
+                                            widget.excursions.first.sId) {
+                                          // favouriteList
+                                          //     .remove(favouriteList[i]);
+                                          existing = true;
+                                        } else {
+                                          existing = false;
+                                          // favouriteList
+                                          //     .add(widget.productdatum);
+                                        }
+                                      }
+                                      log('Existing:$existing');
+                                      if (existing) {
+                                        favouriteListCart
+                                            .remove(widget.excursions.first);
+                                      } else {
+                                        favouriteListCart
+                                            .add(widget.excursions.first);
+                                      }
+                                    } else {
+                                      favouriteListCart
+                                          .add(widget.excursions.first);
+                                    }
 
-                                          // if (isSelected) {
-                                          //   // widget.productdatum.favourite =
-                                          //   //     false;
-                                          //   favouriteList
-                                          //       .remove(widget.productdatum);
+                                    SharedPreferences prefs =
+                                        await SharedPreferences.getInstance();
+                                    prefs.setBool("youKey", isSelected);
+                                    setState(() {
+                                      favouriteListCart;
+                                      isSelected = !isSelected;
 
-                                          //   //api
-                                          // } else {
-                                          //   // widget.productdatum.favourite =
-                                          //   //     true;
-                                          //   favouriteList
-                                          //       .add(widget.productdatum);
-                                          //   log('Fav Item:${favouriteList.first.id}');
-                                          //   //api
-                                          //   log('Excursion Id Else:$mealId');
-                                          // }
-                                          SharedPreferences prefs =
-                                          await SharedPreferences
-                                              .getInstance();
-                                          prefs.setBool("youKey", isSelected);
-                                          setState(() {
-                                            favouriteListCart;
-                                            isSelected = !isSelected;
-
-                                            // widget.toggleFavourite(mealId);
-                                          });
-                                          controller.goToCheckout();
-                                        },
-                                          icon:  Icon(FeatherIcons.shoppingBag,
-                                            color: const Color(0xff1529e8),
-                                            size: controller.cartAnimation.value,
-                                          ),
-                                      ),
-                                    ),
-                                    // controller.addCart
-                                    //     ?
-                                    Positioned(
-                                      right: 10,
-                                      top: 8,
-                                      child: FxContainer.rounded(
-                                        color: const Color(0xff1529e8),
-                                        paddingAll: 4,
-                                        child: FxText.bodySmall(
-                                          controller.selectedtour.length
-                                              .toString(),
-                                          color: theme.colorScheme.onPrimary,
-                                          fontSize: 8,
-                                          fontWeight: 700,
+                                      // widget.toggleFavourite(mealId);
+                                    });
+                                    controller.goToCheckout();
+                                  },
+                                  child: Stack(
+                                    children: [
+                                      FxContainer(
+                                        color: const Color(0xff1529e8)
+                                            .withAlpha(40),
+                                        paddingAll:
+                                            controller.paddingAnimation.value,
+                                        child: Icon(
+                                          FeatherIcons.shoppingBag,
+                                          color: const Color(0xff1529e8),
+                                          size: controller.cartAnimation.value,
                                         ),
                                       ),
-                                    )
-                                    // : Container(),
-                                  ],
+                                      // controller.addCart
+                                      //     ?
+                                      Positioned(
+                                        right: 10,
+                                        top: 8,
+                                        child: FxContainer.rounded(
+                                          color: const Color(0xff1529e8),
+                                          paddingAll: 4,
+                                          child: FxText.bodySmall(
+                                            controller.selectedtour.length
+                                                .toString(),
+                                            color: theme.colorScheme.onPrimary,
+                                            fontSize: 8,
+                                            fontWeight: 700,
+                                          ),
+                                        ),
+                                      )
+                                      // : Container(),
+                                    ],
+                                  ),
                                 );
                               },
                             ),
                             FxSpacing.width(20),
+                            // AnimatedBuilder(
+                            //   animation: controller.cartController,
+                            //   builder: (BuildContext context, _) {
+                            //     return Stack(
+                            //       children: [
+                            //         FxContainer(
+                            //           color:
+                            //               const Color(0xff1529e8).withAlpha(40),
+                            //           paddingAll:
+                            //               controller.paddingAnimation.value,
+                            //           child: IconButton(
+                            //             onPressed:()async{
+                            //               bool existing = false;
+                            //               // controller.isFav
+                            //               //     ? controller.animationController
+                            //               //         .reverse()
+                            //               //     : controller.animationController
+                            //               //         .forward();
+                            //               log('Fav Item:${favouriteListCart.map((e) => e.sId)}');
+                            //               log('Sel Id:${widget.excursions.first.sId}');
+                            //               if (favouriteListCart.isNotEmpty) {
+                            //                 for (var i = 0;
+                            //                 i < favouriteListCart.length;
+                            //                 i++) {
+                            //                   if (favouriteListCart.first.sId ==
+                            //                       widget.excursions.first.sId) {
+                            //                     // favouriteList
+                            //                     //     .remove(favouriteList[i]);
+                            //                     existing = true;
+                            //                   } else {
+                            //                     existing = false;
+                            //                     // favouriteList
+                            //                     //     .add(widget.productdatum);
+                            //                   }
+                            //                 }
+                            //                 log('Existing:$existing');
+                            //                 if (existing) {
+                            //                   favouriteListCart
+                            //                       .remove(widget.excursions.first);
+                            //                 } else {
+                            //                   favouriteListCart
+                            //                       .add(widget.excursions.first);
+                            //                 }
+                            //                 // tempFavouriteList.map((e) {
+                            //                 //   if (e.id ==
+                            //                 //       widget.productdatum.id) {
+                            //                 //     favouriteList.remove(e);
+                            //                 //   } else {
+                            //                 //     favouriteList
+                            //                 //         .add(widget.productdatum);
+                            //                 //   }
+                            //                 // }).toList();
+                            //               } else {
+                            //                 favouriteListCart
+                            //                     .add(widget.excursions.first);
+                            //               }
+
+                            //               // if (isSelected) {
+                            //               //   // widget.productdatum.favourite =
+                            //               //   //     false;
+                            //               //   favouriteList
+                            //               //       .remove(widget.productdatum);
+
+                            //               //   //api
+                            //               // } else {
+                            //               //   // widget.productdatum.favourite =
+                            //               //   //     true;
+                            //               //   favouriteList
+                            //               //       .add(widget.productdatum);
+                            //               //   log('Fav Item:${favouriteList.first.id}');
+                            //               //   //api
+                            //               //   log('Excursion Id Else:$mealId');
+                            //               // }
+                            //               SharedPreferences prefs =
+                            //               await SharedPreferences
+                            //                   .getInstance();
+                            //               prefs.setBool("youKey", isSelected);
+                            //               setState(() {
+                            //                 favouriteListCart;
+                            //                 isSelected = !isSelected;
+
+                            //                 // widget.toggleFavourite(mealId);
+                            //               });
+                            //               controller.goToCheckout();
+                            //             },
+                            //               icon:  Icon(FeatherIcons.shoppingBag,
+                            //                 color: const Color(0xff1529e8),
+                            //                 size: controller.cartAnimation.value,
+                            //               ),
+                            //           ),
+                            //         ),
+                            //         // controller.addCart
+                            //         //     ?
+                            //         Positioned(
+                            //           right: 10,
+                            //           top: 8,
+                            //           child: FxContainer.rounded(
+                            //             color: const Color(0xff1529e8),
+                            //             paddingAll: 4,
+                            //             child: FxText.bodySmall(
+                            //               controller.selectedtour.length
+                            //                   .toString(),
+                            //               color: theme.colorScheme.onPrimary,
+                            //               fontSize: 8,
+                            //               fontWeight: 700,
+                            //             ),
+                            //           ),
+                            //         )
+                            //         // : Container(),
+                            //       ],
+                            //     );
+                            //   },
+                            // ),
+                            // FxSpacing.width(20),
                             Expanded(
                               child: FadeTransition(
                                 opacity: controller.fadeAnimation,

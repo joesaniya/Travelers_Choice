@@ -2,7 +2,6 @@ import 'dart:developer';
 
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutx/flutx.dart';
 import 'package:hotel_travel/services/auth_service.dart';
 import 'package:hotel_travel/services/visa_service.dart';
@@ -21,8 +20,6 @@ import '../services/app_constants.dart';
 import '../theme/app_theme.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-
-import 'Cart_Screen.dart';
 
 class HomeScreen extends StatefulWidget {
   List<Activity> cartMeal;
@@ -938,116 +935,116 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                             ),
                           ),
                           FxSpacing.width(20),
-                          RotationTransition(
-                            turns: controller.bellAnimation,
-                            // key: controller.intro.keys[0],
-                            child: InkWell(
-                              onTap: () {
-                                Navigator.of(context, rootNavigator: true).push(
-                                    PageRouteBuilder(
-                                        transitionDuration:
-                                            const Duration(milliseconds: 500),
-                                        transitionsBuilder: (
-                                          BuildContext context,
-                                          Animation<double> animation,
-                                          Animation<double> secondaryAnimation,
-                                          Widget child,
-                                        ) =>
-                                            FadeTransition(
-                                              opacity: animation,
-                                              child: child,
-                                            ),
-                                        pageBuilder: (_, __, ___) =>
-                                            NewCart(widget.cartMeal)));
-                                // controller.goToNotification();
-                              },
-                              child: Stack(
-                                clipBehavior: Clip.none,
-                                children: [
-                                  Icon(
-                                    FeatherIcons.shoppingBag,
-                                    color: theme.colorScheme.onBackground,
-                                    size: 20,
-                                  ),
-                                  Positioned(
-                                    bottom: -2,
-                                    right: -2,
-                                    child: FxContainer.rounded(
-                                      paddingAll: 3,
-                                      color: const Color(0xff1529e8),
-                                      // color: theme.colorScheme.primary,
-                                      child: Center(
-                                          child: FxText.bodySmall(
-                                        '2',
-                                        color: theme.colorScheme.onPrimary,
-                                        fontSize: 8,
-                                      )),
-                                    ),
-                                  )
-                                ],
-                              ),
-                            ),
-                          ),
-
-                          // //icon
-                          // IconButton(
-                          //   icon: const Icon(Icons.shopping_cart),
-                          //   onPressed: () {
-                          //     Navigator.of(context, rootNavigator: true).push(
-                          //         PageRouteBuilder(
-                          //             transitionDuration:
-                          //                 const Duration(milliseconds: 500),
-                          //             transitionsBuilder: (
-                          //               BuildContext context,
-                          //               Animation<double> animation,
-                          //               Animation<double> secondaryAnimation,
-                          //               Widget child,
-                          //             ) =>
-                          //                 FadeTransition(
-                          //                   opacity: animation,
-                          //                   child: child,
-                          //                 ),
-                          //             pageBuilder: (_, __, ___) =>
-                          //                 NewCart(widget.cartMeal)));
-                          //   },
+                          // RotationTransition(
+                          //   turns: controller.bellAnimation,
+                          //   // key: controller.intro.keys[0],
+                          //   child: InkWell(
+                          //     onTap: () {
+                          //       Navigator.of(context, rootNavigator: true).push(
+                          //           PageRouteBuilder(
+                          //               transitionDuration:
+                          //                   const Duration(milliseconds: 500),
+                          //               transitionsBuilder: (
+                          //                 BuildContext context,
+                          //                 Animation<double> animation,
+                          //                 Animation<double> secondaryAnimation,
+                          //                 Widget child,
+                          //               ) =>
+                          //                   FadeTransition(
+                          //                     opacity: animation,
+                          //                     child: child,
+                          //                   ),
+                          //               pageBuilder: (_, __, ___) =>
+                          //                   NewCart(widget.cartMeal)));
+                          //       // controller.goToNotification();
+                          //     },
+                          //     child: Stack(
+                          //       clipBehavior: Clip.none,
+                          //       children: [
+                          //         Icon(
+                          //           FeatherIcons.shoppingBag,
+                          //           color: theme.colorScheme.onBackground,
+                          //           size: 20,
+                          //         ),
+                          //         Positioned(
+                          //           bottom: -2,
+                          //           right: -2,
+                          //           child: FxContainer.rounded(
+                          //             paddingAll: 3,
+                          //             color: const Color(0xff1529e8),
+                          //             // color: theme.colorScheme.primary,
+                          //             child: Center(
+                          //                 child: FxText.bodySmall(
+                          //               '2',
+                          //               color: theme.colorScheme.onPrimary,
+                          //               fontSize: 8,
+                          //             )),
+                          //           ),
+                          //         )
+                          //       ],
+                          //     ),
+                          //   ),
                           // ),
-                          FxSpacing.width(20),
 
-                          //bell
-                          RotationTransition(
-                            turns: controller.bellAnimation,
-                            // key: controller.intro.keys[0],
-                            child: InkWell(
-                              onTap: () {
-                                controller.goToNotification();
-                              },
-                              child: Stack(
-                                clipBehavior: Clip.none,
-                                children: [
-                                  Icon(
-                                    FeatherIcons.bell,
-                                    color: theme.colorScheme.onBackground,
-                                    size: 20,
-                                  ),
-                                  Positioned(
-                                    bottom: -2,
-                                    right: -2,
-                                    child: FxContainer.rounded(
-                                      paddingAll: 3,
-                                      color: const Color(0xff1529e8),
-                                      // color: theme.colorScheme.primary,
-                                      child: Center(
-                                          child: FxText.bodySmall(
-                                        '2',
-                                        color: theme.colorScheme.onPrimary,
-                                        fontSize: 8,
-                                      )),
-                                    ),
-                                  )
-                                ],
-                              ),
-                            ),
-                          ),
+                          // // //icon
+                          // // IconButton(
+                          // //   icon: const Icon(Icons.shopping_cart),
+                          // //   onPressed: () {
+                          // //     Navigator.of(context, rootNavigator: true).push(
+                          // //         PageRouteBuilder(
+                          // //             transitionDuration:
+                          // //                 const Duration(milliseconds: 500),
+                          // //             transitionsBuilder: (
+                          // //               BuildContext context,
+                          // //               Animation<double> animation,
+                          // //               Animation<double> secondaryAnimation,
+                          // //               Widget child,
+                          // //             ) =>
+                          // //                 FadeTransition(
+                          // //                   opacity: animation,
+                          // //                   child: child,
+                          // //                 ),
+                          // //             pageBuilder: (_, __, ___) =>
+                          // //                 NewCart(widget.cartMeal)));
+                          // //   },
+                          // // ),
+                          // FxSpacing.width(20),
+
+                          // //bell
+                          // RotationTransition(
+                          //   turns: controller.bellAnimation,
+                          //   // key: controller.intro.keys[0],
+                          //   child: InkWell(
+                          //     onTap: () {
+                          //       controller.goToNotification();
+                          //     },
+                          //     child: Stack(
+                          //       clipBehavior: Clip.none,
+                          //       children: [
+                          //         Icon(
+                          //           FeatherIcons.bell,
+                          //           color: theme.colorScheme.onBackground,
+                          //           size: 20,
+                          //         ),
+                          //         Positioned(
+                          //           bottom: -2,
+                          //           right: -2,
+                          //           child: FxContainer.rounded(
+                          //             paddingAll: 3,
+                          //             color: const Color(0xff1529e8),
+                          //             // color: theme.colorScheme.primary,
+                          //             child: Center(
+                          //                 child: FxText.bodySmall(
+                          //               '2',
+                          //               color: theme.colorScheme.onPrimary,
+                          //               fontSize: 8,
+                          //             )),
+                          //           ),
+                          //         )
+                          //       ],
+                          //     ),
+                          //   ),
+                          // ),
                         ],
                       ),
                     )

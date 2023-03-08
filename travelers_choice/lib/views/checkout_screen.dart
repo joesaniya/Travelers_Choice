@@ -1240,7 +1240,7 @@ class _CheckOutScreenState extends State<CheckOutScreen>
                     padding: FxSpacing.y(12),
                     onPressed: () {
                       controller.nextPage(
-                          selectedExcursions, context, widget.totalAmount);
+                          selectedExcursions, context, widget.totalAmount,controller.token);
                     },
                     borderRadiusAll: 4,
                     elevation: 0,
@@ -1531,10 +1531,10 @@ class _CheckOutScreenState extends State<CheckOutScreen>
                   ? controller.Login()
                   : controller.selectedPayment == 1
                       ? controller.nextPage(
-                          selectedExcursions, context, widget.totalAmount)
+                          selectedExcursions, context, widget.totalAmount,controller.token)
                       : controller.selectedPayment == 2
                           ? controller.nextPage(
-                              selectedExcursions, context, widget.totalAmount)
+                              selectedExcursions, context, widget.totalAmount, controller.token)
                           : ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(
                                   content: Text('Select payment method')));
@@ -1566,6 +1566,52 @@ class _CheckOutScreenState extends State<CheckOutScreen>
               ],
             ),
           ),
+
+          FxSpacing.height(10),
+
+          //continue
+          token == null
+              ? FxButton.block(
+                  onPressed: () {
+                    controller.selectedPayment == 1
+                        ? controller.nextPage(
+                            selectedExcursions, context, widget.totalAmount,controller.token)
+                        : controller.selectedPayment == 2
+                            ? controller.nextPage(
+                                selectedExcursions, context, widget.totalAmount,controller.token)
+                            : ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                    content: Text('Select payment method')));
+                  },
+                  borderRadiusAll: 4,
+                  elevation: 0,
+                  splashColor: const Color(0xff1529e8).withAlpha(40),
+                  backgroundColor: const Color(0xff1529e8).withAlpha(40),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      FxText.bodyMedium(
+                        'Payment Without Login',
+                        fontWeight: 600,
+                        color: const Color(0xff1529e8),
+                        // color: theme.colorScheme.onPrimary,
+                      ),
+                      FxText.bodyMedium(
+                        ' ${widget.totalAmount} AED',
+                        // '${widget.selectedtourOption.first.GrandTotalAmount}',
+                        // '${widget.totalAmount} AED',
+                        // widget.finalAmount.toString(),
+                        // widget.TotalCalculation.toString(),
+                        // controller1.grandSelectedTourAmount().toString(),
+                        fontWeight: 700,
+                        color: const Color(0xff1529e8),
+                        // color: theme.colorScheme.onPrimary,
+                      ),
+                    ],
+                  ),
+                )
+              : const SizedBox(),
+
           FxSpacing.height(80),
         ],
       ),

@@ -188,7 +188,8 @@ class _SearchScreenState extends State<SearchScreen>
         ),
       ));
     } else {
-      if (controller.allattractionList!.isEmpty) {
+      // if (controller.allattractionList!.isEmpty)
+      if (controller.allattractionList!.first.attractions.data.isEmpty) {
         return const Scaffold(body: Center(child: Text("No Data found")));
       } else {
         return Scaffold(

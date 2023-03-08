@@ -138,7 +138,9 @@ class AllBookingController extends FxController {
 
   Future<void> bookNow(
       // String id,
-      Datum ordermodal) async {
+      Datum ordermodal
+      // AllAttractionOrders ordermodal
+      ) async {
     animationController.forward();
     log('Order attraction');
     await Future.delayed(const Duration(seconds: 1));
