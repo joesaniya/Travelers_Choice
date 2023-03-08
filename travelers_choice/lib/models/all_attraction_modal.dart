@@ -52,8 +52,12 @@ class Attractions {
   factory Attractions.fromJson(Map<String, dynamic> json) => Attractions(
         id: json["_id"],
         totalAttractions: json["totalAttractions"] ?? 0,
-        data: List<Datum>.from(json["data"].map((x) => Datum.fromJson(x)))
-            .toList(),
+        // data: List<Datum>.from(json["data"].map((x) => Datum.fromJson(x)))
+        //     .toList(),
+        data: json["data"] != null
+            ? List<Datum>.from(json["data"].map((x) => Datum.fromJson(x)))
+                .toList()
+            : <Datum>[],
       );
 
   Map<String, dynamic> toJson() => {
@@ -83,7 +87,7 @@ class Datum {
     required this.activity,
     required this.totalReviews,
     required this.averageRating,
-    this.favourite=false,
+    this.favourite = false,
   });
 
   String id;
