@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutx/flutx.dart';
+import 'package:hotel_travel/models/atteraction_model.dart';
 import 'package:hotel_travel/views/checkout_screen.dart';
 
 import '../models/all_attraction_modal.dart';
@@ -49,7 +50,7 @@ class NewCartController extends FxController {
   @override
   void initState() {
     super.initState();
-    fetchData();
+    // fetchData();
     fetchloader();
     animationController = AnimationController(
       duration: const Duration(seconds: 1),
@@ -96,31 +97,31 @@ class NewCartController extends FxController {
     return cart.person > 1;
   }
 
-  void increment(Cart cart) {
-    if (!increaseAble(cart)) return;
-    cart.person++;
-    calculateBilling();
-    update();
-  }
+  // void increment(Cart cart) {
+  //   if (!increaseAble(cart)) return;
+  //   cart.person++;
+  //   calculateBilling();
+  //   update();
+  // }
+  //
+  // void decrement(Cart cart) {
+  //   if (!decreaseAble(cart)) return;
+  //   cart.person--;
+  //   calculateBilling();
+  //   update();
+  // }
 
-  void decrement(Cart cart) {
-    if (!decreaseAble(cart)) return;
-    cart.person--;
-    calculateBilling();
-    update();
-  }
-
-  void fetchData() async {
-    // carts = HotelTravelCache.carts;
-    // carts = HotelTravelCache.carts!.cast<Cart>();
-    products = HotelTravelCache.products;
-    log('fetch');
-    // log(carts!.length.toString());
-    calculateBilling();
-    showLoading = false;
-    // uiLoading = false;
-    update();
-  }
+  // void fetchData() async {
+  //   // carts = HotelTravelCache.carts;
+  //   // carts = HotelTravelCache.carts!.cast<Cart>();
+  //   products = HotelTravelCache.products;
+  //   log('fetch');
+  //   // log(carts!.length.toString());
+  //   calculateBilling();
+  //   showLoading = false;
+  //   // uiLoading = false;
+  //   update();
+  // }
 
   void fetchloader() async {
     await Future.delayed(const Duration(seconds: 4));
@@ -131,14 +132,14 @@ class NewCartController extends FxController {
     update();
   }
 
-  void calculateBilling() {
-    order = 0;
-    for (Cart cart in carts!) {
-      order = order + (cart.product.price * cart.person);
-    }
-
-    total = order + tax - offer;
-  }
+  // void calculateBilling() {
+  //   order = 0;
+  //   for (Cart cart in carts!) {
+  //     order = order + (cart.product.price * cart.person);
+  //   }
+  //
+  //   total = order + tax - offer;
+  // }
 
   double findAspectRatio() {
     double width = MediaQuery.of(context).size.width;
@@ -172,9 +173,8 @@ class NewCartController extends FxController {
     return "new_cart_controller";
   }
 
-  Future<void> goToCheckout() async {
+  Future<void> goToCheckout(List<Activity> favouriteListCart, double grandTotal) async {
     await Future.delayed(const Duration(seconds: 1));
-
     // print("product${product}");
     Navigator.of(context, rootNavigator: true).push(PageRouteBuilder(
         transitionDuration: const Duration(milliseconds: 500),
@@ -190,15 +190,15 @@ class NewCartController extends FxController {
             ),
 
         pageBuilder: (_, __, ___) => CheckOutScreen(
-            1,
+            favouriteListCart.length,
             // selectedtours,
-            [],
-            "",
-            selectedtransfer,
+            favouriteListCart,
+            favouriteListCart.first.selectedDate!,
+            favouriteListCart.first.transferType,
 
             // excursions.activities!
             // amount
-            789
+            grandTotal
         )
 
       // CheckOutScreen(

@@ -94,6 +94,8 @@ dependencies:
   permission_handler: ^10.2.0
   path_provider: ^2.0.13
   external_path: ^1.0.3
+  flutter_native_splash: ^2.0.1+1
+
 
 dev_dependencies:
   flutter_test:
@@ -102,7 +104,8 @@ dev_dependencies:
   flutter_lints: ^2.0.0
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
-
+flutter_native_splash:
+  background_image: assets/other/splash_screen.png
 # The following section is specific to Flutter.
 flutter:
   # The following line ensures that the Material Icons font is
