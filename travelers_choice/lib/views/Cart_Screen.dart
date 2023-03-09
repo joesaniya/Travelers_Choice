@@ -7,7 +7,6 @@ import '../models/atteraction_model.dart';
 import '../theme/app_theme.dart';
 import 'package:hotel_travel/models/all_attraction_modal.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../controllers/attraction_Controller.dart';
 import 'full_app.dart';
 
 class NewCart extends StatefulWidget {
@@ -75,12 +74,7 @@ class _NewCartState extends State<NewCart> with TickerProviderStateMixin {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // FxText.bodyMedium(
-            //   'Billing Information',
-            //   muted: true,
-            //   fontWeight: 700,
-            // ),
-            FxSpacing.height(20),
+            // FxSpacing.height(20),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -92,7 +86,7 @@ class _NewCartState extends State<NewCart> with TickerProviderStateMixin {
                 // Expanded(child: Container()),
                 Expanded(
                   child: Align(
-                    alignment: Alignment.centerLeft,
+                    alignment: Alignment.centerRight,
                     child: FxText.bodyMedium(
                       // '\$' + controller.order.precise,
                       product.name!,
@@ -312,87 +306,86 @@ class _NewCartState extends State<NewCart> with TickerProviderStateMixin {
                     ],
                   ),
                 )
-              : Stack(
+              : Column(
                   children: [
-                    ListView.builder(
+                    ListView.separated(
                       scrollDirection: Axis.vertical,
-                      padding: const EdgeInsets.all(5),
+                      padding: FxSpacing.x(20),
                       physics: const AlwaysScrollableScrollPhysics(),
                       shrinkWrap: true,
                       itemCount: favouriteListCart.length,
+                      separatorBuilder: (context, index) {
+                        return const SizedBox(
+                          height: 10,
+                        );
+                      },
                       itemBuilder: (BuildContext context, int index) {
                         return _buildSingleProduct(
                             // widget.favouriteMeals.first.attractions.data.first
                             favouriteListCart[index]);
                       },
                     ),
-                    Positioned(
-                      bottom: 0,
-                      left: 0,
-                      right: 0,
-                      child: Container(
-                        padding: FxSpacing.xy(12, 8),
-                        child: PhysicalModel(
-                          color: theme.cardTheme.color!.withAlpha(200),
-                          elevation: 12,
-                          borderRadius:
-                              const BorderRadius.all(Radius.circular(32)),
-                          shadowColor:
-                              theme.colorScheme.onBackground.withAlpha(12),
-                          shape: BoxShape.rectangle,
-                          child: Container(
-                            decoration: BoxDecoration(
-                              color: theme.cardTheme.color!.withAlpha(200),
-                              borderRadius:
-                                  const BorderRadius.all(Radius.circular(32)),
-                            ),
-                            padding: FxSpacing.xy(16, 12),
-                            child: Column(
-                              children: <Widget>[
-                                FadeTransition(
-                                  opacity: controller.fadeAnimation,
-                                  child: FxButton.block(
-                                      onPressed: () {
-                                        final grandTotal = favouriteListCart
-                                            .map((e) => e.grandTotal)
-                                            .reduce((value, element) =>
-                                                value + element);
+                    Container(
+                      padding: FxSpacing.xy(12, 8),
+                      child: PhysicalModel(
+                        color: theme.cardTheme.color!.withAlpha(200),
+                        elevation: 12,
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(32)),
+                        shadowColor:
+                            theme.colorScheme.onBackground.withAlpha(12),
+                        shape: BoxShape.rectangle,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: theme.cardTheme.color!.withAlpha(200),
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(32)),
+                          ),
+                          padding: FxSpacing.xy(16, 12),
+                          child: Column(
+                            children: <Widget>[
+                              FadeTransition(
+                                opacity: controller.fadeAnimation,
+                                child: FxButton.block(
+                                    onPressed: () {
+                                      final grandTotal = favouriteListCart
+                                          .map((e) => e.grandTotal)
+                                          .reduce((value, element) =>
+                                              value + element);
 
-                                        controller.goToCheckout(
-                                            favouriteListCart, grandTotal);
-                                      },
-                                      backgroundColor: const Color(0xff1529e8),
-                                      // backgroundColor: theme.colorScheme.primary,
-                                      elevation: 0,
-                                      borderRadiusAll: 4,
-                                      child: Row(
-                                        children: [
-                                          SlideTransition(
-                                            position: controller.animation,
-                                            child: Image(
-                                              height: 22,
-                                              width: 22,
+                                      controller.goToCheckout(
+                                          favouriteListCart, grandTotal);
+                                    },
+                                    backgroundColor: const Color(0xff1529e8),
+                                    // backgroundColor: theme.colorScheme.primary,
+                                    elevation: 0,
+                                    borderRadiusAll: 4,
+                                    child: Row(
+                                      children: [
+                                        SlideTransition(
+                                          position: controller.animation,
+                                          child: Image(
+                                            height: 22,
+                                            width: 22,
+                                            color: theme.colorScheme.onPrimary,
+                                            image: const AssetImage(
+                                                'assets/images/apps/shopping2/icons/clear_cart_outline.png'),
+                                          ),
+                                        ),
+                                        Expanded(
+                                          child: Center(
+                                            child: FxText.bodyMedium(
+                                              'Checkout',
+                                              fontWeight: 600,
                                               color:
                                                   theme.colorScheme.onPrimary,
-                                              image: const AssetImage(
-                                                  'assets/images/apps/shopping2/icons/clear_cart_outline.png'),
                                             ),
                                           ),
-                                          Expanded(
-                                            child: Center(
-                                              child: FxText.bodyMedium(
-                                                'Checkout',
-                                                fontWeight: 600,
-                                                color:
-                                                    theme.colorScheme.onPrimary,
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      )),
-                                ),
-                              ],
-                            ),
+                                        ),
+                                      ],
+                                    )),
+                              ),
+                            ],
                           ),
                         ),
                       ),
