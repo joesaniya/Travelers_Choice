@@ -175,14 +175,7 @@ class NewCartController extends FxController {
   Future<void> goToCheckout() async {
     await Future.delayed(const Duration(seconds: 1));
 
-    // log(selectedtour.length.toString());
-    // log(selectedtour.first.name.toString());
-    // log(selectedtour.first.adultCount.toString());
-    // print( selectedtour.length);
-    // print(selectedtour);
-    // print( dateTE.text);
-    // print(selectedtransfer);
-    // print(grandSelectedTourAmount());
+    // print("product${product}");
     Navigator.of(context, rootNavigator: true).push(PageRouteBuilder(
         transitionDuration: const Duration(milliseconds: 500),
         transitionsBuilder: (
@@ -205,7 +198,8 @@ class NewCartController extends FxController {
 
             // excursions.activities!
             // amount
-            789)
+            789
+        )
 
       // CheckOutScreen(
       //     selectedtour.length,

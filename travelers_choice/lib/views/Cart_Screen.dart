@@ -47,224 +47,10 @@ class _NewCartState extends State<NewCart> with TickerProviderStateMixin {
     super.initState();
     getAttraction(context);
     log('saved:${favouriteListCart.length}');
-    // log('Cart Saved:${widget.cartMeal.length}');
     theme = AppTheme.shoppingTheme;
 
     controller = FxControllerStore.put(NewCartController(this));
     log('Item:${favouriteListCart.map((e) => e.sId)}');
-  }
-
-  Widget _billingWidget(Activity product) {
-    List<Widget> list = [];
-    log('message');
-    // log(widget.length.toString());
-    return SizedBox(
-      child: ListView.separated(
-        itemCount: favouriteListCart.length,
-        shrinkWrap: true,
-        itemBuilder: (context, index) {
-          return FadeTransition(
-            opacity: controller.fadeAnimation,
-            child: FxContainer(
-              borderRadiusAll: 4,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // FxText.bodyMedium(
-                  //   'Billing Information',
-                  //   muted: true,
-                  //   fontWeight: 700,
-                  // ),
-                  FxSpacing.height(20),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      FxText.bodyMedium(
-                        'Option',
-                        fontWeight: 600,
-                      ),
-                      FxSpacing.width(20),
-                      // Expanded(child: Container()),
-                      Expanded(
-                        child: Align(
-                          alignment: Alignment.centerLeft,
-                          child: FxText.bodyMedium(
-                            // '\$' + controller.order.precise,
-                            product.name!,
-                            fontWeight: 700,
-                            textAlign: TextAlign.left,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  FxSpacing.height(4),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      FxText.bodyMedium(
-                        'Transfer',
-                        fontWeight: 600,
-                      ),
-                      product.transferType == null
-                          ? FxText.bodyMedium(
-                              'without',
-                              fontWeight: 700,
-                            )
-                          : FxText.bodyMedium(
-                              product.transferType.toString(),
-                              fontWeight: 700,
-                            ),
-                    ],
-                  ),
-                  FxSpacing.height(4),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      FxText.bodyMedium(
-                        'Date',
-                        fontWeight: 600,
-                      ),
-                      FxText.bodyMedium(
-                        product.selectedDate.toString(),
-                        fontWeight: 700,
-                      ),
-                    ],
-                  ),
-                  FxSpacing.height(4),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      FxText.bodyMedium(
-                        'Pax',
-                        fontWeight: 600,
-                      ),
-                      Expanded(child: Container()),
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          FxContainer(
-                            padding: FxSpacing.fromLTRB(8, 6, 8, 6),
-                            color: const Color(0xff1529e8).withAlpha(40),
-                            child: Row(
-                              children: [
-                                FxText.bodyMedium(product.adultCount.toString(),
-                                    color: const Color(0xff1529e8),
-                                    // color: customTheme.groceryPrimary,
-                                    fontWeight: 500,
-                                    letterSpacing: -0.2),
-                                FxSpacing.width(4),
-                                FxText.bodyMedium('Adult',
-                                    color: const Color(0xff1529e8),
-                                    // color: customTheme.groceryPrimary,
-                                    fontWeight: 500,
-                                    letterSpacing: -0.2),
-                              ],
-                            ),
-                          ),
-                          FxSpacing.width(10),
-                          FxContainer(
-                            padding: FxSpacing.fromLTRB(8, 6, 8, 6),
-                            color: const Color(0xff1529e8).withAlpha(40),
-                            child: Row(
-                              children: [
-                                FxText.bodyMedium(product.childCount.toString(),
-                                    color: const Color(0xff1529e8),
-                                    // color: customTheme.groceryPrimary,
-                                    fontWeight: 500,
-                                    letterSpacing: -0.2),
-                                FxSpacing.width(4),
-                                FxText.bodyMedium('child',
-                                    color: const Color(0xff1529e8),
-                                    // color: customTheme.groceryPrimary,
-                                    fontWeight: 500,
-                                    letterSpacing: -0.2),
-                              ],
-                            ),
-                          ),
-                          FxSpacing.width(10),
-                          FxContainer(
-                            padding: FxSpacing.fromLTRB(8, 6, 8, 6),
-                            color: const Color(0xff1529e8).withAlpha(40),
-                            child: Row(
-                              children: [
-                                FxText.bodyMedium(
-                                    product.infantCount.toString(),
-                                    color: const Color(0xff1529e8),
-                                    // color: customTheme.groceryPrimary,
-                                    fontWeight: 500,
-                                    letterSpacing: -0.2),
-                                FxSpacing.width(4),
-                                FxText.bodyMedium('Infant',
-                                    color: const Color(0xff1529e8),
-                                    // color: customTheme.groceryPrimary,
-                                    fontWeight: 500,
-                                    letterSpacing: -0.2),
-                              ],
-                            ),
-                          )
-                        ],
-                      )
-                    ],
-                  ),
-                  FxSpacing.height(4),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      FxText.bodyMedium(
-                        'Amount',
-                        fontWeight: 600,
-                      ),
-                      FxText.bodyMedium(
-                        "${product.grandTotal}AED",
-                        fontWeight: 700,
-                      ),
-                    ],
-                  ),
-                  FxSpacing.height(12),
-                  Row(
-                    children: [
-                      Expanded(
-                        flex: 2,
-                        child: Container(),
-                      ),
-                      Expanded(
-                        child: FxDashedDivider(
-                          dashSpace: 4,
-                          dashWidth: 8,
-                          color: theme.colorScheme.onBackground.withAlpha(180),
-                          height: 1.2,
-                        ),
-                      )
-                    ],
-                  ),
-                  FxSpacing.height(12),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      FxText.bodyMedium(
-                        'Grand Total',
-                        fontWeight: 700,
-                        color: const Color(0xff1529e8),
-                      ),
-                      FxText.bodyMedium(
-                        // '\$' + controller.total.precise,
-                        "${product.grandTotal}AED",
-                        fontWeight: 800,
-                        color: const Color(0xff1529e8),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          );
-        },
-        separatorBuilder: (context, index) {
-          return FxSpacing.height(10);
-        },
-      ),
-    );
   }
 
   Widget _buildSingleProduct(Activity product) {
@@ -525,8 +311,7 @@ class _NewCartState extends State<NewCart> with TickerProviderStateMixin {
                     ],
                   ),
                 )
-              : ListView(
-                  physics: const AlwaysScrollableScrollPhysics(),
+              : Stack(
                   children: [
                     ListView.builder(
                       scrollDirection: Axis.vertical,
@@ -567,16 +352,8 @@ class _NewCartState extends State<NewCart> with TickerProviderStateMixin {
                                   opacity: controller.fadeAnimation,
                                   child: FxButton.block(
                                       onPressed: () {
-                                        controller.goToCheckout();
+                                        // controller.goToCheckout();
                                       },
-                                      //     () {
-                                      //   // token == null
-                                      //   //     ? controller.Login()
-                                      //   //     :
-                                      //
-                                      //   // favouriteListCart
-                                      //   //     .add(controller.selectedtour as Activity);
-                                      // },
                                       backgroundColor: const Color(0xff1529e8),
                                       // backgroundColor: theme.colorScheme.primary,
                                       elevation: 0,

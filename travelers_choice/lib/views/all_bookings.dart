@@ -375,7 +375,14 @@ class _AllBookingsState extends State<AllBookings>
                                                         .orderStatus ==
                                                     'confirmed'
                                                 ? Colors.green
-                                                : Colors.red,
+                                                : controller
+                                                            .orders!
+                                                            .result!
+                                                            .data![index]
+                                                            .orderStatus ==
+                                                        'pending'
+                                                    ? Colors.orange
+                                                    : Colors.red,
                                             fontWeight: 600,
                                             // color: const Color(0xff1529e8),
                                           )

@@ -61,7 +61,8 @@ class ActivityController extends FxController {
         tour.grandTotal = tour.adultPrice!.toDouble();
         selectedtour.add(tour);
       }
-    } else {
+    }
+    else {
       int index = person_count.indexOf(value[0]);
       double val = getGrandTotal(person_count[index]);
       person_count[index].grandTotal = val;
