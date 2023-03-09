@@ -1,15 +1,20 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:developer';
-
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_intro/flutter_intro.dart';
 import 'package:flutx/flutx.dart';
-
+import 'package:http/http.dart' as http;
+import 'package:permission_handler/permission_handler.dart';
 import '../models/category.dart';
 import '../models/order_attraction_modal.dart';
 import '../models/product.dart';
+import '../views/download/pdf_viewer_page.dart';
 import '../views/hotel_travel_constants.dart';
 import '../views/view_order.dart';
+import 'package:path_provider/path_provider.dart' as path;
+import 'package:dio/dio.dart';
 
 class AllBookingController extends FxController {
   TickerProvider ticker;
@@ -136,10 +141,72 @@ class AllBookingController extends FxController {
     update();
   }
 
+  void openPDF(BuildContext context, File file) => Navigator.of(context).push(
+        MaterialPageRoute(builder: (context) => PDFViewerPage(file: file)),
+      );
+  void downloadBtn(String orderId, String ActivityId) async {
+    log('Donloadbtn Calling....');
+    var res = await http.get(
+      Uri.parse(
+          "https://secure.mytravellerschoice.com/api/v1/attractions/orders/6401e4f5913789806d34b998/ticket/6401e4f5913789806d34b999"),
+      // "https://secure.mytravellerschoice.com/api/v1/attractions/orders/$orderId/ticket/$ActivityId"),
+      headers: <String, String>{
+        "Content-Type": "application/json",
+        "Accept": "application/json",
+      },
+    );
+    // body: jsonEncode(body),
+
+    if (res.statusCode == 200) {
+      log('response 200');
+      // log('Response download:${res.bodyBytes}');
+
+      String imagesdata = res.body;
+      log('download data:$imagesdata');
+      downloadBook(
+          downloadLink:
+              "https://secure.mytravellerschoice.com/api/v1/attractions/orders/6401e4f5913789806d34b998/ticket/6401e4f5913789806d34b999",
+          title: "esther");
+      // Navigator.of(context, rootNavigator: true).pushReplacement(
+      //   MaterialPageRoute(
+      //     builder: (context) => TicketDownload(downloaddata: imagesdata),
+      //   ),
+      // );
+    } else {
+      log('img error');
+      var jsondata = jsonDecode(res.body);
+      log(jsondata['error']);
+      print(jsondata['error']);
+      //snackbar
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(jsondata['error'])));
+      return null;
+    }
+  }
+
+  downloadBook({String? downloadLink, String? title}) async {
+    log('downloading...');
+    Dio dio;
+    if (await Permission.storage.request().isGranted) {
+      log('permissionif..');
+      final downloadPath = await path.getExternalStorageDirectory();
+      var filePath = '${downloadPath!.path}/$title.pdf';
+
+      dio = Dio();
+      await dio.download(downloadLink!, filePath).then((value) {
+        dio.close();
+        log('downloaded');
+      }).catchError((Object e) {
+        log('error:$e');
+        // Fluttertoast.showToast(
+        //     msg: "Terjadi kesalahan. Download gagal.", timeInSecForIosWeb: 1);
+      });
+    } else {}
+  }
+
   Future<void> bookNow(
       // String id,
-      Datum ordermodal
-      // AllAttractionOrders ordermodal
+      Datum ordermodal // AllAttractionOrders ordermodal
       ) async {
     animationController.forward();
     log('Order attraction');
@@ -162,31 +229,6 @@ class AllBookingController extends FxController {
             // Id: id
             ordermodal)));
   }
-
-  // Future<void> VewPage(
-  //     // DetailattractionModal review
-  //     String id,
-  //     AllAttractionOrders ordermodal) async {
-  //   animationController.forward();
-  //   await Future.delayed(const Duration(seconds: 1));
-  //   Navigator.of(context, rootNavigator: true).push(PageRouteBuilder(
-  //       transitionDuration: const Duration(milliseconds: 500),
-  //       transitionsBuilder: (
-  //         BuildContext context,
-  //         Animation<double> animation,
-  //         Animation<double> secondaryAnimation,
-  //         Widget child,
-  //       ) =>
-  //           FadeTransition(
-  //             opacity: animation,
-  //             child: child,
-  //           ),
-  //       pageBuilder: (_, __, ___) => ViewOrder(Id:id)
-  //       // ActivityScreen(
-  //       //   Excursions: widget.detailattraction
-  //       //   )
-  //       ));
-  // }
 
   void changeSelectedCategory(Category category) {
     selectedCategory = category;
@@ -213,22 +255,6 @@ class AllBookingController extends FxController {
     //     //     transitionDuration: const Duration(seconds: 1),
     //     //     pageBuilder: (_, __, ___) => SingleProductScreen(product)),
     //     );
-  }
-
-  void goToSubscription() {
-    // Navigator.of(context, rootNavigator: true).push(
-    //   MaterialPageRoute(
-    //     builder: (context) => SubscriptionScreen(),
-    //   ),
-    // );
-  }
-
-  void goToNotification() {
-    // Navigator.of(context, rootNavigator: true).push(
-    //   MaterialPageRoute(
-    //     builder: (context) => NotificationScreen(),
-    //   ),
-    // );
   }
 
   @override

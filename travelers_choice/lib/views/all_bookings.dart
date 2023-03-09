@@ -1,10 +1,12 @@
 import 'dart:developer';
-
+import 'dart:io';
+import 'package:dio/dio.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutx/flutx.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../controllers/all_bookings.dart';
 import '../loading_effect.dart';
@@ -12,6 +14,9 @@ import '../models/product.dart';
 import '../services/app_constants.dart';
 import '../services/attraction_Service.dart';
 import '../theme/app_theme.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:path_provider/path_provider.dart' as path;
+import 'package:external_path/external_path.dart';
 
 class AllBookings extends StatefulWidget {
   const AllBookings({Key? key}) : super(key: key);
@@ -27,6 +32,7 @@ class _AllBookingsState extends State<AllBookings>
   @override
   void initState() {
     super.initState();
+    getPermission();
     theme = AppTheme.shoppingTheme;
     theme1 = AppTheme.learningTheme;
     SharedPreferences.getInstance().then((sharedPrefValue) {
@@ -74,6 +80,102 @@ class _AllBookingsState extends State<AllBookings>
     } catch (e) {
       rethrow;
     }
+  }
+
+  final imgUrl =
+      "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf";
+
+  var dio = Dio();
+
+  void getPermission() async {
+    print("getPermission");
+    await Permission.storage.request();
+    // await PermissionHandler().requestPermissions([PermissionGroup.storage]);
+    // Map<PermissionGroup, PermissionStatus> permissions =
+    //     await PermissionHandler().requestPermissions([PermissionGroup.storage]);
+  }
+
+  Future download2(Dio dio, String url, String savePath) async {
+    log('2download');
+    try {
+      Response response = await dio.get(
+        url,
+        onReceiveProgress: showDownloadProgress,
+        //Received data with List<int>
+        options: Options(
+            responseType: ResponseType.bytes,
+            followRedirects: false,
+            validateStatus: (status) {
+              return status! < 500;
+            }),
+      );
+      print(response.headers);
+      File file = File(savePath);
+      var raf = file.openSync(mode: FileMode.write);
+      // response.data is List<int> type
+      raf.writeFromSync(response.data);
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text('Your Ticket was downloaded Sucessfully')));
+      await raf.close();
+    } catch (e) {
+      print(e);
+      log('Error:$e');
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(e.toString())));
+    }
+  }
+
+  void showDownloadProgress(received, total) {
+    if (total != -1) {
+      print((received / total * 100).toStringAsFixed(0) + "%");
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text('Your Ticket was downloaded Sucessfully')));
+    }
+  }
+
+//todo
+  var imageUrl =
+      "https://secure.mytravellerschoice.com/api/v1/attractions/orders/6401e4f5913789806d34b998/ticket/6401e4f5913789806d34b999";
+  // "https://www.itl.cat/pngfile/big/10-100326_desktop-wallpaper-hd-full-screen-free-download-full.jpg";
+  bool downloading = true;
+  String downloadingStr = "No data";
+  String savePath = "";
+
+  Future downloadFile() async {
+    log('download');
+    try {
+      Dio dio = Dio();
+      String fileName = 'Jensy';
+      // String fileName = imageUrl.substring(imageUrl.lastIndexOf("/") + 1);
+
+      savePath = await getFilePath(fileName);
+      await dio.download(imageUrl, savePath, onReceiveProgress: (rec, total) {
+        setState(() {
+          downloading = true;
+          // download = (rec / total) * 100;
+          downloadingStr = "Downloading Image : $rec";
+        });
+      });
+      setState(() {
+        downloading = false;
+        downloadingStr = "Completed";
+      });
+      log('finding Path');
+      log('Save Path:$savePath');
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+  Future<String> getFilePath(uniqueFileName) async {
+    String path = '';
+
+    Directory dir = await getApplicationDocumentsDirectory();
+
+    path = '${dir.path}/$uniqueFileName';
+
+    return path;
   }
 
   Widget attractionList() {
@@ -758,30 +860,89 @@ class _AllBookingsState extends State<AllBookings>
                                 // ),
 
                                 FxSpacing.width(10),
-                                FxContainer(
-                                  onTap: () {
-                                    log('download clicked');
-                                  },
-                                  padding: FxSpacing.fromLTRB(8, 6, 8, 6),
-                                  color: const Color(0xff1529e8).withAlpha(40),
-                                  // color:Color(0xff6874E8),
-                                  // customTheme.groceryPrimary.withAlpha(40),
-                                  child: Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      FxText.bodyMedium("Download",
-                                          color: const Color(0xff1529e8),
-                                          // color: customTheme.groceryPrimary,
-                                          fontWeight: 500,
-                                          letterSpacing: -0.2),
-                                      const Icon(
-                                        MdiIcons.download,
-                                        size: 14,
-                                        color: Color(0xff1529e8),
+                                controller.orders!.result!.data![index]
+                                            .orderStatus ==
+                                        'confirmed'
+                                    ? FxContainer(
+                                        // onTap: () async {
+                                        //   log('download clicked');
+                                        //   log('Order Id:${controller.orders!.result!.data![index].id}');
+                                        //   log('Activity Id:${controller.orders!.result!.data![index].activities!.id}');
+                                        //   // const url =
+                                        //   //     'https://secure.mytravellerschoice.com/api/v1/attractions/orders/6401e4f5913789806d34b998/ticket/6401e4f5913789806d34b999';
+                                        //   // final file = await PDFApi.loadNetwork(url);
+                                        //   // controller.openPDF(context, file);
+                                        //   // controller.downloadBtn(
+                                        //   //     controller
+                                        //   //         .orders!.result!.data![index].id
+                                        //   //         .toString(),
+                                        //   //     controller.orders!.result!.data![index]
+                                        //   //         .activities!.id
+                                        //   //         .toString());
+
+                                        //   //todo
+                                        //   // downloadBook(
+                                        //   //     downloadLink:
+                                        //   //         //     "https://secure.mytravellerschoice.com/api/v1/attractions/orders/${controller.orders!.result!.data![index].id}/ticket/${controller.orders!.result!.data![index].activities!.id}",
+                                        //   //         "https://secure.mytravellerschoice.com/api/v1/attractions/orders/6401e4f5913789806d34b998/ticket/6401e4f5913789806d34b999",
+                                        //   //     title: "test");
+                                        // },
+                                        onTap: () async {
+                                          log('tap');
+                                          // String path = await ExtStorage
+                                          //     .getExternalStoragePublicDirectory(
+                                          //         ExtStorage.DIRECTORY_DOWNLOADS);
+                                          //todo
+                                          String path = await ExternalPath
+                                              .getExternalStoragePublicDirectory(
+                                                  ExternalPath
+                                                      .DIRECTORY_DOWNLOADS);
+
+                                          //
+                                          //String fullPath = tempDir.path + "/boo2.pdf'";
+                                          String fullPath =
+                                              "$path/${controller.orders!.result!.data![index].activities!.activity!.name!}.pdf";
+                                          print('full path $fullPath');
+                                          String Idorder = controller
+                                              .orders!.result!.data![index].id
+                                              .toString();
+                                          String idactivity = controller
+                                              .orders!
+                                              .result!
+                                              .data![index]
+                                              .activities!
+                                              .id
+                                              .toString();
+
+                                          final ticketimage =
+                                              // "https://secure.mytravellerschoice.com/api/v1/attractions/orders/6401e4f5913789806d34b998/ticket/6401e4f5913789806d34b999";
+                                              "https://secure.mytravellerschoice.com/api/v1/attractions/orders/$Idorder/ticket/$idactivity";
+
+                                          download2(dio, ticketimage, fullPath);
+                                          // downloadFile();
+                                        },
+                                        padding: FxSpacing.fromLTRB(8, 6, 8, 6),
+                                        color: const Color(0xff1529e8)
+                                            .withAlpha(40),
+                                        // color:Color(0xff6874E8),
+                                        // customTheme.groceryPrimary.withAlpha(40),
+                                        child: Row(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            FxText.bodyMedium("Download",
+                                                color: const Color(0xff1529e8),
+                                                // color: customTheme.groceryPrimary,
+                                                fontWeight: 500,
+                                                letterSpacing: -0.2),
+                                            const Icon(
+                                              MdiIcons.download,
+                                              size: 14,
+                                              color: Color(0xff1529e8),
+                                            )
+                                          ],
+                                        ),
                                       )
-                                    ],
-                                  ),
-                                ),
+                                    : const SizedBox(),
                                 FxSpacing.width(10),
                               ],
                             ),
@@ -1429,5 +1590,27 @@ class _AllBookingsState extends State<AllBookings>
         builder: (controller) {
           return _buildBody();
         });
+  }
+
+  downloadBook({String? downloadLink, String? title}) async {
+    log('downloading...');
+    Dio dio;
+    if (await Permission.storage.request().isGranted) {
+      log('permissionif..');
+      final downloadPath = await path.getExternalStorageDirectory();
+      var filePath = '${downloadPath!.path}/$title.pdf';
+
+      dio = Dio();
+      await dio.download(downloadLink!, filePath).then((value) {
+        dio.close();
+        log('downloaded');
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            content: Text('Your Ticket was downloaded Sucessfully')));
+      }).catchError((Object e) {
+        log('error:$e');
+        // Fluttertoast.showToast(
+        //     msg: "Terjadi kesalahan. Download gagal.", timeInSecForIosWeb: 1);
+      });
+    } else {}
   }
 }
