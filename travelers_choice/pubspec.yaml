@@ -95,6 +95,8 @@ dependencies:
   path_provider: ^2.0.13
   external_path: ^1.0.3
   flutter_launcher_icons: ^0.11.0
+  flutter_native_splash: ^2.0.1+1
+
 
 dev_dependencies:
   flutter_test:
@@ -109,6 +111,8 @@ flutter_icons:
   ios: true
   image_path: "assets/tctt-logo.png"
 
+flutter_native_splash:
+  background_image: assets/other/splash_screen.png
 # The following section is specific to Flutter.
 flutter:
   # The following line ensures that the Material Icons font is

@@ -26,30 +26,29 @@ class _NewCartState extends State<NewCart> with TickerProviderStateMixin {
   SharedPreferences? sharedPreferences;
 
   bool isLoading = true;
-  getAttraction(BuildContext context) async {
-    // await AuthService().getCountry();
-    log('getAttraction function called');
-    sharedPreferences = await SharedPreferences.getInstance();
-    Future.delayed(Duration.zero, () async {
-      await AttractionController().getAllattractionList(context).then((value) {
-        if (value != null) {
-          isLoading = false;
-          allattractionList = [];
-          allattractionList!.add(value);
-          log('All1:$allattractionList');
-        }
-      });
-    });
-  }
+  // getAttraction(BuildContext context) async {
+  //   // await AuthService().getCountry();
+  //   log('getAttraction function called');
+  //   sharedPreferences = await SharedPreferences.getInstance();
+  //   Future.delayed(Duration.zero, () async {
+  //     await AttractionController().getAllattractionList(context).then((value) {
+  //       if (value != null) {
+  //         isLoading = false;
+  //         allattractionList = [];
+  //         allattractionList!.add(value);
+  //         log('All1:$allattractionList');
+  //       }
+  //     });
+  //   });
+  // }
 
   @override
   void initState() {
     super.initState();
-    getAttraction(context);
-    log('initial');
-    log('cart:${favouriteListCart.length}');
+    // getAttraction(context);
+    log('saved:${favouriteListCart.length}');
+    log("favoriteCartList $favouriteListCart");
     theme = AppTheme.shoppingTheme;
-
     controller = FxControllerStore.put(NewCartController(this));
     log('Item:${favouriteListCart.map((e) => e.sId)}');
   }
@@ -57,6 +56,7 @@ class _NewCartState extends State<NewCart> with TickerProviderStateMixin {
   Widget _buildSingleProduct(Activity product) {
     String text = product.name!;
 
+    print("product$product");
     text = text.replaceAll("_", " ");
 
     List<String> words = text.split(" ");
@@ -288,14 +288,15 @@ class _NewCartState extends State<NewCart> with TickerProviderStateMixin {
       return Scaffold(
           backgroundColor: const Color(0xfff5f5f5),
           appBar: AppBar(
-              elevation: 0,
-              automaticallyImplyLeading: false,
-              title: FxText.titleMedium(
-                'Cart',
-                fontWeight: 700,
-              ),
-              centerTitle: true,
-              backgroundColor: Colors.transparent),
+            elevation: 0,
+            automaticallyImplyLeading: false,
+            title: FxText.titleMedium(
+              'Cart',
+              fontWeight: 700,
+            ),
+            centerTitle: true,
+            backgroundColor: const Color(0xfff5f5f5),
+          ),
           body: favouriteListCart.isEmpty
               ? Center(
                   child: Column(
@@ -313,9 +314,9 @@ class _NewCartState extends State<NewCart> with TickerProviderStateMixin {
                 )
               : Stack(
                   children: [
-                    ListView.separated(
+                    ListView.builder(
                       scrollDirection: Axis.vertical,
-                      padding: FxSpacing.x(20),
+                      padding: const EdgeInsets.all(5),
                       physics: const AlwaysScrollableScrollPhysics(),
                       shrinkWrap: true,
                       itemCount: favouriteListCart.length,
@@ -323,11 +324,6 @@ class _NewCartState extends State<NewCart> with TickerProviderStateMixin {
                         return _buildSingleProduct(
                             // widget.favouriteMeals.first.attractions.data.first
                             favouriteListCart[index]);
-                      },
-                      separatorBuilder: (context, index) {
-                        return const SizedBox(
-                          height: 10,
-                        );
                       },
                     ),
                     Positioned(
@@ -357,7 +353,13 @@ class _NewCartState extends State<NewCart> with TickerProviderStateMixin {
                                   opacity: controller.fadeAnimation,
                                   child: FxButton.block(
                                       onPressed: () {
-                                        // controller.goToCheckout();
+                                        final grandTotal = favouriteListCart
+                                            .map((e) => e.grandTotal)
+                                            .reduce((value, element) =>
+                                                value + element);
+
+                                        controller.goToCheckout(
+                                            favouriteListCart, grandTotal);
                                       },
                                       backgroundColor: const Color(0xff1529e8),
                                       // backgroundColor: theme.colorScheme.primary,
@@ -395,72 +397,6 @@ class _NewCartState extends State<NewCart> with TickerProviderStateMixin {
                         ),
                       ),
                     )
-
-                    // Positioned(
-                    //   bottom: 0,
-                    //   left: 0,
-                    //   right: 0,
-                    //   child: Container(
-                    //     padding: FxSpacing.xy(12, 60),
-                    //     child: PhysicalModel(
-                    //       color: theme.cardTheme.color!.withAlpha(200),
-                    //       elevation: 12,
-                    //       borderRadius:
-                    //           const BorderRadius.all(Radius.circular(32)),
-                    //       shadowColor:
-                    //           theme.colorScheme.onBackground.withAlpha(12),
-                    //       shape: BoxShape.rectangle,
-                    //       child: Container(
-                    //         decoration: BoxDecoration(
-                    //           color: theme.cardTheme.color!.withAlpha(200),
-                    //           borderRadius:
-                    //               const BorderRadius.all(Radius.circular(32)),
-                    //         ),
-                    //         padding: FxSpacing.xy(16, 12),
-                    //         child: Column(
-                    //           children: <Widget>[
-                    //             FadeTransition(
-                    //               opacity: controller.fadeAnimation,
-                    //               child: FxButton.block(
-                    //                   onPressed: () {
-                    //                     // controller.goToCheckout();
-                    //                   },
-                    //                   backgroundColor: const Color(0xff1529e8),
-                    //                   // backgroundColor: theme.colorScheme.primary,
-                    //                   elevation: 0,
-                    //                   borderRadiusAll: 4,
-                    //                   child: Row(
-                    //                     children: [
-                    //                       SlideTransition(
-                    //                         position: controller.animation,
-                    //                         child: Image(
-                    //                           height: 22,
-                    //                           width: 22,
-                    //                           color:
-                    //                               theme.colorScheme.onPrimary,
-                    //                           image: const AssetImage(
-                    //                               'assets/images/apps/shopping2/icons/clear_cart_outline.png'),
-                    //                         ),
-                    //                       ),
-                    //                       Expanded(
-                    //                         child: Center(
-                    //                           child: FxText.bodyMedium(
-                    //                             'Checkout',
-                    //                             fontWeight: 600,
-                    //                             color:
-                    //                                 theme.colorScheme.onPrimary,
-                    //                           ),
-                    //                         ),
-                    //                       ),
-                    //                     ],
-                    //                   )),
-                    //             ),
-                    //           ],
-                    //         ),
-                    //       ),
-                    //     ),
-                    //   ),
-                    // )
                   ],
                 ));
     }

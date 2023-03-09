@@ -29,24 +29,32 @@ class _SplashScreen2State extends State<SplashScreen2> {
         controller: controller,
         builder: (controller) {
           return Scaffold(
-            body: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Hero(
-                    tag: "splash_username",
-                    child: FxText.titleLarge(
-                      'Welcome To Traveler\s Choice App',
-                      // "Hey Nency,",
-                      fontWeight: 700,
-                    ),
-                  ),
-                  FxText.bodySmall(
-                    "Wait here, we are fetching data",
-                  ),
-                ],
+            body:
+            Container(
+              child: Image.asset("assets/other/splash_screen.png",
+                fit: BoxFit.fill,
+                width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height,
               ),
-            ),
+            )
+            // Center(
+            //   child: Column(
+            //     mainAxisAlignment: MainAxisAlignment.center,
+            //     children: [
+            //       Hero(
+            //         tag: "splash_username",
+            //         child: FxText.titleLarge(
+            //           'Welcome To Traveler\s Choice App',
+            //           // "Hey Nency,",
+            //           fontWeight: 700,
+            //         ),
+            //       ),
+            //       FxText.bodySmall(
+            //         "Wait here, we are fetching data",
+            //       ),
+            //     ],
+            //   ),
+            // ),
           );
         });
   }
