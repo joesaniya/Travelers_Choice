@@ -46,7 +46,8 @@ class _NewCartState extends State<NewCart> with TickerProviderStateMixin {
   void initState() {
     super.initState();
     getAttraction(context);
-    log('saved:${favouriteListCart.length}');
+    log('initial');
+    log('cart:${favouriteListCart.length}');
     theme = AppTheme.shoppingTheme;
 
     controller = FxControllerStore.put(NewCartController(this));
@@ -287,16 +288,14 @@ class _NewCartState extends State<NewCart> with TickerProviderStateMixin {
       return Scaffold(
           backgroundColor: const Color(0xfff5f5f5),
           appBar: AppBar(
-            elevation: 0,
-            automaticallyImplyLeading: false,
-            title: FxText.titleMedium(
-              'Cart',
-              fontWeight: 700,
-            ),
-            centerTitle: true,
-            backgroundColor: const Color(0xfff5f5f5),
-          ),
-
+              elevation: 0,
+              automaticallyImplyLeading: false,
+              title: FxText.titleMedium(
+                'Cart',
+                fontWeight: 700,
+              ),
+              centerTitle: true,
+              backgroundColor: Colors.transparent),
           body: favouriteListCart.isEmpty
               ? Center(
                   child: Column(
@@ -314,10 +313,10 @@ class _NewCartState extends State<NewCart> with TickerProviderStateMixin {
                 )
               : Stack(
                   children: [
-                    ListView.builder(
+                    ListView.separated(
                       scrollDirection: Axis.vertical,
-                      padding: const EdgeInsets.all(5),
-                      physics: const NeverScrollableScrollPhysics(),
+                      padding: FxSpacing.x(20),
+                      physics: const AlwaysScrollableScrollPhysics(),
                       shrinkWrap: true,
                       itemCount: favouriteListCart.length,
                       itemBuilder: (BuildContext context, int index) {
@@ -325,12 +324,16 @@ class _NewCartState extends State<NewCart> with TickerProviderStateMixin {
                             // widget.favouriteMeals.first.attractions.data.first
                             favouriteListCart[index]);
                       },
+                      separatorBuilder: (context, index) {
+                        return const SizedBox(
+                          height: 10,
+                        );
+                      },
                     ),
                     Positioned(
                       bottom: 0,
                       left: 0,
                       right: 0,
-
                       child: Container(
                         padding: FxSpacing.xy(12, 8),
                         child: PhysicalModel(
@@ -392,6 +395,72 @@ class _NewCartState extends State<NewCart> with TickerProviderStateMixin {
                         ),
                       ),
                     )
+
+                    // Positioned(
+                    //   bottom: 0,
+                    //   left: 0,
+                    //   right: 0,
+                    //   child: Container(
+                    //     padding: FxSpacing.xy(12, 60),
+                    //     child: PhysicalModel(
+                    //       color: theme.cardTheme.color!.withAlpha(200),
+                    //       elevation: 12,
+                    //       borderRadius:
+                    //           const BorderRadius.all(Radius.circular(32)),
+                    //       shadowColor:
+                    //           theme.colorScheme.onBackground.withAlpha(12),
+                    //       shape: BoxShape.rectangle,
+                    //       child: Container(
+                    //         decoration: BoxDecoration(
+                    //           color: theme.cardTheme.color!.withAlpha(200),
+                    //           borderRadius:
+                    //               const BorderRadius.all(Radius.circular(32)),
+                    //         ),
+                    //         padding: FxSpacing.xy(16, 12),
+                    //         child: Column(
+                    //           children: <Widget>[
+                    //             FadeTransition(
+                    //               opacity: controller.fadeAnimation,
+                    //               child: FxButton.block(
+                    //                   onPressed: () {
+                    //                     // controller.goToCheckout();
+                    //                   },
+                    //                   backgroundColor: const Color(0xff1529e8),
+                    //                   // backgroundColor: theme.colorScheme.primary,
+                    //                   elevation: 0,
+                    //                   borderRadiusAll: 4,
+                    //                   child: Row(
+                    //                     children: [
+                    //                       SlideTransition(
+                    //                         position: controller.animation,
+                    //                         child: Image(
+                    //                           height: 22,
+                    //                           width: 22,
+                    //                           color:
+                    //                               theme.colorScheme.onPrimary,
+                    //                           image: const AssetImage(
+                    //                               'assets/images/apps/shopping2/icons/clear_cart_outline.png'),
+                    //                         ),
+                    //                       ),
+                    //                       Expanded(
+                    //                         child: Center(
+                    //                           child: FxText.bodyMedium(
+                    //                             'Checkout',
+                    //                             fontWeight: 600,
+                    //                             color:
+                    //                                 theme.colorScheme.onPrimary,
+                    //                           ),
+                    //                         ),
+                    //                       ),
+                    //                     ],
+                    //                   )),
+                    //             ),
+                    //           ],
+                    //         ),
+                    //       ),
+                    //     ),
+                    //   ),
+                    // )
                   ],
                 ));
     }

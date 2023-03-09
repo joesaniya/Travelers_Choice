@@ -10,7 +10,6 @@ import 'package:hotel_travel/views/new_cart.dart';
 import 'package:intl/intl.dart';
 
 import '../models/cart.dart';
-import '../views/Cart_Screen.dart';
 import '../views/checkout_screen.dart';
 import '../views/hotel_travel_constants.dart';
 import '../views/login_Screens/login_screen.dart';
@@ -22,7 +21,7 @@ class ActivityController extends FxController {
   TickerProvider ticker;
   ActivityController(this.ticker);
   bool showLoading = true, uiLoading = true;
-  final List<String> TransferCodes = ['Wthout Transfer', 'private', 'shared'];
+  final List<String> TransferCodes = ['Without Transfer', 'private', 'shared'];
   final List<String> SharedwithoutCodes = [
     'without',
     'private',
@@ -61,8 +60,7 @@ class ActivityController extends FxController {
         tour.grandTotal = tour.adultPrice!.toDouble();
         selectedtour.add(tour);
       }
-    }
-    else {
+    } else {
       int index = person_count.indexOf(value[0]);
       double val = getGrandTotal(person_count[index]);
       person_count[index].grandTotal = val;
@@ -489,7 +487,6 @@ class ActivityController extends FxController {
   //           grandSelectedTourAmount())));
   // }
 
-
   Future<void> goToCheckout1() async {
     await Future.delayed(const Duration(seconds: 1));
 
@@ -504,11 +501,11 @@ class ActivityController extends FxController {
     Navigator.of(context, rootNavigator: true).push(PageRouteBuilder(
         transitionDuration: const Duration(milliseconds: 500),
         transitionsBuilder: (
-            BuildContext context,
-            Animation<double> animation,
-            Animation<double> secondaryAnimation,
-            Widget child,
-            ) =>
+          BuildContext context,
+          Animation<double> animation,
+          Animation<double> secondaryAnimation,
+          Widget child,
+        ) =>
             FadeTransition(
               opacity: animation,
               child: child,
@@ -518,8 +515,7 @@ class ActivityController extends FxController {
             selectedtour,
             dateTE.text,
             selectedtransfer,
-            grandSelectedTourAmount()))
-    );
+            grandSelectedTourAmount())));
   }
 
   Future<void> goToCheckout() async {
@@ -531,9 +527,9 @@ class ActivityController extends FxController {
       // log(selectedtour.length.toString());
       // log(selectedtour.first.name.toString());
       // log(selectedtour.first.adultCount.toString());
-      print( selectedtour.length);
+      print(selectedtour.length);
       print(selectedtour);
-      print( dateTE.text);
+      print(dateTE.text);
       print(selectedtransfer);
       print(grandSelectedTourAmount());
       Navigator.of(context, rootNavigator: true).push(PageRouteBuilder(
@@ -596,11 +592,11 @@ class ActivityController extends FxController {
       Navigator.of(context, rootNavigator: true).push(PageRouteBuilder(
           transitionDuration: const Duration(milliseconds: 500),
           transitionsBuilder: (
-              BuildContext context,
-              Animation<double> animation,
-              Animation<double> secondaryAnimation,
-              Widget child,
-              ) =>
+            BuildContext context,
+            Animation<double> animation,
+            Animation<double> secondaryAnimation,
+            Widget child,
+          ) =>
               FadeTransition(
                 opacity: animation,
                 child: child,
@@ -616,17 +612,17 @@ class ActivityController extends FxController {
               // amount
               grandSelectedTourAmount())
 
-        // CheckOutScreen(
-        //     selectedtour.length,
-        //     // selectedtours,
-        //     selectedtour,
-        //     dateTE.text,
-        //     selectedtransfer,
+          // CheckOutScreen(
+          //     selectedtour.length,
+          //     // selectedtours,
+          //     selectedtour,
+          //     dateTE.text,
+          //     selectedtransfer,
 
-        //     // excursions.activities!
-        //     // amount
-        //     grandSelectedTourAmount())
-      ));
+          //     // excursions.activities!
+          //     // amount
+          //     grandSelectedTourAmount())
+          ));
     }
   }
 
