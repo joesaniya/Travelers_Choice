@@ -94,33 +94,11 @@ class _ActivityScreenState extends State<ActivityScreen>
               border: Border.all(color: Colors.grey.shade300, width: 1)),
           child: Column(
             children: [
-              Column(
-                  children: controller.selectedtour.map((Activity tour) {
-                return Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Expanded(child: Text(tour.name.toString())),
-                    FxSpacing.width(20),
-                    Text(tour.grandTotal.toString()),
-                  ],
-                );
-              }).toList()),
-              FxSpacing.height(20),
-              FxDashedDivider(
-                dashSpace: 4,
-                dashWidth: 8,
-                color: theme.colorScheme.onBackground.withAlpha(180),
-                height: 1.2,
-              ),
-              FxSpacing.height(20),
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  FxText.bodyLarge(
-                    'Total Amount',
-                    fontWeight: 700,
-                    color: const Color(0xff1529e8),
-                  ),
+                  Expanded(
+                      child:
+                          Text('${controller.selectedtour.length} Selected')),
                   FxText.bodyLarge(
                     // controller.selectedtour.first.GrandTotalAmount.toString(),
                     controller.grandSelectedTourAmount().toString(),
@@ -129,23 +107,59 @@ class _ActivityScreenState extends State<ActivityScreen>
                   ),
                 ],
               )
+              // Column(
+              //     children: controller.selectedtour.map((Activity tour) {
+              //   return Row(
+              //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //     children: [
+              //       Expanded(child: Text(tour.name.toString())),
+              //       FxSpacing.width(20),
+              //       Text(tour.grandTotal.toString()),
+              //     ],
+              //   );
+              // }).toList()),
+              // FxSpacing.height(20),
+              // FxDashedDivider(
+              //   dashSpace: 4,
+              //   dashWidth: 8,
+              //   color: theme.colorScheme.onBackground.withAlpha(180),
+              //   height: 1.2,
+              // ),
+              // FxSpacing.height(20),
+              // Row(
+              //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //   children: [
+              //     FxText.bodyLarge(
+              //       'Total Amount',
+              //       fontWeight: 700,
+              //       color: const Color(0xff1529e8),
+              //     ),
+              //     FxText.bodyLarge(
+              //       // controller.selectedtour.first.GrandTotalAmount.toString(),
+              //       controller.grandSelectedTourAmount().toString(),
+              //       fontWeight: 700,
+              //       color: const Color(0xff1529e8),
+              //     ),
+              //   ],
+              // )
             ],
           ));
     } else {
-      return Container(
-        padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 20),
-        decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: const BorderRadius.all(Radius.circular(10)),
-            border: Border.all(color: Colors.grey.shade300, width: 1)),
-        child: Center(
-          child: FxText.bodyMedium(
-            'No Tour Option Selected!!',
-            muted: true,
-            fontWeight: 700,
-          ),
-        ),
-      );
+      // return Container(
+      //   padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 20),
+      //   decoration: BoxDecoration(
+      //       color: Colors.white,
+      //       borderRadius: const BorderRadius.all(Radius.circular(10)),
+      //       border: Border.all(color: Colors.grey.shade300, width: 1)),
+      //   child: Center(
+      //     child: FxText.bodyMedium(
+      //       'No Tour Option Selected!!',
+      //       muted: true,
+      //       fontWeight: 700,
+      //     ),
+      //   ),
+      // );
+      return const SizedBox();
     }
   }
 
