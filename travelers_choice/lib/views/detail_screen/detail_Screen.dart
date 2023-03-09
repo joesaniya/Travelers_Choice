@@ -571,7 +571,7 @@ class _DetailScreenState extends State<DetailScreen>
                               // // '${controller.detailattraction.first.activities.first.adultPrice} ${controller.currency() ?? '\$'}',
                               '${(controller.detailattraction!.first.activities!.first.lowPrice
                               // * widget.conversionRate
-                              )}'
+                              )} AED'
                               // as double).toStringAsFixed(2)} ${widget.currencySymbol}'
                               ,
                               // controller.product.price.toString(),

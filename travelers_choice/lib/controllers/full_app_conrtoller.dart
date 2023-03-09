@@ -11,7 +11,7 @@ class NavItem {
 
 class FullAppController extends FxController {
   int currentIndex = 0;
-  int pages = 4;
+  int pages = 5;
   late TabController tabController;
 
   final TickerProvider tickerProvider;

@@ -3,9 +3,11 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutx/flutx.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../controllers/review_controller.dart';
 import '../../loading_effect.dart';
+import '../../services/app_constants.dart';
 import '../../theme/app_theme.dart';
 import '../bottomSheet/post_review_screen.dart';
 
@@ -29,11 +31,12 @@ class _ReviewScreenState extends State<ReviewScreen>
   late CustomTheme customTheme;
   late ThemeData theme;
   late ReviewController controller;
+  String? token;
 
   @override
   initState() {
     super.initState();
-
+    initializingData();
     customTheme = AppTheme.customTheme;
     theme = AppTheme.theme;
     controller = FxControllerStore.put(ReviewController(this));
@@ -45,6 +48,15 @@ class _ReviewScreenState extends State<ReviewScreen>
     log('Id:${widget.Id}');
     log('Rating:${widget.rating}');
     log('TotalRating Count:${widget.TotalRatingCount}');
+  }
+
+  void initializingData() {
+    SharedPreferences.getInstance().then((sharedPrefValue) {
+      setState(() {
+        token = sharedPrefValue.getString(AppConstants.KEY_ACCESS_TOKEN)!;
+        log('Review Token:${token!}');
+      });
+    });
   }
 
   @override
@@ -89,32 +101,34 @@ class _ReviewScreenState extends State<ReviewScreen>
               ),
               title: FxText("Reviews", fontWeight: 600),
             ),
-            floatingActionButton: FloatingActionButton.extended(
-              hoverColor: Colors.indigoAccent,
-              splashColor: Colors.indigoAccent,
-              onPressed: () async {
-                var data = await showModalBottomSheet(
-                    context: context,
-                    builder: (BuildContext buildContext) {
-                      return PostReviewSheet(
-                        reviewplace: widget.Id,
-                      );
-                    });
-                log("Modal sheet closed with value: " + data);
-                // if (data == 'Success') {
-                //   log('Sucessss1');
-                //   controller.getReviews(widget.Id, setState);
-                // }
-                controller.getReviews(widget.Id, setState);
-                // setState(() {
-                //   controller.reviewsget = [];
-                //   controller.reviewsget = [data];
-                // });
-              },
-              label: const Text('Write a Review'),
-              icon: const Icon(Icons.edit),
-              backgroundColor: const Color(0xff1529e8),
-            ),
+            floatingActionButton: token == null
+                ? const SizedBox()
+                : FloatingActionButton.extended(
+                    hoverColor: Colors.indigoAccent,
+                    splashColor: Colors.indigoAccent,
+                    onPressed: () async {
+                      var data = await showModalBottomSheet(
+                          context: context,
+                          builder: (BuildContext buildContext) {
+                            return PostReviewSheet(
+                              reviewplace: widget.Id,
+                            );
+                          });
+                      log("Modal sheet closed with value: " + data);
+                      // if (data == 'Success') {
+                      //   log('Sucessss1');
+                      //   controller.getReviews(widget.Id, setState);
+                      // }
+                      controller.getReviews(widget.Id, setState);
+                      // setState(() {
+                      //   controller.reviewsget = [];
+                      //   controller.reviewsget = [data];
+                      // });
+                    },
+                    label: const Text('Write a Review'),
+                    icon: const Icon(Icons.edit),
+                    backgroundColor: const Color(0xff1529e8),
+                  ),
             body: controller.reviewsget!.first.attractionReviews.isEmpty
                 ? Center(
                     child: Column(
@@ -230,13 +244,24 @@ class _ReviewScreenState extends State<ReviewScreen>
         children: <Widget>[
           Row(
             children: <Widget>[
-              Container(
-                width: 36,
+              // Container(
+              //   width: 36,
+              //   height: 36,
+              //   decoration: BoxDecoration(
+              //     shape: BoxShape.circle,
+              //     image: DecorationImage(
+              //         image: AssetImage(image), fit: BoxFit.fill),
+              //   ),
+              // ),
+              SizedBox(
                 height: 36,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  image: DecorationImage(
-                      image: AssetImage(image), fit: BoxFit.fill),
+                width: 36,
+                child: CircleAvatar(
+                  backgroundColor: theme.colorScheme.primary.withAlpha(28),
+                  child: FxText.bodyLarge(name[0],
+                      color: theme.colorScheme.primary,
+                      fontSize: 30,
+                      fontWeight: 600),
                 ),
               ),
               Expanded(
@@ -417,15 +442,31 @@ class _ReviewScreenState extends State<ReviewScreen>
             children: <Widget>[
               Row(
                 children: <Widget>[
-                  Container(
-                    width: 36,
+                  // Container(
+                  //   width: 36,
+                  //   height: 36,
+                  //   decoration: const BoxDecoration(
+                  //     shape: BoxShape.circle,
+                  //     image: DecorationImage(
+                  //         image: AssetImage(
+                  //             './assets/images/profile/avatar_2.jpg'),
+                  //         fit: BoxFit.fill),
+                  //   ),
+                  // ),
+                  SizedBox(
                     height: 36,
-                    decoration: const BoxDecoration(
-                      shape: BoxShape.circle,
-                      image: DecorationImage(
-                          image: AssetImage(
-                              './assets/images/profile/avatar_2.jpg'),
-                          fit: BoxFit.fill),
+                    width: 36,
+                    child: CircleAvatar(
+                      backgroundColor: theme.colorScheme.primary.withAlpha(28),
+                      child: Center(
+                        child: FxText.bodyLarge(
+                            controller.reviewsget!.first.attractionReviews[i]
+                                .user.name[0]
+                                .toUpperCase(),
+                            color: theme.colorScheme.primary,
+                            fontSize: 15,
+                            fontWeight: 600),
+                      ),
                     ),
                   ),
                   Expanded(

@@ -186,7 +186,6 @@ class _HistoryScreenState extends State<HistoryScreen>
                                                 orders!.result!.data![index]
                                                     .activities!.adultsCount!
                                                     .toString(),
-
                                                 color: const Color(0xff1529e8),
                                                 // color: customTheme.groceryPrimary,
                                                 fontWeight: 500,
@@ -213,7 +212,6 @@ class _HistoryScreenState extends State<HistoryScreen>
                                                 orders!.result!.data![index]
                                                     .activities!.childrenCount!
                                                     .toString(),
-
                                                 color: const Color(0xff1529e8),
                                                 // color: customTheme.groceryPrimary,
                                                 fontWeight: 500,
@@ -397,12 +395,13 @@ class _HistoryScreenState extends State<HistoryScreen>
     return Scaffold(
         backgroundColor: const Color(0xfff5f5f5),
         appBar: AppBar(
-          elevation: 0,
-          title: const Center(
-              child: Text(
-            "History",
-            style: TextStyle(color: Colors.black),
-          )),
+          automaticallyImplyLeading: false,
+          title: FxText.titleMedium(
+            'History',
+            fontWeight: 700,
+          ),
+          centerTitle: true,
+          backgroundColor: const Color(0xfff5f5f5),
           bottom: TabBar(
             labelColor: Colors.black,
             unselectedLabelColor: Colors.black,

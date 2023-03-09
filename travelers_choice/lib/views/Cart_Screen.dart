@@ -10,8 +10,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../controllers/attraction_Controller.dart';
 import 'full_app.dart';
 
-
-
 class NewCart extends StatefulWidget {
   final List<Activity> cartMeal;
   const NewCart(this.cartMeal, {super.key});
@@ -20,8 +18,7 @@ class NewCart extends StatefulWidget {
   _NewCartState createState() => _NewCartState();
 }
 
-class _NewCartState extends State<NewCart>
-    with TickerProviderStateMixin {
+class _NewCartState extends State<NewCart> with TickerProviderStateMixin {
   late ThemeData theme;
 
   late NewCartController controller;
@@ -55,7 +52,6 @@ class _NewCartState extends State<NewCart>
     controller = FxControllerStore.put(NewCartController(this));
     log('Item:${favouriteListCart.map((e) => e.sId)}');
   }
-
 
   Widget _buildSingleProduct(Activity product) {
     String text = product.name!;
@@ -116,13 +112,13 @@ class _NewCartState extends State<NewCart>
                 ),
                 product.transferType == null
                     ? FxText.bodyMedium(
-                  'without',
-                  fontWeight: 700,
-                )
+                        'without',
+                        fontWeight: 700,
+                      )
                     : FxText.bodyMedium(
-                  product.transferType.toString(),
-                  fontWeight: 700,
-                ),
+                        product.transferType.toString(),
+                        fontWeight: 700,
+                      ),
               ],
             ),
             FxSpacing.height(4),
@@ -134,8 +130,7 @@ class _NewCartState extends State<NewCart>
                   fontWeight: 600,
                 ),
                 FxText.bodyMedium(
-                  product.selectedDate
-                      .toString(),
+                  product.selectedDate.toString(),
                   fontWeight: 700,
                 ),
               ],
@@ -157,9 +152,7 @@ class _NewCartState extends State<NewCart>
                       color: const Color(0xff1529e8).withAlpha(40),
                       child: Row(
                         children: [
-                          FxText.bodyMedium(
-                              product.adultCount
-                                  .toString(),
+                          FxText.bodyMedium(product.adultCount.toString(),
                               color: const Color(0xff1529e8),
                               // color: customTheme.groceryPrimary,
                               fontWeight: 500,
@@ -179,9 +172,7 @@ class _NewCartState extends State<NewCart>
                       color: const Color(0xff1529e8).withAlpha(40),
                       child: Row(
                         children: [
-                          FxText.bodyMedium(
-                              product.childCount
-                                  .toString(),
+                          FxText.bodyMedium(product.childCount.toString(),
                               color: const Color(0xff1529e8),
                               // color: customTheme.groceryPrimary,
                               fontWeight: 500,
@@ -201,9 +192,7 @@ class _NewCartState extends State<NewCart>
                       color: const Color(0xff1529e8).withAlpha(40),
                       child: Row(
                         children: [
-                          FxText.bodyMedium(
-                              product.infantCount
-                                  .toString(),
+                          FxText.bodyMedium(product.infantCount.toString(),
                               color: const Color(0xff1529e8),
                               // color: customTheme.groceryPrimary,
                               fontWeight: 500,
@@ -296,122 +285,115 @@ class _NewCartState extends State<NewCart>
       );
     } else {
       return Scaffold(
-        backgroundColor: const Color(0xfff5f5f5),
-        appBar: AppBar(
-          elevation: 0,
-          automaticallyImplyLeading: false,
-          title: FxText.titleMedium(
-            'Cart',
-            fontWeight: 700,
-          ),
-          centerTitle: true,
           backgroundColor: const Color(0xfff5f5f5),
-        ),
-        body: favouriteListCart.isEmpty
-            ? Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: const [
-              // Lottie.asset('assets/lottie/confirmation.json',
-              //     height: 300, width: 300),
-              Text('You have no cart itmes - start adding some item!',
-                  style: TextStyle(
-                      fontFamily: 'inter',
-                      fontWeight: FontWeight.w400,
-                      fontSize: 16))
-            ],
+          appBar: AppBar(
+            elevation: 0,
+            automaticallyImplyLeading: false,
+            title: FxText.titleMedium(
+              'Cart',
+              fontWeight: 700,
+            ),
+            centerTitle: true,
+            backgroundColor: const Color(0xfff5f5f5),
           ),
-        )
-            :
 
-            Stack(
-              // physics: AlwaysScrollableScrollPhysics(),
-              children: [
-                ListView.builder(
-                  scrollDirection: Axis.vertical,
-                  padding: EdgeInsets.all(5),
-                  physics: const NeverScrollableScrollPhysics(),
-                  shrinkWrap: true,
-                  itemCount: favouriteListCart.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return _buildSingleProduct(
-                      // widget.favouriteMeals.first.attractions.data.first
-                        favouriteListCart[index]);
-                  },
-                ),
-                Positioned(
-                  bottom: 0,
-                  left: 0,
-                  right: 0,
-                  child: Container(
-                    padding: FxSpacing.xy(12, 8),
-                    child: PhysicalModel(
-                      color: theme.cardTheme.color!.withAlpha(200),
-                      elevation: 12,
-                      borderRadius: const BorderRadius.all(Radius.circular(32)),
-                      shadowColor: theme.colorScheme.onBackground.withAlpha(12),
-                      shape: BoxShape.rectangle,
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: theme.cardTheme.color!.withAlpha(200),
-                          borderRadius: const BorderRadius.all(Radius.circular(32)),
-                        ),
-                        padding: FxSpacing.xy(16, 12),
-                        child: Column(
-                          children: <Widget>[
-                            FadeTransition(
-                              opacity: controller.fadeAnimation,
-                              child: FxButton.block(
-                                  onPressed:
-                                      ()  {
-                                    // controller.goToCheckout();
-                                  },
-                                  //     () {
-                                  //   // token == null
-                                  //   //     ? controller.Login()
-                                  //   //     :
-                                  //
-                                  //   // favouriteListCart
-                                  //   //     .add(controller.selectedtour as Activity);
-                                  // },
-                                  backgroundColor: const Color(0xff1529e8),
-                                  // backgroundColor: theme.colorScheme.primary,
-                                  elevation: 0,
-                                  borderRadiusAll: 4,
-                                  child: Row(
-                                    children: [
-                                      SlideTransition(
-                                        position: controller.animation,
-                                        child: Image(
-                                          height: 22,
-                                          width: 22,
-                                          color: theme.colorScheme.onPrimary,
-                                          image: const AssetImage(
-                                              'assets/images/apps/shopping2/icons/clear_cart_outline.png'),
-                                        ),
-                                      ),
-                                      Expanded(
-                                        child: Center(
-                                          child: FxText.bodyMedium(
-                                            'Checkout',
-                                            fontWeight: 600,
-                                            color: theme.colorScheme.onPrimary,
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  )),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
+          body: favouriteListCart.isEmpty
+              ? Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: const [
+                      // Lottie.asset('assets/lottie/confirmation.json',
+                      //     height: 300, width: 300),
+                      Text('You have no cart itmes - start adding some item!',
+                          style: TextStyle(
+                              fontFamily: 'inter',
+                              fontWeight: FontWeight.w400,
+                              fontSize: 16))
+                    ],
                   ),
                 )
-              ],
-            )
+              : Stack(
+                  children: [
+                    ListView.builder(
+                      scrollDirection: Axis.vertical,
+                      padding: const EdgeInsets.all(5),
+                      physics: const NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      itemCount: favouriteListCart.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return _buildSingleProduct(
+                            // widget.favouriteMeals.first.attractions.data.first
+                            favouriteListCart[index]);
+                      },
+                    ),
+                    Positioned(
+                      bottom: 0,
+                      left: 0,
+                      right: 0,
 
-      );
+                      child: Container(
+                        padding: FxSpacing.xy(12, 8),
+                        child: PhysicalModel(
+                          color: theme.cardTheme.color!.withAlpha(200),
+                          elevation: 12,
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(32)),
+                          shadowColor:
+                              theme.colorScheme.onBackground.withAlpha(12),
+                          shape: BoxShape.rectangle,
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: theme.cardTheme.color!.withAlpha(200),
+                              borderRadius:
+                                  const BorderRadius.all(Radius.circular(32)),
+                            ),
+                            padding: FxSpacing.xy(16, 12),
+                            child: Column(
+                              children: <Widget>[
+                                FadeTransition(
+                                  opacity: controller.fadeAnimation,
+                                  child: FxButton.block(
+                                      onPressed: () {
+                                        // controller.goToCheckout();
+                                      },
+                                      backgroundColor: const Color(0xff1529e8),
+                                      // backgroundColor: theme.colorScheme.primary,
+                                      elevation: 0,
+                                      borderRadiusAll: 4,
+                                      child: Row(
+                                        children: [
+                                          SlideTransition(
+                                            position: controller.animation,
+                                            child: Image(
+                                              height: 22,
+                                              width: 22,
+                                              color:
+                                                  theme.colorScheme.onPrimary,
+                                              image: const AssetImage(
+                                                  'assets/images/apps/shopping2/icons/clear_cart_outline.png'),
+                                            ),
+                                          ),
+                                          Expanded(
+                                            child: Center(
+                                              child: FxText.bodyMedium(
+                                                'Checkout',
+                                                fontWeight: 600,
+                                                color:
+                                                    theme.colorScheme.onPrimary,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      )),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    )
+                  ],
+                ));
     }
   }
 }

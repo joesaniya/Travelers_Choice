@@ -12,7 +12,7 @@ import '../../theme/app_theme.dart';
 
 class FilterSheet extends StatefulWidget {
   Destination? categoryplace;
-  FilterSheet({this.categoryplace});
+  FilterSheet({super.key, this.categoryplace});
 
   @override
   State<FilterSheet> createState() => _FilterSheetState();
@@ -42,16 +42,24 @@ class _FilterSheetState extends State<FilterSheet>
   List<AllattractionModal> allattractionList = <AllattractionModal>[];
   bool isAllAttractionListLoading = true;
   Future<AllattractionModal?> FilterattractionList(
-      String place, String startprice,String Endprice) async {
+      String place, String startprice, String Endprice) async {
     // isCountryListLoading = true;
     try {
-      var data = await SearchService().FilterAttraction(place, startprice,Endprice);
+      var data =
+          await SearchService().FilterAttraction(place, startprice, Endprice);
       allattractionList.clear();
       if (data != null) {
+        log('datafilter');
         allattractionList.add(data);
+        // if (allattractionList.first.attractions.data == null) {
+        //   log('process....');
+        // } else {
+        //   allattractionList.add(data);
+        // }
         // isCountryListLoading = false;
         return data; //removed true
       } else {
+        log('Null');
         return null; //falseremoved
       }
     } catch (e) {
@@ -615,13 +623,36 @@ class _FilterSheetState extends State<FilterSheet>
                                     AllattractionModal? temp =
                                         await FilterattractionList(
                                             widget.categoryplace!.name,
-                                            controller.selectedRange.start.toString(),controller.selectedRange.end.toString()
-                                             );
+                                            controller.selectedRange.start
+                                                .toString(),
+                                            controller.selectedRange.end
+                                                .toString());
+
+                                    // if (controller.allattractionList!.first
+                                    //     .attractions.data.isEmpty) {
+                                    //   log('empty');
+                                    // } else {
+                                    //   controller.allattractionList!.first
+                                    //       .attractions.data = [];
+                                    //   controller.allattractionList!.first
+                                    //       .attractions.data
+                                    //       .add(temp as Datum);
+                                    // }
 
                                     setState(() {
+                                      log('setSearch');
                                       controller.allattractionList = [];
 
                                       controller.allattractionList!.add(temp!);
+
+                                      //todo
+                                      // controller.allattractionList!.first
+                                      //             .attractions.data ==
+                                      //         null
+                                      //     ? log('empty data')
+                                      //     : controller.allattractionList!.first
+                                      //         .attractions.data
+                                      //         .add(temp as Datum);
                                     });
 
                                     Navigator.pop(context, temp);

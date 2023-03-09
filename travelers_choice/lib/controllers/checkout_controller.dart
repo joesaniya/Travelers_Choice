@@ -7,6 +7,7 @@ import 'package:flutx/flutx.dart';
 import 'package:hotel_travel/views/hotel_travel_constants.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/atteraction_model.dart';
 import '../models/product.dart';
@@ -14,7 +15,9 @@ import '../models/razor_response.dart';
 import '../models/shipping_address.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import '../services/app_constants.dart';
 import '../views/checkout_screen.dart';
+import '../views/login_Screens/login_screen.dart';
 import '../views/payment_cc.dart';
 import 'razor_credentials.dart' as razorCredentials;
 
@@ -42,6 +45,7 @@ class CheckOutController extends FxController {
   bool selected = true;
 
   List<Tab> tabs = [];
+  String? token;
 //form
   late Animation<double> fadeAnimation, cartAnimation;
   // late AnimationController animationController;
@@ -129,7 +133,10 @@ class CheckOutController extends FxController {
   initState() {
     super.initState();
     fetchData();
-
+    SharedPreferences.getInstance().then((sharedPrefValue) {
+      token = sharedPrefValue.getString(AppConstants.KEY_ACCESS_TOKEN);
+      log(token.toString());
+    });
     // details=;
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       _razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS, _handlePaymentSuccess);
@@ -340,6 +347,20 @@ class CheckOutController extends FxController {
     }
   }
 
+  void Login() {
+    log('calling login....');
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('Please Login Your account'),
+      ),
+    );
+    Navigator.of(context, rootNavigator: true).pushReplacement(
+      MaterialPageRoute(
+        builder: (context) => const LogInScreen(),
+      ),
+    );
+  }
+
   void fetchData() async {
     products = HotelTravelCache.products;
     // calculateBilling();
@@ -394,7 +415,7 @@ class CheckOutController extends FxController {
   }
 
   //next button
-  nextPage(selectedExcursionsDatas, context, total) async {
+  nextPage(selectedExcursionsDatas, context, total, token) async {
     log('Page Number:$currentPage ');
     log('Total:$total ');
 
@@ -440,7 +461,7 @@ class CheckOutController extends FxController {
 
       if (selectedPayment == 1) {
         log('1');
-        createOrderccAvenue(selectedExcursionsDatas);
+        createOrderccAvenue(selectedExcursionsDatas, token);
       } else {
         log('2');
         createOrder(selectedExcursionsDatas);
@@ -745,7 +766,7 @@ class CheckOutController extends FxController {
   }
 
   //ccavenue
-  void createOrderccAvenue(selectedExcursionsDatas) async {
+  void createOrderccAvenue(selectedExcursionsDatas, token) async {
     String username = razorCredentials.keyId;
     String password = razorCredentials.keySecret;
     String basicAuth =
@@ -797,10 +818,12 @@ class CheckOutController extends FxController {
           "https://secure.mytravellerschoice.com/api/v1/attractions/orders/create"),
       headers: <String, String>{
         "Content-Type": "application/json",
-        "Accept": "application/json"
+        // "Accept": "application/json",
+        "authorization": "Bearer $token",
       },
       body: jsonEncode(body),
     );
+    log('cc Bearer Token:$token');
     log('Body Data:${res.body}');
 
     //todo

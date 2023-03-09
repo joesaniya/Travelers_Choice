@@ -19,7 +19,7 @@ List<Activity> favouriteListCart = <Activity>[];
 class FullApp extends StatefulWidget {
   List<AllattractionModal> favouriteMeal;
   List<Activity> cartMeal;
-  FullApp(this.favouriteMeal,this.cartMeal, {super.key});
+  FullApp(this.favouriteMeal, this.cartMeal, {super.key});
 
   @override
   _FullAppState createState() => _FullAppState();
@@ -61,6 +61,7 @@ class _FullAppState extends State<FullApp> with SingleTickerProviderStateMixin {
     return FxBuilder<FullAppController>(
         controller: controller,
         builder: (controller) {
+          // return _buildItem();
           return Scaffold(
             backgroundColor: const Color(0xfff5f5f5),
             // body: Column(
@@ -102,6 +103,8 @@ class _FullAppState extends State<FullApp> with SingleTickerProviderStateMixin {
             //     )
             //   ],
             // ),
+
+            //crt
             body: Stack(
               children: [
                 TabBarView(
@@ -112,6 +115,7 @@ class _FullAppState extends State<FullApp> with SingleTickerProviderStateMixin {
 
                     // const Center(child: Text('Saved')),
                     SavedScreen(widget.favouriteMeal),
+                    NewCart(widget.cartMeal),
                     const HistoryScreen(),
                     // CartScreen(),
                     const ProfileScreen()
@@ -150,16 +154,22 @@ class _FullAppState extends State<FullApp> with SingleTickerProviderStateMixin {
                                 title: "Saved"),
                             singleItem(
                                 index: 2,
+                                activeIconData: FeatherIcons.shoppingBag,
+                                iconData: FeatherIcons.shoppingBag,
+                                title: "Cart"),
+                            singleItem(
+                                index: 3,
                                 // activeIconData: Icons.luggage,
                                 // iconData: Icons.luggage,
                                 activeIconData: FeatherIcons.clock,
                                 iconData: FeatherIcons.clock,
                                 title: "History"),
                             singleItem(
-                                index: 3,
+                                index: 4,
                                 iconData: FeatherIcons.user,
                                 activeIconData: FeatherIcons.user,
                                 title: "Profile"),
+                            Expanded(child: Container())
                           ],
                         ),
                       ),
@@ -172,12 +182,152 @@ class _FullAppState extends State<FullApp> with SingleTickerProviderStateMixin {
         });
   }
 
+  int _selectedIndex = 0;
+
+  _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
+  Widget _buildItem() {
+    return Scaffold(
+      extendBody: true,
+      body: Stack(
+        children: [
+          [
+            HomeScreen(widget.cartMeal),
+            SavedScreen(widget.favouriteMeal),
+            NewCart(widget.cartMeal),
+            const HistoryScreen(),
+            const ProfileScreen()
+          ][_selectedIndex],
+        ],
+      ),
+      bottomNavigationBar: Container(
+        padding: FxSpacing.xy(12, 8),
+        child: PhysicalModel(
+          color: theme.cardTheme.color!.withAlpha(200),
+          elevation: 12,
+          borderRadius: const BorderRadius.all(Radius.circular(32)),
+          shadowColor: theme.colorScheme.onBackground.withAlpha(12),
+          shape: BoxShape.rectangle,
+          child: SizedBox(
+            height: 70,
+            child: BottomNavigationBar(
+              currentIndex: _selectedIndex,
+              onTap: _onItemTapped,
+              showSelectedLabels: false,
+              showUnselectedLabels: false,
+              elevation: 0,
+              selectedLabelStyle: const TextStyle(
+
+                  // color: theme.colorScheme.onPrimary,
+                  color: Colors.blue,
+                  letterSpacing: 0.3,
+                  fontWeight: FontWeight.w600),
+              items: [
+                (_selectedIndex == 0)
+                    ? const BottomNavigationBarItem(
+                        icon: Icon(
+                          FeatherIcons.search,
+                          size: 20,
+                          color: Color(0xff1529e8),
+                          // color: theme.colorScheme.onPrimary,
+                        ),
+                        label: 'Search',
+                      )
+                    : BottomNavigationBarItem(
+                        icon: Icon(
+                          FeatherIcons.search,
+                          size: 20,
+                          color: theme.colorScheme.onBackground,
+                        ),
+                        label: ''),
+                (_selectedIndex == 1)
+                    ? const BottomNavigationBarItem(
+                        icon: Icon(
+                          FeatherIcons.heart,
+                          size: 20,
+                          color: Color(0xff1529e8),
+                          // color: theme.colorScheme.onPrimary,
+                        ),
+                        label: 'Saved')
+                    : BottomNavigationBarItem(
+                        icon: Icon(
+                          FeatherIcons.heart,
+                          size: 20,
+                          color: theme.colorScheme.onBackground,
+                        ),
+                        label: ''),
+                (_selectedIndex == 2)
+                    ? const BottomNavigationBarItem(
+                        icon: Icon(
+                          FeatherIcons.shoppingBag,
+                          size: 20,
+                          color: Color(0xff1529e8),
+                          // color: theme.colorScheme.onPrimary,
+                        ),
+                        label: 'Cart')
+                    : BottomNavigationBarItem(
+                        icon: Icon(
+                          FeatherIcons.shoppingBag,
+                          size: 20,
+                          color: theme.colorScheme.onBackground,
+                        ),
+                        label: ''),
+                (_selectedIndex == 3)
+                    ? const BottomNavigationBarItem(
+                        icon: Icon(
+                          Icons.luggage,
+                          size: 20,
+                          color: Color(0xff1529e8),
+                          // color: theme.colorScheme.onPrimary,
+                        ),
+                        label: 'History')
+                    : BottomNavigationBarItem(
+                        icon: Icon(
+                          Icons.luggage,
+                          size: 20,
+                          color: theme.colorScheme.onBackground,
+                        ),
+                        label: ''),
+                (_selectedIndex == 4)
+                    ? const BottomNavigationBarItem(
+                        icon: Icon(
+                          FeatherIcons.user,
+                          size: 20,
+                          color: Color(0xff1529e8),
+                          // color: theme.colorScheme.onPrimary,
+                        ),
+                        label: 'Profile')
+                    : BottomNavigationBarItem(
+                        icon: Icon(
+                          FeatherIcons.user,
+                          size: 20,
+                          color: theme.colorScheme.onBackground,
+                        ),
+                        label: ''),
+              ],
+            ),
+          ),
+        ),
+      ),
+
+      // bottomNavigationBar: CustomBottomNavigationBar(
+      //     onItemTapped: _onItemTapped, selectedIndex: _selectedIndex),
+    );
+  }
+
   Widget singleItem(
       {required int index,
       required IconData iconData,
       required IconData activeIconData,
       required String title}) {
-    double width = MediaQuery.of(context).size.width - 64;
+    // double width = MediaQuery.of(context).size.width / 5;
+    // double width = MediaQuery.of(context).size.width - 64;
+    // double width = MediaQuery.of(context).size.width;
+    double width = MediaQuery.of(context).size.width - 120;
     double selectedWidth = width * (1.5 / 4.5);
     double unSelectedWidth = width * (1 / 4.5);
 
