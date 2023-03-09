@@ -324,8 +324,8 @@ class _NewCartState extends State<NewCart>
         )
             :
 
-            ListView(
-              physics: AlwaysScrollableScrollPhysics(),
+            Stack(
+              // physics: AlwaysScrollableScrollPhysics(),
               children: [
                 ListView.builder(
                   scrollDirection: Axis.vertical,
