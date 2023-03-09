@@ -327,7 +327,8 @@ class _FullAppState extends State<FullApp> with SingleTickerProviderStateMixin {
     // double width = MediaQuery.of(context).size.width / 5;
     // double width = MediaQuery.of(context).size.width - 64;
     // double width = MediaQuery.of(context).size.width;
-    double width = MediaQuery.of(context).size.width - 120;
+    // double width = MediaQuery.of(context).size.width - 120;
+    double width = MediaQuery.of(context).size.width - 122;
     double selectedWidth = width * (1.5 / 4.5);
     double unSelectedWidth = width * (1 / 4.5);
 
