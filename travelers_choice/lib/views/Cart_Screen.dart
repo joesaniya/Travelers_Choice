@@ -296,6 +296,7 @@ class _NewCartState extends State<NewCart> with TickerProviderStateMixin {
             centerTitle: true,
             backgroundColor: const Color(0xfff5f5f5),
           ),
+
           body: favouriteListCart.isEmpty
               ? Center(
                   child: Column(
@@ -329,6 +330,7 @@ class _NewCartState extends State<NewCart> with TickerProviderStateMixin {
                       bottom: 0,
                       left: 0,
                       right: 0,
+
                       child: Container(
                         padding: FxSpacing.xy(12, 8),
                         child: PhysicalModel(
