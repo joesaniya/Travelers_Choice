@@ -220,6 +220,7 @@ class _CheckOutScreenState extends State<CheckOutScreen>
     log(widget.length.toString());
     return SizedBox(
       child: ListView.separated(
+        physics: const AlwaysScrollableScrollPhysics(),
         itemCount: widget.length,
         shrinkWrap: true,
         itemBuilder: (context, index) {
@@ -554,7 +555,8 @@ class _CheckOutScreenState extends State<CheckOutScreen>
                   child: PageView(
                     allowImplicitScrolling: true,
                     pageSnapping: true,
-                    physics: const NeverScrollableScrollPhysics(),
+                    physics: const AlwaysScrollableScrollPhysics(),
+                    // physics: const NeverScrollableScrollPhysics(),
                     // physics: const ClampingScrollPhysics(),
                     controller: controller.pageController,
                     onPageChanged: (int page) {
@@ -1232,8 +1234,8 @@ class _CheckOutScreenState extends State<CheckOutScreen>
                   child: FxButton(
                     padding: FxSpacing.y(12),
                     onPressed: () {
-                      controller.nextPage(
-                          selectedExcursions, context, widget.totalAmount,controller.token);
+                      controller.nextPage(selectedExcursions, context,
+                          widget.totalAmount, controller.token);
                     },
                     borderRadiusAll: 4,
                     elevation: 0,
@@ -1523,11 +1525,11 @@ class _CheckOutScreenState extends State<CheckOutScreen>
               token == null
                   ? controller.Login()
                   : controller.selectedPayment == 1
-                      ? controller.nextPage(
-                          selectedExcursions, context, widget.totalAmount,controller.token)
+                      ? controller.nextPage(selectedExcursions, context,
+                          widget.totalAmount, controller.token)
                       : controller.selectedPayment == 2
-                          ? controller.nextPage(
-                              selectedExcursions, context, widget.totalAmount, controller.token)
+                          ? controller.nextPage(selectedExcursions, context,
+                              widget.totalAmount, controller.token)
                           : ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(
                                   content: Text('Select payment method')));
@@ -1567,11 +1569,11 @@ class _CheckOutScreenState extends State<CheckOutScreen>
               ? FxButton.block(
                   onPressed: () {
                     controller.selectedPayment == 1
-                        ? controller.nextPage(
-                            selectedExcursions, context, widget.totalAmount,controller.token)
+                        ? controller.nextPage(selectedExcursions, context,
+                            widget.totalAmount, controller.token)
                         : controller.selectedPayment == 2
-                            ? controller.nextPage(
-                                selectedExcursions, context, widget.totalAmount,controller.token)
+                            ? controller.nextPage(selectedExcursions, context,
+                                widget.totalAmount, controller.token)
                             : ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(
                                     content: Text('Select payment method')));

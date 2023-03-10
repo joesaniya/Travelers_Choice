@@ -10,8 +10,6 @@ import '../models/atteraction_model.dart';
 import '../theme/app_theme.dart';
 import 'checkout_screen.dart';
 
-
-
 class NewCartPage extends StatefulWidget {
   dynamic? length;
 
@@ -24,12 +22,8 @@ class NewCartPage extends StatefulWidget {
   @override
   Key? key;
 
-  NewCartPage(
-      this.length,
-      this.selectedtourOption,
-      this.textdate,
-      this.Transfer,
-      this.totalAmount,
+  NewCartPage(this.length, this.selectedtourOption, this.textdate,
+      this.Transfer, this.totalAmount,
       {super.key});
 
   @override
@@ -95,7 +89,7 @@ class _NewCartPageState extends State<NewCartPage>
       padding: FxSpacing.all(16),
       bordered: !isSelected,
       border: Border.all(
-        // color: customTheme.border
+          // color: customTheme.border
           color: Colors.indigo),
       color: isSelected ? Colors.white : Colors.transparent,
       // color: isSelected ? customTheme.card : theme.scaffoldBackgroundColor,
@@ -127,23 +121,23 @@ class _NewCartPageState extends State<NewCartPage>
           // isSelected ? Space.width(16) : Space.width(20),
           isSelected
               ? Container(
-            padding: FxSpacing.all(8),
-            decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: const Color(0xff1529e8).withAlpha(40)),
-            child: const Icon(
-              FeatherIcons.check,
-              color: Color(0xff1529e8),
-              size: 14,
-            ),
-          )
+                  padding: FxSpacing.all(8),
+                  decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: const Color(0xff1529e8).withAlpha(40)),
+                  child: const Icon(
+                    FeatherIcons.check,
+                    color: Color(0xff1529e8),
+                    size: 14,
+                  ),
+                )
               : Container(
-            height: 26,
-            width: 26,
-            decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                border: Border.all(color: const Color(0xff1529e8))),
-          ),
+                  height: 26,
+                  width: 26,
+                  decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      border: Border.all(color: const Color(0xff1529e8))),
+                ),
         ],
       ),
     );
@@ -155,7 +149,7 @@ class _NewCartPageState extends State<NewCartPage>
     log(widget.length.toString());
     return SizedBox(
       child: ListView.separated(
-        physics: NeverScrollableScrollPhysics(),
+        physics: const NeverScrollableScrollPhysics(),
         itemCount: widget.length,
         shrinkWrap: true,
         itemBuilder: (context, index) {
@@ -204,13 +198,13 @@ class _NewCartPageState extends State<NewCartPage>
                       ),
                       widget.Transfer == null
                           ? FxText.bodyMedium(
-                        'without',
-                        fontWeight: 700,
-                      )
+                              'without',
+                              fontWeight: 700,
+                            )
                           : FxText.bodyMedium(
-                        widget.Transfer.toString(),
-                        fontWeight: 700,
-                      ),
+                              widget.Transfer.toString(),
+                              fontWeight: 700,
+                            ),
                     ],
                   ),
                   FxSpacing.height(4),
@@ -367,7 +361,6 @@ class _NewCartPageState extends State<NewCartPage>
         },
       ),
     );
-
   }
 
   Widget paymentInfo() {
@@ -383,29 +376,30 @@ class _NewCartPageState extends State<NewCartPage>
           //bill
           _billingWidget(),
           FxSpacing.height(20),
-          FxText.bodyLarge(
-            'Select Payment Method',
-            fontWeight: 800,
-          ),
-          FxSpacing.height(12),
-          FxDashedDivider(
-            dashSpace: 4,
-            dashWidth: 8,
-            color: theme.colorScheme.onBackground.withAlpha(180),
-            height: 1.2,
-          ),
-          FxSpacing.height(20),
+          // FxText.bodyLarge(
+          //   'Select Payment Method',
+          //   fontWeight: 800,
+          // ),
+          // FxSpacing.height(12),
+          // FxDashedDivider(
+          //   dashSpace: 4,
+          //   dashWidth: 8,
+          //   color: theme.colorScheme.onBackground.withAlpha(180),
+          //   height: 1.2,
+          // ),
+          // FxSpacing.height(20),
 
-          getSinglePayment(
-              index: 1,
-              method: "CCavenue",
-              image: 'assets/images/apps/shopping2/icons/cc-avenue.png'),
           // getSinglePayment(
-          //     index: 2,
-          //     method: "RazorPay",
-          //     image: 'assets/images/apps/shopping2/icons/razor_logo.png'),
+          //     index: 1,
+          //     method: "CCavenue",
+          //     image: 'assets/images/apps/shopping2/icons/cc-avenue.png'),
+          // // getSinglePayment(
+          // //     index: 2,
+          // //     method: "RazorPay",
+          // //     image: 'assets/images/apps/shopping2/icons/razor_logo.png'),
 
-          FxSpacing.height(20),
+          // FxSpacing.height(20),
+
           // MaterialButton(
           //   onPressed: () {
           //     controller.initPlatformState();
@@ -423,19 +417,19 @@ class _NewCartPageState extends State<NewCartPage>
             onPressed: () {
               log('book');
               // controller1.goToCheckout1();
-              print( widget.selectedtourOption.length);
-                  print(widget.selectedtourOption);
-                 print( widget.textdate);
-                  print(widget.Transfer);
-                  print(widget.totalAmount);
+              print(widget.selectedtourOption.length);
+              print(widget.selectedtourOption);
+              print(widget.textdate);
+              print(widget.Transfer);
+              print(widget.totalAmount);
               Navigator.of(context, rootNavigator: true).push(PageRouteBuilder(
                   transitionDuration: const Duration(milliseconds: 500),
                   transitionsBuilder: (
-                      BuildContext context,
-                      Animation<double> animation,
-                      Animation<double> secondaryAnimation,
-                      Widget child,
-                      ) =>
+                    BuildContext context,
+                    Animation<double> animation,
+                    Animation<double> secondaryAnimation,
+                    Widget child,
+                  ) =>
                       FadeTransition(
                         opacity: animation,
                         child: child,
@@ -445,9 +439,7 @@ class _NewCartPageState extends State<NewCartPage>
                       widget.selectedtourOption,
                       widget.textdate,
                       widget.Transfer,
-                      widget.totalAmount
-                  ))
-              );
+                      widget.totalAmount)));
             },
             borderRadiusAll: 4,
             elevation: 0,

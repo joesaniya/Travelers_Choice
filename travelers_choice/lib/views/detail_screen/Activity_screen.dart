@@ -97,11 +97,13 @@ class _ActivityScreenState extends State<ActivityScreen>
               Row(
                 children: [
                   Expanded(
-                      child:
-                          Text('${controller.selectedtour.length} Selected')),
+                      child: FxText.bodyMedium(
+                    '${controller.selectedtour.length} Selected',
+                    fontWeight: 800,
+                  )),
                   FxText.bodyLarge(
                     // controller.selectedtour.first.GrandTotalAmount.toString(),
-                    controller.grandSelectedTourAmount().toString(),
+                    '${controller.grandSelectedTourAmount().toString()} AED',
                     fontWeight: 700,
                     color: const Color(0xff1529e8),
                   ),
