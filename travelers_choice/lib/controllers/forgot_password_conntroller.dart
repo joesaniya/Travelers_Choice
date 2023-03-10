@@ -1,8 +1,11 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutx/flutx.dart';
 
 import '../views/login_Screens/confrim_password.dart';
 import '../views/register_screen/register_screen.dart';
+import 'auth_controller.dart';
 
 class ForgotPasswordController extends FxController {
   TickerProvider ticker;
@@ -18,17 +21,18 @@ class ForgotPasswordController extends FxController {
     super.initState();
     emailTE = TextEditingController();
     arrowController = AnimationController(
-        vsync: ticker, duration: Duration(milliseconds: 500));
+        vsync: ticker, duration: const Duration(milliseconds: 500));
     emailController = AnimationController(
-        vsync: ticker, duration: Duration(milliseconds: 50));
+        vsync: ticker, duration: const Duration(milliseconds: 50));
 
-    arrowAnimation = Tween<Offset>(begin: Offset(0, 0), end: Offset(8, 0))
-        .animate(CurvedAnimation(
+    arrowAnimation =
+        Tween<Offset>(begin: const Offset(0, 0), end: const Offset(8, 0))
+            .animate(CurvedAnimation(
       parent: arrowController,
       curve: Curves.easeIn,
     ));
     emailAnimation =
-        Tween<Offset>(begin: Offset(-0.01, 0), end: Offset(0.01, 0))
+        Tween<Offset>(begin: const Offset(-0.01, 0), end: const Offset(0.01, 0))
             .animate(CurvedAnimation(
       parent: emailController,
       curve: Curves.easeIn,
@@ -62,23 +66,35 @@ class ForgotPasswordController extends FxController {
     return null;
   }
 
-  Future<void> goToResetPasswordScreen() async {
+  Future<void> goToResetPasswordScreen(String email) async {
     emailCounter = 0;
+    log('calling...goto resetpassword screen');
+    log('email Fn:$email');
     if (formKey.currentState!.validate()) {
       arrowController.forward();
-      await Future.delayed(Duration(milliseconds: 500));
-      Navigator.of(context, rootNavigator: true).pushReplacement(
-        MaterialPageRoute(
-          builder: (context) => ConfirmPasswordScreen(emailTE.text),
-        ),
-      );
+      await Future.delayed(const Duration(milliseconds: 500));
+      await AuthController().ForgotpwdUpdate(email, context).then((value) {
+        if (value) {
+          Navigator.of(context, rootNavigator: true).pushReplacement(
+            MaterialPageRoute(
+              builder: (context) => ConfirmPasswordScreen(emailTE.text),
+            ),
+          );
+        }
+      });
+      // ForgotpwdUpdate(email, context).then(
+      //     (value) => Navigator.of(context, rootNavigator: true).pushReplacement(
+      //           MaterialPageRoute(
+      //             builder: (context) => ConfirmPasswordScreen(emailTE.text),
+      //           ),
+      //         ));
     }
   }
 
   void goToRegisterScreen() {
     Navigator.of(context, rootNavigator: true).pushReplacement(
       MaterialPageRoute(
-        builder: (context) => RegisterScreen(),
+        builder: (context) => const RegisterScreen(),
       ),
     );
   }

@@ -141,8 +141,8 @@ class AllBookingController extends FxController {
     update();
   }
 
-  void openPDF(BuildContext context, File file) => Navigator.of(context).push(
-        MaterialPageRoute(builder: (context) => PDFViewerPage(file: file)),
+  void openPDF(BuildContext context, File file,String orderId,String ActivityId) => Navigator.of(context).push(
+        MaterialPageRoute(builder: (context) => PDFViewerPage(file: file,IdOrder:orderId,IdActivity: ActivityId)),
       );
   void downloadBtn(String orderId, String ActivityId) async {
     log('Donloadbtn Calling....');

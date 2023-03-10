@@ -17,6 +17,7 @@ import '../theme/app_theme.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:path_provider/path_provider.dart' as path;
 import 'package:external_path/external_path.dart';
+import '../controllers/pdf_api.dart';
 
 class AllBookings extends StatefulWidget {
   const AllBookings({Key? key}) : super(key: key);
@@ -814,56 +815,60 @@ class _AllBookingsState extends State<AllBookings>
                             ),
 
                             //details
-                            Row(
-                              crossAxisAlignment: CrossAxisAlignment.end,
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                // FxContainer(
-                                //   onTap: () {
-                                //     log('review Screen clicked');
-                                //     log('id:${controller.orders!.result!.data![index].id}');
-                                //     controller.bookNow(controller
-                                //             .orders!.result!.data as Datum
-                                //         // ,controller.orders!.result!
-                                //         //     .data![index].id
-                                //         );
-                                //     // controller.bookNow(controller.orders!.result.data);
+                            controller.orders!.result!.data![index]
+                                        .orderStatus ==
+                                    'confirmed'
+                                ? Row(
+                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: [
+                                      FxContainer(
+                                        onTap: () async {
+                                          log('preview Screen clicked');
+                                          log('id:${controller.orders!.result!.data![index].id}');
+                                          String Idorder = controller
+                                              .orders!.result!.data![index].id
+                                              .toString();
+                                          String idactivity = controller
+                                              .orders!
+                                              .result!
+                                              .data![index]
+                                              .activities!
+                                              .id
+                                              .toString();
 
-                                //     // controller.VewPage(orders!
-                                //     //     .result!.data![index].id
-                                //     //     .toString(),orders!.result!.data[index]);
-                                //     // Navigator.push(
-                                //     //     context,
-                                //     //     MaterialPageRoute(
-                                //     //         builder: (context) => ReviewScreen()));
-                                //   },
-                                //   padding: FxSpacing.fromLTRB(8, 6, 8, 6),
-                                //   color:
-                                //       const Color(0xff1529e8).withAlpha(40),
-                                //   // color:Color(0xff6874E8),
-                                //   // customTheme.groceryPrimary.withAlpha(40),
-                                //   child: Row(
-                                //     mainAxisSize: MainAxisSize.min,
-                                //     children: [
-                                //       FxText.bodyMedium("View",
-                                //           color: const Color(0xff1529e8),
-                                //           // color: customTheme.groceryPrimary,
-                                //           fontWeight: 500,
-                                //           letterSpacing: -0.2),
-                                //       const Icon(
-                                //         MdiIcons.eye,
-                                //         size: 14,
-                                //         color: Color(0xff1529e8),
-                                //       )
-                                //     ],
-                                //   ),
-                                // ),
-
-                                FxSpacing.width(10),
-                                controller.orders!.result!.data![index]
-                                            .orderStatus ==
-                                        'confirmed'
-                                    ? FxContainer(
+                                          final url =
+                                              'https://secure.mytravellerschoice.com/api/v1/attractions/orders/$Idorder/ticket/$idactivity';
+                                          final file =
+                                              await PDFApi.loadNetwork(url);
+                                          controller.openPDF(context, file,
+                                              Idorder, idactivity);
+                                        },
+                                        padding: FxSpacing.fromLTRB(8, 6, 8, 6),
+                                        color: const Color(0xff1529e8)
+                                            .withAlpha(40),
+                                        child: Row(
+                                          // mainAxisSize: MainAxisSize.min,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            FxText.bodyMedium("View",
+                                                color: const Color(0xff1529e8),
+                                                fontWeight: 500,
+                                                letterSpacing: -0.2),
+                                            FxSpacing.width(5),
+                                            const Icon(
+                                              MdiIcons.eye,
+                                              size: 14,
+                                              color: Color(0xff1529e8),
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                      FxSpacing.width(10),
+                                      FxContainer(
                                         // onTap: () async {
                                         //   log('download clicked');
                                         //   log('Order Id:${controller.orders!.result!.data![index].id}');
@@ -941,11 +946,11 @@ class _AllBookingsState extends State<AllBookings>
                                             )
                                           ],
                                         ),
-                                      )
-                                    : const SizedBox(),
-                                FxSpacing.width(10),
-                              ],
-                            ),
+                                      ),
+                                      FxSpacing.width(10),
+                                    ],
+                                  )
+                                : const SizedBox(),
                             FxSpacing.height(15)
                           ],
                         ),

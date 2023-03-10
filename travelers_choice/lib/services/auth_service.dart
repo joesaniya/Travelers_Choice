@@ -335,4 +335,72 @@ class AuthService {
       rethrow;
     }
   }
+
+  //forgotmailsend
+  Future patchForgototpmail(String email, BuildContext context) async {
+    try {
+      var body = {"email": email};
+      var response = await http.patch(
+          Uri.parse(
+            'https://secure.mytravellerschoice.com/api/v1/users/forget-password',
+          ),
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: jsonEncode(body));
+
+      if (response.statusCode == 200) {
+        var jsondata = jsonDecode(response.body);
+        print('Response => ${response.body}');
+
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text(jsondata['message'])));
+        return response.body;
+      } else {
+        var jsondata = jsonDecode(response.body);
+        log(jsondata['error']);
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text(jsondata['error'])));
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  //confirmpwd
+  Future confirmPassword(String email, String newPassword,
+      String confirmPassword, String otp, BuildContext context) async {
+    try {
+      var body = {
+        "email": email,
+        "otp": otp,
+        "confirmPassword": confirmPassword,
+        "newPassword": newPassword
+      };
+      var response = await http.patch(
+          Uri.parse(
+            'https://secure.mytravellerschoice.com/api/v1/users/complete/forget-password',
+          ),
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: jsonEncode(body));
+
+      if (response.statusCode == 200) {
+        var jsondata = jsonDecode(response.body);
+        print('Response => ${response.body}');
+
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text(jsondata['message'])));
+        return response.body;
+      } else {
+        var jsondata = jsonDecode(response.body);
+        log(jsondata['error']);
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text(jsondata['error'])));
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
 }
