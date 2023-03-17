@@ -13,5 +13,6 @@ class AppConstants {
   static const String KEY_ACCESS_TOKEN_CurrenciesList = 'currencies';
   static const String KEY_ACCESS_BALANCE = 'balance';
    static const String KEY_ACCESS_TOKEN_CountryFlag = 'flag';
-
+  static const String symbol = 'currencySymbol';
+   static const String rate = 'ConversionRate';
 }

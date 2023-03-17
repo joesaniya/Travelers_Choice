@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutx/flutx.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
@@ -424,6 +425,12 @@ class _RegisterScreenState extends State<RegisterScreen>
                           position: controller.phoneAnimation,
                           child: TextFormField(
                             style: FxTextStyle.bodyMedium(),
+                            keyboardType: TextInputType.number,
+                            inputFormatters: [
+                              FilteringTextInputFormatter.digitsOnly,
+                              FilteringTextInputFormatter.allow(
+                                  RegExp(r'[0-9]'))
+                            ],
                             decoration: InputDecoration(
                                 floatingLabelBehavior:
                                     FloatingLabelBehavior.never,

@@ -101,19 +101,19 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     log('All Data:$allattractionList');
     theme = AppTheme.shoppingTheme;
     theme1 = AppTheme.learningTheme;
-    // SharedPreferences.getInstance().then((sharedPrefValue) {
-    //   setState(() {
-    //     name = sharedPrefValue.getString(AppConstants.KEY_ACCESS_TOKEN_Name);
-    //     log(name.toString());
-    //     log('username');
-    //     token = sharedPrefValue.getString(AppConstants.KEY_ACCESS_TOKEN);
-    //     log('Token home:${token.toString()}');
+    SharedPreferences.getInstance().then((sharedPrefValue) {
+      setState(() {
+        name = sharedPrefValue.getString(AppConstants.KEY_ACCESS_TOKEN_Name);
+        log(name.toString());
+        log('username');
+        token = sharedPrefValue.getString(AppConstants.KEY_ACCESS_TOKEN);
+        log('Token home:${token.toString()}');
 
-    //     // flagname = sharedPrefValue
-    //     //     .getString(AppConstants.KEY_ACCESS_TOKEN_CountryFlag);
-    //     // log('Country Flag:$flagname');
-    //   });
-    // });
+        // flagname = sharedPrefValue
+        //     .getString(AppConstants.KEY_ACCESS_TOKEN_CountryFlag);
+        // log('Country Flag:$flagname');
+      });
+    });
     controller = FxControllerStore.put(HomeController(this));
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       // addCategories();
@@ -174,6 +174,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     }
   }
 
+  String? currencySymbol;
+  double? conversionRate;
+
 //topatt
   Widget _buildProductList() {
     List<Widget> list = [];
@@ -186,8 +189,12 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       text = text.replaceAll("_", " ");
 
       List<String> words = text.split(" ");
-      var currencySymbol = selectedCountry!.isocode;
-      var conversionRate = selectedCountry!.conversionRate;
+      currencySymbol = selectedCountry!.isocode;
+      conversionRate = selectedCountry!.conversionRate;
+      sharedPreferences!
+          .setString(AppConstants.symbol, selectedCountry!.isocode);
+      sharedPreferences!
+          .setDouble(AppConstants.rate, selectedCountry!.conversionRate);
       for (int i = 0; i < words.length; i++) {
         words[i] =
             words[i][0].toUpperCase() + words[i].substring(1).toLowerCase();
@@ -896,10 +903,12 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                             element.country.id ==
                                             value.toString());
 
-                                    log("Abbrar ${selectedCountry!.currencySymbol}");
+                                    log("Selected Currency Symbol: ${selectedCountry!.currencySymbol}");
+                                    log("Selected Country: $selectedCountry");
                                     controller.selectedCountryCode =
                                         value.toString();
                                     // _selectedCountryCode = value.toString();
+                                    log("Selected CountryCode: ${controller.selectedCountryCode}");
                                   });
                                 },
 

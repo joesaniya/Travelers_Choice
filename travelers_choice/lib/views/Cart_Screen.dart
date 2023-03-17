@@ -4,6 +4,7 @@ import 'package:flutx/flutx.dart';
 import '../controllers/new_cart_controller.dart';
 import '../loading_effect.dart';
 import '../models/atteraction_model.dart';
+import '../services/app_constants.dart';
 import '../theme/app_theme.dart';
 import 'package:hotel_travel/models/all_attraction_modal.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -48,8 +49,22 @@ class _NewCartState extends State<NewCart> with TickerProviderStateMixin {
     log('saved:${favouriteListCart.length}');
     log("favoriteCartList $favouriteListCart");
     theme = AppTheme.shoppingTheme;
+    initializingData();
     controller = FxControllerStore.put(NewCartController(this));
     log('Item:${favouriteListCart.map((e) => e.sId)}');
+  }
+
+  String? currencySymbol;
+  double? conversionRate;
+  void initializingData() {
+    SharedPreferences.getInstance().then((sharedPrefValue) {
+      setState(() {
+        conversionRate = sharedPrefValue.getDouble(AppConstants.rate);
+        log('conversionRate:$conversionRate');
+        currencySymbol = sharedPrefValue.getString(AppConstants.symbol);
+        log('currencySymbol:$currencySymbol');
+      });
+    });
   }
 
   Widget _buildSingleProduct(Activity product) {
@@ -214,7 +229,8 @@ class _NewCartState extends State<NewCart> with TickerProviderStateMixin {
                   fontWeight: 600,
                 ),
                 FxText.bodyMedium(
-                  "${product.grandTotal}AED",
+                  '${((product.grandTotal * conversionRate!)).toStringAsFixed(2)} $currencySymbol',
+                  // "${product.grandTotal}AED",
                   fontWeight: 700,
                 ),
               ],
@@ -246,8 +262,8 @@ class _NewCartState extends State<NewCart> with TickerProviderStateMixin {
                   color: const Color(0xff1529e8),
                 ),
                 FxText.bodyMedium(
-                  // '\$' + controller.total.precise,
-                  "${product.grandTotal}AED",
+                  '${((product.grandTotal * conversionRate!)).toStringAsFixed(2)} $currencySymbol',
+                  // "${product.grandTotal}AED",
                   fontWeight: 800,
                   color: const Color(0xff1529e8),
                 ),
@@ -325,6 +341,9 @@ class _NewCartState extends State<NewCart> with TickerProviderStateMixin {
                             favouriteListCart[index]);
                       },
                     ),
+                    // const SizedBox(
+                    //   height: 50,
+                    // ),
                     Container(
                       padding: FxSpacing.xy(12, 8),
                       child: PhysicalModel(

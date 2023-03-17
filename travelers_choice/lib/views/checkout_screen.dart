@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutx/flutx.dart';
 import 'package:hotel_travel/controllers/Activity_Controller.dart';
@@ -105,11 +106,18 @@ class _CheckOutScreenState extends State<CheckOutScreen>
     );
   }
 
+  String? currencySymbol;
+  double? conversionRate;
+
   void initializingData() {
     SharedPreferences.getInstance().then((sharedPrefValue) {
       setState(() {
         token = sharedPrefValue.getString(AppConstants.KEY_ACCESS_TOKEN)!;
         log('checkout Toen:${token!}');
+        conversionRate = sharedPrefValue.getDouble(AppConstants.rate);
+        log('conversionRate:$conversionRate');
+        currencySymbol = sharedPrefValue.getString(AppConstants.symbol);
+        log('currencySymbol:$currencySymbol');
       });
     });
   }
@@ -404,7 +412,8 @@ class _CheckOutScreenState extends State<CheckOutScreen>
                         fontWeight: 600,
                       ),
                       FxText.bodyMedium(
-                        "${widget.selectedtourOption[index].grandTotal}AED",
+                        '${((widget.selectedtourOption[index].grandTotal * conversionRate!)).toStringAsFixed(2)} $currencySymbol',
+                        // "${widget.selectedtourOption[index].grandTotal}AED",
                         fontWeight: 700,
                       ),
                     ],
@@ -437,7 +446,8 @@ class _CheckOutScreenState extends State<CheckOutScreen>
                       ),
                       FxText.bodyMedium(
                         // '\$' + controller.total.precise,
-                        "${widget.selectedtourOption[index].grandTotal}AED",
+                        '${((widget.selectedtourOption[index].grandTotal * conversionRate!)).toStringAsFixed(2)} $currencySymbol',
+                        // "${widget.selectedtourOption[index].grandTotal}AED",
                         fontWeight: 800,
                         color: const Color(0xff1529e8),
                       ),
@@ -1076,6 +1086,12 @@ class _CheckOutScreenState extends State<CheckOutScreen>
                               position: controller.phoneAnimation,
                               child: TextFormField(
                                 style: FxTextStyle.bodyMedium(),
+                                keyboardType: TextInputType.number,
+                                inputFormatters: [
+                                  FilteringTextInputFormatter.digitsOnly,
+                                  FilteringTextInputFormatter.allow(
+                                      RegExp(r'[0-9]'))
+                                ],
                                 decoration: InputDecoration(
                                     floatingLabelBehavior:
                                         FloatingLabelBehavior.never,

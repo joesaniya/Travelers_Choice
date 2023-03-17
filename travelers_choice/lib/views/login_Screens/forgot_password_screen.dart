@@ -6,7 +6,6 @@ import 'package:flutx/flutx.dart';
 import '/theme/app_theme.dart';
 
 import '../../controllers/forgot_password_conntroller.dart';
-import 'login_screen.dart';
 
 class ForgotPasswordScreen extends StatefulWidget {
   const ForgotPasswordScreen({Key? key}) : super(key: key);
@@ -170,12 +169,12 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen>
                   border:
                       Border.all(color: const Color(0xff1529e8).withAlpha(120)),
                   onTap: () {
-                    // Navigator.pop(context);
-                    Navigator.of(context, rootNavigator: true).pushReplacement(
-                      MaterialPageRoute(
-                        builder: (context) => const LogInScreen(),
-                      ),
-                    );
+                    Navigator.pop(context);
+                    // Navigator.of(context, rootNavigator: true).pushReplacement(
+                    //   MaterialPageRoute(
+                    //     builder: (context) => const LogInScreen(),
+                    //   ),
+                    // );
                   },
                   child: const Icon(
                     FeatherIcons.chevronLeft,

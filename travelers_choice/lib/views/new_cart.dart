@@ -3,10 +3,12 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutx/flutx.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../controllers/Activity_Controller.dart';
 import '../controllers/checkout_controller.dart';
 import '../models/atteraction_model.dart';
+import '../services/app_constants.dart';
 import '../theme/app_theme.dart';
 import 'checkout_screen.dart';
 
@@ -47,12 +49,26 @@ class _NewCartPageState extends State<NewCartPage>
     log('Selected Total Amount:${widget.totalAmount}');
 
     fetchlog();
+    initializingData();
     log('Selected Final Amount:${widget.selectedtourOption.first.grandTotal}');
 
     // fetchData();
     theme = AppTheme.shoppingTheme;
     controller1 = FxControllerStore.put(ActivityController(this));
     controller = FxControllerStore.put(CheckOutController(this));
+  }
+
+  String? currencySymbol;
+  double? conversionRate;
+  void initializingData() {
+    SharedPreferences.getInstance().then((sharedPrefValue) {
+      setState(() {
+        conversionRate = sharedPrefValue.getDouble(AppConstants.rate);
+        log('conversionRate:$conversionRate');
+        currencySymbol = sharedPrefValue.getString(AppConstants.symbol);
+        log('currencySymbol:$currencySymbol');
+      });
+    });
   }
 
   fetchlog() async {
@@ -312,7 +328,9 @@ class _NewCartPageState extends State<NewCartPage>
                         fontWeight: 600,
                       ),
                       FxText.bodyMedium(
-                        "${widget.selectedtourOption[index].grandTotal}AED",
+                        '${((widget.selectedtourOption[index].grandTotal * conversionRate!)).toStringAsFixed(2)} $currencySymbol',
+
+                        // "${widget.selectedtourOption[index].grandTotal}AED",
                         fontWeight: 700,
                       ),
                     ],
@@ -344,8 +362,9 @@ class _NewCartPageState extends State<NewCartPage>
                         color: const Color(0xff1529e8),
                       ),
                       FxText.bodyMedium(
-                        // '\$' + controller.total.precise,
-                        "${widget.selectedtourOption[index].grandTotal}AED",
+                        '${((widget.selectedtourOption[index].grandTotal * conversionRate!)).toStringAsFixed(2)} $currencySymbol',
+
+                        // "${widget.selectedtourOption[index].grandTotal}AED",
                         fontWeight: 800,
                         color: const Color(0xff1529e8),
                       ),
@@ -454,7 +473,9 @@ class _NewCartPageState extends State<NewCartPage>
                   color: theme.colorScheme.onPrimary,
                 ),
                 FxText.bodyMedium(
-                  ' ${widget.totalAmount} AED',
+                  '${((widget.totalAmount! * conversionRate!)).toStringAsFixed(2)} $currencySymbol',
+
+                  // ' ${widget.totalAmount} AED',
                   fontWeight: 700,
                   color: theme.colorScheme.onPrimary,
                 ),

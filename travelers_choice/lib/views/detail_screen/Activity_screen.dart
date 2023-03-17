@@ -12,6 +12,7 @@ import '../../controllers/Activity_controller.dart';
 import '../../controllers/checkout_controller.dart';
 import '../../loading_effect.dart';
 import '../../models/atteraction_model.dart';
+import '../../services/app_constants.dart';
 import '../../theme/app_theme.dart';
 import '../full_app.dart';
 
@@ -48,13 +49,26 @@ class _ActivityScreenState extends State<ActivityScreen>
   void initState() {
     super.initState();
     favouriteListCheck();
-    // initializingData();
+    initializingData();
     theme = AppTheme.shoppingTheme;
     var selectedData = widget.excursions;
 
     controller = FxControllerStore.put(ActivityController(this));
     controller1 = FxControllerStore.put(CheckOutController(this));
     print(controller.person_count);
+  }
+
+  String? currencySymbol;
+  double? conversionRate;
+  void initializingData() {
+    SharedPreferences.getInstance().then((sharedPrefValue) {
+      setState(() {
+        conversionRate = sharedPrefValue.getDouble(AppConstants.rate);
+        log('conversionRate:$conversionRate');
+        currencySymbol = sharedPrefValue.getString(AppConstants.symbol);
+        log('currencySymbol:$currencySymbol');
+      });
+    });
   }
 
   // void initializingData() {
@@ -103,7 +117,9 @@ class _ActivityScreenState extends State<ActivityScreen>
                   )),
                   FxText.bodyLarge(
                     // controller.selectedtour.first.GrandTotalAmount.toString(),
-                    '${controller.grandSelectedTourAmount().toString()} AED',
+                    // '${controller.grandSelectedTourAmount().toString()} AED',
+                    '${((controller.grandSelectedTourAmount() * conversionRate) as double).toStringAsFixed(2)} $currencySymbol',
+
                     fontWeight: 700,
                     color: const Color(0xff1529e8),
                   ),
@@ -394,7 +410,9 @@ class _ActivityScreenState extends State<ActivityScreen>
                             children: [
                               FxText.bodySmall('per person*'),
                               FxText.bodyLarge(
-                                '${widget.excursions[i].lowPrice.toString()} AED',
+                                '${((widget.excursions[i].lowPrice * conversionRate) as double).toStringAsFixed(2)} $currencySymbol',
+
+                                // '${widget.excursions[i].lowPrice.toString()} AED',
                                 fontWeight: 900,
                               )
                             ],
@@ -819,11 +837,12 @@ class _ActivityScreenState extends State<ActivityScreen>
                                         ),
                                         FxText.bodyMedium(
                                           // '\$' + controller.total.precise,
-                                          controller
-                                              .getGrandTotal(
-                                                  widget.excursions[i])
-                                              .toString(),
-                                          // controller.products.
+                                          // controller
+                                          //     .getGrandTotal(
+                                          //         widget.excursions[i])
+                                          //     .toString(),
+                                          '${((controller.getGrandTotal(widget.excursions[i]) * conversionRate!)).toStringAsFixed(2)} $currencySymbol',
+
                                           fontWeight: 800,
                                           color: const Color(0xff1529e8),
                                         ),
@@ -1268,6 +1287,43 @@ Widget personCount(controller, cart, setState, theme,
           FxContainer(
             onTap: () async {
               controller.personCountFn(cart,
+                  isAdult: isAdult, isChild: isChild, isInfant: isInfant);
+              setState(() {});
+            },
+            paddingAll: 4,
+            borderRadiusAll: 2,
+            bordered: isDefault(controller, cart,
+                isAdult: isAdult, isChild: isChild, isInfant: isInfant),
+            //  controller.decreaseAble(cart),
+            border: Border.all(color: const Color(0xff1529e8).withAlpha(120)),
+            color: isDefault(controller, cart,
+                    isAdult: isAdult, isChild: isChild, isInfant: isInfant)
+                ? const Color(0xff1529e8).withAlpha(28)
+                : theme.colorScheme.onBackground.withAlpha(200),
+            child: Icon(
+              FeatherIcons.minus,
+              size: 12,
+              color: isDefault(controller, cart,
+                      isAdult: isAdult, isChild: isChild, isInfant: isInfant)
+                  ? const Color(0xff1529e8)
+                  // theme.colorScheme.primary
+                  : theme.colorScheme.onPrimary,
+            ),
+          ),
+          FxSpacing.width(15),
+          FxSpacing.height(8),
+          FxText.bodyMedium(
+            controller
+                .getCounts(cart.sId,
+                    isAdult: isAdult, isChild: isChild, isInfant: isInfant)
+                .toString(),
+            fontWeight: 700,
+          ),
+          FxSpacing.height(8),
+          FxSpacing.width(15),
+          FxContainer(
+            onTap: () async {
+              controller.personCountFn(cart,
                   isIncrement: true,
                   isChild: isChild,
                   isAdult: isAdult,
@@ -1299,43 +1355,6 @@ Widget personCount(controller, cart, setState, theme,
                       isInfant: isInfant,
                       isIncrement: true)
                   ? theme.colorScheme.onPrimary
-                  : theme.colorScheme.onPrimary,
-            ),
-          ),
-          FxSpacing.width(15),
-          FxSpacing.height(8),
-          FxText.bodyMedium(
-            controller
-                .getCounts(cart.sId,
-                    isAdult: isAdult, isChild: isChild, isInfant: isInfant)
-                .toString(),
-            fontWeight: 700,
-          ),
-          FxSpacing.height(8),
-          FxSpacing.width(15),
-          FxContainer(
-            onTap: () async {
-              controller.personCountFn(cart,
-                  isAdult: isAdult, isChild: isChild, isInfant: isInfant);
-              setState(() {});
-            },
-            paddingAll: 4,
-            borderRadiusAll: 2,
-            bordered: isDefault(controller, cart,
-                isAdult: isAdult, isChild: isChild, isInfant: isInfant),
-            //  controller.decreaseAble(cart),
-            border: Border.all(color: const Color(0xff1529e8).withAlpha(120)),
-            color: isDefault(controller, cart,
-                    isAdult: isAdult, isChild: isChild, isInfant: isInfant)
-                ? const Color(0xff1529e8).withAlpha(28)
-                : theme.colorScheme.onBackground.withAlpha(200),
-            child: Icon(
-              FeatherIcons.minus,
-              size: 12,
-              color: isDefault(controller, cart,
-                      isAdult: isAdult, isChild: isChild, isInfant: isInfant)
-                  ? const Color(0xff1529e8)
-                  // theme.colorScheme.primary
                   : theme.colorScheme.onPrimary,
             ),
           ),

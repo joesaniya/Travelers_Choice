@@ -6,12 +6,14 @@ import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutx/flutx.dart';
 import 'package:hotel_travel/views/bottomSheet/Filter_Sheet.dart';
 import 'package:hotel_travel/views/bottomSheet/categories_Sheet.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../controllers/attraction_Controller.dart';
 import '../controllers/search_Home_controller.dart';
 import '../loading_effect.dart';
 import '../models/all_attraction_modal.dart';
 import '../models/Country_modal.dart';
+import '../services/app_constants.dart';
 import '../theme/app_theme.dart';
 
 class SearchScreen extends StatefulWidget {
@@ -154,10 +156,23 @@ class _SearchScreenState extends State<SearchScreen>
 
     theme = AppTheme.shoppingTheme;
     theme1 = AppTheme.learningTheme;
-
+    initializingData();
     // WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
     //   // addCategories();
     // });
+  }
+
+  String? currencySymbol;
+  double? conversionRate;
+  void initializingData() {
+    SharedPreferences.getInstance().then((sharedPrefValue) {
+      setState(() {
+        conversionRate = sharedPrefValue.getDouble(AppConstants.rate);
+        log('conversionRate:$conversionRate');
+        currencySymbol = sharedPrefValue.getString(AppConstants.symbol);
+        log('currencySymbol:$currencySymbol');
+      });
+    });
   }
 
   @override
@@ -1042,7 +1057,8 @@ class _SearchScreenState extends State<SearchScreen>
                               // "65",
                               // '${controller.currency() ?? '\$'} ${product.activity.adultPrice.toString()}',
                               // " ${(selectedCountry != null ? "${((product.activity.lowPrice * selectedCountry!.conversionRate) as double).toStringAsFixed(2)} ${selectedCountry!.isocode} " : "")}",
-                              '${product.activity.lowPrice} AED',
+                              '${((product.activity.lowPrice * conversionRate) as double).toStringAsFixed(2)} $currencySymbol',
+                              // '${product.activity.lowPrice} AED',
 
                               fontWeight: 700,
                             ),
