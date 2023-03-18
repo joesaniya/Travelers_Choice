@@ -53,6 +53,8 @@ class AuthService {
         sharedPreferences.setInt("balance", jsondata['newUser']['balance']);
         sharedPreferences.setString(AppConstants.KEY_ACCESS_TOKEN_countryId,
             jsondata['newUser']['country']);
+        sharedPreferences.setString(AppConstants.KEY_ACCESS_TOKEN_Phone,
+            jsondata['newUser']['phoneNumber']);
         return response.body;
       } else {
         var jsondata = jsonDecode(response.body);
@@ -142,7 +144,8 @@ class AuthService {
         sharedPreferences.setInt("balance", jsondata['user']['balance']);
         sharedPreferences.setString(AppConstants.KEY_ACCESS_TOKEN_countryId,
             jsondata['user']['country']);
-
+        sharedPreferences.setString(AppConstants.KEY_ACCESS_TOKEN_Phone,
+            jsondata['user']['phoneNumber']);
         return response.body;
 
         // //todo

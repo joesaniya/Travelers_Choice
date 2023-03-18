@@ -3,11 +3,11 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutx/flutx.dart';
 import 'package:hotel_travel/views/login_Screens/login_screen.dart';
+import 'package:hotel_travel/views/profile_edit.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/user.dart';
 import '../views/edit_profile.dart';
-import '../views/splash_screens/splash_screen2.dart';
 
 class ProfileController extends FxController {
   bool showLoading = true, uiLoading = true;
@@ -79,7 +79,9 @@ class ProfileController extends FxController {
                   opacity: animation,
                   child: child,
                 ),
-            pageBuilder: (_, __, ___) => const EditProfileScreen()));
+            pageBuilder: (_, __, ___) => const EditProfilePage()
+            // EditProfileScreen()
+            ));
 
     if (result == null) {
       return false;

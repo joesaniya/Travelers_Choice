@@ -41,17 +41,26 @@ class _SplashScreen2State extends State<SplashScreen2> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Hero(
-                    tag: "splash_username",
-                    child: FxText.titleLarge(
-                      'Welcome To Travelers Choice App',
-                      // "Hey Nency,",
-                      fontWeight: 700,
+                  Container(
+                    child: Image.asset(
+                      "assets/other/tctt-logo.png",
+                      fit: BoxFit.fill,
+                      width: 200,
+                      height: 200,
                     ),
                   ),
-                  FxText.bodySmall(
-                    "Wait here, we are fetching data",
-                  ),
+
+                  // Hero(
+                  //   tag: "splash_username",
+                  //   child: FxText.titleLarge(
+                  //     'Welcome To Travelers Choice App',
+                  //     // "Hey Nency,",
+                  //     fontWeight: 700,
+                  //   ),
+                  // ),
+                  // FxText.bodySmall(
+                  //   "Wait here, we are fetching data",
+                  // ),
                 ],
               ),
             ),
