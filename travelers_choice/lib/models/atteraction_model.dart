@@ -665,7 +665,7 @@ class Activity {
 class PrivateTransfers {
   String? name;
   int? maxCapacity;
-  int? price;
+  dynamic price;
   int? cost;
   String? sId;
 

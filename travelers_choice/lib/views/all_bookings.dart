@@ -391,7 +391,7 @@ class _AllBookingsState extends State<AllBookings>
         ),
         body: controller.token == null
             ? const Text('Login or signup')
-            : controller.orders!.result == null
+            : controller.orders?.result == null
                 ? Center(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -718,6 +718,9 @@ class _AllBookingsState extends State<AllBookings>
                               child: Column(
                                 children: [
                                   Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Row(
                                         children: [
@@ -736,7 +739,7 @@ class _AllBookingsState extends State<AllBookings>
                                           ),
                                         ],
                                       ),
-                                      // FxSpacing.width(20),
+                                      FxSpacing.width(20),
                                       //3
                                       Expanded(
                                           child: Row(
@@ -767,6 +770,9 @@ class _AllBookingsState extends State<AllBookings>
                                   //2
                                   FxSpacing.height(10),
                                   Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Row(
                                         children: [
@@ -789,6 +795,7 @@ class _AllBookingsState extends State<AllBookings>
                                           ),
                                         ],
                                       ),
+                                      FxSpacing.width(20),
                                       //3
                                       Expanded(
                                           child: Row(

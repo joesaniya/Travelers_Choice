@@ -287,7 +287,7 @@ class _CheckOutScreenState extends State<CheckOutScreen>
                       //       ),
                       widget.Transfer == null
                           ? FxText.bodyMedium(
-                              'without',
+                              'Private',
                               fontWeight: 700,
                             )
                           : FxText.bodyMedium(
@@ -845,7 +845,7 @@ class _CheckOutScreenState extends State<CheckOutScreen>
                             children: [
                               Expanded(
                                 child: FxText.labelLarge(
-                                  "Code",
+                                  "Choose Your Country",
                                   fontWeight: 600,
                                   color: Colors.black,
                                   letterSpacing: 0.4,

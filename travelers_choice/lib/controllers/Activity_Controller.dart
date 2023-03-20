@@ -57,7 +57,8 @@ class ActivityController extends FxController {
       if (selectedtour.contains(tour)) {
         selectedtour.remove(tour);
       } else {
-        tour.grandTotal = tour.adultPrice!.toDouble();
+        tour.grandTotal = tour.lowPrice!.toDouble();
+        // tour.grandTotal = tour.adultPrice!.toDouble();
         selectedtour.add(tour);
       }
     } else {
@@ -83,8 +84,8 @@ class ActivityController extends FxController {
 
     for (Activity tour in selectedtour) {
       log('tour.grandTotal:${tour.grandTotal}');
-
-      amount = amount + (tour.grandTotal);
+      amount = amount + (tour.grandTotal + tour.privateTransfers!.first.price);
+      // amount = amount + (tour.grandTotal);
       log('amount:$amount');
     }
 

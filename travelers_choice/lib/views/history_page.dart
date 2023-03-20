@@ -107,7 +107,8 @@ class _HistoryScreenState extends State<HistoryScreen>
       log('You have no attractions orders');
       return const Text("You have no attractions orders");
     } else {
-      if (orders!.result == null) {
+      if (orders!.result == null) 
+      {
         log('You have no attractions');
         return const Text("You have no attractions");
       }

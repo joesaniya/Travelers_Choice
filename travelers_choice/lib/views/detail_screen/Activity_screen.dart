@@ -328,37 +328,37 @@ class _ActivityScreenState extends State<ActivityScreen>
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             GestureDetector(
-                              onTap: () {
-                                clickedExcursion = !clickedExcursion;
+                              // onTap: () {
+                              //   clickedExcursion = !clickedExcursion;
 
-                                setState(() {});
-                                // controller.updateTours(widget.excursions[i]);
-                                // controller1.addCart
-                                //     ? controller1.cartController.reverse()
-                                //     : controller1.cartController.forward();
+                              //   setState(() {});
+                              //   // controller.updateTours(widget.excursions[i]);
+                              //   // controller1.addCart
+                              //   //     ? controller1.cartController.reverse()
+                              //   //     : controller1.cartController.forward();
 
-                                //todo
-                                // if (controllerTE[i].text.isEmpty) {
-                                //   ScaffoldMessenger.of(context).showSnackBar(
-                                //       const SnackBar(
-                                //           content: Text("Select Your Date")));
-                                // } else {
-                                // selectedIndex = i;
-                                // controller.selectedtour
-                                //         .contains(widget.excursions[i])
-                                //     ? selectedIndex = i
-                                //     : selectedIndex = null;
-                                controller.updateTours(widget.excursions[i]);
-                                log('Count:${widget.excursions[i].adultCount}${widget.excursions[i].childCount}${widget.excursions[i].infantCount}');
+                              //   //todo
+                              //   // if (controllerTE[i].text.isEmpty) {
+                              //   //   ScaffoldMessenger.of(context).showSnackBar(
+                              //   //       const SnackBar(
+                              //   //           content: Text("Select Your Date")));
+                              //   // } else {
+                              //   // selectedIndex = i;
+                              //   // controller.selectedtour
+                              //   //         .contains(widget.excursions[i])
+                              //   //     ? selectedIndex = i
+                              //   //     : selectedIndex = null;
+                              //   controller.updateTours(widget.excursions[i]);
+                              //   log('Count:${widget.excursions[i].adultCount}${widget.excursions[i].childCount}${widget.excursions[i].infantCount}');
 
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                        content: !clickedExcursion
-                                            ? const Text(
-                                                "Added this Excursion!!")
-                                            : const Text(
-                                                "Removed this Excursion!!")));
-                              },
+                              //   ScaffoldMessenger.of(context).showSnackBar(
+                              //       SnackBar(
+                              //           content: !clickedExcursion
+                              //               ? const Text(
+                              //                   "Added this Excursion!!")
+                              //               : const Text(
+                              //                   "Removed this Excursion!!")));
+                              // },
                               child: AnimatedContainer(
                                 // height: 40 ?? 28,
                                 // width: 40 ?? 28,
