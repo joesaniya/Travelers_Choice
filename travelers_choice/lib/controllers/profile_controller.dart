@@ -13,7 +13,7 @@ class ProfileController extends FxController {
   bool showLoading = true, uiLoading = true;
   bool notification = true, offlineReading = false;
   late User user;
-  String? name, email;
+  String? name, email, phoneNumber;
 
   // double? balanceamount;
   int? balanceamount;
@@ -66,8 +66,8 @@ class ProfileController extends FxController {
   // }
 
   Future<bool> EditProfile() async {
-    var result =
-        await Navigator.of(context, rootNavigator: true).push(PageRouteBuilder(
+    var result = await Navigator.of(context, rootNavigator: true).push(
+        PageRouteBuilder(
             transitionDuration: const Duration(milliseconds: 500),
             transitionsBuilder: (
               BuildContext context,
@@ -79,7 +79,8 @@ class ProfileController extends FxController {
                   opacity: animation,
                   child: child,
                 ),
-            pageBuilder: (_, __, ___) => const EditProfilePage()
+            pageBuilder: (_, __, ___) =>
+                EditProfilePage(name: name, email: email,phone:phoneNumber)
             // EditProfileScreen()
             ));
 

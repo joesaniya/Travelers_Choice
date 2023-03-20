@@ -45,9 +45,9 @@ class EditProfileController extends FxController {
   @override
   void initState() {
     super.initState();
-    nameTE = TextEditingController();
-    mobileTE = TextEditingController();
-    emailTE = TextEditingController();
+    nameTE = TextEditingController(text: name);
+    mobileTE = TextEditingController(text: phoneNumber);
+    emailTE = TextEditingController(text: email);
     addressTE = TextEditingController();
     ageTE = TextEditingController();
     fetchData();

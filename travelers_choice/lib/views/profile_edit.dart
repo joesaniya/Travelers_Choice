@@ -17,7 +17,8 @@ import '../theme/constant.dart';
 import '/theme/app_theme.dart';
 
 class EditProfilePage extends StatefulWidget {
-  const EditProfilePage({Key? key}) : super(key: key);
+  String? name, email, phone;
+  EditProfilePage({super.key, this.name, this.email, this.phone});
 
   @override
   _EditProfilePageState createState() => _EditProfilePageState();
@@ -55,6 +56,7 @@ class _EditProfilePageState extends State<EditProfilePage>
   void initState() {
     super.initState();
     fetchData();
+
     SharedPreferences.getInstance().then((sharedPrefValue) {
       setState(() {
         controller.name =
@@ -86,6 +88,8 @@ class _EditProfilePageState extends State<EditProfilePage>
         color: Colors.transparent,
       ),
     );
+    controller.information(widget.name.toString(), widget.email.toString(),
+        widget.phone.toString());
   }
 
   fetchData() {
@@ -103,6 +107,8 @@ class _EditProfilePageState extends State<EditProfilePage>
       //   }
       // });
     });
+    // controller.fetchdetails(controller.name.toString(),
+    //     controller.email.toString(), controller.phoneNumber.toString());
   }
 
   String? _selectedCountry;

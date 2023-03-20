@@ -53,6 +53,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
             sharedPrefValue.getString(AppConstants.KEY_ACCESS_TOKEN_Email);
         log(profileController.email.toString());
         log('username');
+        profileController.phoneNumber =
+            sharedPrefValue.getString(AppConstants.KEY_ACCESS_TOKEN_Phone);
+        log('Ph Number:${profileController.phoneNumber.toString()}');
 
         profileController.balanceamount =
             sharedPrefValue.getInt(AppConstants.KEY_ACCESS_BALANCE);
@@ -349,20 +352,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           },
                           value: profileController.notification,
                         ),
-                        ListTile(
-                          dense: true,
-                          contentPadding: FxSpacing.zero,
-                          visualDensity: VisualDensity.compact,
-                          title: FxText.bodyMedium(
-                            "Language",
-                            letterSpacing: 0,
-                          ),
-                          trailing: Icon(
-                            Icons.chevron_right,
-                            size: 20,
-                            color: theme.colorScheme.onBackground,
-                          ),
-                        ),
+                        // ListTile(
+                        //   dense: true,
+                        //   contentPadding: FxSpacing.zero,
+                        //   visualDensity: VisualDensity.compact,
+                        //   title: FxText.bodyMedium(
+                        //     "Language",
+                        //     letterSpacing: 0,
+                        //   ),
+                        //   trailing: Icon(
+                        //     Icons.chevron_right,
+                        //     size: 20,
+                        //     color: theme.colorScheme.onBackground,
+                        //   ),
+                        // ),
                         profileController.token == null
                             ? const SizedBox()
                             : Column(
@@ -379,20 +382,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     ),
                                   ),
                                   FxSpacing.height(8),
-                                  ListTile(
-                                    dense: true,
-                                    contentPadding: FxSpacing.zero,
-                                    visualDensity: VisualDensity.compact,
-                                    title: FxText.bodyMedium(
-                                      "Personal Information",
-                                      letterSpacing: 0,
-                                    ),
-                                    trailing: Icon(
-                                      Icons.chevron_right,
-                                      size: 20,
-                                      color: theme.colorScheme.onBackground,
-                                    ),
-                                  ),
                                   ListTile(
                                     onTap: () {
                                       log('update password clicked');
@@ -467,48 +456,51 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       color: theme.colorScheme.onBackground,
                                     ),
                                   ),
-                                  ListTile(
-                                    dense: true,
-                                    contentPadding: FxSpacing.zero,
-                                    visualDensity: VisualDensity.compact,
-                                    title: FxText.bodyMedium(
-                                      "Bookings Confirmed",
-                                      letterSpacing: 0,
-                                    ),
-                                    trailing: Icon(
-                                      Icons.chevron_right,
-                                      size: 20,
-                                      color: theme.colorScheme.onBackground,
-                                    ),
-                                  ),
-                                  ListTile(
-                                    dense: true,
-                                    contentPadding: FxSpacing.zero,
-                                    visualDensity: VisualDensity.compact,
-                                    title: FxText.bodyMedium(
-                                      "Bookings Cancelled",
-                                      letterSpacing: 0,
-                                    ),
-                                    trailing: Icon(
-                                      Icons.chevron_right,
-                                      size: 20,
-                                      color: theme.colorScheme.onBackground,
-                                    ),
-                                  ),
-                                  ListTile(
-                                    dense: true,
-                                    contentPadding: FxSpacing.zero,
-                                    visualDensity: VisualDensity.compact,
-                                    title: FxText.bodyMedium(
-                                      "Transaction History",
-                                      letterSpacing: 0,
-                                    ),
-                                    trailing: Icon(
-                                      Icons.chevron_right,
-                                      size: 20,
-                                      color: theme.colorScheme.onBackground,
-                                    ),
-                                  ),
+                                  //cmd
+
+                                  // ListTile(
+                                  //   dense: true,
+                                  //   contentPadding: FxSpacing.zero,
+                                  //   visualDensity: VisualDensity.compact,
+                                  //   title: FxText.bodyMedium(
+                                  //     "Bookings Confirmed",
+                                  //     letterSpacing: 0,
+                                  //   ),
+                                  //   trailing: Icon(
+                                  //     Icons.chevron_right,
+                                  //     size: 20,
+                                  //     color: theme.colorScheme.onBackground,
+                                  //   ),
+                                  // ),
+                                  // ListTile(
+                                  //   dense: true,
+                                  //   contentPadding: FxSpacing.zero,
+                                  //   visualDensity: VisualDensity.compact,
+                                  //   title: FxText.bodyMedium(
+                                  //     "Bookings Cancelled",
+                                  //     letterSpacing: 0,
+                                  //   ),
+                                  //   trailing: Icon(
+                                  //     Icons.chevron_right,
+                                  //     size: 20,
+                                  //     color: theme.colorScheme.onBackground,
+                                  //   ),
+                                  // ),
+                                  // ListTile(
+                                  //   dense: true,
+                                  //   contentPadding: FxSpacing.zero,
+                                  //   visualDensity: VisualDensity.compact,
+                                  //   title: FxText.bodyMedium(
+                                  //     "Transaction History",
+                                  //     letterSpacing: 0,
+                                  //   ),
+                                  //   trailing: Icon(
+                                  //     Icons.chevron_right,
+                                  //     size: 20,
+                                  //     color: theme.colorScheme.onBackground,
+                                  //   ),
+                                  // ),
+
                                   FxSpacing.height(16),
                                   Center(
                                       child: FxButton.rounded(

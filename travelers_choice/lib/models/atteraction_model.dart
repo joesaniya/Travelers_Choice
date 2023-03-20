@@ -135,7 +135,7 @@ class DetailattractionModal {
     if (json['faqs'] != null) {
       faqs = <Faqs>[];
       json['faqs'].forEach((v) {
-        faqs!.add(new Faqs.fromJson(v));
+        faqs!.add(Faqs.fromJson(v));
       });
     }
     isApiConnected = json['isApiConnected'];
@@ -205,8 +205,8 @@ class DetailattractionModal {
     data['cancelBeforeTime'] = cancelBeforeTime;
     data['cancellationFee'] = cancellationFee;
     data['cancellationType'] = cancellationType;
-     if (this.faqs != null) {
-      data['faqs'] = this.faqs!.map((v) => v.toJson()).toList();
+    if (faqs != null) {
+      data['faqs'] = faqs!.map((v) => v.toJson()).toList();
     }
     data['isApiConnected'] = isApiConnected;
     data['isCombo'] = isCombo;
@@ -244,10 +244,10 @@ class Faqs {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['question'] = this.question;
-    data['answer'] = this.answer;
-    data['_id'] = this.sId;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['question'] = question;
+    data['answer'] = answer;
+    data['_id'] = sId;
     return data;
   }
 }
@@ -506,7 +506,7 @@ class Activity {
   bool? isDeleted;
   dynamic adultCost;
   dynamic childCost;
-  double? infantCost;
+  dynamic infantCost;
   int adultCount = 1;
   int childCount = 0;
   int infantCount = 0;

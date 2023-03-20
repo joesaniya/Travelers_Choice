@@ -2,10 +2,13 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutx/flutx.dart';
+import '../models/all_attraction_modal.dart';
+import '../models/atteraction_model.dart';
 import '/theme/app_theme.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import '/controllers/login_controller.dart';
-import 'booking_success.dart';
+import 'full_app.dart';
+import 'history_page.dart';
 
 class PaymentCC extends StatefulWidget {
   String paymentdata;
@@ -20,6 +23,36 @@ class _PaymentCCState extends State<PaymentCC> with TickerProviderStateMixin {
   late ThemeData theme;
   late LogInController controller;
   late InAppWebViewController _webViewController;
+
+  final List<AllattractionModal> _favouriteMeals = [];
+  final List<Activity> _cartMeal = [];
+  final List<AllattractionModal> _availableMeals = <AllattractionModal>[];
+
+  void _toggleFavorite(String mealId) {
+    final existingIndex = _favouriteMeals
+        .indexWhere((meal) => meal.attractions.data.first.id == mealId);
+    if (existingIndex >= 0) {
+      _favouriteMeals.removeAt(existingIndex);
+      setState(() {});
+      // setState(() {
+      //   _favouriteMeals.removeAt(existingIndex);
+      // });
+    } else {
+      _favouriteMeals.add(
+        _availableMeals
+            .firstWhere((meal) => meal.attractions.data.first.id == mealId),
+      );
+      // setState(() {
+      //   _favouriteMeals.add(
+      //      <AllattractionModal>[].firstWhere((meal) => meal.id == mealId),
+      //   );
+      // });
+    }
+  }
+
+  bool _isMealFavorite(String id) {
+    return _favouriteMeals.any((meal) => meal.attractions.data.first.id == id);
+  }
 
   @override
   void initState() {
@@ -38,9 +71,10 @@ class _PaymentCCState extends State<PaymentCC> with TickerProviderStateMixin {
             onWillPop: () async {
               log('onwillpop called');
               Navigator.of(context, rootNavigator: true).pushReplacement(
-                MaterialPageRoute(
-                  builder: (context) => const BookingSuccess(),
-                ),
+                MaterialPageRoute(builder: (context) => const HistoryScreen()
+                    // FullApp(_favouriteMeals, _cartMeal)
+                    // const BookingSuccess(),
+                    ),
               );
               return true;
             },
@@ -73,6 +107,7 @@ class _PaymentCCState extends State<PaymentCC> with TickerProviderStateMixin {
                           handlerName: 'handlerFoo',
                           callback: (args) {
                             // return data to JavaScript side!
+                            log('back');
                             return {'bar': 'bar_value', 'baz': 'baz_value'};
                           });
 

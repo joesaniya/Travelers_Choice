@@ -1090,342 +1090,319 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                         conversionRate: selectedCountry!.conversionRate)
                     : const SearchVisa(),
 
-                // GestureDetector(
-                //   onTap: () {},
-                //   child: Container(
-                //     height: 50.0,
-                //     width: double.infinity,
-                //     decoration: BoxDecoration(
-                //       color: const Color(0xff1529e8).withOpacity(0.3),
-                //       borderRadius: BorderRadius.circular(50.0),
-                //       boxShadow: <BoxShadow>[
-                //         BoxShadow(
-                //           color: Colors.grey.shade100,
-                //           offset: const Offset(-4 * -1, 4 * -1),
-                //           blurRadius: 8.0,
-                //         ),
-                //         BoxShadow(
-                //           color: Colors.grey.shade500,
-                //           offset: const Offset(10, 10),
-                //           blurRadius: 8.0,
-                //         ),
-                //       ],
-                //     ),
-                //   ),
-                // ),
-
-                // //anim
-                //  Container(
-                //   // key: controller.intro.keys[2],
-                //   height: 50,
-                //   child: AnimatedList(
-                //       scrollDirection: Axis.horizontal,
-                //       key: controller.listKey,
-                //       initialItemCount: controller.newCategories.length,
-                //       itemBuilder: (context, index, animation) {
-                //         return SlideTransition(
-                //             position: animation.drive(controller.offset),
-                //             child: controller.newCategories[index]);
-                //       }),
-                // ),
-                // FxSpacing.height(20),
-
-                FxSpacing.height(20),
-                //scroll
-                SizedBox(
-                  width: MediaQuery.of(context).size.width,
-                  height: 50,
-                  child: ListView(
-                    scrollDirection: Axis.horizontal,
-                    children: <Widget>[
-                      GestureDetector(
-                        onTap: () {
-                          log('Attraction');
-                          _tabbed = '1';
-                          setState(() {});
-                        },
-                        child: Container(
-                          // width: 100,
-                          decoration: BoxDecoration(
-                              color: _tabbed == '1'
-                                  ? const Color(0xff1529e8)
-                                  // theme1.colorScheme.primary
-                                  : Colors.transparent,
-                              border: Border.all(
-                                  color: _tabbed == '1'
-                                      ? Colors.transparent
-                                      : theme1.colorScheme.primaryContainer,
-                                  width: _tabbed == '1' ? 0.0 : 1.0),
-                              // borderRadius:
-                              //     new BorderRadius.all(Radius.elliptical(90, 45)),
-                              // borderRadius: BorderRadius.only(
-                              //     topLeft: Radius.circular(20),
-                              //     topRight: Radius.circular(20))
-                              borderRadius: BorderRadius.circular(20.0)),
-                          padding: const EdgeInsets.symmetric(horizontal: 15),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Image.asset(
-                                  "assets/images/apps/shopping2/icons/attraction.png",
-                                  height: 20,
-                                  width: 20,
-                                  color: _tabbed == '1'
-                                      ? Colors.white
-                                      : Colors.black),
-                              const SizedBox(
-                                width: 7,
-                              ),
-                              FxText.bodyLarge(
-                                'Attraction',
-                                style: TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w800,
-                                  color: _tabbed == '1'
-                                      ? Colors.white
-                                      : Colors.black,
+                Listener(
+                  behavior: HitTestBehavior.opaque,
+                  onPointerDown: (_) {
+                    FocusManager.instance.primaryFocus?.unfocus();
+                  },
+                  child: Column(
+                    children: [
+                      FxSpacing.height(20),
+                      //scroll
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width,
+                        height: 50,
+                        child: ListView(
+                          scrollDirection: Axis.horizontal,
+                          children: <Widget>[
+                            GestureDetector(
+                              onTap: () {
+                                log('Attraction');
+                                _tabbed = '1';
+                                setState(() {});
+                              },
+                              child: Container(
+                                // width: 100,
+                                decoration: BoxDecoration(
+                                    color: _tabbed == '1'
+                                        ? const Color(0xff1529e8)
+                                        // theme1.colorScheme.primary
+                                        : Colors.transparent,
+                                    border: Border.all(
+                                        color: _tabbed == '1'
+                                            ? Colors.transparent
+                                            : theme1
+                                                .colorScheme.primaryContainer,
+                                        width: _tabbed == '1' ? 0.0 : 1.0),
+                                    // borderRadius:
+                                    //     new BorderRadius.all(Radius.elliptical(90, 45)),
+                                    // borderRadius: BorderRadius.only(
+                                    //     topLeft: Radius.circular(20),
+                                    //     topRight: Radius.circular(20))
+                                    borderRadius: BorderRadius.circular(20.0)),
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 15),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Image.asset(
+                                        "assets/images/apps/shopping2/icons/attraction.png",
+                                        height: 20,
+                                        width: 20,
+                                        color: _tabbed == '1'
+                                            ? Colors.white
+                                            : Colors.black),
+                                    const SizedBox(
+                                      width: 7,
+                                    ),
+                                    FxText.bodyLarge(
+                                      'Attraction',
+                                      style: TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.w800,
+                                        color: _tabbed == '1'
+                                            ? Colors.white
+                                            : Colors.black,
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      const SizedBox(
-                        width: 10,
-                      ),
-                      // GestureDetector(
-                      //   onTap: () {
-                      //     log('flight');
-                      //     _tabbed = '2';
-                      //     setState(() {});
-                      //   },
-                      //   child: Container(
-                      //       width: 120,
-                      //       decoration: BoxDecoration(
-                      //           color: _tabbed == '2'
-                      //               ? const Color(0xff1529e8)
-                      //               // theme1.colorScheme.primary
-                      //               : Colors.transparent,
-                      //           border: Border.all(
-                      //               color: _tabbed == '2'
-                      //                   ? Colors.transparent
-                      //                   : theme1.colorScheme.primaryContainer,
-                      //               width: _tabbed == '2' ? 0.0 : 1.0),
-                      //           borderRadius: BorderRadius.circular(20.0)
-                      //           // borderRadius:
-                      //           //     new BorderRadius.all(Radius.elliptical(90, 45)),
-                      //           ),
-                      //       padding: const EdgeInsets.symmetric(horizontal: 5),
-                      //       child: Row(
-                      //         mainAxisAlignment: MainAxisAlignment.center,
-                      //         crossAxisAlignment: CrossAxisAlignment.center,
-                      //         children: [
-                      //           Image.asset(
-                      //               "assets/images/apps/shopping2/icons/flight.png",
-                      //               height: 20,
-                      //               width: 20,
-                      //               color: _tabbed == '2'
-                      //                   ? Colors.white
-                      //                   : Colors.black),
-                      //           const SizedBox(
-                      //             width: 7,
-                      //           ),
-                      //           FxText.bodyLarge(
-                      //             'Flight',
-                      //             style: TextStyle(
-                      //               fontSize: 18,
-                      //               fontWeight: FontWeight.w800,
-                      //               color: _tabbed == '2'
-                      //                   ? Colors.white
-                      //                   : Colors.black,
-                      //             ),
-                      //           ),
-                      //         ],
-                      //       )),
-                      // ),
-                      // const SizedBox(
-                      //   width: 10,
-                      // ),
-                      //  GestureDetector(
-                      //   onTap: () {
-                      //     log('Hotel');
-                      //     _tabbed = '3';
-                      //     setState(() {});
-                      //   },
-                      //   child: Container(
-                      //     width: 120,
-                      //     decoration: BoxDecoration(
-                      //         color: _tabbed == '3'
-                      //             ? const Color(0xff1529e8)
-                      //             // theme1.colorScheme.primary
-                      //             : Colors.transparent,
-                      //         border: Border.all(
-                      //             color: _tabbed == '3'
-                      //                 ? Colors.transparent
-                      //                 : theme1.colorScheme.primaryContainer,
-                      //             width: _tabbed == '3' ? 0.0 : 1.0),
-                      //         borderRadius: BorderRadius.circular(20.0)),
-                      //     padding: const EdgeInsets.symmetric(horizontal: 5),
-                      //     child: Row(
-                      //       mainAxisAlignment: MainAxisAlignment.center,
-                      //       crossAxisAlignment: CrossAxisAlignment.center,
-                      //       children: [
-                      //         Image.asset(
-                      //             "assets/images/apps/shopping2/icons/hotel.png",
-                      //             height: 20,
-                      //             width: 20,
-                      //             color: _tabbed == '3'
-                      //                 ? Colors.white
-                      //                 : Colors.black),
-                      //         const SizedBox(
-                      //           width: 7,
-                      //         ),
-                      //         FxText.bodyLarge(
-                      //           'Hotel',
-                      //           style: TextStyle(
-                      //               fontSize: 18,
-                      //               fontWeight: FontWeight.w800,
-                      //               color: _tabbed == '3'
-                      //                   ? Colors.white
-                      //                   : Colors.black),
-                      //         ),
-                      //       ],
-                      //     ),
-                      //   ),
-                      // ),
-                      // const SizedBox(
-                      //   width: 10,
-                      // ),
-                      GestureDetector(
-                        onTap: () {
-                          log('visa');
-                          _tabbed = '4';
-                          setState(() {});
-                          // Navigator.push(context, MaterialPageRoute(builder: (context)=> VisaScreen()));
-                        },
-                        child: Container(
-                          width: 120,
-                          decoration: BoxDecoration(
-                              color: _tabbed == '4'
-                                  ? const Color(0xff1529e8)
-                                  // theme1.colorScheme.primary
-                                  : Colors.transparent,
-                              border: Border.all(
-                                  color: _tabbed == '4'
-                                      ? Colors.transparent
-                                      : theme1.colorScheme.primaryContainer,
-                                  width: _tabbed == '4' ? 0.0 : 1.0),
-                              borderRadius: BorderRadius.circular(20.0)),
-                          padding: const EdgeInsets.symmetric(horizontal: 5),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Image.asset(
-                                  "assets/images/apps/shopping2/icons/visa_icon.png",
-                                  height: 20,
-                                  width: 20,
-                                  color: _tabbed == '4'
-                                      ? Colors.white
-                                      : Colors.black),
-                              const SizedBox(
-                                width: 7,
-                              ),
-                              FxText.bodyLarge(
-                                'Visa',
-                                style: TextStyle(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.w800,
+                            ),
+                            const SizedBox(
+                              width: 10,
+                            ),
+                            // GestureDetector(
+                            //   onTap: () {
+                            //     log('flight');
+                            //     _tabbed = '2';
+                            //     setState(() {});
+                            //   },
+                            //   child: Container(
+                            //       width: 120,
+                            //       decoration: BoxDecoration(
+                            //           color: _tabbed == '2'
+                            //               ? const Color(0xff1529e8)
+                            //               // theme1.colorScheme.primary
+                            //               : Colors.transparent,
+                            //           border: Border.all(
+                            //               color: _tabbed == '2'
+                            //                   ? Colors.transparent
+                            //                   : theme1.colorScheme.primaryContainer,
+                            //               width: _tabbed == '2' ? 0.0 : 1.0),
+                            //           borderRadius: BorderRadius.circular(20.0)
+                            //           // borderRadius:
+                            //           //     new BorderRadius.all(Radius.elliptical(90, 45)),
+                            //           ),
+                            //       padding: const EdgeInsets.symmetric(horizontal: 5),
+                            //       child: Row(
+                            //         mainAxisAlignment: MainAxisAlignment.center,
+                            //         crossAxisAlignment: CrossAxisAlignment.center,
+                            //         children: [
+                            //           Image.asset(
+                            //               "assets/images/apps/shopping2/icons/flight.png",
+                            //               height: 20,
+                            //               width: 20,
+                            //               color: _tabbed == '2'
+                            //                   ? Colors.white
+                            //                   : Colors.black),
+                            //           const SizedBox(
+                            //             width: 7,
+                            //           ),
+                            //           FxText.bodyLarge(
+                            //             'Flight',
+                            //             style: TextStyle(
+                            //               fontSize: 18,
+                            //               fontWeight: FontWeight.w800,
+                            //               color: _tabbed == '2'
+                            //                   ? Colors.white
+                            //                   : Colors.black,
+                            //             ),
+                            //           ),
+                            //         ],
+                            //       )),
+                            // ),
+                            // const SizedBox(
+                            //   width: 10,
+                            // ),
+                            //  GestureDetector(
+                            //   onTap: () {
+                            //     log('Hotel');
+                            //     _tabbed = '3';
+                            //     setState(() {});
+                            //   },
+                            //   child: Container(
+                            //     width: 120,
+                            //     decoration: BoxDecoration(
+                            //         color: _tabbed == '3'
+                            //             ? const Color(0xff1529e8)
+                            //             // theme1.colorScheme.primary
+                            //             : Colors.transparent,
+                            //         border: Border.all(
+                            //             color: _tabbed == '3'
+                            //                 ? Colors.transparent
+                            //                 : theme1.colorScheme.primaryContainer,
+                            //             width: _tabbed == '3' ? 0.0 : 1.0),
+                            //         borderRadius: BorderRadius.circular(20.0)),
+                            //     padding: const EdgeInsets.symmetric(horizontal: 5),
+                            //     child: Row(
+                            //       mainAxisAlignment: MainAxisAlignment.center,
+                            //       crossAxisAlignment: CrossAxisAlignment.center,
+                            //       children: [
+                            //         Image.asset(
+                            //             "assets/images/apps/shopping2/icons/hotel.png",
+                            //             height: 20,
+                            //             width: 20,
+                            //             color: _tabbed == '3'
+                            //                 ? Colors.white
+                            //                 : Colors.black),
+                            //         const SizedBox(
+                            //           width: 7,
+                            //         ),
+                            //         FxText.bodyLarge(
+                            //           'Hotel',
+                            //           style: TextStyle(
+                            //               fontSize: 18,
+                            //               fontWeight: FontWeight.w800,
+                            //               color: _tabbed == '3'
+                            //                   ? Colors.white
+                            //                   : Colors.black),
+                            //         ),
+                            //       ],
+                            //     ),
+                            //   ),
+                            // ),
+                            // const SizedBox(
+                            //   width: 10,
+                            // ),
+                            GestureDetector(
+                              onTap: () {
+                                log('visa');
+                                _tabbed = '4';
+                                setState(() {});
+                                // Navigator.push(context, MaterialPageRoute(builder: (context)=> VisaScreen()));
+                              },
+                              child: Container(
+                                width: 120,
+                                decoration: BoxDecoration(
                                     color: _tabbed == '4'
-                                        ? Colors.white
-                                        : Colors.black),
+                                        ? const Color(0xff1529e8)
+                                        // theme1.colorScheme.primary
+                                        : Colors.transparent,
+                                    border: Border.all(
+                                        color: _tabbed == '4'
+                                            ? Colors.transparent
+                                            : theme1
+                                                .colorScheme.primaryContainer,
+                                        width: _tabbed == '4' ? 0.0 : 1.0),
+                                    borderRadius: BorderRadius.circular(20.0)),
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 5),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Image.asset(
+                                        "assets/images/apps/shopping2/icons/visa_icon.png",
+                                        height: 20,
+                                        width: 20,
+                                        color: _tabbed == '4'
+                                            ? Colors.white
+                                            : Colors.black),
+                                    const SizedBox(
+                                      width: 7,
+                                    ),
+                                    FxText.bodyLarge(
+                                      'Visa',
+                                      style: TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.w800,
+                                          color: _tabbed == '4'
+                                              ? Colors.white
+                                              : Colors.black),
+                                    ),
+                                  ],
+                                ),
                               ),
-                            ],
+                            ),
+                            // const SizedBox(
+                            //   width: 10,
+                            // ),
+                            // GestureDetector(
+                            //   onTap: () {
+                            //     log('Transfer');
+                            //     _tabbed = '5';
+                            //     setState(() {});
+                            //   },
+                            //   child: Container(
+                            //     width: 120,
+                            //     decoration: BoxDecoration(
+                            //         color: _tabbed == '5'
+                            //             ? const Color(0xff1529e8)
+                            //             // theme1.colorScheme.primary
+                            //             : Colors.transparent,
+                            //         border: Border.all(
+                            //             color: _tabbed == '5'
+                            //                 ? Colors.transparent
+                            //                 : theme1.colorScheme.primaryContainer,
+                            //             width: _tabbed == '5' ? 0.0 : 1.0),
+                            //         borderRadius: BorderRadius.circular(20.0)
+                            //         // borderRadius:
+                            //         //     new BorderRadius.all(Radius.elliptical(90, 45)),
+                            //         ),
+                            //     padding: const EdgeInsets.symmetric(horizontal: 5),
+                            //     child: Row(
+                            //       mainAxisAlignment: MainAxisAlignment.center,
+                            //       crossAxisAlignment: CrossAxisAlignment.center,
+                            //       children: [
+                            //         Image.asset(
+                            //             "assets/images/apps/shopping2/icons/card.png",
+                            //             height: 20,
+                            //             width: 20,
+                            //             color: _tabbed == '5'
+                            //                 ? Colors.white
+                            //                 : Colors.black),
+                            //         const SizedBox(
+                            //           width: 7,
+                            //         ),
+                            //         FxText.bodyLarge(
+                            //           'Transfer',
+                            //           style: TextStyle(
+                            //               fontSize: 18,
+                            //               fontWeight: FontWeight.w800,
+                            //               color: _tabbed == '5'
+                            //                   ? Colors.white
+                            //                   : Colors.black),
+                            //         ),
+                            //       ],
+                            //     ),
+                            //   ),
+                            // ),
+                          ],
+                        ),
+                      ),
+
+                      FxSpacing.height(20),
+                      TopAttraction(),
+                      // const TopAttractionCard(),->crt
+                      // _buildAttractionList(),
+                      FxSpacing.height(20),
+
+                      FadeTransition(
+                        opacity: controller.fadeAnimation,
+                        // key: controller.intro.keys[1],
+                        child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: Container(
+                            child: FxText.bodyLarge(
+                              'Top Attractions',
+                              letterSpacing: 0,
+                              fontWeight: 600,
+                            ),
                           ),
                         ),
                       ),
-                      // const SizedBox(
-                      //   width: 10,
-                      // ),
-                      // GestureDetector(
-                      //   onTap: () {
-                      //     log('Transfer');
-                      //     _tabbed = '5';
-                      //     setState(() {});
-                      //   },
-                      //   child: Container(
-                      //     width: 120,
-                      //     decoration: BoxDecoration(
-                      //         color: _tabbed == '5'
-                      //             ? const Color(0xff1529e8)
-                      //             // theme1.colorScheme.primary
-                      //             : Colors.transparent,
-                      //         border: Border.all(
-                      //             color: _tabbed == '5'
-                      //                 ? Colors.transparent
-                      //                 : theme1.colorScheme.primaryContainer,
-                      //             width: _tabbed == '5' ? 0.0 : 1.0),
-                      //         borderRadius: BorderRadius.circular(20.0)
-                      //         // borderRadius:
-                      //         //     new BorderRadius.all(Radius.elliptical(90, 45)),
-                      //         ),
-                      //     padding: const EdgeInsets.symmetric(horizontal: 5),
-                      //     child: Row(
-                      //       mainAxisAlignment: MainAxisAlignment.center,
-                      //       crossAxisAlignment: CrossAxisAlignment.center,
-                      //       children: [
-                      //         Image.asset(
-                      //             "assets/images/apps/shopping2/icons/card.png",
-                      //             height: 20,
-                      //             width: 20,
-                      //             color: _tabbed == '5'
-                      //                 ? Colors.white
-                      //                 : Colors.black),
-                      //         const SizedBox(
-                      //           width: 7,
-                      //         ),
-                      //         FxText.bodyLarge(
-                      //           'Transfer',
-                      //           style: TextStyle(
-                      //               fontSize: 18,
-                      //               fontWeight: FontWeight.w800,
-                      //               color: _tabbed == '5'
-                      //                   ? Colors.white
-                      //                   : Colors.black),
-                      //         ),
-                      //       ],
-                      //     ),
-                      //   ),
-                      // ),
+
+                      FxSpacing.height(20),
+                      SingleChildScrollView(
+                        scrollDirection: Axis.vertical,
+                        child: _buildProductList(),
+                      ),
+                      FxSpacing.height(60),
                     ],
                   ),
-                ),
-
-                FxSpacing.height(20),
-                TopAttraction(),
-                // const TopAttractionCard(),->crt
-                // _buildAttractionList(),
-                FxSpacing.height(20),
-
-                FadeTransition(
-                  opacity: controller.fadeAnimation,
-                  // key: controller.intro.keys[1],
-                  child: Container(
-                    child: FxText.bodyLarge(
-                      'Top Attractions',
-                      letterSpacing: 0,
-                      fontWeight: 600,
-                    ),
-                  ),
-                ),
-
-                FxSpacing.height(20),
-                SingleChildScrollView(
-                  scrollDirection: Axis.vertical,
-                  child: _buildProductList(),
-                ),
-                FxSpacing.height(60),
+                )
               ],
             ),
           ),

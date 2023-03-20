@@ -1,8 +1,6 @@
 import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutx/flutx.dart';
-
 import '../services/auth_service.dart';
 import '../views/login_Screens/login_screen.dart';
 import '../views/splash_screens/splash_screen2.dart';
@@ -17,6 +15,7 @@ class EditController extends FxController {
   String? token;
   String? countryId;
   String? name, email, phoneNumber;
+  String? displayname, displayemailD, displayphoneNumber;
   double? balanceamount;
   bool uiLoading = true;
 
@@ -54,13 +53,24 @@ class EditController extends FxController {
   //   }
   // }
 
+  information(String namedis, String emaildis, String phonedis) {
+    log('info');
+    displayname = namedis;
+    displayemailD = emaildis;
+    displayphoneNumber = phonedis;
+    log('Name:$displayname ');
+    log('Email:$displayemailD');
+    log('phone:$displayphoneNumber');
+  }
+
   @override
   void initState() {
     super.initState();
-    nameTE = TextEditingController();
-    emailTE = TextEditingController();
+
+    nameTE = TextEditingController(text: displayname);
+    emailTE = TextEditingController(text: displayemailD);
     passwordTE = TextEditingController();
-    phoneTE = TextEditingController();
+    phoneTE = TextEditingController(text: displayphoneNumber);
     fetchData();
     arrowController = AnimationController(
         vsync: ticker, duration: const Duration(milliseconds: 500));

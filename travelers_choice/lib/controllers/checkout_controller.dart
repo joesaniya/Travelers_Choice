@@ -8,7 +8,7 @@ import 'package:hotel_travel/views/hotel_travel_constants.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
+import '../views/booking_success.dart';
 import '../models/atteraction_model.dart';
 import '../models/product.dart';
 import '../models/razor_response.dart';
@@ -833,19 +833,20 @@ class CheckOutController extends FxController {
 
       var paymentdata = res.body;
       log('Payment data:$paymentdata');
-      Navigator.of(context, rootNavigator: true).pushReplacement(
+      Navigator.of(context, rootNavigator: true)
+          .pushReplacement(
         MaterialPageRoute(
           builder: (context) => PaymentCC(paymentdata: paymentdata),
         ),
-      );
-      //     .whenComplete(() {
-      //   log('complete');
-      //   Navigator.of(context, rootNavigator: true).pushReplacement(
-      //     MaterialPageRoute(
-      //       builder: (context) => const BookingSuccess(),
-      //     ),
-      //   );
-      // });
+      )
+          .whenComplete(() {
+        log('complete');
+        Navigator.of(context, rootNavigator: true).pushReplacement(
+          MaterialPageRoute(
+            builder: (context) => const BookingSuccess(),
+          ),
+        );
+      });
     } else {
       var jsondata = jsonDecode(res.body);
       log(jsondata['error']);
