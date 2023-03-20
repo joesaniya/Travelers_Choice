@@ -838,92 +838,162 @@ class _CheckOutScreenState extends State<CheckOutScreen>
                           borderRadius: BorderRadius.circular(4)),
                       height: 45.0,
                       width: MediaQuery.of(context).size.width,
-                      // margin: const EdgeInsets.all(3.0),
-                      //width: 300.0,
                       child: DropdownButtonHideUnderline(
-                        child: ButtonTheme(
-                          alignedDropdown: true,
-                          child: DropdownButton(
-                            iconSize: 25.0,
-
-                            // dropdownColor: theme.cardTheme.color,
-                            dropdownColor: Colors.white,
-                            icon: const Icon(
-                              Icons.arrow_drop_down,
-                              color: Colors.black,
-                            ),
-                            value: controller.selectedcountry,
-                            // value: _selectedCountryCode,
-                            hint: Center(
-                              child: FxText.labelLarge(
-                                "Choose",
-                                fontWeight: 600,
-                                color: Colors.black,
-                                // color: theme.colorScheme.onPrimary,
-                                letterSpacing: 0.4,
+                        child: DropdownButton2(
+                          isExpanded: true,
+                          hint: Row(
+                            children: [
+                              Expanded(
+                                child: FxText.labelLarge(
+                                  "Code",
+                                  fontWeight: 600,
+                                  color: Colors.black,
+                                  letterSpacing: 0.4,
+                                ),
                               ),
-                            ),
-                            items: controller.countryCodes.map((String value) {
-                              return DropdownMenuItem<String>(
-                                  value: value,
-                                  child: Center(
-                                    child: Text(
-                                      value,
-                                      style: FxTextStyle.bodyMedium(),
-                                    ),
-                                  ));
-                            }).toList(),
-                            onChanged: (value) {
-                              setState(() {
-                                controller.selectedcountry = value.toString();
-                              });
-                            },
-                            // items:
-                            //     // controller.countryCodes.map
-                            //     // _countryCodes.map
-                            //     // countryList.isNotEmpty &&
-                            //     //         countryList.first.countries!.isNotEmpty
-                            //     //     ? countryList.first.countries!.map((value) {
-                            //     //         return DropdownMenuItem<String>(
-                            //     //             value: value!.phonecode.toString(),
-                            //     //             child: Center(
-                            //     //               child: Text(
-                            //     //                 value.phonecode.toString(),
-                            //     //                 style: const TextStyle(
-                            //     //                     color: Colors.black,
-                            //     //                     fontSize: 20,
-                            //     //                     fontWeight: FontWeight.w500),
-                            //     //               ),
-                            //     //             ));
-                            //     //       }).toList()
-                            //     //     : [].map((value) {
-                            //     //         return DropdownMenuItem<String>(
-                            //     //             value: value,
-                            //     //             child: Center(
-                            //     //               child: Text(
-                            //     //                 value,
-                            //     //                 style: const TextStyle(
-                            //     //                     color: Colors.black,
-                            //     //                     fontSize: 20,
-                            //     //                     fontWeight: FontWeight.w500),
-                            //     //               ),
-                            //     //             ));
-                            //     //       }).toList(),
-                            // onChanged: (value) {
-                            //   setState(() {
-                            //     log(value.toString());
-                            //     controller.selectedCountryCode = value.toString();
-                            //     // _selectedCountryCode = value.toString();
-                            //   });
-                            // },
-                            style: FxTextStyle.bodyMedium(),
-                            // style: const TextStyle(
-                            //     color: Colors.black,
-                            //     fontSize: 20,
-                            //     fontWeight: FontWeight.w500),
+                            ],
                           ),
+                          items: countryList.isNotEmpty &&
+                                  countryList.first.countries.isNotEmpty
+                              ? countryList.first.countries.map((value) {
+                                  return DropdownMenuItem<String>(
+                                      value: value.id.toString(),
+                                      child: Center(
+                                        child: Text(
+                                          value.countryName.toString(),
+                                          style: FxTextStyle.bodyMedium(),
+                                        ),
+                                      ));
+                                }).toList()
+                              : [].map((value) {
+                                  return DropdownMenuItem<String>(
+                                      value: value,
+                                      child: Center(
+                                        child: Text(
+                                          value,
+                                          style: FxTextStyle.bodyMedium(),
+                                        ),
+                                      ));
+                                }).toList(),
+                          value: controller.selectedCountryCode,
+                          onChanged: (value) {
+                            setState(() {
+                              log(value.toString());
+                              controller.selectedcountry = value.toString();
+                            });
+                          },
+                          icon: const Icon(Icons.arrow_drop_down),
+                          iconSize: 20,
+                          iconEnabledColor: Colors.black,
+                          iconDisabledColor: Colors.black,
+                          buttonHeight: 30,
+                          buttonWidth: 200,
+                          buttonPadding: const EdgeInsets.only(
+                              left: 14, right: 14, top: 4, bottom: 4),
+                          dropdownDecoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(4),
+                            color: Colors.white,
+                          ),
+                          buttonDecoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: theme.cardTheme.color,
+                          ),
+                          itemHeight: 40,
+                          itemPadding:
+                              const EdgeInsets.only(left: 14, right: 14),
+                          dropdownMaxHeight: 200,
+                          dropdownPadding: null,
+                          scrollbarRadius: const Radius.circular(40),
+                          scrollbarThickness: 2,
+                          scrollbarAlwaysShow: true,
+                          offset: const Offset(0, 0),
                         ),
                       ),
+
+                      // child: DropdownButtonHideUnderline(
+                      //   child: ButtonTheme(
+                      //     alignedDropdown: true,
+                      //     child: DropdownButton(
+                      //       iconSize: 25.0,
+
+                      //       // dropdownColor: theme.cardTheme.color,
+                      //       dropdownColor: Colors.white,
+                      //       icon: const Icon(
+                      //         Icons.arrow_drop_down,
+                      //         color: Colors.black,
+                      //       ),
+                      //       value: controller.selectedcountry,
+                      //       // value: _selectedCountryCode,
+                      //       hint: Center(
+                      //         child: FxText.labelLarge(
+                      //           "Choose",
+                      //           fontWeight: 600,
+                      //           color: Colors.black,
+                      //           // color: theme.colorScheme.onPrimary,
+                      //           letterSpacing: 0.4,
+                      //         ),
+                      //       ),
+                      //       items: controller.countryCodes.map((String value) {
+                      //         return DropdownMenuItem<String>(
+                      //             value: value,
+                      //             child: Center(
+                      //               child: Text(
+                      //                 value,
+                      //                 style: FxTextStyle.bodyMedium(),
+                      //               ),
+                      //             ));
+                      //       }).toList(),
+                      //       onChanged: (value) {
+                      //         setState(() {
+                      //           controller.selectedcountry = value.toString();
+                      //         });
+                      //       },
+                      //       // items:
+                      //       //     // controller.countryCodes.map
+                      //       //     // _countryCodes.map
+                      //       //     // countryList.isNotEmpty &&
+                      //       //     //         countryList.first.countries!.isNotEmpty
+                      //       //     //     ? countryList.first.countries!.map((value) {
+                      //       //     //         return DropdownMenuItem<String>(
+                      //       //     //             value: value!.phonecode.toString(),
+                      //       //     //             child: Center(
+                      //       //     //               child: Text(
+                      //       //     //                 value.phonecode.toString(),
+                      //       //     //                 style: const TextStyle(
+                      //       //     //                     color: Colors.black,
+                      //       //     //                     fontSize: 20,
+                      //       //     //                     fontWeight: FontWeight.w500),
+                      //       //     //               ),
+                      //       //     //             ));
+                      //       //     //       }).toList()
+                      //       //     //     : [].map((value) {
+                      //       //     //         return DropdownMenuItem<String>(
+                      //       //     //             value: value,
+                      //       //     //             child: Center(
+                      //       //     //               child: Text(
+                      //       //     //                 value,
+                      //       //     //                 style: const TextStyle(
+                      //       //     //                     color: Colors.black,
+                      //       //     //                     fontSize: 20,
+                      //       //     //                     fontWeight: FontWeight.w500),
+                      //       //     //               ),
+                      //       //     //             ));
+                      //       //     //       }).toList(),
+                      //       // onChanged: (value) {
+                      //       //   setState(() {
+                      //       //     log(value.toString());
+                      //       //     controller.selectedCountryCode = value.toString();
+                      //       //     // _selectedCountryCode = value.toString();
+                      //       //   });
+                      //       // },
+                      //       style: FxTextStyle.bodyMedium(),
+                      //       // style: const TextStyle(
+                      //       //     color: Colors.black,
+                      //       //     fontSize: 20,
+                      //       //     fontWeight: FontWeight.w500),
+                      //     ),
+                      //   ),
+                      // ),
                     ),
                     FxSpacing.height(20),
                     FadeTransition(
@@ -1565,7 +1635,8 @@ class _CheckOutScreenState extends State<CheckOutScreen>
                   color: theme.colorScheme.onPrimary,
                 ),
                 FxText.bodyMedium(
-                  ' ${widget.totalAmount} AED',
+                  // ' ${widget.totalAmount} AED',
+                  '${((widget.totalAmount! * conversionRate!)).toStringAsFixed(2)} $currencySymbol',
                   // '${widget.selectedtourOption.first.GrandTotalAmount}',
                   // '${widget.totalAmount} AED',
                   // widget.finalAmount.toString(),

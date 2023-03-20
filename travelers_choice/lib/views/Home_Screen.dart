@@ -154,9 +154,10 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         log('getcountry set');
         setState(() {
           countryList.add(data);
-          controller.countryCode = '63db60f9f926b340dbb3f446';
+          // controller.countryCode = '63db60f9f926b340dbb3f446';63ac33ecff04e5652a2583f5
           // controller.countryCode = sharedPreferences!
           //     .getString(AppConstants.KEY_ACCESS_TOKEN_countryId);
+          controller.countryCode = '63ac33ecff04e5652a2583f5';
           print("controller.countryCode ${controller.countryCode}");
           log("controller.countryCode ${controller.countryCode}");
           selectedCountry = countryList.first.currencies.firstWhere(
@@ -847,18 +848,11 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                 iconSize: 0.0,
                                 hint: Row(
                                   children: [
-                                    // Expanded(
-                                    //   child: FxText.labelLarge(
-                                    //     "Code",
-                                    //     fontWeight: 600,
-                                    //     color: Colors.black,
-                                    //     // color: theme.colorScheme.onPrimary,
-                                    //     letterSpacing: 0.4,
-                                    //   ),
-                                    // ),
+                                    
                                     Expanded(
                                       child: SvgPicture.network(
-                                        'https://cdn.jsdelivr.net/npm/svg-country-flags@1.2.10/svg/in.svg',
+                                        'https://cdn.jsdelivr.net/npm/svg-country-flags@1.2.10/svg/ae.svg',
+                                        // 'https://cdn.jsdelivr.net/npm/svg-country-flags@1.2.10/svg/in.svg',
                                         width: 16,
                                         height: 16,
                                       ),
