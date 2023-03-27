@@ -289,7 +289,7 @@ class _ActivityScreenState extends State<ActivityScreen>
                 setState(() {});
 
                 controller.updateTours(widget.excursions[i]);
-                log('Count:${widget.excursions[i].adultCount}${widget.excursions[i].childCount}${widget.excursions[i].infantCount}');
+                // log('Count:${widget.excursions[i].adultCount}${widget.excursions[i].childCount}${widget.excursions[i].infantCount}');
 
                 ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                     content: !clickedExcursion

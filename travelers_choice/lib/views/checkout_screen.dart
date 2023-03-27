@@ -232,6 +232,20 @@ class _CheckOutScreenState extends State<CheckOutScreen>
         itemCount: widget.length,
         shrinkWrap: true,
         itemBuilder: (context, index) {
+          String rateconversion = '';
+          String rateselectedtourOption = '';
+          log('amount not equal:${widget.totalAmount}');
+          if (conversionRate != null) {
+            log('ConersionRate:$conversionRate');
+            rateconversion = ((widget.selectedtourOption[index].grandTotal *
+                    conversionRate!))
+                .toStringAsFixed(2);
+            log('Rate:$rateconversion');
+            rateselectedtourOption =
+                ((widget.selectedtourOption[index].grandTotal *
+                        conversionRate!))
+                    .toStringAsFixed(2);
+          }
           return FadeTransition(
             opacity: controller.fadeAnimation,
             child: FxContainer(
@@ -412,7 +426,8 @@ class _CheckOutScreenState extends State<CheckOutScreen>
                         fontWeight: 600,
                       ),
                       FxText.bodyMedium(
-                        '${((widget.selectedtourOption[index].grandTotal * conversionRate!)).toStringAsFixed(2)} $currencySymbol',
+                        rateconversion,
+                        // '${((widget.selectedtourOption[index].grandTotal * conversionRate!)).toStringAsFixed(2)} $currencySymbol',
                         // "${widget.selectedtourOption[index].grandTotal}AED",
                         fontWeight: 700,
                       ),
@@ -446,7 +461,9 @@ class _CheckOutScreenState extends State<CheckOutScreen>
                       ),
                       FxText.bodyMedium(
                         // '\$' + controller.total.precise,
-                        '${((widget.selectedtourOption[index].grandTotal * conversionRate!)).toStringAsFixed(2)} $currencySymbol',
+                        // rateselectedtourOption,
+                        '$rateconversion $currencySymbol',
+                        // '${((widget.selectedtourOption[index].grandTotal * conversionRate!)).toStringAsFixed(2)} $currencySymbol',
                         // "${widget.selectedtourOption[index].grandTotal}AED",
                         fontWeight: 800,
                         color: const Color(0xff1529e8),
@@ -1345,6 +1362,16 @@ class _CheckOutScreenState extends State<CheckOutScreen>
   }
 
   Widget paymentInfo() {
+    String rateconversion = '';
+    if (widget.totalAmount != null) {
+      log('amount not equal:${widget.totalAmount}');
+      if (conversionRate != null) {
+        log('ConersionRate:$conversionRate');
+        rateconversion =
+            ((widget.totalAmount! * conversionRate!)).toStringAsFixed(2);
+        log('Rate:$rateconversion');
+      }
+    }
     return Container(
       padding: FxSpacing.x(20),
       child: ListView(
@@ -1638,17 +1665,25 @@ class _CheckOutScreenState extends State<CheckOutScreen>
                   fontWeight: 600,
                   color: theme.colorScheme.onPrimary,
                 ),
-                FxText.bodyMedium(
-                  // ' ${widget.totalAmount} AED',
-                  '${((widget.totalAmount! * conversionRate!)).toStringAsFixed(2)} $currencySymbol',
-                  // '${widget.selectedtourOption.first.GrandTotalAmount}',
-                  // '${widget.totalAmount} AED',
-                  // widget.finalAmount.toString(),
-                  // widget.TotalCalculation.toString(),
-                  // controller1.grandSelectedTourAmount().toString(),
-                  fontWeight: 700,
-                  color: theme.colorScheme.onPrimary,
-                ),
+                conversionRate == null
+                    ? FxText.bodyMedium(
+                        '0 AED',
+                        fontWeight: 700,
+                        color: theme.colorScheme.onPrimary,
+                      )
+                    : FxText.bodyMedium(
+                        // ' ${widget.totalAmount} AED',
+                        // rateconversion,
+                        '$rateconversion $currencySymbol',
+                        // '${((widget.totalAmount! * conversionRate!)).toStringAsFixed(2)} $currencySymbol',
+                        // '${widget.selectedtourOption.first.GrandTotalAmount}',
+                        // '${widget.totalAmount} AED',
+                        // widget.finalAmount.toString(),
+                        // widget.TotalCalculation.toString(),
+                        // controller1.grandSelectedTourAmount().toString(),
+                        fontWeight: 700,
+                        color: theme.colorScheme.onPrimary,
+                      )
               ],
             ),
           ),

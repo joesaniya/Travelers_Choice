@@ -44,7 +44,7 @@ class ActivityController extends FxController {
 
   void updateTours(Activity tour) {
     log('updateTours Calling');
-    log('Selected Tour Date:${tour.selectedDate}');
+    // log('Selected Tour Date:${tour.selectedDate}');
 
     List<Activity> value =
         person_count.where((element) => element.sId == tour.sId).toList();
@@ -73,7 +73,7 @@ class ActivityController extends FxController {
 
       print(person_count[index].grandTotal);
     }
-    log('Select:${selectedtour.map((e) => e.selectedDate)}');
+    // log('Select:${selectedtour.map((e) => e.selectedDate)}');
     update();
   }
 
@@ -84,9 +84,18 @@ class ActivityController extends FxController {
 
     for (Activity tour in selectedtour) {
       log('tour.grandTotal:${tour.grandTotal}');
-      amount = amount + (tour.grandTotal + tour.privateTransfers!.first.price);
-      // amount = amount + (tour.grandTotal);
-      log('amount:$amount');
+      if (tour.privateTransfers!.isEmpty) {
+        log('no transfers');
+        amount = amount + (tour.grandTotal);
+      } else {
+        amount =
+            amount + (tour.grandTotal + tour.privateTransfers!.first.price);
+        // amount = amount + (tour.grandTotal);
+        log('amount:$amount');
+      }
+      // amount = amount + (tour.grandTotal + tour.privateTransfers!.first.price);
+      // // amount = amount + (tour.grandTotal);
+      // log('amount:$amount');
     }
 
     return amount;
