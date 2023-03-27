@@ -42,6 +42,8 @@ class CheckOutController extends FxController {
   List<Product>? products;
   bool addCart = false;
   String? selectedCountryCode;
+  String? selectedCountryCode1;
+  String? selectedCountryName;
   bool selected = true;
 
   List<Tab> tabs = [];
@@ -55,6 +57,8 @@ class CheckOutController extends FxController {
   String? selectedname;
   final List<String> nameCodes = ['Mr.', 'Mrs.', 'Ms.'];
   String? selectedcountry;
+  String? selectedNameCountry;
+
   final List<String> countryCodes = ['India', 'UAE', 'France'];
   late AnimationController arrowController,
       animationController,
@@ -433,7 +437,9 @@ class CheckOutController extends FxController {
       } else if (emailTE.text.isEmpty) {
         ScaffoldMessenger.of(context)
             .showSnackBar(const SnackBar(content: Text("Please Enter Email")));
-      } else if (selectedcountry == null || selectedcountry!.isEmpty) {
+      } else if (
+          // selectedcountry == null || selectedcountry!.isEmpty
+          selectedCountryName == null || selectedCountryName!.isEmpty) {
         ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text("Please Select Country")));
       } else if (selectedCountryCode == null || selectedCountryCode!.isEmpty) {

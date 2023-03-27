@@ -875,11 +875,15 @@ class _CheckOutScreenState extends State<CheckOutScreen>
                                         ),
                                       ));
                                 }).toList(),
-                          value: controller.selectedCountryCode,
+                          // value: controller.selectedCountryCode,
+                          // value: controller.selectedCountryCode1,
+                          value: controller.selectedCountryName,
                           onChanged: (value) {
                             setState(() {
-                              log(value.toString());
-                              controller.selectedcountry = value.toString();
+                              log('Country name:${value.toString()}');
+                              controller.selectedCountryName = value.toString();
+                              // controller.selectedNameCountry = value.toString();
+                              // controller.selectedcountry = value.toString();
                             });
                           },
                           icon: const Icon(Icons.arrow_drop_down),

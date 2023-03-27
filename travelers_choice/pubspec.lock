@@ -524,6 +524,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.1.0"
+  global_snack_bar:
+    dependency: "direct main"
+    description:
+      name: global_snack_bar
+      sha256: e159524ad2f23821c22090eef0c6a07ef3f05bdc9bb62e13500ba0fe9408a80a
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.12"
   google_fonts:
     dependency: "direct main"
     description:

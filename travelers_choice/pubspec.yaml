@@ -98,6 +98,7 @@ dependencies:
   flutter_native_splash: ^2.0.1+1
   flutter_typeahead: ^4.3.7
   dropdown_search: ^5.0.6
+  global_snack_bar: ^0.0.12
 
 
 dev_dependencies:

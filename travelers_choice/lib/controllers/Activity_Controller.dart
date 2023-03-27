@@ -4,7 +4,7 @@ import 'package:cc_avenue/cc_avenue.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutx/flutx.dart';
-
+// import 'package:global_snack_bar/global_snack_bar.dart';
 import 'package:hotel_travel/models/atteraction_model.dart';
 import 'package:hotel_travel/views/new_cart.dart';
 import 'package:intl/intl.dart';
@@ -265,6 +265,9 @@ class ActivityController extends FxController {
 
     if (tour.isPrivate) {
       amount = amount + tour.privateTransferPrice!;
+      // amount = amount +
+      //     tour.privateTransferPrice! +
+      //     tour.privateTransfers!.first.cost!.toDouble();
     }
     if (tour.isSharing) {
       amount = amount + tour.sharedTransferPrice!;

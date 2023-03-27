@@ -8,6 +8,7 @@ import 'package:hotel_travel/extensions/extensions.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../card_widgets/customsnackbar.dart';
 import '../../controllers/Activity_controller.dart';
 import '../../controllers/checkout_controller.dart';
 import '../../loading_effect.dart';
@@ -770,6 +771,35 @@ class _ActivityScreenState extends State<ActivityScreen>
                                         ),
                                       ],
                                     ),
+                                    // FxSpacing.height(4),
+                                    // Row(
+                                    //   mainAxisAlignment:
+                                    //       MainAxisAlignment.spaceBetween,
+                                    //   children: [
+                                    //     FxText.bodyMedium(
+                                    //       'Private Cost',
+                                    //       fontWeight: 600,
+                                    //     ),
+                                    //     widget
+                                    //                 .excursions[i]
+                                    //                 .privateTransfers![i]
+                                    //                 .cost ==
+                                    //             null
+                                    //         ? FxText.bodyMedium(
+                                    //             '0.0',
+                                    //             fontWeight: 700,
+                                    //           )
+                                    //         : FxText.bodyMedium(
+                                    //             widget.excursions[i]
+                                    //                 .privateTransfers![i].cost!
+                                    //                 .toStringAsFixed(1),
+
+                                    //             // '${((widget.excursions[i].privateTransfers![i].cost! * conversionRate!)).toStringAsFixed(2)} $currencySymbol',
+                                    //             fontWeight: 700,
+                                    //           ),
+                                    //   ],
+                                    // ),
+
                                     // if (cart.isPrivate) FxSpacing.height(4),
                                     // if (cart.isPrivate) cost(cart, isPrivate: true),
                                     // if (cart.isSharing) FxSpacing.height(4),
@@ -1212,8 +1242,20 @@ class _ActivityScreenState extends State<ActivityScreen>
                                     onPressed: () {
                                       // token == null
                                       //     ? controller.Login()
-                                      //     :
-                                      controller.goToCheckout1();
+                                      //
+                                      controller.selectedtour.first
+                                                  .selectedDate ==
+                                              null
+                                          ? CustomSnackbar.show(
+                                              context: context,
+                                              message: 'Select Your Tour date',
+                                              backgroundColor:
+                                                  const Color(0xff1529e8),
+                                              duration:
+                                                  const Duration(seconds: 2),
+                                            )
+                                          : controller.goToCheckout1();
+                                      // controller.goToCheckout1();
                                       // favouriteListCart
                                       //     .add(controller.selectedtour as Activity);
                                     },
