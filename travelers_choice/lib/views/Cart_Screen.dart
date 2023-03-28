@@ -408,7 +408,8 @@ class _NewCartState extends State<NewCart> with TickerProviderStateMixin {
                           ),
                         ),
                       ),
-                    )
+                    ),
+                    FxSpacing.height(60),
                   ],
                 ));
     }

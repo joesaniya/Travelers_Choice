@@ -1196,6 +1196,18 @@ class _ActivityScreenState extends State<ActivityScreen>
                                       favouriteListCart;
                                       isSelected = !isSelected;
                                     });
+                                    // controller.selectedtour.first
+                                    //             .selectedDate ==
+                                    //         null
+                                    //     ? CustomSnackbar.show(
+                                    //         context: context,
+                                    //         message: 'Select Your Tour date',
+                                    //         backgroundColor:
+                                    //             const Color(0xff1529e8),
+                                    //         duration:
+                                    //             const Duration(seconds: 2),
+                                    //       )
+                                    //     : controller.goToCheckout();
                                     controller.goToCheckout();
                                   },
                                   child: Stack(

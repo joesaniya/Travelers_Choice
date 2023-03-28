@@ -506,10 +506,10 @@ class ActivityController extends FxController {
     // log(selectedtour.length.toString());
     // log(selectedtour.first.name.toString());
     // log(selectedtour.first.adultCount.toString());
-    print(selectedtour.length);
-    print(selectedtour);
-    print(dateTE.text);
-    print(selectedtransfer);
+    log('Length:${selectedtour.length}');
+    log('Selected Tour:$selectedtour');
+    log('Dates:${dateTE.text}');
+    log('Selected Transfer$selectedtransfer');
 
     Navigator.of(context, rootNavigator: true).push(PageRouteBuilder(
         transitionDuration: const Duration(milliseconds: 500),
@@ -539,17 +539,21 @@ class ActivityController extends FxController {
       CustomSnackbar.show(
         context: context,
         message: 'Select Your Tour Option',
-        backgroundColor: Color(0xff1529e8),
-        duration: Duration(seconds: 2),
+        backgroundColor: const Color(0xff1529e8),
+        duration: const Duration(seconds: 2),
       );
     } else {
       // log(selectedtour.length.toString());
       // log(selectedtour.first.name.toString());
       // log(selectedtour.first.adultCount.toString());
-      print(selectedtour.length);
-      print(selectedtour);
-      print(dateTE.text);
-      print(selectedtransfer);
+      // print(selectedtour.length);
+      // print(selectedtour);
+      // print(dateTE.text);
+      // print(selectedtransfer);
+      log('Length:${selectedtour.length}');
+      log('Selected Tour:$selectedtour');
+      log('Dates:${dateTE.text}');
+      log('Selected Transfer$selectedtransfer');
       print(grandSelectedTourAmount());
       Navigator.of(context, rootNavigator: true).push(PageRouteBuilder(
           transitionDuration: const Duration(milliseconds: 500),
@@ -602,11 +606,11 @@ class ActivityController extends FxController {
   Future<void> goToCheckoutFromCart() async {
     await Future.delayed(const Duration(seconds: 1));
     if (selectedtour.isEmpty) {
-        CustomSnackbar.show(
+      CustomSnackbar.show(
         context: context,
         message: 'Select Your Tour Option',
-        backgroundColor: Color(0xff1529e8),
-        duration: Duration(seconds: 2),
+        backgroundColor: const Color(0xff1529e8),
+        duration: const Duration(seconds: 2),
       );
       // ScaffoldMessenger.of(context).showSnackBar(
       //     const SnackBar(content: Text("Select Your Tour Option")));
