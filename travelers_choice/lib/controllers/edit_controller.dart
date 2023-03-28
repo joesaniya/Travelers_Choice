@@ -5,7 +5,7 @@ import '../services/auth_service.dart';
 import '../views/login_Screens/login_screen.dart';
 import '../views/splash_screens/splash_screen2.dart';
 import 'auth_controller.dart';
-
+import '../card_widgets/customsnackbar.dart';
 class EditController extends FxController {
   TickerProvider ticker;
   EditController(this.ticker);
@@ -288,11 +288,23 @@ class EditController extends FxController {
     //   // );
     // }
     if (nameTE.text.isEmpty) {
-      ScaffoldMessenger.of(context)
-          .showSnackBar(const SnackBar(content: Text("Please enter name")));
+      CustomSnackbar.show(
+        context: context,
+        message: 'Please Enter Name',
+        backgroundColor: Color(0xff1529e8),
+        duration: Duration(seconds: 2),
+      );
+      // ScaffoldMessenger.of(context)
+      //     .showSnackBar(const SnackBar(content: Text("Please enter name")));
     } else if (emailTE.text.isEmpty) {
-      ScaffoldMessenger.of(context)
-          .showSnackBar(const SnackBar(content: Text("Please enter email")));
+      CustomSnackbar.show(
+        context: context,
+        message: 'Please Enter Email',
+        backgroundColor: Color(0xff1529e8),
+        duration: Duration(seconds: 2),
+      );
+    //   ScaffoldMessenger.of(context)
+    //       .showSnackBar(const SnackBar(content: Text("Please enter email")));
     }
     // else if (_selectedCountryCode == null || _selectedCountryCode!.isEmpty) {
     //   // log('isempty');
@@ -300,17 +312,35 @@ class EditController extends FxController {
     //       const SnackBar(content: Text("please select country code")));
     // }
     else if (selectedCountryCode == null || selectedCountryCode!.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text("please select country code")));
+      CustomSnackbar.show(
+        context: context,
+        message: 'Please Select Country Code',
+        backgroundColor: Color(0xff1529e8),
+        duration: Duration(seconds: 2),
+      );
+      // ScaffoldMessenger.of(context).showSnackBar(
+      //     const SnackBar(content: Text("please select country code")));
     } else if (phoneTE.text.isEmpty
         // || phoneTE.text.length != 10
         ) {
-      ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text("Please enter 10digit number code")));
+          CustomSnackbar.show(
+        context: context,
+        message: 'Please Enter Phone Number',
+        backgroundColor: Color(0xff1529e8),
+        duration: Duration(seconds: 2),
+      );
+      // ScaffoldMessenger.of(context).showSnackBar(
+      //     const SnackBar(content: Text("Please enter 10digit number code")));
     } else if (passwordTE.text.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          content: Text(
-              "Password contains one alphabet and correctors and numbers")));
+      CustomSnackbar.show(
+        context: context,
+        message: 'Password contains one alphabet and correctors and numbers',
+        backgroundColor: Color(0xff1529e8),
+        duration: Duration(seconds: 2),
+      );
+      // ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+      //     content: Text(
+      //         "Password contains one alphabet and correctors and numbers")));
     } else {
       // ScaffoldMessenger.of(context)
       //     .showSnackBar(const SnackBar(content: Text("success")));

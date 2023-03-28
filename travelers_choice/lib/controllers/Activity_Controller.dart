@@ -8,7 +8,7 @@ import 'package:flutx/flutx.dart';
 import 'package:hotel_travel/models/atteraction_model.dart';
 import 'package:hotel_travel/views/new_cart.dart';
 import 'package:intl/intl.dart';
-
+import '../card_widgets/customsnackbar.dart';
 import '../models/cart.dart';
 import '../views/checkout_screen.dart';
 import '../views/hotel_travel_constants.dart';
@@ -534,8 +534,14 @@ class ActivityController extends FxController {
   Future<void> goToCheckout() async {
     await Future.delayed(const Duration(seconds: 1));
     if (selectedtour.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text("Select Your Tour Option")));
+      // ScaffoldMessenger.of(context).showSnackBar(
+      //     const SnackBar(content: Text("Select Your Tour Option")));
+      CustomSnackbar.show(
+        context: context,
+        message: 'Select Your Tour Option',
+        backgroundColor: Color(0xff1529e8),
+        duration: Duration(seconds: 2),
+      );
     } else {
       // log(selectedtour.length.toString());
       // log(selectedtour.first.name.toString());
@@ -596,8 +602,14 @@ class ActivityController extends FxController {
   Future<void> goToCheckoutFromCart() async {
     await Future.delayed(const Duration(seconds: 1));
     if (selectedtour.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text("Select Your Tour Option")));
+        CustomSnackbar.show(
+        context: context,
+        message: 'Select Your Tour Option',
+        backgroundColor: Color(0xff1529e8),
+        duration: Duration(seconds: 2),
+      );
+      // ScaffoldMessenger.of(context).showSnackBar(
+      //     const SnackBar(content: Text("Select Your Tour Option")));
     } else {
       log(selectedtour.length.toString());
       log(selectedtour.first.name.toString());

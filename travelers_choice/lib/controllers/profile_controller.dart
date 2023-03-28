@@ -6,6 +6,7 @@ import 'package:hotel_travel/views/login_Screens/login_screen.dart';
 import 'package:hotel_travel/views/profile_edit.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../card_widgets/customsnackbar.dart';
 import '../models/user.dart';
 import '../views/edit_profile.dart';
 
@@ -43,8 +44,14 @@ class ProfileController extends FxController {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.clear().then((value) {
       log('log then');
-      ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text("Successfully logged Out!!")));
+      // ScaffoldMessenger.of(context).showSnackBar(
+      //     const SnackBar(content: Text("Successfully logged Out!!")));
+      CustomSnackbar.show(
+        context: context,
+        message: 'Successfully Logged Out!!!',
+        backgroundColor: const Color(0xff1529e8),
+        duration: const Duration(seconds: 2),
+      );
       // Navigator.of(context).pushAndRemoveUntil(
       //     MaterialPageRoute(builder: (context) => const SplashScreen2()),
       //     (route) => false);
@@ -80,7 +87,7 @@ class ProfileController extends FxController {
                   child: child,
                 ),
             pageBuilder: (_, __, ___) =>
-                EditProfilePage(name: name, email: email,phone:phoneNumber)
+                EditProfilePage(name: name, email: email, phone: phoneNumber)
             // EditProfileScreen()
             ));
 

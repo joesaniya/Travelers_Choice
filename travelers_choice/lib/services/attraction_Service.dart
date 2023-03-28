@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:hotel_travel/models/all_attraction_modal.dart';
 import 'package:http/http.dart' as http;
 
+import '../card_widgets/customsnackbar.dart';
 import '../models/atteraction_model.dart';
 import '../models/order_attraction_modal.dart';
 
@@ -32,8 +33,14 @@ class AttractionService {
         return null;
       }
     } catch (e) {
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text(e.toString())));
+      // ScaffoldMessenger.of(context)
+      //     .showSnackBar(SnackBar(content: Text(e.toString())));
+      CustomSnackbar.show(
+        context: context,
+        message: e.toString(),
+        backgroundColor: const Color(0xff1529e8),
+        duration: const Duration(seconds: 2),
+      );
 
       rethrow;
     }
@@ -134,8 +141,14 @@ class AttractionService {
       } else {
         var jsondata = jsonDecode(response.body);
         log(jsondata['error']);
-        ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text(jsondata['error'])));
+        CustomSnackbar.show(
+          context: context,
+          message: jsondata['error'],
+          backgroundColor: const Color(0xff1529e8),
+          duration: const Duration(seconds: 2),
+        );
+        // ScaffoldMessenger.of(context)
+        //     .showSnackBar(SnackBar(content: Text(jsondata['error'])));
         return null;
       }
     } catch (e) {

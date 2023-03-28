@@ -10,6 +10,8 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 import 'package:path/path.dart';
 import 'package:dio/dio.dart';
 
+import '../../card_widgets/customsnackbar.dart';
+
 class PDFViewerPage extends StatefulWidget {
   final File file;
   String IdOrder;
@@ -58,14 +60,26 @@ class _PDFViewerPageState extends State<PDFViewerPage> {
       var raf = file.openSync(mode: FileMode.write);
       // response.data is List<int> type
       raf.writeFromSync(response.data);
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          content: Text('Your Ticket was downloaded Sucessfully')));
+      // ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+      //     content: Text('Your Ticket was downloaded Sucessfully')));
+      CustomSnackbar.show(
+        context: context,
+        message: 'Your Ticket was downloaded Sucessfully',
+        backgroundColor: const Color(0xff1529e8),
+        duration: const Duration(seconds: 2),
+      );
       await raf.close();
     } catch (e) {
       print(e);
       log('Error:$e');
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text(e.toString())));
+      // ScaffoldMessenger.of(context)
+      //     .showSnackBar(SnackBar(content: Text(e.toString())));
+      CustomSnackbar.show(
+        context: context,
+        message: e.toString(),
+        backgroundColor: const Color(0xff1529e8),
+        duration: const Duration(seconds: 2),
+      );
     }
   }
 

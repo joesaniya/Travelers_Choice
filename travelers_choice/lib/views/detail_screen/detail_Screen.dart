@@ -158,11 +158,10 @@ class _DetailScreenState extends State<DetailScreen>
   }
 
   Widget _buildnew() {
-    // log('buildnew');
-    // log(controller.detailattraction.toString());
-    // final mealId = ModalRoute.of(context)!.settings.arguments;
-    print("currencysymbol ${widget.currencySymbol}");
-    print("currencysymbol ${widget.conversionRate}");
+    print("currencysymbol detail $currencySymbol");
+    print("currencysymbol detail $conversionRate");
+
+    // print("currencysymbol detail ${widget.conversionRate}");
     final mealId = widget.productid;
     // log('Meal Id:${widget.productid}');
     final selectedMeal = controller.allattractionList

@@ -6,6 +6,7 @@ import 'package:hotel_travel/models/visa_country_modal.dart';
 import 'package:hotel_travel/views/visa_screen.dart';
 import 'package:intl/intl.dart';
 
+import '../card_widgets/customsnackbar.dart';
 import '../models/Country_modal.dart';
 import '../views/SearchScreen.dart';
 
@@ -126,8 +127,14 @@ class SearchController extends FxController {
     // log('Rate:$conversionRate');
 
     if (locationTE.text.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text("Please select location")));
+      // ScaffoldMessenger.of(context).showSnackBar(
+      //     const SnackBar(content: Text("Please select location")));
+      CustomSnackbar.show(
+        context: context,
+        message: 'Please Select Location',
+        backgroundColor: Color(0xff1529e8),
+        duration: Duration(seconds: 2),
+      );
     }
     // else if (dateTE.text.isEmpty) {
     //   ScaffoldMessenger.of(context)
@@ -171,8 +178,14 @@ class SearchController extends FxController {
     dateCounter = 0;
 
     if (visaTE.text.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text("Please select location")));
+      // ScaffoldMessenger.of(context).showSnackBar(
+      //     const SnackBar(content: Text("Please select location")));
+      CustomSnackbar.show(
+        context: context,
+        message: 'Please Select Location',
+        backgroundColor: Color(0xff1529e8),
+        duration: Duration(seconds: 2),
+      );
     }
     // else if (dateTE.text.isEmpty) {
     //   ScaffoldMessenger.of(context)

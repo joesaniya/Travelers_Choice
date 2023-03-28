@@ -2,7 +2,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
-
+import '../card_widgets/customsnackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutx/flutx.dart';
@@ -63,10 +63,16 @@ class ApplyVisaController extends FxController {
     print('responseError');
     log('responseError');
     // Do something when payment fails
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(response.message ?? ''),
-      ),
+    // ScaffoldMessenger.of(context).showSnackBar(
+    //   SnackBar(
+    //     content: Text(response.message ?? ''),
+    //   ),
+    // );
+    CustomSnackbar.show(
+      context: context,
+      message: response.message ?? '',
+      backgroundColor: Color(0xff1529e8),
+      duration: Duration(seconds: 2),
     );
   }
 
@@ -74,10 +80,16 @@ class ApplyVisaController extends FxController {
     print('responsewallet:');
     log('response wallet:');
     // Do something when an external wallet is selected
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(response.walletName ?? ''),
-      ),
+    // ScaffoldMessenger.of(context).showSnackBar(
+    //   SnackBar(
+    //     content: Text(response.walletName ?? ''),
+    //   ),
+    // );
+    CustomSnackbar.show(
+      context: context,
+      message: response.walletName ?? '',
+      backgroundColor: Color(0xff1529e8),
+      duration: Duration(seconds: 2),
     );
   }
 //  late  Product product;
@@ -464,8 +476,14 @@ print(visaOrderId);
       log(jsondata['error']);
       print(jsondata['error']);
       //snackbar
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text(jsondata['error'])));
+      CustomSnackbar.show(
+        context: context,
+        message: jsondata['error'],
+        backgroundColor: Color(0xff1529e8),
+        duration: Duration(seconds: 2),
+      );
+      // ScaffoldMessenger.of(context)
+      //     .showSnackBar(SnackBar(content: Text(jsondata['error'])));
       return null;
     }
   }
@@ -625,10 +643,16 @@ print(visaOrderId);
     print('sign:${res.body}');
     log('sign:${res.body}');
     if (res.statusCode == 200) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(res.body),
-        ),
+      // ScaffoldMessenger.of(context).showSnackBar(
+      //   SnackBar(
+      //     content: Text(res.body),
+      //   ),
+      // );
+      CustomSnackbar.show(
+        context: context,
+        message: res.body,
+        backgroundColor: Color(0xff1529e8),
+        duration: Duration(seconds: 2),
       );
     }
   }

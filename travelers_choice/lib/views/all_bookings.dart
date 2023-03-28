@@ -8,6 +8,7 @@ import 'package:flutx/flutx.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../card_widgets/customsnackbar.dart';
 import '../controllers/all_bookings.dart';
 import '../loading_effect.dart';
 import '../models/product.dart';
@@ -115,14 +116,26 @@ class _AllBookingsState extends State<AllBookings>
       var raf = file.openSync(mode: FileMode.write);
       // response.data is List<int> type
       raf.writeFromSync(response.data);
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          content: Text('Your Ticket was downloaded Sucessfully')));
+      // ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+      //     content: Text('Your Ticket was downloaded Sucessfully')));
+      CustomSnackbar.show(
+        context: context,
+        message: 'Your Ticket was downloaded Sucessfully',
+        backgroundColor: Color(0xff1529e8),
+        duration: Duration(seconds: 2),
+      );
       await raf.close();
     } catch (e) {
       print(e);
       log('Error:$e');
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text(e.toString())));
+      CustomSnackbar.show(
+        context: context,
+        message: e.toString(),
+        backgroundColor: Color(0xff1529e8),
+        duration: Duration(seconds: 2),
+      );
+      // ScaffoldMessenger.of(context)
+      //     .showSnackBar(SnackBar(content: Text(e.toString())));
     }
   }
 
@@ -130,8 +143,14 @@ class _AllBookingsState extends State<AllBookings>
     if (total != -1) {
       print((received / total * 100).toStringAsFixed(0) + "%");
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          content: Text('Your Ticket was downloaded Sucessfully')));
+      CustomSnackbar.show(
+        context: context,
+        message: 'Your Ticket was downloaded Sucessfully',
+        backgroundColor: Color(0xff1529e8),
+        duration: Duration(seconds: 2),
+      );
+      // ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+      //     content: Text('Your Ticket was downloaded Sucessfully')));
     }
   }
 
@@ -1616,10 +1635,22 @@ class _AllBookingsState extends State<AllBookings>
       await dio.download(downloadLink!, filePath).then((value) {
         dio.close();
         log('downloaded');
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-            content: Text('Your Ticket was downloaded Sucessfully')));
+        // ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        //     content: Text('Your Ticket was downloaded Sucessfully')));
+        CustomSnackbar.show(
+          context: context,
+          message: 'Your Ticket was downloaded Sucessfully',
+          backgroundColor: Color(0xff1529e8),
+          duration: Duration(seconds: 2),
+        );
       }).catchError((Object e) {
         log('error:$e');
+        CustomSnackbar.show(
+          context: context,
+          message: e.toString(),
+          backgroundColor: Color(0xff1529e8),
+          duration: Duration(seconds: 2),
+        );
         // Fluttertoast.showToast(
         //     msg: "Terjadi kesalahan. Download gagal.", timeInSecForIosWeb: 1);
       });

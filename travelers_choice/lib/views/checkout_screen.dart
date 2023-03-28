@@ -5,9 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutx/flutx.dart';
-import 'package:hotel_travel/controllers/Activity_Controller.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../card_widgets/customsnackbar.dart';
 import '../controllers/checkout_controller.dart';
 import '../localizations/language.dart';
 import '../models/Country_modal.dart';
@@ -62,7 +62,7 @@ class _CheckOutScreenState extends State<CheckOutScreen>
   late CustomTheme customTheme;
 
   late CheckOutController controller;
-  late ActivityController controller1;
+  // late ActivityController controller1;
   // late OutlineInputBorder outlineInputBorder;
   late OutlineInputBorder outlineInputBorderenable;
   late OutlineInputBorder outlineInputBorderfocus;
@@ -88,7 +88,7 @@ class _CheckOutScreenState extends State<CheckOutScreen>
     theme = AppTheme.shoppingTheme;
 
     controller = FxControllerStore.put(CheckOutController(this));
-    controller1 = FxControllerStore.putOrFind(ActivityController(this));
+    // controller1 = FxControllerStore.putOrFind(ActivityController(this));
     // outlineInputBorder = const OutlineInputBorder(
     //   borderRadius: BorderRadius.all(Radius.circular(4)),
     //   borderSide: BorderSide(
@@ -112,8 +112,8 @@ class _CheckOutScreenState extends State<CheckOutScreen>
   void initializingData() {
     SharedPreferences.getInstance().then((sharedPrefValue) {
       setState(() {
-        token = sharedPrefValue.getString(AppConstants.KEY_ACCESS_TOKEN)!;
-        log('checkout Toen:${token!}');
+        token = sharedPrefValue.getString(AppConstants.KEY_ACCESS_TOKEN);
+        log('checkout Toen:$token');
         conversionRate = sharedPrefValue.getDouble(AppConstants.rate);
         log('conversionRate:$conversionRate');
         currencySymbol = sharedPrefValue.getString(AppConstants.symbol);
@@ -222,6 +222,8 @@ class _CheckOutScreenState extends State<CheckOutScreen>
     );
   }
 
+  String? rateconversion;
+  String? rateselectedtourOption;
   Widget _billingWidget() {
     List<Widget> list = [];
     log('message');
@@ -232,8 +234,8 @@ class _CheckOutScreenState extends State<CheckOutScreen>
         itemCount: widget.length,
         shrinkWrap: true,
         itemBuilder: (context, index) {
-          String rateconversion = '';
-          String rateselectedtourOption = '';
+          // String? rateconversion;
+          // String? rateselectedtourOption;
           log('amount not equal:${widget.totalAmount}');
           if (conversionRate != null) {
             log('ConersionRate:$conversionRate');
@@ -426,7 +428,7 @@ class _CheckOutScreenState extends State<CheckOutScreen>
                         fontWeight: 600,
                       ),
                       FxText.bodyMedium(
-                        rateconversion,
+                        rateconversion.toString(),
                         // '${((widget.selectedtourOption[index].grandTotal * conversionRate!)).toStringAsFixed(2)} $currencySymbol',
                         // "${widget.selectedtourOption[index].grandTotal}AED",
                         fontWeight: 700,
@@ -582,8 +584,8 @@ class _CheckOutScreenState extends State<CheckOutScreen>
                   child: PageView(
                     allowImplicitScrolling: true,
                     pageSnapping: true,
-                    physics: const AlwaysScrollableScrollPhysics(),
-                    // physics: const NeverScrollableScrollPhysics(),
+                    // physics: const AlwaysScrollableScrollPhysics(),
+                    physics: const NeverScrollableScrollPhysics(),
                     // physics: const ClampingScrollPhysics(),
                     controller: controller.pageController,
                     onPageChanged: (int page) {
@@ -1361,13 +1363,14 @@ class _CheckOutScreenState extends State<CheckOutScreen>
     );
   }
 
+  String? rateconversion1;
   Widget paymentInfo() {
-    String rateconversion = '';
+    // String? rateconversion;
     if (widget.totalAmount != null) {
       log('amount not equal:${widget.totalAmount}');
       if (conversionRate != null) {
         log('ConersionRate:$conversionRate');
-        rateconversion =
+        rateconversion1 =
             ((widget.totalAmount! * conversionRate!)).toStringAsFixed(2);
         log('Rate:$rateconversion');
       }
@@ -1647,9 +1650,15 @@ class _CheckOutScreenState extends State<CheckOutScreen>
                       : controller.selectedPayment == 2
                           ? controller.nextPage(selectedExcursions, context,
                               widget.totalAmount, controller.token)
-                          : ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                  content: Text('Select payment method')));
+                          : CustomSnackbar.show(
+                              context: context,
+                              message: 'Select payment method',
+                              backgroundColor: const Color(0xff1529e8),
+                              duration: const Duration(seconds: 2),
+                            );
+              //  ScaffoldMessenger.of(context).showSnackBar(
+              //     const SnackBar(
+              //         content: Text('Select payment method')));
 
               // controller.initPlatformState();
             },
@@ -1674,7 +1683,7 @@ class _CheckOutScreenState extends State<CheckOutScreen>
                     : FxText.bodyMedium(
                         // ' ${widget.totalAmount} AED',
                         // rateconversion,
-                        '$rateconversion $currencySymbol',
+                        '$rateconversion1 $currencySymbol',
                         // '${((widget.totalAmount! * conversionRate!)).toStringAsFixed(2)} $currencySymbol',
                         // '${widget.selectedtourOption.first.GrandTotalAmount}',
                         // '${widget.totalAmount} AED',
@@ -1700,9 +1709,15 @@ class _CheckOutScreenState extends State<CheckOutScreen>
                         : controller.selectedPayment == 2
                             ? controller.nextPage(selectedExcursions, context,
                                 widget.totalAmount, controller.token)
-                            : ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                    content: Text('Select payment method')));
+                            : CustomSnackbar.show(
+                                context: context,
+                                message: 'Select payment method',
+                                backgroundColor: const Color(0xff1529e8),
+                                duration: const Duration(seconds: 2),
+                              );
+                    // : ScaffoldMessenger.of(context).showSnackBar(
+                    //     const SnackBar(
+                    //         content: Text('Select payment method')));
                   },
                   borderRadiusAll: 4,
                   elevation: 0,
@@ -1718,7 +1733,9 @@ class _CheckOutScreenState extends State<CheckOutScreen>
                         // color: theme.colorScheme.onPrimary,
                       ),
                       FxText.bodyMedium(
-                        ' ${widget.totalAmount} AED',
+                        // ' ${widget.totalAmount} AED',
+                        '$rateconversion1 $currencySymbol',
+                        // '${((widget.totalAmount! * conversionRate!)).toStringAsFixed(2)} $currencySymbol',
                         // '${widget.selectedtourOption.first.GrandTotalAmount}',
                         // '${widget.totalAmount} AED',
                         // widget.finalAmount.toString(),

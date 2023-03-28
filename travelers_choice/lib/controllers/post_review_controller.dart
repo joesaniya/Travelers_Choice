@@ -3,7 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutx/flutx.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
+import '../card_widgets/customsnackbar.dart';
 import '../models/get_reviews.dart';
 import '../services/app_constants.dart';
 import '../services/review_Service.dart';
@@ -160,8 +160,14 @@ class PostReviewController extends FxController {
       // Navigator.pop(context);
     } else {
       print("Data search Null");
-      ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Please Fill All Fields')));
+      CustomSnackbar.show(
+        context: context,
+        message: 'Please Fill All Fields',
+        backgroundColor: const Color(0xff1529e8),
+        duration: const Duration(seconds: 2),
+      );
+      // ScaffoldMessenger.of(context).showSnackBar(
+      //     const SnackBar(content: Text('Please Fill All Fields')));
     }
   }
 
