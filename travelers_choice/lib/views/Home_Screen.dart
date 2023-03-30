@@ -11,6 +11,7 @@ import 'package:iconsax/iconsax.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import '../controllers/attraction_Controller.dart';
 import '../controllers/home_controller.dart';
+import '../flight_module/splash/flight_splash.dart';
 import '../loading_effect.dart';
 
 import '../models/Country_modal.dart';
@@ -848,7 +849,6 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                 iconSize: 0.0,
                                 hint: Row(
                                   children: [
-                                    
                                     Expanded(
                                       child: SvgPicture.network(
                                         'https://cdn.jsdelivr.net/npm/svg-country-flags@1.2.10/svg/ae.svg',
@@ -1157,60 +1157,68 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                             const SizedBox(
                               width: 10,
                             ),
+                            GestureDetector(
+                              onTap: () {
+                                log('flight');
+                                _tabbed = '2';
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            const FlightSplash()));
+                                setState(() {});
+                              },
+                              child: Container(
+                                  width: 120,
+                                  decoration: BoxDecoration(
+                                      color: _tabbed == '2'
+                                          ? const Color(0xff1529e8)
+                                          // theme1.colorScheme.primary
+                                          : Colors.transparent,
+                                      border: Border.all(
+                                          color: _tabbed == '2'
+                                              ? Colors.transparent
+                                              : theme1
+                                                  .colorScheme.primaryContainer,
+                                          width: _tabbed == '2' ? 0.0 : 1.0),
+                                      borderRadius: BorderRadius.circular(20.0)
+                                      // borderRadius:
+                                      //     new BorderRadius.all(Radius.elliptical(90, 45)),
+                                      ),
+                                  padding:
+                                      const EdgeInsets.symmetric(horizontal: 5),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      Image.asset(
+                                          "assets/images/apps/shopping2/icons/flight.png",
+                                          height: 20,
+                                          width: 20,
+                                          color: _tabbed == '2'
+                                              ? Colors.white
+                                              : Colors.black),
+                                      const SizedBox(
+                                        width: 7,
+                                      ),
+                                      FxText.bodyLarge(
+                                        'Flight',
+                                        style: TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.w800,
+                                          color: _tabbed == '2'
+                                              ? Colors.white
+                                              : Colors.black,
+                                        ),
+                                      ),
+                                    ],
+                                  )),
+                            ),
+                            const SizedBox(
+                              width: 10,
+                            ),
                             // GestureDetector(
-                            //   onTap: () {
-                            //     log('flight');
-                            //     _tabbed = '2';
-                            //     setState(() {});
-                            //   },
-                            //   child: Container(
-                            //       width: 120,
-                            //       decoration: BoxDecoration(
-                            //           color: _tabbed == '2'
-                            //               ? const Color(0xff1529e8)
-                            //               // theme1.colorScheme.primary
-                            //               : Colors.transparent,
-                            //           border: Border.all(
-                            //               color: _tabbed == '2'
-                            //                   ? Colors.transparent
-                            //                   : theme1.colorScheme.primaryContainer,
-                            //               width: _tabbed == '2' ? 0.0 : 1.0),
-                            //           borderRadius: BorderRadius.circular(20.0)
-                            //           // borderRadius:
-                            //           //     new BorderRadius.all(Radius.elliptical(90, 45)),
-                            //           ),
-                            //       padding: const EdgeInsets.symmetric(horizontal: 5),
-                            //       child: Row(
-                            //         mainAxisAlignment: MainAxisAlignment.center,
-                            //         crossAxisAlignment: CrossAxisAlignment.center,
-                            //         children: [
-                            //           Image.asset(
-                            //               "assets/images/apps/shopping2/icons/flight.png",
-                            //               height: 20,
-                            //               width: 20,
-                            //               color: _tabbed == '2'
-                            //                   ? Colors.white
-                            //                   : Colors.black),
-                            //           const SizedBox(
-                            //             width: 7,
-                            //           ),
-                            //           FxText.bodyLarge(
-                            //             'Flight',
-                            //             style: TextStyle(
-                            //               fontSize: 18,
-                            //               fontWeight: FontWeight.w800,
-                            //               color: _tabbed == '2'
-                            //                   ? Colors.white
-                            //                   : Colors.black,
-                            //             ),
-                            //           ),
-                            //         ],
-                            //       )),
-                            // ),
-                            // const SizedBox(
-                            //   width: 10,
-                            // ),
-                            //  GestureDetector(
                             //   onTap: () {
                             //     log('Hotel');
                             //     _tabbed = '3';
@@ -1226,10 +1234,12 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                             //         border: Border.all(
                             //             color: _tabbed == '3'
                             //                 ? Colors.transparent
-                            //                 : theme1.colorScheme.primaryContainer,
+                            //                 : theme1
+                            //                     .colorScheme.primaryContainer,
                             //             width: _tabbed == '3' ? 0.0 : 1.0),
                             //         borderRadius: BorderRadius.circular(20.0)),
-                            //     padding: const EdgeInsets.symmetric(horizontal: 5),
+                            //     padding:
+                            //         const EdgeInsets.symmetric(horizontal: 5),
                             //     child: Row(
                             //       mainAxisAlignment: MainAxisAlignment.center,
                             //       crossAxisAlignment: CrossAxisAlignment.center,
@@ -1257,9 +1267,10 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                             //     ),
                             //   ),
                             // ),
-                            // const SizedBox(
-                            //   width: 10,
-                            // ),
+
+                            const SizedBox(
+                              width: 10,
+                            ),
                             GestureDetector(
                               onTap: () {
                                 log('visa');

@@ -49,10 +49,10 @@ class Result {
   factory Result.fromJson(Map<String, dynamic> json) => Result(
         id: json["_id"],
         totalOrders: json["totalOrders"],
-        // data: json["data"] != null
-        //     ? List<Datum>.from(json["data"]!.map((x) => Datum.fromJson(x)))
-        //     : <Datum>[],
-        data: List<Datum>.from(json["data"]!.map((x) => Datum.fromJson(x))),
+        data: json["data"] != null
+            ? List<Datum>.from(json["data"]!.map((x) => Datum.fromJson(x)))
+            : <Datum>[],
+        // data: List<Datum>.from(json["data"]!.map((x) => Datum.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {

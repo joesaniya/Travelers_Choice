@@ -99,6 +99,7 @@ dependencies:
   flutter_typeahead: ^4.3.7
   dropdown_search: ^5.0.6
   global_snack_bar: ^0.0.12
+  auto_complete_search: ^0.0.4
 
 
 dev_dependencies:

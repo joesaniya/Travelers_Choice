@@ -1,5 +1,4 @@
 import 'dart:developer';
-import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:flutx/flutx.dart';
 import 'package:iconsax/iconsax.dart';
@@ -264,26 +263,28 @@ class _SearchPlaceState extends State<SearchPlace>
               log('controller:${controller.locationTE.text}');
             });
           },
+
           suggestions: countryList.isEmpty ||
                   countryList.first.destinations.isEmpty
               ? []
 
-                  // _countryCodes
-                  .map((e) => SearchFieldListItem<Destination>(
-                      // e,
+              // // _countryCodes
+              // .map((e) => SearchFieldListItem<Destination>(
+              //     // e,
 
-                      e!.countryName.toString(),
-                      item: e,
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                        child: Text(
-                          // e,
-                          e.name.toString()[0].toUpperCase() +
-                              e.name.toString().substring(1).toLowerCase(),
-                          style: FxTextStyle.bodyMedium(),
-                        ),
-                      )))
-                  .toList()
+              //     e!.countryName.toString(),
+              //     item: e,
+              //     child: Padding(
+              //       padding: const EdgeInsets.symmetric(horizontal: 8.0),
+              //       child: Text(
+              //         // e,
+              //         'No Data',
+              //         // e.name.toString()[0].toUpperCase() +
+              //         //     e.name.toString().substring(1).toLowerCase(),
+              //         style: FxTextStyle.bodyMedium(),
+              //       ),
+              //     )))
+              // .toList()
               : countryList.first.destinations
                   .map((e) => SearchFieldListItem<Destination>(
                       // e,
@@ -295,6 +296,8 @@ class _SearchPlaceState extends State<SearchPlace>
                         padding: const EdgeInsets.symmetric(horizontal: 8.0),
                         child: Text(
                           // e,
+                          // controller.locationTE.text.isEmpty?Text('Nodata'):Text('data'),
+
                           e.name.toString()[0].toUpperCase() +
                               e.name.toString().substring(1).toLowerCase(),
                           style: FxTextStyle.bodyMedium(),

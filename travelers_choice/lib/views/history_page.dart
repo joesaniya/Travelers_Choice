@@ -125,9 +125,14 @@ class _HistoryScreenState extends State<HistoryScreen>
         );
         // return const Text("You have no attractions");
       }
+      String? orderlength;
+      orderlength = orders!.result!.totalOrders.toString();
       return ListView.builder(
-        itemCount: orders!.result!.totalOrders,
+        // itemCount: orderlength.length,
+        // itemCount: orders!.result!.totalOrders,
+        itemCount: orders!.result!.data!.length,
         itemBuilder: (BuildContext context, int index) {
+          // log('Order Length history:${orderlength!.length}');
           var date = orders!.result!.data![index].activities!.date;
           var newDate = date!.toLocal().toString().substring(0, 10);
           print(newDate);

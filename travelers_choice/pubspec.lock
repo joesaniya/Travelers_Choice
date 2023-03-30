@@ -33,6 +33,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.10.0"
+  auto_complete_search:
+    dependency: "direct main"
+    description:
+      name: auto_complete_search
+      sha256: "061ab8b638fa081c8257cef7677409f9a0b4fc2b1fb07275b26ef86009b57dd1"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.4"
   boolean_selector:
     dependency: transitive
     description:

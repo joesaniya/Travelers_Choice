@@ -121,8 +121,8 @@ class _AllBookingsState extends State<AllBookings>
       CustomSnackbar.show(
         context: context,
         message: 'Your Ticket was downloaded Sucessfully',
-        backgroundColor: Color(0xff1529e8),
-        duration: Duration(seconds: 2),
+        backgroundColor: const Color(0xff1529e8),
+        duration: const Duration(seconds: 2),
       );
       await raf.close();
     } catch (e) {
@@ -131,8 +131,8 @@ class _AllBookingsState extends State<AllBookings>
       CustomSnackbar.show(
         context: context,
         message: e.toString(),
-        backgroundColor: Color(0xff1529e8),
-        duration: Duration(seconds: 2),
+        backgroundColor: const Color(0xff1529e8),
+        duration: const Duration(seconds: 2),
       );
       // ScaffoldMessenger.of(context)
       //     .showSnackBar(SnackBar(content: Text(e.toString())));
@@ -146,8 +146,8 @@ class _AllBookingsState extends State<AllBookings>
       CustomSnackbar.show(
         context: context,
         message: 'Your Ticket was downloaded Sucessfully',
-        backgroundColor: Color(0xff1529e8),
-        duration: Duration(seconds: 2),
+        backgroundColor: const Color(0xff1529e8),
+        duration: const Duration(seconds: 2),
       );
       // ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
       //     content: Text('Your Ticket was downloaded Sucessfully')));
@@ -207,9 +207,23 @@ class _AllBookingsState extends State<AllBookings>
         log('You have no attractions');
         return const Text("You have no attractions");
       }
+
+      if (controller.orders == null ||
+          controller.orders!.result == null ||
+          controller.orders!.result!.data == null ||
+          controller.orders!.result!.totalOrders == null) {
+        return const Text("Empty data");
+      }
+      String? orderlength;
+      orderlength = controller.orders!.result!.totalOrders.toString();
       return ListView.builder(
-        itemCount: controller.orders!.result!.totalOrders,
+        // itemCount: controller.orders!.result!.totalOrders,
+        // itemCount: orderlength.length,
+        // itemCount: controller.orders!.result!.data!.length,
+        itemCount: 2,
         itemBuilder: (BuildContext context, int index) {
+          // log('data length booking:${controller.orders!.result!.data!.length}');
+          // log('Order Length all bookings:${orderlength!.length}');
           var date = controller.orders!.result!.data![index].activities!.date;
           var newDate = date!.toLocal().toString().substring(0, 10);
           print(newDate);
@@ -377,7 +391,10 @@ class _AllBookingsState extends State<AllBookings>
     }
   }
 
+  String? bookinglength;
+
   Widget _buildBody() {
+    // bookinglength = controller.orders!.result!.totalOrders.toString();
     if (controller.uiLoading) {
       return Scaffold(
           body: Padding(
@@ -410,7 +427,7 @@ class _AllBookingsState extends State<AllBookings>
         ),
         body: controller.token == null
             ? const Text('Login or signup')
-            : controller.orders?.result == null
+            : controller.orders!.result == null
                 ? Center(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -436,24 +453,35 @@ class _AllBookingsState extends State<AllBookings>
                     shrinkWrap: true,
                     physics: const AlwaysScrollableScrollPhysics(),
                     separatorBuilder: (BuildContext context, index) {
+                      log('All book');
                       return const SizedBox(
                         height: 10,
                       );
                     },
-                    itemCount: controller.orders!.result!.totalOrders!.toInt(),
+                    // itemCount: bookinglength == null
+                    //     ? controller.orders!.result!.totalOrders!
+                    //     : bookinglength!.length,
+                    // itemCount: controller.orders!.result!.totalOrders!,
+                    itemCount: controller.orders!.result!.data!.length,
                     itemBuilder: (BuildContext context, int index) {
+                      // log('booking length:${bookinglength!.length}');
+                      log('data length:${controller.orders!.result!.data!.length}');
+                      log('index data length:${controller.orders!.result!.data!.length}');
+                      log('index:$index');
                       var date = controller
                           .orders!.result!.data![index].activities!.date;
                       String createdatae = controller
                           .orders!.result!.data![index].createdAt
                           .toString();
+
                       log('Created Date:$createdatae');
                       DateTime dateTime = DateTime.parse(createdatae);
-                      String formattedDatecreate =
-                          "${dateTime.year}-${dateTime.month.toString().padLeft(2, '0')}-${dateTime.day.toString().padLeft(2, '0')}";
-                      log('Format:$formattedDatecreate');
+                      // String formattedDatecreate =
+                      //     "${dateTime.year}-${dateTime.month.toString().padLeft(2, '0')}-${dateTime.day.toString().padLeft(2, '0')}";
+                      // log('Format:$formattedDatecreate');
                       var newDate = date!.toLocal().toString().substring(0, 10);
-                      log('New Date:$newDate');
+                      log('New Date book:$newDate');
+                      log('data length:${controller.orders!.result!.data!.length}');
                       return Container(
                         // height: 212,
                         decoration: BoxDecoration(
@@ -1640,16 +1668,16 @@ class _AllBookingsState extends State<AllBookings>
         CustomSnackbar.show(
           context: context,
           message: 'Your Ticket was downloaded Sucessfully',
-          backgroundColor: Color(0xff1529e8),
-          duration: Duration(seconds: 2),
+          backgroundColor: const Color(0xff1529e8),
+          duration: const Duration(seconds: 2),
         );
       }).catchError((Object e) {
         log('error:$e');
         CustomSnackbar.show(
           context: context,
           message: e.toString(),
-          backgroundColor: Color(0xff1529e8),
-          duration: Duration(seconds: 2),
+          backgroundColor: const Color(0xff1529e8),
+          duration: const Duration(seconds: 2),
         );
         // Fluttertoast.showToast(
         //     msg: "Terjadi kesalahan. Download gagal.", timeInSecForIosWeb: 1);
