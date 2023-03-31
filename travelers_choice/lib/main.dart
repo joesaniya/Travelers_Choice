@@ -17,8 +17,6 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutx/themes/app_theme_notifier.dart';
 import 'package:provider/provider.dart';
 
-import 'views/auth_container.dart';
-
 Future<void> main() async {
   //You will need to initialize AppThemeNotifier class for theme changes.
   WidgetsFlutterBinding.ensureInitialized();
@@ -54,7 +52,10 @@ class MyApp extends StatelessWidget {
       builder: (BuildContext context, AppNotifier value, Widget? child) {
         return MaterialApp(
           debugShowCheckedModeBanner: false,
-          theme: AppTheme.theme,
+          // theme: AppTheme.theme,
+          theme: ThemeData(primarySwatch: Colors.indigo
+              // primarySwatch: const Color(0xff1529e8),
+              ),
           builder: (context, child) {
             return Directionality(
               textDirection: AppTheme.textDirection,

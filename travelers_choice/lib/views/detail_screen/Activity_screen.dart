@@ -1126,6 +1126,7 @@ class _ActivityScreenState extends State<ActivityScreen>
       );
     } else {
       return Scaffold(
+        backgroundColor: const Color(0xfff5f5f5),
         appBar: AppBar(
           leading: InkWell(
             onTap: () {
@@ -1134,7 +1135,8 @@ class _ActivityScreenState extends State<ActivityScreen>
             child: Icon(
               FeatherIcons.chevronLeft,
               size: 20,
-              color: theme.colorScheme.onBackground,
+              // color: theme.colorScheme.onBackground,
+              color: Colors.white,
             ).autoDirection(),
           ),
           elevation: 0,
@@ -1142,10 +1144,11 @@ class _ActivityScreenState extends State<ActivityScreen>
           title: FxText.titleMedium(
             'Tour Options',
             fontWeight: 700,
+            color: Colors.white,
           ),
           centerTitle: true,
         ),
-        backgroundColor: const Color(0xfff5f5f5),
+        // backgroundColor: const Color(0xfff5f5f5),
         body: Stack(
           children: [
             _buildCartList(),

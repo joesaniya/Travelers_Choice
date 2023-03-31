@@ -732,7 +732,7 @@ class _DetailScreenState extends State<DetailScreen>
                           unselectedLabelColor: Colors.black.withOpacity(0.6),
                           labelStyle: const TextStyle(
                               fontFamily: 'inter', fontWeight: FontWeight.w500),
-                          indicatorColor: Colors.black,
+                          indicatorColor: const Color(0xff1529e8),
                           isScrollable: true,
                           tabs: const [
                             Tab(

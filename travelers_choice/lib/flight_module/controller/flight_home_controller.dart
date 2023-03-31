@@ -8,6 +8,7 @@ class FlightHomeController extends FxController {
   FlightHomeController(this.ticker);
   bool uiLoading = true;
   String tabbed = '1';
+  String returndate = '1';
 
   void fetchloader() async {
     await Future.delayed(const Duration(seconds: 4));
@@ -17,17 +18,13 @@ class FlightHomeController extends FxController {
     log(uiLoading.toString());
     update();
   }
-  
+
   @override
   void initState() {
     super.initState();
-     fetchloader();
+    fetchloader();
   }
-  @override
-  void dispose() {
-    
-    super.dispose();
-  }
+
   @override
   String getTag() {
     return "FlightHome-Controller";

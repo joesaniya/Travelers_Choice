@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutx/flutx.dart';
-import 'package:line_icons/line_icons.dart';
 
 import '../../loading_effect.dart';
 import '../../theme/app_theme.dart';
 import '../controller/flight_home_controller.dart';
+import '../widgets/Round_trip_widgets.dart';
+import '../widgets/one_way_widgets.dart';
 
 class FlightHomeScreen extends StatefulWidget {
   const FlightHomeScreen({super.key});
@@ -17,6 +18,7 @@ class _FlightHomeScreenState extends State<FlightHomeScreen>
     with TickerProviderStateMixin {
   late FlightHomeController controller;
   late ThemeData theme, theme1;
+  double? customwidth;
   @override
   void initState() {
     super.initState();
@@ -235,85 +237,33 @@ class _FlightHomeScreenState extends State<FlightHomeScreen>
     );
   }
 
-  Widget _buildBottomContainer() => Flexible(
-        flex: 5,
-        child: Container(
-          color: Colors.white,
-          child: controller.tabbed == '1'
-              ? Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
+  Widget _buildBottomContainer() {
+    customwidth = MediaQuery.of(context).size.width / 2;
+    final size = MediaQuery.of(context).size;
+    return Flexible(
+      flex: 5,
+      child: Container(
+        color: Colors.white,
+        child: controller.tabbed == '1'
+            ? const OneWayWidgets()
+            : controller.tabbed == '2'
+                ? const RoundTripWidgets()
+                : Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: const [
+                        Text(
+                          'Bottom container',
+                          style: TextStyle(
+                            fontSize: 17.0,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.black54,
+                          ),
+                        ),
+                      ]),
+      ),
+    );
+  }
 
-                  // mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                      Container(
-                        // margin: const EdgeInsets.symmetric(horizontal: 20),
-                        // color: Colors.grey.shade200,
-                        // borderColor: Colors.amber,
-                        // border: Border.all(
-                        //     // color: Colors.grey.shade800,
-                        //     color: Colors.black,
-                        //     width: 1),
-                        margin: const EdgeInsets.symmetric(horizontal: 20),
-                        height: 70,
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 5, horizontal: 10),
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                          color: Colors.grey.shade200,
-                          borderRadius:
-                              const BorderRadius.all(Radius.circular(7)),
-                          border: Border.all(color: Colors.black12, width: 1),
-                        ),
-                        child: Row(
-                          children: [
-                            const Icon(
-                              LineIcons.planeDeparture,
-                              size: 29,
-                            ),
-                            FxSpacing.width(10),
-                            Column(
-                              children: [
-                                FxText.labelMedium('FROM'),
-                                Row(
-                                  children: [
-                                    FxText.labelLarge('New Delhi'),
-                                    FxSpacing.width(10),
-                                    FxText.labelMedium('DEL')
-                                  ],
-                                )
-                              ],
-                            )
-                          ],
-                        ),
-                      )
-                    ])
-              : controller.tabbed == '2'
-                  ? Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: const [
-                          Text(
-                            '2',
-                            style: TextStyle(
-                              fontSize: 17.0,
-                              fontWeight: FontWeight.w600,
-                              color: Colors.black54,
-                            ),
-                          ),
-                        ])
-                  : Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: const [
-                          Text(
-                            'Bottom container',
-                            style: TextStyle(
-                              fontSize: 17.0,
-                              fontWeight: FontWeight.w600,
-                              color: Colors.black54,
-                            ),
-                          ),
-                        ]),
-        ),
-      );
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
