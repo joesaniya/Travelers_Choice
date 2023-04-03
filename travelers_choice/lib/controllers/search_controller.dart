@@ -2,7 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutx/flutx.dart';
-import 'package:hotel_travel/models/visa_country_modal.dart';
+import 'package:hotel_travel/models/visaModels/visa_country_modal.dart';
 import 'package:hotel_travel/views/visa_screen.dart';
 import 'package:intl/intl.dart';
 
