@@ -100,6 +100,9 @@ dependencies:
   dropdown_search: ^5.0.6
   global_snack_bar: ^0.0.12
   auto_complete_search: ^0.0.4
+  date_picker_timeline: ^1.2.3
+  get: ^4.6.5
+  gap: ^2.0.1
 
 
 dev_dependencies:

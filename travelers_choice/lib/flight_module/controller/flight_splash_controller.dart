@@ -3,6 +3,7 @@ import 'package:flutx/core/state_management/controller.dart';
 import 'package:hotel_travel/models/cart.dart';
 
 import '../../models/product.dart';
+import '../../models/tickets.dart';
 import '../../views/hotel_travel_constants.dart';
 import '../views/flight_home_screen.dart';
 
@@ -17,7 +18,7 @@ class FlightSplashController extends FxController {
     HotelTravelCache.products = await Product.getDummyList();
     // HotelTravelCache.categories = await Category.getDummyList();
     HotelTravelCache.carts = await Cart.getDummyList();
-    // ShoppingCache.carts = await Cart.getDummyList();
+    HotelTravelCache.tickets = await Tickets.getDummyList();
     await Future.delayed(const Duration(seconds: 1));
 
     Navigator.of(context, rootNavigator: true).pushReplacement(

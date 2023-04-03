@@ -5,6 +5,7 @@ import 'package:hotel_travel/models/cart.dart';
 import '../models/all_attraction_modal.dart';
 import '../models/atteraction_model.dart';
 import '../models/product.dart';
+import '../models/tickets.dart';
 import '../views/full_app.dart';
 import '../views/hotel_travel_constants.dart';
 
@@ -49,6 +50,7 @@ class SplashScreen2Controller extends FxController {
     HotelTravelCache.products = await Product.getDummyList();
     // HotelTravelCache.categories = await Category.getDummyList();
     HotelTravelCache.carts = await Cart.getDummyList();
+    HotelTravelCache.tickets = await Tickets.getDummyList();
     // ShoppingCache.carts = await Cart.getDummyList();
     await Future.delayed(const Duration(seconds: 1));
 

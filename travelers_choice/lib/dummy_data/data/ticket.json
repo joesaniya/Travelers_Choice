@@ -1,0 +1,22 @@
+[
+  {
+    "fcode": "NYC",
+    "fname": "New-York",
+    "Tcode": "LDN",
+    "Tname": "London",
+    "flying_time": "8H 30M",
+    "date": "1 MAY",
+    "departure_time": "08:00 AM",
+    "number": 23
+  },
+  {
+    "fcode": "DK",
+    "fname": "Dhaka",
+    "Tcode": "SH",
+    "Tname": "Shanghai",
+    "flying_time": "4H 20M",
+    "date": "10 MAY",
+    "departure_time": "09:00 AM",
+    "number": 45
+  }
+]

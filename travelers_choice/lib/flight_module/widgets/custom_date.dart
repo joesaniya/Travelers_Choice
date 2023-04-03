@@ -1,6 +1,11 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
+import 'package:flutter_feather_icons/flutter_feather_icons.dart';
+import 'package:flutx/flutx.dart';
+import 'package:hotel_travel/extensions/widgets_extension.dart';
+import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
 class CustomDateRange extends StatefulWidget {
@@ -21,9 +26,11 @@ class _CustomDateRangeState extends State<CustomDateRange> {
 
   List<DateTime> _getSpecialDates() {
     final List<DateTime> dates = <DateTime>[];
-    final DateTime startDate =
-        DateTime.now().subtract(const Duration(days: 200));
-    final DateTime endDate = DateTime.now().add(const Duration(days: 500));
+    final DateTime startDate = DateTime.now();
+    final DateTime endDate = DateTime(DateTime.now().year + 40);
+    // final DateTime startDate =
+    //     DateTime.now().subtract(const Duration(days: 200));
+    // final DateTime endDate = DateTime.now().add(const Duration(days: 500));
     final Random random = Random();
     for (DateTime date = startDate;
         date.isBefore(endDate);
@@ -43,23 +50,57 @@ class _CustomDateRangeState extends State<CustomDateRange> {
 
   @override
   Widget build(BuildContext context) {
-    final Widget _datePicker = Card(
+    final Widget datePicker = Card(
       elevation: 10,
-      margin: EdgeInsets.all(30),
+      margin: const EdgeInsets.all(30),
       child: Container(
           padding: const EdgeInsets.fromLTRB(5, 0, 5, 5),
           child: _getCustomizedDatePicker(_specialDates, Theme.of(context))),
     );
     return Scaffold(
+      appBar: AppBar(
+        leading: InkWell(
+          onTap: () {
+            Navigator.pop(context);
+          },
+          child: const Icon(
+            FeatherIcons.chevronLeft,
+            size: 20,
+            // color: theme.colorScheme.onBackground,
+            color: Colors.white,
+          ).autoDirection(),
+        ),
+        elevation: 0,
+        automaticallyImplyLeading: false,
+        title: FxText.titleMedium(
+          'Pick Your Departure Date',
+          fontWeight: 700,
+          color: Colors.white,
+        ),
+        centerTitle: true,
+      ),
+      // backgroundColor: const Color(0xfff5f5f5),
+
       body: Column(children: <Widget>[
         Expanded(
             flex: 8,
-            child: ListView(children: <Widget>[
-              Container(height: 450, child: _datePicker)
-            ])),
-        Expanded(flex: 1, child: Container())
+            child: ListView(
+                children: <Widget>[SizedBox(height: 450, child: datePicker)])),
+        Expanded(flex: 1, child: Container()),
+        SizedBox(height: 50, child: Text('SelectedDate:' '$_date')),
       ]),
     );
+  }
+
+  final DateRangePickerController _controller = DateRangePickerController();
+  String _date = DateFormat('dd, MMMM yyyy').format(DateTime.now()).toString();
+
+  void selectionChanged(DateRangePickerSelectionChangedArgs args) {
+    SchedulerBinding.instance.addPostFrameCallback((duration) {
+      setState(() {
+        _date = DateFormat('dd, MMMM yyyy').format(args.value).toString();
+      });
+    });
   }
 
   SfDateRangePicker _getCustomizedDatePicker(
@@ -78,6 +119,8 @@ class _CustomDateRangeState extends State<CustomDateRange> {
     return SfDateRangePicker(
       selectionShape: DateRangePickerSelectionShape.rectangle,
       selectionColor: highlightColor,
+      controller: _controller,
+      onSelectionChanged: selectionChanged,
       selectionTextStyle:
           TextStyle(color: isDark ? Colors.black : Colors.white, fontSize: 14),
       minDate: DateTime.now().add(const Duration(days: -200)),
