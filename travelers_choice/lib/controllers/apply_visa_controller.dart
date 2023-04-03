@@ -2,12 +2,13 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutx/flutx.dart';
 import 'package:hotel_travel/models/Country_modal.dart';
-import 'package:hotel_travel/models/create_visa_modal.dart';
+import 'package:hotel_travel/models/visaModels/create_visa_modal.dart';
 import 'package:hotel_travel/services/visa_service.dart';
 import 'package:hotel_travel/views/payment_screen.dart';
 import 'package:intl/intl.dart';
@@ -16,6 +17,7 @@ import 'package:http/http.dart' as http;
 import '../models/atteraction_model.dart';
 import '../models/product.dart';
 import '../models/shipping_address.dart';
+import '../models/visaModels/visa_document_model.dart';
 import 'razor_credentials.dart' as razorCredentials;
 import 'package:cc_avenue/cc_avenue.dart';
 import '../views/payment_cc.dart';
@@ -836,6 +838,25 @@ print(visaOrderId);
     try {
       var data = await VisaService()
           .postCreateVisa(map,
+
+      );
+      if (data != null) {
+        // log(data);
+        return data;
+      } else {
+        return data;
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<VisaDocumentUpload?> postDocumentUpload(
+      {required File image1, required File image2, required File image3,required File image4,required File image5, String? id}
+      ) async {
+    try {
+      var data = await VisaService()
+          .postVisaDocumentUpload( image1, image2, image3, image4, image5,
 
       );
       if (data != null) {

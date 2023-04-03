@@ -14,7 +14,7 @@ import 'package:flutx/widgets/container/container.dart';
 import 'package:flutx/widgets/dashed_divider/dashed_divider.dart';
 import 'package:flutx/widgets/text/text.dart';
 import 'package:form_field_validator/form_field_validator.dart';
-import 'package:hotel_travel/models/select_visa_modal.dart';
+import 'package:hotel_travel/models/visaModels/select_visa_modal.dart';
 import 'package:hotel_travel/views/payment_screen.dart';
 import 'package:im_stepper/stepper.dart';
 import 'package:image_picker/image_picker.dart';
@@ -26,7 +26,7 @@ import '../controllers/apply_visa_controller.dart';
 import '../images.dart';
 import '../localizations/language.dart';
 import '../models/Country_modal.dart';
-import '../models/create_visa_modal.dart';
+import '../models/visaModels/create_visa_modal.dart';
 import '../services/app_constants.dart';
 import '../services/auth_service.dart';
 import '../theme/app_theme.dart';
@@ -86,12 +86,20 @@ class _ApplyVisaState extends State<ApplyVisa>  with TickerProviderStateMixin{
   int totalIndex = 3;
   late CounterController _counterController;
   List<PickedFile?> _imageFile=[];
+  List<PickedFile?> _passportFirstPage=[];
+  List<PickedFile?> _passportSecondPage=[];
+  List<PickedFile?> _supportiveDocument1=[];
+  List<PickedFile?> _supportiveDocument2=[];
   List<String> _fileName = [];
   List<String> _fileName2 = [];
   List<String> _fileName3 = [];
   List<String> _fileName4 = [];
   int price = 0;
   final ImagePicker _picker = ImagePicker();
+  final ImagePicker _pickerf1 = ImagePicker();
+  final ImagePicker _pickerf2 = ImagePicker();
+  final ImagePicker _pickerf3 = ImagePicker();
+  final ImagePicker _pickerf4 = ImagePicker();
 
   bool isLoading = false;
   _ApplyVisaState(SelectVisaModal? visa);
@@ -105,6 +113,40 @@ class _ApplyVisaState extends State<ApplyVisa>  with TickerProviderStateMixin{
       // _imageFile = pickedFile;
     });
   }
+  void takePhotoF1(ImageSource source, index)async{
+    final pickedFile = await _pickerf1.getImage(source: source);
+    setState(() {
+      _passportFirstPage.removeAt(index);
+      _passportFirstPage.insert(index, pickedFile!);
+      // _imageFile = pickedFile;
+    });
+  }
+  void takePhotoF2(ImageSource source, index)async{
+    final pickedFile = await _pickerf2.getImage(source: source);
+    setState(() {
+      _passportSecondPage.removeAt(index);
+      _passportSecondPage.insert(index, pickedFile!);
+      // _imageFile = pickedFile;
+    });
+  }
+  void takePhotoF3(ImageSource source, index)async{
+    final pickedFile = await _pickerf3.getImage(source: source);
+    setState(() {
+      _supportiveDocument1.removeAt(index);
+      _supportiveDocument1.insert(index, pickedFile!);
+      // _imageFile = pickedFile;
+    });
+  }
+  void takePhotoF4(ImageSource source, index)async{
+    final pickedFile = await _pickerf4.getImage(source: source);
+    setState(() {
+      _supportiveDocument2.removeAt(index);
+      _supportiveDocument2.insert(index, pickedFile!);
+      // _imageFile = pickedFile;
+    });
+  }
+
+
   late FocusNode nameNode;
 
   late OutlineInputBorder outlineInputBorderenable;
@@ -287,9 +329,10 @@ String userName = "";
         case 1:
         return travellerDetails();
       case 2:
-        return payments();
+        return uploadDetails();
         case 3:
-          return uploadDetails();
+          return payments();
+
 
       default:
         return itenaryDetails();
@@ -1453,29 +1496,8 @@ String userName = "";
                      controller.currentPage++;
                    });
                  }
-              // data!.add(controller.visaApplication);
-              //     print("data $data");
-                  //
-                  // await controller.postCreateVisa(
-                  //     body
-                  // ).then((value) {if(value){controller.currentPage++;}});
-
-                    // (visaApplication==null )?print("visaApplication is null"):(visaApplication!= null)?print("visapplication in not null"):print("notinh works");
-
-
-
-                   // if(visaApplication == null){
-                   //
-                   //   controller.currentPage;f
-                   // }else{
-                   //     controller.currentPage++;
-                   // }
-
-
-
 
                 }
-
               },
               borderRadiusAll: 4,
               elevation: 0,
@@ -1491,6 +1513,87 @@ String userName = "";
           ]),
     );
   }
+
+  void upLoadFile(index) async {
+    final results = await FilePicker.platform.pickFiles(
+      allowMultiple: false,
+      type: FileType.image,
+      // allowedExtensions: ['jpg', 'png'],
+    );
+
+    if (results != null) {
+      final path1 = results.files.single.path!;
+
+      _fileName.removeAt(index); //  ["ilfer","" , "", ];
+      _fileName.insert(index,  results.files.single.name);
+      // storage.uploadFile(path, fileName);
+      setState(() {});
+      print(_fileName);
+      print(results.files.single.name);
+      print(path1);
+
+    } else {
+      // User canceled the picker
+    }
+  }
+  void upLoadFile2(index) async {
+    final results = await FilePicker.platform.pickFiles(
+      allowMultiple: false,
+      type: FileType.image,
+      // allowedExtensions: ['jpg', 'png'],
+    );
+
+    if (results != null) {
+      final path2 = results.files.single.path!;
+
+      _fileName2.removeAt(index); //  ["ilfer","" , "", ];
+      _fileName2.insert(index,  results.files.single.name);
+      // storage.uploadFile(path, fileName);
+      setState(() {});
+      print(_fileName2);
+    } else {
+      // User canceled the picker
+    }
+  }
+  void upLoadFile3(index) async {
+    final results = await FilePicker.platform.pickFiles(
+      allowMultiple: false,
+      type: FileType.any,
+      // allowedExtensions: ['jpg', 'png'],
+    );
+
+    if (results != null) {
+      final path3 = results.files.single.path!;
+
+      _fileName3.removeAt(index); //  ["ilfer","" , "", ];
+      _fileName3.insert(index,  results.files.single.name);
+      // storage.uploadFile(path, fileName);
+      setState(() {});
+      print(_fileName3);
+    } else {
+      // User canceled the picker
+    }
+  }
+  void upLoadFile4(index) async {
+    final results = await FilePicker.platform.pickFiles(
+      allowMultiple: false,
+      type: FileType.any,
+      // allowedExtensions: ['jpg', 'png'],
+    );
+
+    if (results != null) {
+      final path4 = results.files.single.path!;
+
+      _fileName4.removeAt(index); //  ["ilfer","" , "", ];
+      _fileName4.insert(index,  results.files.single.name);
+      // storage.uploadFile(path, fileName);
+      setState(() {});
+      print(_fileName4);
+    } else {
+      // User canceled the picker
+    }
+  }
+
 
   Widget uploadDetails() {
     var onwardDateResponse = createdVisaOrder!.onwardDate;
@@ -1526,6 +1629,10 @@ String userName = "";
                 _fileName3.add("");
                 _fileName4.add("");
                 _imageFile.add(null);
+                _supportiveDocument1.add(null);
+                _passportFirstPage.add(null);
+                _passportSecondPage.add(null);
+                _supportiveDocument2.add(null);
                   return  Container(
                     padding: EdgeInsets.all(10),
                     // color: Colors.white,
@@ -1706,24 +1813,23 @@ String userName = "";
                         Row(
                           children: [
                             Container(
-                              alignment: Alignment.topCenter,
-                              padding: EdgeInsets.all(5),
+                              height: 100,
+                              width:100,
                               decoration: BoxDecoration(
                                   color: Colors.white,
-                                  border: Border.all(width: 1, color: Colors.black),
-                                  // color: const Color(0xff1529e8),
-                                  borderRadius: BorderRadius.circular(4)),
-                              height: MediaQuery.of(context).size.height *0.05,
-                              width: MediaQuery.of(context).size.width*0.6,
-                              child: Align(alignment:Alignment.centerLeft,child: Text(_fileName[index])),
+                                  border: Border.all(width: 1,color: Colors.black),
+                                  borderRadius: BorderRadius.circular(4)
+                              ),
+                              child: (_passportFirstPage[index] != null)? Image.file(
+                                File( _passportFirstPage[index]?.path ?? "" ,),fit: BoxFit.fitWidth,) : Container(),
                             ),
                             SizedBox(width:5),
                             ElevatedButton(
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor: const Color(0xff1529e8),
                                 ),
-                                onPressed: (){
-                                  upLoadFile(index);
+                                onPressed: ()async{
+                                  takePhotoF1(ImageSource.gallery, index);
                                 },
                                 child: Text("Choose File"))
                           ],
@@ -1744,24 +1850,23 @@ String userName = "";
                         Row(
                           children: [
                             Container(
-                              alignment: Alignment.topCenter,
-                              padding: EdgeInsets.all(5),
+                              height: 100,
+                              width:100,
                               decoration: BoxDecoration(
                                   color: Colors.white,
-                                  border: Border.all(width: 1, color: Colors.black),
-                                  // color: const Color(0xff1529e8),
-                                  borderRadius: BorderRadius.circular(4)),
-                              height: MediaQuery.of(context).size.height *0.05,
-                              width: MediaQuery.of(context).size.width*0.6,
-                              child: Align(alignment:Alignment.centerLeft,child: Text(_fileName2[index])),
+                                  border: Border.all(width: 1,color: Colors.black),
+                                  borderRadius: BorderRadius.circular(4)
+                              ),
+                              child: (_passportSecondPage[index] != null)? Image.file(
+                                File( _passportSecondPage[index]?.path ?? "" ,),fit: BoxFit.fitWidth,) : Container(),
                             ),
                             SizedBox(width: 5,),
                             ElevatedButton(
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor: const Color(0xff1529e8),
                                 ),
-                                onPressed: (){
-                                  upLoadFile2(index);
+                                onPressed: ()async{
+                                  takePhotoF2(ImageSource.gallery, index);
                                 },
                                 child: Text("Choose File"))
                           ],
@@ -1780,25 +1885,6 @@ String userName = "";
                         const SizedBox(height: 10,),
                         Row(
                           children: [
-                            // Container(
-                            //   padding:EdgeInsets.all(5),
-                            //   width: MediaQuery.of(context).size.width *0.6,
-                            //   height: (_imageFile[index] == null) ?MediaQuery.of(context).size.height *0.05:
-                            //   MediaQuery.of(context).size.height *0.08 ,
-                            //   decoration: (_imageFile[index] == null)? BoxDecoration(
-                            //       color: Colors.white,
-                            //       border: Border.all(width: 1, color: Colors.black),
-                            //       // color: const Color(0xff1529e8),
-                            //       borderRadius: BorderRadius.circular(4)): BoxDecoration(),
-                            //   child: (_imageFile[index] == null)? Container(): Align(
-                            //     alignment: Alignment.centerLeft,
-                            //     child: Container(
-                            //       width:100,
-                            //       height:70,
-                            //       child: (_imageFile[index] != null)? Image.file(
-                            //           File( _imageFile[index]?.path ?? "" )) : Container()),
-                            //   ),
-                            // ),
                             
                             Container(
                               height: 100,
@@ -1841,24 +1927,23 @@ String userName = "";
                         Row(
                           children: [
                             Container(
-                              alignment: Alignment.topCenter,
-                              padding: EdgeInsets.all(5),
-                              width: MediaQuery.of(context).size.width *0.6,
-                              height: MediaQuery.of(context).size.height *0.05,
+                              height: 100,
+                              width:100,
                               decoration: BoxDecoration(
                                   color: Colors.white,
-                                  border: Border.all(width: 1, color: Colors.black),
-                                  // color: const Color(0xff1529e8),
-                                  borderRadius: BorderRadius.circular(4)),
-                              child: Align(alignment:Alignment.centerLeft,child: Text(_fileName3[index])),
+                                  border: Border.all(width: 1,color: Colors.black),
+                                  borderRadius: BorderRadius.circular(4)
+                              ),
+                              child: (_supportiveDocument1[index] != null)? Image.file(
+                                File( _supportiveDocument1[index]?.path ?? "" ,),fit: BoxFit.fitWidth,) : Container(),
                             ),
                             SizedBox(width: 5,),
                             ElevatedButton(
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor: const Color(0xff1529e8),
                                 ),
-                                onPressed: (){
-                                  upLoadFile3(index);
+                                onPressed: ()async{
+                                  takePhotoF3(ImageSource.gallery, index);
                                 },
                                 child: Text("Choose File"))
 
@@ -1882,24 +1967,23 @@ String userName = "";
                         Row(
                           children: [
                             Container(
-                              alignment: Alignment.topCenter,
-                              padding: EdgeInsets.all(5),
-                              width: MediaQuery.of(context).size.width *0.6,
-                              height: MediaQuery.of(context).size.height *0.05,
+                              height: 100,
+                              width:100,
                               decoration: BoxDecoration(
                                   color: Colors.white,
-                                  border: Border.all(width: 1, color: Colors.black),
-                                  // color: const Color(0xff1529e8),
-                                  borderRadius: BorderRadius.circular(4)),
-                              child: Align(alignment:Alignment.centerLeft,child: Text(_fileName4[index])),
+                                  border: Border.all(width: 1,color: Colors.black),
+                                  borderRadius: BorderRadius.circular(4)
+                              ),
+                              child: (_supportiveDocument2[index] != null)? Image.file(
+                                File( _supportiveDocument2[index]?.path ?? "" ,),fit: BoxFit.fitWidth,) : Container(),
                             ),
                             SizedBox(width:5),
                             ElevatedButton(
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor: const Color(0xff1529e8),
                                 ),
-                                onPressed: (){
-                                  upLoadFile4(index);
+                                onPressed: ()async{
+                                  takePhotoF4(ImageSource.gallery, index);
                                 },
                                 child: Text("Choose File"))
 
@@ -1919,21 +2003,38 @@ String userName = "";
             FxButton.block(
               onPressed: () {
                 // controller.nextPage();
-                if( _fileName.first.isEmpty){
+
+                if( _passportFirstPage.first == null){
                   ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(content: Text("Please Upload Passport First Page")));
-                }else if(_fileName2.first.isEmpty){
+                }else if(_passportSecondPage.first == null){
                   ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(content: Text("Please Upload Passport Second Page")));
                 }else if(_imageFile.first == null){
                   ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(content: Text("Please Upload Passport Image")));
-                }else if(_fileName3.first.isEmpty){
+                }else if(_supportiveDocument1.first == null){
+                  ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text("Please Upload Supportive Documents")));
+                }else if(_supportiveDocument2.first == null){
                   ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(content: Text("Please Upload Supportive Documents")));
                 }else{
+                  // controller.postDocumentUpload(map);
+
+                  controller.postDocumentUpload(
+                    image1:  File(_passportFirstPage.first!.path),
+                    image2:  File(_passportSecondPage.first!.path),
+                      image3:File(_imageFile.first!.path),
+                     image4: File(_supportiveDocument1.first!.path),
+                     image5: File(_supportiveDocument2.first!.path),
+                   // id: createdVisaOrder!.travellers!.first.id
+                  );
+
+                  print(_passportFirstPage.first!.path);
                   setState(() {
-                    controller.currentPage++;
+
+                    // controller.currentPage++;
                     // isFinished1 = true;
                   });
                 }
@@ -1944,7 +2045,7 @@ String userName = "";
               splashColor: const Color(0xff1529e8).withAlpha(40),
               backgroundColor: const Color(0xff1529e8),
               child: FxText.bodyMedium(
-                'Proceed Payment',
+                'Upload Documents',
                 fontWeight: 600,
                 color: theme.colorScheme.onPrimary,
               ),
@@ -2335,7 +2436,7 @@ String userName = "";
               // setState(() {
               print(visaOrderId);
               controller.createVisaOrderccAvenue(visaOrderId!);
-              //   controller.currentPage++;
+                // controller.currentPage++;
               //   // isFinished1 = true;
               // });
 
@@ -2479,82 +2580,6 @@ String userName = "";
   //   show(files: files);
   // }
 
-  void upLoadFile(index) async {
-    final results = await FilePicker.platform.pickFiles(
-      allowMultiple: false,
-      type: FileType.any,
-      // allowedExtensions: ['jpg', 'png'],
-    );
-
-    if (results != null) {
-      final path = results.files.single.path!;
-
-      _fileName.removeAt(index); //  ["ilfer","" , "", ];
-      _fileName.insert(index,  results.files.single.name);
-      // storage.uploadFile(path, fileName);
-      setState(() {});
-      print(_fileName);
-    } else {
-      // User canceled the picker
-    }
-  }
-  void upLoadFile2(index) async {
-    final results = await FilePicker.platform.pickFiles(
-      allowMultiple: false,
-      type: FileType.any,
-      // allowedExtensions: ['jpg', 'png'],
-    );
-
-    if (results != null) {
-      final path = results.files.single.path!;
-
-      _fileName2.removeAt(index); //  ["ilfer","" , "", ];
-      _fileName2.insert(index,  results.files.single.name);
-      // storage.uploadFile(path, fileName);
-      setState(() {});
-      print(_fileName2);
-    } else {
-      // User canceled the picker
-    }
-  }
-  void upLoadFile3(index) async {
-    final results = await FilePicker.platform.pickFiles(
-      allowMultiple: false,
-      type: FileType.any,
-      // allowedExtensions: ['jpg', 'png'],
-    );
-
-    if (results != null) {
-      final path = results.files.single.path!;
-
-      _fileName3.removeAt(index); //  ["ilfer","" , "", ];
-      _fileName3.insert(index,  results.files.single.name);
-      // storage.uploadFile(path, fileName);
-      setState(() {});
-      print(_fileName);
-    } else {
-      // User canceled the picker
-    }
-  }
-  void upLoadFile4(index) async {
-    final results = await FilePicker.platform.pickFiles(
-      allowMultiple: false,
-      type: FileType.any,
-      // allowedExtensions: ['jpg', 'png'],
-    );
-
-    if (results != null) {
-      final path = results.files.single.path!;
-
-      _fileName4.removeAt(index); //  ["ilfer","" , "", ];
-      _fileName4.insert(index,  results.files.single.name);
-      // storage.uploadFile(path, fileName);
-      setState(() {});
-      print(_fileName);
-    } else {
-      // User canceled the picker
-    }
-  }
 
 
 }

@@ -7,7 +7,7 @@ import 'package:searchfield/searchfield.dart';
 
 import '../../controllers/search_controller.dart';
 import '../../models/Country_modal.dart';
-import '../../models/visa_country_modal.dart';
+import '../../models/visaModels/visa_country_modal.dart';
 import '../../services/auth_service.dart';
 import '../../services/visa_service.dart';
 import '../../theme/app_theme.dart';
