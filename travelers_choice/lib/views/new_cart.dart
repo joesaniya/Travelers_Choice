@@ -3,10 +3,12 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutx/flutx.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../controllers/Activity_Controller.dart';
 import '../controllers/checkout_controller.dart';
 import '../models/atteraction_model.dart';
+import '../services/app_constants.dart';
 import '../theme/app_theme.dart';
 import 'checkout_screen.dart';
 
@@ -47,12 +49,26 @@ class _NewCartPageState extends State<NewCartPage>
     log('Selected Total Amount:${widget.totalAmount}');
 
     fetchlog();
+    initializingData();
     log('Selected Final Amount:${widget.selectedtourOption.first.grandTotal}');
 
     // fetchData();
     theme = AppTheme.shoppingTheme;
     controller1 = FxControllerStore.put(ActivityController(this));
     controller = FxControllerStore.put(CheckOutController(this));
+  }
+
+  String? currencySymbol;
+  double? conversionRate;
+  void initializingData() {
+    SharedPreferences.getInstance().then((sharedPrefValue) {
+      setState(() {
+        conversionRate = sharedPrefValue.getDouble(AppConstants.rate);
+        log('conversionRate:$conversionRate');
+        currencySymbol = sharedPrefValue.getString(AppConstants.symbol);
+        log('currencySymbol:$currencySymbol');
+      });
+    });
   }
 
   fetchlog() async {
@@ -143,6 +159,9 @@ class _NewCartPageState extends State<NewCartPage>
     );
   }
 
+  String? rateconversion;
+  String? rateselectedtourOption;
+
   Widget _billingWidget() {
     List<Widget> list = [];
     log('message');
@@ -153,6 +172,18 @@ class _NewCartPageState extends State<NewCartPage>
         itemCount: widget.length,
         shrinkWrap: true,
         itemBuilder: (context, index) {
+          log('amount not equal:${widget.totalAmount}');
+          if (conversionRate != null) {
+            log('ConersionRate:$conversionRate');
+            rateconversion = ((widget.selectedtourOption[index].grandTotal *
+                    conversionRate!))
+                .toStringAsFixed(2);
+            log('Rate:$rateconversion');
+            rateselectedtourOption =
+                ((widget.selectedtourOption[index].grandTotal *
+                        conversionRate!))
+                    .toStringAsFixed(2);
+          }
           return FadeTransition(
             opacity: controller.fadeAnimation,
             child: FxContainer(
@@ -312,7 +343,9 @@ class _NewCartPageState extends State<NewCartPage>
                         fontWeight: 600,
                       ),
                       FxText.bodyMedium(
-                        "${widget.selectedtourOption[index].grandTotal}AED",
+                        // '${((widget.selectedtourOption[index].grandTotal * conversionRate!)).toStringAsFixed(2)} $currencySymbol',
+                        rateconversion.toString(),
+                        // "${widget.selectedtourOption[index].grandTotal}AED",
                         fontWeight: 700,
                       ),
                     ],
@@ -344,8 +377,9 @@ class _NewCartPageState extends State<NewCartPage>
                         color: const Color(0xff1529e8),
                       ),
                       FxText.bodyMedium(
-                        // '\$' + controller.total.precise,
-                        "${widget.selectedtourOption[index].grandTotal}AED",
+                        // '${((widget.selectedtourOption[index].grandTotal * conversionRate!)).toStringAsFixed(2)} $currencySymbol',
+                        '$rateconversion $currencySymbol',
+                        // "${widget.selectedtourOption[index].grandTotal}AED",
                         fontWeight: 800,
                         color: const Color(0xff1529e8),
                       ),
@@ -363,7 +397,17 @@ class _NewCartPageState extends State<NewCartPage>
     );
   }
 
+  String? rateconversion1;
   Widget paymentInfo() {
+    if (widget.totalAmount != null) {
+      log('amount not equal:${widget.totalAmount}');
+      if (conversionRate != null) {
+        log('ConersionRate:$conversionRate');
+        rateconversion1 =
+            ((widget.totalAmount! * conversionRate!)).toStringAsFixed(2);
+        log('Rate:$rateconversion1');
+      }
+    }
     return Container(
       padding: FxSpacing.x(20),
       child: ListView(
@@ -420,7 +464,7 @@ class _NewCartPageState extends State<NewCartPage>
               print(widget.selectedtourOption.length);
               print(widget.selectedtourOption);
               print(widget.textdate);
-              print(widget.Transfer);
+              log('Transfer${widget.Transfer}');
               print(widget.totalAmount);
               Navigator.of(context, rootNavigator: true).push(PageRouteBuilder(
                   transitionDuration: const Duration(milliseconds: 500),
@@ -453,11 +497,32 @@ class _NewCartPageState extends State<NewCartPage>
                   fontWeight: 600,
                   color: theme.colorScheme.onPrimary,
                 ),
-                FxText.bodyMedium(
-                  ' ${widget.totalAmount} AED',
-                  fontWeight: 700,
-                  color: theme.colorScheme.onPrimary,
-                ),
+                // FxText.bodyMedium(
+                //   '${((widget.totalAmount! * conversionRate!)).toStringAsFixed(2)} $currencySymbol',
+
+                //   // ' ${widget.totalAmount} AED',
+                //   fontWeight: 700,
+                //   color: theme.colorScheme.onPrimary,
+                // ),
+                conversionRate == null
+                    ? FxText.bodyMedium(
+                        '0 AED',
+                        fontWeight: 700,
+                        color: theme.colorScheme.onPrimary,
+                      )
+                    : FxText.bodyMedium(
+                        // ' ${widget.totalAmount} AED',
+                        // rateconversion,
+                        '$rateconversion1 $currencySymbol',
+                        // '${((widget.totalAmount! * conversionRate!)).toStringAsFixed(2)} $currencySymbol',
+                        // '${widget.selectedtourOption.first.GrandTotalAmount}',
+                        // '${widget.totalAmount} AED',
+                        // widget.finalAmount.toString(),
+                        // widget.TotalCalculation.toString(),
+                        // controller1.grandSelectedTourAmount().toString(),
+                        fontWeight: 700,
+                        color: theme.colorScheme.onPrimary,
+                      )
               ],
             ),
           ),

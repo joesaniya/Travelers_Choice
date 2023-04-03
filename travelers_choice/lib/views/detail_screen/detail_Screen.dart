@@ -13,6 +13,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../loading_effect.dart';
+import '../../services/app_constants.dart';
 import '../../theme/app_theme.dart';
 import '../full_app.dart';
 import 'package:share_plus/share_plus.dart';
@@ -44,7 +45,8 @@ class _DetailScreenState extends State<DetailScreen>
   late OutlineInputBorder outlineInputBorder;
   late DetailController controller;
   //  List<String> favs = [];
-
+  String? currencySymbol;
+  double? conversionRate;
   // List<DetailattractionModal> detailattraction = <DetailattractionModal>[];
   bool isSelected = false;
   String stringValue = "No value";
@@ -117,6 +119,7 @@ class _DetailScreenState extends State<DetailScreen>
     getAllSavedData();
     favouriteListCheck();
     log('isSelected555');
+    initializingData();
     controller = FxControllerStore.put(DetailController(
       this,
       //  widget.productid
@@ -134,6 +137,17 @@ class _DetailScreenState extends State<DetailScreen>
             width: 0));
   }
 
+  void initializingData() {
+    SharedPreferences.getInstance().then((sharedPrefValue) {
+      setState(() {
+        conversionRate = sharedPrefValue.getDouble(AppConstants.rate);
+        log('conversionRate:$conversionRate');
+        currencySymbol = sharedPrefValue.getString(AppConstants.symbol);
+        log('currencySymbol:$currencySymbol');
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return FxBuilder<DetailController>(
@@ -144,11 +158,10 @@ class _DetailScreenState extends State<DetailScreen>
   }
 
   Widget _buildnew() {
-    // log('buildnew');
-    // log(controller.detailattraction.toString());
-    // final mealId = ModalRoute.of(context)!.settings.arguments;
-    print("currencysymbol ${widget.currencySymbol}");
-    print("currencysymbol ${widget.conversionRate}");
+    print("currencysymbol detail $currencySymbol");
+    print("currencysymbol detail $conversionRate");
+
+    // print("currencysymbol detail ${widget.conversionRate}");
     final mealId = widget.productid;
     // log('Meal Id:${widget.productid}');
     final selectedMeal = controller.allattractionList
@@ -569,11 +582,12 @@ class _DetailScreenState extends State<DetailScreen>
                               //     // ? '${controller.detailattraction!.first.activities!.first.adultPrice} AED'
                               //     : '${controller.detailattraction!.first.activities!.first.privateTransfers!.first.price} AED',
                               // // '${controller.detailattraction.first.activities.first.adultPrice} ${controller.currency() ?? '\$'}',
-                              '${(controller.detailattraction!.first.activities!.first.lowPrice
-                              // * widget.conversionRate
-                              )} AED'
+                              // '${(controller.detailattraction!.first.activities!.first.lowPrice* conversionRate
+
+                              // )} AED'
+                              '${((controller.detailattraction!.first.activities!.first.lowPrice * conversionRate) as double).toStringAsFixed(2)} $currencySymbol',
                               // as double).toStringAsFixed(2)} ${widget.currencySymbol}'
-                              ,
+
                               // controller.product.price.toString(),
                               fontWeight: 700)
                         ],
@@ -718,7 +732,7 @@ class _DetailScreenState extends State<DetailScreen>
                           unselectedLabelColor: Colors.black.withOpacity(0.6),
                           labelStyle: const TextStyle(
                               fontFamily: 'inter', fontWeight: FontWeight.w500),
-                          indicatorColor: Colors.black,
+                          indicatorColor: const Color(0xff1529e8),
                           isScrollable: true,
                           tabs: const [
                             Tab(

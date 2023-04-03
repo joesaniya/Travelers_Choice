@@ -1,15 +1,18 @@
 import 'dart:developer';
 
+import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutx/flutx.dart';
 import 'package:hotel_travel/extensions/extensions.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 import '../../../theme/constant.dart';
 import '../controllers/edit_profile_controller.dart';
 import '../loading_effect.dart';
+import '../models/Country_modal.dart';
 import '../services/app_constants.dart';
+import '../services/auth_service.dart';
 import '../theme/app_theme.dart';
 
 class EditProfileScreen extends StatefulWidget {
@@ -19,13 +22,16 @@ class EditProfileScreen extends StatefulWidget {
   _EditProfileScreenState createState() => _EditProfileScreenState();
 }
 
-class _EditProfileScreenState extends State<EditProfileScreen> {
+class _EditProfileScreenState extends State<EditProfileScreen>
+    with TickerProviderStateMixin {
   late ThemeData theme;
   late EditProfileController controller;
+  late OutlineInputBorder outlineInputBorder;
 
   @override
   void initState() {
     super.initState();
+    fetchData();
     SharedPreferences.getInstance().then((sharedPrefValue) {
       setState(() {
         controller.name =
@@ -34,6 +40,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         controller.email =
             sharedPrefValue.getString(AppConstants.KEY_ACCESS_TOKEN_Email);
         log(controller.email.toString());
+        controller.phoneNumber =
+            sharedPrefValue.getString(AppConstants.KEY_ACCESS_TOKEN_Phone);
+        log('Ph Number:${controller.phoneNumber.toString()}');
         log('username');
         controller.token =
             sharedPrefValue.getString(AppConstants.KEY_ACCESS_TOKEN)!;
@@ -45,6 +54,55 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     });
     theme = AppTheme.learningTheme;
     controller = FxControllerStore.putOrFind(EditProfileController());
+    outlineInputBorder = const OutlineInputBorder(
+      borderRadius: BorderRadius.all(Radius.circular(4)),
+      borderSide: BorderSide(
+        color: Colors.transparent,
+      ),
+    );
+  }
+
+  bool isLoading = true;
+
+  fetchData() {
+    Future.delayed(Duration.zero, () async {
+      await getCountryList().then((value) {
+        if (value) {
+          log('message');
+          isLoading = false;
+          setState(() {});
+        }
+      });
+      // await AuthController().getCountryList().then((value) {
+      //   if (value) {
+      //     isLoading = false;
+      //     setState(() {});
+      //   }
+      // });
+    });
+  }
+
+  String? _selectedCountry;
+
+  List<CountryModal> countryList = <CountryModal>[];
+  bool isCountryListLoading = true;
+  Future getCountryList() async {
+    isCountryListLoading = true;
+    try {
+      var data = await AuthService().getCountry();
+      countryList.clear();
+      if (data != null) {
+        setState(() {});
+        countryList.add(data);
+        log('1');
+        isCountryListLoading = false;
+        return true;
+      } else {
+        return false;
+      }
+    } catch (e) {
+      rethrow;
+    }
   }
 
   @override
@@ -165,104 +223,215 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               'Your Name',
             ),
             FxSpacing.height(8),
-            FxTextField(
-              controller: controller.nameTE,
-              floatingLabelBehavior: FloatingLabelBehavior.never,
-              autoFocusedBorder: true,
-              autoIcon: false,
-              textFieldStyle: FxTextFieldStyle.outlined,
-              textFieldType: FxTextFieldType.name,
-              filled: true,
-              isDense: true,
-              isCollapsed: true,
+            TextFormField(
+              style: FxTextStyle.bodyMedium(),
+              decoration: InputDecoration(
+                  floatingLabelBehavior: FloatingLabelBehavior.never,
+                  filled: true,
+                  isDense: true,
+                  fillColor: theme.cardTheme.color,
+                  hintText: "Name",
+                  labelText: controller.name,
+                  enabledBorder: outlineInputBorder,
+                  focusedBorder: outlineInputBorder,
+                  border: outlineInputBorder,
+                  contentPadding: FxSpacing.all(16),
+                  hintStyle: FxTextStyle.bodyMedium(),
+                  isCollapsed: true),
               maxLines: 1,
-              labelStyle: FxTextStyle.bodySmall(xMuted: true),
-              fillColor: theme.colorScheme.primaryContainer,
-              focusedBorderColor: theme.colorScheme.primary,
-              enabledBorderColor: theme.colorScheme.primary,
-              labelTextColor: theme.colorScheme.onBackground,
+              controller: controller.nameTE,
+              validator: controller.validateName,
               cursorColor: theme.colorScheme.onBackground,
-              focusedBorderRadius: Constant.textFieldRadius.medium,
-              enabledBorderRadius: Constant.textFieldRadius.medium,
             ),
+
             FxSpacing.height(20),
             FxText.bodyMedium(
               'Email',
             ),
             FxSpacing.height(8),
-            FxTextField(
-              controller: controller.emailTE,
-              floatingLabelBehavior: FloatingLabelBehavior.never,
-              autoFocusedBorder: true,
-              autoIcon: false,
-              textFieldStyle: FxTextFieldStyle.outlined,
-              textFieldType: FxTextFieldType.email,
-              filled: true,
-              isDense: true,
-              isCollapsed: true,
+            TextFormField(
+              style: FxTextStyle.bodyMedium(),
+              decoration: InputDecoration(
+                  floatingLabelBehavior: FloatingLabelBehavior.never,
+                  filled: true,
+                  isDense: true,
+                  fillColor: theme.cardTheme.color,
+                  hintText: "Email",
+                  labelText: controller.email,
+                  enabledBorder: outlineInputBorder,
+                  focusedBorder: outlineInputBorder,
+                  border: outlineInputBorder,
+                  contentPadding: FxSpacing.all(16),
+                  hintStyle: FxTextStyle.bodyMedium(),
+                  isCollapsed: true),
               maxLines: 1,
-              labelStyle: FxTextStyle.bodySmall(xMuted: true),
-              fillColor: theme.colorScheme.primaryContainer,
-              focusedBorderColor: theme.colorScheme.primary,
-              enabledBorderColor: theme.colorScheme.primary,
-              labelTextColor: theme.colorScheme.onBackground,
+              controller: controller.emailTE,
+              validator: controller.validateEmail,
               cursorColor: theme.colorScheme.onBackground,
-              focusedBorderRadius: Constant.textFieldRadius.medium,
-              enabledBorderRadius: Constant.textFieldRadius.medium,
             ),
+
             FxSpacing.height(20),
             FxText.bodyMedium(
               'Mobile Number',
             ),
             FxSpacing.height(8),
-            FxTextField(
-              controller: controller.mobileTE,
-              floatingLabelBehavior: FloatingLabelBehavior.never,
-              autoFocusedBorder: true,
-              autoIcon: false,
-              textFieldStyle: FxTextFieldStyle.outlined,
-              textFieldType: FxTextFieldType.mobileNumber,
-              filled: true,
-              isDense: true,
-              isCollapsed: true,
-              labelText: 'Number',
+            TextFormField(
+              style: FxTextStyle.bodyMedium(),
+              keyboardType: TextInputType.number,
+              inputFormatters: [
+                FilteringTextInputFormatter.digitsOnly,
+                FilteringTextInputFormatter.allow(RegExp(r'[0-9]'))
+              ],
+              decoration: InputDecoration(
+                  floatingLabelBehavior: FloatingLabelBehavior.never,
+                  filled: true,
+                  isDense: true,
+                  fillColor: theme.cardTheme.color,
+                  hintText: "Phone",
+                  labelText: controller.phoneNumber,
+                  enabledBorder: outlineInputBorder,
+                  focusedBorder: outlineInputBorder,
+                  border: outlineInputBorder,
+                  contentPadding: FxSpacing.all(16),
+                  hintStyle: FxTextStyle.bodyMedium(),
+                  isCollapsed: true),
               maxLines: 1,
-              labelStyle: FxTextStyle.bodySmall(xMuted: true),
-              fillColor: theme.colorScheme.primaryContainer,
-              focusedBorderColor: theme.colorScheme.primary,
-              enabledBorderColor: theme.colorScheme.primary,
-              labelTextColor: theme.colorScheme.onBackground,
+              controller: controller.mobileTE,
+              validator: controller.validatePhone,
               cursorColor: theme.colorScheme.onBackground,
-              focusedBorderRadius: Constant.textFieldRadius.medium,
-              enabledBorderRadius: Constant.textFieldRadius.medium,
             ),
+
             FxSpacing.height(20),
             FxText.bodyMedium(
-              'Address',
+              'Country',
             ),
             FxSpacing.height(8),
-            FxTextField(
-              controller: controller.addressTE,
-              floatingLabelBehavior: FloatingLabelBehavior.never,
-              autoFocusedBorder: true,
-              autoIcon: false,
-              textFieldStyle: FxTextFieldStyle.outlined,
-              textFieldType: FxTextFieldType.name,
-              filled: true,
-              isDense: true,
-              isCollapsed: true,
-              labelText: 'Address',
-              maxLines: 1,
-              labelStyle: FxTextStyle.bodySmall(xMuted: true),
-              fillColor: theme.colorScheme.primaryContainer,
-              focusedBorderColor: theme.colorScheme.primary,
-              enabledBorderColor: theme.colorScheme.primary,
-              labelTextColor: theme.colorScheme.onBackground,
-              cursorColor: theme.colorScheme.onBackground,
-              focusedBorderRadius: Constant.textFieldRadius.medium,
-              enabledBorderRadius: Constant.textFieldRadius.medium,
+
+            // FxTextField(
+            //   controller: controller.addressTE,
+            //   floatingLabelBehavior: FloatingLabelBehavior.never,
+            //   autoFocusedBorder: true,
+            //   autoIcon: false,
+            //   textFieldStyle: FxTextFieldStyle.outlined,
+            //   textFieldType: FxTextFieldType.name,
+            //   filled: true,
+            //   isDense: true,
+            //   isCollapsed: true,
+            //   labelText: 'Address',
+            //   maxLines: 1,
+            //   labelStyle: FxTextStyle.bodySmall(xMuted: true),
+            //   fillColor: theme.colorScheme.primaryContainer,
+            //   focusedBorderColor: theme.colorScheme.primary,
+            //   enabledBorderColor: theme.colorScheme.primary,
+            //   labelTextColor: theme.colorScheme.onBackground,
+            //   cursorColor: theme.colorScheme.onBackground,
+            //   focusedBorderRadius: Constant.textFieldRadius.medium,
+            //   enabledBorderRadius: Constant.textFieldRadius.medium,
+            // ),
+            GestureDetector(
+              onTap: () {
+                log('Clicked');
+                // log(countryList.first.countries
+                //     .map((e) => e.countryName)
+                //     .toString());
+                countryList.isNotEmpty && countryList.first.countries.isNotEmpty
+                    ? log(countryList.first.countries.first.countryName)
+                    : log('empty');
+              },
+              child: SizedBox(
+                height: 50,
+                width: MediaQuery.of(context).size.width,
+                child: DropdownButtonHideUnderline(
+                  child: DropdownButton2(
+                    isExpanded: true,
+                    hint: Row(
+                      children: [
+                        Expanded(
+                          child: FxText.labelLarge(
+                            // "Code",
+                            'India',
+                            fontWeight: 600,
+                            color: Colors.black,
+                            // color: theme.colorScheme.onPrimary,
+                            letterSpacing: 0.4,
+                          ),
+                        ),
+                      ],
+                    ),
+                    items: countryList.isNotEmpty &&
+                            countryList.first.countries.isNotEmpty
+                        ? countryList.first.countries.map((value) {
+                            return DropdownMenuItem<String>(
+                                value: value.id.toString(),
+                                child: Center(
+                                  child: Text(
+                                    value.countryName.toString(),
+                                    style: FxTextStyle.bodyMedium(),
+                                  ),
+                                ));
+                          }).toList()
+                        : [].map((value) {
+                            return DropdownMenuItem<String>(
+                                value: value,
+                                child: Center(
+                                  child: Text(
+                                    value,
+                                    style: FxTextStyle.bodyMedium(),
+                                  ),
+                                ));
+                          }).toList(),
+
+                    value: controller.selectedCountryCode,
+
+                    onChanged: (value) {
+                      setState(() {
+                        log(value.toString());
+                        controller.selectedCountryCode = value.toString();
+                      });
+                    },
+
+                    icon: const Icon(Icons.arrow_drop_down),
+                    iconSize: 20,
+                    iconEnabledColor: Colors.black,
+                    iconDisabledColor: Colors.black,
+                    buttonHeight: 30,
+                    buttonWidth: 200,
+                    buttonPadding: const EdgeInsets.only(
+                        left: 14, right: 14, top: 4, bottom: 4),
+                    dropdownDecoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(4),
+                      color: Colors.white,
+                    ),
+                    buttonDecoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      // border: Border.all(
+                      //     color: AppColor
+                      //         .Secondary1,
+                      //     width: 1),
+                      // color: const Color(0xff2C2138),
+                      color: theme.cardTheme.color,
+                    ),
+                    // .
+                    // copyWith(
+                    //   boxShadow:
+                    //       kElevationToShadow[
+                    //           2],
+                    // ),
+                    itemHeight: 40,
+                    // itemWidth: 200,
+                    itemPadding: const EdgeInsets.only(left: 14, right: 14),
+                    dropdownMaxHeight: 200,
+                    dropdownPadding: null,
+
+                    scrollbarRadius: const Radius.circular(40),
+                    scrollbarThickness: 2,
+                    scrollbarAlwaysShow: true,
+                    offset: const Offset(0, 0),
+                  ),
+                ),
+              ),
             ),
-            FxSpacing.height(20),
+            FxSpacing.height(60),
             // Row(
             //   children: [
             //     Expanded(
@@ -351,11 +520,11 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             // FxSpacing.height(20),
             FxButton.block(
               onPressed: () async {
-                print(controller.nameTE.text);
-                print(controller.emailTE.text);
-                print(controller.countryId);
-                print(controller.mobileTE.text);
-                print(controller.token);
+                print('Name:${controller.nameTE.text}');
+                print('Email:${controller.emailTE.text}');
+                print('Country:${controller.countryId}');
+                print('Mobile:${controller.mobileTE.text}');
+                print('Token:${controller.token}');
                 var result = await controller.patchEdit(
                     controller.nameTE.text,
                     controller.emailTE.text,
@@ -365,6 +534,13 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     context);
 
                 controller.goBack(canRefresh: result);
+                // controller.updateProfile(
+                //     controller.nameTE.text,
+                //     controller.emailTE.text,
+                //     controller.countryId!,
+                //     controller.mobileTE.text,
+                //     controller.token!,
+                //     context);
               },
               elevation: 0,
               borderRadiusAll: Constant.buttonRadius.large,

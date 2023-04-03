@@ -8,6 +8,7 @@ import 'package:flutx/flutx.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../card_widgets/customsnackbar.dart';
 import '../controllers/all_bookings.dart';
 import '../loading_effect.dart';
 import '../models/product.dart';
@@ -17,6 +18,7 @@ import '../theme/app_theme.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:path_provider/path_provider.dart' as path;
 import 'package:external_path/external_path.dart';
+import '../controllers/pdf_api.dart';
 
 class AllBookings extends StatefulWidget {
   const AllBookings({Key? key}) : super(key: key);
@@ -114,14 +116,26 @@ class _AllBookingsState extends State<AllBookings>
       var raf = file.openSync(mode: FileMode.write);
       // response.data is List<int> type
       raf.writeFromSync(response.data);
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          content: Text('Your Ticket was downloaded Sucessfully')));
+      // ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+      //     content: Text('Your Ticket was downloaded Sucessfully')));
+      CustomSnackbar.show(
+        context: context,
+        message: 'Your Ticket was downloaded Sucessfully',
+        backgroundColor: const Color(0xff1529e8),
+        duration: const Duration(seconds: 2),
+      );
       await raf.close();
     } catch (e) {
       print(e);
       log('Error:$e');
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text(e.toString())));
+      CustomSnackbar.show(
+        context: context,
+        message: e.toString(),
+        backgroundColor: const Color(0xff1529e8),
+        duration: const Duration(seconds: 2),
+      );
+      // ScaffoldMessenger.of(context)
+      //     .showSnackBar(SnackBar(content: Text(e.toString())));
     }
   }
 
@@ -129,8 +143,14 @@ class _AllBookingsState extends State<AllBookings>
     if (total != -1) {
       print((received / total * 100).toStringAsFixed(0) + "%");
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          content: Text('Your Ticket was downloaded Sucessfully')));
+      CustomSnackbar.show(
+        context: context,
+        message: 'Your Ticket was downloaded Sucessfully',
+        backgroundColor: const Color(0xff1529e8),
+        duration: const Duration(seconds: 2),
+      );
+      // ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+      //     content: Text('Your Ticket was downloaded Sucessfully')));
     }
   }
 
@@ -187,9 +207,23 @@ class _AllBookingsState extends State<AllBookings>
         log('You have no attractions');
         return const Text("You have no attractions");
       }
+
+      if (controller.orders == null ||
+          controller.orders!.result == null ||
+          controller.orders!.result!.data == null ||
+          controller.orders!.result!.totalOrders == null) {
+        return const Text("Empty data");
+      }
+      String? orderlength;
+      orderlength = controller.orders!.result!.totalOrders.toString();
       return ListView.builder(
-        itemCount: controller.orders!.result!.totalOrders,
+        // itemCount: controller.orders!.result!.totalOrders,
+        // itemCount: orderlength.length,
+        // itemCount: controller.orders!.result!.data!.length,
+        itemCount: 2,
         itemBuilder: (BuildContext context, int index) {
+          // log('data length booking:${controller.orders!.result!.data!.length}');
+          // log('Order Length all bookings:${orderlength!.length}');
           var date = controller.orders!.result!.data![index].activities!.date;
           var newDate = date!.toLocal().toString().substring(0, 10);
           print(newDate);
@@ -357,7 +391,10 @@ class _AllBookingsState extends State<AllBookings>
     }
   }
 
+  String? bookinglength;
+
   Widget _buildBody() {
+    // bookinglength = controller.orders!.result!.totalOrders.toString();
     if (controller.uiLoading) {
       return Scaffold(
           body: Padding(
@@ -416,24 +453,35 @@ class _AllBookingsState extends State<AllBookings>
                     shrinkWrap: true,
                     physics: const AlwaysScrollableScrollPhysics(),
                     separatorBuilder: (BuildContext context, index) {
+                      log('All book');
                       return const SizedBox(
                         height: 10,
                       );
                     },
-                    itemCount: controller.orders!.result!.totalOrders!.toInt(),
+                    // itemCount: bookinglength == null
+                    //     ? controller.orders!.result!.totalOrders!
+                    //     : bookinglength!.length,
+                    // itemCount: controller.orders!.result!.totalOrders!,
+                    itemCount: controller.orders!.result!.data!.length,
                     itemBuilder: (BuildContext context, int index) {
+                      // log('booking length:${bookinglength!.length}');
+                      log('data length:${controller.orders!.result!.data!.length}');
+                      log('index data length:${controller.orders!.result!.data!.length}');
+                      log('index:$index');
                       var date = controller
                           .orders!.result!.data![index].activities!.date;
                       String createdatae = controller
                           .orders!.result!.data![index].createdAt
                           .toString();
+
                       log('Created Date:$createdatae');
                       DateTime dateTime = DateTime.parse(createdatae);
-                      String formattedDatecreate =
-                          "${dateTime.year}-${dateTime.month.toString().padLeft(2, '0')}-${dateTime.day.toString().padLeft(2, '0')}";
-                      log('Format:$formattedDatecreate');
+                      // String formattedDatecreate =
+                      //     "${dateTime.year}-${dateTime.month.toString().padLeft(2, '0')}-${dateTime.day.toString().padLeft(2, '0')}";
+                      // log('Format:$formattedDatecreate');
                       var newDate = date!.toLocal().toString().substring(0, 10);
-                      log('New Date:$newDate');
+                      log('New Date book:$newDate');
+                      log('data length:${controller.orders!.result!.data!.length}');
                       return Container(
                         // height: 212,
                         decoration: BoxDecoration(
@@ -717,6 +765,9 @@ class _AllBookingsState extends State<AllBookings>
                               child: Column(
                                 children: [
                                   Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Row(
                                         children: [
@@ -735,7 +786,7 @@ class _AllBookingsState extends State<AllBookings>
                                           ),
                                         ],
                                       ),
-                                      // FxSpacing.width(20),
+                                      FxSpacing.width(20),
                                       //3
                                       Expanded(
                                           child: Row(
@@ -766,6 +817,9 @@ class _AllBookingsState extends State<AllBookings>
                                   //2
                                   FxSpacing.height(10),
                                   Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Row(
                                         children: [
@@ -788,6 +842,7 @@ class _AllBookingsState extends State<AllBookings>
                                           ),
                                         ],
                                       ),
+                                      FxSpacing.width(20),
                                       //3
                                       Expanded(
                                           child: Row(
@@ -814,56 +869,60 @@ class _AllBookingsState extends State<AllBookings>
                             ),
 
                             //details
-                            Row(
-                              crossAxisAlignment: CrossAxisAlignment.end,
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                // FxContainer(
-                                //   onTap: () {
-                                //     log('review Screen clicked');
-                                //     log('id:${controller.orders!.result!.data![index].id}');
-                                //     controller.bookNow(controller
-                                //             .orders!.result!.data as Datum
-                                //         // ,controller.orders!.result!
-                                //         //     .data![index].id
-                                //         );
-                                //     // controller.bookNow(controller.orders!.result.data);
+                            controller.orders!.result!.data![index]
+                                        .orderStatus ==
+                                    'confirmed'
+                                ? Row(
+                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: [
+                                      FxContainer(
+                                        onTap: () async {
+                                          log('preview Screen clicked');
+                                          log('id:${controller.orders!.result!.data![index].id}');
+                                          String Idorder = controller
+                                              .orders!.result!.data![index].id
+                                              .toString();
+                                          String idactivity = controller
+                                              .orders!
+                                              .result!
+                                              .data![index]
+                                              .activities!
+                                              .id
+                                              .toString();
 
-                                //     // controller.VewPage(orders!
-                                //     //     .result!.data![index].id
-                                //     //     .toString(),orders!.result!.data[index]);
-                                //     // Navigator.push(
-                                //     //     context,
-                                //     //     MaterialPageRoute(
-                                //     //         builder: (context) => ReviewScreen()));
-                                //   },
-                                //   padding: FxSpacing.fromLTRB(8, 6, 8, 6),
-                                //   color:
-                                //       const Color(0xff1529e8).withAlpha(40),
-                                //   // color:Color(0xff6874E8),
-                                //   // customTheme.groceryPrimary.withAlpha(40),
-                                //   child: Row(
-                                //     mainAxisSize: MainAxisSize.min,
-                                //     children: [
-                                //       FxText.bodyMedium("View",
-                                //           color: const Color(0xff1529e8),
-                                //           // color: customTheme.groceryPrimary,
-                                //           fontWeight: 500,
-                                //           letterSpacing: -0.2),
-                                //       const Icon(
-                                //         MdiIcons.eye,
-                                //         size: 14,
-                                //         color: Color(0xff1529e8),
-                                //       )
-                                //     ],
-                                //   ),
-                                // ),
-
-                                FxSpacing.width(10),
-                                controller.orders!.result!.data![index]
-                                            .orderStatus ==
-                                        'confirmed'
-                                    ? FxContainer(
+                                          final url =
+                                              'https://secure.mytravellerschoice.com/api/v1/attractions/orders/$Idorder/ticket/$idactivity';
+                                          final file =
+                                              await PDFApi.loadNetwork(url);
+                                          controller.openPDF(context, file,
+                                              Idorder, idactivity);
+                                        },
+                                        padding: FxSpacing.fromLTRB(8, 6, 8, 6),
+                                        color: const Color(0xff1529e8)
+                                            .withAlpha(40),
+                                        child: Row(
+                                          // mainAxisSize: MainAxisSize.min,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            FxText.bodyMedium("View",
+                                                color: const Color(0xff1529e8),
+                                                fontWeight: 500,
+                                                letterSpacing: -0.2),
+                                            FxSpacing.width(5),
+                                            const Icon(
+                                              MdiIcons.eye,
+                                              size: 14,
+                                              color: Color(0xff1529e8),
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                      FxSpacing.width(10),
+                                      FxContainer(
                                         // onTap: () async {
                                         //   log('download clicked');
                                         //   log('Order Id:${controller.orders!.result!.data![index].id}');
@@ -941,11 +1000,11 @@ class _AllBookingsState extends State<AllBookings>
                                             )
                                           ],
                                         ),
-                                      )
-                                    : const SizedBox(),
-                                FxSpacing.width(10),
-                              ],
-                            ),
+                                      ),
+                                      FxSpacing.width(10),
+                                    ],
+                                  )
+                                : const SizedBox(),
                             FxSpacing.height(15)
                           ],
                         ),
@@ -1604,10 +1663,22 @@ class _AllBookingsState extends State<AllBookings>
       await dio.download(downloadLink!, filePath).then((value) {
         dio.close();
         log('downloaded');
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-            content: Text('Your Ticket was downloaded Sucessfully')));
+        // ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        //     content: Text('Your Ticket was downloaded Sucessfully')));
+        CustomSnackbar.show(
+          context: context,
+          message: 'Your Ticket was downloaded Sucessfully',
+          backgroundColor: const Color(0xff1529e8),
+          duration: const Duration(seconds: 2),
+        );
       }).catchError((Object e) {
         log('error:$e');
+        CustomSnackbar.show(
+          context: context,
+          message: e.toString(),
+          backgroundColor: const Color(0xff1529e8),
+          duration: const Duration(seconds: 2),
+        );
         // Fluttertoast.showToast(
         //     msg: "Terjadi kesalahan. Download gagal.", timeInSecForIosWeb: 1);
       });

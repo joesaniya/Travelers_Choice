@@ -4,6 +4,8 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
+import '../card_widgets/customsnackbar.dart';
+
 class PaymentService {
   Future PersonalInformation(
       String name,
@@ -73,8 +75,14 @@ class PaymentService {
         log(jsondata['error']);
         print(jsondata['error']);
         //snackbar
-        ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text(jsondata['error'])));
+        CustomSnackbar.show(
+          context: context,
+          message: jsondata['error'],
+          backgroundColor: Color(0xff1529e8),
+          duration: Duration(seconds: 2),
+        );
+        // ScaffoldMessenger.of(context)
+        //     .showSnackBar(SnackBar(content: Text(jsondata['error'])));
         return null;
       }
     } catch (e) {

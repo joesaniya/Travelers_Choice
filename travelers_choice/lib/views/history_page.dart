@@ -109,11 +109,30 @@ class _HistoryScreenState extends State<HistoryScreen>
     } else {
       if (orders!.result == null) {
         log('You have no attractions');
-        return const Text("You have no attractions");
+        Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: const [
+              // Lottie.asset('assets/lottie/confirmation.json',
+              //     height: 300, width: 300),
+              Text('No Order History!!',
+                  style: TextStyle(
+                      fontFamily: 'inter',
+                      fontWeight: FontWeight.w400,
+                      fontSize: 16))
+            ],
+          ),
+        );
+        // return const Text("You have no attractions");
       }
+      String? orderlength;
+      orderlength = orders!.result!.totalOrders.toString();
       return ListView.builder(
-        itemCount: orders!.result!.totalOrders,
+        // itemCount: orderlength.length,
+        // itemCount: orders!.result!.totalOrders,
+        itemCount: orders!.result!.data!.length,
         itemBuilder: (BuildContext context, int index) {
+          // log('Order Length history:${orderlength!.length}');
           var date = orders!.result!.data![index].activities!.date;
           var newDate = date!.toLocal().toString().substring(0, 10);
           print(newDate);
@@ -124,6 +143,40 @@ class _HistoryScreenState extends State<HistoryScreen>
             paddingAll: 12,
             child: Column(
               children: [
+                Container(
+                  child: Row(
+                      // mainAxisAlignment: MainAxisAlignment.end,
+                      // crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        FxText.bodyLarge(
+                          'Status:',
+
+                          // textAlign: TextAlign.left,
+                          letterSpacing: 0,
+                          fontWeight: 600,
+                        ),
+                        FxSpacing.width(10),
+                        FxText.bodyLarge(
+                          orders!.result!.data![index].activities!.status
+                              .toString(),
+                          color:
+                              orders!.result!.data![index].activities!.status ==
+                                      'confirmed'
+                                  ? Colors.green
+                                  : Colors.red,
+                          fontWeight: 600,
+                          // color: const Color(0xff1529e8),
+                        )
+                      ]),
+                ),
+                FxSpacing.height(10),
+                FxDashedDivider(
+                  dashSpace: 4,
+                  dashWidth: 8,
+                  color: theme.colorScheme.onBackground.withAlpha(180),
+                  height: 1.2,
+                ),
+                FxSpacing.height(10),
                 Row(
                   children: [
                     FxContainer(
@@ -444,6 +497,7 @@ class _HistoryScreenState extends State<HistoryScreen>
                   children: [attractionList(), visaList()],
                 ),
               ),
+              FxSpacing.height(60),
             ],
           ),
         ));

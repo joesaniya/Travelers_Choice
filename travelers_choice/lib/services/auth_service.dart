@@ -1,9 +1,9 @@
 import 'dart:convert';
 import 'dart:developer';
-
+import '../card_widgets/customsnackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:hotel_travel/models/all_attraction_modal.dart';
-
+import 'package:global_snack_bar/global_snack_bar.dart';
 import 'package:http/http.dart' as http;
 
 import '../models/Country_modal.dart';
@@ -53,13 +53,21 @@ class AuthService {
         sharedPreferences.setInt("balance", jsondata['newUser']['balance']);
         sharedPreferences.setString(AppConstants.KEY_ACCESS_TOKEN_countryId,
             jsondata['newUser']['country']);
+        sharedPreferences.setString(AppConstants.KEY_ACCESS_TOKEN_Phone,
+            jsondata['newUser']['phoneNumber']);
         return response.body;
       } else {
         var jsondata = jsonDecode(response.body);
         log(jsondata['error']);
         //snackbar
-        ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text(jsondata['error'])));
+        CustomSnackbar.show(
+          context: context,
+          message: jsondata['error'],
+          backgroundColor: const Color(0xff1529e8),
+          duration: const Duration(seconds: 2),
+        );
+        // ScaffoldMessenger.of(context)
+        //     .showSnackBar(SnackBar(content: Text(jsondata['error'])));
         return null;
       }
     } catch (e) {
@@ -142,7 +150,8 @@ class AuthService {
         sharedPreferences.setInt("balance", jsondata['user']['balance']);
         sharedPreferences.setString(AppConstants.KEY_ACCESS_TOKEN_countryId,
             jsondata['user']['country']);
-
+        sharedPreferences.setString(AppConstants.KEY_ACCESS_TOKEN_Phone,
+            jsondata['user']['phoneNumber']);
         return response.body;
 
         // //todo
@@ -165,8 +174,15 @@ class AuthService {
       else {
         var jsondata = jsonDecode(response.body);
         log(jsondata['error']);
-        ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text(jsondata['error'])));
+
+        CustomSnackbar.show(
+          context: context,
+          message: jsondata['error'],
+          backgroundColor: const Color(0xff1529e8),
+          duration: const Duration(seconds: 2),
+        );
+        // ScaffoldMessenger.of(context)
+        //     .showSnackBar(SnackBar(content: Text(jsondata['error'])));
       }
     } catch (e) {
       rethrow;
@@ -296,8 +312,14 @@ class AuthService {
       } else {
         var jsondata = jsonDecode(response.body);
         log(jsondata['error']);
-        ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text(jsondata['error'])));
+        CustomSnackbar.show(
+          context: context,
+          message: jsondata['error'],
+          backgroundColor: const Color(0xff1529e8),
+          duration: const Duration(seconds: 2),
+        );
+        // ScaffoldMessenger.of(context)
+        //     .showSnackBar(SnackBar(content: Text(jsondata['error'])));
       }
     } catch (e) {
       rethrow;
@@ -321,15 +343,119 @@ class AuthService {
       if (response.statusCode == 200) {
         var jsondata = jsonDecode(response.body);
         print('Response => ${response.body}');
+        CustomSnackbar.show(
+          context: context,
+          message: jsondata['message'],
+          backgroundColor: const Color(0xff1529e8),
+          duration: const Duration(seconds: 2),
+        );
 
-        ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text(jsondata['message'])));
+        // ScaffoldMessenger.of(context)
+        //     .showSnackBar(SnackBar(content: Text(jsondata['message'])));
         return response.body;
       } else {
         var jsondata = jsonDecode(response.body);
         log(jsondata['error']);
-        ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text(jsondata['error'])));
+        CustomSnackbar.show(
+          context: context,
+          message: jsondata['error'],
+          backgroundColor: const Color(0xff1529e8),
+          duration: const Duration(seconds: 2),
+        );
+        // ScaffoldMessenger.of(context)
+        //     .showSnackBar(SnackBar(content: Text(jsondata['error'])));
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  //forgotmailsend
+  Future patchForgototpmail(String email, BuildContext context) async {
+    try {
+      var body = {"email": email};
+      var response = await http.patch(
+          Uri.parse(
+            'https://secure.mytravellerschoice.com/api/v1/users/forget-password',
+          ),
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: jsonEncode(body));
+
+      if (response.statusCode == 200) {
+        var jsondata = jsonDecode(response.body);
+        print('Response => ${response.body}');
+        CustomSnackbar.show(
+          context: context,
+          message: jsondata['message'],
+          backgroundColor: const Color(0xff1529e8),
+          duration: const Duration(seconds: 2),
+        );
+
+        // ScaffoldMessenger.of(context)
+        //     .showSnackBar(SnackBar(content: Text(jsondata['message'])));
+        return response.body;
+      } else {
+        var jsondata = jsonDecode(response.body);
+        log(jsondata['error']);
+        CustomSnackbar.show(
+          context: context,
+          message: jsondata['error'],
+          backgroundColor: const Color(0xff1529e8),
+          duration: const Duration(seconds: 2),
+        );
+        // ScaffoldMessenger.of(context)
+        //     .showSnackBar(SnackBar(content: Text(jsondata['error'])));
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  //confirmpwd
+  Future confirmPassword(String email, String newPassword,
+      String confirmPassword, String otp, BuildContext context) async {
+    try {
+      var body = {
+        "email": email,
+        "otp": otp,
+        "confirmPassword": confirmPassword,
+        "newPassword": newPassword
+      };
+      var response = await http.patch(
+          Uri.parse(
+            'https://secure.mytravellerschoice.com/api/v1/users/complete/forget-password',
+          ),
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: jsonEncode(body));
+
+      if (response.statusCode == 200) {
+        var jsondata = jsonDecode(response.body);
+        print('Response => ${response.body}');
+        CustomSnackbar.show(
+          context: context,
+          message: jsondata['message'],
+          backgroundColor: const Color(0xff1529e8),
+          duration: const Duration(seconds: 2),
+        );
+
+        // ScaffoldMessenger.of(context)
+        //     .showSnackBar(SnackBar(content: Text(jsondata['message'])));
+        return response.body;
+      } else {
+        var jsondata = jsonDecode(response.body);
+        log(jsondata['error']);
+        CustomSnackbar.show(
+          context: context,
+          message: jsondata['error'],
+          backgroundColor: const Color(0xff1529e8),
+          duration: const Duration(seconds: 2),
+        );
+        // ScaffoldMessenger.of(context)
+        //     .showSnackBar(SnackBar(content: Text(jsondata['error'])));
       }
     } catch (e) {
       rethrow;

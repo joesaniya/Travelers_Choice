@@ -10,6 +10,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../controllers/attraction_Controller.dart';
 import '../controllers/saved_controller.dart';
 import '../loading_effect.dart';
+import '../models/Country_modal.dart';
+import '../services/app_constants.dart';
+import '../services/auth_service.dart';
 import '../theme/app_theme.dart';
 import 'full_app.dart';
 
@@ -49,12 +52,62 @@ class _SavedScreenState extends State<SavedScreen>
   @override
   void initState() {
     super.initState();
+    getCountryList();
     getAttraction(context);
     log('saved:${favouriteList.length}');
     theme = AppTheme.shoppingTheme;
-
+    initializingData();
     controller = FxControllerStore.put(SavedController(this));
     log('Item:${favouriteList.map((e) => e.id)}');
+  }
+
+  String? currencySymbol;
+  double? conversionRate;
+  void initializingData() {
+    SharedPreferences.getInstance().then((sharedPrefValue) {
+      setState(() {
+        conversionRate = sharedPrefValue.getDouble(AppConstants.rate);
+        log('conversionRate:$conversionRate');
+        currencySymbol = sharedPrefValue.getString(AppConstants.symbol);
+        log('currencySymbol:$currencySymbol');
+      });
+    });
+  }
+
+  Currency? selectedCountry;
+
+  List<CountryModal> countryList = <CountryModal>[];
+  bool isCountryListLoading = true;
+  getCountryList() async {
+    log('getcountry');
+    isCountryListLoading = true;
+    try {
+      log('getcountry try');
+      var data = await AuthService().getCountry();
+      countryList.clear();
+      if (data != null) {
+        log('getcountry set');
+        setState(() {
+          countryList.add(data);
+          // controller.countryCode = '63db60f9f926b340dbb3f446';
+          controller.countryCode = '63ac33ecff04e5652a2583f5';
+          // controller.countryCode = sharedPreferences!
+          //     .getString(AppConstants.KEY_ACCESS_TOKEN_countryId);
+          print("controller.countryCode ${controller.countryCode}");
+          log("controller.countryCode ${controller.countryCode}");
+          selectedCountry = countryList.first.currencies.firstWhere(
+              (element) => element.country.id == controller.countryCode);
+          log("selected Country:$selectedCountry");
+        });
+
+        isCountryListLoading = false;
+        return true;
+      } else {
+        return false;
+      }
+    } catch (e) {
+      rethrow;
+    }
   }
 
   Widget _buildSingleProduct(Datum product) {
@@ -185,7 +238,9 @@ class _SavedScreenState extends State<SavedScreen>
                       ),
                     ),
                     FxText.labelLarge(
-                      "${product.activity.lowPrice} AED",
+                      // " ${(selectedCountry != null ? "${((product.activity.lowPrice * selectedCountry!.conversionRate) as double).toStringAsFixed(2)} ${selectedCountry!.isocode} " : "")}",
+                      '${((product.activity.lowPrice * conversionRate) as double).toStringAsFixed(2)} $currencySymbol',
+                      // "${product.activity.lowPrice} AED",
                       color: const Color(0xff1529e8),
                     )
                   ],

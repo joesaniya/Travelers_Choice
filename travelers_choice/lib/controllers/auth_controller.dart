@@ -27,6 +27,37 @@ class AuthController {
     }
   }
 
+  Future<bool> ConfirmPwdUpdate(String email, String newPassword,
+      String confirmPassword, String otp, BuildContext context) async {
+    try {
+      var data = await AuthService()
+          .confirmPassword(email, newPassword, confirmPassword, otp, context);
+
+      if (data != null) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+   Future<bool> ForgotpwdUpdate(String email, BuildContext context) async {
+    try {
+      var data = await AuthService().patchForgototpmail(email, context);
+      if (data != null) {
+        // log(data);
+        // Navigator.pop(context);
+        return true;
+      } else {
+        return false;
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
+
   Future<bool> login(
       String email, String password, BuildContext context) async {
     try {

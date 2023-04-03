@@ -1,5 +1,5 @@
 import 'dart:developer';
-
+import '../card_widgets/customsnackbar.dart';
 import 'package:cc_avenue/cc_avenue.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -8,7 +8,7 @@ import 'package:hotel_travel/views/hotel_travel_constants.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
+import '../views/booking_success.dart';
 import '../models/atteraction_model.dart';
 import '../models/product.dart';
 import '../models/razor_response.dart';
@@ -42,6 +42,8 @@ class CheckOutController extends FxController {
   List<Product>? products;
   bool addCart = false;
   String? selectedCountryCode;
+  String? selectedCountryCode1;
+  String? selectedCountryName;
   bool selected = true;
 
   List<Tab> tabs = [];
@@ -55,6 +57,8 @@ class CheckOutController extends FxController {
   String? selectedname;
   final List<String> nameCodes = ['Mr.', 'Mrs.', 'Ms.'];
   String? selectedcountry;
+  String? selectedNameCountry;
+
   final List<String> countryCodes = ['India', 'UAE', 'France'];
   late AnimationController arrowController,
       animationController,
@@ -95,10 +99,16 @@ class CheckOutController extends FxController {
     print('responseError');
     log('responseError');
     // Do something when payment fails
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(response.message ?? ''),
-      ),
+    // ScaffoldMessenger.of(context).showSnackBar(
+    //   SnackBar(
+    //     content: Text(response.message ?? ''),
+    //   ),
+    // );
+    CustomSnackbar.show(
+      context: context,
+      message: response.message ?? '',
+      backgroundColor: Color(0xff1529e8),
+      duration: Duration(seconds: 2),
     );
   }
 
@@ -106,10 +116,16 @@ class CheckOutController extends FxController {
     print('responsewallet:');
     log('response wallet:');
     // Do something when an external wallet is selected
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(response.walletName ?? ''),
-      ),
+    // ScaffoldMessenger.of(context).showSnackBar(
+    //   SnackBar(
+    //     content: Text(response.walletName ?? ''),
+    //   ),
+    // );
+    CustomSnackbar.show(
+      context: context,
+      message: response.walletName ?? '',
+      backgroundColor: Color(0xff1529e8),
+      duration: Duration(seconds: 2),
     );
   }
 
@@ -349,10 +365,16 @@ class CheckOutController extends FxController {
 
   void Login() {
     log('calling login....');
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Please Login Your account'),
-      ),
+    // ScaffoldMessenger.of(context).showSnackBar(
+    //   const SnackBar(
+    //     content: Text('Please Login Your account'),
+    //   ),
+    // );
+    CustomSnackbar.show(
+      context: context,
+      message: 'Please Login Your account',
+      backgroundColor: Color(0xff1529e8),
+      duration: Duration(seconds: 2),
     );
     Navigator.of(context, rootNavigator: true).pushReplacement(
       MaterialPageRoute(
@@ -422,28 +444,72 @@ class CheckOutController extends FxController {
     if (currentPage == 0) {
       log('selected page 0');
       if (selectedname == null || selectedname!.isEmpty) {
-        ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text("Please Select Mr/Ms/Mrs")));
+        CustomSnackbar.show(
+          context: context,
+          message:'Please Select Mr/Ms/Mrs',
+          backgroundColor: Color(0xff1529e8),
+          duration: Duration(seconds: 2),
+        );
+        // ScaffoldMessenger.of(context).showSnackBar(
+        //     const SnackBar(content: Text("Please Select Mr/Ms/Mrs")));
       } else if (FnameTE.text.isEmpty) {
-        ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text("Please Enter First Name")));
+        CustomSnackbar.show(
+          context: context,
+          message: 'Please Enter First Name',
+          backgroundColor: Color(0xff1529e8),
+          duration: Duration(seconds: 2),
+        );
+        // ScaffoldMessenger.of(context).showSnackBar(
+        //     const SnackBar(content: Text("Please Enter First Name")));
       } else if (LnameTE.text.isEmpty) {
-        ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text("Please Enter Last Name")));
+        CustomSnackbar.show(
+          context: context,
+          message: 'Please Enter Last Name',
+          backgroundColor: Color(0xff1529e8),
+          duration: Duration(seconds: 2),
+        );
+        // ScaffoldMessenger.of(context).showSnackBar(
+        //     const SnackBar(content: Text("Please Enter Last Name")));
       } else if (emailTE.text.isEmpty) {
-        ScaffoldMessenger.of(context)
-            .showSnackBar(const SnackBar(content: Text("Please Enter Email")));
-      } else if (selectedcountry == null || selectedcountry!.isEmpty) {
-        ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text("Please Select Country")));
+        CustomSnackbar.show(
+          context: context,
+          message: 'Please Enter email',
+          backgroundColor: Color(0xff1529e8),
+          duration: Duration(seconds: 2),
+        );
+        // ScaffoldMessenger.of(context)
+        //     .showSnackBar(const SnackBar(content: Text("Please Enter Email")));
+      } else if (
+          // selectedcountry == null || selectedcountry!.isEmpty
+          selectedCountryName == null || selectedCountryName!.isEmpty) {
+        // ScaffoldMessenger.of(context).showSnackBar(
+        //     const SnackBar(content: Text("Please Select Country")));
+        CustomSnackbar.show(
+          context: context,
+          message: 'Please Select Country',
+          backgroundColor: Color(0xff1529e8),
+          duration: Duration(seconds: 2),
+        );
       } else if (selectedCountryCode == null || selectedCountryCode!.isEmpty) {
-        ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text("Please Select Phone Code")));
+        // ScaffoldMessenger.of(context).showSnackBar(
+        //     const SnackBar(content: Text("Please Select Phone Code")));
+        CustomSnackbar.show(
+          context: context,
+          message: 'Please Select Phone Code',
+          backgroundColor: Color(0xff1529e8),
+          duration: Duration(seconds: 2),
+        );
       } else if (phoneTE.text.isEmpty
           // || phoneTE.text.length != 10
           ) {
-        ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text("Please Enter Phone Number")));
+            CustomSnackbar.show(
+          context: context,
+          message: 'Please Enter Phone Number',
+          backgroundColor: Color(0xff1529e8),
+          duration: Duration(seconds: 2),
+        );
+        // ScaffoldMessenger.of(context).showSnackBar(
+        //     const SnackBar(content: Text("Please Enter Phone Number")));
       }
       // else if (reqTE.text.isEmpty) {
       //   ScaffoldMessenger.of(context)
@@ -675,8 +741,14 @@ class CheckOutController extends FxController {
       log(jsondata['error']);
       print(jsondata['error']);
       //snackbar
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text(jsondata['error'])));
+      CustomSnackbar.show(
+        context: context,
+        message: jsondata['error'],
+        backgroundColor: Color(0xff1529e8),
+        duration: Duration(seconds: 2),
+      );
+      // ScaffoldMessenger.of(context)
+      //     .showSnackBar(SnackBar(content: Text(jsondata['error'])));
       return null;
     }
   }
@@ -757,10 +829,16 @@ class CheckOutController extends FxController {
     print('sign:${res.body}');
     log('sign:${res.body}');
     if (res.statusCode == 200) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(res.body),
-        ),
+      // ScaffoldMessenger.of(context).showSnackBar(
+      //   SnackBar(
+      //     content: Text(res.body),
+      //   ),
+      // );
+      CustomSnackbar.show(
+        context: context,
+        message:res.body,
+        backgroundColor: Color(0xff1529e8),
+        duration: Duration(seconds: 2),
       );
     }
   }
@@ -833,26 +911,33 @@ class CheckOutController extends FxController {
 
       var paymentdata = res.body;
       log('Payment data:$paymentdata');
-      Navigator.of(context, rootNavigator: true).pushReplacement(
+      Navigator.of(context, rootNavigator: true)
+          .pushReplacement(
         MaterialPageRoute(
           builder: (context) => PaymentCC(paymentdata: paymentdata),
         ),
-      );
-      //     .whenComplete(() {
-      //   log('complete');
-      //   Navigator.of(context, rootNavigator: true).pushReplacement(
-      //     MaterialPageRoute(
-      //       builder: (context) => const BookingSuccess(),
-      //     ),
-      //   );
-      // });
+      )
+          .whenComplete(() {
+        log('complete');
+        Navigator.of(context, rootNavigator: true).pushReplacement(
+          MaterialPageRoute(
+            builder: (context) => const BookingSuccess(),
+          ),
+        );
+      });
     } else {
       var jsondata = jsonDecode(res.body);
       log(jsondata['error']);
       print(jsondata['error']);
       //snackbar
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text(jsondata['error'])));
+      CustomSnackbar.show(
+        context: context,
+        message: jsondata['error'],
+        backgroundColor: Color(0xff1529e8),
+        duration: Duration(seconds: 2),
+      );
+      // ScaffoldMessenger.of(context)
+      //     .showSnackBar(SnackBar(content: Text(jsondata['error'])));
       return null;
     }
   }

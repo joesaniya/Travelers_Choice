@@ -33,6 +33,7 @@ class HomeController extends FxController {
 
   late Intro intro;
   String? selectedCountryCode;
+  final focus = FocusNode();
 
   @override
   void initState() {

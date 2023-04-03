@@ -4,6 +4,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
+import '../card_widgets/customsnackbar.dart';
 import '../models/get_reviews.dart';
 
 class ReviewService {
@@ -67,8 +68,14 @@ class ReviewService {
         var jsondata = jsonDecode(response.body);
         log(jsondata['error']);
         //snackbar
-        ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text(jsondata['error'])));
+        CustomSnackbar.show(
+          context: context,
+          message: jsondata['error'],
+          backgroundColor: Color(0xff1529e8),
+          duration: Duration(seconds: 2),
+        );
+        // ScaffoldMessenger.of(context)
+        //     .showSnackBar(SnackBar(content: Text(jsondata['error'])));
         return 'Failure';
       }
     } catch (e) {

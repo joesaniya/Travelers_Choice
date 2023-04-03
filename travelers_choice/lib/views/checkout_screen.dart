@@ -2,11 +2,12 @@ import 'dart:developer';
 
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutx/flutx.dart';
-import 'package:hotel_travel/controllers/Activity_Controller.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../card_widgets/customsnackbar.dart';
 import '../controllers/checkout_controller.dart';
 import '../localizations/language.dart';
 import '../models/Country_modal.dart';
@@ -61,7 +62,7 @@ class _CheckOutScreenState extends State<CheckOutScreen>
   late CustomTheme customTheme;
 
   late CheckOutController controller;
-  late ActivityController controller1;
+  // late ActivityController controller1;
   // late OutlineInputBorder outlineInputBorder;
   late OutlineInputBorder outlineInputBorderenable;
   late OutlineInputBorder outlineInputBorderfocus;
@@ -87,7 +88,7 @@ class _CheckOutScreenState extends State<CheckOutScreen>
     theme = AppTheme.shoppingTheme;
 
     controller = FxControllerStore.put(CheckOutController(this));
-    controller1 = FxControllerStore.putOrFind(ActivityController(this));
+    // controller1 = FxControllerStore.putOrFind(ActivityController(this));
     // outlineInputBorder = const OutlineInputBorder(
     //   borderRadius: BorderRadius.all(Radius.circular(4)),
     //   borderSide: BorderSide(
@@ -105,11 +106,18 @@ class _CheckOutScreenState extends State<CheckOutScreen>
     );
   }
 
+  String? currencySymbol;
+  double? conversionRate;
+
   void initializingData() {
     SharedPreferences.getInstance().then((sharedPrefValue) {
       setState(() {
-        token = sharedPrefValue.getString(AppConstants.KEY_ACCESS_TOKEN)!;
-        log('checkout Toen:${token!}');
+        token = sharedPrefValue.getString(AppConstants.KEY_ACCESS_TOKEN);
+        log('checkout Toen:$token');
+        conversionRate = sharedPrefValue.getDouble(AppConstants.rate);
+        log('conversionRate:$conversionRate');
+        currencySymbol = sharedPrefValue.getString(AppConstants.symbol);
+        log('currencySymbol:$currencySymbol');
       });
     });
   }
@@ -214,6 +222,8 @@ class _CheckOutScreenState extends State<CheckOutScreen>
     );
   }
 
+  String? rateconversion;
+  String? rateselectedtourOption;
   Widget _billingWidget() {
     List<Widget> list = [];
     log('message');
@@ -224,6 +234,20 @@ class _CheckOutScreenState extends State<CheckOutScreen>
         itemCount: widget.length,
         shrinkWrap: true,
         itemBuilder: (context, index) {
+          // String? rateconversion;
+          // String? rateselectedtourOption;
+          log('amount not equal:${widget.totalAmount}');
+          if (conversionRate != null) {
+            log('ConersionRate:$conversionRate');
+            rateconversion = ((widget.selectedtourOption[index].grandTotal *
+                    conversionRate!))
+                .toStringAsFixed(2);
+            log('Rate:$rateconversion');
+            rateselectedtourOption =
+                ((widget.selectedtourOption[index].grandTotal *
+                        conversionRate!))
+                    .toStringAsFixed(2);
+          }
           return FadeTransition(
             opacity: controller.fadeAnimation,
             child: FxContainer(
@@ -279,7 +303,7 @@ class _CheckOutScreenState extends State<CheckOutScreen>
                       //       ),
                       widget.Transfer == null
                           ? FxText.bodyMedium(
-                              'without',
+                              'Private',
                               fontWeight: 700,
                             )
                           : FxText.bodyMedium(
@@ -404,7 +428,9 @@ class _CheckOutScreenState extends State<CheckOutScreen>
                         fontWeight: 600,
                       ),
                       FxText.bodyMedium(
-                        "${widget.selectedtourOption[index].grandTotal}AED",
+                        rateconversion.toString(),
+                        // '${((widget.selectedtourOption[index].grandTotal * conversionRate!)).toStringAsFixed(2)} $currencySymbol',
+                        // "${widget.selectedtourOption[index].grandTotal}AED",
                         fontWeight: 700,
                       ),
                     ],
@@ -437,7 +463,10 @@ class _CheckOutScreenState extends State<CheckOutScreen>
                       ),
                       FxText.bodyMedium(
                         // '\$' + controller.total.precise,
-                        "${widget.selectedtourOption[index].grandTotal}AED",
+                        // rateselectedtourOption,
+                        '$rateconversion $currencySymbol',
+                        // '${((widget.selectedtourOption[index].grandTotal * conversionRate!)).toStringAsFixed(2)} $currencySymbol',
+                        // "${widget.selectedtourOption[index].grandTotal}AED",
                         fontWeight: 800,
                         color: const Color(0xff1529e8),
                       ),
@@ -555,8 +584,8 @@ class _CheckOutScreenState extends State<CheckOutScreen>
                   child: PageView(
                     allowImplicitScrolling: true,
                     pageSnapping: true,
-                    physics: const AlwaysScrollableScrollPhysics(),
-                    // physics: const NeverScrollableScrollPhysics(),
+                    // physics: const AlwaysScrollableScrollPhysics(),
+                    physics: const NeverScrollableScrollPhysics(),
                     // physics: const ClampingScrollPhysics(),
                     controller: controller.pageController,
                     onPageChanged: (int page) {
@@ -828,92 +857,166 @@ class _CheckOutScreenState extends State<CheckOutScreen>
                           borderRadius: BorderRadius.circular(4)),
                       height: 45.0,
                       width: MediaQuery.of(context).size.width,
-                      // margin: const EdgeInsets.all(3.0),
-                      //width: 300.0,
                       child: DropdownButtonHideUnderline(
-                        child: ButtonTheme(
-                          alignedDropdown: true,
-                          child: DropdownButton(
-                            iconSize: 25.0,
-
-                            // dropdownColor: theme.cardTheme.color,
-                            dropdownColor: Colors.white,
-                            icon: const Icon(
-                              Icons.arrow_drop_down,
-                              color: Colors.black,
-                            ),
-                            value: controller.selectedcountry,
-                            // value: _selectedCountryCode,
-                            hint: Center(
-                              child: FxText.labelLarge(
-                                "Choose",
-                                fontWeight: 600,
-                                color: Colors.black,
-                                // color: theme.colorScheme.onPrimary,
-                                letterSpacing: 0.4,
+                        child: DropdownButton2(
+                          isExpanded: true,
+                          hint: Row(
+                            children: [
+                              Expanded(
+                                child: FxText.labelLarge(
+                                  "Choose Your Country",
+                                  fontWeight: 600,
+                                  color: Colors.black,
+                                  letterSpacing: 0.4,
+                                ),
                               ),
-                            ),
-                            items: controller.countryCodes.map((String value) {
-                              return DropdownMenuItem<String>(
-                                  value: value,
-                                  child: Center(
-                                    child: Text(
-                                      value,
-                                      style: FxTextStyle.bodyMedium(),
-                                    ),
-                                  ));
-                            }).toList(),
-                            onChanged: (value) {
-                              setState(() {
-                                controller.selectedcountry = value.toString();
-                              });
-                            },
-                            // items:
-                            //     // controller.countryCodes.map
-                            //     // _countryCodes.map
-                            //     // countryList.isNotEmpty &&
-                            //     //         countryList.first.countries!.isNotEmpty
-                            //     //     ? countryList.first.countries!.map((value) {
-                            //     //         return DropdownMenuItem<String>(
-                            //     //             value: value!.phonecode.toString(),
-                            //     //             child: Center(
-                            //     //               child: Text(
-                            //     //                 value.phonecode.toString(),
-                            //     //                 style: const TextStyle(
-                            //     //                     color: Colors.black,
-                            //     //                     fontSize: 20,
-                            //     //                     fontWeight: FontWeight.w500),
-                            //     //               ),
-                            //     //             ));
-                            //     //       }).toList()
-                            //     //     : [].map((value) {
-                            //     //         return DropdownMenuItem<String>(
-                            //     //             value: value,
-                            //     //             child: Center(
-                            //     //               child: Text(
-                            //     //                 value,
-                            //     //                 style: const TextStyle(
-                            //     //                     color: Colors.black,
-                            //     //                     fontSize: 20,
-                            //     //                     fontWeight: FontWeight.w500),
-                            //     //               ),
-                            //     //             ));
-                            //     //       }).toList(),
-                            // onChanged: (value) {
-                            //   setState(() {
-                            //     log(value.toString());
-                            //     controller.selectedCountryCode = value.toString();
-                            //     // _selectedCountryCode = value.toString();
-                            //   });
-                            // },
-                            style: FxTextStyle.bodyMedium(),
-                            // style: const TextStyle(
-                            //     color: Colors.black,
-                            //     fontSize: 20,
-                            //     fontWeight: FontWeight.w500),
+                            ],
                           ),
+                          items: countryList.isNotEmpty &&
+                                  countryList.first.countries.isNotEmpty
+                              ? countryList.first.countries.map((value) {
+                                  return DropdownMenuItem<String>(
+                                      value: value.id.toString(),
+                                      child: Center(
+                                        child: Text(
+                                          value.countryName.toString(),
+                                          style: FxTextStyle.bodyMedium(),
+                                        ),
+                                      ));
+                                }).toList()
+                              : [].map((value) {
+                                  return DropdownMenuItem<String>(
+                                      value: value,
+                                      child: Center(
+                                        child: Text(
+                                          value,
+                                          style: FxTextStyle.bodyMedium(),
+                                        ),
+                                      ));
+                                }).toList(),
+                          // value: controller.selectedCountryCode,
+                          // value: controller.selectedCountryCode1,
+                          value: controller.selectedCountryName,
+                          onChanged: (value) {
+                            setState(() {
+                              log('Country name:${value.toString()}');
+                              controller.selectedCountryName = value.toString();
+                              // controller.selectedNameCountry = value.toString();
+                              // controller.selectedcountry = value.toString();
+                            });
+                          },
+                          icon: const Icon(Icons.arrow_drop_down),
+                          iconSize: 20,
+                          iconEnabledColor: Colors.black,
+                          iconDisabledColor: Colors.black,
+                          buttonHeight: 30,
+                          buttonWidth: 200,
+                          buttonPadding: const EdgeInsets.only(
+                              left: 14, right: 14, top: 4, bottom: 4),
+                          dropdownDecoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(4),
+                            color: Colors.white,
+                          ),
+                          buttonDecoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: theme.cardTheme.color,
+                          ),
+                          itemHeight: 40,
+                          itemPadding:
+                              const EdgeInsets.only(left: 14, right: 14),
+                          dropdownMaxHeight: 200,
+                          dropdownPadding: null,
+                          scrollbarRadius: const Radius.circular(40),
+                          scrollbarThickness: 2,
+                          scrollbarAlwaysShow: true,
+                          offset: const Offset(0, 0),
                         ),
                       ),
+
+                      // child: DropdownButtonHideUnderline(
+                      //   child: ButtonTheme(
+                      //     alignedDropdown: true,
+                      //     child: DropdownButton(
+                      //       iconSize: 25.0,
+
+                      //       // dropdownColor: theme.cardTheme.color,
+                      //       dropdownColor: Colors.white,
+                      //       icon: const Icon(
+                      //         Icons.arrow_drop_down,
+                      //         color: Colors.black,
+                      //       ),
+                      //       value: controller.selectedcountry,
+                      //       // value: _selectedCountryCode,
+                      //       hint: Center(
+                      //         child: FxText.labelLarge(
+                      //           "Choose",
+                      //           fontWeight: 600,
+                      //           color: Colors.black,
+                      //           // color: theme.colorScheme.onPrimary,
+                      //           letterSpacing: 0.4,
+                      //         ),
+                      //       ),
+                      //       items: controller.countryCodes.map((String value) {
+                      //         return DropdownMenuItem<String>(
+                      //             value: value,
+                      //             child: Center(
+                      //               child: Text(
+                      //                 value,
+                      //                 style: FxTextStyle.bodyMedium(),
+                      //               ),
+                      //             ));
+                      //       }).toList(),
+                      //       onChanged: (value) {
+                      //         setState(() {
+                      //           controller.selectedcountry = value.toString();
+                      //         });
+                      //       },
+                      //       // items:
+                      //       //     // controller.countryCodes.map
+                      //       //     // _countryCodes.map
+                      //       //     // countryList.isNotEmpty &&
+                      //       //     //         countryList.first.countries!.isNotEmpty
+                      //       //     //     ? countryList.first.countries!.map((value) {
+                      //       //     //         return DropdownMenuItem<String>(
+                      //       //     //             value: value!.phonecode.toString(),
+                      //       //     //             child: Center(
+                      //       //     //               child: Text(
+                      //       //     //                 value.phonecode.toString(),
+                      //       //     //                 style: const TextStyle(
+                      //       //     //                     color: Colors.black,
+                      //       //     //                     fontSize: 20,
+                      //       //     //                     fontWeight: FontWeight.w500),
+                      //       //     //               ),
+                      //       //     //             ));
+                      //       //     //       }).toList()
+                      //       //     //     : [].map((value) {
+                      //       //     //         return DropdownMenuItem<String>(
+                      //       //     //             value: value,
+                      //       //     //             child: Center(
+                      //       //     //               child: Text(
+                      //       //     //                 value,
+                      //       //     //                 style: const TextStyle(
+                      //       //     //                     color: Colors.black,
+                      //       //     //                     fontSize: 20,
+                      //       //     //                     fontWeight: FontWeight.w500),
+                      //       //     //               ),
+                      //       //     //             ));
+                      //       //     //       }).toList(),
+                      //       // onChanged: (value) {
+                      //       //   setState(() {
+                      //       //     log(value.toString());
+                      //       //     controller.selectedCountryCode = value.toString();
+                      //       //     // _selectedCountryCode = value.toString();
+                      //       //   });
+                      //       // },
+                      //       style: FxTextStyle.bodyMedium(),
+                      //       // style: const TextStyle(
+                      //       //     color: Colors.black,
+                      //       //     fontSize: 20,
+                      //       //     fontWeight: FontWeight.w500),
+                      //     ),
+                      //   ),
+                      // ),
                     ),
                     FxSpacing.height(20),
                     FadeTransition(
@@ -1076,6 +1179,12 @@ class _CheckOutScreenState extends State<CheckOutScreen>
                               position: controller.phoneAnimation,
                               child: TextFormField(
                                 style: FxTextStyle.bodyMedium(),
+                                keyboardType: TextInputType.number,
+                                inputFormatters: [
+                                  FilteringTextInputFormatter.digitsOnly,
+                                  FilteringTextInputFormatter.allow(
+                                      RegExp(r'[0-9]'))
+                                ],
                                 decoration: InputDecoration(
                                     floatingLabelBehavior:
                                         FloatingLabelBehavior.never,
@@ -1254,7 +1363,18 @@ class _CheckOutScreenState extends State<CheckOutScreen>
     );
   }
 
+  String? rateconversion1;
   Widget paymentInfo() {
+    // String? rateconversion;
+    if (widget.totalAmount != null) {
+      log('amount not equal:${widget.totalAmount}');
+      if (conversionRate != null) {
+        log('ConersionRate:$conversionRate');
+        rateconversion1 =
+            ((widget.totalAmount! * conversionRate!)).toStringAsFixed(2);
+        log('Rate:$rateconversion');
+      }
+    }
     return Container(
       padding: FxSpacing.x(20),
       child: ListView(
@@ -1530,9 +1650,15 @@ class _CheckOutScreenState extends State<CheckOutScreen>
                       : controller.selectedPayment == 2
                           ? controller.nextPage(selectedExcursions, context,
                               widget.totalAmount, controller.token)
-                          : ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                  content: Text('Select payment method')));
+                          : CustomSnackbar.show(
+                              context: context,
+                              message: 'Select payment method',
+                              backgroundColor: const Color(0xff1529e8),
+                              duration: const Duration(seconds: 2),
+                            );
+              //  ScaffoldMessenger.of(context).showSnackBar(
+              //     const SnackBar(
+              //         content: Text('Select payment method')));
 
               // controller.initPlatformState();
             },
@@ -1548,16 +1674,25 @@ class _CheckOutScreenState extends State<CheckOutScreen>
                   fontWeight: 600,
                   color: theme.colorScheme.onPrimary,
                 ),
-                FxText.bodyMedium(
-                  ' ${widget.totalAmount} AED',
-                  // '${widget.selectedtourOption.first.GrandTotalAmount}',
-                  // '${widget.totalAmount} AED',
-                  // widget.finalAmount.toString(),
-                  // widget.TotalCalculation.toString(),
-                  // controller1.grandSelectedTourAmount().toString(),
-                  fontWeight: 700,
-                  color: theme.colorScheme.onPrimary,
-                ),
+                conversionRate == null
+                    ? FxText.bodyMedium(
+                        '0 AED',
+                        fontWeight: 700,
+                        color: theme.colorScheme.onPrimary,
+                      )
+                    : FxText.bodyMedium(
+                        // ' ${widget.totalAmount} AED',
+                        // rateconversion,
+                        '$rateconversion1 $currencySymbol',
+                        // '${((widget.totalAmount! * conversionRate!)).toStringAsFixed(2)} $currencySymbol',
+                        // '${widget.selectedtourOption.first.GrandTotalAmount}',
+                        // '${widget.totalAmount} AED',
+                        // widget.finalAmount.toString(),
+                        // widget.TotalCalculation.toString(),
+                        // controller1.grandSelectedTourAmount().toString(),
+                        fontWeight: 700,
+                        color: theme.colorScheme.onPrimary,
+                      )
               ],
             ),
           ),
@@ -1574,9 +1709,15 @@ class _CheckOutScreenState extends State<CheckOutScreen>
                         : controller.selectedPayment == 2
                             ? controller.nextPage(selectedExcursions, context,
                                 widget.totalAmount, controller.token)
-                            : ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                    content: Text('Select payment method')));
+                            : CustomSnackbar.show(
+                                context: context,
+                                message: 'Select payment method',
+                                backgroundColor: const Color(0xff1529e8),
+                                duration: const Duration(seconds: 2),
+                              );
+                    // : ScaffoldMessenger.of(context).showSnackBar(
+                    //     const SnackBar(
+                    //         content: Text('Select payment method')));
                   },
                   borderRadiusAll: 4,
                   elevation: 0,
@@ -1592,7 +1733,9 @@ class _CheckOutScreenState extends State<CheckOutScreen>
                         // color: theme.colorScheme.onPrimary,
                       ),
                       FxText.bodyMedium(
-                        ' ${widget.totalAmount} AED',
+                        // ' ${widget.totalAmount} AED',
+                        '$rateconversion1 $currencySymbol',
+                        // '${((widget.totalAmount! * conversionRate!)).toStringAsFixed(2)} $currencySymbol',
                         // '${widget.selectedtourOption.first.GrandTotalAmount}',
                         // '${widget.totalAmount} AED',
                         // widget.finalAmount.toString(),

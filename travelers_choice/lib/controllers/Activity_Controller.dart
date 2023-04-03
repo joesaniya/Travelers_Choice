@@ -4,11 +4,11 @@ import 'package:cc_avenue/cc_avenue.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutx/flutx.dart';
-
+// import 'package:global_snack_bar/global_snack_bar.dart';
 import 'package:hotel_travel/models/atteraction_model.dart';
 import 'package:hotel_travel/views/new_cart.dart';
 import 'package:intl/intl.dart';
-
+import '../card_widgets/customsnackbar.dart';
 import '../models/cart.dart';
 import '../views/checkout_screen.dart';
 import '../views/hotel_travel_constants.dart';
@@ -44,7 +44,7 @@ class ActivityController extends FxController {
 
   void updateTours(Activity tour) {
     log('updateTours Calling');
-    log('Selected Tour Date:${tour.selectedDate}');
+    // log('Selected Tour Date:${tour.selectedDate}');
 
     List<Activity> value =
         person_count.where((element) => element.sId == tour.sId).toList();
@@ -57,7 +57,8 @@ class ActivityController extends FxController {
       if (selectedtour.contains(tour)) {
         selectedtour.remove(tour);
       } else {
-        tour.grandTotal = tour.adultPrice!.toDouble();
+        tour.grandTotal = tour.lowPrice!.toDouble();
+        // tour.grandTotal = tour.adultPrice!.toDouble();
         selectedtour.add(tour);
       }
     } else {
@@ -72,7 +73,7 @@ class ActivityController extends FxController {
 
       print(person_count[index].grandTotal);
     }
-    log('Select:${selectedtour.map((e) => e.selectedDate)}');
+    // log('Select:${selectedtour.map((e) => e.selectedDate)}');
     update();
   }
 
@@ -83,9 +84,18 @@ class ActivityController extends FxController {
 
     for (Activity tour in selectedtour) {
       log('tour.grandTotal:${tour.grandTotal}');
-
-      amount = amount + (tour.grandTotal);
-      log('amount:$amount');
+      if (tour.privateTransfers!.isEmpty) {
+        log('no transfers');
+        amount = amount + (tour.grandTotal);
+      } else {
+        amount =
+            amount + (tour.grandTotal + tour.privateTransfers!.first.price);
+        // amount = amount + (tour.grandTotal);
+        log('amount:$amount');
+      }
+      // amount = amount + (tour.grandTotal + tour.privateTransfers!.first.price);
+      // // amount = amount + (tour.grandTotal);
+      // log('amount:$amount');
     }
 
     return amount;
@@ -264,6 +274,9 @@ class ActivityController extends FxController {
 
     if (tour.isPrivate) {
       amount = amount + tour.privateTransferPrice!;
+      // amount = amount +
+      //     tour.privateTransferPrice! +
+      //     tour.privateTransfers!.first.cost!.toDouble();
     }
     if (tour.isSharing) {
       amount = amount + tour.sharedTransferPrice!;
@@ -493,10 +506,10 @@ class ActivityController extends FxController {
     // log(selectedtour.length.toString());
     // log(selectedtour.first.name.toString());
     // log(selectedtour.first.adultCount.toString());
-    print(selectedtour.length);
-    print(selectedtour);
-    print(dateTE.text);
-    print(selectedtransfer);
+    log('Length:${selectedtour.length}');
+    log('Selected Tour:$selectedtour');
+    log('Dates:${dateTE.text}');
+    log('Selected Transfer$selectedtransfer');
 
     Navigator.of(context, rootNavigator: true).push(PageRouteBuilder(
         transitionDuration: const Duration(milliseconds: 500),
@@ -521,16 +534,26 @@ class ActivityController extends FxController {
   Future<void> goToCheckout() async {
     await Future.delayed(const Duration(seconds: 1));
     if (selectedtour.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text("Select Your Tour Option")));
+      // ScaffoldMessenger.of(context).showSnackBar(
+      //     const SnackBar(content: Text("Select Your Tour Option")));
+      CustomSnackbar.show(
+        context: context,
+        message: 'Select Your Tour Option',
+        backgroundColor: const Color(0xff1529e8),
+        duration: const Duration(seconds: 2),
+      );
     } else {
       // log(selectedtour.length.toString());
       // log(selectedtour.first.name.toString());
       // log(selectedtour.first.adultCount.toString());
-      print(selectedtour.length);
-      print(selectedtour);
-      print(dateTE.text);
-      print(selectedtransfer);
+      // print(selectedtour.length);
+      // print(selectedtour);
+      // print(dateTE.text);
+      // print(selectedtransfer);
+      log('Length:${selectedtour.length}');
+      log('Selected Tour:$selectedtour');
+      log('Dates:${dateTE.text}');
+      log('Selected Transfer$selectedtransfer');
       print(grandSelectedTourAmount());
       Navigator.of(context, rootNavigator: true).push(PageRouteBuilder(
           transitionDuration: const Duration(milliseconds: 500),
@@ -583,8 +606,14 @@ class ActivityController extends FxController {
   Future<void> goToCheckoutFromCart() async {
     await Future.delayed(const Duration(seconds: 1));
     if (selectedtour.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text("Select Your Tour Option")));
+      CustomSnackbar.show(
+        context: context,
+        message: 'Select Your Tour Option',
+        backgroundColor: const Color(0xff1529e8),
+        duration: const Duration(seconds: 2),
+      );
+      // ScaffoldMessenger.of(context).showSnackBar(
+      //     const SnackBar(content: Text("Select Your Tour Option")));
     } else {
       log(selectedtour.length.toString());
       log(selectedtour.first.name.toString());

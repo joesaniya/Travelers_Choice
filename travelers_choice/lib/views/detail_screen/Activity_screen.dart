@@ -8,10 +8,12 @@ import 'package:hotel_travel/extensions/extensions.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../card_widgets/customsnackbar.dart';
 import '../../controllers/Activity_controller.dart';
 import '../../controllers/checkout_controller.dart';
 import '../../loading_effect.dart';
 import '../../models/atteraction_model.dart';
+import '../../services/app_constants.dart';
 import '../../theme/app_theme.dart';
 import '../full_app.dart';
 
@@ -48,13 +50,26 @@ class _ActivityScreenState extends State<ActivityScreen>
   void initState() {
     super.initState();
     favouriteListCheck();
-    // initializingData();
+    initializingData();
     theme = AppTheme.shoppingTheme;
     var selectedData = widget.excursions;
 
     controller = FxControllerStore.put(ActivityController(this));
     controller1 = FxControllerStore.put(CheckOutController(this));
     print(controller.person_count);
+  }
+
+  String? currencySymbol;
+  double? conversionRate;
+  void initializingData() {
+    SharedPreferences.getInstance().then((sharedPrefValue) {
+      setState(() {
+        conversionRate = sharedPrefValue.getDouble(AppConstants.rate);
+        log('conversionRate:$conversionRate');
+        currencySymbol = sharedPrefValue.getString(AppConstants.symbol);
+        log('currencySymbol:$currencySymbol');
+      });
+    });
   }
 
   // void initializingData() {
@@ -103,7 +118,9 @@ class _ActivityScreenState extends State<ActivityScreen>
                   )),
                   FxText.bodyLarge(
                     // controller.selectedtour.first.GrandTotalAmount.toString(),
-                    '${controller.grandSelectedTourAmount().toString()} AED',
+                    // '${controller.grandSelectedTourAmount().toString()} AED',
+                    '${((controller.grandSelectedTourAmount() * conversionRate) as double).toStringAsFixed(2)} $currencySymbol',
+
                     fontWeight: 700,
                     color: const Color(0xff1529e8),
                   ),
@@ -272,7 +289,7 @@ class _ActivityScreenState extends State<ActivityScreen>
                 setState(() {});
 
                 controller.updateTours(widget.excursions[i]);
-                log('Count:${widget.excursions[i].adultCount}${widget.excursions[i].childCount}${widget.excursions[i].infantCount}');
+                // log('Count:${widget.excursions[i].adultCount}${widget.excursions[i].childCount}${widget.excursions[i].infantCount}');
 
                 ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                     content: !clickedExcursion
@@ -312,37 +329,37 @@ class _ActivityScreenState extends State<ActivityScreen>
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             GestureDetector(
-                              onTap: () {
-                                clickedExcursion = !clickedExcursion;
+                              // onTap: () {
+                              //   clickedExcursion = !clickedExcursion;
 
-                                setState(() {});
-                                // controller.updateTours(widget.excursions[i]);
-                                // controller1.addCart
-                                //     ? controller1.cartController.reverse()
-                                //     : controller1.cartController.forward();
+                              //   setState(() {});
+                              //   // controller.updateTours(widget.excursions[i]);
+                              //   // controller1.addCart
+                              //   //     ? controller1.cartController.reverse()
+                              //   //     : controller1.cartController.forward();
 
-                                //todo
-                                // if (controllerTE[i].text.isEmpty) {
-                                //   ScaffoldMessenger.of(context).showSnackBar(
-                                //       const SnackBar(
-                                //           content: Text("Select Your Date")));
-                                // } else {
-                                // selectedIndex = i;
-                                // controller.selectedtour
-                                //         .contains(widget.excursions[i])
-                                //     ? selectedIndex = i
-                                //     : selectedIndex = null;
-                                controller.updateTours(widget.excursions[i]);
-                                log('Count:${widget.excursions[i].adultCount}${widget.excursions[i].childCount}${widget.excursions[i].infantCount}');
+                              //   //todo
+                              //   // if (controllerTE[i].text.isEmpty) {
+                              //   //   ScaffoldMessenger.of(context).showSnackBar(
+                              //   //       const SnackBar(
+                              //   //           content: Text("Select Your Date")));
+                              //   // } else {
+                              //   // selectedIndex = i;
+                              //   // controller.selectedtour
+                              //   //         .contains(widget.excursions[i])
+                              //   //     ? selectedIndex = i
+                              //   //     : selectedIndex = null;
+                              //   controller.updateTours(widget.excursions[i]);
+                              //   log('Count:${widget.excursions[i].adultCount}${widget.excursions[i].childCount}${widget.excursions[i].infantCount}');
 
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                        content: !clickedExcursion
-                                            ? const Text(
-                                                "Added this Excursion!!")
-                                            : const Text(
-                                                "Removed this Excursion!!")));
-                              },
+                              //   ScaffoldMessenger.of(context).showSnackBar(
+                              //       SnackBar(
+                              //           content: !clickedExcursion
+                              //               ? const Text(
+                              //                   "Added this Excursion!!")
+                              //               : const Text(
+                              //                   "Removed this Excursion!!")));
+                              // },
                               child: AnimatedContainer(
                                 // height: 40 ?? 28,
                                 // width: 40 ?? 28,
@@ -394,7 +411,9 @@ class _ActivityScreenState extends State<ActivityScreen>
                             children: [
                               FxText.bodySmall('per person*'),
                               FxText.bodyLarge(
-                                '${widget.excursions[i].lowPrice.toString()} AED',
+                                '${((widget.excursions[i].lowPrice * conversionRate) as double).toStringAsFixed(2)} $currencySymbol',
+
+                                // '${widget.excursions[i].lowPrice.toString()} AED',
                                 fontWeight: 900,
                               )
                             ],
@@ -752,6 +771,35 @@ class _ActivityScreenState extends State<ActivityScreen>
                                         ),
                                       ],
                                     ),
+                                    // FxSpacing.height(4),
+                                    // Row(
+                                    //   mainAxisAlignment:
+                                    //       MainAxisAlignment.spaceBetween,
+                                    //   children: [
+                                    //     FxText.bodyMedium(
+                                    //       'Private Cost',
+                                    //       fontWeight: 600,
+                                    //     ),
+                                    //     widget
+                                    //                 .excursions[i]
+                                    //                 .privateTransfers![i]
+                                    //                 .cost ==
+                                    //             null
+                                    //         ? FxText.bodyMedium(
+                                    //             '0.0',
+                                    //             fontWeight: 700,
+                                    //           )
+                                    //         : FxText.bodyMedium(
+                                    //             widget.excursions[i]
+                                    //                 .privateTransfers![i].cost!
+                                    //                 .toStringAsFixed(1),
+
+                                    //             // '${((widget.excursions[i].privateTransfers![i].cost! * conversionRate!)).toStringAsFixed(2)} $currencySymbol',
+                                    //             fontWeight: 700,
+                                    //           ),
+                                    //   ],
+                                    // ),
+
                                     // if (cart.isPrivate) FxSpacing.height(4),
                                     // if (cart.isPrivate) cost(cart, isPrivate: true),
                                     // if (cart.isSharing) FxSpacing.height(4),
@@ -819,11 +867,12 @@ class _ActivityScreenState extends State<ActivityScreen>
                                         ),
                                         FxText.bodyMedium(
                                           // '\$' + controller.total.precise,
-                                          controller
-                                              .getGrandTotal(
-                                                  widget.excursions[i])
-                                              .toString(),
-                                          // controller.products.
+                                          // controller
+                                          //     .getGrandTotal(
+                                          //         widget.excursions[i])
+                                          //     .toString(),
+                                          '${((controller.getGrandTotal(widget.excursions[i]) * conversionRate!)).toStringAsFixed(2)} $currencySymbol',
+
                                           fontWeight: 800,
                                           color: const Color(0xff1529e8),
                                         ),
@@ -1077,6 +1126,7 @@ class _ActivityScreenState extends State<ActivityScreen>
       );
     } else {
       return Scaffold(
+        backgroundColor: const Color(0xfff5f5f5),
         appBar: AppBar(
           leading: InkWell(
             onTap: () {
@@ -1085,7 +1135,8 @@ class _ActivityScreenState extends State<ActivityScreen>
             child: Icon(
               FeatherIcons.chevronLeft,
               size: 20,
-              color: theme.colorScheme.onBackground,
+              // color: theme.colorScheme.onBackground,
+              color: Colors.white,
             ).autoDirection(),
           ),
           elevation: 0,
@@ -1093,10 +1144,11 @@ class _ActivityScreenState extends State<ActivityScreen>
           title: FxText.titleMedium(
             'Tour Options',
             fontWeight: 700,
+            color: Colors.white,
           ),
           centerTitle: true,
         ),
-        backgroundColor: const Color(0xfff5f5f5),
+        // backgroundColor: const Color(0xfff5f5f5),
         body: Stack(
           children: [
             _buildCartList(),
@@ -1147,6 +1199,18 @@ class _ActivityScreenState extends State<ActivityScreen>
                                       favouriteListCart;
                                       isSelected = !isSelected;
                                     });
+                                    // controller.selectedtour.first
+                                    //             .selectedDate ==
+                                    //         null
+                                    //     ? CustomSnackbar.show(
+                                    //         context: context,
+                                    //         message: 'Select Your Tour date',
+                                    //         backgroundColor:
+                                    //             const Color(0xff1529e8),
+                                    //         duration:
+                                    //             const Duration(seconds: 2),
+                                    //       )
+                                    //     : controller.goToCheckout();
                                     controller.goToCheckout();
                                   },
                                   child: Stack(
@@ -1193,8 +1257,20 @@ class _ActivityScreenState extends State<ActivityScreen>
                                     onPressed: () {
                                       // token == null
                                       //     ? controller.Login()
-                                      //     :
-                                      controller.goToCheckout1();
+                                      //
+                                      controller.selectedtour.first
+                                                  .selectedDate ==
+                                              null
+                                          ? CustomSnackbar.show(
+                                              context: context,
+                                              message: 'Select Your Tour date',
+                                              backgroundColor:
+                                                  const Color(0xff1529e8),
+                                              duration:
+                                                  const Duration(seconds: 2),
+                                            )
+                                          : controller.goToCheckout1();
+                                      // controller.goToCheckout1();
                                       // favouriteListCart
                                       //     .add(controller.selectedtour as Activity);
                                     },
@@ -1268,6 +1344,43 @@ Widget personCount(controller, cart, setState, theme,
           FxContainer(
             onTap: () async {
               controller.personCountFn(cart,
+                  isAdult: isAdult, isChild: isChild, isInfant: isInfant);
+              setState(() {});
+            },
+            paddingAll: 4,
+            borderRadiusAll: 2,
+            bordered: isDefault(controller, cart,
+                isAdult: isAdult, isChild: isChild, isInfant: isInfant),
+            //  controller.decreaseAble(cart),
+            border: Border.all(color: const Color(0xff1529e8).withAlpha(120)),
+            color: isDefault(controller, cart,
+                    isAdult: isAdult, isChild: isChild, isInfant: isInfant)
+                ? const Color(0xff1529e8).withAlpha(28)
+                : theme.colorScheme.onBackground.withAlpha(200),
+            child: Icon(
+              FeatherIcons.minus,
+              size: 12,
+              color: isDefault(controller, cart,
+                      isAdult: isAdult, isChild: isChild, isInfant: isInfant)
+                  ? const Color(0xff1529e8)
+                  // theme.colorScheme.primary
+                  : theme.colorScheme.onPrimary,
+            ),
+          ),
+          FxSpacing.width(15),
+          FxSpacing.height(8),
+          FxText.bodyMedium(
+            controller
+                .getCounts(cart.sId,
+                    isAdult: isAdult, isChild: isChild, isInfant: isInfant)
+                .toString(),
+            fontWeight: 700,
+          ),
+          FxSpacing.height(8),
+          FxSpacing.width(15),
+          FxContainer(
+            onTap: () async {
+              controller.personCountFn(cart,
                   isIncrement: true,
                   isChild: isChild,
                   isAdult: isAdult,
@@ -1299,43 +1412,6 @@ Widget personCount(controller, cart, setState, theme,
                       isInfant: isInfant,
                       isIncrement: true)
                   ? theme.colorScheme.onPrimary
-                  : theme.colorScheme.onPrimary,
-            ),
-          ),
-          FxSpacing.width(15),
-          FxSpacing.height(8),
-          FxText.bodyMedium(
-            controller
-                .getCounts(cart.sId,
-                    isAdult: isAdult, isChild: isChild, isInfant: isInfant)
-                .toString(),
-            fontWeight: 700,
-          ),
-          FxSpacing.height(8),
-          FxSpacing.width(15),
-          FxContainer(
-            onTap: () async {
-              controller.personCountFn(cart,
-                  isAdult: isAdult, isChild: isChild, isInfant: isInfant);
-              setState(() {});
-            },
-            paddingAll: 4,
-            borderRadiusAll: 2,
-            bordered: isDefault(controller, cart,
-                isAdult: isAdult, isChild: isChild, isInfant: isInfant),
-            //  controller.decreaseAble(cart),
-            border: Border.all(color: const Color(0xff1529e8).withAlpha(120)),
-            color: isDefault(controller, cart,
-                    isAdult: isAdult, isChild: isChild, isInfant: isInfant)
-                ? const Color(0xff1529e8).withAlpha(28)
-                : theme.colorScheme.onBackground.withAlpha(200),
-            child: Icon(
-              FeatherIcons.minus,
-              size: 12,
-              color: isDefault(controller, cart,
-                      isAdult: isAdult, isChild: isChild, isInfant: isInfant)
-                  ? const Color(0xff1529e8)
-                  // theme.colorScheme.primary
                   : theme.colorScheme.onPrimary,
             ),
           ),

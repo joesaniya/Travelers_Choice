@@ -4,17 +4,17 @@
 
 import 'dart:convert';
 
-AllAttractionOrders allAttractionOrdersFromJson(String ? str) =>
+AllAttractionOrders allAttractionOrdersFromJson(String? str) =>
     AllAttractionOrders.fromJson(json.decode(str!));
 
-String ? allAttractionOrdersToJson(AllAttractionOrders data) =>
+String? allAttractionOrdersToJson(AllAttractionOrders data) =>
     json.encode(data.toJson());
 
 class AllAttractionOrders {
   AllAttractionOrders({
     this.result,
-     this.skip,
-     this.limit,
+    this.skip,
+    this.limit,
   });
 
   Result? result;
@@ -23,7 +23,7 @@ class AllAttractionOrders {
 
   factory AllAttractionOrders.fromJson(Map<String, dynamic> json) =>
       AllAttractionOrders(
-        result: Result.fromJson(json["result"]??{}),
+        result: Result.fromJson(json["result"] ?? {}),
         skip: json["skip"],
         limit: json["limit"],
       );
@@ -38,8 +38,8 @@ class AllAttractionOrders {
 class Result {
   Result({
     this.id,
-     this.totalOrders,
-     this.data,
+    this.totalOrders,
+    this.data,
   });
 
   dynamic? id;
@@ -49,7 +49,10 @@ class Result {
   factory Result.fromJson(Map<String, dynamic> json) => Result(
         id: json["_id"],
         totalOrders: json["totalOrders"],
-        data: List<Datum>.from(json["data"]!.map((x) => Datum.fromJson(x))),
+        data: json["data"] != null
+            ? List<Datum>.from(json["data"]!.map((x) => Datum.fromJson(x)))
+            : <Datum>[],
+        // data: List<Datum>.from(json["data"]!.map((x) => Datum.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
@@ -61,31 +64,31 @@ class Result {
 
 class Datum {
   Datum({
-     this.id,
-     this.activities,
-     this.totalAmount,
-     this.orderStatus,
-     this.name,
-     this.email,
-     this.phoneNumber,
-     this.country,
-     this.referenceNumber,
-     this.createdAt,
-     this.updatedAt,
-     this.attraction,
+    this.id,
+    this.activities,
+    this.totalAmount,
+    this.orderStatus,
+    this.name,
+    this.email,
+    this.phoneNumber,
+    this.country,
+    this.referenceNumber,
+    this.createdAt,
+    this.updatedAt,
+    this.attraction,
   });
 
   String? id;
   Activities? activities;
-  int ? totalAmount;
-  String ? orderStatus;
-  String ? name;
-  String ? email;
-  String ? phoneNumber;
+  int? totalAmount;
+  String? orderStatus;
+  String? name;
+  String? email;
+  String? phoneNumber;
   Country? country;
-  String ? referenceNumber;
-  DateTime ?  createdAt;
-  DateTime ?  updatedAt;
+  String? referenceNumber;
+  DateTime? createdAt;
+  DateTime? updatedAt;
   Attraction? attraction;
 
   factory Datum.fromJson(Map<String, dynamic> json) => Datum(
@@ -121,37 +124,37 @@ class Datum {
 
 class Activities {
   Activities({
-     this.bookingType,
-     this.activity,
-     this.date,
-     this.adultsCount,
-     this.childrenCount,
-     this.infantCount,
-     this.transferType,
-     this.adultTickets,
-     this.childTickets,
-     this.status,
-     this.profit,
-     this.offerAmount,
-     this.isRefunded,
-     this.id,
-     this.destination,
+    this.bookingType,
+    this.activity,
+    this.date,
+    this.adultsCount,
+    this.childrenCount,
+    this.infantCount,
+    this.transferType,
+    this.adultTickets,
+    this.childTickets,
+    this.status,
+    this.profit,
+    this.offerAmount,
+    this.isRefunded,
+    this.id,
+    this.destination,
   });
 
-  String ? bookingType;
+  String? bookingType;
   Activity? activity;
-  DateTime ?  date;
-  int ? adultsCount;
-  int ? childrenCount;
-  int ? infantCount;
-  String ? transferType;
+  DateTime? date;
+  int? adultsCount;
+  int? childrenCount;
+  int? infantCount;
+  String? transferType;
   List<dynamic>? adultTickets;
   List<dynamic>? childTickets;
-  String ? status;
-  int ? profit;
-  int ? offerAmount;
+  String? status;
+  int? profit;
+  int? offerAmount;
   bool? isRefunded;
-  String ? id;
+  String? id;
   Activity? destination;
 
   factory Activities.fromJson(Map<String, dynamic> json) => Activities(
@@ -193,10 +196,10 @@ class Activities {
 
 class Activity {
   Activity({
-     this.name,
+    this.name,
   });
 
-  String ? name;
+  String? name;
 
   factory Activity.fromJson(Map<String, dynamic> json) => Activity(
         name: json["name"],
@@ -209,11 +212,11 @@ class Activity {
 
 class Attraction {
   Attraction({
-     this.title,
-     this.images,
+    this.title,
+    this.images,
   });
 
-  String ? title;
+  String? title;
   List<String>? images;
 
   factory Attraction.fromJson(Map<String, dynamic> json) => Attraction(
@@ -229,26 +232,26 @@ class Attraction {
 
 class Country {
   Country({
-     this.id,
-     this.countryName,
-     this.isocode,
-     this.phonecode,
-     this.flag,
-     this.isDeleted,
-     this.createdAt,
-     this.updatedAt,
-     this.v,
+    this.id,
+    this.countryName,
+    this.isocode,
+    this.phonecode,
+    this.flag,
+    this.isDeleted,
+    this.createdAt,
+    this.updatedAt,
+    this.v,
   });
 
-  String ? id;
-  String ? countryName;
-  String ? isocode;
-  String ? phonecode;
-  String ? flag;
+  String? id;
+  String? countryName;
+  String? isocode;
+  String? phonecode;
+  String? flag;
   bool? isDeleted;
-  DateTime ?  createdAt;
-  DateTime ?  updatedAt;
-  int ? v;
+  DateTime? createdAt;
+  DateTime? updatedAt;
+  int? v;
 
   factory Country.fromJson(Map<String, dynamic> json) => Country(
         id: json["_id"],
@@ -257,8 +260,8 @@ class Country {
         phonecode: json["phonecode"],
         flag: json["flag"],
         isDeleted: json["isDeleted"],
-        createdAt: DateTime .parse(json["createdAt"]),
-        updatedAt: DateTime .parse(json["updatedAt"]),
+        createdAt: DateTime.parse(json["createdAt"]),
+        updatedAt: DateTime.parse(json["updatedAt"]),
         v: json["__v"],
       );
 

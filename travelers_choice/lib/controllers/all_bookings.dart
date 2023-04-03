@@ -15,7 +15,7 @@ import '../views/hotel_travel_constants.dart';
 import '../views/view_order.dart';
 import 'package:path_provider/path_provider.dart' as path;
 import 'package:dio/dio.dart';
-
+import '../card_widgets/customsnackbar.dart';
 class AllBookingController extends FxController {
   TickerProvider ticker;
   AllBookingController(this.ticker);
@@ -141,8 +141,8 @@ class AllBookingController extends FxController {
     update();
   }
 
-  void openPDF(BuildContext context, File file) => Navigator.of(context).push(
-        MaterialPageRoute(builder: (context) => PDFViewerPage(file: file)),
+  void openPDF(BuildContext context, File file,String orderId,String ActivityId) => Navigator.of(context).push(
+        MaterialPageRoute(builder: (context) => PDFViewerPage(file: file,IdOrder:orderId,IdActivity: ActivityId)),
       );
   void downloadBtn(String orderId, String ActivityId) async {
     log('Donloadbtn Calling....');
@@ -178,8 +178,14 @@ class AllBookingController extends FxController {
       log(jsondata['error']);
       print(jsondata['error']);
       //snackbar
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text(jsondata['error'])));
+      CustomSnackbar.show(
+        context: context,
+        message: jsondata['error'],
+        backgroundColor: Color(0xff1529e8),
+        duration: Duration(seconds: 2),
+      );
+      // ScaffoldMessenger.of(context)
+      //     .showSnackBar(SnackBar(content: Text(jsondata['error'])));
       return null;
     }
   }

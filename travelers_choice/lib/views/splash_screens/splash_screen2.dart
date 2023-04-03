@@ -30,31 +30,40 @@ class _SplashScreen2State extends State<SplashScreen2> {
         builder: (controller) {
           return Scaffold(
             body:
-            Container(
-              child: Image.asset("assets/other/splash_screen.png",
-                fit: BoxFit.fill,
-                width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height,
+                // Container(
+                //   child: Image.asset("assets/other/splash_screen.png",
+                //     fit: BoxFit.fill,
+                //     width: MediaQuery.of(context).size.width,
+                //   height: MediaQuery.of(context).size.height,
+                //   ),
+                // )
+                Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    child: Image.asset(
+                      "assets/other/tctt-logo.png",
+                      fit: BoxFit.fill,
+                      width: 200,
+                      height: 200,
+                    ),
+                  ),
+
+                  // Hero(
+                  //   tag: "splash_username",
+                  //   child: FxText.titleLarge(
+                  //     'Welcome To Travelers Choice App',
+                  //     // "Hey Nency,",
+                  //     fontWeight: 700,
+                  //   ),
+                  // ),
+                  // FxText.bodySmall(
+                  //   "Wait here, we are fetching data",
+                  // ),
+                ],
               ),
-            )
-            // Center(
-            //   child: Column(
-            //     mainAxisAlignment: MainAxisAlignment.center,
-            //     children: [
-            //       Hero(
-            //         tag: "splash_username",
-            //         child: FxText.titleLarge(
-            //           'Welcome To Traveler\s Choice App',
-            //           // "Hey Nency,",
-            //           fontWeight: 700,
-            //         ),
-            //       ),
-            //       FxText.bodySmall(
-            //         "Wait here, we are fetching data",
-            //       ),
-            //     ],
-            //   ),
-            // ),
+            ),
           );
         });
   }

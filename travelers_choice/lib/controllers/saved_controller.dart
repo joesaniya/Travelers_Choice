@@ -45,6 +45,8 @@ class SavedController extends FxController {
     '20'
   ];
 
+  String? currencies, countryCode;
+
   @override
   void initState() {
     super.initState();
