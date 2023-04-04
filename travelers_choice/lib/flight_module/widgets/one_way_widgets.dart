@@ -59,10 +59,12 @@ class _OneWayWidgetsState extends State<OneWayWidgets>
       list.add(FadeTransition(
           opacity: controller.fadeAnimation,
           child: SizedBox(
-            width: size.width * 0.85,
+            // width: size.width * 0.85,
+            width: MediaQuery.of(context).size.width,
             height: 169,
             child: Container(
-              margin: const EdgeInsets.only(left: 16),
+              // margin: const EdgeInsets.only(left: 16),
+              margin: const EdgeInsets.symmetric(horizontal: 20),
               child: Column(
                 children: [
                   Container(
@@ -72,19 +74,22 @@ class _OneWayWidgetsState extends State<OneWayWidgets>
                             topLeft: Radius.circular(21),
                             topRight: Radius.circular(21)),
                         color: iscolorful == null
-                            ? const Color(0xFF526799)
+                            ? const Color(0xff1529e8).withAlpha(40)
+                            // const Color(0xFF526799)
                             : Colors.white),
                     child: Column(
                       children: [
                         Row(
                           children: [
-                            Text(
+                            FxText.bodyMedium(
                               // "${ticket_map["from"]["code"]}",
                               ticket1.fcode,
-                              style: iscolorful == null
-                                  ? Styles.headlinestyle3
-                                      .copyWith(color: Colors.white)
-                                  : Styles.headlinestyle3,
+                              color: const Color(0xff1529e8),
+                              fontWeight: 900,
+                              // style: iscolorful == null
+                              //     ? Styles.headlinestyle3
+                              //         .copyWith(color: Colors.white)
+                              //     : Styles.headlinestyle3,
                             ),
                             Expanded(child: Container()),
                             CircularContainer(
@@ -110,7 +115,8 @@ class _OneWayWidgetsState extends State<OneWayWidgets>
                                                     style: TextStyle(
                                                         color:
                                                             iscolorful == null
-                                                                ? Colors.white
+                                                                ? Colors.black
+                                                                // Colors.white
                                                                 : Colors.grey
                                                                     .shade300),
                                                   )),
@@ -123,7 +129,8 @@ class _OneWayWidgetsState extends State<OneWayWidgets>
                                     child: Icon(
                                       Icons.local_airport_outlined,
                                       color: iscolorful == null
-                                          ? Colors.white
+                                          ? Colors.black
+                                          // Colors.white
                                           : const Color(0xFF8ACCF7),
                                     ),
                                   ),
@@ -134,13 +141,15 @@ class _OneWayWidgetsState extends State<OneWayWidgets>
                               iscolorful: true,
                             ),
                             const Spacer(),
-                            Text(
+                            FxText.bodyMedium(
                               // "${ticket_map["to"]["code"]}",
                               ticket1.fcode,
-                              style: iscolorful == null
-                                  ? Styles.headlinestyle3
-                                      .copyWith(color: Colors.white)
-                                  : Styles.headlinestyle3,
+                              color: const Color(0xff1529e8),
+                              fontWeight: 900,
+                              // style: iscolorful == null
+                              //     ? Styles.headlinestyle3
+                              //         .copyWith(color: Colors.white)
+                              //     : Styles.headlinestyle3,
                             )
                           ],
                         ),
@@ -148,29 +157,36 @@ class _OneWayWidgetsState extends State<OneWayWidgets>
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text(
+                            FxText.bodyMedium(
                               // "${ticket_map["from"]["name"]}",
                               ticket1.fname,
-                              style: iscolorful == null
-                                  ? Styles.headlinestyle4
-                                      .copyWith(color: Colors.white)
-                                  : Styles.headlinestyle4,
+                              color: const Color(0xff1529e8),
+                              fontWeight: 900,
+                              // style: iscolorful == null
+                              //     ? Styles.headlinestyle4
+                              //         .copyWith(color: Colors.white)
+                              //     : Styles.headlinestyle4,
                             ),
-                            Text(
+                            FxText.bodyMedium(
                               // "${ticket_map["flying_time"]}",
-                              ticket1.flyingtime,
-                              style: iscolorful == null
-                                  ? Styles.headlinestyle4
-                                      .copyWith(color: Colors.white)
-                                  : Styles.headlinestyle4,
+                              // ticket1.flyingtime,
+                              '8h 40m',
+                              color: const Color(0xff1529e8),
+                              fontWeight: 900,
+                              // style: iscolorful == null
+                              //     ? Styles.headlinestyle4
+                              //         .copyWith(color: Colors.white)
+                              //     : Styles.headlinestyle4,
                             ),
-                            Text(
+                            FxText.bodyMedium(
                               // "${ticket_map["to"]["name"]}",
                               ticket1.fname,
-                              style: iscolorful == null
-                                  ? Styles.headlinestyle4
-                                      .copyWith(color: Colors.white)
-                                  : Styles.headlinestyle4,
+                              color: const Color(0xff1529e8),
+                              fontWeight: 900,
+                              // style: iscolorful == null
+                              //     ? Styles.headlinestyle4
+                              //         .copyWith(color: Colors.white)
+                              //     : Styles.headlinestyle4,
                             ),
                           ],
                         )
@@ -178,8 +194,10 @@ class _OneWayWidgetsState extends State<OneWayWidgets>
                     ),
                   ),
                   Container(
-                    color:
-                        iscolorful == null ? Styles.orangecolor : Colors.white,
+                    color: iscolorful == null
+                        ? const Color(0xff1529e8)
+                        // Styles.orangecolor
+                        : Colors.white,
                     child: Row(
                       children: [
                         const SizedBox(
@@ -244,7 +262,8 @@ class _OneWayWidgetsState extends State<OneWayWidgets>
                                 ? const Radius.circular(21)
                                 : const Radius.circular(0)),
                         color: iscolorful == null
-                            ? Styles.orangecolor
+                            ? const Color(0xff1529e8)
+                            // Styles.orangecolor
                             : Colors.white),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -473,47 +492,52 @@ class _OneWayWidgetsState extends State<OneWayWidgets>
           //   ],
           // ),
 
-          Container(
-            margin: const EdgeInsets.symmetric(horizontal: 20),
-            // height: 70,
-            padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-            width: double.infinity,
-            decoration: BoxDecoration(
-              color: Colors.grey.shade200,
-              borderRadius: const BorderRadius.all(Radius.circular(7)),
-              border: Border.all(color: Colors.black12, width: 1),
-            ),
-            child: Row(
-              children: [
-                const Icon(
-                  LineIcons.planeDeparture,
-                  size: 29,
-                ),
-                FxSpacing.width(10),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    FxText.labelMedium('FROM'),
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        FxText.labelLarge(
-                          'New Delhi',
-                          fontWeight: 900,
-                          fontSize: 15,
-                          color: Colors.black,
-                        ),
-                        FxSpacing.width(10),
-                        FxText.labelMedium('DEL')
-                      ],
-                    ),
-                    FxText.labelMedium(
-                        'Chhatrapati Sivaji International Airport'),
-                  ],
-                )
-              ],
+          GestureDetector(
+            onTap: () {
+              controller.fromairport();
+            },
+            child: Container(
+              margin: const EdgeInsets.symmetric(horizontal: 20),
+              // height: 70,
+              padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+              width: double.infinity,
+              decoration: BoxDecoration(
+                color: Colors.grey.shade200,
+                borderRadius: const BorderRadius.all(Radius.circular(7)),
+                border: Border.all(color: Colors.black12, width: 1),
+              ),
+              child: Row(
+                children: [
+                  const Icon(
+                    LineIcons.planeDeparture,
+                    size: 29,
+                  ),
+                  FxSpacing.width(10),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      FxText.labelMedium('FROM'),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          FxText.labelLarge(
+                            'New Delhi',
+                            fontWeight: 900,
+                            fontSize: 15,
+                            color: Colors.black,
+                          ),
+                          FxSpacing.width(10),
+                          FxText.labelMedium('DEL')
+                        ],
+                      ),
+                      FxText.labelMedium(
+                          'Chhatrapati Sivaji International Airport'),
+                    ],
+                  )
+                ],
+              ),
             ),
           ),
           FxSpacing.height(20),
@@ -789,28 +813,34 @@ class _OneWayWidgetsState extends State<OneWayWidgets>
 
           FxSpacing.height(20),
 
-          Container(
-            margin: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 15),
-            height: 50,
-            width: MediaQuery.of(context).size.width,
-            decoration: const BoxDecoration(
-              borderRadius: BorderRadius.all(Radius.circular(6)),
-              gradient: LinearGradient(
-                begin: Alignment.centerLeft,
-                end: Alignment.centerRight,
-                colors: <Color>[
-                  Color(0xff1529e8),
-                  Color(0xff5c69e0),
-                ],
+          GestureDetector(
+            onTap: () {
+              controller.searchflights();
+            },
+            child: Container(
+              margin:
+                  const EdgeInsets.symmetric(horizontal: 20.0, vertical: 15),
+              height: 50,
+              width: MediaQuery.of(context).size.width,
+              decoration: const BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(6)),
+                gradient: LinearGradient(
+                  begin: Alignment.centerLeft,
+                  end: Alignment.centerRight,
+                  colors: <Color>[
+                    Color(0xff1529e8),
+                    Color(0xff5c69e0),
+                  ],
+                ),
               ),
-            ),
-            child: Center(
-              child: FxText.bodyMedium(
-                'Search Flights',
-                color: Colors.white,
-                // color: customTheme.estateOnPrimary,
-                fontWeight: 700,
-                fontSize: 20,
+              child: Center(
+                child: FxText.bodyMedium(
+                  'Search Flights',
+                  color: Colors.white,
+                  // color: customTheme.estateOnPrimary,
+                  fontWeight: 700,
+                  fontSize: 20,
+                ),
               ),
             ),
           ),
@@ -843,6 +873,14 @@ class _OneWayWidgetsState extends State<OneWayWidgets>
           //               TicketView(ticket_map: ticketinfomap))
           //           .toList()),
           // ),
+
+          Container(
+              margin: const EdgeInsets.symmetric(horizontal: 20),
+              child: FxText.bodyLarge(
+                'UPCOMING FLIGHTS',
+                fontWeight: 900,
+              )),
+          FxSpacing.height(7),
           SingleChildScrollView(
             scrollDirection: Axis.vertical,
             child: _buildProductList(),

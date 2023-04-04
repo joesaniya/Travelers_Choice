@@ -63,7 +63,7 @@ class PlacesStaggeredView extends StatelessWidget {
                           fit: BoxFit.fill,
                           image: AssetImage(places[index]["image"]),
                         ),
-                        borderRadius: BorderRadius.all(Radius.circular(12.0)),
+                        borderRadius: const BorderRadius.all(Radius.circular(12.0)),
                       ),
                     ))),
         // child: StaggeredGridView.countBuilder(

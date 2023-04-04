@@ -2,9 +2,12 @@ import 'dart:developer';
 import 'package:date_picker_timeline/date_picker_timeline.dart';
 import 'package:flutter/material.dart';
 import 'package:flutx/flutx.dart';
+import 'package:hotel_travel/flight_module/views/flight_list.dart';
+import 'package:hotel_travel/models/Country_modal.dart';
 
 import '../../models/tickets.dart';
 import '../../views/hotel_travel_constants.dart';
+import '../views/destination.dart';
 
 class OneWayController extends FxController {
   TickerProvider ticker;
@@ -65,6 +68,24 @@ class OneWayController extends FxController {
     log('selectedCategory:$tickets');
 
     update();
+  }
+
+  void fromairport() {
+    log('calling from');
+    Navigator.of(context, rootNavigator: true).pushReplacement(
+      PageRouteBuilder(
+          transitionDuration: const Duration(seconds: 2),
+          pageBuilder: (_, __, ___) =>  DestinationAirport()),
+    );
+  }
+
+  void searchflights() {
+    log('calling search flights');
+    Navigator.of(context, rootNavigator: true).pushReplacement(
+      PageRouteBuilder(
+          transitionDuration: const Duration(seconds: 2),
+          pageBuilder: (_, __, ___) => const FlightList()),
+    );
   }
 
   // // This function will be triggered when the floating button is pressed
