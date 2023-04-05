@@ -1,0 +1,27 @@
+[
+    {
+        "Destname": "Mumbai",
+        "Airportname": "Chhatrapati Sivaji International Airport",
+        "Airportcode": "BOM"
+    },
+    {
+        "Destname": "Bengaluru",
+        "Airportname": "Bengaluru International Airport",
+        "Airportcode": "BLR"
+    },
+    {
+        "Destname": "Mumbai",
+        "Airportname": "Chhatrapati Sivaji International Airport",
+        "Airportcode": "BOM"
+    },
+    {
+        "Destname": "Bangkok",
+        "Airportname": "Bangkok",
+        "Airportcode": "BKK"
+    },
+    {
+        "Destname": "Pune",
+        "Airportname": "Pune Airport",
+        "Airportcode": "PNQ"
+    }
+]

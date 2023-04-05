@@ -8,6 +8,7 @@ import 'package:hotel_travel/models/Country_modal.dart';
 import '../../models/tickets.dart';
 import '../../views/hotel_travel_constants.dart';
 import '../views/destination.dart';
+import '../views/seat_page.dart';
 
 class OneWayController extends FxController {
   TickerProvider ticker;
@@ -75,7 +76,16 @@ class OneWayController extends FxController {
     Navigator.of(context, rootNavigator: true).pushReplacement(
       PageRouteBuilder(
           transitionDuration: const Duration(seconds: 2),
-          pageBuilder: (_, __, ___) =>  DestinationAirport()),
+          pageBuilder: (_, __, ___) => const DestinationAirport()),
+    );
+  }
+
+  void Bookseat() {
+    log('calling Book Seat');
+    Navigator.of(context, rootNavigator: true).pushReplacement(
+      PageRouteBuilder(
+          transitionDuration: const Duration(seconds: 2),
+          pageBuilder: (_, __, ___) => const SeatPage()),
     );
   }
 

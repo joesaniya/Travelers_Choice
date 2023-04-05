@@ -104,7 +104,6 @@ dependencies:
   get: ^4.6.5
   gap: ^2.0.1
 
-
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -136,6 +135,9 @@ flutter:
 
     #Profiles
     - assets/images/profile/
+
+    #seat
+    - assets/seat/
 
     #Shopping
     - assets/images/apps/shopping/

@@ -3,6 +3,9 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutx/flutx.dart';
 
+import '../../models/plane.dart';
+import '../../views/hotel_travel_constants.dart';
+
 class DestinationController extends FxController {
   TickerProvider ticker;
   DestinationController(this.ticker);
@@ -15,6 +18,10 @@ class DestinationController extends FxController {
   int fromCounter = 0;
   int toCounter = 0;
   bool uiLoading = true;
+  List<Planes>? planes;
+  String fromto = '1';
+
+  List<Planes>? foundCompany;
 
   void fetchloader() async {
     await Future.delayed(const Duration(seconds: 4));
@@ -25,10 +32,20 @@ class DestinationController extends FxController {
     update();
   }
 
+  void fetchData() {
+    planes = HotelTravelCache.planes;
+
+    log('selectedplanes:$planes');
+
+    update();
+  }
+
   @override
   void initState() {
     super.initState();
+    fetchData();
     fetchloader();
+    foundCompany = planes;
     FromTE = TextEditingController();
     toTE = TextEditingController();
     animationController = AnimationController(
