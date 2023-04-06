@@ -3,7 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutx/flutx.dart';
-import 'package:hotel_travel/extensions/extensions.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 import '../../loading_effect.dart';
 import '../../models/tickets.dart';
@@ -30,6 +30,67 @@ class _FlightListState extends State<FlightList> with TickerProviderStateMixin {
     theme1 = AppTheme.learningTheme;
     controller = FxControllerStore.put(FlightListController(this));
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {});
+  }
+
+  List<Widget> _buildType() {
+    List<Widget> choices = [];
+    for (var item in controller.flightnameList) {
+      bool selected = controller.selectedChoices.contains(item);
+      if (selected) {
+        choices.add(GestureDetector(
+          onTap: () {
+            controller.removeChoice(item);
+            setState(() {});
+          },
+          child: Container(
+              margin: const EdgeInsets.symmetric(horizontal: 6, vertical: 10),
+              width: 70,
+              decoration: BoxDecoration(
+                  // color: Color(0xff1529e8),
+                  color: Colors.white,
+                  borderRadius: const BorderRadius.all(Radius.circular(5)),
+                  border: Border.all(
+                    width: 1,
+                    color: const Color(0xff1529e8),
+                  )),
+              padding: const EdgeInsets.all(8),
+              child: Align(
+                alignment: Alignment.center,
+                child: FxText.bodySmall(
+                  item,
+                  fontSize: 11,
+                  color: const Color(0xff1529e8),
+                  // color: theme.colorScheme.primary,
+                ),
+              )),
+        ));
+      } else {
+        choices.add(GestureDetector(
+          onTap: () {
+            controller.addChoice(item);
+            setState(() {});
+          },
+          child: Container(
+            margin: const EdgeInsets.symmetric(horizontal: 6, vertical: 10),
+            width: 70,
+            decoration: const BoxDecoration(
+                color: Color(0xff1529e8),
+                borderRadius: BorderRadius.all(Radius.circular(5))),
+            padding: const EdgeInsets.all(8),
+            child: Align(
+              alignment: Alignment.center,
+              child: FxText.bodySmall(
+                item,
+                color: Colors.white,
+                // color: theme.colorScheme.onBackground,
+                fontSize: 11,
+              ),
+            ),
+          ),
+        ));
+      }
+    }
+    return choices;
   }
 
   Widget _buildProductList() {
@@ -161,63 +222,329 @@ class _FlightListState extends State<FlightList> with TickerProviderStateMixin {
     } else {
       return Scaffold(
         backgroundColor: const Color(0xfff5f5f5),
-        appBar: AppBar(
-          elevation: 0,
-          title: FxText.titleMedium(
-            'Flight\'s List',
-            color: Colors.white,
-            fontWeight: 700,
-          ),
-          centerTitle: true,
-          automaticallyImplyLeading: false,
-          leading: InkWell(
-            onTap: () {
-              controller.goBack(canRefresh: true);
-            },
-            child: const Icon(
-              FeatherIcons.chevronLeft,
-              size: 20,
-            ).autoDirection(),
-          ),
-        ),
+        // appBar: AppBar(
+        //   elevation: 0,
+        //   title: FxText.titleMedium(
+        //     'Flight\'s List',
+        //     color: Colors.white,
+        //     fontWeight: 700,
+        //   ),
+        //   centerTitle: true,
+        //   automaticallyImplyLeading: false,
+        //   leading: InkWell(
+        //     onTap: () {
+        //       controller.goBack(canRefresh: true);
+        //     },
+        //     child: const Icon(
+        //       FeatherIcons.chevronLeft,
+        //       size: 20,
+        //     ).autoDirection(),
+        //   ),
+        // ),
         body: SafeArea(
           child: _buildSearch(),
+        ),
+        // body: Stack(children: [
+        //   _buildSearch(),
+        //   Positioned(
+        //       bottom: 0,
+        //       left: 0,
+        //       right: 0,
+        //       child: Container(
+        //         padding: FxSpacing.xy(12, 8),
+        //         child: PhysicalModel(
+        //           color: theme.cardTheme.color!.withAlpha(200),
+        //           elevation: 12,
+        //           borderRadius: const BorderRadius.all(Radius.circular(32)),
+        //           shadowColor: theme.colorScheme.onBackground.withAlpha(12),
+        //           shape: BoxShape.rectangle,
+        //           child: Container(
+        //             decoration: BoxDecoration(
+        //               color: theme.cardTheme.color!.withAlpha(200),
+        //               borderRadius: const BorderRadius.all(Radius.circular(32)),
+        //             ),
+        //             padding: FxSpacing.xy(16, 12),
+        //             child: const Text('data'),
+        //           ),
+        //         ),
+        //       ))
+        // ]),
+        bottomNavigationBar: Container(
+          padding: const EdgeInsets.only(left: 20, right: 20, bottom: 20),
+          color: Colors.transparent,
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(20),
+            child: Container(
+              height: 70,
+              // color: Colors.grey.shade500,
+              color: const Color(0xff1529e8).withAlpha(40),
+              child: Row(
+                children: [
+                  Expanded(
+                      child: Container(
+                    child: ListView(
+                      scrollDirection: Axis.horizontal,
+
+                      // children: List.generate(
+                      //   controller.flightnameList.length,
+                      //   (index) {
+                      //     return Container(
+                      //       margin: const EdgeInsets.symmetric(
+                      //           horizontal: 6, vertical: 10),
+                      //       width: 70,
+                      //       decoration: const BoxDecoration(
+                      //           color: Color(0xff1529e8),
+                      //           borderRadius:
+                      //               BorderRadius.all(Radius.circular(5))),
+                      //       // padding: const EdgeInsets.all(8),
+                      //       child: ChoiceChip(
+                      //         labelPadding: const EdgeInsets.all(2.0),
+                      //         label: FxText.bodySmall(
+                      //             controller.flightnameList[index],
+                      //             color:
+                      //                 controller.defaultChoiceIndex == index
+                      //                     ? Colors.white
+                      //                     : Colors.red,
+                      //             fontSize: 14),
+                      //         selected:
+                      //             controller.defaultChoiceIndex == index,
+                      //         selectedColor: const Color(0xff1529e8),
+                      //         onSelected: (value) {
+                      //           setState(() {
+                      //             controller.defaultChoiceIndex = value
+                      //                 ? index
+                      //                 : controller.defaultChoiceIndex;
+
+                      //             log('index:${controller.defaultChoiceIndex.toString()}');
+                      //           });
+                      //         },
+                      //         elevation: 1,
+                      //       ),
+                      //     );
+                      //   },
+                      // )
+                      children: _buildType(),
+                    ),
+                  )),
+                  Container(
+                    color: Colors.blue,
+                    padding: FxSpacing.xy(12, 8),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        const Icon(
+                          FeatherIcons.sliders,
+                          color: Colors.white,
+                        ),
+                        FxText(
+                          'Sort & Filter',
+                          color: Colors.white,
+                        )
+                      ],
+                    ),
+                  )
+                ],
+              ),
+            ),
+          ),
         ),
       );
     }
   }
 
   Widget _buildSearch() {
-    return Padding(
-      // padding: const EdgeInsets.only(left: 16.0),
-      padding: const EdgeInsets.symmetric(horizontal: 16),
-      child: ListView(
-        // crossAxisAlignment: CrossAxisAlignment.start,
-        shrinkWrap: true,
-        physics: const AlwaysScrollableScrollPhysics(),
-        children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 7),
-            child: FxText.bodyMedium(
-              "Best Deals for Next 6 Months",
-              fontWeight: 900,
+    return ListView(
+      // crossAxisAlignment: CrossAxisAlignment.start,
+      shrinkWrap: true,
+      physics: const AlwaysScrollableScrollPhysics(),
+      padding: FxSpacing.fromLTRB(
+          16,
+          //  FxSpacing.safeAreaTop(context) + 16,
+          5,
+          16,
+          20),
+      children: <Widget>[
+        //     controller.adddate
+        //         ? Navigator.of(context, rootNavigator: true).pushReplacement(
+        //   PageRouteBuilder(
+        //       transitionDuration: const Duration(seconds: 2),
+        //       pageBuilder: (_, __, ___) => const FlightHomeScreen()),
+        // )
+        //         :
+        Container(
+          // padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+            color: theme.cardTheme.color,
+            border: Border.all(width: 1, color: Colors.grey.shade300),
+            boxShadow: [
+              BoxShadow(
+                // color: Colors.grey.shade400,
+                color: const Color(0xff1529e8).withOpacity(0.4),
+                blurRadius: 2,
+                offset: const Offset(0, 3),
+              ),
+            ],
+          ),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4),
+            child: Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.pop(context);
+                      },
+                      child: const Icon(
+                        // FeatherIcons.chevronLeft,
+                        Icons.arrow_back,
+                        size: 30,
+                        color: Colors.black,
+                      ),
+                    ),
+                    FxSpacing.width(10),
+                    Expanded(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                              FxText.bodyMedium(
+                                'Kochi to NewDelhi',
+                                fontSize: 20,
+                                fontWeight: 700,
+                                color: Colors.black,
+                              ),
+                              FxSpacing.width(20),
+                              Container(
+                                  child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  FxContainer(
+                                    onTap: () {
+                                      controller.Edit();
+                                      // log('g');
+                                      // Navigator.push(
+                                      //     context,
+                                      //     MaterialPageRoute(
+                                      //         builder: (context) =>
+                                      //             const FlightHomeScreen()));
+                                      // controller.adddate
+                                      //     ? controller.cartController
+                                      //         .reverse()
+                                      //     : controller.cartController
+                                      //         .forward();
+                                    },
+                                    padding: FxSpacing.fromLTRB(8, 6, 8, 6),
+                                    color:
+                                        const Color(0xff1529e8).withAlpha(40),
+                                    child: Row(
+                                      // mainAxisSize: MainAxisSize.min,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        FxText.bodyMedium("Edit",
+                                            color: const Color(0xff1529e8),
+                                            fontWeight: 500,
+                                            letterSpacing: -0.2),
+                                        FxSpacing.width(5),
+                                        const Icon(
+                                          MdiIcons.pen,
+                                          size: 14,
+                                          color: Color(0xff1529e8),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                  FxSpacing.width(10),
+                                ],
+                              ))
+                            ],
+                          ),
+                          FxSpacing.height(7),
+                          Row(
+                            children: [
+                              FxText.bodyMedium(
+                                '05 Apr',
+                                fontSize: 15,
+                                fontWeight: 500,
+                                color: Colors.black54,
+                              ),
+                              FxSpacing.width(5),
+                              Container(
+                                height: 20,
+                                width: 3,
+                                color: Colors.black54,
+                              ),
+                              FxSpacing.width(5),
+                              FxText.bodyMedium(
+                                '1 Adult',
+                                fontSize: 15,
+                                fontWeight: 500,
+                                color: Colors.black54,
+                              ),
+                              // const VerticalDivider(
+                              //   color: Colors.black, //color of divider
+                              //   width: 10, //width space of divider
+                              //   thickness: 3, //thickness of divier line
+                              //   indent: 10, //Spacing at the top of divider.
+                              //   endIndent:
+                              //       10, //Spacing at the bottom of divider.
+                              // ),
+                              FxSpacing.width(5),
+                              Container(
+                                height: 20,
+                                width: 3,
+                                color: Colors.black54,
+                              ),
+                              FxSpacing.width(5),
+                              FxText.bodyMedium(
+                                'Economy/Premium Class',
+                                fontSize: 15,
+                                fontWeight: 500,
+                                color: Colors.black54,
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ],
             ),
           ),
-          FxSpacing.height(10),
-          _buildProductList()
-          // _flightCard(),
-          // _reservationsItem()
-          // _buildDealsList()
-          // StreamBuilder(
-          //   stream: flightListBloc.dealsStream,
-          //   builder: (context, snapshot) {
-          //     return !snapshot.hasData
-          //         ? Center(child: CircularProgressIndicator())
-          //         : _buildDealsList(context, snapshot.data.documents);
-          //   },
-          // ),
-        ],
-      ),
+        ),
+        FxSpacing.height(20),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 7),
+          child: FxText.bodyMedium(
+            "Best Deals for Next 6 Months",
+            fontWeight: 900,
+          ),
+        ),
+        FxSpacing.height(10),
+        _buildProductList()
+        // _flightCard(),
+        // _reservationsItem()
+        // _buildDealsList()
+        // StreamBuilder(
+        //   stream: flightListBloc.dealsStream,
+        //   builder: (context, snapshot) {
+        //     return !snapshot.hasData
+        //         ? Center(child: CircularProgressIndicator())
+        //         : _buildDealsList(context, snapshot.data.documents);
+        //   },
+        // ),
+      ],
     );
   }
 

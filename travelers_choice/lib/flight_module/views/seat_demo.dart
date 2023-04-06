@@ -6,7 +6,10 @@ import 'package:hotel_travel/extensions/extensions.dart';
 import '../../loading_effect.dart';
 import '../../theme/app_theme.dart';
 import '../controller/seat_page_controller.dart';
+import '../widgets/acronym_custom_text.dart';
+import '../widgets/active_info_text.dart';
 import '../widgets/flight_logo.dart';
+import '../widgets/inactive_custom_text.dart';
 import '../widgets/total_seat.dart';
 
 class SeatPage extends StatefulWidget {
@@ -79,140 +82,98 @@ class _SeatPageState extends State<SeatPage> with TickerProviderStateMixin {
           //   child: Container(),
           //   // child: _buildColumn(),
           // ),
-          body: Padding(
+          body: ListView(
             padding: FxSpacing.fromLTRB(
                 20, FxSpacing.safeAreaTop(context) + 20, 20, 20),
-            child: Column(
-              // padding: FxSpacing.fromLTRB(
-              //     20, FxSpacing.safeAreaTop(context) + 20, 20, 20),
-              children: [
-                title(),
-                sitstatus(),
-                seat(),
-              ],
-            ),
-          ));
-    }
-  }
-
-  Widget seat() {
-    return Expanded(
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Stack(
             children: [
-              const Image(
-                image: AssetImage('assets/seat/plane_layout.png'),
-              ),
-              Positioned(
-                  left: 0.0,
-                  top: 140.0,
-                  bottom: 0.0,
-                  right: 10.0,
-                  child: Column(
-                    children: [
-                      const EmiratesLogo(),
-                      FxSpacing.height(15),
-                      FxText.bodyMedium(
-                        '5h 46m',
-                        fontWeight: 900,
-                        color: Colors.black,
+              title(),
+              sitstatus(),
+              Expanded(
+                child: SizedBox(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Stack(
+                        children: <Widget>[
+                          const Image(
+                            image: AssetImage('assets/seat/plane_layout.png'),
+                          ),
+                          Positioned(
+                            left: 0.0,
+                            top: 140.0,
+                            bottom: 0.0,
+                            right: 10.0,
+                            child: Column(
+                              children: <Widget>[
+                                FxText.bodyMedium(
+                                  '5h 46m',
+                                  fontWeight: 900,
+                                  color: Colors.black,
+                                ),
+                                FxSpacing.height(25),
+                                FxText.bodyMedium(
+                                  'Economy',
+                                  fontWeight: 900,
+                                  color: Colors.black,
+                                ),
+                                // Text(
+                                //   '${ticket.bookingClass} Class',
+                                //   style: TextStyle(color: kAccentColor),
+                                // ),
+                              ],
+                            ),
+                          ),
+                          Positioned(
+                            left: 32.0,
+                            top: 225.0,
+                            bottom: 0.0,
+                            right: 10.0,
+                            child: Column(
+                              children: const <Widget>[
+                                TotalSeats(),
+                              ],
+                            ),
+                          ),
+                        ],
                       ),
-                      FxSpacing.height(25),
-                      FxText.bodyMedium(
-                        'Economy',
-                        fontWeight: 900,
-                        color: Colors.black,
-                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: <Widget>[
+                          const SizedBox(height: 65.0),
+                          AcronymCustomText(
+                              text: ticket.substring(0, 3).toUpperCase()),
+                          ActiveInfoCustomText(text: 'Delhi'),
+                          const SizedBox(height: 20.0),
+                          EmiratesLogo(),
+                          ActiveInfoCustomText(text: 'ticket.duration'),
+                          const SizedBox(height: 30.0),
+                          AcronymCustomText(
+                              text: ticket.substring(0, 3).toUpperCase()),
+                          ActiveInfoCustomText(text: ticket),
+                          const SizedBox(height: 30.0),
+                          InactiveInfoCustomText(text: 'FLIGHT NO'),
+                          const SizedBox(height: 5.0),
+                          ActiveInfoCustomText(text: ' ticket.flightNumber'),
+                          const SizedBox(height: 30.0),
+                          AcronymCustomText(text: 'ticket.seatNumber'),
+                          ActiveInfoCustomText(text: 'Seat'),
+                        ],
+                      )
                     ],
-                  )),
-              Positioned(
-                left: 32.0,
-                top: 225.0,
-                bottom: 0.0,
-                right: 10.0,
-                child: Column(
-                  children: const <Widget>[
-                    // TotalSeats(),
-                  ],
+                  ),
                 ),
               ),
             ],
-          ),
-          Expanded(
-            // flex: 4,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: <Widget>[
-                const SizedBox(height: 65.0),
-                FxText.bodyMedium(
-                  'KAR',
-                  fontSize: 20,
-                ),
-                FxText.bodyMedium(
-                  'Karachi',
-                  fontSize: 18,
-                  fontWeight: 900,
-                ),
-                const SizedBox(height: 20.0),
-                // const EmiratesLogo(),
-                FxText.bodyMedium(
-                  '9h 28m',
-                  fontSize: 18,
-                  fontWeight: 900,
-                ),
-                const SizedBox(height: 30.0),
-                FxText.bodyMedium(
-                  'ADA',
-                  fontSize: 20,
-                ),
-                FxText.bodyMedium(
-                  'Adana',
-                  fontSize: 18,
-                  fontWeight: 900,
-                ),
-                const SizedBox(height: 30.0),
-                FxText.bodyMedium(
-                  'FLIGHT NO',
-                  fontSize: 18,
-                  fontWeight: 900,
-                ),
-                const SizedBox(height: 5.0),
-                FxText.bodyMedium(
-                  'SQ60',
-                  fontSize: 18,
-                  fontWeight: 600,
-                  color: Colors.indigo,
-                ),
-                const SizedBox(height: 30.0),
-                FxText.bodyMedium(
-                  'Seat',
-                  fontSize: 18,
-                  fontWeight: 900,
-                ),
-                FxText.bodyMedium(
-                  'T5',
-                  fontSize: 18,
-                  fontWeight: 900,
-                ),
-              ],
-            ),
-          )
-        ],
-      ),
-    );
+          ));
+    }
   }
 
   Widget title() {
     return Container(
       // margin: const EdgeInsets.only(top: 50),
-      child: Align(
-        alignment: Alignment.centerLeft,
-        child: FxText(
-          'Select Your Favorite\nSeat',
-          // style: blackTextStyle.copyWith(fontSize: 24, fontWeight: semibold),
-        ),
+      child: FxText(
+        'Select Your Favorite\nSeat',
+        // style: blackTextStyle.copyWith(fontSize: 24, fontWeight: semibold),
       ),
     );
   }

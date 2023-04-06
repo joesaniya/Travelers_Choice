@@ -5,6 +5,7 @@ import 'package:flutx/flutx.dart';
 
 import '../../models/tickets.dart';
 import '../../views/hotel_travel_constants.dart';
+import '../views/flight_home_screen.dart';
 
 class FlightListController extends FxController {
   TickerProvider ticker;
@@ -12,11 +13,45 @@ class FlightListController extends FxController {
   bool uiLoading = true;
   late AnimationController animationController;
   List<Tickets>? tickets;
+  bool adddate = false;
+  String tabbed = '1';
   late AnimationController cartController;
   late Animation<double> cartAnimation, fadeAnimation;
+  final List<String> flightnameList = [
+    'Non Stop',
+    'Morning Departures',
+    'Indigo',
+    'Vistara',
+    'Air India',
+    'Go First',
+    'Air Asia',
+    'Late Departures',
+    '1 Stop'
+  ];
+  List<String> selectedChoices = [];
+  int? defaultChoiceIndex;
 
   void goBack({bool? canRefresh}) {
     Navigator.pop(context, canRefresh);
+  }
+
+  void addChoice(String item) {
+    selectedChoices.add(item);
+    update();
+  }
+
+  void removeChoice(String item) {
+    selectedChoices.remove(item);
+    update();
+  }
+
+  void Edit() {
+    log('Edit Calling');
+    Navigator.of(context, rootNavigator: true).pushReplacement(
+      PageRouteBuilder(
+          transitionDuration: const Duration(seconds: 2),
+          pageBuilder: (_, __, ___) => const FlightHomeScreen()),
+    );
   }
 
   void fetchloader() async {
@@ -32,6 +67,7 @@ class FlightListController extends FxController {
   void initState() {
     fetchData();
     fetchloader();
+    defaultChoiceIndex = 0;
     animationController = AnimationController(
       duration: const Duration(seconds: 3),
       vsync: ticker,
@@ -53,6 +89,16 @@ class FlightListController extends FxController {
       ),
     );
 
+    cartController.addStatusListener((status) {
+      if (status == AnimationStatus.completed) {
+        adddate = true;
+        update();
+      }
+      if (status == AnimationStatus.dismissed) {
+        adddate = false;
+        update();
+      }
+    });
     animationController.forward();
   }
 
@@ -67,7 +113,7 @@ class FlightListController extends FxController {
   @override
   void dispose() {
     animationController.dispose();
-
+    cartController.dispose();
     super.dispose();
   }
 
