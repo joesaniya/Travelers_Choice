@@ -13,6 +13,7 @@ import '../utils/app_styles.dart';
 import 'package:gap/gap.dart';
 
 import 'circula_container.dart';
+import 'upcoming_flights.dart';
 
 class OneWayWidgets extends StatefulWidget {
   const OneWayWidgets({super.key});
@@ -881,17 +882,19 @@ class _OneWayWidgetsState extends State<OneWayWidgets>
           //           .toList()),
           // ),
 
-          Container(
-              margin: const EdgeInsets.symmetric(horizontal: 20),
-              child: FxText.bodyLarge(
-                'UPCOMING FLIGHTS',
-                fontWeight: 900,
-              )),
-          FxSpacing.height(7),
-          SingleChildScrollView(
-            scrollDirection: Axis.vertical,
-            child: _buildProductList(),
-          ),
+          const UpcomingFlights()
+
+          // Container(
+          //     margin: const EdgeInsets.symmetric(horizontal: 20),
+          //     child: FxText.bodyLarge(
+          //       'UPCOMING FLIGHTS',
+          //       fontWeight: 900,
+          //     )),
+          // FxSpacing.height(7),
+          // SingleChildScrollView(
+          //   scrollDirection: Axis.vertical,
+          //   child: _buildProductList(),
+          // ),
         ]);
   }
 }

@@ -17,6 +17,33 @@ class FlightListController extends FxController {
   String tabbed = '1';
   late AnimationController cartController;
   late Animation<double> cartAnimation, fadeAnimation;
+
+  //customdate
+  DateTime selectedDate = DateTime.now(); // TO tracking date
+
+  int currentDateSelectedIndex = 0; //For Horizontal Date
+  ScrollController scrollController =
+      ScrollController(); //To Track Scroll of ListView
+
+  List<String> listOfMonths = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec"
+  ];
+
+  List<String> listOfDays = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+
+  //
+
   final List<String> flightnameList = [
     'Non Stop',
     'Morning Departures',
@@ -63,11 +90,19 @@ class FlightListController extends FxController {
     update();
   }
 
+  void scrollListener() {
+    if (scrollController.offset >= scrollController.position.maxScrollExtent &&
+        !scrollController.position.outOfRange) {
+      // Load more data
+    }
+  }
+
   @override
   void initState() {
     fetchData();
     fetchloader();
     defaultChoiceIndex = 0;
+    scrollController.addListener(scrollListener);
     animationController = AnimationController(
       duration: const Duration(seconds: 3),
       vsync: ticker,
@@ -114,6 +149,8 @@ class FlightListController extends FxController {
   void dispose() {
     animationController.dispose();
     cartController.dispose();
+    scrollController.removeListener(scrollListener);
+    scrollController.dispose();
     super.dispose();
   }
 

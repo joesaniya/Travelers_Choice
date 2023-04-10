@@ -8,6 +8,7 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 import '../../loading_effect.dart';
 import '../../models/tickets.dart';
 import '../../theme/app_theme.dart';
+import '../bottomsheet/sort_filter_sheet.dart';
 import '../controller/flight_list_controller.dart';
 import '../widgets/flight_detail_chip.dart';
 
@@ -326,22 +327,32 @@ class _FlightListState extends State<FlightList> with TickerProviderStateMixin {
                       children: _buildType(),
                     ),
                   )),
-                  Container(
-                    color: Colors.blue,
-                    padding: FxSpacing.xy(12, 8),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        const Icon(
-                          FeatherIcons.sliders,
-                          color: Colors.white,
-                        ),
-                        FxText(
-                          'Sort & Filter',
-                          color: Colors.white,
-                        )
-                      ],
+                  GestureDetector(
+                    onTap: () async {
+                      var data = await showModalBottomSheet(
+                          context: context,
+                          builder: (BuildContext buildContext) {
+                            return const SortFilterSheet();
+                          });
+                      setState(() {});
+                    },
+                    child: Container(
+                      color: Colors.blue,
+                      padding: FxSpacing.xy(12, 8),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          const Icon(
+                            FeatherIcons.sliders,
+                            color: Colors.white,
+                          ),
+                          FxText(
+                            'Sort & Filter',
+                            color: Colors.white,
+                          )
+                        ],
+                      ),
                     ),
                   )
                 ],
@@ -523,6 +534,88 @@ class _FlightListState extends State<FlightList> with TickerProviderStateMixin {
             ),
           ),
         ),
+        FxSpacing.height(20),
+        //customdate
+        Container(
+            height: 30,
+            margin: const EdgeInsets.only(left: 10),
+            alignment: Alignment.centerLeft,
+            child: Text(
+              '${controller.selectedDate.day}-${controller.listOfMonths[controller.selectedDate.month - 1]}, ${controller.selectedDate.year}',
+              style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w800,
+                  color: Colors.indigo[700]),
+            )),
+        const SizedBox(height: 10),
+        //To show Calendar Widget
+        SizedBox(
+            // height: 80,
+            // height: 95,
+            height: 60,
+            child: Container(
+                child: ListView.separated(
+              separatorBuilder: (BuildContext context, int index) {
+                return const SizedBox(width: 10);
+              },
+              itemCount: 365,
+              shrinkWrap: true,
+              physics: const BouncingScrollPhysics(),
+              controller: controller.scrollController,
+              scrollDirection: Axis.horizontal,
+              itemBuilder: (BuildContext context, int index) {
+                return InkWell(
+                  onTap: () {
+                    setState(() {
+                      controller.currentDateSelectedIndex = index;
+                      controller.selectedDate =
+                          DateTime.now().add(Duration(days: index));
+                    });
+                  },
+                  child: Container(
+                    // height: 80,
+                    // width: 60,
+                    padding: FxSpacing.xy(12, 8),
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8),
+                        boxShadow: [
+                          BoxShadow(
+                              color: Colors.grey.shade400,
+                              offset: const Offset(3, 3),
+                              blurRadius: 5)
+                        ],
+                        border: Border.all(
+                            color: controller.currentDateSelectedIndex == index
+                                ? Colors.transparent
+                                : Colors.grey.shade300,
+                            width: 1),
+                        color: controller.currentDateSelectedIndex == index
+                            ? const Color(0xff1529e8)
+                            : Colors.white),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          '${controller.listOfDays[DateTime.now().add(Duration(days: index)).weekday - 1].toString()}${controller.listOfMonths[DateTime.now().add(Duration(days: index)).month - 1].toString()} ${DateTime.now().add(Duration(days: index)).day.toString()}',
+                          style: TextStyle(
+                              fontSize: 16,
+                              color:
+                                  controller.currentDateSelectedIndex == index
+                                      ? Colors.white
+                                      : Colors.grey),
+                        ),
+                        FxSpacing.height(5),
+                        FxText.bodySmall('200 AED',
+                            color: controller.currentDateSelectedIndex == index
+                                ? Colors.white
+                                : Colors.grey)
+                      ],
+                    ),
+                  ),
+                );
+              },
+            ))),
         FxSpacing.height(20),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 7),

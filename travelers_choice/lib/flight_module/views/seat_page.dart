@@ -7,7 +7,6 @@ import '../../loading_effect.dart';
 import '../../theme/app_theme.dart';
 import '../controller/seat_page_controller.dart';
 import '../widgets/flight_logo.dart';
-import '../widgets/total_seat.dart';
 
 class SeatPage extends StatefulWidget {
   const SeatPage({super.key});
@@ -28,6 +27,41 @@ class _SeatPageState extends State<SeatPage> with TickerProviderStateMixin {
     theme1 = AppTheme.learningTheme;
     controller = FxControllerStore.put(SeatPageController(this));
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {});
+  }
+
+  Widget seatWidget(int seatNum) {
+    return Expanded(
+      flex: 1,
+      child: Container(
+        margin: const EdgeInsets.all(4),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(5),
+          color: Colors.white,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.5),
+              spreadRadius: 2,
+              blurRadius: 4,
+              offset: const Offset(1, 3), // changes position of shadow
+            ),
+          ],
+        ),
+        child: Material(
+          color: Colors.transparent,
+          child: InkWell(
+            onTap: () {
+              print("Seat Click: $seatNum");
+            },
+            child: Center(
+              child: Text(
+                (seatNum < 9 ? '0' : '') + seatNum.toString(),
+                style: const TextStyle(color: Colors.red, fontSize: 18),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
   }
 
   @override
@@ -129,12 +163,184 @@ class _SeatPageState extends State<SeatPage> with TickerProviderStateMixin {
                   )),
               Positioned(
                 left: 32.0,
-                top: 225.0,
+                // top: 225.0,
+                top: 280,
                 bottom: 0.0,
                 right: 10.0,
                 child: Column(
-                  children: const <Widget>[
+                  children: <Widget>[
                     // TotalSeats(),
+                    Expanded(
+                        child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 60),
+                      child: Column(
+                        children: [
+                          Expanded(
+                            flex: 1,
+                            child: Row(
+                              mainAxisSize: MainAxisSize.max,
+                              children: [
+                                seatWidget(1),
+                                seatWidget(2),
+                                const Spacer(
+                                  flex: 1,
+                                ),
+                                seatWidget(3),
+                                seatWidget(4),
+                              ],
+                            ),
+                          ),
+                          Expanded(
+                            flex: 1,
+                            child: Row(
+                              mainAxisSize: MainAxisSize.max,
+                              children: [
+                                seatWidget(5),
+                                seatWidget(6),
+                                const Spacer(
+                                  flex: 1,
+                                ),
+                                seatWidget(7),
+                                seatWidget(8),
+                              ],
+                            ),
+                          ),
+                          Expanded(
+                            flex: 1,
+                            child: Row(
+                              mainAxisSize: MainAxisSize.max,
+                              children: [
+                                seatWidget(9),
+                                seatWidget(10),
+                                const Spacer(
+                                  flex: 1,
+                                ),
+                                seatWidget(11),
+                                seatWidget(12),
+                              ],
+                            ),
+                          ),
+                          Expanded(
+                            flex: 1,
+                            child: Row(
+                              mainAxisSize: MainAxisSize.max,
+                              children: [
+                                seatWidget(13),
+                                seatWidget(14),
+                                const Spacer(
+                                  flex: 1,
+                                ),
+                                seatWidget(15),
+                                seatWidget(16),
+                              ],
+                            ),
+                          ),
+                          Expanded(
+                            flex: 1,
+                            child: Row(
+                              mainAxisSize: MainAxisSize.max,
+                              children: [
+                                seatWidget(17),
+                                seatWidget(18),
+                                const Spacer(
+                                  flex: 1,
+                                ),
+                                seatWidget(19),
+                                seatWidget(20),
+                              ],
+                            ),
+                          ),
+                          Expanded(
+                            flex: 1,
+                            child: Row(
+                              mainAxisSize: MainAxisSize.max,
+                              children: [
+                                seatWidget(21),
+                                seatWidget(22),
+                                const Spacer(
+                                  flex: 1,
+                                ),
+                                seatWidget(23),
+                                seatWidget(24),
+                              ],
+                            ),
+                          ),
+                          Expanded(
+                            flex: 1,
+                            child: Row(
+                              mainAxisSize: MainAxisSize.max,
+                              children: [
+                                seatWidget(25),
+                                seatWidget(26),
+                                const Spacer(
+                                  flex: 1,
+                                ),
+                                seatWidget(27),
+                                seatWidget(28),
+                              ],
+                            ),
+                          ),
+                          Expanded(
+                            flex: 1,
+                            child: Row(
+                              mainAxisSize: MainAxisSize.max,
+                              children: [
+                                seatWidget(29),
+                                seatWidget(30),
+                                const Spacer(
+                                  flex: 1,
+                                ),
+                                seatWidget(31),
+                                seatWidget(32),
+                              ],
+                            ),
+                          ),
+                          Expanded(
+                            flex: 1,
+                            child: Row(
+                              mainAxisSize: MainAxisSize.max,
+                              children: [
+                                seatWidget(33),
+                                seatWidget(34),
+                                const Spacer(
+                                  flex: 1,
+                                ),
+                                seatWidget(35),
+                                seatWidget(36),
+                              ],
+                            ),
+                          ),
+                          Expanded(
+                            flex: 1,
+                            child: Row(
+                              mainAxisSize: MainAxisSize.max,
+                              children: [
+                                seatWidget(37),
+                                seatWidget(38),
+                                const Spacer(
+                                  flex: 1,
+                                ),
+                                seatWidget(39),
+                                seatWidget(40),
+                              ],
+                            ),
+                          ),
+                          Expanded(
+                            flex: 1,
+                            child: Row(
+                              mainAxisSize: MainAxisSize.max,
+                              children: [
+                                seatWidget(41),
+                                seatWidget(42),
+                                seatWidget(42),
+                                seatWidget(43),
+                                seatWidget(44),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ))
                   ],
                 ),
               ),
