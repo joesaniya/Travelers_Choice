@@ -19,6 +19,34 @@ class _SeatPageState extends State<SeatPage> with TickerProviderStateMixin {
   late SeatPageController controller;
   late ThemeData theme, theme1;
   double? customwidth;
+
+  List<String> seats = [
+    'A1',
+    'A2',
+    'A3',
+    'A4',
+    'A5',
+    'B1',
+    'B2',
+    'B3',
+    'B4',
+    'B5',
+    'C1',
+    'C2',
+    'C3',
+    'C4',
+    'D1',
+    'D2',
+    'D3',
+    'D4',
+    'D5',
+    'E1',
+    'E2',
+    'E3',
+    'E4',
+    'E5',
+  ];
+  final List<int> _selectedItems = [];
   @override
   void initState() {
     super.initState();
@@ -113,6 +141,25 @@ class _SeatPageState extends State<SeatPage> with TickerProviderStateMixin {
           //   child: Container(),
           //   // child: _buildColumn(),
           // ),
+          bottomNavigationBar: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 15),
+            child: FxButton.block(
+              onPressed: () {
+                controller.ticketscreen();
+              },
+              backgroundColor: const Color(0xff1529e8),
+              // backgroundColor: customTheme.estatePrimary,
+              borderRadiusAll: 12,
+
+              elevation: 0,
+              child: FxText.bodyMedium(
+                'Book Now',
+                color: Colors.white,
+                // color: customTheme.estateOnPrimary,
+                fontWeight: 700,
+              ),
+            ),
+          ),
           body: Padding(
             padding: FxSpacing.fromLTRB(
                 20, FxSpacing.safeAreaTop(context) + 20, 20, 20),
@@ -122,11 +169,285 @@ class _SeatPageState extends State<SeatPage> with TickerProviderStateMixin {
               children: [
                 title(),
                 sitstatus(),
-                seat(),
+                SeatdemoWidget()
+                // seat(),
+                // layout()
               ],
             ),
           ));
     }
+  }
+
+  Widget SeatdemoWidget() {
+    return Expanded(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Stack(
+            children: [
+              const Image(
+                image: AssetImage('assets/seat/plane_layout.png'),
+              ),
+              Positioned(
+                  left: 0.0,
+                  top: 140.0,
+                  // top: 100,
+                  bottom: 0.0,
+                  right: 10.0,
+                  child: Column(
+                    children: [
+                      const EmiratesLogo(),
+                      FxSpacing.height(15),
+                      FxText.bodyMedium(
+                        '5h 46m',
+                        fontWeight: 900,
+                        color: Colors.black,
+                      ),
+                      FxSpacing.height(25),
+                      FxText.bodyMedium(
+                        'Economy',
+                        fontWeight: 900,
+                        color: Colors.black,
+                      ),
+                    ],
+                  )),
+              Positioned(
+                left: 32.0,
+                // top: 225.0,
+                top: 280,
+
+                bottom: 0.0,
+                right: 50.0,
+                child: Container(
+                  height: 500,
+                  // height: 700,
+                  // height: MediaQuery.of(context).size.width * 0.40,
+                  width: MediaQuery.of(context).size.width * 0.40,
+                  color: Colors.transparent,
+                  child: GridView.count(
+                    // crossAxisSpacing: 20,
+                    shrinkWrap: true,
+                    crossAxisCount: 6,
+                    mainAxisSpacing: 20,
+                    // childAspectRatio: 1,
+                    children: List.generate(seats.length, (index) {
+                      return GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            _selectedItems.contains(index)
+                                ? _selectedItems.remove(index)
+                                : _selectedItems.add(index);
+                          });
+                        },
+                        child: Container(
+                          // height: 150,
+                          color: Colors.transparent,
+                          child: Column(
+                            children: [
+                              Expanded(
+                                child: Image.asset(
+                                  'assets/seat/seat.png',
+                                  color: _selectedItems.contains(index)
+                                      ? Colors.indigoAccent
+                                      : Colors.black,
+                                ),
+                              ),
+                              FxText.bodyMedium(
+                                seats[index],
+                                fontWeight: 900,
+                                color: _selectedItems.contains(index)
+                                    ? Colors.indigoAccent
+                                    : Colors.black,
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    }),
+                  ),
+                ),
+              )
+              // Positioned(
+              //   left: 32.0,
+              //   // top: 225.0,
+              //   top: 280,
+              //   bottom: 0.0,
+              //   right: 10.0,
+              //   child: GridView.count(
+              //     // crossAxisSpacing: 20,
+              //     shrinkWrap: true,
+              //     crossAxisCount: 6,
+              //     // mainAxisSpacing: 10,
+              //     // childAspectRatio: 1,
+              //     children: List.generate(seats.length, (index) {
+              //  return Center(
+              //       child: GestureDetector(
+              //         onTap: () {
+              //           setState(() {
+              //             _selectedItems.contains(index)
+              //                 ? _selectedItems.remove(index)
+              //                 : _selectedItems.add(index);
+              //           });
+              //         },
+              //         child: Container(
+              //           color: _selectedItems.contains(index)
+              //               ? Colors.lightGreen
+              //               : const Color(0xff828EFB),
+              //           child: Column(
+              //             children: [
+              //               Image.asset('assets/seat/seat.png'),
+              //               Expanded(
+              //                 child: Text(
+              //                   seats[index],
+              //                   style: const TextStyle(fontSize: 12),
+              //                 ),
+              //               ),
+              //             ],
+              //           ),
+              //         ),
+              //       ),
+              //     );
+
+              //     }),
+              //   ),
+              // ),
+            ],
+          ),
+          Expanded(
+            // flex: 4,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: <Widget>[
+                // const SizedBox(
+                //   height: 65.0
+                //   ),
+                FxSpacing.height(59),
+                FxText.bodyMedium(
+                  'KAR',
+                  fontSize: 20,
+                ),
+                FxText.bodyMedium(
+                  'Karachi',
+                  fontSize: 18,
+                  fontWeight: 900,
+                ),
+                const SizedBox(height: 20.0),
+                // const EmiratesLogo(),
+                FxText.bodyMedium(
+                  '9h 28m',
+                  fontSize: 18,
+                  fontWeight: 900,
+                ),
+                const SizedBox(height: 30.0),
+                FxText.bodyMedium(
+                  'ADA',
+                  fontSize: 20,
+                ),
+                FxText.bodyMedium(
+                  'Adana',
+                  fontSize: 18,
+                  fontWeight: 900,
+                ),
+                const SizedBox(height: 30.0),
+                FxText.bodyMedium(
+                  'FLIGHT NO',
+                  fontSize: 18,
+                  fontWeight: 900,
+                ),
+                const SizedBox(height: 5.0),
+                FxText.bodyMedium(
+                  'SQ60',
+                  fontSize: 18,
+                  fontWeight: 600,
+                  color: Colors.indigo,
+                ),
+                const SizedBox(height: 30.0),
+                FxText.bodyMedium(
+                  'Seat',
+                  fontSize: 18,
+                  fontWeight: 900,
+                ),
+                FxText.bodyMedium(
+                  'T5',
+                  fontSize: 18,
+                  fontWeight: 900,
+                ),
+              ],
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
+  Widget layout() {
+    return Container(
+      height: 420,
+      width: 350,
+      transform: Matrix4.translationValues(25, 65, 1),
+      decoration: BoxDecoration(boxShadow: const [
+        BoxShadow(
+          color: Colors.pink,
+          spreadRadius: 1,
+          blurRadius: 0,
+          offset: Offset(-7, 8), // changes position of shadow
+        ),
+      ], color: Colors.white, borderRadius: BorderRadius.circular(45)),
+      child: Column(
+        children: [
+          Container(
+              transform: Matrix4.translationValues(0, 40, 1),
+              child: const Text("Screen")),
+          Container(
+            width: 250,
+            transform: Matrix4.translationValues(0, 50, 1),
+            child: const Divider(
+              height: 10,
+              color: Colors.pink,
+              thickness: 3,
+            ),
+          ),
+          Container(
+            transform: Matrix4.translationValues(0, 100, 1),
+            child: Padding(
+              padding: const EdgeInsets.only(left: 20, right: 20),
+              child: GridView.count(
+                crossAxisSpacing: 20,
+                shrinkWrap: true,
+                crossAxisCount: 6,
+                mainAxisSpacing: 10,
+                childAspectRatio: 1,
+                children: List.generate(seats.length, (index) {
+                  return Center(
+                    child: GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          _selectedItems.contains(index)
+                              ? _selectedItems.remove(index)
+                              : _selectedItems.add(index);
+                        });
+                      },
+                      child: Container(
+                        color: _selectedItems.contains(index)
+                            ? Colors.lightGreen
+                            : const Color(0xff828EFB),
+                        child: Text(
+                          seats[index],
+                          style: const TextStyle(fontSize: 12),
+                        ),
+                      ),
+                    ),
+                  );
+                }),
+              ),
+            ),
+          ),
+          Container(
+              transform: Matrix4.translationValues(0, 160, 1),
+              child: const Text("your selected seats are: "))
+        ],
+      ),
+    );
   }
 
   Widget seat() {

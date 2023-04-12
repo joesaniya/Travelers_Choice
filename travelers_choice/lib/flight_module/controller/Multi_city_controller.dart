@@ -1,67 +1,37 @@
 import 'dart:developer';
 
+import 'package:date_picker_timeline/date_picker_timeline.dart';
 import 'package:flutter/material.dart';
 import 'package:flutx/flutx.dart';
 
-class RoundTripController extends FxController {
-  TickerProvider ticker;
-  RoundTripController(this.ticker);
+import '../../models/tickets.dart';
+import '../../views/hotel_travel_constants.dart';
+import '../views/flight_list.dart';
 
-  String returndate = '1';
-   bool adddate = false;
+class MultiCityController extends FxController {
+  TickerProvider ticker;
+  MultiCityController(this.ticker);
+
+  bool adddate = false;
+  late TextEditingController nameController;
 
   DateTimeRange? selectedDateRange;
+  DatePickerController datetimecontroller = DatePickerController();
+  List<Tickets>? tickets;
+  DateTime selectedValue = DateTime.now();
+
   late AnimationController animationController;
 
   late AnimationController cartController;
   late Animation<double> cartAnimation, fadeAnimation;
   
-
-  // // This function will be triggered when the floating button is pressed
-  void showdate() async {
-    final DateTimeRange? result = await showDateRangePicker(
-        context: context,
-        // firstDate: DateTime(2022, 1, 1),
-        // lastDate: DateTime(2030, 12, 31),
-        firstDate: DateTime.now(),
-        lastDate: DateTime(DateTime.now().year + 40),
-        currentDate: DateTime.now(),
-        saveText: 'Done',
-        builder: (context, child) {
-          log('data');
-          return Theme(
-            data: Theme.of(context).copyWith(
-              cardColor: Colors.yellow,
-              colorScheme: const ColorScheme.light(
-                background: Colors.white,
-
-                primary: Color(0xff1529e8), // <-- SEE HERE
-                onPrimary: Colors.white, // <-- SEE HERE
-                onSurface: Colors.grey, // <-- SEE HERE
-              ),
-              textButtonTheme: TextButtonThemeData(
-                style: TextButton.styleFrom(
-                  foregroundColor: Colors.white, // button text color
-                ),
-              ),
-            ),
-            child: child!,
-          );
-        });
-
-    if (result != null) {
-      // Rebuild the UI
-      print(result.start.toString());
-
-      selectedDateRange = result;
-      update();
-    }
-  }
-
-   @override
+  
+  
+  @override
   initState() {
     super.initState();
-    
+    fetchData();
+    nameController = TextEditingController();
     animationController = AnimationController(
       duration: const Duration(seconds: 3),
       vsync: ticker,
@@ -95,6 +65,24 @@ class RoundTripController extends FxController {
     });
     animationController.forward();
   }
+
+  void fetchData() {
+    tickets = HotelTravelCache.tickets;
+
+    log('selectedCategory:$tickets');
+
+    update();
+  }
+
+  void searchflights() {
+    log('calling search flights');
+    Navigator.of(context, rootNavigator: true).pushReplacement(
+      PageRouteBuilder(
+          transitionDuration: const Duration(seconds: 2),
+          pageBuilder: (_, __, ___) => const FlightList()),
+    );
+  }
+
   @override
   void dispose() {
     animationController.dispose();
@@ -104,6 +92,6 @@ class RoundTripController extends FxController {
 
   @override
   String getTag() {
-    return "OneWay-Controller";
+    return "MultiCity-Controller";
   }
 }

@@ -6,7 +6,6 @@ import 'package:line_icons/line_icons.dart';
 import 'dart:developer';
 import '../../theme/app_theme.dart';
 import '../bottomsheet/Traveller_class_Sheet.dart';
-import '../controller/one_way_controller.dart';
 import '../controller/round_trip_scontroller.dart';
 import 'upcoming_flights.dart';
 
@@ -62,8 +61,9 @@ class _RoundTripWidgetsState extends State<RoundTripWidgets>
     //     .split(' ')[0] as DateTime;
     // String formattedStartDate = DateFormat.MMMd().format(startdate);
     // log('Start:$formattedStartDate');
-    return Column(
-        mainAxisAlignment: MainAxisAlignment.start,
+    return ListView(
+        physics: const AlwaysScrollableScrollPhysics(),
+        // mainAxisAlignment: MainAxisAlignment.start,
 
         // mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -415,7 +415,8 @@ class _RoundTripWidgetsState extends State<RoundTripWidgets>
                 ),
                 // FxSpacing.width(10),
                 Expanded(
-                  child: controller.selectedDateRange == null
+                  child: controller.adddate ||
+                          controller.selectedDateRange == null
                       ? GestureDetector(
                           // onTap: () {
                           //   controller.returndate == '1';
@@ -515,7 +516,10 @@ class _RoundTripWidgetsState extends State<RoundTripWidgets>
                                 top: 0,
                                 child: GestureDetector(
                                   onTap: () {
-                                    Navigator.of(context).pop();
+                                    // Navigator.of(context).pop();
+                                    controller.adddate
+                                        ? controller.cartController.reverse()
+                                        : controller.cartController.forward();
                                   },
                                   child: const Align(
                                     alignment: Alignment.topRight,
@@ -546,7 +550,7 @@ class _RoundTripWidgetsState extends State<RoundTripWidgets>
               var data = await showModalBottomSheet(
                   context: context,
                   builder: (BuildContext buildContext) {
-                    return TravellerclassSheet(
+                    return const TravellerclassSheet(
                         // categoryplace: widget.place,
                         );
                   });
@@ -626,7 +630,7 @@ class _RoundTripWidgetsState extends State<RoundTripWidgets>
             ),
           ),
 
-          UpcomingFlights()
+          const UpcomingFlights()
 
           // Padding(
           //   padding: const EdgeInsets.symmetric(

@@ -103,6 +103,7 @@ dependencies:
   date_picker_timeline: ^1.2.3
   get: ^4.6.5
   gap: ^2.0.1
+  dotted_border: ^2.0.0+1
 
 dev_dependencies:
   flutter_test:

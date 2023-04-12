@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutx/flutx.dart';
+import 'package:hotel_travel/flight_module/widgets/multicity_widget.dart';
 
 import '../../loading_effect.dart';
 import '../../theme/app_theme.dart';
@@ -243,24 +244,12 @@ class _FlightHomeScreenState extends State<FlightHomeScreen>
     return Flexible(
       flex: 5,
       child: Container(
-        color: Colors.white,
-        child: controller.tabbed == '1'
-            ? const OneWayWidgets()
-            : controller.tabbed == '2'
-                ? const RoundTripWidgets()
-                : Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
-                        Text(
-                          'Bottom container',
-                          style: TextStyle(
-                            fontSize: 17.0,
-                            fontWeight: FontWeight.w600,
-                            color: Colors.black54,
-                          ),
-                        ),
-                      ]),
-      ),
+          color: Colors.white,
+          child: controller.tabbed == '1'
+              ? const OneWayWidgets()
+              : controller.tabbed == '2'
+                  ? const RoundTripWidgets()
+                  : const MultiCityWidgets()),
     );
   }
 
