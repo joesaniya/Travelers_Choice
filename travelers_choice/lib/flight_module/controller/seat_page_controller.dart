@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutx/flutx.dart';
 
 import '../views/ticket_screen.dart';
+import '../widgets/boarding_pass.dart';
 
 class SeatPageController extends FxController {
   TickerProvider ticker;
@@ -11,10 +12,15 @@ class SeatPageController extends FxController {
   bool uiLoading = true;
   void ticketscreen() {
     log('calling ticket');
+    // Navigator.of(context, rootNavigator: true).pushReplacement(
+    //   PageRouteBuilder(
+    //       transitionDuration: const Duration(seconds: 2),
+    //       pageBuilder: (_, __, ___) => Ticket_screen()),
+    // );
     Navigator.of(context, rootNavigator: true).pushReplacement(
       PageRouteBuilder(
           transitionDuration: const Duration(seconds: 2),
-          pageBuilder: (_, __, ___) => Ticket_screen()),
+          pageBuilder: (_, __, ___) => const BoardingPass()),
     );
   }
 

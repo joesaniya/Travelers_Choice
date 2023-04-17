@@ -3,7 +3,6 @@ import 'dart:developer';
 import '../card_widgets/customsnackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:hotel_travel/models/all_attraction_modal.dart';
-import 'package:global_snack_bar/global_snack_bar.dart';
 import 'package:http/http.dart' as http;
 
 import '../models/Country_modal.dart';
@@ -150,7 +149,7 @@ class AuthService {
         sharedPreferences.setInt("balance", jsondata['user']['balance']);
         sharedPreferences.setString(AppConstants.KEY_ACCESS_TOKEN_countryId,
             jsondata['user']['country']);
-        sharedPreferences.setString(AppConstants.KEY_ACCESS_TOKEN_Phone,
+        sharedPreferences.setInt(AppConstants.KEY_ACCESS_TOKEN_Phone,
             jsondata['user']['phoneNumber']);
         return response.body;
 

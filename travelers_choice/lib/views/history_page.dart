@@ -7,6 +7,7 @@ import 'package:hotel_travel/models/order_attraction_modal.dart';
 import 'package:hotel_travel/services/attraction_Service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../controllers/history_controller.dart';
+import '../models/tickets.dart';
 import '../services/app_constants.dart';
 import '../theme/app_theme.dart';
 
@@ -101,6 +102,60 @@ class _HistoryScreenState extends State<HistoryScreen>
 //   return
 // }
 //   }
+
+  Widget _buildflightList() {
+    log('calling flight');
+    List<Widget> list = [];
+
+    for (Tickets ticket1 in controller.tickets!) {
+      list.add(FadeTransition(
+        opacity: controller.fadeAnimation,
+        child: GestureDetector(
+            onTap: () {},
+            child: Container(
+              width: 500,
+              height: 200,
+              margin: const EdgeInsets.only(bottom: 10),
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+              decoration: const BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.all(Radius.circular(14))),
+              child: Column(
+                children: <Widget>[
+                  Row(
+                    children: const [
+                      Icon(Icons.airplane_ticket_sharp,
+                          color: Colors.green, size: 35),
+                      SizedBox(width: 10),
+                      Text("USA Airways",
+                          style: TextStyle(
+                              fontSize: 19, fontWeight: FontWeight.bold)),
+                      SizedBox(width: 50),
+                      Text("\$999",
+                          style: TextStyle(
+                              fontSize: 18, fontWeight: FontWeight.bold)),
+                      SizedBox(width: 10),
+                    ],
+                  ),
+                  const SizedBox(height: 10),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      _itemDepartment(),
+                      _locationPlane(),
+                      _itemDepartment2()
+                    ],
+                  )
+                ],
+              ),
+            )),
+      ));
+    }
+
+    return Column(
+      children: list,
+    );
+  }
 
   Widget attractionList() {
     if (orders == null) {
@@ -421,6 +476,185 @@ class _HistoryScreenState extends State<HistoryScreen>
     );
   }
 
+  Widget flightList() {
+    return SizedBox(
+      child: ListView(
+        children: <Widget>[
+          _reservationsItem(),
+          _reservationsItem(),
+          _reservationsItem(),
+          _reservationsItem(),
+          _reservationsItem(),
+        ],
+      ),
+    );
+  }
+
+  Widget _reservationsItem() {
+    return FxContainer(
+      margin: FxSpacing.bottom(20),
+      borderRadiusAll: 4,
+      color: Colors.white,
+      paddingAll: 12,
+      child: Column(
+        children: <Widget>[
+          Row(
+            children: const [
+              Icon(Icons.airplane_ticket_sharp, color: Colors.green, size: 35),
+              SizedBox(width: 10),
+              Text("USA Airways",
+                  style: TextStyle(fontSize: 19, fontWeight: FontWeight.bold)),
+              SizedBox(width: 50),
+              Text("\$999",
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+              SizedBox(width: 10),
+            ],
+          ),
+          const SizedBox(height: 10),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              _itemDepartment(),
+              _locationPlane(),
+              _itemDepartment2()
+            ],
+          )
+        ],
+      ),
+    );
+  }
+
+  Widget _itemDepartment() {
+    return Container(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: const [
+          Text("Departure",
+              style: TextStyle(color: Color.fromARGB(255, 36, 35, 35))),
+          SizedBox(height: 10),
+          Text("10:20",
+              style:
+                  TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
+          SizedBox(height: 1),
+          Text("AUS", style: TextStyle(color: Colors.black54)),
+          SizedBox(height: 20),
+          Text("08:40",
+              style:
+                  TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
+          SizedBox(height: 1),
+          Text("USA", style: TextStyle(color: Colors.black54)),
+        ],
+      ),
+    );
+  }
+
+  Widget _itemDepartment2() {
+    return Container(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: const [
+          Text("Arrive",
+              style: TextStyle(color: Color.fromARGB(255, 36, 35, 35))),
+          SizedBox(height: 10),
+          Text("06:10",
+              style:
+                  TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
+          SizedBox(height: 1),
+          Text("USA", style: TextStyle(color: Colors.black54)),
+          SizedBox(height: 20),
+          Text("12:30",
+              style:
+                  TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
+          SizedBox(height: 1),
+          Text("AUS", style: TextStyle(color: Colors.black54)),
+        ],
+      ),
+    );
+  }
+
+  Widget _locationPlane() {
+    return Container(
+      child: Column(
+        children: <Widget>[
+          Row(
+            children: const [
+              Icon(Icons.flight_takeoff,
+                  color: Color.fromARGB(255, 13, 170, 8), size: 21),
+              Icon(Icons.fiber_manual_record, color: Colors.blue, size: 8),
+              Icon(Icons.fiber_manual_record, color: Colors.blue, size: 8),
+              Icon(Icons.fiber_manual_record, color: Colors.blue, size: 8),
+              Icon(Icons.fiber_manual_record, color: Colors.blue, size: 8),
+              Icon(Icons.fiber_manual_record, color: Colors.blue, size: 8),
+              Icon(Icons.fiber_manual_record, color: Colors.blue, size: 8),
+              Icon(Icons.fiber_manual_record, color: Colors.blue, size: 8),
+              Icon(Icons.fiber_manual_record, color: Colors.blue, size: 8),
+              Icon(Icons.fiber_manual_record, color: Colors.green, size: 8),
+              Icon(Icons.fiber_manual_record, color: Colors.green, size: 8),
+              Icon(Icons.fiber_manual_record, color: Colors.green, size: 8),
+              Icon(Icons.fiber_manual_record, color: Colors.green, size: 8),
+              Icon(Icons.fiber_manual_record, color: Colors.green, size: 8),
+              Icon(Icons.fiber_manual_record, color: Colors.green, size: 8),
+              Icon(Icons.fiber_manual_record, color: Colors.green, size: 8),
+              Icon(Icons.fiber_manual_record, color: Colors.green, size: 8),
+              Icon(Icons.location_on,
+                  color: Color.fromARGB(255, 172, 67, 7), size: 21),
+            ],
+          ),
+          const SizedBox(height: 10),
+          Row(
+            children: const [
+              Icon(Icons.location_on,
+                  color: Color.fromARGB(255, 172, 67, 7), size: 21),
+              Icon(Icons.fiber_manual_record, color: Colors.blue, size: 8),
+              Icon(Icons.fiber_manual_record, color: Colors.blue, size: 8),
+              Icon(Icons.fiber_manual_record, color: Colors.blue, size: 8),
+              Icon(Icons.fiber_manual_record, color: Colors.blue, size: 8),
+              Icon(Icons.fiber_manual_record, color: Colors.blue, size: 8),
+              Icon(Icons.fiber_manual_record, color: Colors.blue, size: 8),
+              Icon(Icons.fiber_manual_record, color: Colors.blue, size: 8),
+              Icon(Icons.fiber_manual_record, color: Colors.blue, size: 8),
+              Icon(Icons.fiber_manual_record, color: Colors.green, size: 8),
+              Icon(Icons.fiber_manual_record, color: Colors.green, size: 8),
+              Icon(Icons.fiber_manual_record, color: Colors.green, size: 8),
+              Icon(Icons.fiber_manual_record, color: Colors.green, size: 8),
+              Icon(Icons.fiber_manual_record, color: Colors.green, size: 8),
+              Icon(Icons.fiber_manual_record, color: Colors.green, size: 8),
+              Icon(Icons.fiber_manual_record, color: Colors.green, size: 8),
+              Icon(Icons.fiber_manual_record, color: Colors.green, size: 8),
+              Icon(Icons.flight_takeoff,
+                  color: Color.fromARGB(255, 13, 170, 8), size: 21),
+            ],
+          ),
+          const SizedBox(
+            height: 14,
+          ),
+          // Row(
+          //   children: [
+          //     ElevatedButton(
+          //         onPressed: () {},
+          //         child: const Text(
+          //           "Print Ticket",
+          //           style: TextStyle(color: Colors.black),
+          //         ))
+          //   ],
+          // )
+          Center(
+              child: FxButton.rounded(
+            onPressed: () {
+              log('logout clicked');
+            },
+            elevation: 2,
+            backgroundColor: const Color(0xff1529e8),
+            child: FxText.labelLarge(
+              "Print Ticket",
+              color: Colors.white,
+            ),
+          ))
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return FxBuilder<HistoryController>(
@@ -472,12 +706,18 @@ class _HistoryScreenState extends State<HistoryScreen>
               Tab(
                   // text: "credits",
                   child: Text(
-                "Attraction order",
+                "Attraction",
                 style: TextStyle(fontSize: 16),
               )),
               Tab(
                 child: Text(
-                  "Visa order",
+                  "Visa",
+                  style: TextStyle(fontSize: 16),
+                ),
+              ),
+              Tab(
+                child: Text(
+                  "Flight",
                   style: TextStyle(fontSize: 16),
                 ),
               ),
@@ -494,7 +734,11 @@ class _HistoryScreenState extends State<HistoryScreen>
               Expanded(
                 child: TabBarView(
                   controller: controller.tabController,
-                  children: [attractionList(), visaList()],
+                  children: [
+                    attractionList(), visaList(),
+                    // _buildflightList()
+                    flightList()
+                  ],
                 ),
               ),
               FxSpacing.height(60),

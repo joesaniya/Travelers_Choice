@@ -17,7 +17,8 @@ import '../theme/constant.dart';
 import '/theme/app_theme.dart';
 
 class EditProfilePage extends StatefulWidget {
-  String? name, email, phone;
+  String? name, email;
+  int? phone;
   EditProfilePage({super.key, this.name, this.email, this.phone});
 
   @override

@@ -7,8 +7,10 @@ import 'package:flutx/flutx.dart';
 import 'package:intl/intl.dart';
 
 import '../models/atteraction_model.dart';
+import '../models/tickets.dart';
 import '../views/checkout_screen.dart';
 import '../../controllers/attraction_Controller.dart';
+import '../views/hotel_travel_constants.dart';
 
 class HistoryController extends FxController {
   TickerProvider ticker;
@@ -42,6 +44,8 @@ class HistoryController extends FxController {
 
   bool isFav = false;
   bool addCart = false;
+
+   List<Tickets>? tickets;
 
   late List<String> sizes;
   String selectedSize = 'M';
@@ -130,7 +134,7 @@ class HistoryController extends FxController {
   void initState() {
     super.initState();
     //new
-    tabController = TabController(length: 2, vsync: ticker);
+    tabController = TabController(length: 3, vsync: ticker);
     scrollController = ScrollController(initialScrollOffset: 0.0);
     scrollController.addListener(() {
       changeAppBarColor(scrollController);
@@ -142,7 +146,7 @@ class HistoryController extends FxController {
     dateTE = TextEditingController();
     // HistoryController = TextEditingController();
     save = false;
-    // fetchData();
+    fetchData();
     dateController = AnimationController(
         vsync: ticker, duration: const Duration(milliseconds: 50));
     timerAnimation = Timer.periodic(const Duration(seconds: 4), (Timer timer) {
@@ -307,7 +311,13 @@ class HistoryController extends FxController {
   //   products = HotelTravelCache.products;
   //   log(products!.length.toString());
   // }
+  void fetchData() {
+    tickets = HotelTravelCache.tickets;
 
+    log('selectedtickets:$tickets');
+
+    update();
+  }
   void fetchloader() async {
     await Future.delayed(const Duration(seconds: 4));
 

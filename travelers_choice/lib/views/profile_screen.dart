@@ -54,7 +54,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         log(profileController.email.toString());
         log('username');
         profileController.phoneNumber =
-            sharedPrefValue.getString(AppConstants.KEY_ACCESS_TOKEN_Phone);
+            sharedPrefValue.getInt(AppConstants.KEY_ACCESS_TOKEN_Phone);
         log('Ph Number:${profileController.phoneNumber.toString()}');
 
         profileController.balanceamount =
