@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutx/flutx.dart';
 import 'package:gap/gap.dart';
-import 'package:get/get.dart';
 
 import '../utils/app_layout.dart';
 import '../utils/app_styles.dart';
 import '../widgets/circula_container.dart';
 
 class TicketView extends StatelessWidget {
-  TicketView({required this.ticket_map, this.iscolorful});
+  const TicketView({super.key, required this.ticket_map, this.iscolorful});
   final Map<String, dynamic> ticket_map;
   final bool? iscolorful;
   @override
@@ -17,26 +17,27 @@ class TicketView extends StatelessWidget {
       width: size.width * 0.85,
       height: 169,
       child: Container(
-        margin: EdgeInsets.only(left: 16),
+        margin: const EdgeInsets.only(left: 16),
         child: Column(
           children: [
             Container(
-              padding: EdgeInsets.all(16),
+              padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                  borderRadius: BorderRadius.only(
+                  borderRadius: const BorderRadius.only(
                       topLeft: Radius.circular(21),
                       topRight: Radius.circular(21)),
-                  color: iscolorful == null ? Color(0xFF526799) : Colors.white),
+                  color: iscolorful == null
+                      ? const Color(0xff1529e8).withAlpha(40)
+                      // const Color(0xFF526799)
+                      : Colors.white),
               child: Column(
                 children: [
                   Row(
                     children: [
-                      Text(
+                      FxText.bodyMedium(
                         "${ticket_map["from"]["code"]}",
-                        style: iscolorful == null
-                            ? Styles.headlinestyle3
-                                .copyWith(color: Colors.white)
-                            : Styles.headlinestyle3,
+                        color: const Color(0xff1529e8),
+                        fontWeight: 900,
                       ),
                       Expanded(child: Container()),
                       CircularContainer(
@@ -61,7 +62,8 @@ class TicketView extends StatelessWidget {
                                               "-",
                                               style: TextStyle(
                                                   color: iscolorful == null
-                                                      ? Colors.white
+                                                      ? Colors.black
+                                                      // Colors.white
                                                       : Colors.grey.shade300),
                                             )),
                                   );
@@ -73,8 +75,9 @@ class TicketView extends StatelessWidget {
                               child: Icon(
                                 Icons.local_airport_outlined,
                                 color: iscolorful == null
-                                    ? Colors.white
-                                    : Color(0xFF8ACCF7),
+                                    ? Colors.black
+                                    // Colors.white
+                                    : const Color(0xFF8ACCF7),
                               ),
                             ),
                           ),
@@ -83,40 +86,37 @@ class TicketView extends StatelessWidget {
                       CircularContainer(
                         iscolorful: true,
                       ),
-                      Spacer(),
-                      Text(
+                      const Spacer(),
+                      FxText.bodyMedium(
                         "${ticket_map["to"]["code"]}",
-                        style: iscolorful == null
-                            ? Styles.headlinestyle3
-                                .copyWith(color: Colors.white)
-                            : Styles.headlinestyle3,
+
+                        color: const Color(0xff1529e8),
+                        fontWeight: 900,
+                        // style: iscolorful == null
+                        //     ? Styles.headlinestyle3
+                        //         .copyWith(color: Colors.white)
+                        //     : Styles.headlinestyle3,
                       )
                     ],
                   ),
-                  Gap(3),
+                  const Gap(3),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
+                      FxText.bodyMedium(
                         "${ticket_map["from"]["name"]}",
-                        style: iscolorful == null
-                            ? Styles.headlinestyle4
-                                .copyWith(color: Colors.white)
-                            : Styles.headlinestyle4,
+                        color: const Color(0xff1529e8),
+                        fontWeight: 900,
                       ),
-                      Text(
+                      FxText.bodyMedium(
                         "${ticket_map["flying_time"]}",
-                        style: iscolorful == null
-                            ? Styles.headlinestyle4
-                                .copyWith(color: Colors.white)
-                            : Styles.headlinestyle4,
+                        color: const Color(0xff1529e8),
+                        fontWeight: 900,
                       ),
-                      Text(
+                      FxText.bodyMedium(
                         "${ticket_map["to"]["name"]}",
-                        style: iscolorful == null
-                            ? Styles.headlinestyle4
-                                .copyWith(color: Colors.white)
-                            : Styles.headlinestyle4,
+                        color: const Color(0xff1529e8),
+                        fontWeight: 900,
                       ),
                     ],
                   )
@@ -124,10 +124,13 @@ class TicketView extends StatelessWidget {
               ),
             ),
             Container(
-              color: iscolorful == null ? Styles.orangecolor : Colors.white,
+              color: iscolorful == null
+                  ? const Color(0xff1529e8)
+                  // Styles.orangecolor
+                  : Colors.white,
               child: Row(
                 children: [
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                     width: 10,
                     child: DecoratedBox(
@@ -140,7 +143,7 @@ class TicketView extends StatelessWidget {
                   ),
                   Expanded(
                       child: Padding(
-                    padding: EdgeInsets.all(6),
+                    padding: const EdgeInsets.all(6),
                     child: LayoutBuilder(
                       builder:
                           (BuildContext context, BoxConstraints constraints) {
@@ -163,7 +166,7 @@ class TicketView extends StatelessWidget {
                       },
                     ),
                   )),
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                     width: 10,
                     child: DecoratedBox(
@@ -178,17 +181,19 @@ class TicketView extends StatelessWidget {
               ),
             ),
             Container(
-              padding: EdgeInsets.all(16),
+              padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.only(
                       bottomLeft: iscolorful == null
-                          ? Radius.circular(21)
-                          : Radius.circular(0),
+                          ? const Radius.circular(21)
+                          : const Radius.circular(0),
                       bottomRight: iscolorful == null
-                          ? Radius.circular(21)
-                          : Radius.circular(0)),
-                  color:
-                      iscolorful == null ? Styles.orangecolor : Colors.white),
+                          ? const Radius.circular(21)
+                          : const Radius.circular(0)),
+                  color: iscolorful == null
+                      ? const Color(0xff1529e8)
+                      // Styles.orangecolor
+                      : Colors.white),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [

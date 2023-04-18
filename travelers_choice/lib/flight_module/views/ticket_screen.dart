@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:hotel_travel/flight_module/views/ticket_view.dart';
-
+import 'package:barcode_widget/barcode_widget.dart';
 import '../utils/app_info_list.dart';
 import '../utils/app_layout.dart';
 import '../utils/app_styles.dart';
 import '../utils/ticket_screen_codes.dart';
 
-
 class Ticket_screen extends StatelessWidget {
+  const Ticket_screen({super.key});
+
   // const ({Key? key}) : super(key: key);
 
   @override
@@ -23,19 +24,19 @@ class Ticket_screen extends StatelessWidget {
                   horizontal: Applayout.getwidth(20),
                   vertical: Applayout.getheight(20)),
               children: [
-                Gap(40),
+                const Gap(40),
                 Text("Tickets",
                     style: Styles.headlinestyle1.copyWith(fontSize: 35)),
-                Gap(15),
+                const Gap(15),
                 Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(50),
-                    color: Color(0xFFF4F6FD),
+                    color: const Color(0xFFF4F6FD),
                   ),
                   child: Row(
                     children: [
                       Container(
-                        padding: EdgeInsets.all(8),
+                        padding: const EdgeInsets.all(8),
                         width: size.width * 0.44,
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(50),
@@ -50,7 +51,7 @@ class Ticket_screen extends StatelessWidget {
                       ),
                       Container(
                         width: size.width * 0.41,
-                        decoration: BoxDecoration(
+                        decoration: const BoxDecoration(
                           borderRadius: BorderRadius.only(
                               topRight: Radius.circular(50),
                               bottomRight: Radius.circular(50)),
@@ -66,15 +67,15 @@ class Ticket_screen extends StatelessWidget {
                     ],
                   ),
                 ),
-                Gap(20),
+                const Gap(20),
                 Container(
-                  padding: EdgeInsets.only(right: 15),
+                  padding: const EdgeInsets.only(right: 15),
                   child: TicketView(
                     ticket_map: ticketList[0],
                     iscolorful: true,
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 1,
                 ),
                 ticket_code(
@@ -87,9 +88,9 @@ class Ticket_screen extends StatelessWidget {
                     height: 10,
                     width: 50,
                     // color: Colors.white,
-                    margin: EdgeInsets.symmetric(horizontal: 16),
-                    padding: EdgeInsets.symmetric(horizontal: 16),
-                    decoration: BoxDecoration(color: Colors.white),
+                    margin: const EdgeInsets.symmetric(horizontal: 16),
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    decoration: const BoxDecoration(color: Colors.white),
                     child: LayoutBuilder(
                       builder:
                           (BuildContext context, BoxConstraints constraints) {
@@ -115,11 +116,12 @@ class Ticket_screen extends StatelessWidget {
                   bigtext2: "B2SJ28",
                   smalltext2: "Booking code",
                 ),
-                dash_lines_code(),
+                const dash_lines_code(),
                 Container(
                   color: Colors.white,
-                  margin: EdgeInsets.symmetric(horizontal: 16),
-                  padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                  margin: const EdgeInsets.symmetric(horizontal: 16),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -131,7 +133,7 @@ class Ticket_screen extends StatelessWidget {
                               Container(
                                 height: 20,
                                 width: 50,
-                                decoration: BoxDecoration(
+                                decoration: const BoxDecoration(
                                     image: DecorationImage(
                                         image: AssetImage("assets/visa.png"))),
                               ),
@@ -141,7 +143,7 @@ class Ticket_screen extends StatelessWidget {
                               )
                             ],
                           ),
-                          Gap(5),
+                          const Gap(5),
                           Text(
                             "Payment Method",
                             style: Styles.headlinestyle4,
@@ -165,33 +167,35 @@ class Ticket_screen extends StatelessWidget {
                   ),
                 ),
                 Container(
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                       borderRadius: BorderRadius.only(
                           bottomLeft: Radius.circular(20),
                           bottomRight: Radius.circular(20)),
                       color: Colors.white,
                     ),
-                    margin: EdgeInsets.symmetric(horizontal: 16, vertical: 1),
-                    padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                    margin:
+                        const EdgeInsets.symmetric(horizontal: 16, vertical: 1),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 16, vertical: 16),
                     child: Container(
-                      decoration: BoxDecoration(
+                      decoration: const BoxDecoration(
                           // borderRadius: BorderRadius.circular(50)
 
                           ),
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(20),
-                        // child: BarcodeWidget(
-                        //   height: 70,
-                        //   barcode: Barcode.code128(),
-                        //   data:
-                        //       'https://www.linkedin.com/in/abhishek-bhadane-124b13209/',
-                        //   drawText: false,
-                        // ),
+                        child: BarcodeWidget(
+                          height: 70,
+                          barcode: Barcode.code128(),
+                          data:
+                              'https://www.linkedin.com/in/abhishek-bhadane-124b13209/',
+                          drawText: false,
+                        ),
                       ),
                     )),
-                Gap(20),
+                const Gap(20),
                 Container(
-                  padding: EdgeInsets.only(right: 20, left: 10),
+                  padding: const EdgeInsets.only(right: 20, left: 10),
                   child: TicketView(ticket_map: ticketList[0]),
                 )
               ],
@@ -200,10 +204,10 @@ class Ticket_screen extends StatelessWidget {
               left: 25,
               top: 300,
               child: Container(
-                padding: EdgeInsets.all(4),
+                padding: const EdgeInsets.all(4),
                 decoration: BoxDecoration(
                     shape: BoxShape.circle, border: Border.all(width: 2)),
-                child: CircleAvatar(
+                child: const CircleAvatar(
                   maxRadius: 4,
                   backgroundColor: Colors.black,
                 ),
@@ -213,10 +217,10 @@ class Ticket_screen extends StatelessWidget {
               right: 25,
               top: 300,
               child: Container(
-                padding: EdgeInsets.all(4),
+                padding: const EdgeInsets.all(4),
                 decoration: BoxDecoration(
                     shape: BoxShape.circle, border: Border.all(width: 2)),
-                child: CircleAvatar(
+                child: const CircleAvatar(
                   maxRadius: 4,
                   backgroundColor: Colors.black,
                 ),

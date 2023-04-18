@@ -3,8 +3,8 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutx/flutx.dart';
 
+import '../views/flight_checkout.dart';
 import '../views/ticket_screen.dart';
-import '../widgets/boarding_pass.dart';
 
 class SeatPageController extends FxController {
   TickerProvider ticker;
@@ -17,11 +17,18 @@ class SeatPageController extends FxController {
     //       transitionDuration: const Duration(seconds: 2),
     //       pageBuilder: (_, __, ___) => Ticket_screen()),
     // );
-    Navigator.of(context, rootNavigator: true).pushReplacement(
+     Navigator.of(context, rootNavigator: true).pushReplacement(
       PageRouteBuilder(
           transitionDuration: const Duration(seconds: 2),
-          pageBuilder: (_, __, ___) => const BoardingPass()),
+          pageBuilder: (_, __, ___) => FlightCheckout()),
     );
+
+    
+    // Navigator.of(context, rootNavigator: true).pushReplacement(
+    //   PageRouteBuilder(
+    //       transitionDuration: const Duration(seconds: 2),
+    //       pageBuilder: (_, __, ___) => const BoardingPass()),
+    // );
   }
 
   void fetchloader() async {
