@@ -1,9 +1,7 @@
 import 'dart:developer';
-import 'package:date_picker_timeline/date_picker_timeline.dart';
 import 'package:flutter/material.dart';
 import 'package:flutx/flutx.dart';
 import 'package:hotel_travel/flight_module/views/flight_list.dart';
-import 'package:hotel_travel/models/Country_modal.dart';
 
 import '../../models/tickets.dart';
 import '../../views/hotel_travel_constants.dart';
@@ -14,9 +12,7 @@ class UpcomingFlightController extends FxController {
   TickerProvider ticker;
   UpcomingFlightController(this.ticker);
 
- 
   List<Tickets>? tickets;
- 
 
   late AnimationController animationController;
 
@@ -47,7 +43,6 @@ class UpcomingFlightController extends FxController {
       ),
     );
 
-    
     animationController.forward();
   }
 
@@ -61,31 +56,54 @@ class UpcomingFlightController extends FxController {
 
   void fromairport() {
     log('calling from');
-    Navigator.of(context, rootNavigator: true).pushReplacement(
-      PageRouteBuilder(
-          transitionDuration: const Duration(seconds: 2),
-          pageBuilder: (_, __, ___) => const DestinationAirport()),
-    );
+    Navigator.of(context, rootNavigator: true).push(PageRouteBuilder(
+        transitionDuration: const Duration(milliseconds: 500),
+        transitionsBuilder: (
+          BuildContext context,
+          Animation<double> animation,
+          Animation<double> secondaryAnimation,
+          Widget child,
+        ) =>
+            FadeTransition(
+              opacity: animation,
+              child: child,
+            ),
+        pageBuilder: (_, __, ___) => const DestinationAirport()));
   }
 
   void Bookseat() {
     log('calling Book Seat');
-    Navigator.of(context, rootNavigator: true).pushReplacement(
-      PageRouteBuilder(
-          transitionDuration: const Duration(seconds: 2),
-          pageBuilder: (_, __, ___) => const SeatPage()),
-    );
+    Navigator.of(context, rootNavigator: true).push(PageRouteBuilder(
+        transitionDuration: const Duration(milliseconds: 500),
+        transitionsBuilder: (
+          BuildContext context,
+          Animation<double> animation,
+          Animation<double> secondaryAnimation,
+          Widget child,
+        ) =>
+            FadeTransition(
+              opacity: animation,
+              child: child,
+            ),
+        pageBuilder: (_, __, ___) => const SeatPage()));
   }
 
   void searchflights() {
     log('calling search flights');
-    Navigator.of(context, rootNavigator: true).pushReplacement(
-      PageRouteBuilder(
-          transitionDuration: const Duration(seconds: 2),
-          pageBuilder: (_, __, ___) => const FlightList()),
-    );
+    Navigator.of(context, rootNavigator: true).push(PageRouteBuilder(
+        transitionDuration: const Duration(milliseconds: 500),
+        transitionsBuilder: (
+          BuildContext context,
+          Animation<double> animation,
+          Animation<double> secondaryAnimation,
+          Widget child,
+        ) =>
+            FadeTransition(
+              opacity: animation,
+              child: child,
+            ),
+        pageBuilder: (_, __, ___) => const FlightList()));
   }
-
 
   @override
   void dispose() {

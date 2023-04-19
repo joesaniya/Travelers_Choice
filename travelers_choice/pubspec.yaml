@@ -105,6 +105,7 @@ dependencies:
   gap: ^2.0.1
   dotted_border: ^2.0.0+1
   barcode_widget: ^2.0.3
+  animate_do: ^3.0.2
 
 dev_dependencies:
   flutter_test:
@@ -140,6 +141,7 @@ flutter:
 
     #seat
     - assets/seat/
+    - assets/hotel/
 
     #Shopping
     - assets/images/apps/shopping/

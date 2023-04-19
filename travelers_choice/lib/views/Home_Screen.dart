@@ -1218,55 +1218,71 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                             const SizedBox(
                               width: 10,
                             ),
-                            // GestureDetector(
-                            //   onTap: () {
-                            //     log('Hotel');
-                            //     _tabbed = '3';
-                            //     setState(() {});
-                            //   },
-                            //   child: Container(
-                            //     width: 120,
-                            //     decoration: BoxDecoration(
-                            //         color: _tabbed == '3'
-                            //             ? const Color(0xff1529e8)
-                            //             // theme1.colorScheme.primary
-                            //             : Colors.transparent,
-                            //         border: Border.all(
-                            //             color: _tabbed == '3'
-                            //                 ? Colors.transparent
-                            //                 : theme1
-                            //                     .colorScheme.primaryContainer,
-                            //             width: _tabbed == '3' ? 0.0 : 1.0),
-                            //         borderRadius: BorderRadius.circular(20.0)),
-                            //     padding:
-                            //         const EdgeInsets.symmetric(horizontal: 5),
-                            //     child: Row(
-                            //       mainAxisAlignment: MainAxisAlignment.center,
-                            //       crossAxisAlignment: CrossAxisAlignment.center,
-                            //       children: [
-                            //         Image.asset(
-                            //             "assets/images/apps/shopping2/icons/hotel.png",
-                            //             height: 20,
-                            //             width: 20,
-                            //             color: _tabbed == '3'
-                            //                 ? Colors.white
-                            //                 : Colors.black),
-                            //         const SizedBox(
-                            //           width: 7,
-                            //         ),
-                            //         FxText.bodyLarge(
-                            //           'Hotel',
-                            //           style: TextStyle(
-                            //               fontSize: 18,
-                            //               fontWeight: FontWeight.w800,
-                            //               color: _tabbed == '3'
-                            //                   ? Colors.white
-                            //                   : Colors.black),
-                            //         ),
-                            //       ],
-                            //     ),
-                            //   ),
-                            // ),
+                            GestureDetector(
+                              onTap: () {
+                                log('Hotel');
+                                _tabbed = '3';
+                                setState(() {});
+                                //       Navigator.of(context, rootNavigator: true).push(
+                                //           PageRouteBuilder(
+                                //               transitionDuration:
+                                //                   const Duration(milliseconds: 500),
+                                //               transitionsBuilder: (
+                                //                 BuildContext context,
+                                //                 Animation<double> animation,
+                                //                 Animation<double> secondaryAnimation,
+                                //                 Widget child,
+                                //               ) =>
+                                //                   FadeTransition(
+                                //                     opacity: animation,
+                                //                     child: child,
+                                //                   ),
+                                //               pageBuilder: (_, __, ___) =>
+                                //                   NewCart(widget.cartMeal)));
+                              },
+                              child: Container(
+                                width: 120,
+                                decoration: BoxDecoration(
+                                    color: _tabbed == '3'
+                                        ? const Color(0xff1529e8)
+                                        // theme1.colorScheme.primary
+                                        : Colors.transparent,
+                                    border: Border.all(
+                                        color: _tabbed == '3'
+                                            ? Colors.transparent
+                                            : theme1
+                                                .colorScheme.primaryContainer,
+                                        width: _tabbed == '3' ? 0.0 : 1.0),
+                                    borderRadius: BorderRadius.circular(20.0)),
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 5),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Image.asset(
+                                        "assets/images/apps/shopping2/icons/hotel.png",
+                                        height: 20,
+                                        width: 20,
+                                        color: _tabbed == '3'
+                                            ? Colors.white
+                                            : Colors.black),
+                                    const SizedBox(
+                                      width: 7,
+                                    ),
+                                    FxText.bodyLarge(
+                                      'Hotel',
+                                      style: TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.w800,
+                                          color: _tabbed == '3'
+                                              ? Colors.white
+                                              : Colors.black),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
 
                             const SizedBox(
                               width: 10,

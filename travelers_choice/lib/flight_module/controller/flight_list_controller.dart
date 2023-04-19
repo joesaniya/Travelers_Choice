@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutx/flutx.dart';
+import 'package:hotel_travel/flight_module/views/seat_demo.dart';
 
 import '../../models/tickets.dart';
 import '../../views/hotel_travel_constants.dart';
@@ -71,14 +72,44 @@ class FlightListController extends FxController {
     selectedChoices.remove(item);
     update();
   }
+ 
+  void Bookseat() {
+    log('calling Book Seat');
+    Navigator.of(context, rootNavigator: true).push(PageRouteBuilder(
+        transitionDuration: const Duration(milliseconds: 500),
+        transitionsBuilder: (
+          BuildContext context,
+          Animation<double> animation,
+          Animation<double> secondaryAnimation,
+          Widget child,
+        ) =>
+            FadeTransition(
+              opacity: animation,
+              child: child,
+            ),
+        pageBuilder: (_, __, ___) => const SeatPage()));
+  }
 
   void Edit() {
     log('Edit Calling');
-    Navigator.of(context, rootNavigator: true).pushReplacement(
-      PageRouteBuilder(
-          transitionDuration: const Duration(seconds: 2),
-          pageBuilder: (_, __, ___) => const FlightHomeScreen()),
-    );
+    // Navigator.of(context, rootNavigator: true).pushReplacement(
+    //   PageRouteBuilder(
+    //       transitionDuration: const Duration(seconds: 2),
+    //       pageBuilder: (_, __, ___) => const FlightHomeScreen()),
+    // );
+      Navigator.of(context, rootNavigator: true).push(PageRouteBuilder(
+        transitionDuration: const Duration(milliseconds: 500),
+        transitionsBuilder: (
+          BuildContext context,
+          Animation<double> animation,
+          Animation<double> secondaryAnimation,
+          Widget child,
+        ) =>
+            FadeTransition(
+              opacity: animation,
+              child: child,
+            ),
+        pageBuilder: (_, __, ___) => const FlightHomeScreen()));
   }
 
   void fetchloader() async {

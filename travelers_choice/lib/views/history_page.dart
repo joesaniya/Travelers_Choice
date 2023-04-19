@@ -641,7 +641,7 @@ class _HistoryScreenState extends State<HistoryScreen>
           Center(
               child: FxButton.rounded(
             onPressed: () {
-              log('logout clicked');
+              controller.BoardingScreen();
             },
             elevation: 2,
             backgroundColor: const Color(0xff1529e8),

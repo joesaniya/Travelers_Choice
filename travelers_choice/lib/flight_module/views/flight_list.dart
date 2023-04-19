@@ -102,7 +102,9 @@ class _FlightListState extends State<FlightList> with TickerProviderStateMixin {
       list.add(FadeTransition(
         opacity: controller.fadeAnimation,
         child: GestureDetector(
-          onTap: () {},
+          onTap: () {
+            // controller.Bookseat();
+          },
           child: Container(
               margin: const EdgeInsets.only(bottom: 5),
               height: 144,

@@ -91,11 +91,25 @@ class OneWayController extends FxController {
 
   void searchflights() {
     log('calling search flights');
-    Navigator.of(context, rootNavigator: true).pushReplacement(
-      PageRouteBuilder(
-          transitionDuration: const Duration(seconds: 2),
-          pageBuilder: (_, __, ___) => const FlightList()),
-    );
+    // Navigator.of(context, rootNavigator: true).pushReplacement(
+    //   PageRouteBuilder(
+    //       transitionDuration: const Duration(seconds: 2),
+    //       pageBuilder: (_, __, ___) => const FlightList()),
+    // );
+        Navigator.of(context, rootNavigator: true).push(PageRouteBuilder(
+        transitionDuration: const Duration(milliseconds: 500),
+        transitionsBuilder: (
+          BuildContext context,
+          Animation<double> animation,
+          Animation<double> secondaryAnimation,
+          Widget child,
+        ) =>
+            FadeTransition(
+              opacity: animation,
+              child: child,
+            ),
+        pageBuilder: (_, __, ___) => const FlightList()));
+                                   
   }
 
   // // This function will be triggered when the floating button is pressed

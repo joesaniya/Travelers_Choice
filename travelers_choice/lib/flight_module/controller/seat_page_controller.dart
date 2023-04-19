@@ -17,11 +17,19 @@ class SeatPageController extends FxController {
     //       transitionDuration: const Duration(seconds: 2),
     //       pageBuilder: (_, __, ___) => Ticket_screen()),
     // );
-     Navigator.of(context, rootNavigator: true).pushReplacement(
-      PageRouteBuilder(
-          transitionDuration: const Duration(seconds: 2),
-          pageBuilder: (_, __, ___) => FlightCheckout()),
-    );
+       Navigator.of(context, rootNavigator: true).push(PageRouteBuilder(
+        transitionDuration: const Duration(milliseconds: 500),
+        transitionsBuilder: (
+          BuildContext context,
+          Animation<double> animation,
+          Animation<double> secondaryAnimation,
+          Widget child,
+        ) =>
+            FadeTransition(
+              opacity: animation,
+              child: child,
+            ),
+        pageBuilder: (_, __, ___) => const FlightCheckout()));
 
     
     // Navigator.of(context, rootNavigator: true).pushReplacement(

@@ -30,13 +30,18 @@ class BoardingPass extends StatelessWidget {
                         horizontal: 20, vertical: 50),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: const [
-                        Icon(
-                          Icons.arrow_back,
-                          size: 30,
-                          color: Colors.white,
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.pop(context);
+                          },
+                          child: const Icon(
+                            Icons.arrow_back,
+                            size: 30,
+                            color: Colors.white,
+                          ),
                         ),
-                        Text(
+                        const Text(
                           'Boarding Pass',
                           style: TextStyle(
                             fontSize: 20,
@@ -44,7 +49,7 @@ class BoardingPass extends StatelessWidget {
                             color: Colors.white,
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           width: 10,
                         ),
                       ],

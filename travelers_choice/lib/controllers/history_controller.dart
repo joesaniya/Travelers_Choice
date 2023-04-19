@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutx/flutx.dart';
 import 'package:intl/intl.dart';
 
+import '../flight_module/widgets/boarding_pass.dart';
 import '../models/atteraction_model.dart';
 import '../models/tickets.dart';
 import '../views/checkout_screen.dart';
@@ -239,7 +240,27 @@ class HistoryController extends FxController {
       }
     });
   }
-
+ void BoardingScreen() {
+    log('Boarding screen calling');
+    // Navigator.of(context, rootNavigator: true).pushReplacement(
+    //   PageRouteBuilder(
+    //       transitionDuration: const Duration(seconds: 2),
+    //       pageBuilder: (_, __, ___) => const BoardingPass()),
+    // );
+     Navigator.of(context, rootNavigator: true).push(PageRouteBuilder(
+        transitionDuration: const Duration(milliseconds: 500),
+        transitionsBuilder: (
+          BuildContext context,
+          Animation<double> animation,
+          Animation<double> secondaryAnimation,
+          Widget child,
+        ) =>
+            FadeTransition(
+              opacity: animation,
+              child: child,
+            ),
+        pageBuilder: (_, __, ___) =>  const BoardingPass()));
+  }
   @override
   void dispose() {
     animationController.dispose();
