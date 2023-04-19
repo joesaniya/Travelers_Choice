@@ -277,11 +277,11 @@ class RegisterController extends FxController {
     } else if (phoneTE.text.isEmpty
         // || phoneTE.text.length != 10
         ) {
-          CustomSnackbar.show(
+      CustomSnackbar.show(
         context: context,
         message: 'Please Enter Phone Number',
-        backgroundColor: Color(0xff1529e8),
-        duration: Duration(seconds: 2),
+        backgroundColor: const Color(0xff1529e8),
+        duration: const Duration(seconds: 2),
       );
       // ScaffoldMessenger.of(context).showSnackBar(
       //     const SnackBar(content: Text("Please enter 10digit number code")));
@@ -292,8 +292,8 @@ class RegisterController extends FxController {
       CustomSnackbar.show(
         context: context,
         message: 'Password contains one alphabet and correctors and numbers',
-        backgroundColor: Color(0xff1529e8),
-        duration: Duration(seconds: 2),
+        backgroundColor: const Color(0xff1529e8),
+        duration: const Duration(seconds: 2),
       );
       // if (passwordTE.text.contains(RegExp(r"[a-z]"))) {
       //   log('A');
