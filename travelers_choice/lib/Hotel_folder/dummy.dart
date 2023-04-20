@@ -25,11 +25,11 @@ List<String> nearby = [
 ];
 
 List<String> facilities = [
-  "assets/icons/wifi.svg",
-  "assets/icons/weightlift.svg",
-  "assets/icons/drink.svg",
-  "assets/icons/park.svg",
-  "assets/icons/pool.svg"
+  "assets/hotel/icons/wifi.svg",
+  "assets/hotel/weightlift.svg",
+  "assets/hotel/drink.svg",
+  "assets/hotel/park.svg",
+  "assets/hotel/pool.svg"
 ];
 
 List<String> review = [

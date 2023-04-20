@@ -7,8 +7,7 @@ class HotelHomeController extends FxController {
   TickerProvider ticker;
   HotelHomeController(this.ticker);
   bool uiLoading = true;
-  String tabbed = '1';
-  String returndate = '1';
+  
 
   void fetchloader() async {
     await Future.delayed(const Duration(seconds: 4));

@@ -1,7 +1,11 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutx/flutx.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+
+import '../views/hotel_detail.dart';
 
 class PopularItem extends StatelessWidget {
   final String imageUrl;
@@ -36,6 +40,20 @@ class PopularItem extends StatelessWidget {
             //     ),
             //   ),
             // );
+            log('hoteldetail');
+            Navigator.of(context, rootNavigator: true).push(PageRouteBuilder(
+                transitionDuration: const Duration(milliseconds: 500),
+                transitionsBuilder: (
+                  BuildContext context,
+                  Animation<double> animation,
+                  Animation<double> secondaryAnimation,
+                  Widget child,
+                ) =>
+                    FadeTransition(
+                      opacity: animation,
+                      child: child,
+                    ),
+                pageBuilder: (_, __, ___) => const HotelDetail()));
           },
           child: Stack(
             children: [
@@ -57,41 +75,35 @@ class PopularItem extends StatelessWidget {
               Positioned(
                 top: 12,
                 right: 12,
-                child:       Container(
-                            margin: const EdgeInsets.only(left: 8),
-                            child: ClipOval(
-                              child: Material(
-                                color: const Color(0xff1529e8).withAlpha(24),
-                                child: Container(
-                                  child: InkWell(
-                                    highlightColor: const Color(0xff1529e8)
-                                        .withAlpha(20),
-                                    splashColor: const Color(0xff1529e8)
-                                        .withAlpha(100),
-                                    child: SizedBox(
-                                        width: 44,
-                                        height: 44,
-                                        child: Icon(
-                                          MdiIcons.heartOutline,
-                                          // isSelected
-                                          //     ? MdiIcons.heart
-                                          //     : MdiIcons.heartOutline,
-                                          // color: controller
-                                          //     .colorAnimation.value,
-                                          // size: controller
-                                          //     .sizeAnimation.value,
+                child: Container(
+                  margin: const EdgeInsets.only(left: 8),
+                  child: ClipOval(
+                    child: Material(
+                      color: const Color(0xff1529e8).withAlpha(24),
+                      child: Container(
+                        child: InkWell(
+                          highlightColor: const Color(0xff1529e8).withAlpha(20),
+                          splashColor: const Color(0xff1529e8).withAlpha(100),
+                          child: const SizedBox(
+                              width: 44,
+                              height: 44,
+                              child: Icon(
+                                MdiIcons.heartOutline,
+                                // isSelected
+                                //     ? MdiIcons.heart
+                                //     : MdiIcons.heartOutline,
+                                // color: controller
+                                //     .colorAnimation.value,
+                                // size: controller
+                                //     .sizeAnimation.value,
+                              )),
+                          onTap: () {},
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
 
-                                         
-                                        )),
-                                    onTap: ()  {
-                                   
-                                    },
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                      
                 // child: ClipOval(
                 //   child: Container(
                 //     height: 23,
@@ -105,7 +117,6 @@ class PopularItem extends StatelessWidget {
                 //     ),
                 //   ),
                 // ),
-             
               ),
               Positioned(
                 bottom: 15,
@@ -117,9 +128,8 @@ class PopularItem extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                          FxText.bodyMedium(name, fontWeight: 500),
-                          FxText.bodyMedium(price, fontWeight: 500),
-                        
+                        FxText.bodyMedium(name, fontWeight: 500),
+                        FxText.bodyMedium(price, fontWeight: 500),
                       ],
                     ),
                     Row(

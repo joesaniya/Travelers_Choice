@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 
 import 'package:animate_do/animate_do.dart';
@@ -8,6 +10,7 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 import '../../models/tickets.dart';
 import '../../theme/app_theme.dart';
 import '../controller/popular_list_controller.dart';
+import '../views/hotel_detail.dart';
 
 class PopularList extends StatefulWidget {
   final List items;
@@ -133,6 +136,22 @@ class _PopularListState extends State<PopularList>
                     //     ),
                     //   ),
                     // );
+                    log('hoteldetail');
+                    Navigator.of(context, rootNavigator: true).push(
+                        PageRouteBuilder(
+                            transitionDuration:
+                                const Duration(milliseconds: 500),
+                            transitionsBuilder: (
+                              BuildContext context,
+                              Animation<double> animation,
+                              Animation<double> secondaryAnimation,
+                              Widget child,
+                            ) =>
+                                FadeTransition(
+                                  opacity: animation,
+                                  child: child,
+                                ),
+                            pageBuilder: (_, __, ___) => const HotelDetail()));
                   },
                   child: Stack(
                     children: [

@@ -9,7 +9,7 @@ import 'package:hotel_travel/views/search_screens/search_place.dart';
 import 'package:hotel_travel/views/search_screens/visa_search.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import '../Hotel_folder/views/hotel_splash.dart';
+import '../Hotel_folder/views/hotel_search.dart';
 import '../controllers/attraction_Controller.dart';
 import '../controllers/home_controller.dart';
 import '../flight_module/splash/flight_splash.dart';
@@ -1083,7 +1083,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                     ? SearchPlace(
                         isocode: selectedCountry!.isocode,
                         conversionRate: selectedCountry!.conversionRate)
-                    : const SearchVisa(),
+                    : _tabbed == '3'
+                        ? const HotelSearch()
+                        : const SearchVisa(),
 
                 Listener(
                   behavior: HitTestBehavior.opaque,
@@ -1224,22 +1226,22 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                 log('Hotel');
                                 _tabbed = '3';
                                 setState(() {});
-                                Navigator.of(context, rootNavigator: true).push(
-                                    PageRouteBuilder(
-                                        transitionDuration:
-                                            const Duration(milliseconds: 500),
-                                        transitionsBuilder: (
-                                          BuildContext context,
-                                          Animation<double> animation,
-                                          Animation<double> secondaryAnimation,
-                                          Widget child,
-                                        ) =>
-                                            FadeTransition(
-                                              opacity: animation,
-                                              child: child,
-                                            ),
-                                        pageBuilder: (_, __, ___) =>
-                                            const HotelSplash()));
+                                // Navigator.of(context, rootNavigator: true).push(
+                                //     PageRouteBuilder(
+                                //         transitionDuration:
+                                //             const Duration(milliseconds: 500),
+                                //         transitionsBuilder: (
+                                //           BuildContext context,
+                                //           Animation<double> animation,
+                                //           Animation<double> secondaryAnimation,
+                                //           Widget child,
+                                //         ) =>
+                                //             FadeTransition(
+                                //               opacity: animation,
+                                //               child: child,
+                                //             ),
+                                //         pageBuilder: (_, __, ___) =>
+                                //             const HotelSplash()));
                               },
                               child: Container(
                                 width: 120,
