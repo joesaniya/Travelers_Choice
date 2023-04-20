@@ -20,7 +20,7 @@ class SectionTitle extends StatelessWidget {
             // Text(title, style: nunito18),
             FxText.bodyMedium(
               title,
-              color: Colors.white,
+              color: Colors.black,
               // color: customTheme.estateOnPrimary,
               fontWeight: 700,
             ),

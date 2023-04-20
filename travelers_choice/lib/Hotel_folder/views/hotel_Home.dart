@@ -9,6 +9,7 @@ import '../../theme/app_theme.dart';
 import '../controller/hote_home_controller.dart';
 import '../dummy.dart';
 import '../widgets/chips.dart';
+import '../widgets/nearby_grid.dart';
 import '../widgets/popular_list.dart';
 
 class HotelHome extends StatefulWidget {
@@ -126,7 +127,9 @@ class _HotelHomeState extends State<HotelHome> with TickerProviderStateMixin {
         ),
         FxSpacing.height(15),
         const SearchBar(),
-        const Chips()
+        const Chips(),
+        PopularList(items: popular),
+        NearbyGrid(data: nearby),
       ],
     );
   }
@@ -138,6 +141,7 @@ class _HotelHomeState extends State<HotelHome> with TickerProviderStateMixin {
         const SearchBar(),
         const Chips(),
         PopularList(items: popular),
+        NearbyGrid(data: nearby),
       ],
     );
   }
