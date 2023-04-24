@@ -7,6 +7,7 @@ import 'package:intl/intl.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 import '../../theme/app_theme.dart';
+import '../bottomsheet.dart/person_seat.dart';
 import '../controller/hotel_search_controller.dart';
 import 'hotel_splash.dart';
 
@@ -56,10 +57,54 @@ class _HotelSearchState extends State<HotelSearch>
         lastDate: DateTime(2101));
   }
 
+  Future<void> checkinPicker(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+        context: context,
+        initialDate: DateTime.now(),
+        firstDate: DateTime(2018),
+        lastDate: DateTime(2101));
+
+    if (picked != null && picked != controller.selectedValue) {
+      controller.selectedValue = picked;
+      setState(() {
+        controller.selectedValue = picked;
+      });
+    }
+
+    log('selected:$controller.selectedValue');
+  }
+
+  Future<void> checkOutPicker(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+        context: context,
+        initialDate: DateTime.now(),
+        firstDate: DateTime(2018),
+        lastDate: DateTime(2101));
+
+    if (picked != null && picked != controller.selectedCheckOut) {
+      setState(() {
+        controller.selectedCheckOut = picked;
+      });
+    }
+
+    log('selected:$controller.selectedValue');
+  }
+
   @override
   Widget build(BuildContext context) {
-    // DateTime newdate = DateTime.now();
-    //  String formattedYear = DateFormat('EEEE, yyyy').format(newdate);
+    DateTime newdate = DateTime.now();
+    DateTime newdate2 = controller.selectedValue;
+    String formattedYear = DateFormat.MMMd().format(newdate);
+    String formattedYeardate = DateFormat.MMMd().format(newdate2);
+    log('ui1:$formattedYear');
+    log('ui2:$formattedYeardate');
+    //checkOut
+    DateTime checkOutTimeNow = DateTime.now();
+    DateTime checkOutTimeSel = controller.selectedCheckOut;
+    String CurrentTimeCheckout = DateFormat.MMMd().format(checkOutTimeNow);
+    String SlecteddateCheckout = DateFormat.MMMd().format(checkOutTimeSel);
+    log('Checkout1:$CurrentTimeCheckout');
+    log('Checkout2:$SlecteddateCheckout');
     return FxBuilder<HotelSearchController>(
         controller: controller,
         builder: (controller) {
@@ -124,132 +169,155 @@ class _HotelSearchState extends State<HotelSearch>
                     child: Row(
                       children: <Widget>[
                         Expanded(
-                          child: Container(
-                            child: Center(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                // mainAxisAlignment: MainAxisAlignment.center,
-                                children: <Widget>[
-                                  Padding(
-                                    padding: FxSpacing.only(
-                                        // left: 16
-                                        left: 0),
-                                    child: FxText.bodySmall("Check in",
-                                        fontWeight: 500),
-                                  ),
-                                  // SlideTransition(
-                                  //   position: controller.checkInAnimation,
-                                  //   child: TextFormField(
-                                  //     onTap: () async {
-                                  //       DateTime? pickedDate =
-                                  //           await showDatePicker(
-                                  //               context: context,
-                                  //               initialDate: DateTime.now(),
-                                  //               firstDate: DateTime(
-                                  //                   1900), //DateTime.now() - not to allow to choose before today.
-                                  //               lastDate: DateTime(2101));
-                                  //       if (pickedDate != null) {
-                                  //         print(
-                                  //             pickedDate); //pickedDate output format => 2021-03-10 00:00:00.000
-                                  //         String formattedDate =
-                                  //             DateFormat('yyyy-MM-dd')
-                                  //                 .format(pickedDate);
-                                  //         print(formattedDate);
-                                  //         controller.checkInTE.text =
-                                  //             formattedDate;
-                                  //         log('Checkin:${controller.checkInTE.text}');
-                                  //       } else {
-                                  //         log("checkIn is not selected");
-                                  //       }
-                                  //     },
-                                  //     style: FxTextStyle.bodyLarge(
-                                  //         fontWeight: 600),
-                                  //     decoration: InputDecoration(
-                                  //         floatingLabelBehavior:
-                                  //             FloatingLabelBehavior.never,
-                                  //         filled: true,
-                                  //         isDense: true,
-                                  //         fillColor: Colors.transparent,
-                                  //         // fillColor: theme.cardTheme.color,
-                                  //         hintText: "25 Mar",
-                                  //         enabledBorder: InputBorder.none,
-                                  //         focusedBorder: InputBorder.none,
-                                  //         border: InputBorder.none,
-                                  //         // enabledBorder: outlineInputBorder,
-                                  //         // focusedBorder: outlineInputBorder,
-                                  //         // border: outlineInputBorder,
-                                  //         // contentPadding: FxSpacing.all(16),
-                                  //         contentPadding:
-                                  //             FxSpacing.only(left: 16),
-                                  //         hintStyle: FxTextStyle.bodyLarge(
-                                  //             fontWeight: 600),
-                                  //         isCollapsed: true),
-                                  //     maxLines: 1,
-                                  //     controller: controller.checkInTE,
-                                  //     validator: controller.validateCheckIn,
-                                  //     cursorColor:
-                                  //         theme.colorScheme.onBackground,
-                                  //   ),
-                                  // ),
+                          child: GestureDetector(
+                            // onTap: () async {
+                            //   DateTime? pickedDate =
+                            //       await showDatePicker(
+                            //           context: context,
+                            //           initialDate: DateTime.now(),
+                            //           firstDate: DateTime(
+                            //               1900), //DateTime.now() - not to allow to choose before today.
+                            //           lastDate: DateTime(2101));
+                            //   if (pickedDate != null) {
+                            //     print(
+                            //         pickedDate); //pickedDate output format => 2021-03-10 00:00:00.000
+                            //     String formattedDate =
+                            //         DateFormat('yyyy-MM-dd')
+                            //             .format(pickedDate);
+                            //     print(formattedDate);
+                            //     controller.selectedValue =
+                            //         formattedDate as DateTime;
+                            //     log('Checkin:${controller.selectedValue}');
+                            //   } else {
+                            //     log("checkIn is not selected");
+                            //   }
+                            // },
+                            onTap: () => checkinPicker(context),
+                            // onTap: () => controller.showPicker(context),
+                            child: Container(
+                              child: Center(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  // mainAxisAlignment: MainAxisAlignment.center,
+                                  children: <Widget>[
+                                    Padding(
+                                      padding: FxSpacing.only(
+                                          // left: 16
+                                          left: 0),
+                                      child: FxText.bodySmall("Check in",
+                                          fontWeight: 500),
+                                    ),
+                                    // SlideTransition(
+                                    //   position: controller.checkInAnimation,
+                                    //   child: TextFormField(
+                                    //     onTap: () async {
+                                    //       DateTime? pickedDate =
+                                    //           await showDatePicker(
+                                    //               context: context,
+                                    //               initialDate: DateTime.now(),
+                                    //               firstDate: DateTime(
+                                    //                   1900), //DateTime.now() - not to allow to choose before today.
+                                    //               lastDate: DateTime(2101));
+                                    //       if (pickedDate != null) {
+                                    //         print(
+                                    //             pickedDate); //pickedDate output format => 2021-03-10 00:00:00.000
+                                    //         String formattedDate =
+                                    //             DateFormat('yyyy-MM-dd')
+                                    //                 .format(pickedDate);
+                                    //         print(formattedDate);
+                                    //         controller.checkInTE.text =
+                                    //             formattedDate;
+                                    //         log('Checkin:${controller.checkInTE.text}');
+                                    //       } else {
+                                    //         log("checkIn is not selected");
+                                    //       }
+                                    //     },
+                                    //     style: FxTextStyle.bodyLarge(
+                                    //         fontWeight: 600),
+                                    //     decoration: InputDecoration(
+                                    //         floatingLabelBehavior:
+                                    //             FloatingLabelBehavior.never,
+                                    //         filled: true,
+                                    //         isDense: true,
+                                    //         fillColor: Colors.transparent,
+                                    //         // fillColor: theme.cardTheme.color,
+                                    //         hintText: "25 Mar",
+                                    //         enabledBorder: InputBorder.none,
+                                    //         focusedBorder: InputBorder.none,
+                                    //         border: InputBorder.none,
+                                    //         // enabledBorder: outlineInputBorder,
+                                    //         // focusedBorder: outlineInputBorder,
+                                    //         // border: outlineInputBorder,
+                                    //         // contentPadding: FxSpacing.all(16),
+                                    //         contentPadding:
+                                    //             FxSpacing.only(left: 16),
+                                    //         hintStyle: FxTextStyle.bodyLarge(
+                                    //             fontWeight: 600),
+                                    //         isCollapsed: true),
+                                    //     maxLines: 1,
+                                    //     controller: controller.checkInTE,
+                                    //     validator: controller.validateCheckIn,
+                                    //     cursorColor:
+                                    //         theme.colorScheme.onBackground,
+                                    //   ),
+                                    // ),
 
-                                  GestureDetector(
-                                    onTap: () async {
-                                      DateTime? pickedDate =
-                                          await showDatePicker(
-                                              context: context,
-                                              initialDate: DateTime.now(),
-                                              firstDate: DateTime(
-                                                  1900), //DateTime.now() - not to allow to choose before today.
-                                              lastDate: DateTime(2101));
-                                      if (pickedDate != null) {
-                                        print(
-                                            pickedDate); //pickedDate output format => 2021-03-10 00:00:00.000
-                                        String formattedDate =
-                                            DateFormat('yyyy-MM-dd')
-                                                .format(pickedDate);
-                                        print(formattedDate);
-                                        controller.selectedValue =
-                                            formattedDate as DateTime;
-                                        log('Checkin:${controller.selectedValue}');
-                                      } else {
-                                        log("checkIn is not selected");
-                                      }
-                                    },
-                                    child: controller.selectedValue == null
-                                        ? FxText.bodyLarge("28 May",
+                                    controller.selectedValue == null
+                                        ? FxText.bodyLarge(formattedYear,
                                             fontWeight: 600)
-                                        : FxText.bodyLarge(
-                                            controller.selectedValue.toString(),
-                                            fontWeight: 600),
-                                  )
-                                ],
+                                        : FxText.bodyLarge(formattedYeardate,
+                                            fontWeight: 600)
+                                  ],
+                                ),
                               ),
                             ),
                           ),
                         ),
                         Expanded(
-                          child: Container(
-                            child: Center(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  FxText.bodySmall("Check out",
-                                      fontWeight: 500),
-                                  FxText.bodyLarge("31 May", fontWeight: 600),
-                                ],
+                          child: GestureDetector(
+                            onTap: () => checkOutPicker(context),
+                            child: Container(
+                              child: Center(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    FxText.bodySmall("Check out",
+                                        fontWeight: 500),
+                                    // FxText.bodyLarge("31 May", fontWeight: 600),
+                                    controller.selectedCheckOut == null
+                                        ? FxText.bodyLarge(CurrentTimeCheckout,
+                                            fontWeight: 600)
+                                        : FxText.bodyLarge(SlecteddateCheckout,
+                                            fontWeight: 600)
+                                  ],
+                                ),
                               ),
                             ),
                           ),
                         ),
                         Expanded(
-                          child: Container(
-                            child: Center(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  FxText.bodySmall("Person", fontWeight: 500),
-                                  FxText.bodyLarge("2 Couple", fontWeight: 600),
-                                ],
+                          child: GestureDetector(
+                            onTap: () async {
+                              var data = await showModalBottomSheet(
+                                  context: context,
+                                  builder: (BuildContext buildContext) {
+                                    return const PersonSeat();
+                                  });
+                              setState(() {
+                                // controller.allattractionList = [];
+                                // controller.allattractionList = [data];
+                              });
+                            },
+                            child: Container(
+                              child: Center(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    FxText.bodySmall("Person", fontWeight: 500),
+                                    FxText.bodyLarge("2 Couple",
+                                        fontWeight: 600),
+                                  ],
+                                ),
                               ),
                             ),
                           ),

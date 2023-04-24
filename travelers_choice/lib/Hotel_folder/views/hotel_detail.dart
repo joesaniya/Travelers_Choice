@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutx/flutx.dart';
 
 import '../../loading_effect.dart';
-import '../../models/product_image.dart';
 import '../../theme/app_theme.dart';
 import '../controller/hotel_detail_controller.dart';
 import '../widgets/custom_button.dart';

@@ -31,7 +31,7 @@ class ProductImage {
 
   static Future<String> getData() async {
     return await rootBundle
-        .loadString('lib/apps/homemade/data/product_images.json');
+        .loadString('lib/dummy_data/data/product_images.json');
   }
 
   @override

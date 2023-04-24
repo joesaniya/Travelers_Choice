@@ -17,16 +17,40 @@ class HotelSearchController extends FxController {
   int emailCounter = 0;
   int passwordCounter = 0;
   DateTime selectedValue = DateTime.now();
+  DateTime selectedCheckOut = DateTime.now();
 
-  
+  DateTime selectedDate = DateTime.now();
 
+  var customFormat = DateFormat('dd-MM-yyyy');
+
+  Future<void> showPicker(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+        context: context,
+        initialDate: DateTime.now(),
+        firstDate: DateTime(2018),
+        lastDate: DateTime(2101));
+
+    if (picked != null && picked != selectedDate) selectedDate = picked;
+    selectedValue = picked!;
+    log('selected:$selectedValue');
+    update();
+  }
+
+  // String? todaydate;
+  String? formattedYear;
   @override
   void initState() {
     super.initState();
-    DateTime newdate = DateTime.now();
-    DateTime newdate2 = selectedValue;
-    log('Calener:${selectedValue.toString()}');
-    String formattedYear = DateFormat('EEEE, yyyy').format(newdate);
+    // DateTime newdate = DateTime.now();
+    // DateTime newdate2 = selectedValue;
+    // log('Calener:${selectedValue.toString()}');
+    // // String formattedYear = DateFormat('EEEE, yyyy').format(newdate);
+    // formattedYear = DateFormat.MMMd().format(newdate);
+    // // formattedYear = todaydate.toString();
+    // // log('Today:$todaydate');
+    // log('DateTime:$formattedYear');
+    // String formattedYeardate = DateFormat.MMMd().format(newdate2);
+    // log('year:$formattedYeardate');
     checkInTE = TextEditingController();
     checkOutTE = TextEditingController();
     arrowController = AnimationController(

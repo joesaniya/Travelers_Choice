@@ -10,7 +10,7 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 import '../../models/tickets.dart';
 import '../../theme/app_theme.dart';
 import '../controller/popular_list_controller.dart';
-import '../views/hotel_detail.dart';
+import '../views/demo_detail.dart';
 
 class PopularList extends StatefulWidget {
   final List items;
@@ -89,7 +89,7 @@ class _PopularListState extends State<PopularList>
 
   Widget _popularcard() {
     if (controller.uiLoading) {
-      return const CircularProgressIndicator();
+      return Center(child: FxText.bodyMedium('Loading.....'));
     } else {
       return FadeInUp(
         duration: const Duration(milliseconds: 1100),
@@ -151,7 +151,9 @@ class _PopularListState extends State<PopularList>
                                   opacity: animation,
                                   child: child,
                                 ),
-                            pageBuilder: (_, __, ___) => const HotelDetail()));
+                            pageBuilder: (_, __, ___) =>
+                                // const HotelDetail()
+                                const SingleProductScreen()));
                   },
                   child: Stack(
                     children: [
