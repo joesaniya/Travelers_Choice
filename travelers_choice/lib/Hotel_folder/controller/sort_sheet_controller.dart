@@ -1,29 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutx/flutx.dart';
 
-class PersonSeatController extends FxController {
+class SortSeatController extends FxController {
   TickerProvider ticker;
-  PersonSeatController(this.ticker);
+  SortSeatController(this.ticker);
 
   int? defaultChoiceIndex;
   int roomscount = 1;
-  String? selectedage;
-  final List<String> ageCodes = [
-    '<1',
-    '1',
-    '2',
-    '3',
-    '4',
-    '5',
-    '6',
-    '7',
-    '8',
-    '9',
-    '10',
-    '11'
-  ];
-  List<String> options = ['Option 1', 'Option 2', 'Option 3'];
-  List<String> dropdownValues = List.generate(3, (index) => 'Option 1');
+
   void roomsincrement() {
     if (roomscount >= 0 && roomscount < 100) {
       roomscount++;
@@ -72,6 +56,6 @@ class PersonSeatController extends FxController {
 
   @override
   String getTag() {
-    return "Traveller-Class-Controller";
+    return "Sort-sheet-Controller";
   }
 }

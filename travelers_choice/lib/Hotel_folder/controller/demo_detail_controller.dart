@@ -1,10 +1,12 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutx/flutx.dart';
 
 import '../../models/product.dart';
 import '../../models/product_image.dart';
+import '../views/view_optios.dart';
 
 enum ImageResType { portrait, landscape, mixed }
 
@@ -45,7 +47,7 @@ class SingleProductController extends FxController {
         viewportFraction: 0.7,
       );
     }
-    await Future.delayed(Duration(seconds: 1));
+    await Future.delayed(const Duration(seconds: 1));
     showLoading = false;
     uiLoading = false;
     update();
@@ -57,7 +59,7 @@ class SingleProductController extends FxController {
     if (fromUser) {
       await pageController.animateToPage(
         page,
-        duration: Duration(milliseconds: 600),
+        duration: const Duration(milliseconds: 600),
         curve: Curves.ease,
       );
     }
@@ -70,10 +72,28 @@ class SingleProductController extends FxController {
   }
 
   getResType(ProductImage image) {
-    if (image.height < image.width)
+    if (image.height < image.width) {
       return ImageResType.landscape;
-    else
+    } else {
       return ImageResType.portrait;
+    }
+  }
+
+  viewpax() {
+    log('options');
+    Navigator.of(context, rootNavigator: true).push(PageRouteBuilder(
+        transitionDuration: const Duration(milliseconds: 500),
+        transitionsBuilder: (
+          BuildContext context,
+          Animation<double> animation,
+          Animation<double> secondaryAnimation,
+          Widget child,
+        ) =>
+            FadeTransition(
+              opacity: animation,
+              child: child,
+            ),
+        pageBuilder: (_, __, ___) => const ViewOptions()));
   }
 
   @override

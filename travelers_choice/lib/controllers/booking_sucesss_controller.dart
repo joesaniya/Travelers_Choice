@@ -49,6 +49,7 @@ class BookingSuccessController extends FxController {
           pageBuilder: (_, __, ___) => const AllBookings()),
     );
   }
+  
 
   @override
   String getTag() {

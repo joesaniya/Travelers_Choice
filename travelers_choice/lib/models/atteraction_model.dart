@@ -488,7 +488,7 @@ class Activity {
   String? name;
   String? facilities; //no
   int? adultAgeLimit;
-  int? adultPrice;
+  dynamic? adultPrice;
   dynamic childAgeLimit;
   int? childPrice;
   dynamic infantAgeLimit;

@@ -3,13 +3,13 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutx/flutx.dart';
+import 'package:hotel_travel/Hotel_folder/views/search_hotel.dart';
 import 'package:intl/intl.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 import '../../theme/app_theme.dart';
 import '../bottomsheet.dart/person_seat.dart';
 import '../controller/hotel_search_controller.dart';
-import 'hotel_splash.dart';
 
 class HotelSearch extends StatefulWidget {
   const HotelSearch({super.key});
@@ -344,8 +344,9 @@ class _HotelSearchState extends State<HotelSearch>
                                     opacity: animation,
                                     child: child,
                                   ),
-                              pageBuilder: (_, __, ___) =>
-                                  const HotelSplash()));
+                              pageBuilder: (_, __, ___) => const SearchHotel()
+                              // const HotelSplash()
+                              ));
                     },
                     splashColor: theme.colorScheme.onPrimary.withAlpha(30),
                     backgroundColor: const Color(0xff1529e8),
@@ -354,7 +355,7 @@ class _HotelSearchState extends State<HotelSearch>
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         FxText.labelLarge(
-                          "Search",
+                          "Search Hotels",
                           fontWeight: 600,
                           color: theme.colorScheme.onPrimary,
                           letterSpacing: 0.4,

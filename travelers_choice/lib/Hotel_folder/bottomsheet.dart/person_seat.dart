@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutx/flutx.dart';
@@ -24,6 +25,9 @@ class _PersonSeatState extends State<PersonSeat> with TickerProviderStateMixin {
     'Double',
     'Triple',
   ];
+
+  List<String> options = ['Option 1', 'Option 2', 'Option 3'];
+  List<String> dropdownValues = List.generate(3, (index) => 'Option 1');
 
   @override
   void initState() {
@@ -132,8 +136,7 @@ class _PersonSeatState extends State<PersonSeat> with TickerProviderStateMixin {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               FxText.bodyLarge(
-                // 'SELECT TRAVELLERS & CLASS',
-                'SELECT Persons & Room Type',
+                'SELECT ROOMS AND GUESTS',
                 fontWeight: 800,
               ),
               GestureDetector(
@@ -165,7 +168,7 @@ class _PersonSeatState extends State<PersonSeat> with TickerProviderStateMixin {
                       children: [
                         FxSpacing.height(24),
                         FxText.bodyLarge(
-                          'ADD NUMBER OF PERSONS',
+                          'ADD GUESTS',
                           letterSpacing: 0,
                           fontWeight: 600,
                           decoration: TextDecoration.underline,
@@ -177,7 +180,7 @@ class _PersonSeatState extends State<PersonSeat> with TickerProviderStateMixin {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             FxText.bodyMedium(
-                              'Adult',
+                              'Rooms',
                               fontWeight: 900,
                             ),
                             Expanded(child: Container()),
@@ -196,7 +199,7 @@ class _PersonSeatState extends State<PersonSeat> with TickerProviderStateMixin {
                                 children: [
                                   InkWell(
                                       onTap: () {
-                                        controller.adultdecrement();
+                                        controller.roomsdecrement();
                                       },
                                       child: const Icon(
                                         Icons.remove,
@@ -215,7 +218,7 @@ class _PersonSeatState extends State<PersonSeat> with TickerProviderStateMixin {
                                         color: Colors.white),
                                     child: FxText.bodyMedium(
                                       // '3',
-                                      controller.adultcount.toString(),
+                                      controller.roomscount.toString(),
                                       fontWeight: 700,
                                       // style: const TextStyle(
                                       //     color: Colors.black, fontSize: 16),
@@ -223,7 +226,7 @@ class _PersonSeatState extends State<PersonSeat> with TickerProviderStateMixin {
                                   ),
                                   InkWell(
                                       onTap: () {
-                                        controller.adultincrement();
+                                        controller.roomsincrement();
                                       },
                                       child: const Icon(
                                         Icons.add,
@@ -243,8 +246,85 @@ class _PersonSeatState extends State<PersonSeat> with TickerProviderStateMixin {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             FxText.bodyMedium(
-                              'Children',
+                              'Adults',
                               fontWeight: 900,
+                            ),
+                            Expanded(child: Container()),
+                            // Row(
+                            //   children: const [],
+                            // )
+                            Container(
+                              padding: const EdgeInsets.all(10),
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(5),
+                                  color: const Color(0xff1529e8)
+                                  // color:
+                                  //     Theme.of(context).colorScheme.secondary
+                                  ),
+                              child: Row(
+                                children: [
+                                  InkWell(
+                                      onTap: () {
+                                        controller.adultsdecrement();
+                                      },
+                                      child: const Icon(
+                                        Icons.remove,
+                                        color: Colors.white,
+                                        size: 16,
+                                      )),
+                                  Container(
+                                    margin: const EdgeInsets.symmetric(
+                                        horizontal: 3),
+                                    padding: const EdgeInsets.symmetric(
+                                        // horizontal: 3, vertical: 2
+                                        horizontal: 10,
+                                        vertical: 7),
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(3),
+                                        color: Colors.white),
+                                    child: FxText.bodyMedium(
+                                      // '3',
+                                      controller.adultscount.toString(),
+                                      fontWeight: 700,
+                                      // style: const TextStyle(
+                                      //     color: Colors.black, fontSize: 16),
+                                    ),
+                                  ),
+                                  InkWell(
+                                      onTap: () {
+                                        controller.adultsincrement();
+                                      },
+                                      child: const Icon(
+                                        Icons.add,
+                                        color: Colors.white,
+                                        size: 16,
+                                      )),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+
+//infant
+                        FxSpacing.height(14),
+
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                FxText.bodyMedium(
+                                  'Children',
+                                  fontWeight: 900,
+                                ),
+                                FxSpacing.height(5),
+                                FxText.bodyMedium(
+                                  'Ages 0-11',
+                                  fontWeight: 900,
+                                ),
+                              ],
                             ),
                             Expanded(child: Container()),
                             // Row(
@@ -280,7 +360,6 @@ class _PersonSeatState extends State<PersonSeat> with TickerProviderStateMixin {
                                         borderRadius: BorderRadius.circular(3),
                                         color: Colors.white),
                                     child: FxText.bodyMedium(
-                                      // '3',
                                       controller.childcount.toString(),
                                       fontWeight: 700,
                                       // style: const TextStyle(
@@ -302,71 +381,326 @@ class _PersonSeatState extends State<PersonSeat> with TickerProviderStateMixin {
                           ],
                         ),
 
-//infant
                         FxSpacing.height(14),
 
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             FxText.bodyMedium(
-                              'Infant',
+                              'Age of Children',
                               fontWeight: 900,
                             ),
                             Expanded(child: Container()),
                             // Row(
                             //   children: const [],
                             // )
-                            Container(
-                              padding: const EdgeInsets.all(10),
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(5),
-                                  color: const Color(0xff1529e8)
-                                  // color:
-                                  //     Theme.of(context).colorScheme.secondary
-                                  ),
-                              child: Row(
-                                children: [
-                                  InkWell(
-                                      onTap: () {
-                                        controller.infantdecrement();
-                                      },
-                                      child: const Icon(
-                                        Icons.remove,
-                                        color: Colors.white,
-                                        size: 16,
-                                      )),
-                                  Container(
-                                    margin: const EdgeInsets.symmetric(
-                                        horizontal: 3),
-                                    padding: const EdgeInsets.symmetric(
-                                        // horizontal: 3, vertical: 2
-                                        horizontal: 10,
-                                        vertical: 7),
+                            controller.childcount == 0
+                                ? const SizedBox()
+                                : Container(
                                     decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(3),
-                                        color: Colors.white),
-                                    child: FxText.bodyMedium(
-                                      controller.infantcount.toString(),
-                                      fontWeight: 700,
-                                      // style: const TextStyle(
-                                      //     color: Colors.black, fontSize: 16),
+                                        color: theme.cardTheme.color,
+                                        // color: const Color(0xff1529e8),
+                                        borderRadius: BorderRadius.circular(4)),
+                                    // height: 45.0,
+                                    // width: 80,
+                                    height: 50,
+                                    width: 100,
+                                    child: DropdownButtonHideUnderline(
+                                      child: DropdownButton2(
+                                        isExpanded: true,
+                                        hint: Row(
+                                          children: [
+                                            Expanded(
+                                              child: FxText.labelLarge(
+                                                " ",
+                                                fontWeight: 600,
+                                                color: Colors.black,
+                                                // color: theme.colorScheme.onPrimary,
+                                                letterSpacing: 0.4,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        items: controller.ageCodes
+                                            .map((String value) {
+                                          return DropdownMenuItem<String>(
+                                              value: value,
+                                              child: Center(
+                                                child: Text(
+                                                  value,
+                                                  style:
+                                                      FxTextStyle.bodyMedium(),
+                                                ),
+                                              ));
+                                        }).toList(),
+
+                                        value: controller.selectedage,
+                                        onChanged: (value) {
+                                          setState(() {
+                                            controller.selectedage =
+                                                value.toString();
+                                          });
+                                        },
+
+                                        icon: const Icon(Icons.arrow_drop_down),
+                                        iconSize: 20,
+                                        iconEnabledColor: Colors.black,
+                                        iconDisabledColor: Colors.black,
+                                        buttonHeight: 30,
+                                        buttonWidth: 200,
+                                        buttonPadding: const EdgeInsets.only(
+                                            left: 14,
+                                            right: 14,
+                                            top: 4,
+                                            bottom: 4),
+                                        dropdownDecoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(4),
+                                          color: Colors.white,
+                                        ),
+                                        buttonDecoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          color: theme.cardTheme.color,
+                                        ),
+
+                                        itemHeight: 40,
+                                        // itemWidth: 200,
+                                        itemPadding: const EdgeInsets.only(
+                                            left: 14, right: 14),
+                                        dropdownMaxHeight: 200,
+                                        dropdownPadding: null,
+
+                                        scrollbarRadius:
+                                            const Radius.circular(40),
+                                        scrollbarThickness: 2,
+                                        scrollbarAlwaysShow: true,
+                                        offset: const Offset(0, 0),
+                                      ),
                                     ),
                                   ),
-                                  InkWell(
-                                      onTap: () {
-                                        controller.infantincrement();
-                                      },
-                                      child: const Icon(
-                                        Icons.add,
-                                        color: Colors.white,
-                                        size: 16,
-                                      )),
-                                ],
-                              ),
-                            ),
+                            //wrap
                           ],
                         ),
 
+                        controller.childcount == 0
+                            ? const SizedBox()
+                            : Wrap(
+                                spacing: 10,
+                                runSpacing: 10,
+                                children: List.generate(controller.childcount,
+                                    (index) {
+                                  return Container(
+                                    decoration: BoxDecoration(
+                                        color: theme.cardTheme.color,
+                                        // color: const Color(0xff1529e8),
+                                        borderRadius: BorderRadius.circular(4)),
+                                    // height: 45.0,
+                                    // width: 80,
+                                    height: 50,
+                                    width: 100,
+                                    margin: const EdgeInsets.only(right: 6),
+                                    child: DropdownButtonHideUnderline(
+                                      child: DropdownButton2(
+                                        isExpanded: true,
+                                        hint: Row(
+                                          children: [
+                                            Expanded(
+                                              child: FxText.labelLarge(
+                                                " ",
+                                                fontWeight: 600,
+                                                color: Colors.black,
+                                                // color: theme.colorScheme.onPrimary,
+                                                letterSpacing: 0.4,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        items: controller.ageCodes
+                                            .map((String value) {
+                                          return DropdownMenuItem<String>(
+                                              value: value,
+                                              child: Center(
+                                                child: Text(
+                                                  value,
+                                                  style:
+                                                      FxTextStyle.bodyMedium(),
+                                                ),
+                                              ));
+                                        }).toList(),
+
+                                        value: controller.selectedage,
+                                        onChanged: (value) {
+                                          setState(() {
+                                            controller.selectedage =
+                                                value.toString();
+                                          });
+                                        },
+
+                                        icon: const Icon(Icons.arrow_drop_down),
+                                        iconSize: 20,
+                                        iconEnabledColor: Colors.black,
+                                        iconDisabledColor: Colors.black,
+                                        buttonHeight: 30,
+                                        buttonWidth: 200,
+                                        buttonPadding: const EdgeInsets.only(
+                                            left: 14,
+                                            right: 14,
+                                            top: 4,
+                                            bottom: 4),
+                                        dropdownDecoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(4),
+                                          color: Colors.white,
+                                        ),
+                                        buttonDecoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          color: theme.cardTheme.color,
+                                        ),
+
+                                        itemHeight: 40,
+                                        // itemWidth: 200,
+                                        itemPadding: const EdgeInsets.only(
+                                            left: 14, right: 14),
+                                        dropdownMaxHeight: 200,
+                                        dropdownPadding: null,
+
+                                        scrollbarRadius:
+                                            const Radius.circular(40),
+                                        scrollbarThickness: 2,
+                                        scrollbarAlwaysShow: true,
+                                        offset: const Offset(0, 0),
+                                      ),
+                                    ),
+                                  );
+                                }),
+                              ),
+
+// //demo
+//                         controller.childcount == 0
+//                             ? const SizedBox()
+//                             : Wrap(
+//                                 spacing: 10,
+//                                 runSpacing: 10,
+//                                 children: List.generate(controller.childcount,
+//                                     (index) {
+//                                   return Container(
+//                                     decoration: BoxDecoration(
+//                                         color: theme.cardTheme.color,
+//                                         // color: const Color(0xff1529e8),
+//                                         borderRadius: BorderRadius.circular(4)),
+//                                     // height: 45.0,
+//                                     // width: 80,
+//                                     height: 50,
+//                                     width: 100,
+//                                     margin: const EdgeInsets.only(right: 6),
+//                                     child: DropdownButtonHideUnderline(
+//                                       child: DropdownButton2(
+//                                         isExpanded: true,
+//                                         hint: Row(
+//                                           children: [
+//                                             Expanded(
+//                                               child: FxText.labelLarge(
+//                                                 " ",
+//                                                 fontWeight: 600,
+//                                                 color: Colors.black,
+//                                                 // color: theme.colorScheme.onPrimary,
+//                                                 letterSpacing: 0.4,
+//                                               ),
+//                                             ),
+//                                           ],
+//                                         ),
+//                                         items: controller.ageCodes
+//                                             .map((String value) {
+//                                           return DropdownMenuItem<String>(
+//                                               value: value,
+//                                               child: Center(
+//                                                 child: Text(
+//                                                   value,
+//                                                   style:
+//                                                       FxTextStyle.bodyMedium(),
+//                                                 ),
+//                                               ));
+//                                         }).toList(),
+
+//                                         value: controller.selectedage,
+//                                         onChanged: (value) {
+//                                           setState(() {
+//                                             controller.selectedage =
+//                                                 value.toString();
+//                                           });
+//                                         },
+
+//                                         icon: const Icon(Icons.arrow_drop_down),
+//                                         iconSize: 20,
+//                                         iconEnabledColor: Colors.black,
+//                                         iconDisabledColor: Colors.black,
+//                                         buttonHeight: 30,
+//                                         buttonWidth: 200,
+//                                         buttonPadding: const EdgeInsets.only(
+//                                             left: 14,
+//                                             right: 14,
+//                                             top: 4,
+//                                             bottom: 4),
+//                                         dropdownDecoration: BoxDecoration(
+//                                           borderRadius:
+//                                               BorderRadius.circular(4),
+//                                           color: Colors.white,
+//                                         ),
+//                                         buttonDecoration: BoxDecoration(
+//                                           borderRadius:
+//                                               BorderRadius.circular(10),
+//                                           color: theme.cardTheme.color,
+//                                         ),
+
+//                                         itemHeight: 40,
+//                                         // itemWidth: 200,
+//                                         itemPadding: const EdgeInsets.only(
+//                                             left: 14, right: 14),
+//                                         dropdownMaxHeight: 200,
+//                                         dropdownPadding: null,
+
+//                                         scrollbarRadius:
+//                                             const Radius.circular(40),
+//                                         scrollbarThickness: 2,
+//                                         scrollbarAlwaysShow: true,
+//                                         offset: const Offset(0, 0),
+//                                       ),
+//                                     ),
+//                                   );
+//                                 }),
+//                               ),
+
+//demodrop
+                        controller.childcount == 0
+                            ? const SizedBox()
+                            : SizedBox(
+                                height: 50,
+                                child: ListView.builder(
+                                  itemCount: options.length,
+                                  itemBuilder:
+                                      (BuildContext context, int index) {
+                                    return DropdownButton<String>(
+                                      value: dropdownValues[index],
+                                      onChanged: (String? newValue) {
+                                        setState(() {
+                                          dropdownValues[index] =
+                                              newValue.toString();
+                                        });
+                                      },
+                                      items: options
+                                          .map<DropdownMenuItem<String>>(
+                                              (String value) {
+                                        return DropdownMenuItem<String>(
+                                          value: value,
+                                          child: Text(value),
+                                        );
+                                      }).toList(),
+                                    );
+                                  },
+                                ),
+                              ),
                         //cabinclass
                         FxSpacing.height(24),
                         FxText.bodyLarge(
