@@ -56,7 +56,7 @@ class PersonSeatController extends FxController {
 
   int adultscount = 0;
 
-  void adultsincrement() {
+  void adultsincrement(int index) {
     if (adultscount >= 0 && adultscount < 100) {
       adultscount++;
     }

@@ -336,10 +336,13 @@ class _SearchScreenState extends State<SearchScreen>
                                 categoryplace: widget.place,
                               );
                             });
-                        setState(() {
-                          controller.allattractionList = [];
-                          controller.allattractionList = [data];
-                        });
+                        if (data != null) {
+                          setState(() {
+                            controller.allattractionList = [];
+
+                            controller.allattractionList = [data];
+                          });
+                        }
                         // showModalBottomSheet(
                         //   context: context,
                         //   backgroundColor: Colors.white,
@@ -359,7 +362,7 @@ class _SearchScreenState extends State<SearchScreen>
                         padding: FxSpacing.xy(6, 9),
                         color: const Color(0xff1529e8),
                         child: FxText.bodySmall(
-                          'Categories',
+                          'Categories2',
                           fontWeight: 300,
                           color: Colors.white,
                           // color: theme.colorScheme.onPrimary,
@@ -714,10 +717,13 @@ class _SearchScreenState extends State<SearchScreen>
                                     categoryplace: widget.place,
                                   );
                                 });
-                            setState(() {
-                              controller.allattractionList = [];
-                              controller.allattractionList = [data];
-                            });
+                            if (data != null) {
+                              setState(() {
+                                controller.allattractionList = [];
+
+                                controller.allattractionList = [data];
+                              });
+                            }
                             // showModalBottomSheet(
                             //   context: context,
                             //   backgroundColor: Colors.white,
@@ -772,10 +778,12 @@ class _SearchScreenState extends State<SearchScreen>
                                     categoryplace: widget.place,
                                   );
                                 });
-                            setState(() {
-                              controller.allattractionList = [];
-                              controller.allattractionList = [data];
-                            });
+                            if (data != null) {
+                              setState(() {
+                                controller.allattractionList = [];
+                                controller.allattractionList = [data];
+                              });
+                            }
                             // showModalBottomSheet(
                             //   context: context,
                             //   backgroundColor: Colors.white,

@@ -490,6 +490,161 @@ class _HistoryScreenState extends State<HistoryScreen>
     );
   }
 
+  Widget HotelList() {
+    if (orders == null) {
+      log('You have no attractions orders');
+      return const Text("You have no attractions orders");
+    } else {
+      if (orders!.result == null) {
+        log('You have no attractions');
+        Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: const [
+              // Lottie.asset('assets/lottie/confirmation.json',
+              //     height: 300, width: 300),
+              Text('No Order History!!',
+                  style: TextStyle(
+                      fontFamily: 'inter',
+                      fontWeight: FontWeight.w400,
+                      fontSize: 16))
+            ],
+          ),
+        );
+        // return const Text("You have no attractions");
+      }
+      String? orderlength;
+      orderlength = orders!.result!.totalOrders.toString();
+      return ListView.builder(
+        // itemCount: orderlength.length,
+        // itemCount: orders!.result!.totalOrders,
+        itemCount: orders!.result!.data!.length,
+        itemBuilder: (BuildContext context, int index) {
+          // log('Order Length history:${orderlength!.length}');
+          var date = orders!.result!.data![index].activities!.date;
+          var newDate = date!.toLocal().toString().substring(0, 10);
+          print(newDate);
+          return FxContainer(
+            margin: FxSpacing.bottom(20),
+            borderRadiusAll: 4,
+            color: Colors.white,
+            paddingAll: 12,
+            child: Row(
+              children: [
+                FxContainer(
+                  paddingAll: 0,
+                  borderRadiusAll: 4,
+                  height: MediaQuery.of(context).size.height * 0.11,
+                  width: MediaQuery.of(context).size.width * 0.2,
+                  clipBehavior: Clip.antiAliasWithSaveLayer,
+                  child: CachedNetworkImage(
+                      height: MediaQuery.of(context).size.height * 0.11,
+                      width: MediaQuery.of(context).size.width * 0.2,
+                      fit: BoxFit.cover,
+                      progressIndicatorBuilder: (context, url, progress) =>
+                          Center(
+                            child: CircularProgressIndicator(
+                              value: progress.progress,
+                            ),
+                          ),
+                      imageUrl:
+                          'https://secure.mytravellerschoice.com/public/images/hotels/images-1682593932493-438110354.jpg'
+                      // 'https://a.walletbot.online${orders!.result!.data![index].attraction!.images!.first}',
+                      ),
+                ),
+                FxSpacing.width(10),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      FxText.titleMedium(
+                        'Nikki Beach Resort & Spa Dubai',
+                        fontWeight: 700,
+                      ),
+                      FxSpacing.height(8),
+                      FxText.bodyMedium(
+                        '7234.35 AED',
+                        fontWeight: 700,
+                      ),
+                      FxSpacing.height(8),
+                      // Row(
+                      //   // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      //   crossAxisAlignment: CrossAxisAlignment.start,
+                      //   children: [
+                      //     FxText.bodyMedium(
+                      //       'Selected Pax:',
+                      //       fontWeight: 600,
+                      //     ),
+                      //     FxSpacing.width(7),
+                      //     Expanded(
+                      //       child: FxContainer(
+                      //         padding: FxSpacing.fromLTRB(5, 6, 1, 6),
+                      //         color: const Color(0xff1529e8).withAlpha(40),
+                      //         child: FxText.bodyMedium(
+                      //             'Double Deleuxe with Bed and Breakfast',
+                      //             color: const Color(0xff1529e8),
+                      //             // color: customTheme.groceryPrimary,
+                      //             fontWeight: 500,
+                      //             letterSpacing: -0.2),
+                      //       ),
+                      //     )
+                      //   ],
+                      // ),
+                      // //total nength of stay
+                      // FxSpacing.height(8),
+                      // Row(
+                      //   // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      //   crossAxisAlignment: CrossAxisAlignment.start,
+                      //   children: [
+                      //     FxText.bodyMedium(
+                      //       'Total Length of Stay:',
+                      //       fontWeight: 600,
+                      //     ),
+                      //     FxSpacing.width(7),
+                      //     Expanded(
+                      //       child: FxContainer(
+                      //         padding: FxSpacing.fromLTRB(5, 6, 1, 6),
+                      //         color: const Color(0xff1529e8).withAlpha(40),
+                      //         child: FxText.bodyMedium('1 Night & 0 days',
+                      //             color: const Color(0xff1529e8),
+                      //             fontWeight: 500,
+                      //             letterSpacing: -0.2),
+                      //       ),
+                      //     )
+                      //   ],
+                      // ),
+
+                      // const SizedBox(
+                      //   height: 5,
+                      // ),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: FxText.bodyMedium(
+                              "Check In: $newDate",
+                              fontWeight: 700,
+                            ),
+                          ),
+                          Expanded(
+                            child: FxText.bodyMedium(
+                              "Check Out: $newDate",
+                              fontWeight: 700,
+                            ),
+                          ),
+                        ],
+                      )
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          );
+        },
+      );
+    }
+  }
+
   Widget _reservationsItem() {
     return FxContainer(
       margin: FxSpacing.bottom(20),
@@ -691,6 +846,7 @@ class _HistoryScreenState extends State<HistoryScreen>
           backgroundColor: const Color(0xfff5f5f5),
           bottom: TabBar(
             labelColor: Colors.black,
+            isScrollable: true,
             unselectedLabelColor: Colors.black,
             controller: controller.tabController,
             indicatorSize: TabBarIndicatorSize.label,
@@ -721,6 +877,12 @@ class _HistoryScreenState extends State<HistoryScreen>
                   style: TextStyle(fontSize: 16),
                 ),
               ),
+              Tab(
+                child: Text(
+                  "Hotel",
+                  style: TextStyle(fontSize: 16),
+                ),
+              ),
             ],
           ),
         ),
@@ -737,7 +899,8 @@ class _HistoryScreenState extends State<HistoryScreen>
                   children: [
                     attractionList(), visaList(),
                     // _buildflightList()
-                    flightList()
+                    flightList(),
+                    HotelList()
                   ],
                 ),
               ),

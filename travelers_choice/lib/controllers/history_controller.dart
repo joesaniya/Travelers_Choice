@@ -1,4 +1,3 @@
-
 import 'dart:async';
 import 'dart:developer';
 
@@ -9,8 +8,6 @@ import 'package:intl/intl.dart';
 import '../flight_module/widgets/boarding_pass.dart';
 import '../models/atteraction_model.dart';
 import '../models/tickets.dart';
-import '../views/checkout_screen.dart';
-import '../../controllers/attraction_Controller.dart';
 import '../views/hotel_travel_constants.dart';
 
 class HistoryController extends FxController {
@@ -46,7 +43,7 @@ class HistoryController extends FxController {
   bool isFav = false;
   bool addCart = false;
 
-   List<Tickets>? tickets;
+  List<Tickets>? tickets;
 
   late List<String> sizes;
   String selectedSize = 'M';
@@ -135,7 +132,7 @@ class HistoryController extends FxController {
   void initState() {
     super.initState();
     //new
-    tabController = TabController(length: 3, vsync: ticker);
+    tabController = TabController(length: 4, vsync: ticker);
     scrollController = ScrollController(initialScrollOffset: 0.0);
     scrollController.addListener(() {
       changeAppBarColor(scrollController);
@@ -166,9 +163,9 @@ class HistoryController extends FxController {
     dateAnimation =
         Tween<Offset>(begin: const Offset(-0.01, 0), end: const Offset(0.01, 0))
             .animate(CurvedAnimation(
-          parent: dateController,
-          curve: Curves.easeIn,
-        ));
+      parent: dateController,
+      curve: Curves.easeIn,
+    ));
     animationController = AnimationController(
         vsync: ticker, duration: const Duration(milliseconds: 500));
 
@@ -177,8 +174,8 @@ class HistoryController extends FxController {
 
     colorAnimation =
         ColorTween(begin: Colors.grey.shade400, end: const Color(0xff1529e8)
-          // end: const Color(0xff1c8c8c)
-        )
+                // end: const Color(0xff1c8c8c)
+                )
             .animate(animationController);
 
     sizeAnimation = TweenSequence(<TweenSequenceItem<double>>[
@@ -240,14 +237,15 @@ class HistoryController extends FxController {
       }
     });
   }
- void BoardingScreen() {
+
+  void BoardingScreen() {
     log('Boarding screen calling');
     // Navigator.of(context, rootNavigator: true).pushReplacement(
     //   PageRouteBuilder(
     //       transitionDuration: const Duration(seconds: 2),
     //       pageBuilder: (_, __, ___) => const BoardingPass()),
     // );
-     Navigator.of(context, rootNavigator: true).push(PageRouteBuilder(
+    Navigator.of(context, rootNavigator: true).push(PageRouteBuilder(
         transitionDuration: const Duration(milliseconds: 500),
         transitionsBuilder: (
           BuildContext context,
@@ -259,8 +257,9 @@ class HistoryController extends FxController {
               opacity: animation,
               child: child,
             ),
-        pageBuilder: (_, __, ___) =>  const BoardingPass()));
+        pageBuilder: (_, __, ___) => const BoardingPass()));
   }
+
   @override
   void dispose() {
     animationController.dispose();
@@ -271,7 +270,6 @@ class HistoryController extends FxController {
     timerAnimation.cancel();
     scrollController.dispose();
   }
-
 
   Future<void> dateselect() async {
     DateTime? pickedDate = await showDatePicker(
@@ -339,6 +337,7 @@ class HistoryController extends FxController {
 
     update();
   }
+
   void fetchloader() async {
     await Future.delayed(const Duration(seconds: 4));
 
@@ -369,4 +368,3 @@ class HistoryController extends FxController {
     return "Detail_controller";
   }
 }
-

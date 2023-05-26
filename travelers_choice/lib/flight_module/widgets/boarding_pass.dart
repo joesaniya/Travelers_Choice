@@ -306,14 +306,15 @@ class BoardingPass extends StatelessWidget {
                       ),
                     ),
                   ),
-                  Positioned(
-                    bottom: 0,
-                    left: size.width * 0.12,
-                    child: Image.asset(
-                      'assets/seat/bar_code.png',
-                      height: size.height * 0.12,
-                    ),
-                  ),
+                  //barcode
+                  // Positioned(
+                  //   bottom: 0,
+                  //   left: size.width * 0.12,
+                  //   // child: Image.asset(
+                  //   //   'assets/seat/bar_code.png',
+                  //   //   height: size.height * 0.12,
+                  //   // ),
+                  // ),
                 ],
               ),
             ),

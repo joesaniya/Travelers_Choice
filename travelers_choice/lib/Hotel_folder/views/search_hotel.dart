@@ -67,6 +67,30 @@ class _SearchHotelState extends State<SearchHotel>
             // physics: const NeverScrollableScrollPhysics(),
             children: [
               Container(
+                // color:  const Color(0xff1529e8),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  // color: const Color(0xff1529e8),
+                  color: const Color(0xff1529e8).withAlpha(40),
+                  border: Border.all(
+                      width: 1,
+                      //  color: Colors.grey.shade300
+                      color: const Color(0xff1529e8)),
+                ),
+                padding: FxSpacing.xy(6, 9),
+
+                child: Center(
+                  child: FxText.bodyMedium(
+                    'You Selected:2 Rooms for 4 Adults and 2 Children',
+                    fontWeight: 500,
+                    letterSpacing: -0.2,
+                    color: const Color(0xff1529e8),
+                  ),
+                ),
+              ),
+
+              FxSpacing.height(8),
+              Container(
                 // padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),

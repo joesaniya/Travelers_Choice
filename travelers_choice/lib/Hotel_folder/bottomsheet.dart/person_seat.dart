@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutx/flutx.dart';
 
+import '../../card_widgets/customsnackbar.dart';
 import '../../theme/app_theme.dart';
 import '../controller/person_seat_controller.dart';
 
@@ -118,6 +119,642 @@ class _PersonSeatState extends State<PersonSeat> with TickerProviderStateMixin {
         builder: (controller) {
           return _buildBody();
         });
+  }
+
+  Widget RoomsList() {
+    return ListView.builder(
+        shrinkWrap: true,
+        itemCount: controller.roomscount,
+        itemBuilder: (context, index) {
+          return Container(
+            margin: const EdgeInsets.all(5.0),
+            padding: const EdgeInsets.all(5.0),
+            decoration: BoxDecoration(
+                // color: Color(0xffe6e1e5),
+                color: Colors.white,
+                // color: Color(0xffe5fdfd),
+                borderRadius: const BorderRadius.all(Radius.circular(10)),
+                border: Border.all(color: Colors.grey.shade300, width: 1)),
+            child: Column(
+              children: [
+                Center(
+                  child: FxText.bodyMedium(
+                    'Room $index',
+                    fontWeight: 900,
+                  ),
+                ),
+                FxSpacing.height(20),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    FxText.bodyMedium(
+                      'Adults',
+                      fontWeight: 900,
+                    ),
+                    Expanded(child: Container()),
+                    Container(
+                      padding: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(5),
+                          color: const Color(0xff1529e8)
+                          // color:
+                          //     Theme.of(context).colorScheme.secondary
+                          ),
+                      child: Row(
+                        children: [
+                          InkWell(
+                              onTap: () {
+                                controller.adultsdecrement();
+                              },
+                              child: const Icon(
+                                Icons.remove,
+                                color: Colors.white,
+                                size: 16,
+                              )),
+                          Container(
+                            margin: const EdgeInsets.symmetric(horizontal: 3),
+                            padding: const EdgeInsets.symmetric(
+                                // horizontal: 3, vertical: 2
+                                horizontal: 10,
+                                vertical: 7),
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(3),
+                                color: Colors.white),
+                            child: FxText.bodyMedium(
+                              // '3',
+                              controller.adultscount.toString(),
+                              fontWeight: 700,
+                              // style: const TextStyle(
+                              //     color: Colors.black, fontSize: 16),
+                            ),
+                          ),
+                          InkWell(
+                              onTap: () {
+                                controller.adultsincrement(index);
+                              },
+                              child: const Icon(
+                                Icons.add,
+                                color: Colors.white,
+                                size: 16,
+                              )),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+
+                //infant
+                FxSpacing.height(14),
+
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        FxText.bodyMedium(
+                          'Children',
+                          fontWeight: 900,
+                        ),
+                        FxSpacing.height(5),
+                        FxText.bodyMedium(
+                          'Ages 0-11',
+                          fontWeight: 900,
+                        ),
+                      ],
+                    ),
+                    Expanded(child: Container()),
+                    // Row(
+                    //   children: const [],
+                    // )
+                    Container(
+                      padding: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(5),
+                          color: const Color(0xff1529e8)
+                          // color:
+                          //     Theme.of(context).colorScheme.secondary
+                          ),
+                      child: Row(
+                        children: [
+                          InkWell(
+                              onTap: () {
+                                controller.childdecrement();
+                              },
+                              child: const Icon(
+                                Icons.remove,
+                                color: Colors.white,
+                                size: 16,
+                              )),
+                          Container(
+                            margin: const EdgeInsets.symmetric(horizontal: 3),
+                            padding: const EdgeInsets.symmetric(
+                                // horizontal: 3, vertical: 2
+                                horizontal: 10,
+                                vertical: 7),
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(3),
+                                color: Colors.white),
+                            child: FxText.bodyMedium(
+                              controller.childcount.toString(),
+                              fontWeight: 700,
+                              // style: const TextStyle(
+                              //     color: Colors.black, fontSize: 16),
+                            ),
+                          ),
+                          InkWell(
+                              onTap: () {
+                                controller.childincrement();
+                              },
+                              child: const Icon(
+                                Icons.add,
+                                color: Colors.white,
+                                size: 16,
+                              )),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+
+                FxSpacing.height(14),
+
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    FxText.bodyMedium(
+                      'Age of Children',
+                      fontWeight: 900,
+                    ),
+                    Expanded(child: Container()),
+                    controller.childcount == 0
+                        ? const SizedBox()
+                        : Expanded(
+                            child: Column(
+                              children: [
+                                Wrap(
+                                  spacing: 10,
+                                  runSpacing: 10,
+                                  children: List.generate(controller.childcount,
+                                      (index) {
+                                    return Container(
+                                      decoration: BoxDecoration(
+                                          color: theme.cardTheme.color,
+                                          // color: const Color(0xff1529e8),
+                                          borderRadius:
+                                              BorderRadius.circular(4)),
+                                      // height: 45.0,
+                                      // width: 80,
+                                      height: 50,
+                                      width: 100,
+                                      margin: const EdgeInsets.only(right: 6),
+                                      child: DropdownButtonHideUnderline(
+                                        child: DropdownButton2(
+                                          isExpanded: true,
+                                          hint: Row(
+                                            children: [
+                                              Expanded(
+                                                child: FxText.labelLarge(
+                                                  " ",
+                                                  fontWeight: 600,
+                                                  color: Colors.black,
+                                                  // color: theme.colorScheme.onPrimary,
+                                                  letterSpacing: 0.4,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          items: controller.ageCodes
+                                              .map((String value) {
+                                            return DropdownMenuItem<String>(
+                                                value: value,
+                                                child: Center(
+                                                  child: Text(
+                                                    value,
+                                                    style: FxTextStyle
+                                                        .bodyMedium(),
+                                                  ),
+                                                ));
+                                          }).toList(),
+
+                                          value: controller.selectedage,
+                                          onChanged: (value) {
+                                            setState(() {
+                                              controller.selectedage =
+                                                  value.toString();
+                                            });
+                                          },
+
+                                          icon:
+                                              const Icon(Icons.arrow_drop_down),
+                                          iconSize: 20,
+                                          iconEnabledColor: Colors.black,
+                                          iconDisabledColor: Colors.black,
+                                          buttonHeight: 30,
+                                          buttonWidth: 200,
+                                          buttonPadding: const EdgeInsets.only(
+                                              left: 14,
+                                              right: 14,
+                                              top: 4,
+                                              bottom: 4),
+                                          dropdownDecoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(4),
+                                            color: Colors.white,
+                                          ),
+                                          buttonDecoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            color: theme.cardTheme.color,
+                                          ),
+
+                                          itemHeight: 40,
+                                          // itemWidth: 200,
+                                          itemPadding: const EdgeInsets.only(
+                                              left: 14, right: 14),
+                                          dropdownMaxHeight: 200,
+                                          dropdownPadding: null,
+
+                                          scrollbarRadius:
+                                              const Radius.circular(40),
+                                          scrollbarThickness: 2,
+                                          scrollbarAlwaysShow: true,
+                                          offset: const Offset(0, 0),
+                                        ),
+                                      ),
+                                    );
+                                  }),
+                                ),
+                              ],
+                            ),
+                          ),
+                  ],
+                ),
+              ],
+            ),
+          );
+        });
+    // return Column(
+    //   children: List.generate(controller.roomscount, (index) {
+    //     return Container(
+    //       margin: const EdgeInsets.all(5.0),
+    //       padding: const EdgeInsets.all(5.0),
+    //       decoration: BoxDecoration(
+    //           // color: Color(0xffe6e1e5),
+    //           color: Colors.white,
+    //           // color: Color(0xffe5fdfd),
+    //           borderRadius: const BorderRadius.all(Radius.circular(10)),
+    //           border: Border.all(color: Colors.grey.shade300, width: 1)),
+    //       child: Column(
+    //         children: [
+    //           Center(
+    //             child: FxText.bodyMedium(
+    //               'Room $index',
+    //               fontWeight: 900,
+    //             ),
+    //           ),
+    //           FxSpacing.height(20),
+    //           Row(
+    //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    //             children: [
+    //               FxText.bodyMedium(
+    //                 'Adults',
+    //                 fontWeight: 900,
+    //               ),
+    //               Expanded(child: Container()),
+
+    //               Container(
+    //                 padding: const EdgeInsets.all(10),
+    //                 decoration: BoxDecoration(
+    //                     borderRadius: BorderRadius.circular(5),
+    //                     color: const Color(0xff1529e8)
+    //                     // color:
+    //                     //     Theme.of(context).colorScheme.secondary
+    //                     ),
+    //                 child: Row(
+    //                   children: [
+    //                     InkWell(
+    //                         onTap: () {
+    //                           controller.adultsdecrement();
+    //                         },
+    //                         child: const Icon(
+    //                           Icons.remove,
+    //                           color: Colors.white,
+    //                           size: 16,
+    //                         )),
+    //                     Container(
+    //                       margin: const EdgeInsets.symmetric(horizontal: 3),
+    //                       padding: const EdgeInsets.symmetric(
+    //                           // horizontal: 3, vertical: 2
+    //                           horizontal: 10,
+    //                           vertical: 7),
+    //                       decoration: BoxDecoration(
+    //                           borderRadius: BorderRadius.circular(3),
+    //                           color: Colors.white),
+    //                       child: FxText.bodyMedium(
+    //                         // '3',
+    //                         controller.adultscount.toString(),
+    //                         fontWeight: 700,
+    //                         // style: const TextStyle(
+    //                         //     color: Colors.black, fontSize: 16),
+    //                       ),
+    //                     ),
+    //                     InkWell(
+    //                         onTap: () {
+    //                           controller.adultsincrement(index);
+    //                         },
+    //                         child: const Icon(
+    //                           Icons.add,
+    //                           color: Colors.white,
+    //                           size: 16,
+    //                         )),
+    //                   ],
+    //                 ),
+    //               ),
+    //             ],
+    //           ),
+
+    //           //infant
+    //           FxSpacing.height(14),
+
+    //           Row(
+    //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    //             children: [
+    //               Column(
+    //                 mainAxisAlignment: MainAxisAlignment.start,
+    //                 crossAxisAlignment: CrossAxisAlignment.start,
+    //                 children: [
+    //                   FxText.bodyMedium(
+    //                     'Children',
+    //                     fontWeight: 900,
+    //                   ),
+    //                   FxSpacing.height(5),
+    //                   FxText.bodyMedium(
+    //                     'Ages 0-11',
+    //                     fontWeight: 900,
+    //                   ),
+    //                 ],
+    //               ),
+    //               Expanded(child: Container()),
+    //               // Row(
+    //               //   children: const [],
+    //               // )
+    //               Container(
+    //                 padding: const EdgeInsets.all(10),
+    //                 decoration: BoxDecoration(
+    //                     borderRadius: BorderRadius.circular(5),
+    //                     color: const Color(0xff1529e8)
+    //                     // color:
+    //                     //     Theme.of(context).colorScheme.secondary
+    //                     ),
+    //                 child: Row(
+    //                   children: [
+    //                     InkWell(
+    //                         onTap: () {
+    //                           controller.childdecrement();
+    //                         },
+    //                         child: const Icon(
+    //                           Icons.remove,
+    //                           color: Colors.white,
+    //                           size: 16,
+    //                         )),
+    //                     Container(
+    //                       margin: const EdgeInsets.symmetric(horizontal: 3),
+    //                       padding: const EdgeInsets.symmetric(
+    //                           // horizontal: 3, vertical: 2
+    //                           horizontal: 10,
+    //                           vertical: 7),
+    //                       decoration: BoxDecoration(
+    //                           borderRadius: BorderRadius.circular(3),
+    //                           color: Colors.white),
+    //                       child: FxText.bodyMedium(
+    //                         controller.childcount.toString(),
+    //                         fontWeight: 700,
+    //                         // style: const TextStyle(
+    //                         //     color: Colors.black, fontSize: 16),
+    //                       ),
+    //                     ),
+    //                     InkWell(
+    //                         onTap: () {
+    //                           controller.childincrement();
+    //                         },
+    //                         child: const Icon(
+    //                           Icons.add,
+    //                           color: Colors.white,
+    //                           size: 16,
+    //                         )),
+    //                   ],
+    //                 ),
+    //               ),
+    //             ],
+    //           ),
+
+    //           FxSpacing.height(14),
+
+    //           Row(
+    //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    //             crossAxisAlignment: CrossAxisAlignment.start,
+    //             children: [
+    //               FxText.bodyMedium(
+    //                 'Age of Children',
+    //                 fontWeight: 900,
+    //               ),
+    //               Expanded(child: Container()),
+    //               controller.childcount == 0
+    //                   ? const SizedBox()
+    //                   : Expanded(
+    //                       child: Column(
+    //                         children: [
+    //                           Wrap(
+    //                             spacing: 10,
+    //                             runSpacing: 10,
+    //                             children: List.generate(controller.childcount,
+    //                                 (index) {
+    //                               return Container(
+    //                                 decoration: BoxDecoration(
+    //                                     color: theme.cardTheme.color,
+    //                                     // color: const Color(0xff1529e8),
+    //                                     borderRadius: BorderRadius.circular(4)),
+    //                                 // height: 45.0,
+    //                                 // width: 80,
+    //                                 height: 50,
+    //                                 width: 100,
+    //                                 margin: const EdgeInsets.only(right: 6),
+    //                                 child: DropdownButtonHideUnderline(
+    //                                   child: DropdownButton2(
+    //                                     isExpanded: true,
+    //                                     hint: Row(
+    //                                       children: [
+    //                                         Expanded(
+    //                                           child: FxText.labelLarge(
+    //                                             " ",
+    //                                             fontWeight: 600,
+    //                                             color: Colors.black,
+    //                                             // color: theme.colorScheme.onPrimary,
+    //                                             letterSpacing: 0.4,
+    //                                           ),
+    //                                         ),
+    //                                       ],
+    //                                     ),
+    //                                     items: controller.ageCodes
+    //                                         .map((String value) {
+    //                                       return DropdownMenuItem<String>(
+    //                                           value: value,
+    //                                           child: Center(
+    //                                             child: Text(
+    //                                               value,
+    //                                               style:
+    //                                                   FxTextStyle.bodyMedium(),
+    //                                             ),
+    //                                           ));
+    //                                     }).toList(),
+
+    //                                     value: controller.selectedage,
+    //                                     onChanged: (value) {
+    //                                       setState(() {
+    //                                         controller.selectedage =
+    //                                             value.toString();
+    //                                       });
+    //                                     },
+
+    //                                     icon: const Icon(Icons.arrow_drop_down),
+    //                                     iconSize: 20,
+    //                                     iconEnabledColor: Colors.black,
+    //                                     iconDisabledColor: Colors.black,
+    //                                     buttonHeight: 30,
+    //                                     buttonWidth: 200,
+    //                                     buttonPadding: const EdgeInsets.only(
+    //                                         left: 14,
+    //                                         right: 14,
+    //                                         top: 4,
+    //                                         bottom: 4),
+    //                                     dropdownDecoration: BoxDecoration(
+    //                                       borderRadius:
+    //                                           BorderRadius.circular(4),
+    //                                       color: Colors.white,
+    //                                     ),
+    //                                     buttonDecoration: BoxDecoration(
+    //                                       borderRadius:
+    //                                           BorderRadius.circular(10),
+    //                                       color: theme.cardTheme.color,
+    //                                     ),
+
+    //                                     itemHeight: 40,
+    //                                     // itemWidth: 200,
+    //                                     itemPadding: const EdgeInsets.only(
+    //                                         left: 14, right: 14),
+    //                                     dropdownMaxHeight: 200,
+    //                                     dropdownPadding: null,
+
+    //                                     scrollbarRadius:
+    //                                         const Radius.circular(40),
+    //                                     scrollbarThickness: 2,
+    //                                     scrollbarAlwaysShow: true,
+    //                                     offset: const Offset(0, 0),
+    //                                   ),
+    //                                 ),
+    //                               );
+    //                             }),
+    //                           ),
+    //                         ],
+    //                       ),
+    //                     ),
+
+    //               // controller.childcount == 0
+    //               //     ? const SizedBox()
+    //               //     : Container(
+    //               //         decoration: BoxDecoration(
+    //               //             color: theme.cardTheme.color,
+    //               //             // color: const Color(0xff1529e8),
+    //               //             borderRadius: BorderRadius.circular(4)),
+    //               //         // height: 45.0,
+    //               //         // width: 80,
+    //               //         height: 50,
+    //               //         width: 100,
+    //               //         child: DropdownButtonHideUnderline(
+    //               //           child: DropdownButton2(
+    //               //             isExpanded: true,
+    //               //             hint: Row(
+    //               //               children: [
+    //               //                 Expanded(
+    //               //                   child: FxText.labelLarge(
+    //               //                     " ",
+    //               //                     fontWeight: 600,
+    //               //                     color: Colors.black,
+    //               //                     // color: theme.colorScheme.onPrimary,
+    //               //                     letterSpacing: 0.4,
+    //               //                   ),
+    //               //                 ),
+    //               //               ],
+    //               //             ),
+    //               //             items: controller.ageCodes
+    //               //                 .map((String value) {
+    //               //               return DropdownMenuItem<String>(
+    //               //                   value: value,
+    //               //                   child: Center(
+    //               //                     child: Text(
+    //               //                       value,
+    //               //                       style:
+    //               //                           FxTextStyle.bodyMedium(),
+    //               //                     ),
+    //               //                   ));
+    //               //             }).toList(),
+
+    //               //             value: controller.selectedage,
+    //               //             onChanged: (value) {
+    //               //               setState(() {
+    //               //                 controller.selectedage =
+    //               //                     value.toString();
+    //               //               });
+    //               //             },
+
+    //               //             icon: const Icon(Icons.arrow_drop_down),
+    //               //             iconSize: 20,
+    //               //             iconEnabledColor: Colors.black,
+    //               //             iconDisabledColor: Colors.black,
+    //               //             buttonHeight: 30,
+    //               //             buttonWidth: 200,
+    //               //             buttonPadding: const EdgeInsets.only(
+    //               //                 left: 14,
+    //               //                 right: 14,
+    //               //                 top: 4,
+    //               //                 bottom: 4),
+    //               //             dropdownDecoration: BoxDecoration(
+    //               //               borderRadius:
+    //               //                   BorderRadius.circular(4),
+    //               //               color: Colors.white,
+    //               //             ),
+    //               //             buttonDecoration: BoxDecoration(
+    //               //               borderRadius:
+    //               //                   BorderRadius.circular(10),
+    //               //               color: theme.cardTheme.color,
+    //               //             ),
+
+    //               //             itemHeight: 40,
+    //               //             // itemWidth: 200,
+    //               //             itemPadding: const EdgeInsets.only(
+    //               //                 left: 14, right: 14),
+    //               //             dropdownMaxHeight: 200,
+    //               //             dropdownPadding: null,
+
+    //               //             scrollbarRadius:
+    //               //                 const Radius.circular(40),
+    //               //             scrollbarThickness: 2,
+    //               //             scrollbarAlwaysShow: true,
+    //               //             offset: const Offset(0, 0),
+    //               //           ),
+    //               //         ),
+    //               //       ),
+    //               // //wrap
+    //             ],
+    //           ),
+    //         ],
+    //       ),
+    //     );
+    //   }),
+    // );
   }
 
   Widget _buildBody() {
@@ -242,342 +879,7 @@ class _PersonSeatState extends State<PersonSeat> with TickerProviderStateMixin {
                         //children
                         FxSpacing.height(14),
 
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            FxText.bodyMedium(
-                              'Adults',
-                              fontWeight: 900,
-                            ),
-                            Expanded(child: Container()),
-                            // Row(
-                            //   children: const [],
-                            // )
-                            Container(
-                              padding: const EdgeInsets.all(10),
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(5),
-                                  color: const Color(0xff1529e8)
-                                  // color:
-                                  //     Theme.of(context).colorScheme.secondary
-                                  ),
-                              child: Row(
-                                children: [
-                                  InkWell(
-                                      onTap: () {
-                                        controller.adultsdecrement();
-                                      },
-                                      child: const Icon(
-                                        Icons.remove,
-                                        color: Colors.white,
-                                        size: 16,
-                                      )),
-                                  Container(
-                                    margin: const EdgeInsets.symmetric(
-                                        horizontal: 3),
-                                    padding: const EdgeInsets.symmetric(
-                                        // horizontal: 3, vertical: 2
-                                        horizontal: 10,
-                                        vertical: 7),
-                                    decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(3),
-                                        color: Colors.white),
-                                    child: FxText.bodyMedium(
-                                      // '3',
-                                      controller.adultscount.toString(),
-                                      fontWeight: 700,
-                                      // style: const TextStyle(
-                                      //     color: Colors.black, fontSize: 16),
-                                    ),
-                                  ),
-                                  InkWell(
-                                      onTap: () {
-                                        controller.adultsincrement();
-                                      },
-                                      child: const Icon(
-                                        Icons.add,
-                                        color: Colors.white,
-                                        size: 16,
-                                      )),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-
-//infant
-                        FxSpacing.height(14),
-
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                FxText.bodyMedium(
-                                  'Children',
-                                  fontWeight: 900,
-                                ),
-                                FxSpacing.height(5),
-                                FxText.bodyMedium(
-                                  'Ages 0-11',
-                                  fontWeight: 900,
-                                ),
-                              ],
-                            ),
-                            Expanded(child: Container()),
-                            // Row(
-                            //   children: const [],
-                            // )
-                            Container(
-                              padding: const EdgeInsets.all(10),
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(5),
-                                  color: const Color(0xff1529e8)
-                                  // color:
-                                  //     Theme.of(context).colorScheme.secondary
-                                  ),
-                              child: Row(
-                                children: [
-                                  InkWell(
-                                      onTap: () {
-                                        controller.childdecrement();
-                                      },
-                                      child: const Icon(
-                                        Icons.remove,
-                                        color: Colors.white,
-                                        size: 16,
-                                      )),
-                                  Container(
-                                    margin: const EdgeInsets.symmetric(
-                                        horizontal: 3),
-                                    padding: const EdgeInsets.symmetric(
-                                        // horizontal: 3, vertical: 2
-                                        horizontal: 10,
-                                        vertical: 7),
-                                    decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(3),
-                                        color: Colors.white),
-                                    child: FxText.bodyMedium(
-                                      controller.childcount.toString(),
-                                      fontWeight: 700,
-                                      // style: const TextStyle(
-                                      //     color: Colors.black, fontSize: 16),
-                                    ),
-                                  ),
-                                  InkWell(
-                                      onTap: () {
-                                        controller.childincrement();
-                                      },
-                                      child: const Icon(
-                                        Icons.add,
-                                        color: Colors.white,
-                                        size: 16,
-                                      )),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-
-                        FxSpacing.height(14),
-
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            FxText.bodyMedium(
-                              'Age of Children',
-                              fontWeight: 900,
-                            ),
-                            Expanded(child: Container()),
-                            // Row(
-                            //   children: const [],
-                            // )
-                            controller.childcount == 0
-                                ? const SizedBox()
-                                : Container(
-                                    decoration: BoxDecoration(
-                                        color: theme.cardTheme.color,
-                                        // color: const Color(0xff1529e8),
-                                        borderRadius: BorderRadius.circular(4)),
-                                    // height: 45.0,
-                                    // width: 80,
-                                    height: 50,
-                                    width: 100,
-                                    child: DropdownButtonHideUnderline(
-                                      child: DropdownButton2(
-                                        isExpanded: true,
-                                        hint: Row(
-                                          children: [
-                                            Expanded(
-                                              child: FxText.labelLarge(
-                                                " ",
-                                                fontWeight: 600,
-                                                color: Colors.black,
-                                                // color: theme.colorScheme.onPrimary,
-                                                letterSpacing: 0.4,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                        items: controller.ageCodes
-                                            .map((String value) {
-                                          return DropdownMenuItem<String>(
-                                              value: value,
-                                              child: Center(
-                                                child: Text(
-                                                  value,
-                                                  style:
-                                                      FxTextStyle.bodyMedium(),
-                                                ),
-                                              ));
-                                        }).toList(),
-
-                                        value: controller.selectedage,
-                                        onChanged: (value) {
-                                          setState(() {
-                                            controller.selectedage =
-                                                value.toString();
-                                          });
-                                        },
-
-                                        icon: const Icon(Icons.arrow_drop_down),
-                                        iconSize: 20,
-                                        iconEnabledColor: Colors.black,
-                                        iconDisabledColor: Colors.black,
-                                        buttonHeight: 30,
-                                        buttonWidth: 200,
-                                        buttonPadding: const EdgeInsets.only(
-                                            left: 14,
-                                            right: 14,
-                                            top: 4,
-                                            bottom: 4),
-                                        dropdownDecoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(4),
-                                          color: Colors.white,
-                                        ),
-                                        buttonDecoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                          color: theme.cardTheme.color,
-                                        ),
-
-                                        itemHeight: 40,
-                                        // itemWidth: 200,
-                                        itemPadding: const EdgeInsets.only(
-                                            left: 14, right: 14),
-                                        dropdownMaxHeight: 200,
-                                        dropdownPadding: null,
-
-                                        scrollbarRadius:
-                                            const Radius.circular(40),
-                                        scrollbarThickness: 2,
-                                        scrollbarAlwaysShow: true,
-                                        offset: const Offset(0, 0),
-                                      ),
-                                    ),
-                                  ),
-                            //wrap
-                          ],
-                        ),
-
-                        controller.childcount == 0
-                            ? const SizedBox()
-                            : Wrap(
-                                spacing: 10,
-                                runSpacing: 10,
-                                children: List.generate(controller.childcount,
-                                    (index) {
-                                  return Container(
-                                    decoration: BoxDecoration(
-                                        color: theme.cardTheme.color,
-                                        // color: const Color(0xff1529e8),
-                                        borderRadius: BorderRadius.circular(4)),
-                                    // height: 45.0,
-                                    // width: 80,
-                                    height: 50,
-                                    width: 100,
-                                    margin: const EdgeInsets.only(right: 6),
-                                    child: DropdownButtonHideUnderline(
-                                      child: DropdownButton2(
-                                        isExpanded: true,
-                                        hint: Row(
-                                          children: [
-                                            Expanded(
-                                              child: FxText.labelLarge(
-                                                " ",
-                                                fontWeight: 600,
-                                                color: Colors.black,
-                                                // color: theme.colorScheme.onPrimary,
-                                                letterSpacing: 0.4,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                        items: controller.ageCodes
-                                            .map((String value) {
-                                          return DropdownMenuItem<String>(
-                                              value: value,
-                                              child: Center(
-                                                child: Text(
-                                                  value,
-                                                  style:
-                                                      FxTextStyle.bodyMedium(),
-                                                ),
-                                              ));
-                                        }).toList(),
-
-                                        value: controller.selectedage,
-                                        onChanged: (value) {
-                                          setState(() {
-                                            controller.selectedage =
-                                                value.toString();
-                                          });
-                                        },
-
-                                        icon: const Icon(Icons.arrow_drop_down),
-                                        iconSize: 20,
-                                        iconEnabledColor: Colors.black,
-                                        iconDisabledColor: Colors.black,
-                                        buttonHeight: 30,
-                                        buttonWidth: 200,
-                                        buttonPadding: const EdgeInsets.only(
-                                            left: 14,
-                                            right: 14,
-                                            top: 4,
-                                            bottom: 4),
-                                        dropdownDecoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(4),
-                                          color: Colors.white,
-                                        ),
-                                        buttonDecoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                          color: theme.cardTheme.color,
-                                        ),
-
-                                        itemHeight: 40,
-                                        // itemWidth: 200,
-                                        itemPadding: const EdgeInsets.only(
-                                            left: 14, right: 14),
-                                        dropdownMaxHeight: 200,
-                                        dropdownPadding: null,
-
-                                        scrollbarRadius:
-                                            const Radius.circular(40),
-                                        scrollbarThickness: 2,
-                                        scrollbarAlwaysShow: true,
-                                        offset: const Offset(0, 0),
-                                      ),
-                                    ),
-                                  );
-                                }),
-                              ),
-
-// //demo
+                        RoomsList(),
 //                         controller.childcount == 0
 //                             ? const SizedBox()
 //                             : Wrap(
@@ -672,35 +974,130 @@ class _PersonSeatState extends State<PersonSeat> with TickerProviderStateMixin {
 //                                 }),
 //                               ),
 
-//demodrop
-                        controller.childcount == 0
-                            ? const SizedBox()
-                            : SizedBox(
-                                height: 50,
-                                child: ListView.builder(
-                                  itemCount: options.length,
-                                  itemBuilder:
-                                      (BuildContext context, int index) {
-                                    return DropdownButton<String>(
-                                      value: dropdownValues[index],
-                                      onChanged: (String? newValue) {
-                                        setState(() {
-                                          dropdownValues[index] =
-                                              newValue.toString();
-                                        });
-                                      },
-                                      items: options
-                                          .map<DropdownMenuItem<String>>(
-                                              (String value) {
-                                        return DropdownMenuItem<String>(
-                                          value: value,
-                                          child: Text(value),
-                                        );
-                                      }).toList(),
-                                    );
-                                  },
-                                ),
-                              ),
+// // //demo
+// //                         controller.childcount == 0
+// //                             ? const SizedBox()
+// //                             : Wrap(
+// //                                 spacing: 10,
+// //                                 runSpacing: 10,
+// //                                 children: List.generate(controller.childcount,
+// //                                     (index) {
+// //                                   return Container(
+// //                                     decoration: BoxDecoration(
+// //                                         color: theme.cardTheme.color,
+// //                                         // color: const Color(0xff1529e8),
+// //                                         borderRadius: BorderRadius.circular(4)),
+// //                                     // height: 45.0,
+// //                                     // width: 80,
+// //                                     height: 50,
+// //                                     width: 100,
+// //                                     margin: const EdgeInsets.only(right: 6),
+// //                                     child: DropdownButtonHideUnderline(
+// //                                       child: DropdownButton2(
+// //                                         isExpanded: true,
+// //                                         hint: Row(
+// //                                           children: [
+// //                                             Expanded(
+// //                                               child: FxText.labelLarge(
+// //                                                 " ",
+// //                                                 fontWeight: 600,
+// //                                                 color: Colors.black,
+// //                                                 // color: theme.colorScheme.onPrimary,
+// //                                                 letterSpacing: 0.4,
+// //                                               ),
+// //                                             ),
+// //                                           ],
+// //                                         ),
+// //                                         items: controller.ageCodes
+// //                                             .map((String value) {
+// //                                           return DropdownMenuItem<String>(
+// //                                               value: value,
+// //                                               child: Center(
+// //                                                 child: Text(
+// //                                                   value,
+// //                                                   style:
+// //                                                       FxTextStyle.bodyMedium(),
+// //                                                 ),
+// //                                               ));
+// //                                         }).toList(),
+
+// //                                         value: controller.selectedage,
+// //                                         onChanged: (value) {
+// //                                           setState(() {
+// //                                             controller.selectedage =
+// //                                                 value.toString();
+// //                                           });
+// //                                         },
+
+// //                                         icon: const Icon(Icons.arrow_drop_down),
+// //                                         iconSize: 20,
+// //                                         iconEnabledColor: Colors.black,
+// //                                         iconDisabledColor: Colors.black,
+// //                                         buttonHeight: 30,
+// //                                         buttonWidth: 200,
+// //                                         buttonPadding: const EdgeInsets.only(
+// //                                             left: 14,
+// //                                             right: 14,
+// //                                             top: 4,
+// //                                             bottom: 4),
+// //                                         dropdownDecoration: BoxDecoration(
+// //                                           borderRadius:
+// //                                               BorderRadius.circular(4),
+// //                                           color: Colors.white,
+// //                                         ),
+// //                                         buttonDecoration: BoxDecoration(
+// //                                           borderRadius:
+// //                                               BorderRadius.circular(10),
+// //                                           color: theme.cardTheme.color,
+// //                                         ),
+
+// //                                         itemHeight: 40,
+// //                                         // itemWidth: 200,
+// //                                         itemPadding: const EdgeInsets.only(
+// //                                             left: 14, right: 14),
+// //                                         dropdownMaxHeight: 200,
+// //                                         dropdownPadding: null,
+
+// //                                         scrollbarRadius:
+// //                                             const Radius.circular(40),
+// //                                         scrollbarThickness: 2,
+// //                                         scrollbarAlwaysShow: true,
+// //                                         offset: const Offset(0, 0),
+// //                                       ),
+// //                                     ),
+// //                                   );
+// //                                 }),
+// //                               ),
+
+// //demodrop
+//                         controller.childcount == 0
+//                             ? const SizedBox()
+//                             : SizedBox(
+//                                 height: 50,
+//                                 child: ListView.builder(
+//                                   itemCount: options.length,
+//                                   itemBuilder:
+//                                       (BuildContext context, int index) {
+//                                     return DropdownButton<String>(
+//                                       value: dropdownValues[index],
+//                                       onChanged: (String? newValue) {
+//                                         setState(() {
+//                                           dropdownValues[index] =
+//                                               newValue.toString();
+//                                         });
+//                                       },
+//                                       items: options
+//                                           .map<DropdownMenuItem<String>>(
+//                                               (String value) {
+//                                         return DropdownMenuItem<String>(
+//                                           value: value,
+//                                           child: Text(value),
+//                                         );
+//                                       }).toList(),
+//                                     );
+//                                   },
+//                                 ),
+//                               ),
                         //cabinclass
                         FxSpacing.height(24),
                         FxText.bodyLarge(
@@ -788,6 +1185,13 @@ class _PersonSeatState extends State<PersonSeat> with TickerProviderStateMixin {
                           // },
                           onTap: () async {
                             log('filter apply clicked');
+                            CustomSnackbar.show(
+                              context: context,
+                              message: '2 Rooms for 4 Adults and 2 Children',
+                              backgroundColor: const Color(0xff1529e8),
+                              duration: const Duration(seconds: 2),
+                            );
+                            Navigator.pop(context);
                           },
                           padding: FxSpacing.y(12),
                           // color: theme.colorScheme.primary,

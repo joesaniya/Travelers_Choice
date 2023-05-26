@@ -168,7 +168,6 @@ class _CategoriesBottomSheetState extends State<CategoriesBottomSheet>
                                 Expanded(
                                     child: FxContainer(
                                   onTap: () {
-                                    // controller.closeEndDrawer();
                                     Navigator.pop(context);
                                   },
                                   color: Colors.transparent,
@@ -185,8 +184,6 @@ class _CategoriesBottomSheetState extends State<CategoriesBottomSheet>
                                 Expanded(
                                     child: FxContainer.none(
                                   onTap: () async {
-                                    // controller.closeEndDrawer();
-                                    // Navigator.pop(context);
                                     if (controller.categoryid != null) {
                                       //todo
                                       AllattractionModal? temp =

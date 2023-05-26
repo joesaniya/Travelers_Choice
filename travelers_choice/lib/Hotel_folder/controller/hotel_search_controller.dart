@@ -8,20 +8,51 @@ class HotelSearchController extends FxController {
   TickerProvider ticker;
   HotelSearchController(this.ticker);
 
-  late TextEditingController checkInTE, checkOutTE;
+  late TextEditingController checkInTE, checkOutTE, locationTE;
   GlobalKey<FormState> formKey = GlobalKey();
   late AnimationController arrowController,
       checkInController,
-      checkOutController;
-  late Animation<Offset> arrowAnimation, checkInAnimation, checkOutAnimation;
+      checkOutController,
+      locationController;
+  late Animation<Offset> arrowAnimation,
+      locationAnimation,
+      checkInAnimation,
+      checkOutAnimation;
   int emailCounter = 0;
   int passwordCounter = 0;
+  int locationCounter = 0;
+  final focus = FocusNode();
   DateTime selectedValue = DateTime.now();
   DateTime selectedCheckOut = DateTime.now();
 
   DateTime selectedDate = DateTime.now();
 
   var customFormat = DateFormat('dd-MM-yyyy');
+
+  final List<Map<String, dynamic>> roles = [
+    {"name": "Dubai", "desc": "Having full access rights", "role": 1},
+    {
+      "name": "Abu Dhabi",
+      "desc": "Having full access rights of a Organization",
+      "role": 2
+    },
+    {
+      "name": "Sharjah",
+      "desc": "Having Magenent access rights of a Organization",
+      "role": 3
+    },
+    {
+      "name": "Oman",
+      "desc": "Having Technician Support access rights",
+      "role": 4
+    },
+    {
+      "name": "Customer Support",
+      "desc": "Having Customer Support access rights",
+      "role": 5
+    },
+    {"name": "User", "desc": "Having End User access rights", "role": 6},
+  ];
 
   Future<void> showPicker(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
@@ -51,8 +82,11 @@ class HotelSearchController extends FxController {
     // log('DateTime:$formattedYear');
     // String formattedYeardate = DateFormat.MMMd().format(newdate2);
     // log('year:$formattedYeardate');
+    locationTE = TextEditingController();
     checkInTE = TextEditingController();
     checkOutTE = TextEditingController();
+    locationController = AnimationController(
+        vsync: ticker, duration: const Duration(milliseconds: 50));
     arrowController = AnimationController(
         vsync: ticker, duration: const Duration(milliseconds: 500));
     checkOutController = AnimationController(
@@ -64,6 +98,12 @@ class HotelSearchController extends FxController {
         Tween<Offset>(begin: const Offset(0, 0), end: const Offset(8, 0))
             .animate(CurvedAnimation(
       parent: arrowController,
+      curve: Curves.easeIn,
+    ));
+    locationAnimation =
+        Tween<Offset>(begin: const Offset(-0.01, 0), end: const Offset(0.01, 0))
+            .animate(CurvedAnimation(
+      parent: locationController,
       curve: Curves.easeIn,
     ));
     checkInAnimation =
@@ -78,6 +118,15 @@ class HotelSearchController extends FxController {
       parent: checkInController,
       curve: Curves.easeIn,
     ));
+    locationController.addStatusListener((status) {
+      if (status == AnimationStatus.completed) {
+        locationController.reverse();
+      }
+      if (status == AnimationStatus.dismissed && locationCounter < 2) {
+        locationController.forward();
+        locationCounter++;
+      }
+    });
 
     checkOutController.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
@@ -105,6 +154,9 @@ class HotelSearchController extends FxController {
     arrowController.dispose();
     checkOutController.dispose();
     checkInController.dispose();
+    locationController.dispose();
+
+    focus.dispose();
     super.dispose();
   }
 
