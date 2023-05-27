@@ -34,6 +34,7 @@ class _PersonSeatState extends State<PersonSeat> with TickerProviderStateMixin {
   void initState() {
     super.initState();
     defaultChoiceIndex = 0;
+
     theme = AppTheme.shoppingTheme;
     theme1 = AppTheme.learningTheme;
     customTheme = AppTheme.customTheme;
@@ -41,6 +42,7 @@ class _PersonSeatState extends State<PersonSeat> with TickerProviderStateMixin {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       // addCategories();
     });
+    controller.roomsList.add(RoomsList(adults: 0, children: [], ages: []));
   }
 
   // List<Widget> _buildType() {
@@ -121,7 +123,7 @@ class _PersonSeatState extends State<PersonSeat> with TickerProviderStateMixin {
         });
   }
 
-  Widget RoomsList() {
+  Widget RoomsListUI() {
     return ListView.builder(
         shrinkWrap: true,
         itemCount: controller.roomscount,
@@ -181,8 +183,7 @@ class _PersonSeatState extends State<PersonSeat> with TickerProviderStateMixin {
                                 borderRadius: BorderRadius.circular(3),
                                 color: Colors.white),
                             child: FxText.bodyMedium(
-                              // '3',
-                              controller.adultscount.toString(),
+                              controller.roomsList[index].adults.toString(),
                               fontWeight: 700,
                               // style: const TextStyle(
                               //     color: Colors.black, fontSize: 16),
@@ -879,7 +880,7 @@ class _PersonSeatState extends State<PersonSeat> with TickerProviderStateMixin {
                         //children
                         FxSpacing.height(14),
 
-                        RoomsList(),
+                        RoomsListUI(),
 //                         controller.childcount == 0
 //                             ? const SizedBox()
 //                             : Wrap(

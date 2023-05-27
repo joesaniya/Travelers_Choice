@@ -11,6 +11,7 @@ import '../../services/auth_service.dart';
 import '../../theme/app_theme.dart';
 import '../bottomsheet.dart/person_seat.dart';
 import '../controller/hotel_search_controller.dart';
+import '../controller/person_seat_controller.dart';
 
 class HotelSearch extends StatefulWidget {
   const HotelSearch({super.key});
@@ -22,6 +23,7 @@ class HotelSearch extends StatefulWidget {
 class _HotelSearchState extends State<HotelSearch>
     with TickerProviderStateMixin {
   late HotelSearchController controller;
+  late PersonSeatController controller1;
   // late AnimationController controller;
   // Animation<Offset>? offset;
   late ThemeData theme, theme1;
@@ -30,6 +32,7 @@ class _HotelSearchState extends State<HotelSearch>
   void initState() {
     super.initState();
     fetchData();
+
     theme = AppTheme.shoppingTheme;
     theme1 = AppTheme.learningTheme;
     // controller = AnimationController(
@@ -41,7 +44,7 @@ class _HotelSearchState extends State<HotelSearch>
     //   curve: Curves.easeOut,
     // ));
     controller = FxControllerStore.put(HotelSearchController(this));
-    // WidgetsBinding.instance.addPostFrameCallback((timeStamp) {});
+    controller1 = FxControllerStore.put(PersonSeatController(this));
   }
 
   // @override
@@ -501,10 +504,7 @@ class _HotelSearchState extends State<HotelSearch>
                                   builder: (BuildContext buildContext) {
                                     return const PersonSeat();
                                   });
-                              setState(() {
-                                // controller.allattractionList = [];
-                                // controller.allattractionList = [data];
-                              });
+                              setState(() {});
                             },
                             child: Container(
                               child: Center(
@@ -514,6 +514,7 @@ class _HotelSearchState extends State<HotelSearch>
                                     FxText.bodySmall("Person", fontWeight: 500),
                                     FxText.bodyLarge(
                                         // "2 Couple",
+                                        // controller1.roomsList.length.toString(),
                                         '4 Adults,2 Children',
                                         fontWeight: 600),
                                   ],
