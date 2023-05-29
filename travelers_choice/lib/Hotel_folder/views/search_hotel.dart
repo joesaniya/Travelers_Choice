@@ -90,67 +90,70 @@ class _SearchHotelState extends State<SearchHotel>
               ),
 
               FxSpacing.height(8),
-              Container(
-                // padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                  border: Border.all(width: 1, color: Colors.grey.shade300),
-                  boxShadow: [
-                    BoxShadow(
-                      // color: Colors.grey.shade400,
-                      color: const Color(0xff1529e8).withOpacity(0.4),
-                      blurRadius: 2,
-                      offset: const Offset(0, 3),
-                    ),
-                  ],
-                ),
-                child: TextFormField(
-                  style: FxTextStyle.bodyMedium(),
-                  controller: controller.SearchTE,
-                  cursorColor: theme.colorScheme.primary,
-
-                  //2
-                  onChanged: (value) {},
-
-                  decoration: InputDecoration(
-                    hintText: "Search your place ...",
-                    hintStyle: FxTextStyle.bodySmall(
-                        color: theme.colorScheme.onBackground),
-                    border: const OutlineInputBorder(
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(4),
-                        ),
-                        borderSide: BorderSide.none),
-                    enabledBorder: const OutlineInputBorder(
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(4),
-                        ),
-                        borderSide: BorderSide.none),
-                    focusedBorder: const OutlineInputBorder(
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(4),
-                        ),
-                        borderSide: BorderSide.none),
-                    filled: true,
-                    // fillColor: const Color(0xffcfd2ff),
-                    fillColor: theme.cardTheme.color,
-                    prefixIcon: Icon(
-                      FeatherIcons.search,
-                      size: 16,
-                      color: theme.colorScheme.onBackground.withAlpha(150),
-                    ),
-                    isDense: true,
-                  ),
-                  textCapitalization: TextCapitalization.sentences,
-                ),
-              ),
-              FxSpacing.height(20),
-              //btn
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  GestureDetector(
+                  Expanded(
+                    child: Container(
+                      // padding: const EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        border:
+                            Border.all(width: 1, color: Colors.grey.shade300),
+                        boxShadow: [
+                          BoxShadow(
+                            // color: Colors.grey.shade400,
+                            color: const Color(0xff1529e8).withOpacity(0.4),
+                            blurRadius: 2,
+                            offset: const Offset(0, 3),
+                          ),
+                        ],
+                      ),
+                      child: TextFormField(
+                        style: FxTextStyle.bodyMedium(),
+                        controller: controller.SearchTE,
+                        cursorColor: theme.colorScheme.primary,
+
+                        //2
+                        onChanged: (value) {},
+
+                        decoration: InputDecoration(
+                          hintText: "Search your place ...",
+                          hintStyle: FxTextStyle.bodySmall(
+                              color: theme.colorScheme.onBackground),
+                          border: const OutlineInputBorder(
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(4),
+                              ),
+                              borderSide: BorderSide.none),
+                          enabledBorder: const OutlineInputBorder(
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(4),
+                              ),
+                              borderSide: BorderSide.none),
+                          focusedBorder: const OutlineInputBorder(
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(4),
+                              ),
+                              borderSide: BorderSide.none),
+                          filled: true,
+                          // fillColor: const Color(0xffcfd2ff),
+                          fillColor: theme.cardTheme.color,
+                          prefixIcon: Icon(
+                            FeatherIcons.search,
+                            size: 16,
+                            color:
+                                theme.colorScheme.onBackground.withAlpha(150),
+                          ),
+                          isDense: true,
+                        ),
+                        textCapitalization: TextCapitalization.sentences,
+                      ),
+                    ),
+                  ),
+                  FxSpacing.width(4),
+                  FxContainer(
+                    paddingAll: 12,
+                    borderRadiusAll: 4,
                     onTap: () async {
                       var data = await showModalBottomSheet(
                           context: context,
@@ -158,56 +161,18 @@ class _SearchHotelState extends State<SearchHotel>
                             return const SortSeat();
                           });
                       setState(() {});
-                      // showModalBottomSheet(
-                      //   context: context,
-                      //   backgroundColor: Colors.white,
-                      //   shape: const RoundedRectangleBorder(
-                      //       borderRadius: BorderRadius.only(
-                      //           topLeft: Radiaus.circular(20),
-                      //           topRight: Radius.circular(20))),
-                      //   isScrollControlled: true,
-                      //   builder: (context) {
-                      //     return const CategoriesBottomSheet();
-                      //   },
-                      // );
                     },
-                    child: FxContainer(
-                      borderRadiusAll: 10,
-                      height: 30,
-                      width: 80,
-                      // padding: FxSpacing.xy(8, 4),
-                      padding: FxSpacing.xy(6, 9),
-                      color: const Color(0xff1529e8),
-                      child: Center(
-                        child: FxText.bodySmall(
-                          'Sort',
-                          fontWeight: 300,
-                          color: Colors.white,
-                          // color: theme.colorScheme.onPrimary,
-                        ),
-                      ),
+                    color: const Color(0xff1529e8).withAlpha(40),
+                    child: const Icon(
+                      Iconsax.sort,
+                      color: Color(0xff1529e8),
+                      size: 20,
                     ),
                   ),
-                  GestureDetector(
-                    // onTap: () {
-                    //   // showModalBottomSheet(
-                    //   //     context: context,
-                    //   //     builder: (BuildContext buildContext) {
-                    //   //       return const FilterSheet();
-                    //   //     });
-                    //   showModalBottomSheet(
-                    //     context: context,
-                    //     backgroundColor: Colors.white,
-                    //     shape: const RoundedRectangleBorder(
-                    //         borderRadius: BorderRadius.only(
-                    //             topLeft: Radius.circular(20),
-                    //             topRight: Radius.circular(20))),
-                    //     isScrollControlled: true,
-                    //     builder: (context) {
-                    //       return const FilterSheet();
-                    //     },
-                    //   );
-                    // },
+                  FxSpacing.width(4),
+                  FxContainer(
+                    paddingAll: 12,
+                    borderRadiusAll: 4,
                     onTap: () async {
                       var data = await showModalBottomSheet(
                           context: context,
@@ -215,37 +180,118 @@ class _SearchHotelState extends State<SearchHotel>
                             return const HotelFilterSheet();
                           });
                       setState(() {});
-                      // showModalBottomSheet(
-                      //   context: context,
-                      //   backgroundColor: Colors.white,
-                      //   shape: const RoundedRectangleBorder(
-                      //       borderRadius: BorderRadius.only(
-                      //           topLeft: Radius.circular(20),
-                      //           topRight: Radius.circular(20))),
-                      //   isScrollControlled: true,
-                      //   builder: (context) {
-                      //     return const CategoriesBottomSheet();
-                      //   },
-                      // );
                     },
-                    child: Container(
-                      height: 30,
-                      width: 80,
-                      decoration: BoxDecoration(
-                          color: const Color(0xff1529e8),
-                          borderRadius: BorderRadius.circular(10)),
-                      child: Center(
-                        child: FxText.bodySmall(
-                          'Filter',
-                          fontWeight: 300,
-                          color: Colors.white,
-                          // color: theme.colorScheme.onPrimary,
-                        ),
-                      ),
+                    color: const Color(0xff1529e8).withAlpha(40),
+                    child: const Icon(
+                      FeatherIcons.sliders,
+                      color: Color(0xff1529e8),
+                      size: 20,
                     ),
                   ),
                 ],
               ),
+              // FxSpacing.height(20),
+              //btn
+              // Row(
+              //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //   crossAxisAlignment: CrossAxisAlignment.center,
+              //   children: [
+              //     GestureDetector(
+              //       onTap: () async {
+              //         var data = await showModalBottomSheet(
+              //             context: context,
+              //             builder: (BuildContext buildContext) {
+              //               return const SortSeat();
+              //             });
+              //         setState(() {});
+              //         // showModalBottomSheet(
+              //         //   context: context,
+              //         //   backgroundColor: Colors.white,
+              //         //   shape: const RoundedRectangleBorder(
+              //         //       borderRadius: BorderRadius.only(
+              //         //           topLeft: Radiaus.circular(20),
+              //         //           topRight: Radius.circular(20))),
+              //         //   isScrollControlled: true,
+              //         //   builder: (context) {
+              //         //     return const CategoriesBottomSheet();
+              //         //   },
+              //         // );
+              //       },
+              //       child: FxContainer(
+              //         borderRadiusAll: 10,
+              //         height: 30,
+              //         width: 80,
+              //         // padding: FxSpacing.xy(8, 4),
+              //         padding: FxSpacing.xy(6, 9),
+              //         color: const Color(0xff1529e8),
+              //         child: Center(
+              //           child: FxText.bodySmall(
+              //             'Sort',
+              //             fontWeight: 300,
+              //             color: Colors.white,
+              //             // color: theme.colorScheme.onPrimary,
+              //           ),
+              //         ),
+              //       ),
+              //     ),
+              //     GestureDetector(
+              //       // onTap: () {
+              //       //   // showModalBottomSheet(
+              //       //   //     context: context,
+              //       //   //     builder: (BuildContext buildContext) {
+              //       //   //       return const FilterSheet();
+              //       //   //     });
+              //       //   showModalBottomSheet(
+              //       //     context: context,
+              //       //     backgroundColor: Colors.white,
+              //       //     shape: const RoundedRectangleBorder(
+              //       //         borderRadius: BorderRadius.only(
+              //       //             topLeft: Radius.circular(20),
+              //       //             topRight: Radius.circular(20))),
+              //       //     isScrollControlled: true,
+              //       //     builder: (context) {
+              //       //       return const FilterSheet();
+              //       //     },
+              //       //   );
+              //       // },
+              //       onTap: () async {
+              //         var data = await showModalBottomSheet(
+              //             context: context,
+              //             builder: (BuildContext buildContext) {
+              //               return const HotelFilterSheet();
+              //             });
+              //         setState(() {});
+              //         // showModalBottomSheet(
+              //         //   context: context,
+              //         //   backgroundColor: Colors.white,
+              //         //   shape: const RoundedRectangleBorder(
+              //         //       borderRadius: BorderRadius.only(
+              //         //           topLeft: Radius.circular(20),
+              //         //           topRight: Radius.circular(20))),
+              //         //   isScrollControlled: true,
+              //         //   builder: (context) {
+              //         //     return const CategoriesBottomSheet();
+              //         //   },
+              //         // );
+              //       },
+              //       child: Container(
+              //         height: 30,
+              //         width: 80,
+              //         decoration: BoxDecoration(
+              //             color: const Color(0xff1529e8),
+              //             borderRadius: BorderRadius.circular(10)),
+              //         child: Center(
+              //           child: FxText.bodySmall(
+              //             'Filter',
+              //             fontWeight: 300,
+              //             color: Colors.white,
+              //             // color: theme.colorScheme.onPrimary,
+              //           ),
+              //         ),
+              //       ),
+              //     ),
+              //   ],
+              // ),
 
               FxSpacing.height(20),
               // SingleChildScrollView(

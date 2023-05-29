@@ -81,9 +81,10 @@ class PersonSeatController extends FxController {
     update();
   }
 
-  void adultsdecrement() {
+  void adultsdecrement(int index) {
     if (adultscount > 1) {
       adultscount--;
+        roomsList[index].adults = adultscount;
     }
     update();
   }

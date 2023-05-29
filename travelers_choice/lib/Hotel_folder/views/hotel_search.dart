@@ -511,11 +511,15 @@ class _HotelSearchState extends State<HotelSearch>
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: <Widget>[
-                                    FxText.bodySmall("Person", fontWeight: 500),
+                                    FxText.bodySmall(
+                                        // "Person",
+                                        "Room",
+                                        fontWeight: 500),
                                     FxText.bodyLarge(
                                         // "2 Couple",
+                                        '1 Room',
                                         // controller1.roomsList.length.toString(),
-                                        '4 Adults,2 Children',
+                                        // '4 Adults,2 Children',
                                         fontWeight: 600),
                                   ],
                                 ),

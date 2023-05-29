@@ -166,7 +166,7 @@ class _PersonSeatState extends State<PersonSeat> with TickerProviderStateMixin {
                         children: [
                           InkWell(
                               onTap: () {
-                                controller.adultsdecrement();
+                                controller.adultsdecrement(index);
                               },
                               child: const Icon(
                                 Icons.remove,
