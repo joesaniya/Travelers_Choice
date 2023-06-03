@@ -44,14 +44,6 @@ dependencies:
   material_design_icons_flutter: 5.0.6996
   flutter_feather_icons: ^2.0.0+1
 
-  #(Syncfusion Flutter packages - Charts, Calendar, ETC.)
-  syncfusion_flutter_core: ^20.1.56
-  syncfusion_flutter_calendar: ^20.1.56
-  syncfusion_flutter_datepicker: ^20.1.56
-  syncfusion_flutter_sliders: ^20.1.56
-  syncfusion_flutter_charts: ^20.1.56
-  syncfusion_flutter_gauges: ^20.1.56
-
   # Other
   google_maps_flutter: ^2.2.4
   shimmer: ^2.0.0
@@ -147,10 +139,6 @@ flutter:
 
     #Shopping
     - assets/images/apps/shopping/
-    - assets/images/apps/shopping/product/
-    - assets/images/apps/shopping/offer/
-    - assets/images/apps/shopping/camera/
-    - assets/images/apps/shopping/vector/
 
     #Shopping2
     - assets/images/apps/shopping2/icons/
@@ -166,29 +154,8 @@ flutter:
     #Places
     - assets/images/place/
 
-    #Music
-    - assets/images/apps/music/
-
     #Food
     - assets/images/apps/food/
-
-    #estate
-    - assets/images/apps/estate/
-
-    #Course
-    - assets/images/apps/course/
-
-    #Chat
-    - assets/images/apps/chat/
-
-    #Social
-    - assets/images/apps/social/
-
-    #Other
-    - assets/images/all/
-
-    #Event
-    - assets/images/apps/event/
 
     ###################---------------------- Custom Apps -------------------------#################
 
@@ -201,29 +168,9 @@ flutter:
     - assets/images/apps/homemade/category/
     - assets/images/apps/homemade/shop/
 
-    ##dating
-    - assets/images/apps/dating/
-
-    ##Muvi
-    - assets/images/apps/muvi/
-
     ##CustomApps
-    - assets/images/apps/cookify/
+
     - assets/images/apps/grocery/
-    - assets/images/apps/medicare/
-
-    ##Learning  (Material Design 3)
-    - assets/images/apps/learning/images/
-    - assets/images/apps/learning/icons/
-
-    #Illustration
-    - assets/illustration/food/
-    - assets/illustration/shopping/
-    - assets/illustration/hotel/
-    - assets/illustration/music/
-
-    #Month backgrounds
-    - assets/images/month_background/
 
     #Languages
     - assets/lang/
@@ -231,24 +178,12 @@ flutter:
     #Icons
     - assets/icons/
 
-    #Rive Animations
-    - assets/animations/rive/
-
     #Other
     - assets/other/
 
     ###################---------------------- Full Apps -------------------------#################
 
     # Data
-
-    #NFT
-    - assets/images/full_apps/nft/icons/
-    - assets/images/full_apps/nft/images/
-
-    #Rental
-
-    - assets/images/full_apps/rental_service/images/
-    - assets/images/full_apps/rental_service/icons/
 
     #Shopping Manager
     - assets/images/full_apps/shopping/

@@ -5,6 +5,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutx/flutx.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -442,944 +443,1072 @@ class _AllBookingsState extends State<AllBookings>
                       ],
                     ),
                   )
-                : ListView.separated(
-                    padding: FxSpacing.fromLTRB(
-                        20,
-                        // FxSpacing.safeAreaTop(context) + 20,
-                        // FxSpacing.safeAreaTop(context) + 5,
-                        0,
-                        20,
-                        0),
-                    shrinkWrap: true,
+                : ListView(
+                    padding: FxSpacing.fromLTRB(20, 0, 20, 20),
                     physics: const AlwaysScrollableScrollPhysics(),
-                    separatorBuilder: (BuildContext context, index) {
-                      log('All book');
-                      return const SizedBox(
-                        height: 10,
-                      );
-                    },
-                    // itemCount: bookinglength == null
-                    //     ? controller.orders!.result!.totalOrders!
-                    //     : bookinglength!.length,
-                    // itemCount: controller.orders!.result!.totalOrders!,
-                    itemCount: controller.orders!.result!.data!.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      // log('booking length:${bookinglength!.length}');
-                      log('data length:${controller.orders!.result!.data!.length}');
-                      log('index data length:${controller.orders!.result!.data!.length}');
-                      log('index:$index');
-                      var date = controller
-                          .orders!.result!.data![index].activities!.date;
-                      String createdatae = controller
-                          .orders!.result!.data![index].createdAt
-                          .toString();
+                    children: [
+                      Row(
+                        children: [
+                          Expanded(
+                            child: Container(
+                              // padding: const EdgeInsets.all(16),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                border: Border.all(
+                                    width: 1, color: Colors.grey.shade300),
+                                boxShadow: [
+                                  BoxShadow(
+                                    // color: Colors.grey.shade400,
+                                    color: const Color(0xff1529e8)
+                                        .withOpacity(0.4),
+                                    blurRadius: 2,
+                                    offset: const Offset(0, 3),
+                                  ),
+                                ],
+                              ),
+                              child: TextFormField(
+                                style: FxTextStyle.bodyMedium(),
+                                controller: controller.SearchTE,
+                                cursorColor: theme.colorScheme.primary,
 
-                      log('Created Date:$createdatae');
-                      DateTime dateTime = DateTime.parse(createdatae);
-                      // String formattedDatecreate =
-                      //     "${dateTime.year}-${dateTime.month.toString().padLeft(2, '0')}-${dateTime.day.toString().padLeft(2, '0')}";
-                      // log('Format:$formattedDatecreate');
-                      var newDate = date!.toLocal().toString().substring(0, 10);
-                      log('New Date book:$newDate');
-                      log('data length:${controller.orders!.result!.data!.length}');
-                      return Container(
-                        // height: 212,
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius:
-                                const BorderRadius.all(Radius.circular(10)),
-                            border: Border.all(
-                                color: Colors.grey.shade300, width: 1)),
-                        // margin: const EdgeInsets.only(
-                        //   bottom: 20,
-                        // ),
-                        child: Column(
-                          children: [
-                            Container(
-                              margin: const EdgeInsets.all(8),
-                              child: Column(
-                                children: [
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
+                                //2
+                                onChanged: (value) {},
+
+                                decoration: InputDecoration(
+                                  hintText: "Search your Order ...",
+                                  hintStyle: FxTextStyle.bodySmall(
+                                      color: theme.colorScheme.onBackground),
+                                  border: const OutlineInputBorder(
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(4),
+                                      ),
+                                      borderSide: BorderSide.none),
+                                  enabledBorder: const OutlineInputBorder(
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(4),
+                                      ),
+                                      borderSide: BorderSide.none),
+                                  focusedBorder: const OutlineInputBorder(
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(4),
+                                      ),
+                                      borderSide: BorderSide.none),
+                                  filled: true,
+                                  // fillColor: const Color(0xffcfd2ff),
+                                  fillColor: theme.cardTheme.color,
+                                  prefixIcon: Icon(
+                                    FeatherIcons.search,
+                                    size: 16,
+                                    color: theme.colorScheme.onBackground
+                                        .withAlpha(150),
+                                  ),
+                                  isDense: true,
+                                ),
+                                textCapitalization:
+                                    TextCapitalization.sentences,
+                              ),
+                            ),
+                          ),
+                          FxSpacing.width(4),
+                          FxContainer(
+                            paddingAll: 12,
+                            borderRadiusAll: 4,
+                            onTap: () async {
+                              // var data = await showModalBottomSheet(
+                              //     context: context,
+                              //     builder: (BuildContext buildContext) {
+                              //       return const SortSeat();
+                              //     });
+                              // setState(() {});
+                            },
+                            color: const Color(0xff1529e8).withAlpha(40),
+                            child: const Icon(
+                              Iconsax.sort,
+                              color: Color(0xff1529e8),
+                              size: 20,
+                            ),
+                          ),
+                          FxSpacing.width(4),
+                          FxContainer(
+                            paddingAll: 12,
+                            borderRadiusAll: 4,
+                            onTap: () async {
+                              // var data = await showModalBottomSheet(
+                              //     context: context,
+                              //     builder: (BuildContext buildContext) {
+                              //       return const HotelFilterSheet();
+                              //     });
+                              // setState(() {});
+                            },
+                            color: const Color(0xff1529e8).withAlpha(40),
+                            child: const Icon(
+                              FeatherIcons.sliders,
+                              color: Color(0xff1529e8),
+                              size: 20,
+                            ),
+                          ),
+                        ],
+                      ),
+                      FxSpacing.height(10),
+                      ListView.separated(
+                        // padding: FxSpacing.fromLTRB(
+                        //     20,
+                        //     // FxSpacing.safeAreaTop(context) + 20,
+                        //     // FxSpacing.safeAreaTop(context) + 5,
+                        //     0,
+                        //     20,
+                        //     0),
+                        shrinkWrap: true,
+                        physics: const AlwaysScrollableScrollPhysics(),
+                        separatorBuilder: (BuildContext context, index) {
+                          log('All book');
+                          return const SizedBox(
+                            height: 10,
+                          );
+                        },
+                        // itemCount: bookinglength == null
+                        //     ? controller.orders!.result!.totalOrders!
+                        //     : bookinglength!.length,
+                        // itemCount: controller.orders!.result!.totalOrders!,
+                        itemCount: controller.orders!.result!.data!.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          // log('booking length:${bookinglength!.length}');
+                          log('data length:${controller.orders!.result!.data!.length}');
+                          log('index data length:${controller.orders!.result!.data!.length}');
+                          log('index:$index');
+                          var date = controller
+                              .orders!.result!.data![index].activities!.date;
+                          String createdatae = controller
+                              .orders!.result!.data![index].createdAt
+                              .toString();
+
+                          log('Created Date:$createdatae');
+                          DateTime dateTime = DateTime.parse(createdatae);
+                          // String formattedDatecreate =
+                          //     "${dateTime.year}-${dateTime.month.toString().padLeft(2, '0')}-${dateTime.day.toString().padLeft(2, '0')}";
+                          // log('Format:$formattedDatecreate');
+                          var newDate =
+                              date!.toLocal().toString().substring(0, 10);
+                          log('New Date book:$newDate');
+                          log('data length:${controller.orders!.result!.data!.length}');
+                          return Container(
+                            // height: 212,
+                            decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius:
+                                    const BorderRadius.all(Radius.circular(10)),
+                                border: Border.all(
+                                    color: Colors.grey.shade300, width: 1)),
+                            // margin: const EdgeInsets.only(
+                            //   bottom: 20,
+                            // ),
+                            child: Column(
+                              children: [
+                                Container(
+                                  margin: const EdgeInsets.all(8),
+                                  child: Column(
                                     children: [
-                                      Container(
-                                        child: Row(children: [
-                                          FxText.bodyLarge(
-                                            'Status:',
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Container(
+                                            child: Row(children: [
+                                              FxText.bodyLarge(
+                                                'Status:',
 
-                                            // textAlign: TextAlign.left,
-                                            letterSpacing: 0,
-                                            fontWeight: 600,
-                                          ),
-                                          FxSpacing.width(10),
-                                          FxText.bodyLarge(
-                                            controller.orders!.result!
-                                                .data![index].orderStatus
-                                                .toString(),
+                                                // textAlign: TextAlign.left,
+                                                letterSpacing: 0,
+                                                fontWeight: 600,
+                                              ),
+                                              FxSpacing.width(10),
+                                              FxText.bodyLarge(
+                                                controller.orders!.result!
+                                                    .data![index].orderStatus
+                                                    .toString(),
 
-                                            color: controller
-                                                        .orders!
-                                                        .result!
-                                                        .data![index]
-                                                        .orderStatus ==
-                                                    'confirmed'
-                                                ? Colors.green
-                                                : controller
+                                                color: controller
                                                             .orders!
                                                             .result!
                                                             .data![index]
                                                             .orderStatus ==
-                                                        'pending'
-                                                    ? Colors.orange
-                                                    : Colors.red,
-                                            fontWeight: 600,
-                                            // color: const Color(0xff1529e8),
-                                          )
-                                        ]),
-                                      ),
-                                      Container(
-                                        child: Row(children: [
-                                          FxText.bodyLarge(
-                                            'Date:',
-
-                                            // textAlign: TextAlign.left,
-                                            letterSpacing: 0,
-                                            fontWeight: 600,
+                                                        'confirmed'
+                                                    ? Colors.green
+                                                    : controller
+                                                                .orders!
+                                                                .result!
+                                                                .data![index]
+                                                                .orderStatus ==
+                                                            'pending'
+                                                        ? Colors.orange
+                                                        : Colors.red,
+                                                fontWeight: 600,
+                                                // color: const Color(0xff1529e8),
+                                              )
+                                            ]),
                                           ),
-                                          FxSpacing.width(10),
-                                          FxText.bodyLarge(
-                                            // formattedDatecreate,
-                                            newDate,
-                                            fontWeight: 600,
-                                            color: const Color(0xff1529e8),
+                                          Container(
+                                            child: Row(children: [
+                                              FxText.bodyLarge(
+                                                'Date:',
+
+                                                // textAlign: TextAlign.left,
+                                                letterSpacing: 0,
+                                                fontWeight: 600,
+                                              ),
+                                              FxSpacing.width(10),
+                                              FxText.bodyLarge(
+                                                // formattedDatecreate,
+                                                newDate,
+                                                fontWeight: 600,
+                                                color: const Color(0xff1529e8),
+                                              )
+                                            ]),
                                           )
-                                        ]),
-                                      )
-                                    ],
-                                  ),
-                                  //controller.updateTours(widget.excursions[i])
-                                  FxSpacing.height(10),
-                                  // orders!.result!.data!.contains(
-                                  //   orders!.result!.data![index]
-                                  //       .referenceNumber
-                                  //       .toString(),
-                                  // )
-                                  //     ? const Text('hh')
-                                  //     : const SizedBox(),
-                                  FxDashedDivider(
-                                    dashSpace: 4,
-                                    dashWidth: 8,
-                                    color: theme.colorScheme.onBackground
-                                        .withAlpha(180),
-                                    height: 1.2,
-                                  ),
-                                ],
-                              ),
-                            ),
-
-                            Row(
-                              children: [
-                                Container(
-                                  margin:
-                                      const EdgeInsets.symmetric(horizontal: 5),
-                                  decoration: BoxDecoration(
-                                      color: const Color(0xff919EB0),
-                                      borderRadius: const BorderRadius.all(
-                                          Radius.circular(10)),
-                                      border: Border.all(
-                                          color: Colors.grey.shade300,
-                                          width: 1)),
-                                  child: Row(
-                                    children: [
-                                      FxSpacing.width(10),
-                                      FxText.bodyLarge('Ref No:',
-
-                                          // textAlign: TextAlign.left,
-                                          letterSpacing: 0,
-                                          fontWeight: 600,
-                                          color: Colors.white),
-                                      FxSpacing.width(10),
-                                      FxText.bodyLarge(
-                                        controller.orders!.result!.data![index]
-                                            .referenceNumber
-                                            .toString(),
-                                        color: Colors.white,
-
-                                        fontWeight: 600,
-                                        // color: const Color(0xff1529e8),
+                                        ],
                                       ),
-                                      const SizedBox(
-                                        width: 10,
-                                      )
+                                      //controller.updateTours(widget.excursions[i])
+                                      FxSpacing.height(10),
+                                      // orders!.result!.data!.contains(
+                                      //   orders!.result!.data![index]
+                                      //       .referenceNumber
+                                      //       .toString(),
+                                      // )
+                                      //     ? const Text('hh')
+                                      //     : const SizedBox(),
+                                      FxDashedDivider(
+                                        dashSpace: 4,
+                                        dashWidth: 8,
+                                        color: theme.colorScheme.onBackground
+                                            .withAlpha(180),
+                                        height: 1.2,
+                                      ),
                                     ],
                                   ),
                                 ),
-                                Expanded(child: Container())
-                              ],
-                            ),
-                            Container(
-                              margin: const EdgeInsets.all(8),
-                              child: Row(
-                                children: [
-                                  Container(
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(10),
-                                    ),
-                                    clipBehavior: Clip.antiAliasWithSaveLayer,
-                                    child: CachedNetworkImage(
-                                      height: 100,
-                                      width: 100,
-                                      fit: BoxFit.cover,
-                                      progressIndicatorBuilder:
-                                          (context, url, progress) => Center(
-                                        child: CircularProgressIndicator(
-                                          value: progress.progress,
-                                        ),
-                                      ),
-                                      imageUrl:
-                                          'https://a.walletbot.online${controller.orders!.result!.data![index].attraction!.images!.first}',
-                                    ),
-                                  ),
-                                  FxSpacing.width(20),
-                                  Expanded(
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      children: [
-                                        Hero(
-                                          tag:
-                                              "product_${controller.orders!.result!.data![index].activities!.activity!.name!}",
-                                          // child: FxText.bodyLarge(
-                                          //   product.name,
-                                          //   // fontWeight: 500,
-                                          // ),
-                                          child: FxText.bodyLarge(
-                                            controller
-                                                .orders!
-                                                .result!
-                                                .data![index]
-                                                .activities!
-                                                .activity!
-                                                .name!,
-                                            fontWeight: 800,
-                                            overflow: TextOverflow.ellipsis,
-                                            maxLines: 2,
-                                          ),
-                                        ),
-                                        FxSpacing.height(4),
-                                        Container(
-                                          child: Column(
-                                            children: [
-                                              Row(
-                                                children: [
-                                                  FxText.bodySmall(
-                                                    'Adult:',
-                                                    fontWeight: 900,
-                                                    color: Colors.black,
-                                                  ),
-                                                  FxSpacing.width(10),
-                                                  FxText.bodySmall(
-                                                    controller
-                                                        .orders!
-                                                        .result!
-                                                        .data![index]
-                                                        .activities!
-                                                        .adultsCount
-                                                        .toString(),
-                                                    fontWeight: 600,
-                                                    color: Colors.black,
-                                                  ),
-                                                ],
-                                              ),
-                                              Row(
-                                                children: [
-                                                  FxText.bodySmall(
-                                                    'Child:',
-                                                    fontWeight: 900,
-                                                    color: Colors.black,
-                                                  ),
-                                                  FxSpacing.width(10),
-                                                  FxText.bodySmall(
-                                                    controller
-                                                        .orders!
-                                                        .result!
-                                                        .data![index]
-                                                        .activities!
-                                                        .childrenCount
-                                                        .toString(),
-                                                    fontWeight: 600,
-                                                    color: Colors.black,
-                                                  ),
-                                                ],
-                                              ),
-                                              Row(
-                                                children: [
-                                                  FxText.bodySmall(
-                                                    'Infant:',
-                                                    fontWeight: 900,
-                                                    color: Colors.black,
-                                                  ),
-                                                  FxSpacing.width(10),
-                                                  FxText.bodySmall(
-                                                    controller
-                                                        .orders!
-                                                        .result!
-                                                        .data![index]
-                                                        .activities!
-                                                        .infantCount
-                                                        .toString(),
-                                                    fontWeight: 600,
-                                                    color: Colors.black,
-                                                  ),
-                                                ],
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                        FxSpacing.height(4),
-                                        Hero(
-                                          tag:
-                                              "${controller.orders!.result!.data![index].activities!.activity!.name!}_${controller.orders!.result!.data![index].totalAmount}",
-                                          child: FxText.labelLarge(
-                                            "${controller.orders!.result!.data![index].totalAmount} AED",
-                                            // "\$" + product.price.toString() + "/hour",
-                                            fontWeight: 700,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
 
-                            //personal details
-                            FxContainer(
-                              margin: const EdgeInsets.all(8),
-                              padding: FxSpacing.fromLTRB(8, 6, 8, 6),
-                              color: const Color(0xfff5f5f5),
-                              // color: const Color(0xff1529e8).withAlpha(40),
-                              child: Column(
-                                children: [
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Row(
+                                Row(
+                                  children: [
+                                    Container(
+                                      margin: const EdgeInsets.symmetric(
+                                          horizontal: 5),
+                                      decoration: BoxDecoration(
+                                          color: const Color(0xff919EB0),
+                                          borderRadius: const BorderRadius.all(
+                                              Radius.circular(10)),
+                                          border: Border.all(
+                                              color: Colors.grey.shade300,
+                                              width: 1)),
+                                      child: Row(
                                         children: [
-                                          FxText.bodySmall(
-                                            'Name:',
-                                            fontWeight: 900,
-                                            color: Colors.black,
-                                          ),
                                           FxSpacing.width(10),
-                                          FxText.bodySmall(
+                                          FxText.bodyLarge('Ref No:',
+
+                                              // textAlign: TextAlign.left,
+                                              letterSpacing: 0,
+                                              fontWeight: 600,
+                                              color: Colors.white),
+                                          FxSpacing.width(10),
+                                          FxText.bodyLarge(
                                             controller.orders!.result!
-                                                .data![index].name
+                                                .data![index].referenceNumber
                                                 .toString(),
+                                            color: Colors.white,
+
                                             fontWeight: 600,
-                                            color: Colors.black,
+                                            // color: const Color(0xff1529e8),
                                           ),
+                                          const SizedBox(
+                                            width: 10,
+                                          )
                                         ],
                                       ),
+                                    ),
+                                    Expanded(child: Container())
+                                  ],
+                                ),
+                                Container(
+                                  margin: const EdgeInsets.all(8),
+                                  child: Row(
+                                    children: [
+                                      Container(
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                        ),
+                                        clipBehavior:
+                                            Clip.antiAliasWithSaveLayer,
+                                        child: CachedNetworkImage(
+                                          height: 100,
+                                          width: 100,
+                                          fit: BoxFit.cover,
+                                          progressIndicatorBuilder:
+                                              (context, url, progress) =>
+                                                  Center(
+                                            child: CircularProgressIndicator(
+                                              value: progress.progress,
+                                            ),
+                                          ),
+                                          imageUrl:
+                                              'https://a.walletbot.online${controller.orders!.result!.data![index].attraction!.images!.first}',
+                                        ),
+                                      ),
                                       FxSpacing.width(20),
-                                      //3
                                       Expanded(
-                                          child: Row(
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          children: [
+                                            Hero(
+                                              tag:
+                                                  "product_${controller.orders!.result!.data![index].activities!.activity!.name!}",
+                                              // child: FxText.bodyLarge(
+                                              //   product.name,
+                                              //   // fontWeight: 500,
+                                              // ),
+                                              child: FxText.bodyLarge(
+                                                controller
+                                                    .orders!
+                                                    .result!
+                                                    .data![index]
+                                                    .activities!
+                                                    .activity!
+                                                    .name!,
+                                                fontWeight: 800,
+                                                overflow: TextOverflow.ellipsis,
+                                                maxLines: 2,
+                                              ),
+                                            ),
+                                            FxSpacing.height(4),
+                                            Container(
+                                              child: Column(
+                                                children: [
+                                                  Row(
+                                                    children: [
+                                                      FxText.bodySmall(
+                                                        'Adult:',
+                                                        fontWeight: 900,
+                                                        color: Colors.black,
+                                                      ),
+                                                      FxSpacing.width(10),
+                                                      FxText.bodySmall(
+                                                        controller
+                                                            .orders!
+                                                            .result!
+                                                            .data![index]
+                                                            .activities!
+                                                            .adultsCount
+                                                            .toString(),
+                                                        fontWeight: 600,
+                                                        color: Colors.black,
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  Row(
+                                                    children: [
+                                                      FxText.bodySmall(
+                                                        'Child:',
+                                                        fontWeight: 900,
+                                                        color: Colors.black,
+                                                      ),
+                                                      FxSpacing.width(10),
+                                                      FxText.bodySmall(
+                                                        controller
+                                                            .orders!
+                                                            .result!
+                                                            .data![index]
+                                                            .activities!
+                                                            .childrenCount
+                                                            .toString(),
+                                                        fontWeight: 600,
+                                                        color: Colors.black,
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  Row(
+                                                    children: [
+                                                      FxText.bodySmall(
+                                                        'Infant:',
+                                                        fontWeight: 900,
+                                                        color: Colors.black,
+                                                      ),
+                                                      FxSpacing.width(10),
+                                                      FxText.bodySmall(
+                                                        controller
+                                                            .orders!
+                                                            .result!
+                                                            .data![index]
+                                                            .activities!
+                                                            .infantCount
+                                                            .toString(),
+                                                        fontWeight: 600,
+                                                        color: Colors.black,
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                            FxSpacing.height(4),
+                                            Hero(
+                                              tag:
+                                                  "${controller.orders!.result!.data![index].activities!.activity!.name!}_${controller.orders!.result!.data![index].totalAmount}",
+                                              child: FxText.labelLarge(
+                                                "${controller.orders!.result!.data![index].totalAmount} AED",
+                                                // "\$" + product.price.toString() + "/hour",
+                                                fontWeight: 700,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+
+                                //personal details
+                                FxContainer(
+                                  margin: const EdgeInsets.all(8),
+                                  padding: FxSpacing.fromLTRB(8, 6, 8, 6),
+                                  color: const Color(0xfff5f5f5),
+                                  // color: const Color(0xff1529e8).withAlpha(40),
+                                  child: Column(
+                                    children: [
+                                      Row(
                                         mainAxisAlignment:
                                             MainAxisAlignment.start,
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
                                         children: [
-                                          FxText.bodySmall(
-                                            'Email:',
-                                            fontWeight: 900,
-                                            color: Colors.black,
+                                          Row(
+                                            children: [
+                                              FxText.bodySmall(
+                                                'Name:',
+                                                fontWeight: 900,
+                                                color: Colors.black,
+                                              ),
+                                              FxSpacing.width(10),
+                                              FxText.bodySmall(
+                                                controller.orders!.result!
+                                                    .data![index].name
+                                                    .toString(),
+                                                fontWeight: 600,
+                                                color: Colors.black,
+                                              ),
+                                            ],
                                           ),
-                                          FxSpacing.width(10),
+                                          FxSpacing.width(20),
+                                          //3
                                           Expanded(
-                                            child: FxText.bodySmall(
-                                              controller.orders!.result!
-                                                  .data![index].email
-                                                  .toString(),
-                                              fontWeight: 600,
-                                              color: Colors.black,
+                                              child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              FxText.bodySmall(
+                                                'Email:',
+                                                fontWeight: 900,
+                                                color: Colors.black,
+                                              ),
+                                              FxSpacing.width(10),
+                                              Expanded(
+                                                child: FxText.bodySmall(
+                                                  controller.orders!.result!
+                                                      .data![index].email
+                                                      .toString(),
+                                                  fontWeight: 600,
+                                                  color: Colors.black,
+                                                ),
+                                              ),
+                                            ],
+                                          ))
+                                        ],
+                                      ),
+                                      //2
+                                      FxSpacing.height(10),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Row(
+                                            children: [
+                                              FxText.bodySmall(
+                                                'Country:',
+                                                fontWeight: 900,
+                                                color: Colors.black,
+                                              ),
+                                              FxSpacing.width(10),
+                                              FxText.bodySmall(
+                                                controller
+                                                    .orders!
+                                                    .result!
+                                                    .data![index]
+                                                    .country!
+                                                    .countryName
+                                                    .toString(),
+                                                fontWeight: 600,
+                                                color: Colors.black,
+                                              ),
+                                            ],
+                                          ),
+                                          FxSpacing.width(20),
+                                          //3
+                                          Expanded(
+                                              child: Row(
+                                            children: [
+                                              FxText.bodySmall(
+                                                'Phone:',
+                                                fontWeight: 900,
+                                                color: Colors.black,
+                                              ),
+                                              FxSpacing.width(10),
+                                              FxText.bodySmall(
+                                                controller.orders!.result!
+                                                    .data![index].phoneNumber
+                                                    .toString(),
+                                                fontWeight: 600,
+                                                color: Colors.black,
+                                              ),
+                                            ],
+                                          ))
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
+
+                                //details
+                                controller.orders!.result!.data![index]
+                                            .orderStatus ==
+                                        'confirmed'
+                                    ? Row(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.end,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.end,
+                                        children: [
+                                          FxContainer(
+                                            onTap: () async {
+                                              log('preview Screen clicked');
+                                              log('id:${controller.orders!.result!.data![index].id}');
+                                              String Idorder = controller
+                                                  .orders!
+                                                  .result!
+                                                  .data![index]
+                                                  .id
+                                                  .toString();
+                                              String idactivity = controller
+                                                  .orders!
+                                                  .result!
+                                                  .data![index]
+                                                  .activities!
+                                                  .id
+                                                  .toString();
+
+                                              final url =
+                                                  'https://secure.mytravellerschoice.com/api/v1/attractions/orders/$Idorder/ticket/$idactivity';
+                                              final file =
+                                                  await PDFApi.loadNetwork(url);
+                                              controller.openPDF(context, file,
+                                                  Idorder, idactivity);
+                                            },
+                                            padding:
+                                                FxSpacing.fromLTRB(8, 6, 8, 6),
+                                            color: const Color(0xff1529e8)
+                                                .withAlpha(40),
+                                            child: Row(
+                                              // mainAxisSize: MainAxisSize.min,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.center,
+                                              children: [
+                                                FxText.bodyMedium("View",
+                                                    color:
+                                                        const Color(0xff1529e8),
+                                                    fontWeight: 500,
+                                                    letterSpacing: -0.2),
+                                                FxSpacing.width(5),
+                                                const Icon(
+                                                  MdiIcons.eye,
+                                                  size: 14,
+                                                  color: Color(0xff1529e8),
+                                                )
+                                              ],
                                             ),
                                           ),
-                                        ],
-                                      ))
-                                    ],
-                                  ),
-                                  //2
-                                  FxSpacing.height(10),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Row(
-                                        children: [
-                                          FxText.bodySmall(
-                                            'Country:',
-                                            fontWeight: 900,
-                                            color: Colors.black,
+                                          FxSpacing.width(10),
+                                          FxContainer(
+                                            // onTap: () async {
+                                            //   log('download clicked');
+                                            //   log('Order Id:${controller.orders!.result!.data![index].id}');
+                                            //   log('Activity Id:${controller.orders!.result!.data![index].activities!.id}');
+                                            //   // const url =
+                                            //   //     'https://secure.mytravellerschoice.com/api/v1/attractions/orders/6401e4f5913789806d34b998/ticket/6401e4f5913789806d34b999';
+                                            //   // final file = await PDFApi.loadNetwork(url);
+                                            //   // controller.openPDF(context, file);
+                                            //   // controller.downloadBtn(
+                                            //   //     controller
+                                            //   //         .orders!.result!.data![index].id
+                                            //   //         .toString(),
+                                            //   //     controller.orders!.result!.data![index]
+                                            //   //         .activities!.id
+                                            //   //         .toString());
+
+                                            //   //todo
+                                            //   // downloadBook(
+                                            //   //     downloadLink:
+                                            //   //         //     "https://secure.mytravellerschoice.com/api/v1/attractions/orders/${controller.orders!.result!.data![index].id}/ticket/${controller.orders!.result!.data![index].activities!.id}",
+                                            //   //         "https://secure.mytravellerschoice.com/api/v1/attractions/orders/6401e4f5913789806d34b998/ticket/6401e4f5913789806d34b999",
+                                            //   //     title: "test");
+                                            // },
+                                            onTap: () async {
+                                              log('tap');
+                                              // String path = await ExtStorage
+                                              //     .getExternalStoragePublicDirectory(
+                                              //         ExtStorage.DIRECTORY_DOWNLOADS);
+                                              //todo
+                                              String path = await ExternalPath
+                                                  .getExternalStoragePublicDirectory(
+                                                      ExternalPath
+                                                          .DIRECTORY_DOWNLOADS);
+
+                                              //
+                                              //String fullPath = tempDir.path + "/boo2.pdf'";
+                                              String fullPath =
+                                                  "$path/${controller.orders!.result!.data![index].activities!.activity!.name!}.pdf";
+                                              print('full path $fullPath');
+                                              String Idorder = controller
+                                                  .orders!
+                                                  .result!
+                                                  .data![index]
+                                                  .id
+                                                  .toString();
+                                              String idactivity = controller
+                                                  .orders!
+                                                  .result!
+                                                  .data![index]
+                                                  .activities!
+                                                  .id
+                                                  .toString();
+
+                                              final ticketimage =
+                                                  // "https://secure.mytravellerschoice.com/api/v1/attractions/orders/6401e4f5913789806d34b998/ticket/6401e4f5913789806d34b999";
+                                                  "https://secure.mytravellerschoice.com/api/v1/attractions/orders/$Idorder/ticket/$idactivity";
+
+                                              download2(
+                                                  dio, ticketimage, fullPath);
+                                              // downloadFile();
+                                            },
+                                            padding:
+                                                FxSpacing.fromLTRB(8, 6, 8, 6),
+                                            color: const Color(0xff1529e8)
+                                                .withAlpha(40),
+                                            // color:Color(0xff6874E8),
+                                            // customTheme.groceryPrimary.withAlpha(40),
+                                            child: Row(
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: [
+                                                FxText.bodyMedium("Download",
+                                                    color:
+                                                        const Color(0xff1529e8),
+                                                    // color: customTheme.groceryPrimary,
+                                                    fontWeight: 500,
+                                                    letterSpacing: -0.2),
+                                                const Icon(
+                                                  MdiIcons.download,
+                                                  size: 14,
+                                                  color: Color(0xff1529e8),
+                                                )
+                                              ],
+                                            ),
                                           ),
                                           FxSpacing.width(10),
-                                          FxText.bodySmall(
-                                            controller
-                                                .orders!
-                                                .result!
-                                                .data![index]
-                                                .country!
-                                                .countryName
-                                                .toString(),
-                                            fontWeight: 600,
-                                            color: Colors.black,
-                                          ),
                                         ],
-                                      ),
-                                      FxSpacing.width(20),
-                                      //3
-                                      Expanded(
-                                          child: Row(
-                                        children: [
-                                          FxText.bodySmall(
-                                            'Phone:',
-                                            fontWeight: 900,
-                                            color: Colors.black,
-                                          ),
-                                          FxSpacing.width(10),
-                                          FxText.bodySmall(
-                                            controller.orders!.result!
-                                                .data![index].phoneNumber
-                                                .toString(),
-                                            fontWeight: 600,
-                                            color: Colors.black,
-                                          ),
-                                        ],
-                                      ))
-                                    ],
-                                  ),
-                                ],
-                              ),
+                                      )
+                                    : const SizedBox(),
+                                FxSpacing.height(15)
+                              ],
                             ),
+                          );
 
-                            //details
-                            controller.orders!.result!.data![index]
-                                        .orderStatus ==
-                                    'confirmed'
-                                ? Row(
-                                    crossAxisAlignment: CrossAxisAlignment.end,
-                                    mainAxisAlignment: MainAxisAlignment.end,
-                                    children: [
-                                      FxContainer(
-                                        onTap: () async {
-                                          log('preview Screen clicked');
-                                          log('id:${controller.orders!.result!.data![index].id}');
-                                          String Idorder = controller
-                                              .orders!.result!.data![index].id
-                                              .toString();
-                                          String idactivity = controller
-                                              .orders!
-                                              .result!
-                                              .data![index]
-                                              .activities!
-                                              .id
-                                              .toString();
+                          //slimu
+                          // return SlimyCard(
+                          //   color: const Color(0xff1529e8).withAlpha(40),
+                          //   width: MediaQuery.of(context).size.width,
+                          //   topCardHeight: 195,
+                          //   bottomCardHeight: 150,
+                          //   borderRadius: 15,
+                          //   topCardWidget: Container(
+                          //     // height: 212,
+                          //     decoration: BoxDecoration(
+                          //         color: Colors.white,
+                          //         borderRadius:
+                          //             const BorderRadius.all(Radius.circular(10)),
+                          //         border:
+                          //             Border.all(color: Colors.grey.shade300, width: 1)),
 
-                                          final url =
-                                              'https://secure.mytravellerschoice.com/api/v1/attractions/orders/$Idorder/ticket/$idactivity';
-                                          final file =
-                                              await PDFApi.loadNetwork(url);
-                                          controller.openPDF(context, file,
-                                              Idorder, idactivity);
-                                        },
-                                        padding: FxSpacing.fromLTRB(8, 6, 8, 6),
-                                        color: const Color(0xff1529e8)
-                                            .withAlpha(40),
-                                        child: Row(
-                                          // mainAxisSize: MainAxisSize.min,
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          children: [
-                                            FxText.bodyMedium("View",
-                                                color: const Color(0xff1529e8),
-                                                fontWeight: 500,
-                                                letterSpacing: -0.2),
-                                            FxSpacing.width(5),
-                                            const Icon(
-                                              MdiIcons.eye,
-                                              size: 14,
-                                              color: Color(0xff1529e8),
-                                            )
-                                          ],
-                                        ),
-                                      ),
-                                      FxSpacing.width(10),
-                                      FxContainer(
-                                        // onTap: () async {
-                                        //   log('download clicked');
-                                        //   log('Order Id:${controller.orders!.result!.data![index].id}');
-                                        //   log('Activity Id:${controller.orders!.result!.data![index].activities!.id}');
-                                        //   // const url =
-                                        //   //     'https://secure.mytravellerschoice.com/api/v1/attractions/orders/6401e4f5913789806d34b998/ticket/6401e4f5913789806d34b999';
-                                        //   // final file = await PDFApi.loadNetwork(url);
-                                        //   // controller.openPDF(context, file);
-                                        //   // controller.downloadBtn(
-                                        //   //     controller
-                                        //   //         .orders!.result!.data![index].id
-                                        //   //         .toString(),
-                                        //   //     controller.orders!.result!.data![index]
-                                        //   //         .activities!.id
-                                        //   //         .toString());
+                          //     child: Column(
+                          //       children: [
+                          //         Container(
+                          //           margin: const EdgeInsets.all(8),
+                          //           child: Column(
+                          //             children: [
+                          //               Row(
+                          //                 mainAxisAlignment:
+                          //                     MainAxisAlignment.spaceBetween,
+                          //                 children: [
+                          //                   Container(
+                          //                     child: Row(children: [
+                          //                       FxText.bodyLarge(
+                          //                         'Status:',
 
-                                        //   //todo
-                                        //   // downloadBook(
-                                        //   //     downloadLink:
-                                        //   //         //     "https://secure.mytravellerschoice.com/api/v1/attractions/orders/${controller.orders!.result!.data![index].id}/ticket/${controller.orders!.result!.data![index].activities!.id}",
-                                        //   //         "https://secure.mytravellerschoice.com/api/v1/attractions/orders/6401e4f5913789806d34b998/ticket/6401e4f5913789806d34b999",
-                                        //   //     title: "test");
-                                        // },
-                                        onTap: () async {
-                                          log('tap');
-                                          // String path = await ExtStorage
-                                          //     .getExternalStoragePublicDirectory(
-                                          //         ExtStorage.DIRECTORY_DOWNLOADS);
-                                          //todo
-                                          String path = await ExternalPath
-                                              .getExternalStoragePublicDirectory(
-                                                  ExternalPath
-                                                      .DIRECTORY_DOWNLOADS);
+                          //                         // textAlign: TextAlign.left,
+                          //                         letterSpacing: 0,
+                          //                         fontWeight: 600,
+                          //                       ),
+                          //                       FxSpacing.width(10),
+                          //                       FxText.bodyLarge(
+                          //                         orders!.result!.data![index].orderStatus
+                          //                             .toString(),
 
-                                          //
-                                          //String fullPath = tempDir.path + "/boo2.pdf'";
-                                          String fullPath =
-                                              "$path/${controller.orders!.result!.data![index].activities!.activity!.name!}.pdf";
-                                          print('full path $fullPath');
-                                          String Idorder = controller
-                                              .orders!.result!.data![index].id
-                                              .toString();
-                                          String idactivity = controller
-                                              .orders!
-                                              .result!
-                                              .data![index]
-                                              .activities!
-                                              .id
-                                              .toString();
+                          //                         color: orders!.result!.data![index]
+                          //                                     .orderStatus ==
+                          //                                 'confirmed'
+                          //                             ? Colors.green
+                          //                             : Colors.red,
+                          //                         fontWeight: 600,
+                          //                         // color: const Color(0xff1529e8),
+                          //                       )
+                          //                     ]),
+                          //                   ),
+                          //                   Container(
+                          //                     child: Row(children: [
+                          //                       FxText.bodyLarge(
+                          //                         'Date:',
 
-                                          final ticketimage =
-                                              // "https://secure.mytravellerschoice.com/api/v1/attractions/orders/6401e4f5913789806d34b998/ticket/6401e4f5913789806d34b999";
-                                              "https://secure.mytravellerschoice.com/api/v1/attractions/orders/$Idorder/ticket/$idactivity";
+                          //                         // textAlign: TextAlign.left,
+                          //                         letterSpacing: 0,
+                          //                         fontWeight: 600,
+                          //                       ),
+                          //                       FxSpacing.width(10),
+                          //                       FxText.bodyLarge(
+                          //                         newDate,
+                          //                         // formattedDatecreate,
+                          //                         fontWeight: 600,
+                          //                         color: const Color(0xff1529e8),
+                          //                       )
+                          //                     ]),
+                          //                   )
+                          //                 ],
+                          //               ),
+                          //               FxSpacing.height(10),
+                          //               FxDashedDivider(
+                          //                 dashSpace: 4,
+                          //                 dashWidth: 8,
+                          //                 color: theme.colorScheme.onBackground
+                          //                     .withAlpha(180),
+                          //                 height: 1.2,
+                          //               ),
+                          //             ],
+                          //           ),
+                          //         ),
+                          //         Container(
+                          //           margin: const EdgeInsets.all(8),
+                          //           child: Row(
+                          //             children: [
+                          //               Container(
+                          //                 decoration: BoxDecoration(
+                          //                   borderRadius: BorderRadius.circular(10),
+                          //                 ),
+                          //                 clipBehavior: Clip.antiAliasWithSaveLayer,
+                          //                 child: CachedNetworkImage(
+                          //                   height: 100,
+                          //                   width: 100,
+                          //                   fit: BoxFit.cover,
+                          //                   progressIndicatorBuilder:
+                          //                       (context, url, progress) => Center(
+                          //                     child: CircularProgressIndicator(
+                          //                       value: progress.progress,
+                          //                     ),
+                          //                   ),
+                          //                   imageUrl:
+                          //                       'https://a.walletbot.online${orders!.result!.data![index].attraction!.images!.first}',
+                          //                 ),
+                          //               ),
+                          //               FxSpacing.width(20),
+                          //               Expanded(
+                          //                 child: Column(
+                          //                   crossAxisAlignment: CrossAxisAlignment.start,
+                          //                   mainAxisAlignment: MainAxisAlignment.start,
+                          //                   children: [
+                          //                     Hero(
+                          //                       tag:
+                          //                           "product_${orders!.result!.data![index].activities!.activity!.name!}",
+                          //                       child: FxText.bodyLarge(
+                          //                         orders!.result!.data![index].activities!
+                          //                             .activity!.name!,
+                          //                         fontWeight: 800,
+                          //                         overflow: TextOverflow.ellipsis,
+                          //                         maxLines: 2,
+                          //                       ),
+                          //                     ),
+                          //                     FxSpacing.height(4),
+                          //                     Container(
+                          //                       child: Column(
+                          //                         children: [
+                          //                           Row(
+                          //                             children: [
+                          //                               FxText.bodySmall(
+                          //                                 'Adult:',
+                          //                                 fontWeight: 900,
+                          //                                 color: Colors.black,
+                          //                               ),
+                          //                               FxSpacing.width(10),
+                          //                               FxText.bodySmall(
+                          //                                 orders!.result!.data![index]
+                          //                                     .activities!.adultsCount
+                          //                                     .toString(),
+                          //                                 fontWeight: 600,
+                          //                                 color: Colors.black,
+                          //                               ),
+                          //                             ],
+                          //                           ),
+                          //                           Row(
+                          //                             children: [
+                          //                               FxText.bodySmall(
+                          //                                 'Child:',
+                          //                                 fontWeight: 900,
+                          //                                 color: Colors.black,
+                          //                               ),
+                          //                               FxSpacing.width(10),
+                          //                               FxText.bodySmall(
+                          //                                 orders!.result!.data![index]
+                          //                                     .activities!.childrenCount
+                          //                                     .toString(),
+                          //                                 fontWeight: 600,
+                          //                                 color: Colors.black,
+                          //                               ),
+                          //                             ],
+                          //                           ),
+                          //                           Row(
+                          //                             children: [
+                          //                               FxText.bodySmall(
+                          //                                 'Infant:',
+                          //                                 fontWeight: 900,
+                          //                                 color: Colors.black,
+                          //                               ),
+                          //                               FxSpacing.width(10),
+                          //                               FxText.bodySmall(
+                          //                                 orders!.result!.data![index]
+                          //                                     .activities!.infantCount
+                          //                                     .toString(),
+                          //                                 fontWeight: 600,
+                          //                                 color: Colors.black,
+                          //                               ),
+                          //                             ],
+                          //                           ),
+                          //                         ],
+                          //                       ),
+                          //                     ),
+                          //                     FxSpacing.height(4),
+                          //                     Hero(
+                          //                       tag:
+                          //                           "${orders!.result!.data![index].activities!.activity!.name!}_${orders!.result!.data![index].totalAmount}",
+                          //                       child: FxText.labelLarge(
+                          //                         "${orders!.result!.data![index].totalAmount} AED",
+                          //                         // "\$" + product.price.toString() + "/hour",
+                          //                         fontWeight: 700,
+                          //                       ),
+                          //                     ),
+                          //                   ],
+                          //                 ),
+                          //               ),
+                          //             ],
+                          //           ),
+                          //         ),
+                          //       ],
+                          //     ),
+                          //   ),
+                          //   bottomCardWidget: Container(
+                          //     child: Column(
+                          //       children: [
+                          //         Container(
+                          //           decoration: BoxDecoration(
+                          //               color: const Color(0xff919EB0),
+                          //               borderRadius:
+                          //                   const BorderRadius.all(Radius.circular(10)),
+                          //               border: Border.all(
+                          //                   color: Colors.grey.shade300, width: 1)),
+                          //           child: Row(
+                          //             children: [
+                          //               FxSpacing.width(10),
+                          //               FxText.bodyLarge('Ref No:',
 
-                                          download2(dio, ticketimage, fullPath);
-                                          // downloadFile();
-                                        },
-                                        padding: FxSpacing.fromLTRB(8, 6, 8, 6),
-                                        color: const Color(0xff1529e8)
-                                            .withAlpha(40),
-                                        // color:Color(0xff6874E8),
-                                        // customTheme.groceryPrimary.withAlpha(40),
-                                        child: Row(
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: [
-                                            FxText.bodyMedium("Download",
-                                                color: const Color(0xff1529e8),
-                                                // color: customTheme.groceryPrimary,
-                                                fontWeight: 500,
-                                                letterSpacing: -0.2),
-                                            const Icon(
-                                              MdiIcons.download,
-                                              size: 14,
-                                              color: Color(0xff1529e8),
-                                            )
-                                          ],
-                                        ),
-                                      ),
-                                      FxSpacing.width(10),
-                                    ],
-                                  )
-                                : const SizedBox(),
-                            FxSpacing.height(15)
-                          ],
-                        ),
-                      );
+                          //                   // textAlign: TextAlign.left,
+                          //                   letterSpacing: 0,
+                          //                   fontWeight: 600,
+                          //                   color: Colors.white),
+                          //               FxSpacing.width(10),
+                          //               FxText.bodyLarge(
+                          //                 orders!.result!.data![index].referenceNumber
+                          //                     .toString(),
+                          //                 color: Colors.white,
 
-                      //slimu
-                      // return SlimyCard(
-                      //   color: const Color(0xff1529e8).withAlpha(40),
-                      //   width: MediaQuery.of(context).size.width,
-                      //   topCardHeight: 195,
-                      //   bottomCardHeight: 150,
-                      //   borderRadius: 15,
-                      //   topCardWidget: Container(
-                      //     // height: 212,
-                      //     decoration: BoxDecoration(
-                      //         color: Colors.white,
-                      //         borderRadius:
-                      //             const BorderRadius.all(Radius.circular(10)),
-                      //         border:
-                      //             Border.all(color: Colors.grey.shade300, width: 1)),
+                          //                 fontWeight: 600,
+                          //                 // color: const Color(0xff1529e8),
+                          //               )
+                          //             ],
+                          //           ),
+                          //         ),
+                          //         Container(
+                          //           child: Column(
+                          //             children: [
+                          //               Align(
+                          //                 alignment: Alignment.centerLeft,
+                          //                 child: FxText.bodyLarge(
+                          //                   'Billing Details',
+                          //                   color: Colors.black,
 
-                      //     child: Column(
-                      //       children: [
-                      //         Container(
-                      //           margin: const EdgeInsets.all(8),
-                      //           child: Column(
-                      //             children: [
-                      //               Row(
-                      //                 mainAxisAlignment:
-                      //                     MainAxisAlignment.spaceBetween,
-                      //                 children: [
-                      //                   Container(
-                      //                     child: Row(children: [
-                      //                       FxText.bodyLarge(
-                      //                         'Status:',
+                          //                   fontWeight: 600,
+                          //                   // color: const Color(0xff1529e8),
+                          //                 ),
+                          //               ),
+                          //               FxSpacing.height(10),
+                          //               Row(
+                          //                 children: [
+                          //                   Expanded(
+                          //                     child: Row(
+                          //                       crossAxisAlignment:
+                          //                           CrossAxisAlignment.start,
+                          //                       mainAxisAlignment:
+                          //                           MainAxisAlignment.center,
+                          //                       children: [
+                          //                         FxText.bodyLarge(
+                          //                           'Name:',
+                          //                           color: Colors.black,
 
-                      //                         // textAlign: TextAlign.left,
-                      //                         letterSpacing: 0,
-                      //                         fontWeight: 600,
-                      //                       ),
-                      //                       FxSpacing.width(10),
-                      //                       FxText.bodyLarge(
-                      //                         orders!.result!.data![index].orderStatus
-                      //                             .toString(),
+                          //                           fontWeight: 600,
+                          //                           // color: const Color(0xff1529e8),
+                          //                         ),
+                          //                         FxText.bodySmall(
+                          //                           orders!.result!.data![index].name
+                          //                               .toString(),
+                          //                           color: const Color(0xff1529e8),
 
-                      //                         color: orders!.result!.data![index]
-                      //                                     .orderStatus ==
-                      //                                 'confirmed'
-                      //                             ? Colors.green
-                      //                             : Colors.red,
-                      //                         fontWeight: 600,
-                      //                         // color: const Color(0xff1529e8),
-                      //                       )
-                      //                     ]),
-                      //                   ),
-                      //                   Container(
-                      //                     child: Row(children: [
-                      //                       FxText.bodyLarge(
-                      //                         'Date:',
+                          //                           fontWeight: 600,
+                          //                           // color: const Color(0xff1529e8),
+                          //                         ),
+                          //                       ],
+                          //                     ),
+                          //                   ),
+                          //                   Expanded(
+                          //                     child: Row(
+                          //                       crossAxisAlignment:
+                          //                           CrossAxisAlignment.start,
+                          //                       mainAxisAlignment:
+                          //                           MainAxisAlignment.center,
+                          //                       children: [
+                          //                         FxText.bodyLarge(
+                          //                           'Email:',
+                          //                           color: Colors.black,
 
-                      //                         // textAlign: TextAlign.left,
-                      //                         letterSpacing: 0,
-                      //                         fontWeight: 600,
-                      //                       ),
-                      //                       FxSpacing.width(10),
-                      //                       FxText.bodyLarge(
-                      //                         newDate,
-                      //                         // formattedDatecreate,
-                      //                         fontWeight: 600,
-                      //                         color: const Color(0xff1529e8),
-                      //                       )
-                      //                     ]),
-                      //                   )
-                      //                 ],
-                      //               ),
-                      //               FxSpacing.height(10),
-                      //               FxDashedDivider(
-                      //                 dashSpace: 4,
-                      //                 dashWidth: 8,
-                      //                 color: theme.colorScheme.onBackground
-                      //                     .withAlpha(180),
-                      //                 height: 1.2,
-                      //               ),
-                      //             ],
-                      //           ),
-                      //         ),
-                      //         Container(
-                      //           margin: const EdgeInsets.all(8),
-                      //           child: Row(
-                      //             children: [
-                      //               Container(
-                      //                 decoration: BoxDecoration(
-                      //                   borderRadius: BorderRadius.circular(10),
-                      //                 ),
-                      //                 clipBehavior: Clip.antiAliasWithSaveLayer,
-                      //                 child: CachedNetworkImage(
-                      //                   height: 100,
-                      //                   width: 100,
-                      //                   fit: BoxFit.cover,
-                      //                   progressIndicatorBuilder:
-                      //                       (context, url, progress) => Center(
-                      //                     child: CircularProgressIndicator(
-                      //                       value: progress.progress,
-                      //                     ),
-                      //                   ),
-                      //                   imageUrl:
-                      //                       'https://a.walletbot.online${orders!.result!.data![index].attraction!.images!.first}',
-                      //                 ),
-                      //               ),
-                      //               FxSpacing.width(20),
-                      //               Expanded(
-                      //                 child: Column(
-                      //                   crossAxisAlignment: CrossAxisAlignment.start,
-                      //                   mainAxisAlignment: MainAxisAlignment.start,
-                      //                   children: [
-                      //                     Hero(
-                      //                       tag:
-                      //                           "product_${orders!.result!.data![index].activities!.activity!.name!}",
-                      //                       child: FxText.bodyLarge(
-                      //                         orders!.result!.data![index].activities!
-                      //                             .activity!.name!,
-                      //                         fontWeight: 800,
-                      //                         overflow: TextOverflow.ellipsis,
-                      //                         maxLines: 2,
-                      //                       ),
-                      //                     ),
-                      //                     FxSpacing.height(4),
-                      //                     Container(
-                      //                       child: Column(
-                      //                         children: [
-                      //                           Row(
-                      //                             children: [
-                      //                               FxText.bodySmall(
-                      //                                 'Adult:',
-                      //                                 fontWeight: 900,
-                      //                                 color: Colors.black,
-                      //                               ),
-                      //                               FxSpacing.width(10),
-                      //                               FxText.bodySmall(
-                      //                                 orders!.result!.data![index]
-                      //                                     .activities!.adultsCount
-                      //                                     .toString(),
-                      //                                 fontWeight: 600,
-                      //                                 color: Colors.black,
-                      //                               ),
-                      //                             ],
-                      //                           ),
-                      //                           Row(
-                      //                             children: [
-                      //                               FxText.bodySmall(
-                      //                                 'Child:',
-                      //                                 fontWeight: 900,
-                      //                                 color: Colors.black,
-                      //                               ),
-                      //                               FxSpacing.width(10),
-                      //                               FxText.bodySmall(
-                      //                                 orders!.result!.data![index]
-                      //                                     .activities!.childrenCount
-                      //                                     .toString(),
-                      //                                 fontWeight: 600,
-                      //                                 color: Colors.black,
-                      //                               ),
-                      //                             ],
-                      //                           ),
-                      //                           Row(
-                      //                             children: [
-                      //                               FxText.bodySmall(
-                      //                                 'Infant:',
-                      //                                 fontWeight: 900,
-                      //                                 color: Colors.black,
-                      //                               ),
-                      //                               FxSpacing.width(10),
-                      //                               FxText.bodySmall(
-                      //                                 orders!.result!.data![index]
-                      //                                     .activities!.infantCount
-                      //                                     .toString(),
-                      //                                 fontWeight: 600,
-                      //                                 color: Colors.black,
-                      //                               ),
-                      //                             ],
-                      //                           ),
-                      //                         ],
-                      //                       ),
-                      //                     ),
-                      //                     FxSpacing.height(4),
-                      //                     Hero(
-                      //                       tag:
-                      //                           "${orders!.result!.data![index].activities!.activity!.name!}_${orders!.result!.data![index].totalAmount}",
-                      //                       child: FxText.labelLarge(
-                      //                         "${orders!.result!.data![index].totalAmount} AED",
-                      //                         // "\$" + product.price.toString() + "/hour",
-                      //                         fontWeight: 700,
-                      //                       ),
-                      //                     ),
-                      //                   ],
-                      //                 ),
-                      //               ),
-                      //             ],
-                      //           ),
-                      //         ),
-                      //       ],
-                      //     ),
-                      //   ),
-                      //   bottomCardWidget: Container(
-                      //     child: Column(
-                      //       children: [
-                      //         Container(
-                      //           decoration: BoxDecoration(
-                      //               color: const Color(0xff919EB0),
-                      //               borderRadius:
-                      //                   const BorderRadius.all(Radius.circular(10)),
-                      //               border: Border.all(
-                      //                   color: Colors.grey.shade300, width: 1)),
-                      //           child: Row(
-                      //             children: [
-                      //               FxSpacing.width(10),
-                      //               FxText.bodyLarge('Ref No:',
+                          //                           fontWeight: 600,
+                          //                           // color: const Color(0xff1529e8),
+                          //                         ),
+                          //                         Expanded(
+                          //                           child: FxText.bodySmall(
+                          //                             orders!.result!.data![index].email
+                          //                                 .toString(),
+                          //                             color: const Color(0xff1529e8),
 
-                      //                   // textAlign: TextAlign.left,
-                      //                   letterSpacing: 0,
-                      //                   fontWeight: 600,
-                      //                   color: Colors.white),
-                      //               FxSpacing.width(10),
-                      //               FxText.bodyLarge(
-                      //                 orders!.result!.data![index].referenceNumber
-                      //                     .toString(),
-                      //                 color: Colors.white,
+                          //                             fontWeight: 600,
+                          //                             // color: const Color(0xff1529e8),
+                          //                           ),
+                          //                         ),
+                          //                       ],
+                          //                     ),
+                          //                   ),
+                          //                 ],
+                          //               ),
 
-                      //                 fontWeight: 600,
-                      //                 // color: const Color(0xff1529e8),
-                      //               )
-                      //             ],
-                      //           ),
-                      //         ),
-                      //         Container(
-                      //           child: Column(
-                      //             children: [
-                      //               Align(
-                      //                 alignment: Alignment.centerLeft,
-                      //                 child: FxText.bodyLarge(
-                      //                   'Billing Details',
-                      //                   color: Colors.black,
+                          //               //a
+                          //               FxSpacing.height(5),
+                          //               Row(
+                          //                 children: [
+                          //                   Expanded(
+                          //                     child: Row(
+                          //                       crossAxisAlignment:
+                          //                           CrossAxisAlignment.start,
+                          //                       mainAxisAlignment:
+                          //                           MainAxisAlignment.center,
+                          //                       children: [
+                          //                         FxText.bodyLarge(
+                          //                           'Country:',
+                          //                           color: Colors.black,
 
-                      //                   fontWeight: 600,
-                      //                   // color: const Color(0xff1529e8),
-                      //                 ),
-                      //               ),
-                      //               FxSpacing.height(10),
-                      //               Row(
-                      //                 children: [
-                      //                   Expanded(
-                      //                     child: Row(
-                      //                       crossAxisAlignment:
-                      //                           CrossAxisAlignment.start,
-                      //                       mainAxisAlignment:
-                      //                           MainAxisAlignment.center,
-                      //                       children: [
-                      //                         FxText.bodyLarge(
-                      //                           'Name:',
-                      //                           color: Colors.black,
+                          //                           fontWeight: 600,
+                          //                           // color: const Color(0xff1529e8),
+                          //                         ),
+                          //                         FxText.bodySmall(
+                          //                           orders!.result!.data![index].country!
+                          //                               .countryName
+                          //                               .toString(),
 
-                      //                           fontWeight: 600,
-                      //                           // color: const Color(0xff1529e8),
-                      //                         ),
-                      //                         FxText.bodySmall(
-                      //                           orders!.result!.data![index].name
-                      //                               .toString(),
-                      //                           color: const Color(0xff1529e8),
+                          //                           color: const Color(0xff1529e8),
 
-                      //                           fontWeight: 600,
-                      //                           // color: const Color(0xff1529e8),
-                      //                         ),
-                      //                       ],
-                      //                     ),
-                      //                   ),
-                      //                   Expanded(
-                      //                     child: Row(
-                      //                       crossAxisAlignment:
-                      //                           CrossAxisAlignment.start,
-                      //                       mainAxisAlignment:
-                      //                           MainAxisAlignment.center,
-                      //                       children: [
-                      //                         FxText.bodyLarge(
-                      //                           'Email:',
-                      //                           color: Colors.black,
+                          //                           fontWeight: 600,
+                          //                           // color: const Color(0xff1529e8),
+                          //                         ),
+                          //                       ],
+                          //                     ),
+                          //                   ),
+                          //                   Expanded(
+                          //                     child: Row(
+                          //                       crossAxisAlignment:
+                          //                           CrossAxisAlignment.start,
+                          //                       mainAxisAlignment:
+                          //                           MainAxisAlignment.center,
+                          //                       children: [
+                          //                         FxText.bodyLarge(
+                          //                           'Phone:',
+                          //                           color: Colors.black,
 
-                      //                           fontWeight: 600,
-                      //                           // color: const Color(0xff1529e8),
-                      //                         ),
-                      //                         Expanded(
-                      //                           child: FxText.bodySmall(
-                      //                             orders!.result!.data![index].email
-                      //                                 .toString(),
-                      //                             color: const Color(0xff1529e8),
+                          //                           fontWeight: 600,
+                          //                           // color: const Color(0xff1529e8),
+                          //                         ),
+                          //                         Expanded(
+                          //                           child: FxText.bodySmall(
+                          //                             orders!.result!.data![index]
+                          //                                 .phoneNumber
+                          //                                 .toString(),
+                          //                             color: const Color(0xff1529e8),
 
-                      //                             fontWeight: 600,
-                      //                             // color: const Color(0xff1529e8),
-                      //                           ),
-                      //                         ),
-                      //                       ],
-                      //                     ),
-                      //                   ),
-                      //                 ],
-                      //               ),
-
-                      //               //a
-                      //               FxSpacing.height(5),
-                      //               Row(
-                      //                 children: [
-                      //                   Expanded(
-                      //                     child: Row(
-                      //                       crossAxisAlignment:
-                      //                           CrossAxisAlignment.start,
-                      //                       mainAxisAlignment:
-                      //                           MainAxisAlignment.center,
-                      //                       children: [
-                      //                         FxText.bodyLarge(
-                      //                           'Country:',
-                      //                           color: Colors.black,
-
-                      //                           fontWeight: 600,
-                      //                           // color: const Color(0xff1529e8),
-                      //                         ),
-                      //                         FxText.bodySmall(
-                      //                           orders!.result!.data![index].country!
-                      //                               .countryName
-                      //                               .toString(),
-
-                      //                           color: const Color(0xff1529e8),
-
-                      //                           fontWeight: 600,
-                      //                           // color: const Color(0xff1529e8),
-                      //                         ),
-                      //                       ],
-                      //                     ),
-                      //                   ),
-                      //                   Expanded(
-                      //                     child: Row(
-                      //                       crossAxisAlignment:
-                      //                           CrossAxisAlignment.start,
-                      //                       mainAxisAlignment:
-                      //                           MainAxisAlignment.center,
-                      //                       children: [
-                      //                         FxText.bodyLarge(
-                      //                           'Phone:',
-                      //                           color: Colors.black,
-
-                      //                           fontWeight: 600,
-                      //                           // color: const Color(0xff1529e8),
-                      //                         ),
-                      //                         Expanded(
-                      //                           child: FxText.bodySmall(
-                      //                             orders!.result!.data![index]
-                      //                                 .phoneNumber
-                      //                                 .toString(),
-                      //                             color: const Color(0xff1529e8),
-
-                      //                             fontWeight: 600,
-                      //                             // color: const Color(0xff1529e8),
-                      //                           ),
-                      //                         ),
-                      //                       ],
-                      //                     ),
-                      //                   ),
-                      //                 ],
-                      //               )
-                      //             ],
-                      //           ),
-                      //         )
-                      //       ],
-                      //     ),
-                      //   ),
-                      //   slimeEnabled: true,
-                      // );
-                    },
+                          //                             fontWeight: 600,
+                          //                             // color: const Color(0xff1529e8),
+                          //                           ),
+                          //                         ),
+                          //                       ],
+                          //                     ),
+                          //                   ),
+                          //                 ],
+                          //               )
+                          //             ],
+                          //           ),
+                          //         )
+                          //       ],
+                          //     ),
+                          //   ),
+                          //   slimeEnabled: true,
+                          // );
+                        },
+                      ),
+                    ],
                   ),
       );
     }

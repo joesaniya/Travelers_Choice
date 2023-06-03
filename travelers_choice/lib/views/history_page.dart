@@ -492,11 +492,11 @@ class _HistoryScreenState extends State<HistoryScreen>
 
   Widget HotelList() {
     if (orders == null) {
-      log('You have no attractions orders');
-      return const Text("You have no attractions orders");
+      log('You have no Bookings');
+      return const Text("You have no Bookings!!");
     } else {
       if (orders!.result == null) {
-        log('You have no attractions');
+        log('You have no Booking!!');
         Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -515,6 +515,9 @@ class _HistoryScreenState extends State<HistoryScreen>
       }
       String? orderlength;
       orderlength = orders!.result!.totalOrders.toString();
+      // return const Text('Hotel History Screen',
+      //     style: TextStyle(
+      //         fontFamily: 'inter', fontWeight: FontWeight.w400, fontSize: 16));
       return ListView.builder(
         // itemCount: orderlength.length,
         // itemCount: orders!.result!.totalOrders,
