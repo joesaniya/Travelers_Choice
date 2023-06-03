@@ -16,6 +16,7 @@ import '../views/view_order.dart';
 import 'package:path_provider/path_provider.dart' as path;
 import 'package:dio/dio.dart';
 import '../card_widgets/customsnackbar.dart';
+
 class AllBookingController extends FxController {
   TickerProvider ticker;
   AllBookingController(this.ticker);
@@ -25,15 +26,18 @@ class AllBookingController extends FxController {
   bool uiLoading = true;
   late Category selectedCategory;
   late AnimationController animationController;
-  late AnimationController bellController;
+  late AnimationController bellController, searchController;
+  late Animation<Offset> searchAnimation;
   late Animation<double> scaleAnimation,
       slideAnimation,
       fadeAnimation,
       bellAnimation;
   late Tween<Offset> offset;
+  late TextEditingController SearchTE;
   final GlobalKey<AnimatedListState> listKey = GlobalKey<AnimatedListState>();
   List<Widget> newCategories = [];
   late Intro intro;
+  int searchCounter = 0;
   String? token;
   AllAttractionOrders? orders;
 
@@ -65,7 +69,24 @@ class AllBookingController extends FxController {
     );
 
     offset = Tween<Offset>(begin: const Offset(1, 0), end: const Offset(0, 0));
-
+    SearchTE = TextEditingController();
+    searchController = AnimationController(
+        vsync: ticker, duration: const Duration(milliseconds: 500));
+    searchAnimation =
+        Tween<Offset>(begin: const Offset(0, 0), end: const Offset(8, 0))
+            .animate(CurvedAnimation(
+      parent: searchController,
+      curve: Curves.easeIn,
+    ));
+    searchController.addStatusListener((status) {
+      if (status == AnimationStatus.completed) {
+        searchController.reverse();
+      }
+      if (status == AnimationStatus.dismissed && searchCounter < 2) {
+        searchController.forward();
+        searchCounter++;
+      }
+    });
     animationController.forward();
     bellController.repeat(reverse: true);
 
@@ -120,6 +141,7 @@ class AllBookingController extends FxController {
   void dispose() {
     animationController.dispose();
     bellController.dispose();
+    searchController.dispose();
     super.dispose();
   }
 
@@ -141,8 +163,12 @@ class AllBookingController extends FxController {
     update();
   }
 
-  void openPDF(BuildContext context, File file,String orderId,String ActivityId) => Navigator.of(context).push(
-        MaterialPageRoute(builder: (context) => PDFViewerPage(file: file,IdOrder:orderId,IdActivity: ActivityId)),
+  void openPDF(
+          BuildContext context, File file, String orderId, String ActivityId) =>
+      Navigator.of(context).push(
+        MaterialPageRoute(
+            builder: (context) => PDFViewerPage(
+                file: file, IdOrder: orderId, IdActivity: ActivityId)),
       );
   void downloadBtn(String orderId, String ActivityId) async {
     log('Donloadbtn Calling....');
@@ -181,8 +207,8 @@ class AllBookingController extends FxController {
       CustomSnackbar.show(
         context: context,
         message: jsondata['error'],
-        backgroundColor: Color(0xff1529e8),
-        duration: Duration(seconds: 2),
+        backgroundColor: const Color(0xff1529e8),
+        duration: const Duration(seconds: 2),
       );
       // ScaffoldMessenger.of(context)
       //     .showSnackBar(SnackBar(content: Text(jsondata['error'])));
