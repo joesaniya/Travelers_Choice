@@ -57,16 +57,22 @@ class PersonSeatController extends FxController {
 
   int childcount = 0;
 
-  void childincrement() {
+  void childincrement(int index1) {
     if (childcount >= 0 && childcount < 100) {
       childcount++;
+      for (var i = 0; i < childcount; i++) {
+        roomsList[index1].children!.add(0);
+      }
     }
     update();
   }
 
-  void childdecrement() {
+  void childdecrement(int index1) {
     if (childcount > 1) {
       childcount--;
+      for (var i = 0; i < childcount; i++) {
+        roomsList[index1].children!.removeLast();
+      }
     }
     update();
   }
@@ -84,7 +90,7 @@ class PersonSeatController extends FxController {
   void adultsdecrement(int index) {
     if (adultscount > 1) {
       adultscount--;
-        roomsList[index].adults = adultscount;
+      roomsList[index].adults = adultscount;
     }
     update();
   }

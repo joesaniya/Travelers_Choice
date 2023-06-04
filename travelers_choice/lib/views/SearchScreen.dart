@@ -12,14 +12,14 @@ import '../controllers/attraction_Controller.dart';
 import '../controllers/search_Home_controller.dart';
 import '../loading_effect.dart';
 import '../models/all_attraction_modal.dart';
-import '../models/Country_modal.dart';
 import '../services/app_constants.dart';
 import '../theme/app_theme.dart';
 
 class SearchScreen extends StatefulWidget {
-  final Destination place;
+  // final Destination place;
   // List<Datum> searchdata;
   // final BuildContext rootContext;
+  String? place;
   String? currencySymbol;
   double? conversionRate;
   SearchScreen(
@@ -69,7 +69,9 @@ class _SearchScreenState extends State<SearchScreen>
     });
   }
 
-  getAttraction(Destination place) {
+  getAttraction(
+      // Destination place
+      String? place) {
     log('getAttraction function called');
     Future.delayed(Duration.zero, () async {
       // log('get${place.name}');
@@ -84,7 +86,7 @@ class _SearchScreenState extends State<SearchScreen>
         for (AllattractionModal val in controller.allattractionList!) {
           for (Datum des in val.attractions.data) {
             if (des.destination.name.toLowerCase().trim() ==
-                place.name.toLowerCase().trim()) {
+                place!.toLowerCase().trim()) {
               temp.add(val);
               // log('dest:${temp.length}');
               // log('destination:${des.destination.name}');
@@ -204,7 +206,8 @@ class _SearchScreenState extends State<SearchScreen>
       ));
     } else {
       // if (controller.allattractionList!.isEmpty)
-      if (controller.allattractionList!.first.attractions.data.isEmpty) {
+      if (controller.allattractionList!.isEmpty ||
+          controller.allattractionList!.first.attractions.data.isEmpty) {
         return Scaffold(
             //     body: Column(
             //   children: [

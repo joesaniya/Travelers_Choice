@@ -12,7 +12,8 @@ import '../../services/Search_Service.dart';
 import '../../theme/app_theme.dart';
 
 class CategoriesBottomSheet extends StatefulWidget {
-  Destination? categoryplace;
+  // Destination? categoryplace;
+  String? categoryplace;
   CategoriesBottomSheet({super.key, this.categoryplace});
 
   @override
@@ -28,7 +29,7 @@ class _CategoriesBottomSheetState extends State<CategoriesBottomSheet>
   @override
   void initState() {
     log('sheet');
-    log('Category Place:${widget.categoryplace!.name.toString()}');
+    log('Category Place:${widget.categoryplace.toString()}');
     super.initState();
     theme = AppTheme.shoppingTheme;
     theme1 = AppTheme.learningTheme;
@@ -188,7 +189,7 @@ class _CategoriesBottomSheetState extends State<CategoriesBottomSheet>
                                       //todo
                                       AllattractionModal? temp =
                                           await getAllattractionList(
-                                              widget.categoryplace!.name,
+                                              widget.categoryplace!,
                                               controller.categoryid!);
 
                                       setState(() {

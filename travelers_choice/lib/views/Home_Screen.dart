@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutx/flutx.dart';
@@ -14,7 +13,6 @@ import '../controllers/attraction_Controller.dart';
 import '../controllers/home_controller.dart';
 import '../flight_module/splash/flight_splash.dart';
 import '../loading_effect.dart';
-
 import '../models/Country_modal.dart';
 import '../models/all_attraction_modal.dart';
 import '../models/atteraction_model.dart';
@@ -22,6 +20,7 @@ import '../services/app_constants.dart';
 import '../theme/app_theme.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'search_screens/search_attrction.dart';
 
 class HomeScreen extends StatefulWidget {
   List<Activity> cartMeal;
@@ -1079,6 +1078,10 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                 //   ],
                 // ),
 
+                SearchAttractionScreen(
+                    isocode: selectedCountry!.isocode,
+                    conversionRate: selectedCountry!.conversionRate),
+                FxSpacing.height(29),
                 _tabbed == '1'
                     ? SearchPlace(
                         isocode: selectedCountry!.isocode,

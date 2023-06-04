@@ -115,11 +115,11 @@ class SearchController extends FxController {
   }
 
   Future<void> searchbtn(
-    // Destination locationplace
-    Destination selectedCountry,
-    String code,
-    double Currencyvalue
-  ) async {
+      // Destination locationplace
+      // Destination selectedCountry,
+      String selectedCountry,
+      String code,
+      double Currencyvalue) async {
     log('search btn');
     locationCounter = 0;
     dateCounter = 0;
@@ -132,8 +132,8 @@ class SearchController extends FxController {
       CustomSnackbar.show(
         context: context,
         message: 'Please Select Location',
-        backgroundColor: Color(0xff1529e8),
-        duration: Duration(seconds: 2),
+        backgroundColor: const Color(0xff1529e8),
+        duration: const Duration(seconds: 2),
       );
     }
     // else if (dateTE.text.isEmpty) {
@@ -183,8 +183,8 @@ class SearchController extends FxController {
       CustomSnackbar.show(
         context: context,
         message: 'Please Select Location',
-        backgroundColor: Color(0xff1529e8),
-        duration: Duration(seconds: 2),
+        backgroundColor: const Color(0xff1529e8),
+        duration: const Duration(seconds: 2),
       );
     }
     // else if (dateTE.text.isEmpty) {

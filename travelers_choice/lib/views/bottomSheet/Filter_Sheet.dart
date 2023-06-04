@@ -11,7 +11,8 @@ import '../../services/Search_Service.dart';
 import '../../theme/app_theme.dart';
 
 class FilterSheet extends StatefulWidget {
-  Destination? categoryplace;
+  // Destination? categoryplace;
+  String? categoryplace;
   FilterSheet({super.key, this.categoryplace});
 
   @override
@@ -28,7 +29,7 @@ class _FilterSheetState extends State<FilterSheet>
   @override
   void initState() {
     log('sheet');
-    log('Category Place:${widget.categoryplace!.name.toString()}');
+    log('Category Place:${widget.categoryplace!.toString()}');
     super.initState();
     theme = AppTheme.shoppingTheme;
     theme1 = AppTheme.learningTheme;
@@ -622,7 +623,7 @@ class _FilterSheetState extends State<FilterSheet>
                                     log('not equal');
                                     AllattractionModal? temp =
                                         await FilterattractionList(
-                                            widget.categoryplace!.name,
+                                            widget.categoryplace.toString(),
                                             controller.selectedRange.start
                                                 .toString(),
                                             controller.selectedRange.end

@@ -9,6 +9,7 @@ import '../models/Country_modal.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/atteraction_model.dart';
+import '../models/attraction_search_modal.dart';
 import '../models/update_profile_modal.dart';
 import 'app_constants.dart';
 
@@ -460,4 +461,63 @@ class AuthService {
       rethrow;
     }
   }
+
+  Future<AttractionSearchDataModal?> getSearch() async {
+    log('get Country Api');
+    try {
+      // Map<String, String> queryParameters = {"foo": "bar"};
+
+      var response = await http.get(
+        Uri.parse(
+          'https://a.walletbot.online/api/v1/search/list?search=',
+        ),
+        headers: {'Content-Type': 'application/json'},
+      );
+      // var uri = Uri.http(
+      //   'https://a.walletbot.online/api/v1/search/list?search=',
+
+      //   // queryparams as String
+      // );
+      // final response = await http.get(
+      //   uri,
+      //   headers: {"Accept": "application/json"},
+      // );
+      if (response.statusCode == 200) {
+        var jsondata = jsonDecode(response.body);
+        log(response.body);
+
+        print(
+            "new response search attraction:${attractionSearchDataModalFromJson(response.body)}");
+        return attractionSearchDataModalFromJson(response.body);
+      } else {
+        var jsondata = jsonDecode(response.body);
+        log(jsondata['error']);
+        return null;
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  // Future<AttractionSearchResponse> processSearchAttraction() async {
+  //   try {
+  //     Response response = await http.get(
+  //       'https://a.walletbot.online/api/v1/search/list?search=',
+  //     );
+  //     log("searchAttraction ${response.data}");
+
+  //     AttractionSearchResponse attractionSearchResponse =
+  //         AttractionSearchResponse.fromJson(json.decode(response.toString()));
+  //     print("llllll ${attractionSearchResponse.destinations!.length}");
+
+  //     return attractionSearchResponse;
+  //   } catch (error) {
+  //     AttractionSearchResponse attractionSearchResponse =
+  //         AttractionSearchResponse();
+
+  //     print(error);
+  //     attractionSearchResponse.errorResponse = handleError(error);
+  //     return attractionSearchResponse;
+  //   }
+  // }
 }

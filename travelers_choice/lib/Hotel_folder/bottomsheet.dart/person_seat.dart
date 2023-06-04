@@ -241,7 +241,9 @@ class _PersonSeatState extends State<PersonSeat> with TickerProviderStateMixin {
                         children: [
                           InkWell(
                               onTap: () {
-                                controller.childdecrement();
+                                controller.childdecrement(
+                                  index,
+                                );
                               },
                               child: const Icon(
                                 Icons.remove,
@@ -266,7 +268,9 @@ class _PersonSeatState extends State<PersonSeat> with TickerProviderStateMixin {
                           ),
                           InkWell(
                               onTap: () {
-                                controller.childincrement();
+                                controller.childincrement(
+                                  index,
+                                );
                               },
                               child: const Icon(
                                 Icons.add,
