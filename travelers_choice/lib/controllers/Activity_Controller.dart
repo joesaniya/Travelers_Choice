@@ -88,9 +88,9 @@ class ActivityController extends FxController {
         log('no transfers');
         amount = amount + (tour.grandTotal);
       } else {
-        amount =
-            amount + (tour.grandTotal + tour.privateTransfers!.first.price);
-        // amount = amount + (tour.grandTotal);
+        // amount =
+        //     amount + (tour.grandTotal + tour.privateTransfers!.first.price);
+        amount = amount + (tour.grandTotal);
         log('amount:$amount');
       }
       // amount = amount + (tour.grandTotal + tour.privateTransfers!.first.price);
@@ -198,10 +198,10 @@ class ActivityController extends FxController {
     List<Activity> value =
         person_count.where((element) => element.sId == tour.sId).toList();
     if (value.isEmpty) {
-      // return tour.adultPrice!.toDouble();
-      return tour.adultPrice == null
-          ? tour.privateTransfers!.first.price
-          : tour.adultPrice!.toDouble();
+      return tour.adultPrice!.toDouble();
+      // return tour.adultPrice == null
+      //     ? tour.privateTransfers!.first.price
+      //     : tour.adultPrice!.toDouble();//added transfer fee+total
       // : tour.privateTransfers!.first.price;
     } else {
       return (value[0].adultCount * (value[0].adultPrice ?? 1.0)) +
@@ -273,13 +273,15 @@ class ActivityController extends FxController {
     double amount = double.parse(getTotal(tour).toString());
 
     if (tour.isPrivate) {
-      amount = amount + tour.privateTransferPrice!;
+      // amount = amount + tour.privateTransferPrice!;//added transfer fee
+      amount = amount;
       // amount = amount +
       //     tour.privateTransferPrice! +
       //     tour.privateTransfers!.first.cost!.toDouble();
     }
     if (tour.isSharing) {
-      amount = amount + tour.sharedTransferPrice!;
+      // amount = amount + tour.sharedTransferPrice!;
+      amount = amount; //added transfer fee
     }
     log("Current Grand Total => $amount");
     return amount;

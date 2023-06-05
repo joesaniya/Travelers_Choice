@@ -283,6 +283,6 @@ class SearchAttractionController extends FxController {
 
   @override
   String getTag() {
-    return "login_controller";
+    return "search_Attraction_controller";
   }
 }

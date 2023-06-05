@@ -2,14 +2,18 @@ import 'dart:developer';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutx/flutx.dart';
 import 'package:hotel_travel/models/order_attraction_modal.dart';
 import 'package:hotel_travel/services/attraction_Service.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../controllers/history_controller.dart';
 import '../models/tickets.dart';
 import '../services/app_constants.dart';
 import '../theme/app_theme.dart';
+import 'bottomSheet/filter_bookings.dart';
+import 'bottomSheet/sort_allbooking.dart';
 
 class HistoryScreen extends StatefulWidget {
   const HistoryScreen({
@@ -182,205 +186,329 @@ class _HistoryScreenState extends State<HistoryScreen>
       }
       String? orderlength;
       orderlength = orders!.result!.totalOrders.toString();
-      return ListView.builder(
-        // itemCount: orderlength.length,
-        // itemCount: orders!.result!.totalOrders,
-        itemCount: orders!.result!.data!.length,
-        itemBuilder: (BuildContext context, int index) {
-          // log('Order Length history:${orderlength!.length}');
-          var date = orders!.result!.data![index].activities!.date;
-          var newDate = date!.toLocal().toString().substring(0, 10);
-          print(newDate);
-          return FxContainer(
-            margin: FxSpacing.bottom(20),
-            borderRadiusAll: 4,
-            color: Colors.white,
-            paddingAll: 12,
-            child: Column(
-              children: [
-                Container(
-                  child: Row(
-                      // mainAxisAlignment: MainAxisAlignment.end,
-                      // crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        FxText.bodyLarge(
-                          'Status:',
-
-                          // textAlign: TextAlign.left,
-                          letterSpacing: 0,
-                          fontWeight: 600,
-                        ),
-                        FxSpacing.width(10),
-                        FxText.bodyLarge(
-                          orders!.result!.data![index].activities!.status
-                              .toString(),
-                          color:
-                              orders!.result!.data![index].activities!.status ==
-                                      'confirmed'
-                                  ? Colors.green
-                                  : Colors.red,
-                          fontWeight: 600,
-                          // color: const Color(0xff1529e8),
-                        )
-                      ]),
-                ),
-                FxSpacing.height(10),
-                FxDashedDivider(
-                  dashSpace: 4,
-                  dashWidth: 8,
-                  color: theme.colorScheme.onBackground.withAlpha(180),
-                  height: 1.2,
-                ),
-                FxSpacing.height(10),
-                Row(
-                  children: [
-                    FxContainer(
-                      paddingAll: 0,
-                      borderRadiusAll: 4,
-                      height: MediaQuery.of(context).size.height * 0.11,
-                      width: MediaQuery.of(context).size.width * 0.2,
-                      clipBehavior: Clip.antiAliasWithSaveLayer,
-                      child: CachedNetworkImage(
-                        height: MediaQuery.of(context).size.height * 0.11,
-                        width: MediaQuery.of(context).size.width * 0.2,
-                        fit: BoxFit.cover,
-                        progressIndicatorBuilder: (context, url, progress) =>
-                            Center(
-                          child: CircularProgressIndicator(
-                            value: progress.progress,
-                          ),
-                        ),
-                        imageUrl:
-                            'https://a.walletbot.online${orders!.result!.data![index].attraction!.images!.first}',
+      return Column(
+        children: [
+          Row(
+            children: [
+              Expanded(
+                child: Container(
+                  // padding: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    border: Border.all(width: 1, color: Colors.grey.shade300),
+                    boxShadow: [
+                      BoxShadow(
+                        // color: Colors.grey.shade400,
+                        color: const Color(0xff1529e8).withOpacity(0.4),
+                        blurRadius: 2,
+                        offset: const Offset(0, 3),
                       ),
+                    ],
+                  ),
+                  child: TextFormField(
+                    style: FxTextStyle.bodyMedium(),
+                    controller: controller.SearchTE,
+                    cursorColor: theme.colorScheme.primary,
+
+                    //2
+                    onChanged: (value) {},
+
+                    decoration: InputDecoration(
+                      hintText: "Search your Order ...",
+                      hintStyle: FxTextStyle.bodySmall(
+                          color: theme.colorScheme.onBackground),
+                      border: const OutlineInputBorder(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(4),
+                          ),
+                          borderSide: BorderSide.none),
+                      enabledBorder: const OutlineInputBorder(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(4),
+                          ),
+                          borderSide: BorderSide.none),
+                      focusedBorder: const OutlineInputBorder(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(4),
+                          ),
+                          borderSide: BorderSide.none),
+                      filled: true,
+                      // fillColor: const Color(0xffcfd2ff),
+                      fillColor: theme.cardTheme.color,
+                      prefixIcon: Icon(
+                        FeatherIcons.search,
+                        size: 16,
+                        color: theme.colorScheme.onBackground.withAlpha(150),
+                      ),
+                      isDense: true,
                     ),
-                    FxSpacing.width(10),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          FxText.titleMedium(
-                            orders!.result!.data![index].activities!.activity!
-                                .name!,
-                            fontWeight: 700,
-                          ),
-                          FxSpacing.height(8),
-                          FxText.bodyMedium(
-                            '${orders!.result!.data![index].totalAmount.toString()} AED',
-                            fontWeight: 700,
-                          ),
-                          FxSpacing.height(8),
-                          Row(
-                            // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    textCapitalization: TextCapitalization.sentences,
+                  ),
+                ),
+              ),
+              FxSpacing.width(4),
+              FxContainer(
+                paddingAll: 12,
+                borderRadiusAll: 4,
+                onTap: () async {
+                  var data = await showModalBottomSheet(
+                      context: context,
+                      builder: (BuildContext buildContext) {
+                        return const SortAllBooking();
+                      });
+                  setState(() {});
+                },
+                color: const Color(0xff1529e8).withAlpha(40),
+                child: const Icon(
+                  Iconsax.sort,
+                  color: Color(0xff1529e8),
+                  size: 20,
+                ),
+              ),
+              FxSpacing.width(4),
+              FxContainer(
+                paddingAll: 12,
+                borderRadiusAll: 4,
+                onTap: () async {
+                  var data = await showModalBottomSheet(
+                      context: context,
+                      builder: (BuildContext buildContext) {
+                        return const FilterAllBooking();
+                      });
+                  setState(() {});
+                },
+                color: const Color(0xff1529e8).withAlpha(40),
+                child: const Icon(
+                  FeatherIcons.sliders,
+                  color: Color(0xff1529e8),
+                  size: 20,
+                ),
+              ),
+            ],
+          ),
+          FxSpacing.height(20),
+          Expanded(
+            child: ListView.builder(
+              // itemCount: orderlength.length,
+              // itemCount: orders!.result!.totalOrders,
+              itemCount: orders!.result!.data!.length,
+              itemBuilder: (BuildContext context, int index) {
+                // log('Order Length history:${orderlength!.length}');
+                var date = orders!.result!.data![index].activities!.date;
+                var newDate = date!.toLocal().toString().substring(0, 10);
+                print(newDate);
+                return FxContainer(
+                  margin: FxSpacing.bottom(20),
+                  borderRadiusAll: 4,
+                  color: Colors.white,
+                  paddingAll: 12,
+                  child: Column(
+                    children: [
+                      Container(
+                        child: Row(
+                            // mainAxisAlignment: MainAxisAlignment.end,
+                            // crossAxisAlignment: CrossAxisAlignment.end,
                             children: [
-                              FxText.bodyMedium(
-                                'Pax',
+                              FxText.bodyLarge(
+                                'Status:',
+
+                                // textAlign: TextAlign.left,
+                                letterSpacing: 0,
                                 fontWeight: 600,
                               ),
-                              FxSpacing.width(7),
-                              Expanded(
-                                child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.end,
+                              FxSpacing.width(10),
+                              FxText.bodyLarge(
+                                orders!.result!.data![index].activities!.status
+                                    .toString(),
+                                color: orders!.result!.data![index].activities!
+                                            .status ==
+                                        'confirmed'
+                                    ? Colors.green
+                                    : Colors.red,
+                                fontWeight: 600,
+                                // color: const Color(0xff1529e8),
+                              )
+                            ]),
+                      ),
+                      FxSpacing.height(10),
+                      FxDashedDivider(
+                        dashSpace: 4,
+                        dashWidth: 8,
+                        color: theme.colorScheme.onBackground.withAlpha(180),
+                        height: 1.2,
+                      ),
+                      FxSpacing.height(10),
+                      Row(
+                        children: [
+                          FxContainer(
+                            paddingAll: 0,
+                            borderRadiusAll: 4,
+                            height: MediaQuery.of(context).size.height * 0.11,
+                            width: MediaQuery.of(context).size.width * 0.2,
+                            clipBehavior: Clip.antiAliasWithSaveLayer,
+                            child: CachedNetworkImage(
+                              height: MediaQuery.of(context).size.height * 0.11,
+                              width: MediaQuery.of(context).size.width * 0.2,
+                              fit: BoxFit.cover,
+                              progressIndicatorBuilder:
+                                  (context, url, progress) => Center(
+                                child: CircularProgressIndicator(
+                                  value: progress.progress,
+                                ),
+                              ),
+                              imageUrl:
+                                  'https://a.walletbot.online${orders!.result!.data![index].attraction!.images!.first}',
+                            ),
+                          ),
+                          FxSpacing.width(10),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                FxText.titleMedium(
+                                  orders!.result!.data![index].activities!
+                                      .activity!.name!,
+                                  fontWeight: 700,
+                                ),
+                                FxSpacing.height(8),
+                                FxText.bodyMedium(
+                                  '${orders!.result!.data![index].totalAmount.toString()} AED',
+                                  fontWeight: 700,
+                                ),
+                                FxSpacing.height(8),
+                                Row(
+                                  // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Expanded(
-                                      child: FxContainer(
-                                        padding: FxSpacing.fromLTRB(5, 6, 1, 6),
-                                        color: const Color(0xff1529e8)
-                                            .withAlpha(40),
-                                        child: Row(
-                                          children: [
-                                            FxText.bodyMedium(
-                                                orders!.result!.data![index]
-                                                    .activities!.adultsCount!
-                                                    .toString(),
-                                                color: const Color(0xff1529e8),
-                                                // color: customTheme.groceryPrimary,
-                                                fontWeight: 500,
-                                                letterSpacing: -0.2),
-                                            FxSpacing.width(2),
-                                            FxText.bodyMedium('Adult',
-                                                color: const Color(0xff1529e8),
-                                                // color: customTheme.groceryPrimary,
-                                                fontWeight: 500,
-                                                letterSpacing: -0.2),
-                                          ],
-                                        ),
-                                      ),
+                                    FxText.bodyMedium(
+                                      'Pax',
+                                      fontWeight: 600,
                                     ),
-                                    FxSpacing.width(8),
+                                    FxSpacing.width(7),
                                     Expanded(
-                                      child: FxContainer(
-                                        padding: FxSpacing.fromLTRB(5, 6, 1, 6),
-                                        color: const Color(0xff1529e8)
-                                            .withAlpha(40),
-                                        child: Row(
-                                          children: [
-                                            FxText.bodyMedium(
-                                                orders!.result!.data![index]
-                                                    .activities!.childrenCount!
-                                                    .toString(),
-                                                color: const Color(0xff1529e8),
-                                                // color: customTheme.groceryPrimary,
-                                                fontWeight: 500,
-                                                letterSpacing: -0.2),
-                                            FxSpacing.width(2),
-                                            FxText.bodyMedium('Child',
-                                                color: const Color(0xff1529e8),
-                                                // color: customTheme.groceryPrimary,
-                                                fontWeight: 500,
-                                                letterSpacing: -0.2),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                    FxSpacing.width(8),
-                                    Expanded(
-                                      child: FxContainer(
-                                        padding: FxSpacing.fromLTRB(5, 6, 1, 6),
-                                        color: const Color(0xff1529e8)
-                                            .withAlpha(40),
-                                        child: Row(
-                                          children: [
-                                            FxText.bodyMedium(
-                                                orders!.result!.data![index]
-                                                    .activities!.infantCount
-                                                    .toString(),
-                                                color: const Color(0xff1529e8),
-                                                // color: customTheme.groceryPrimary,
-                                                fontWeight: 500,
-                                                letterSpacing: -0.2),
-                                            FxSpacing.width(2),
-                                            FxText.bodyMedium('Infant',
-                                                color: const Color(0xff1529e8),
-                                                // color: customTheme.groceryPrimary,
-                                                fontWeight: 500,
-                                                letterSpacing: -0.2),
-                                          ],
-                                        ),
+                                      child: Row(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.end,
+                                        children: [
+                                          Expanded(
+                                            child: FxContainer(
+                                              padding: FxSpacing.fromLTRB(
+                                                  5, 6, 1, 6),
+                                              color: const Color(0xff1529e8)
+                                                  .withAlpha(40),
+                                              child: Row(
+                                                children: [
+                                                  FxText.bodyMedium(
+                                                      orders!
+                                                          .result!
+                                                          .data![index]
+                                                          .activities!
+                                                          .adultsCount!
+                                                          .toString(),
+                                                      color: const Color(
+                                                          0xff1529e8),
+                                                      // color: customTheme.groceryPrimary,
+                                                      fontWeight: 500,
+                                                      letterSpacing: -0.2),
+                                                  FxSpacing.width(2),
+                                                  FxText.bodyMedium('Adult',
+                                                      color: const Color(
+                                                          0xff1529e8),
+                                                      // color: customTheme.groceryPrimary,
+                                                      fontWeight: 500,
+                                                      letterSpacing: -0.2),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                          FxSpacing.width(8),
+                                          Expanded(
+                                            child: FxContainer(
+                                              padding: FxSpacing.fromLTRB(
+                                                  5, 6, 1, 6),
+                                              color: const Color(0xff1529e8)
+                                                  .withAlpha(40),
+                                              child: Row(
+                                                children: [
+                                                  FxText.bodyMedium(
+                                                      orders!
+                                                          .result!
+                                                          .data![index]
+                                                          .activities!
+                                                          .childrenCount!
+                                                          .toString(),
+                                                      color: const Color(
+                                                          0xff1529e8),
+                                                      // color: customTheme.groceryPrimary,
+                                                      fontWeight: 500,
+                                                      letterSpacing: -0.2),
+                                                  FxSpacing.width(2),
+                                                  FxText.bodyMedium('Child',
+                                                      color: const Color(
+                                                          0xff1529e8),
+                                                      // color: customTheme.groceryPrimary,
+                                                      fontWeight: 500,
+                                                      letterSpacing: -0.2),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                          FxSpacing.width(8),
+                                          Expanded(
+                                            child: FxContainer(
+                                              padding: FxSpacing.fromLTRB(
+                                                  5, 6, 1, 6),
+                                              color: const Color(0xff1529e8)
+                                                  .withAlpha(40),
+                                              child: Row(
+                                                children: [
+                                                  FxText.bodyMedium(
+                                                      orders!
+                                                          .result!
+                                                          .data![index]
+                                                          .activities!
+                                                          .infantCount
+                                                          .toString(),
+                                                      color: const Color(
+                                                          0xff1529e8),
+                                                      // color: customTheme.groceryPrimary,
+                                                      fontWeight: 500,
+                                                      letterSpacing: -0.2),
+                                                  FxSpacing.width(2),
+                                                  FxText.bodyMedium('Infant',
+                                                      color: const Color(
+                                                          0xff1529e8),
+                                                      // color: customTheme.groceryPrimary,
+                                                      fontWeight: 500,
+                                                      letterSpacing: -0.2),
+                                                ],
+                                              ),
+                                            ),
+                                          )
+                                        ],
                                       ),
                                     )
                                   ],
                                 ),
-                              )
-                            ],
+                                const SizedBox(
+                                  height: 5,
+                                ),
+                                FxText.bodyMedium(
+                                  "Date: $newDate",
+                                  fontWeight: 700,
+                                )
+                              ],
+                            ),
                           ),
-                          const SizedBox(
-                            height: 5,
-                          ),
-                          FxText.bodyMedium(
-                            "Date: $newDate",
-                            fontWeight: 700,
-                          )
                         ],
                       ),
-                    ),
-                  ],
-                ),
-              ],
+                    ],
+                  ),
+                );
+              },
             ),
-          );
-        },
+          ),
+        ],
       );
     }
   }

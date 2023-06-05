@@ -20,6 +20,8 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:path_provider/path_provider.dart' as path;
 import 'package:external_path/external_path.dart';
 import '../controllers/pdf_api.dart';
+import 'bottomSheet/filter_bookings.dart';
+import 'bottomSheet/sort_allbooking.dart';
 
 class AllBookings extends StatefulWidget {
   const AllBookings({Key? key}) : super(key: key);
@@ -514,12 +516,12 @@ class _AllBookingsState extends State<AllBookings>
                             paddingAll: 12,
                             borderRadiusAll: 4,
                             onTap: () async {
-                              // var data = await showModalBottomSheet(
-                              //     context: context,
-                              //     builder: (BuildContext buildContext) {
-                              //       return const SortSeat();
-                              //     });
-                              // setState(() {});
+                              var data = await showModalBottomSheet(
+                                  context: context,
+                                  builder: (BuildContext buildContext) {
+                                    return const SortAllBooking();
+                                  });
+                              setState(() {});
                             },
                             color: const Color(0xff1529e8).withAlpha(40),
                             child: const Icon(
@@ -533,12 +535,12 @@ class _AllBookingsState extends State<AllBookings>
                             paddingAll: 12,
                             borderRadiusAll: 4,
                             onTap: () async {
-                              // var data = await showModalBottomSheet(
-                              //     context: context,
-                              //     builder: (BuildContext buildContext) {
-                              //       return const HotelFilterSheet();
-                              //     });
-                              // setState(() {});
+                              var data = await showModalBottomSheet(
+                                  context: context,
+                                  builder: (BuildContext buildContext) {
+                                    return const FilterAllBooking();
+                                  });
+                              setState(() {});
                             },
                             color: const Color(0xff1529e8).withAlpha(40),
                             child: const Icon(

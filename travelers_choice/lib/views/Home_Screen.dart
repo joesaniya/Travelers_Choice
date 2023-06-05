@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutx/flutx.dart';
 import 'package:hotel_travel/services/auth_service.dart';
 import 'package:hotel_travel/services/visa_service.dart';
-import 'package:hotel_travel/views/search_screens/search_place.dart';
 import 'package:hotel_travel/views/search_screens/visa_search.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -1078,14 +1077,17 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                 //   ],
                 // ),
 
-                SearchAttractionScreen(
-                    isocode: selectedCountry!.isocode,
-                    conversionRate: selectedCountry!.conversionRate),
-                FxSpacing.height(29),
+                // SearchAttractionScreen(
+                //     isocode: selectedCountry!.isocode,
+                //     conversionRate: selectedCountry!.conversionRate),
+                // FxSpacing.height(29),
                 _tabbed == '1'
-                    ? SearchPlace(
+                    ? SearchAttractionScreen(
                         isocode: selectedCountry!.isocode,
                         conversionRate: selectedCountry!.conversionRate)
+                    // SearchPlace(
+                    //     isocode: selectedCountry!.isocode,
+                    //     conversionRate: selectedCountry!.conversionRate)
                     : _tabbed == '3'
                         ? const HotelSearch()
                         : const SearchVisa(),

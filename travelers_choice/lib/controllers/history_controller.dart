@@ -26,18 +26,21 @@ class HistoryController extends FxController {
 //  late  Product product;
   // late DetailattractionModal product;
 
-  late AnimationController animationController, cartController, dateController;
+  late AnimationController animationController,
+      cartController,
+      dateController,
+      searchController;
   late Animation<Color?> colorAnimation;
   late Animation<double> sizeAnimation,
       cartAnimation,
       paddingAnimation,
       fadeAnimation;
-  late Animation<Offset> dateAnimation;
-  int dateCounter = 0;
+  late Animation<Offset> dateAnimation, searchAnimation;
+  int dateCounter = 0, searchCounter = 0;
   final PageController pageController = PageController(initialPage: 0);
   int currentPage = 0, numPages = 4;
   late Timer timerAnimation;
-  late TextEditingController dateTE;
+  late TextEditingController dateTE, SearchTE;
   // late TextEditingController HistoryController;
 
   bool isFav = false;
@@ -145,6 +148,26 @@ class HistoryController extends FxController {
     // HistoryController = TextEditingController();
     save = false;
     fetchData();
+    SearchTE = TextEditingController();
+    searchController = AnimationController(
+        vsync: ticker, duration: const Duration(milliseconds: 500));
+    searchAnimation =
+        Tween<Offset>(begin: const Offset(0, 0), end: const Offset(8, 0))
+            .animate(CurvedAnimation(
+      parent: searchController,
+      curve: Curves.easeIn,
+    ));
+    searchController.addStatusListener((status) {
+      if (status == AnimationStatus.completed) {
+        searchController.reverse();
+      }
+      if (status == AnimationStatus.dismissed && searchCounter < 2) {
+        searchController.forward();
+        searchCounter++;
+      }
+    });
+
+    //date
     dateController = AnimationController(
         vsync: ticker, duration: const Duration(milliseconds: 50));
     timerAnimation = Timer.periodic(const Duration(seconds: 4), (Timer timer) {
@@ -269,6 +292,7 @@ class HistoryController extends FxController {
     pageController.dispose();
     timerAnimation.cancel();
     scrollController.dispose();
+    searchController.dispose();
   }
 
   Future<void> dateselect() async {

@@ -6,6 +6,7 @@ import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutx/flutx.dart';
 import 'package:hotel_travel/views/bottomSheet/Filter_Sheet.dart';
 import 'package:hotel_travel/views/bottomSheet/categories_Sheet.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../controllers/attraction_Controller.dart';
@@ -224,113 +225,118 @@ class _SearchScreenState extends State<SearchScreen>
               padding: FxSpacing.fromLTRB(
                   20, FxSpacing.safeAreaTop(context) + 20, 20, 20),
               children: [
-                Container(
-                  // padding: const EdgeInsets.all(16),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    border: Border.all(width: 1, color: Colors.grey.shade300),
-                    boxShadow: [
-                      BoxShadow(
-                        // color: Colors.grey.shade400,
-                        color: const Color(0xff1529e8).withOpacity(0.4),
-                        blurRadius: 2,
-                        offset: const Offset(0, 3),
-                      ),
-                    ],
-                  ),
-                  child: TextFormField(
-                    style: FxTextStyle.bodyMedium(),
-                    controller: controller.SearchTE,
-                    cursorColor: theme.colorScheme.primary,
-
-                    //2
-                    onChanged: (value) async {
-                      if (value.isEmpty) {
-                        await AttractionController()
-                            .getSearchattractionList(widget.place)
-                            .then((value) {
-                          if (value != null) {
-                            isLoading = false;
-                            controller.allattractionList = [];
-                            controller.allattractionList!.add(value);
-                            _filteredBooks = controller.allattractionList!;
-                          }
-                        });
-
-                        setState(() {
-                          // len = value.length;
-                          // _filteredBooks = [
-                          //   allattractionModalFromJson(json.encode(value))
-                          // ];
-                          controller.allattractionList!.first.attractions.data;
-                          // _filteredBooks =
-                          //     AllattractionModal as List<AllattractionModal>;
-                        });
-                        // log('Value:$_filteredBooks');
-
-                        return;
-                      }
-
-                      len = 1;
-                      // print(' => ${_filteredBooks.first.attractions.toJson()}');
-
-                      List<Datum> data = _filteredBooks.first.attractions.data
-                          .where((Datum i) {
-                        // log('title:${i.title}');
-                        // log('value:$value');
-                        return i.title
-                            .toLowerCase()
-                            .contains(value.toString().toLowerCase());
-                      }).toList();
-
-                      temp[0].attractions.data = data;
-
-                      setState(() {
-                        controller.allattractionList = temp;
-                        len;
-                      });
-                    },
-
-                    decoration: InputDecoration(
-                      hintText: "Search your place ...",
-                      hintStyle: FxTextStyle.bodySmall(
-                          color: theme.colorScheme.onBackground),
-                      border: const OutlineInputBorder(
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(4),
-                          ),
-                          borderSide: BorderSide.none),
-                      enabledBorder: const OutlineInputBorder(
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(4),
-                          ),
-                          borderSide: BorderSide.none),
-                      focusedBorder: const OutlineInputBorder(
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(4),
-                          ),
-                          borderSide: BorderSide.none),
-                      filled: true,
-                      // fillColor: const Color(0xffcfd2ff),
-                      fillColor: theme.cardTheme.color,
-                      prefixIcon: Icon(
-                        FeatherIcons.search,
-                        size: 16,
-                        color: theme.colorScheme.onBackground.withAlpha(150),
-                      ),
-                      isDense: true,
-                    ),
-                    textCapitalization: TextCapitalization.sentences,
-                  ),
-                ),
-
-                FxSpacing.height(20),
-                //btn
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    GestureDetector(
+                    Expanded(
+                      child: Container(
+                        // padding: const EdgeInsets.all(16),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          border:
+                              Border.all(width: 1, color: Colors.grey.shade300),
+                          boxShadow: [
+                            BoxShadow(
+                              // color: Colors.grey.shade400,
+                              color: const Color(0xff1529e8).withOpacity(0.4),
+                              blurRadius: 2,
+                              offset: const Offset(0, 3),
+                            ),
+                          ],
+                        ),
+                        child: TextFormField(
+                          style: FxTextStyle.bodyMedium(),
+                          controller: controller.SearchTE,
+                          cursorColor: theme.colorScheme.primary,
+
+                          //2
+                          onChanged: (value) async {
+                            if (value.isEmpty) {
+                              await AttractionController()
+                                  .getSearchattractionList(widget.place)
+                                  .then((value) {
+                                if (value != null) {
+                                  isLoading = false;
+                                  controller.allattractionList = [];
+                                  controller.allattractionList!.add(value);
+                                  _filteredBooks =
+                                      controller.allattractionList!;
+                                }
+                              });
+
+                              setState(() {
+                                // len = value.length;
+                                // _filteredBooks = [
+                                //   allattractionModalFromJson(json.encode(value))
+                                // ];
+                                controller
+                                    .allattractionList!.first.attractions.data;
+                                // _filteredBooks =
+                                //     AllattractionModal as List<AllattractionModal>;
+                              });
+                              // log('Value:$_filteredBooks');
+
+                              return;
+                            }
+
+                            len = 1;
+                            // print(' => ${_filteredBooks.first.attractions.toJson()}');
+
+                            List<Datum> data = _filteredBooks
+                                .first.attractions.data
+                                .where((Datum i) {
+                              // log('title:${i.title}');
+                              // log('value:$value');
+                              return i.title
+                                  .toLowerCase()
+                                  .contains(value.toString().toLowerCase());
+                            }).toList();
+
+                            temp[0].attractions.data = data;
+
+                            setState(() {
+                              controller.allattractionList = temp;
+                              len;
+                            });
+                          },
+
+                          decoration: InputDecoration(
+                            hintText: "Search your place ...",
+                            hintStyle: FxTextStyle.bodySmall(
+                                color: theme.colorScheme.onBackground),
+                            border: const OutlineInputBorder(
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(4),
+                                ),
+                                borderSide: BorderSide.none),
+                            enabledBorder: const OutlineInputBorder(
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(4),
+                                ),
+                                borderSide: BorderSide.none),
+                            focusedBorder: const OutlineInputBorder(
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(4),
+                                ),
+                                borderSide: BorderSide.none),
+                            filled: true,
+                            // fillColor: const Color(0xffcfd2ff),
+                            fillColor: theme.cardTheme.color,
+                            prefixIcon: Icon(
+                              FeatherIcons.search,
+                              size: 16,
+                              color:
+                                  theme.colorScheme.onBackground.withAlpha(150),
+                            ),
+                            isDense: true,
+                          ),
+                          textCapitalization: TextCapitalization.sentences,
+                        ),
+                      ),
+                    ),
+                    FxSpacing.width(4),
+                    FxContainer(
+                      paddingAll: 12,
+                      borderRadiusAll: 4,
                       onTap: () async {
                         var data = await showModalBottomSheet(
                             context: context,
@@ -346,52 +352,18 @@ class _SearchScreenState extends State<SearchScreen>
                             controller.allattractionList = [data];
                           });
                         }
-                        // showModalBottomSheet(
-                        //   context: context,
-                        //   backgroundColor: Colors.white,
-                        //   shape: const RoundedRectangleBorder(
-                        //       borderRadius: BorderRadius.only(
-                        //           topLeft: Radiaus.circular(20),
-                        //           topRight: Radius.circular(20))),
-                        //   isScrollControlled: true,
-                        //   builder: (context) {
-                        //     return const CategoriesBottomSheet();
-                        //   },
-                        // );
                       },
-                      child: FxContainer(
-                        borderRadiusAll: 10,
-                        // padding: FxSpacing.xy(8, 4),
-                        padding: FxSpacing.xy(6, 9),
-                        color: const Color(0xff1529e8),
-                        child: FxText.bodySmall(
-                          'Categories2',
-                          fontWeight: 300,
-                          color: Colors.white,
-                          // color: theme.colorScheme.onPrimary,
-                        ),
+                      color: const Color(0xff1529e8).withAlpha(40),
+                      child: const Icon(
+                        Iconsax.category,
+                        color: Color(0xff1529e8),
+                        size: 20,
                       ),
                     ),
-                    GestureDetector(
-                      // onTap: () {
-                      //   // showModalBottomSheet(
-                      //   //     context: context,
-                      //   //     builder: (BuildContext buildContext) {
-                      //   //       return const FilterSheet();
-                      //   //     });
-                      //   showModalBottomSheet(
-                      //     context: context,
-                      //     backgroundColor: Colors.white,
-                      //     shape: const RoundedRectangleBorder(
-                      //         borderRadius: BorderRadius.only(
-                      //             topLeft: Radius.circular(20),
-                      //             topRight: Radius.circular(20))),
-                      //     isScrollControlled: true,
-                      //     builder: (context) {
-                      //       return const FilterSheet();
-                      //     },
-                      //   );
-                      // },
+                    FxSpacing.width(4),
+                    FxContainer(
+                      paddingAll: 12,
+                      borderRadiusAll: 4,
                       onTap: () async {
                         var data = await showModalBottomSheet(
                             context: context,
@@ -400,41 +372,134 @@ class _SearchScreenState extends State<SearchScreen>
                                 categoryplace: widget.place,
                               );
                             });
-                        setState(() {
-                          controller.allattractionList = [];
-                          controller.allattractionList = [data];
-                        });
-                        // showModalBottomSheet(
-                        //   context: context,
-                        //   backgroundColor: Colors.white,
-                        //   shape: const RoundedRectangleBorder(
-                        //       borderRadius: BorderRadius.only(
-                        //           topLeft: Radius.circular(20),
-                        //           topRight: Radius.circular(20))),
-                        //   isScrollControlled: true,
-                        //   builder: (context) {
-                        //     return const CategoriesBottomSheet();
-                        //   },
-                        // );
+                        if (data != null) {
+                          setState(() {
+                            controller.allattractionList = [];
+                            controller.allattractionList = [data];
+                          });
+                        }
                       },
-                      child: Container(
-                        height: 30,
-                        width: 80,
-                        decoration: BoxDecoration(
-                            color: const Color(0xff1529e8),
-                            borderRadius: BorderRadius.circular(10)),
-                        child: Center(
-                          child: FxText.bodySmall(
-                            'Filter',
-                            fontWeight: 300,
-                            color: Colors.white,
-                            // color: theme.colorScheme.onPrimary,
-                          ),
-                        ),
+                      color: const Color(0xff1529e8).withAlpha(40),
+                      child: const Icon(
+                        FeatherIcons.sliders,
+                        color: Color(0xff1529e8),
+                        size: 20,
                       ),
                     ),
                   ],
                 ),
+
+                FxSpacing.height(20),
+                //btn
+                // Row(
+                //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //   crossAxisAlignment: CrossAxisAlignment.center,
+                //   children: [
+                //     GestureDetector(
+                //       onTap: () async {
+                //         var data = await showModalBottomSheet(
+                //             context: context,
+                //             builder: (BuildContext buildContext) {
+                //               return CategoriesBottomSheet(
+                //                 categoryplace: widget.place,
+                //               );
+                //             });
+                //         if (data != null) {
+                //           setState(() {
+                //             controller.allattractionList = [];
+
+                //             controller.allattractionList = [data];
+                //           });
+                //         }
+                //         // showModalBottomSheet(
+                //         //   context: context,
+                //         //   backgroundColor: Colors.white,
+                //         //   shape: const RoundedRectangleBorder(
+                //         //       borderRadius: BorderRadius.only(
+                //         //           topLeft: Radiaus.circular(20),
+                //         //           topRight: Radius.circular(20))),
+                //         //   isScrollControlled: true,
+                //         //   builder: (context) {
+                //         //     return const CategoriesBottomSheet();
+                //         //   },
+                //         // );
+                //       },
+                //       child: FxContainer(
+                //         borderRadiusAll: 10,
+                //         // padding: FxSpacing.xy(8, 4),
+                //         padding: FxSpacing.xy(6, 9),
+                //         color: const Color(0xff1529e8),
+                //         child: FxText.bodySmall(
+                //           'Categories2',
+                //           fontWeight: 300,
+                //           color: Colors.white,
+                //           // color: theme.colorScheme.onPrimary,
+                //         ),
+                //       ),
+                //     ),
+                //     GestureDetector(
+                //       // onTap: () {
+                //       //   // showModalBottomSheet(
+                //       //   //     context: context,
+                //       //   //     builder: (BuildContext buildContext) {
+                //       //   //       return const FilterSheet();
+                //       //   //     });
+                //       //   showModalBottomSheet(
+                //       //     context: context,
+                //       //     backgroundColor: Colors.white,
+                //       //     shape: const RoundedRectangleBorder(
+                //       //         borderRadius: BorderRadius.only(
+                //       //             topLeft: Radius.circular(20),
+                //       //             topRight: Radius.circular(20))),
+                //       //     isScrollControlled: true,
+                //       //     builder: (context) {
+                //       //       return const FilterSheet();
+                //       //     },
+                //       //   );
+                //       // },
+                //       onTap: () async {
+                //         var data = await showModalBottomSheet(
+                //             context: context,
+                //             builder: (BuildContext buildContext) {
+                //               return FilterSheet(
+                //                 categoryplace: widget.place,
+                //               );
+                //             });
+                //         setState(() {
+                //           controller.allattractionList = [];
+                //           controller.allattractionList = [data];
+                //         });
+                //         // showModalBottomSheet(
+                //         //   context: context,
+                //         //   backgroundColor: Colors.white,
+                //         //   shape: const RoundedRectangleBorder(
+                //         //       borderRadius: BorderRadius.only(
+                //         //           topLeft: Radius.circular(20),
+                //         //           topRight: Radius.circular(20))),
+                //         //   isScrollControlled: true,
+                //         //   builder: (context) {
+                //         //     return const CategoriesBottomSheet();
+                //         //   },
+                //         // );
+                //       },
+                //       child: Container(
+                //         height: 30,
+                //         width: 80,
+                //         decoration: BoxDecoration(
+                //             color: const Color(0xff1529e8),
+                //             borderRadius: BorderRadius.circular(10)),
+                //         child: Center(
+                //           child: FxText.bodySmall(
+                //             'Filter',
+                //             fontWeight: 300,
+                //             color: Colors.white,
+                //             // color: theme.colorScheme.onPrimary,
+                //           ),
+                //         ),
+                //       ),
+                //     ),
+                //   ],
+                // ),
 
                 // Lottie.asset('assets/lottie/search_lottie.json',
                 //     height: 300, width: 300),
@@ -469,249 +534,248 @@ class _SearchScreenState extends State<SearchScreen>
                   padding: FxSpacing.fromLTRB(
                       20, FxSpacing.safeAreaTop(context) + 20, 20, 20),
                   children: [
-                    Container(
-                      // padding: const EdgeInsets.all(16),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        border:
-                            Border.all(width: 1, color: Colors.grey.shade300),
-                        boxShadow: [
-                          BoxShadow(
-                            // color: Colors.grey.shade400,
-                            color: const Color(0xff1529e8).withOpacity(0.4),
-                            blurRadius: 2,
-                            offset: const Offset(0, 3),
-                          ),
-                        ],
-                      ),
-                      child: TextFormField(
-                        style: FxTextStyle.bodyMedium(),
-                        controller: controller.SearchTE,
-                        cursorColor: theme.colorScheme.primary,
-                        // onChanged: (value) => _searchBooks(value),
-
-                        // onChanged: _runFilter,
-                        // onChanged: (value) {
-                        //   // log('Total Data:${_filteredBooks.first.attractions.data.map((e) => e.title)}');
-                        //   // log('Entered keyword:$value');
-                        //   if (len == 0) {
-                        //     temp2 = [..._filteredBooks];
-                        //   }
-                        //   // log('filter value:$_filteredBooks');
-
-                        //   if (value.isEmpty) {
-                        //     log('Temp:${_filteredBooks.first.attractions.data.map((e) => e.title)}');
-                        //     controller.allattractionList!.first.attractions.data =
-                        //         _filteredBooks.first.attractions.data;
-
-                        //     setState(() {
-                        //       // len = value.length;
-                        //       // _filteredBooks = [
-                        //       //   allattractionModalFromJson(json.encode(value))
-                        //       // ];
-                        //       controller.allattractionList!.first.attractions.data;
-                        //       // _filteredBooks =
-                        //       //     AllattractionModal as List<AllattractionModal>;
-                        //     });
-                        //     // log('Value:$_filteredBooks');
-                        //     log('Empty :${controller.allattractionList!.first.attractions.data.map((e) => e.title)}');
-                        //     return;
-                        //   }
-
-                        //   len = 1;
-                        //   // print(' => ${_filteredBooks.first.attractions.toJson()}');
-
-                        //   List<Datum> data =
-                        //       temp2.first.attractions.data.where((Datum i) {
-                        //     // log('title:${i.title}');
-                        //     // log('value:$value');
-                        //     return i.title
-                        //         .toLowerCase()
-                        //         .contains(value.toString().toLowerCase());
-                        //   }).toList();
-
-                        //   temp[0].attractions.data = data;
-
-                        //   setState(() {
-                        //     controller.allattractionList = temp;
-                        //     len;
-                        //   });
-
-                        //   // log('Controller:${controller.allattractionList!.first.attractions.data.map((e) => e.title)}');
-                        //   // print('temp:${temp2[0].attractions.data}');
-                        // },
-                        // onChanged: (value) {
-                        //   // log('Total Data:${_filteredBooks.first.attractions.data.map((e) => e.title)}');
-                        //   // log('Entered keyword:$value');
-                        //   if (len == 0) {
-                        //     temp2 = [..._filteredBooks];
-                        //   }
-                        //   // log('filter value:$_filteredBooks');
-
-                        //   if (value.isEmpty) {
-                        //     log('Temp:${_filteredBooks.first.attractions.data.map((e) => e.title)}');
-                        //     controller.allattractionList!.first.attractions.data =
-                        //         _filteredBooks.first.attractions.data;
-
-                        //     setState(() {
-                        //       // len = value.length;
-                        //       // _filteredBooks = [
-                        //       //   allattractionModalFromJson(json.encode(value))
-                        //       // ];
-                        //       controller.allattractionList!.first.attractions.data;
-                        //       // _filteredBooks =
-                        //       //     AllattractionModal as List<AllattractionModal>;
-                        //     });
-                        //     // log('Value:$_filteredBooks');
-                        //     log('Empty :${controller.allattractionList!.first.attractions.data.map((e) => e.title)}');
-                        //     return;
-                        //   }
-
-                        //   len = 1;
-                        //   // print(' => ${_filteredBooks.first.attractions.toJson()}');
-
-                        //   List<Datum> data =
-                        //       temp2.first.attractions.data.where((Datum i) {
-                        //     // log('title:${i.title}');
-                        //     // log('value:$value');
-                        //     return i.title
-                        //         .toLowerCase()
-                        //         .contains(value.toString().toLowerCase());
-                        //   }).toList();
-
-                        //   temp[0].attractions.data = data;
-
-                        //   setState(() {
-                        //     controller.allattractionList = temp;
-                        //     len;
-                        //   });
-
-                        //   // log('Controller:${controller.allattractionList!.first.attractions.data.map((e) => e.title)}');
-                        //   // print('temp:${temp2[0].attractions.data}');
-                        // },
-                        //2
-                        onChanged: (value) async {
-                          if (value.isEmpty) {
-                            await AttractionController()
-                                .getSearchattractionList(widget.place)
-                                .then((value) {
-                              if (value != null) {
-                                isLoading = false;
-                                controller.allattractionList = [];
-                                controller.allattractionList!.add(value);
-                                _filteredBooks = controller.allattractionList!;
-                              }
-                            });
-
-                            setState(() {
-                              // len = value.length;
-                              // _filteredBooks = [
-                              //   allattractionModalFromJson(json.encode(value))
-                              // ];
-                              controller
-                                  .allattractionList!.first.attractions.data;
-                              // _filteredBooks =
-                              //     AllattractionModal as List<AllattractionModal>;
-                            });
-                            // log('Value:$_filteredBooks');
-
-                            return;
-                          }
-
-                          len = 1;
-                          // print(' => ${_filteredBooks.first.attractions.toJson()}');
-
-                          List<Datum> data = _filteredBooks
-                              .first.attractions.data
-                              .where((Datum i) {
-                            // log('title:${i.title}');
-                            // log('value:$value');
-                            return i.title
-                                .toLowerCase()
-                                .contains(value.toString().toLowerCase());
-                          }).toList();
-
-                          temp[0].attractions.data = data;
-
-                          setState(() {
-                            controller.allattractionList = temp;
-                            len;
-                          });
-
-                          // log('Controller:${controller.allattractionList!.first.attractions.data.map((e) => e.title)}');
-                          // print('temp:${temp2[0].attractions.data}');
-                        },
-                        // onChanged: (e) {
-                        //   if (e != Null || e.isNotEmpty) {
-                        //     // controller.allattractionList!.first.attractions.data = [];
-
-                        //     for (var i in temp.first.attractions.data) {
-                        //       log('i:$i');
-                        //       if (i.title.toLowerCase().contains(e)) {
-                        //         controller.allattractionList!.first.attractions.data
-                        //             .add(i);
-                        //       }
-                        //     }
-
-                        //     // if (value.title.toLowerCase().contains(e)) {
-                        //     //   controller.allattractionList!.first.attractions.data
-                        //     //       .add(value);
-                        //     // }
-
-                        //     log('Message:${controller.allattractionList!.first.attractions.data}');
-                        //   } else {
-                        //     controller.allattractionList!.first.attractions.data =
-                        //         _filteredBooks.first.attractions.data;
-                        //   }
-                        // },
-
-                        // onChanged: controller.runFilter1,
-                        // onChanged: (value) => onSearchTextChanged(value),
-                        // onChanged: (value) => controller.attractFilter(value),
-                        decoration: InputDecoration(
-                          hintText: "Search your place ...",
-                          hintStyle: FxTextStyle.bodySmall(
-                              color: theme.colorScheme.onBackground),
-                          border: const OutlineInputBorder(
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(4),
-                              ),
-                              borderSide: BorderSide.none),
-                          enabledBorder: const OutlineInputBorder(
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(4),
-                              ),
-                              borderSide: BorderSide.none),
-                          focusedBorder: const OutlineInputBorder(
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(4),
-                              ),
-                              borderSide: BorderSide.none),
-                          filled: true,
-                          // fillColor: const Color(0xffcfd2ff),
-                          fillColor: theme.cardTheme.color,
-                          prefixIcon: Icon(
-                            FeatherIcons.search,
-                            size: 16,
-                            color:
-                                theme.colorScheme.onBackground.withAlpha(150),
-                          ),
-                          isDense: true,
-                        ),
-                        textCapitalization: TextCapitalization.sentences,
-                      ),
-                    ),
-                    // Text(
-                    //   widget.place.toString(),
-                    //   style: const TextStyle(color: Colors.red),
-                    // ),
-                    FxSpacing.height(20),
-                    //btn
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        GestureDetector(
+                        Expanded(
+                          child: Container(
+                            // padding: const EdgeInsets.all(16),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              border: Border.all(
+                                  width: 1, color: Colors.grey.shade300),
+                              boxShadow: [
+                                BoxShadow(
+                                  // color: Colors.grey.shade400,
+                                  color:
+                                      const Color(0xff1529e8).withOpacity(0.4),
+                                  blurRadius: 2,
+                                  offset: const Offset(0, 3),
+                                ),
+                              ],
+                            ),
+                            child: TextFormField(
+                              style: FxTextStyle.bodyMedium(),
+                              controller: controller.SearchTE,
+                              cursorColor: theme.colorScheme.primary,
+                              // onChanged: (value) => _searchBooks(value),
+
+                              // onChanged: _runFilter,
+                              // onChanged: (value) {
+                              //   // log('Total Data:${_filteredBooks.first.attractions.data.map((e) => e.title)}');
+                              //   // log('Entered keyword:$value');
+                              //   if (len == 0) {
+                              //     temp2 = [..._filteredBooks];
+                              //   }
+                              //   // log('filter value:$_filteredBooks');
+
+                              //   if (value.isEmpty) {
+                              //     log('Temp:${_filteredBooks.first.attractions.data.map((e) => e.title)}');
+                              //     controller.allattractionList!.first.attractions.data =
+                              //         _filteredBooks.first.attractions.data;
+
+                              //     setState(() {
+                              //       // len = value.length;
+                              //       // _filteredBooks = [
+                              //       //   allattractionModalFromJson(json.encode(value))
+                              //       // ];
+                              //       controller.allattractionList!.first.attractions.data;
+                              //       // _filteredBooks =
+                              //       //     AllattractionModal as List<AllattractionModal>;
+                              //     });
+                              //     // log('Value:$_filteredBooks');
+                              //     log('Empty :${controller.allattractionList!.first.attractions.data.map((e) => e.title)}');
+                              //     return;
+                              //   }
+
+                              //   len = 1;
+                              //   // print(' => ${_filteredBooks.first.attractions.toJson()}');
+
+                              //   List<Datum> data =
+                              //       temp2.first.attractions.data.where((Datum i) {
+                              //     // log('title:${i.title}');
+                              //     // log('value:$value');
+                              //     return i.title
+                              //         .toLowerCase()
+                              //         .contains(value.toString().toLowerCase());
+                              //   }).toList();
+
+                              //   temp[0].attractions.data = data;
+
+                              //   setState(() {
+                              //     controller.allattractionList = temp;
+                              //     len;
+                              //   });
+
+                              //   // log('Controller:${controller.allattractionList!.first.attractions.data.map((e) => e.title)}');
+                              //   // print('temp:${temp2[0].attractions.data}');
+                              // },
+                              // onChanged: (value) {
+                              //   // log('Total Data:${_filteredBooks.first.attractions.data.map((e) => e.title)}');
+                              //   // log('Entered keyword:$value');
+                              //   if (len == 0) {
+                              //     temp2 = [..._filteredBooks];
+                              //   }
+                              //   // log('filter value:$_filteredBooks');
+
+                              //   if (value.isEmpty) {
+                              //     log('Temp:${_filteredBooks.first.attractions.data.map((e) => e.title)}');
+                              //     controller.allattractionList!.first.attractions.data =
+                              //         _filteredBooks.first.attractions.data;
+
+                              //     setState(() {
+                              //       // len = value.length;
+                              //       // _filteredBooks = [
+                              //       //   allattractionModalFromJson(json.encode(value))
+                              //       // ];
+                              //       controller.allattractionList!.first.attractions.data;
+                              //       // _filteredBooks =
+                              //       //     AllattractionModal as List<AllattractionModal>;
+                              //     });
+                              //     // log('Value:$_filteredBooks');
+                              //     log('Empty :${controller.allattractionList!.first.attractions.data.map((e) => e.title)}');
+                              //     return;
+                              //   }
+
+                              //   len = 1;
+                              //   // print(' => ${_filteredBooks.first.attractions.toJson()}');
+
+                              //   List<Datum> data =
+                              //       temp2.first.attractions.data.where((Datum i) {
+                              //     // log('title:${i.title}');
+                              //     // log('value:$value');
+                              //     return i.title
+                              //         .toLowerCase()
+                              //         .contains(value.toString().toLowerCase());
+                              //   }).toList();
+
+                              //   temp[0].attractions.data = data;
+
+                              //   setState(() {
+                              //     controller.allattractionList = temp;
+                              //     len;
+                              //   });
+
+                              //   // log('Controller:${controller.allattractionList!.first.attractions.data.map((e) => e.title)}');
+                              //   // print('temp:${temp2[0].attractions.data}');
+                              // },
+                              //2
+                              onChanged: (value) async {
+                                if (value.isEmpty) {
+                                  await AttractionController()
+                                      .getSearchattractionList(widget.place)
+                                      .then((value) {
+                                    if (value != null) {
+                                      isLoading = false;
+                                      controller.allattractionList = [];
+                                      controller.allattractionList!.add(value);
+                                      _filteredBooks =
+                                          controller.allattractionList!;
+                                    }
+                                  });
+
+                                  setState(() {
+                                    // len = value.length;
+                                    // _filteredBooks = [
+                                    //   allattractionModalFromJson(json.encode(value))
+                                    // ];
+                                    controller.allattractionList!.first
+                                        .attractions.data;
+                                    // _filteredBooks =
+                                    //     AllattractionModal as List<AllattractionModal>;
+                                  });
+                                  // log('Value:$_filteredBooks');
+
+                                  return;
+                                }
+
+                                len = 1;
+                                // print(' => ${_filteredBooks.first.attractions.toJson()}');
+
+                                List<Datum> data = _filteredBooks
+                                    .first.attractions.data
+                                    .where((Datum i) {
+                                  // log('title:${i.title}');
+                                  // log('value:$value');
+                                  return i.title
+                                      .toLowerCase()
+                                      .contains(value.toString().toLowerCase());
+                                }).toList();
+
+                                temp[0].attractions.data = data;
+
+                                setState(() {
+                                  controller.allattractionList = temp;
+                                  len;
+                                });
+
+                                // log('Controller:${controller.allattractionList!.first.attractions.data.map((e) => e.title)}');
+                                // print('temp:${temp2[0].attractions.data}');
+                              },
+                              // onChanged: (e) {
+                              //   if (e != Null || e.isNotEmpty) {
+                              //     // controller.allattractionList!.first.attractions.data = [];
+
+                              //     for (var i in temp.first.attractions.data) {
+                              //       log('i:$i');
+                              //       if (i.title.toLowerCase().contains(e)) {
+                              //         controller.allattractionList!.first.attractions.data
+                              //             .add(i);
+                              //       }
+                              //     }
+
+                              //     // if (value.title.toLowerCase().contains(e)) {
+                              //     //   controller.allattractionList!.first.attractions.data
+                              //     //       .add(value);
+                              //     // }
+
+                              //     log('Message:${controller.allattractionList!.first.attractions.data}');
+                              //   } else {
+                              //     controller.allattractionList!.first.attractions.data =
+                              //         _filteredBooks.first.attractions.data;
+                              //   }
+                              // },
+
+                              // onChanged: controller.runFilter1,
+                              // onChanged: (value) => onSearchTextChanged(value),
+                              // onChanged: (value) => controller.attractFilter(value),
+                              decoration: InputDecoration(
+                                hintText: "Search your place ...",
+                                hintStyle: FxTextStyle.bodySmall(
+                                    color: theme.colorScheme.onBackground),
+                                border: const OutlineInputBorder(
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(4),
+                                    ),
+                                    borderSide: BorderSide.none),
+                                enabledBorder: const OutlineInputBorder(
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(4),
+                                    ),
+                                    borderSide: BorderSide.none),
+                                focusedBorder: const OutlineInputBorder(
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(4),
+                                    ),
+                                    borderSide: BorderSide.none),
+                                filled: true,
+                                // fillColor: const Color(0xffcfd2ff),
+                                fillColor: theme.cardTheme.color,
+                                prefixIcon: Icon(
+                                  FeatherIcons.search,
+                                  size: 16,
+                                  color: theme.colorScheme.onBackground
+                                      .withAlpha(150),
+                                ),
+                                isDense: true,
+                              ),
+                              textCapitalization: TextCapitalization.sentences,
+                            ),
+                          ),
+                        ),
+                        FxSpacing.width(4),
+                        FxContainer(
+                          paddingAll: 12,
+                          borderRadiusAll: 4,
                           onTap: () async {
                             var data = await showModalBottomSheet(
                                 context: context,
@@ -727,52 +791,18 @@ class _SearchScreenState extends State<SearchScreen>
                                 controller.allattractionList = [data];
                               });
                             }
-                            // showModalBottomSheet(
-                            //   context: context,
-                            //   backgroundColor: Colors.white,
-                            //   shape: const RoundedRectangleBorder(
-                            //       borderRadius: BorderRadius.only(
-                            //           topLeft: Radiaus.circular(20),
-                            //           topRight: Radius.circular(20))),
-                            //   isScrollControlled: true,
-                            //   builder: (context) {
-                            //     return const CategoriesBottomSheet();
-                            //   },
-                            // );
                           },
-                          child: FxContainer(
-                            borderRadiusAll: 10,
-                            // padding: FxSpacing.xy(8, 4),
-                            padding: FxSpacing.xy(6, 9),
-                            color: const Color(0xff1529e8),
-                            child: FxText.bodySmall(
-                              'Categories',
-                              fontWeight: 300,
-                              color: Colors.white,
-                              // color: theme.colorScheme.onPrimary,
-                            ),
+                          color: const Color(0xff1529e8).withAlpha(40),
+                          child: const Icon(
+                            Iconsax.category,
+                            color: Color(0xff1529e8),
+                            size: 20,
                           ),
                         ),
-                        GestureDetector(
-                          // onTap: () {
-                          //   // showModalBottomSheet(
-                          //   //     context: context,
-                          //   //     builder: (BuildContext buildContext) {
-                          //   //       return const FilterSheet();
-                          //   //     });
-                          //   showModalBottomSheet(
-                          //     context: context,
-                          //     backgroundColor: Colors.white,
-                          //     shape: const RoundedRectangleBorder(
-                          //         borderRadius: BorderRadius.only(
-                          //             topLeft: Radius.circular(20),
-                          //             topRight: Radius.circular(20))),
-                          //     isScrollControlled: true,
-                          //     builder: (context) {
-                          //       return const FilterSheet();
-                          //     },
-                          //   );
-                          // },
+                        FxSpacing.width(4),
+                        FxContainer(
+                          paddingAll: 12,
+                          borderRadiusAll: 4,
                           onTap: () async {
                             var data = await showModalBottomSheet(
                                 context: context,
@@ -787,39 +817,135 @@ class _SearchScreenState extends State<SearchScreen>
                                 controller.allattractionList = [data];
                               });
                             }
-                            // showModalBottomSheet(
-                            //   context: context,
-                            //   backgroundColor: Colors.white,
-                            //   shape: const RoundedRectangleBorder(
-                            //       borderRadius: BorderRadius.only(
-                            //           topLeft: Radius.circular(20),
-                            //           topRight: Radius.circular(20))),
-                            //   isScrollControlled: true,
-                            //   builder: (context) {
-                            //     return const CategoriesBottomSheet();
-                            //   },
-                            // );
                           },
-                          child: Container(
-                            height: 30,
-                            width: 80,
-                            decoration: BoxDecoration(
-                                color: const Color(0xff1529e8),
-                                borderRadius: BorderRadius.circular(10)),
-                            child: Center(
-                              child: FxText.bodySmall(
-                                'Filter',
-                                fontWeight: 300,
-                                color: Colors.white,
-                                // color: theme.colorScheme.onPrimary,
-                              ),
-                            ),
+                          color: const Color(0xff1529e8).withAlpha(40),
+                          child: const Icon(
+                            FeatherIcons.sliders,
+                            color: Color(0xff1529e8),
+                            size: 20,
                           ),
                         ),
                       ],
                     ),
-
+                    // Text(
+                    //   widget.place.toString(),
+                    //   style: const TextStyle(color: Colors.red),
+                    // ),
                     FxSpacing.height(20),
+                    //btn
+                    // Row(
+                    //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    //   crossAxisAlignment: CrossAxisAlignment.center,
+                    //   children: [
+                    //     GestureDetector(
+                    //       onTap: () async {
+                    //         var data = await showModalBottomSheet(
+                    //             context: context,
+                    //             builder: (BuildContext buildContext) {
+                    //               return CategoriesBottomSheet(
+                    //                 categoryplace: widget.place,
+                    //               );
+                    //             });
+                    //         if (data != null) {
+                    //           setState(() {
+                    //             controller.allattractionList = [];
+
+                    //             controller.allattractionList = [data];
+                    //           });
+                    //         }
+                    //         // showModalBottomSheet(
+                    //         //   context: context,
+                    //         //   backgroundColor: Colors.white,
+                    //         //   shape: const RoundedRectangleBorder(
+                    //         //       borderRadius: BorderRadius.only(
+                    //         //           topLeft: Radiaus.circular(20),
+                    //         //           topRight: Radius.circular(20))),
+                    //         //   isScrollControlled: true,
+                    //         //   builder: (context) {
+                    //         //     return const CategoriesBottomSheet();
+                    //         //   },
+                    //         // );
+                    //       },
+                    //       child: FxContainer(
+                    //         borderRadiusAll: 10,
+                    //         // padding: FxSpacing.xy(8, 4),
+                    //         padding: FxSpacing.xy(6, 9),
+                    //         color: const Color(0xff1529e8),
+                    //         child: FxText.bodySmall(
+                    //           'Categories',
+                    //           fontWeight: 300,
+                    //           color: Colors.white,
+                    //           // color: theme.colorScheme.onPrimary,
+                    //         ),
+                    //       ),
+                    //     ),
+                    //     GestureDetector(
+                    //       // onTap: () {
+                    //       //   // showModalBottomSheet(
+                    //       //   //     context: context,
+                    //       //   //     builder: (BuildContext buildContext) {
+                    //       //   //       return const FilterSheet();
+                    //       //   //     });
+                    //       //   showModalBottomSheet(
+                    //       //     context: context,
+                    //       //     backgroundColor: Colors.white,
+                    //       //     shape: const RoundedRectangleBorder(
+                    //       //         borderRadius: BorderRadius.only(
+                    //       //             topLeft: Radius.circular(20),
+                    //       //             topRight: Radius.circular(20))),
+                    //       //     isScrollControlled: true,
+                    //       //     builder: (context) {
+                    //       //       return const FilterSheet();
+                    //       //     },
+                    //       //   );
+                    //       // },
+                    //       onTap: () async {
+                    //         var data = await showModalBottomSheet(
+                    //             context: context,
+                    //             builder: (BuildContext buildContext) {
+                    //               return FilterSheet(
+                    //                 categoryplace: widget.place,
+                    //               );
+                    //             });
+                    //         if (data != null) {
+                    //           setState(() {
+                    //             controller.allattractionList = [];
+                    //             controller.allattractionList = [data];
+                    //           });
+                    //         }
+                    //         // showModalBottomSheet(
+                    //         //   context: context,
+                    //         //   backgroundColor: Colors.white,
+                    //         //   shape: const RoundedRectangleBorder(
+                    //         //       borderRadius: BorderRadius.only(
+                    //         //           topLeft: Radius.circular(20),
+                    //         //           topRight: Radius.circular(20))),
+                    //         //   isScrollControlled: true,
+                    //         //   builder: (context) {
+                    //         //     return const CategoriesBottomSheet();
+                    //         //   },
+                    //         // );
+                    //       },
+                    //       child: Container(
+                    //         height: 30,
+                    //         width: 80,
+                    //         decoration: BoxDecoration(
+                    //             color: const Color(0xff1529e8),
+                    //             borderRadius: BorderRadius.circular(10)),
+                    //         child: Center(
+                    //           child: FxText.bodySmall(
+                    //             'Filter',
+                    //             fontWeight: 300,
+                    //             color: Colors.white,
+                    //             // color: theme.colorScheme.onPrimary,
+                    //           ),
+                    //         ),
+                    //       ),
+                    //     ),
+                    //   ],
+                    // ),
+
+                    // FxSpacing.height(20),
                     //content
                     SingleChildScrollView(
                       scrollDirection: Axis.vertical,
