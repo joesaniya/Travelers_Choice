@@ -410,12 +410,17 @@ class _ActivityScreenState extends State<ActivityScreen>
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
                               FxText.bodySmall('per person*'),
-                              FxText.bodyLarge(
-                                '${((widget.excursions[i].lowPrice * conversionRate) as double).toStringAsFixed(2)} $currencySymbol',
+                              widget.excursions[i].adultPrice == null
+                                  ? FxText.bodyLarge(
+                                      '0',
+                                      fontWeight: 900,
+                                    )
+                                  : FxText.bodyLarge(
+                                      '${((widget.excursions[i].lowPrice * conversionRate) as double).toStringAsFixed(2)} $currencySymbol',
 
-                                // '${widget.excursions[i].lowPrice.toString()} AED',
-                                fontWeight: 900,
-                              )
+                                      // '${widget.excursions[i].lowPrice.toString()} AED',
+                                      fontWeight: 900,
+                                    )
                             ],
                           ),
                           !controller.selectedtour
@@ -1132,7 +1137,7 @@ class _ActivityScreenState extends State<ActivityScreen>
             onTap: () {
               controller.goBack();
             },
-            child: Icon(
+            child: const Icon(
               FeatherIcons.chevronLeft,
               size: 20,
               // color: theme.colorScheme.onBackground,

@@ -522,7 +522,8 @@ class Activity {
   List<PrivateTransfers>? privateTransfers;
   String? transferType = 'private';
 
-  int? sharedTransferCost;
+  // int? sharedTransferCost;
+  dynamic? sharedTransferCost;
   dynamic? lowPrice;
   String? selectedDate;
 

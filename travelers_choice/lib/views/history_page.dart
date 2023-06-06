@@ -608,6 +608,105 @@ class _HistoryScreenState extends State<HistoryScreen>
     return SizedBox(
       child: ListView(
         children: <Widget>[
+          Row(
+            children: [
+              Expanded(
+                child: Container(
+                  // padding: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    border: Border.all(width: 1, color: Colors.grey.shade300),
+                    boxShadow: [
+                      BoxShadow(
+                        // color: Colors.grey.shade400,
+                        color: const Color(0xff1529e8).withOpacity(0.4),
+                        blurRadius: 2,
+                        offset: const Offset(0, 3),
+                      ),
+                    ],
+                  ),
+                  child: TextFormField(
+                    style: FxTextStyle.bodyMedium(),
+                    controller: controller.SearchTE,
+                    cursorColor: theme.colorScheme.primary,
+
+                    //2
+                    onChanged: (value) {},
+
+                    decoration: InputDecoration(
+                      hintText: "Search your Order ...",
+                      hintStyle: FxTextStyle.bodySmall(
+                          color: theme.colorScheme.onBackground),
+                      border: const OutlineInputBorder(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(4),
+                          ),
+                          borderSide: BorderSide.none),
+                      enabledBorder: const OutlineInputBorder(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(4),
+                          ),
+                          borderSide: BorderSide.none),
+                      focusedBorder: const OutlineInputBorder(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(4),
+                          ),
+                          borderSide: BorderSide.none),
+                      filled: true,
+                      // fillColor: const Color(0xffcfd2ff),
+                      fillColor: theme.cardTheme.color,
+                      prefixIcon: Icon(
+                        FeatherIcons.search,
+                        size: 16,
+                        color: theme.colorScheme.onBackground.withAlpha(150),
+                      ),
+                      isDense: true,
+                    ),
+                    textCapitalization: TextCapitalization.sentences,
+                  ),
+                ),
+              ),
+              FxSpacing.width(4),
+              FxContainer(
+                paddingAll: 12,
+                borderRadiusAll: 4,
+                onTap: () async {
+                  var data = await showModalBottomSheet(
+                      context: context,
+                      builder: (BuildContext buildContext) {
+                        return const SortAllBooking();
+                      });
+                  setState(() {});
+                },
+                color: const Color(0xff1529e8).withAlpha(40),
+                child: const Icon(
+                  Iconsax.sort,
+                  color: Color(0xff1529e8),
+                  size: 20,
+                ),
+              ),
+              FxSpacing.width(4),
+              FxContainer(
+                paddingAll: 12,
+                borderRadiusAll: 4,
+                onTap: () async {
+                  var data = await showModalBottomSheet(
+                      context: context,
+                      builder: (BuildContext buildContext) {
+                        return const FilterAllBooking();
+                      });
+                  setState(() {});
+                },
+                color: const Color(0xff1529e8).withAlpha(40),
+                child: const Icon(
+                  FeatherIcons.sliders,
+                  color: Color(0xff1529e8),
+                  size: 20,
+                ),
+              ),
+            ],
+          ),
+          FxSpacing.height(20),
           _reservationsItem(),
           _reservationsItem(),
           _reservationsItem(),
@@ -646,132 +745,237 @@ class _HistoryScreenState extends State<HistoryScreen>
       // return const Text('Hotel History Screen',
       //     style: TextStyle(
       //         fontFamily: 'inter', fontWeight: FontWeight.w400, fontSize: 16));
-      return ListView.builder(
-        // itemCount: orderlength.length,
-        // itemCount: orders!.result!.totalOrders,
-        itemCount: orders!.result!.data!.length,
-        itemBuilder: (BuildContext context, int index) {
-          // log('Order Length history:${orderlength!.length}');
-          var date = orders!.result!.data![index].activities!.date;
-          var newDate = date!.toLocal().toString().substring(0, 10);
-          print(newDate);
-          return FxContainer(
-            margin: FxSpacing.bottom(20),
-            borderRadiusAll: 4,
-            color: Colors.white,
-            paddingAll: 12,
-            child: Row(
-              children: [
-                FxContainer(
-                  paddingAll: 0,
-                  borderRadiusAll: 4,
-                  height: MediaQuery.of(context).size.height * 0.11,
-                  width: MediaQuery.of(context).size.width * 0.2,
-                  clipBehavior: Clip.antiAliasWithSaveLayer,
-                  child: CachedNetworkImage(
-                      height: MediaQuery.of(context).size.height * 0.11,
-                      width: MediaQuery.of(context).size.width * 0.2,
-                      fit: BoxFit.cover,
-                      progressIndicatorBuilder: (context, url, progress) =>
-                          Center(
-                            child: CircularProgressIndicator(
-                              value: progress.progress,
-                            ),
-                          ),
-                      imageUrl:
-                          'https://secure.mytravellerschoice.com/public/images/hotels/images-1682593932493-438110354.jpg'
-                      // 'https://a.walletbot.online${orders!.result!.data![index].attraction!.images!.first}',
+      return Column(
+        children: [
+          Row(
+            children: [
+              Expanded(
+                child: Container(
+                  // padding: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    border: Border.all(width: 1, color: Colors.grey.shade300),
+                    boxShadow: [
+                      BoxShadow(
+                        // color: Colors.grey.shade400,
+                        color: const Color(0xff1529e8).withOpacity(0.4),
+                        blurRadius: 2,
+                        offset: const Offset(0, 3),
                       ),
-                ),
-                FxSpacing.width(10),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      FxText.titleMedium(
-                        'Nikki Beach Resort & Spa Dubai',
-                        fontWeight: 700,
-                      ),
-                      FxSpacing.height(8),
-                      FxText.bodyMedium(
-                        '7234.35 AED',
-                        fontWeight: 700,
-                      ),
-                      FxSpacing.height(8),
-                      // Row(
-                      //   // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      //   crossAxisAlignment: CrossAxisAlignment.start,
-                      //   children: [
-                      //     FxText.bodyMedium(
-                      //       'Selected Pax:',
-                      //       fontWeight: 600,
-                      //     ),
-                      //     FxSpacing.width(7),
-                      //     Expanded(
-                      //       child: FxContainer(
-                      //         padding: FxSpacing.fromLTRB(5, 6, 1, 6),
-                      //         color: const Color(0xff1529e8).withAlpha(40),
-                      //         child: FxText.bodyMedium(
-                      //             'Double Deleuxe with Bed and Breakfast',
-                      //             color: const Color(0xff1529e8),
-                      //             // color: customTheme.groceryPrimary,
-                      //             fontWeight: 500,
-                      //             letterSpacing: -0.2),
-                      //       ),
-                      //     )
-                      //   ],
-                      // ),
-                      // //total nength of stay
-                      // FxSpacing.height(8),
-                      // Row(
-                      //   // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      //   crossAxisAlignment: CrossAxisAlignment.start,
-                      //   children: [
-                      //     FxText.bodyMedium(
-                      //       'Total Length of Stay:',
-                      //       fontWeight: 600,
-                      //     ),
-                      //     FxSpacing.width(7),
-                      //     Expanded(
-                      //       child: FxContainer(
-                      //         padding: FxSpacing.fromLTRB(5, 6, 1, 6),
-                      //         color: const Color(0xff1529e8).withAlpha(40),
-                      //         child: FxText.bodyMedium('1 Night & 0 days',
-                      //             color: const Color(0xff1529e8),
-                      //             fontWeight: 500,
-                      //             letterSpacing: -0.2),
-                      //       ),
-                      //     )
-                      //   ],
-                      // ),
-
-                      // const SizedBox(
-                      //   height: 5,
-                      // ),
-                      Row(
-                        children: [
-                          Expanded(
-                            child: FxText.bodyMedium(
-                              "Check In: $newDate",
-                              fontWeight: 700,
-                            ),
-                          ),
-                          Expanded(
-                            child: FxText.bodyMedium(
-                              "Check Out: $newDate",
-                              fontWeight: 700,
-                            ),
-                          ),
-                        ],
-                      )
                     ],
                   ),
+                  child: TextFormField(
+                    style: FxTextStyle.bodyMedium(),
+                    controller: controller.SearchTE,
+                    cursorColor: theme.colorScheme.primary,
+
+                    //2
+                    onChanged: (value) {},
+
+                    decoration: InputDecoration(
+                      hintText: "Search your Order ...",
+                      hintStyle: FxTextStyle.bodySmall(
+                          color: theme.colorScheme.onBackground),
+                      border: const OutlineInputBorder(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(4),
+                          ),
+                          borderSide: BorderSide.none),
+                      enabledBorder: const OutlineInputBorder(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(4),
+                          ),
+                          borderSide: BorderSide.none),
+                      focusedBorder: const OutlineInputBorder(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(4),
+                          ),
+                          borderSide: BorderSide.none),
+                      filled: true,
+                      // fillColor: const Color(0xffcfd2ff),
+                      fillColor: theme.cardTheme.color,
+                      prefixIcon: Icon(
+                        FeatherIcons.search,
+                        size: 16,
+                        color: theme.colorScheme.onBackground.withAlpha(150),
+                      ),
+                      isDense: true,
+                    ),
+                    textCapitalization: TextCapitalization.sentences,
+                  ),
                 ),
-              ],
+              ),
+              FxSpacing.width(4),
+              FxContainer(
+                paddingAll: 12,
+                borderRadiusAll: 4,
+                onTap: () async {
+                  var data = await showModalBottomSheet(
+                      context: context,
+                      builder: (BuildContext buildContext) {
+                        return const SortAllBooking();
+                      });
+                  setState(() {});
+                },
+                color: const Color(0xff1529e8).withAlpha(40),
+                child: const Icon(
+                  Iconsax.sort,
+                  color: Color(0xff1529e8),
+                  size: 20,
+                ),
+              ),
+              FxSpacing.width(4),
+              FxContainer(
+                paddingAll: 12,
+                borderRadiusAll: 4,
+                onTap: () async {
+                  var data = await showModalBottomSheet(
+                      context: context,
+                      builder: (BuildContext buildContext) {
+                        return const FilterAllBooking();
+                      });
+                  setState(() {});
+                },
+                color: const Color(0xff1529e8).withAlpha(40),
+                child: const Icon(
+                  FeatherIcons.sliders,
+                  color: Color(0xff1529e8),
+                  size: 20,
+                ),
+              ),
+            ],
+          ),
+          FxSpacing.height(20),
+          Expanded(
+            child: ListView.builder(
+              // itemCount: orderlength.length,
+              // itemCount: orders!.result!.totalOrders,
+              itemCount: orders!.result!.data!.length,
+              itemBuilder: (BuildContext context, int index) {
+                // log('Order Length history:${orderlength!.length}');
+                var date = orders!.result!.data![index].activities!.date;
+                var newDate = date!.toLocal().toString().substring(0, 10);
+                print(newDate);
+                return FxContainer(
+                  margin: FxSpacing.bottom(20),
+                  borderRadiusAll: 4,
+                  color: Colors.white,
+                  paddingAll: 12,
+                  child: Row(
+                    children: [
+                      FxContainer(
+                        paddingAll: 0,
+                        borderRadiusAll: 4,
+                        height: MediaQuery.of(context).size.height * 0.11,
+                        width: MediaQuery.of(context).size.width * 0.2,
+                        clipBehavior: Clip.antiAliasWithSaveLayer,
+                        child: CachedNetworkImage(
+                            height: MediaQuery.of(context).size.height * 0.11,
+                            width: MediaQuery.of(context).size.width * 0.2,
+                            fit: BoxFit.cover,
+                            progressIndicatorBuilder:
+                                (context, url, progress) => Center(
+                                      child: CircularProgressIndicator(
+                                        value: progress.progress,
+                                      ),
+                                    ),
+                            imageUrl:
+                                'https://secure.mytravellerschoice.com/public/images/hotels/images-1682593932493-438110354.jpg'
+                            // 'https://a.walletbot.online${orders!.result!.data![index].attraction!.images!.first}',
+                            ),
+                      ),
+                      FxSpacing.width(10),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            FxText.titleMedium(
+                              'Nikki Beach Resort & Spa Dubai',
+                              fontWeight: 700,
+                            ),
+                            FxSpacing.height(8),
+                            FxText.bodyMedium(
+                              '7234.35 AED',
+                              fontWeight: 700,
+                            ),
+                            FxSpacing.height(8),
+                            // Row(
+                            //   // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            //   crossAxisAlignment: CrossAxisAlignment.start,
+                            //   children: [
+                            //     FxText.bodyMedium(
+                            //       'Selected Pax:',
+                            //       fontWeight: 600,
+                            //     ),
+                            //     FxSpacing.width(7),
+                            //     Expanded(
+                            //       child: FxContainer(
+                            //         padding: FxSpacing.fromLTRB(5, 6, 1, 6),
+                            //         color: const Color(0xff1529e8).withAlpha(40),
+                            //         child: FxText.bodyMedium(
+                            //             'Double Deleuxe with Bed and Breakfast',
+                            //             color: const Color(0xff1529e8),
+                            //             // color: customTheme.groceryPrimary,
+                            //             fontWeight: 500,
+                            //             letterSpacing: -0.2),
+                            //       ),
+                            //     )
+                            //   ],
+                            // ),
+                            // //total nength of stay
+                            // FxSpacing.height(8),
+                            // Row(
+                            //   // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            //   crossAxisAlignment: CrossAxisAlignment.start,
+                            //   children: [
+                            //     FxText.bodyMedium(
+                            //       'Total Length of Stay:',
+                            //       fontWeight: 600,
+                            //     ),
+                            //     FxSpacing.width(7),
+                            //     Expanded(
+                            //       child: FxContainer(
+                            //         padding: FxSpacing.fromLTRB(5, 6, 1, 6),
+                            //         color: const Color(0xff1529e8).withAlpha(40),
+                            //         child: FxText.bodyMedium('1 Night & 0 days',
+                            //             color: const Color(0xff1529e8),
+                            //             fontWeight: 500,
+                            //             letterSpacing: -0.2),
+                            //       ),
+                            //     )
+                            //   ],
+                            // ),
+
+                            // const SizedBox(
+                            //   height: 5,
+                            // ),
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: FxText.bodyMedium(
+                                    "Check In: $newDate",
+                                    fontWeight: 700,
+                                  ),
+                                ),
+                                Expanded(
+                                  child: FxText.bodyMedium(
+                                    "Check Out: $newDate",
+                                    fontWeight: 700,
+                                  ),
+                                ),
+                              ],
+                            )
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              },
             ),
-          );
-        },
+          ),
+        ],
       );
     }
   }

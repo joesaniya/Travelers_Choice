@@ -198,11 +198,14 @@ class ActivityController extends FxController {
     List<Activity> value =
         person_count.where((element) => element.sId == tour.sId).toList();
     if (value.isEmpty) {
-      return tour.adultPrice!.toDouble();
+      // return tour.adultPrice!.toDouble();//without transfer
       // return tour.adultPrice == null
       //     ? tour.privateTransfers!.first.price
       //     : tour.adultPrice!.toDouble();//added transfer fee+total
       // : tour.privateTransfers!.first.price;
+      return tour.adultPrice == null
+          ? tour.privateTransfers!.first.price
+          : tour.adultPrice!.toDouble();
     } else {
       return (value[0].adultCount * (value[0].adultPrice ?? 1.0)) +
           (value[0].childCount * (value[0].childPrice ?? 1.0)) +

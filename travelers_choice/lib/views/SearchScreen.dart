@@ -999,7 +999,8 @@ class _SearchScreenState extends State<SearchScreen>
             // borderRadiusAll: 4,
             // // paddingAll: 16,
             // height: 120,
-            height: 132,
+            height:150,
+            // height: 132,
             decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: const BorderRadius.all(Radius.circular(10)),
@@ -1200,6 +1201,59 @@ class _SearchScreenState extends State<SearchScreen>
                               fontWeight: 700,
                             ),
                           ),
+                          // FxSpacing.height(6),
+                          Row(
+                            children: [
+                              const Icon(
+                                Iconsax.location,
+                                color: Colors.black,
+                                // color: theme.colorScheme.onPrimary,
+                                size: 12,
+                              ),
+                              FxSpacing.width(4),
+                              FxText.labelLarge(
+                                // '\$' + product.price.toString(),
+                                product.destination.name[0].toUpperCase() +
+                                    product.destination.name
+                                        .substring(1)
+                                        .toLowerCase(),
+
+                                // product.price.toString() + " " + "AED",
+                                // "\$" + product.price.toString() + "/hour",
+                                // fontWeight: 700,
+                              ),
+                            ],
+                          ),
+
+                          // FxContainer(
+                          //   borderRadiusAll: 8,
+                          //   // padding: FxSpacing.xy(8, 4),
+                          //   // color: theme.colorScheme.primary,
+                          //   // color: Colors.yellow.shade400,
+                          //   color: Colors.white,
+                          //   child: Row(
+                          //     children: [
+                          //       const Icon(
+                          //         Iconsax.location,
+                          //         color: Colors.black,
+                          //         // color: theme.colorScheme.onPrimary,
+                          //         size: 12,
+                          //       ),
+                          //       FxSpacing.width(4),
+                          //       FxText.labelLarge(
+                          //         // '\$' + product.price.toString(),
+                          //         product.destination.name[0].toUpperCase() +
+                          //             product.destination.name
+                          //                 .substring(1)
+                          //                 .toLowerCase(),
+
+                          //         // product.price.toString() + " " + "AED",
+                          //         // "\$" + product.price.toString() + "/hour",
+                          //         // fontWeight: 700,
+                          //       ),
+                          //     ],
+                          //   ),
+                          // ),
                           FxSpacing.height(6),
                           Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,

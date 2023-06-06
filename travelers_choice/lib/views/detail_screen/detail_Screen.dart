@@ -204,7 +204,7 @@ class _DetailScreenState extends State<DetailScreen>
 
                 elevation: 0,
                 child: FxText.bodyMedium(
-                  'View Tours',
+                  'View package',
                   color: Colors.white,
                   // color: customTheme.estateOnPrimary,
                   fontWeight: 700,
