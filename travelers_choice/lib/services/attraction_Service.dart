@@ -48,6 +48,7 @@ class AttractionService {
 
   //search
   Future<AllattractionModal?> getSearchAttraction(place) async {
+    log('message att:$place');
     try {
       var response = await http.get(
         Uri.parse(

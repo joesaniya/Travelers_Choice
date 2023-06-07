@@ -39,7 +39,7 @@ class AttractionController {
         log('controllergetsearch');
         allattractionList.add(data);
         // isCountryListLoading = false;
-        
+       
         return data; //removed true
       } else {
         log('null data');
@@ -49,7 +49,6 @@ class AttractionController {
       rethrow;
     }
   }
-
 
   //searchcattegories
 
@@ -75,9 +74,9 @@ class AttractionController {
     }
   }
 
-
   //getCategories
-  List<List<SearchCategoriesModal>?> categoriesList = <List<SearchCategoriesModal>?>[];
+  List<List<SearchCategoriesModal>?> categoriesList =
+      <List<SearchCategoriesModal>?>[];
   bool isAllCategoriesListLoading = true;
   Future<List<SearchCategoriesModal>?> getAllcategoriesList() async {
     // isCountryListLoading = true;

@@ -56,6 +56,27 @@ class _HistoryScreenState extends State<HistoryScreen>
     //         width: 0));
   }
 
+  Future<bool> _onWillPop() async {
+    return (await showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: const Text('Are you sure?'),
+            content: const Text('Do you want to exit the App'),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(false),
+                child: const Text('No'),
+              ),
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(true),
+                child: const Text('Yes'),
+              ),
+            ],
+          ),
+        )) ??
+        false;
+  }
+
   fetchData() {
     Future.delayed(Duration.zero, () async {
       await getOrder(context).then((value) {
@@ -1169,79 +1190,82 @@ class _HistoryScreenState extends State<HistoryScreen>
     //         ),
     //       ));
     // }else {
-    return Scaffold(
-        backgroundColor: const Color(0xfff5f5f5),
-        appBar: AppBar(
-          automaticallyImplyLeading: false,
-          title: FxText.titleMedium(
-            'History',
-            fontWeight: 700,
-          ),
-          centerTitle: true,
+    return WillPopScope(
+      onWillPop: _onWillPop,
+      child: Scaffold(
           backgroundColor: const Color(0xfff5f5f5),
-          bottom: TabBar(
-            labelColor: Colors.black,
-            isScrollable: true,
-            unselectedLabelColor: Colors.black,
-            controller: controller.tabController,
-            indicatorSize: TabBarIndicatorSize.label,
-            indicatorColor: const Color(0xff1529e8),
-            // BoxDecoration(
-            //     color: Color(0xff1529e8),
-            //     borderRadius: BorderRadius.circular(25)
-            // ),
-
-            // labelStyle: TextStyle(color: Colors.white) ,
-            //   unselectedLabelColor: Colors.black,
-            tabs: const [
-              Tab(
-                  // text: "credits",
+          appBar: AppBar(
+            automaticallyImplyLeading: false,
+            title: FxText.titleMedium(
+              'History',
+              fontWeight: 700,
+            ),
+            centerTitle: true,
+            backgroundColor: const Color(0xfff5f5f5),
+            bottom: TabBar(
+              labelColor: Colors.black,
+              isScrollable: true,
+              unselectedLabelColor: Colors.black,
+              controller: controller.tabController,
+              indicatorSize: TabBarIndicatorSize.label,
+              indicatorColor: const Color(0xff1529e8),
+              // BoxDecoration(
+              //     color: Color(0xff1529e8),
+              //     borderRadius: BorderRadius.circular(25)
+              // ),
+    
+              // labelStyle: TextStyle(color: Colors.white) ,
+              //   unselectedLabelColor: Colors.black,
+              tabs: const [
+                Tab(
+                    // text: "credits",
+                    child: Text(
+                  "Attraction",
+                  style: TextStyle(fontSize: 16),
+                )),
+                Tab(
                   child: Text(
-                "Attraction",
-                style: TextStyle(fontSize: 16),
-              )),
-              Tab(
-                child: Text(
-                  "Visa",
-                  style: TextStyle(fontSize: 16),
+                    "Visa",
+                    style: TextStyle(fontSize: 16),
+                  ),
                 ),
-              ),
-              Tab(
-                child: Text(
-                  "Flight",
-                  style: TextStyle(fontSize: 16),
+                Tab(
+                  child: Text(
+                    "Flight",
+                    style: TextStyle(fontSize: 16),
+                  ),
                 ),
-              ),
-              Tab(
-                child: Text(
-                  "Hotel",
-                  style: TextStyle(fontSize: 16),
+                Tab(
+                  child: Text(
+                    "Hotel",
+                    style: TextStyle(fontSize: 16),
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-        ),
-        body: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
-          child: Column(
-            children: [
-              const SizedBox(
-                height: 10,
-              ),
-              Expanded(
-                child: TabBarView(
-                  controller: controller.tabController,
-                  children: [
-                    attractionList(), visaList(),
-                    // _buildflightList()
-                    flightList(),
-                    HotelList()
-                  ],
+          body: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+            child: Column(
+              children: [
+                const SizedBox(
+                  height: 10,
                 ),
-              ),
-              FxSpacing.height(60),
-            ],
-          ),
-        ));
+                Expanded(
+                  child: TabBarView(
+                    controller: controller.tabController,
+                    children: [
+                      attractionList(), visaList(),
+                      // _buildflightList()
+                      flightList(),
+                      HotelList()
+                    ],
+                  ),
+                ),
+                FxSpacing.height(60),
+              ],
+            ),
+          )),
+    );
   }
 }

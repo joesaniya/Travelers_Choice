@@ -67,6 +67,27 @@ class _NewCartState extends State<NewCart> with TickerProviderStateMixin {
     });
   }
 
+  Future<bool> _onWillPop() async {
+    return (await showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: const Text('Are you sure?'),
+            content: const Text('Do you want to exit the App'),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(false),
+                child: const Text('No'),
+              ),
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(true),
+                child: const Text('Yes'),
+              ),
+            ],
+          ),
+        )) ??
+        false;
+  }
+
   Widget _buildSingleProduct(Activity product) {
     String text = product.name!;
 
@@ -295,123 +316,127 @@ class _NewCartState extends State<NewCart> with TickerProviderStateMixin {
             )),
       );
     } else {
-      return Scaffold(
-          backgroundColor: const Color(0xfff5f5f5),
-          appBar: AppBar(
-            elevation: 0,
-            automaticallyImplyLeading: false,
-            title: FxText.titleMedium(
-              'Cart',
-              fontWeight: 700,
-            ),
-            centerTitle: true,
+      return WillPopScope(
+        onWillPop: _onWillPop,
+        child: Scaffold(
             backgroundColor: const Color(0xfff5f5f5),
-          ),
-          body: favouriteListCart.isEmpty
-              ? Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
-                      // Lottie.asset('assets/lottie/confirmation.json',
-                      //     height: 300, width: 300),
-                      Text('You have no cart itmes - start adding some item!',
-                          style: TextStyle(
-                              fontFamily: 'inter',
-                              fontWeight: FontWeight.w400,
-                              fontSize: 16))
-                    ],
-                  ),
-                )
-              : Column(
-                  children: [
-                    ListView.separated(
-                      scrollDirection: Axis.vertical,
-                      padding: FxSpacing.x(20),
-                      physics: const AlwaysScrollableScrollPhysics(),
-                      shrinkWrap: true,
-                      itemCount: favouriteListCart.length,
-                      separatorBuilder: (context, index) {
-                        return const SizedBox(
-                          height: 10,
-                        );
-                      },
-                      itemBuilder: (BuildContext context, int index) {
-                        return _buildSingleProduct(
-                            // widget.favouriteMeals.first.attractions.data.first
-                            favouriteListCart[index]);
-                      },
+            appBar: AppBar(
+              elevation: 0,
+              automaticallyImplyLeading: false,
+              title: FxText.titleMedium(
+                'Cart',
+                fontWeight: 700,
+              ),
+              centerTitle: true,
+              backgroundColor: const Color(0xfff5f5f5),
+            ),
+            body: favouriteListCart.isEmpty
+                ? Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: const [
+                        // Lottie.asset('assets/lottie/confirmation.json',
+                        //     height: 300, width: 300),
+                        Text('You have no cart itmes - start adding some item!',
+                            style: TextStyle(
+                                fontFamily: 'inter',
+                                fontWeight: FontWeight.w400,
+                                fontSize: 16))
+                      ],
                     ),
-                    // const SizedBox(
-                    //   height: 50,
-                    // ),
-                    Container(
-                      padding: FxSpacing.xy(12, 8),
-                      child: PhysicalModel(
-                        color: theme.cardTheme.color!.withAlpha(200),
-                        elevation: 12,
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(32)),
-                        shadowColor:
-                            theme.colorScheme.onBackground.withAlpha(12),
-                        shape: BoxShape.rectangle,
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: theme.cardTheme.color!.withAlpha(200),
-                            borderRadius:
-                                const BorderRadius.all(Radius.circular(32)),
-                          ),
-                          padding: FxSpacing.xy(16, 12),
-                          child: Column(
-                            children: <Widget>[
-                              FadeTransition(
-                                opacity: controller.fadeAnimation,
-                                child: FxButton.block(
-                                    onPressed: () {
-                                      final grandTotal = favouriteListCart
-                                          .map((e) => e.grandTotal)
-                                          .reduce((value, element) =>
-                                              value + element);
+                  )
+                : Column(
+                    children: [
+                      ListView.separated(
+                        scrollDirection: Axis.vertical,
+                        padding: FxSpacing.x(20),
+                        physics: const AlwaysScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        itemCount: favouriteListCart.length,
+                        separatorBuilder: (context, index) {
+                          return const SizedBox(
+                            height: 10,
+                          );
+                        },
+                        itemBuilder: (BuildContext context, int index) {
+                          return _buildSingleProduct(
+                              // widget.favouriteMeals.first.attractions.data.first
+                              favouriteListCart[index]);
+                        },
+                      ),
+                      // const SizedBox(
+                      //   height: 50,
+                      // ),
+                      Container(
+                        padding: FxSpacing.xy(12, 8),
+                        child: PhysicalModel(
+                          color: theme.cardTheme.color!.withAlpha(200),
+                          elevation: 12,
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(32)),
+                          shadowColor:
+                              theme.colorScheme.onBackground.withAlpha(12),
+                          shape: BoxShape.rectangle,
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: theme.cardTheme.color!.withAlpha(200),
+                              borderRadius:
+                                  const BorderRadius.all(Radius.circular(32)),
+                            ),
+                            padding: FxSpacing.xy(16, 12),
+                            child: Column(
+                              children: <Widget>[
+                                FadeTransition(
+                                  opacity: controller.fadeAnimation,
+                                  child: FxButton.block(
+                                      onPressed: () {
+                                        final grandTotal = favouriteListCart
+                                            .map((e) => e.grandTotal)
+                                            .reduce((value, element) =>
+                                                value + element);
 
-                                      controller.goToCheckout(
-                                          favouriteListCart, grandTotal);
-                                    },
-                                    backgroundColor: const Color(0xff1529e8),
-                                    // backgroundColor: theme.colorScheme.primary,
-                                    elevation: 0,
-                                    borderRadiusAll: 4,
-                                    child: Row(
-                                      children: [
-                                        SlideTransition(
-                                          position: controller.animation,
-                                          child: Image(
-                                            height: 22,
-                                            width: 22,
-                                            color: theme.colorScheme.onPrimary,
-                                            image: const AssetImage(
-                                                'assets/images/apps/shopping2/icons/clear_cart_outline.png'),
-                                          ),
-                                        ),
-                                        Expanded(
-                                          child: Center(
-                                            child: FxText.bodyMedium(
-                                              'Checkout',
-                                              fontWeight: 600,
+                                        controller.goToCheckout(
+                                            favouriteListCart, grandTotal);
+                                      },
+                                      backgroundColor: const Color(0xff1529e8),
+                                      // backgroundColor: theme.colorScheme.primary,
+                                      elevation: 0,
+                                      borderRadiusAll: 4,
+                                      child: Row(
+                                        children: [
+                                          SlideTransition(
+                                            position: controller.animation,
+                                            child: Image(
+                                              height: 22,
+                                              width: 22,
                                               color:
                                                   theme.colorScheme.onPrimary,
+                                              image: const AssetImage(
+                                                  'assets/images/apps/shopping2/icons/clear_cart_outline.png'),
                                             ),
                                           ),
-                                        ),
-                                      ],
-                                    )),
-                              ),
-                            ],
+                                          Expanded(
+                                            child: Center(
+                                              child: FxText.bodyMedium(
+                                                'Checkout',
+                                                fontWeight: 600,
+                                                color:
+                                                    theme.colorScheme.onPrimary,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      )),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                    FxSpacing.height(60),
-                  ],
-                ));
+                      FxSpacing.height(60),
+                    ],
+                  )),
+      );
     }
   }
 }

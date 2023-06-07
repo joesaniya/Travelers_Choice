@@ -21,10 +21,15 @@ class SearchScreen extends StatefulWidget {
   // List<Datum> searchdata;
   // final BuildContext rootContext;
   String? place;
+  String? placeId;
   String? currencySymbol;
   double? conversionRate;
   SearchScreen(
-      {super.key, required this.place, this.currencySymbol, this.conversionRate
+      {super.key,
+      required this.place,
+      this.placeId,
+      this.currencySymbol,
+      this.conversionRate
       // required this.searchdata
       });
 
@@ -74,6 +79,7 @@ class _SearchScreenState extends State<SearchScreen>
       // Destination place
       String? place) {
     log('getAttraction function called');
+    log('plae:$place');
     Future.delayed(Duration.zero, () async {
       // log('get${place.name}');
       await AttractionController().getSearchattractionList(place).then((value) {
@@ -149,13 +155,15 @@ class _SearchScreenState extends State<SearchScreen>
   @override
   void initState() {
     super.initState();
+    log('Place Id:${widget.placeId}');
     log('Currency SymbolSearch:${widget.currencySymbol}');
     log('RateSearch:${widget.conversionRate}');
     controller = FxControllerStore.put(HomeSearchController(this));
     // log('${widget.place.name}Place Search1');
     temp = [];
     getAttraction(widget.place);
-    // log('${widget.place}Place Search2');
+    // getAttraction(widget.placeId);
+    log('${widget.place}Place Search2');
 
     theme = AppTheme.shoppingTheme;
     theme1 = AppTheme.learningTheme;
@@ -999,7 +1007,7 @@ class _SearchScreenState extends State<SearchScreen>
             // borderRadiusAll: 4,
             // // paddingAll: 16,
             // height: 120,
-            height:150,
+            height: 150,
             // height: 132,
             decoration: BoxDecoration(
                 color: Colors.white,

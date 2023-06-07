@@ -67,6 +67,26 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       });
     });
   }
+Future<bool> _onWillPop() async {
+    return (await showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: const Text('Are you sure?'),
+            content: const Text('Do you want to exit the App'),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(false),
+                child: const Text('No'),
+              ),
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(true),
+                child: const Text('Yes'),
+              ),
+            ],
+          ),
+        )) ??
+        false;
+  }
 
   getVisa(BuildContext context) async {
     await VisaService().getVisaCountry();
@@ -806,7 +826,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         return const Scaffold(body: Center(child: Text("No Data found")));
       } else {
         return WillPopScope(
-          onWillPop: () => controller.onWillPop(),
+          // onWillPop: () => controller.onWillPop(),
+          onWillPop: _onWillPop,
           child: Scaffold(
             backgroundColor: const Color(0xfff5f5f5),
             body: ListView(

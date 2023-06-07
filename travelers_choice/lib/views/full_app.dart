@@ -55,27 +55,6 @@ class _FullAppState extends State<FullApp> with SingleTickerProviderStateMixin {
     return tabs;
   }
 
-  Future<bool> _onWillPop() async {
-    return (await showDialog(
-          context: context,
-          builder: (context) => AlertDialog(
-            title: const Text('Are you sure?'),
-            content: const Text('Do you want to exit the App'),
-            actions: <Widget>[
-              TextButton(
-                onPressed: () => Navigator.of(context).pop(false),
-                child: const Text('No'),
-              ),
-              TextButton(
-                onPressed: () => Navigator.of(context).pop(true),
-                child: const Text('Yes'),
-              ),
-            ],
-          ),
-        )) ??
-        false;
-  }
-
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -83,126 +62,121 @@ class _FullAppState extends State<FullApp> with SingleTickerProviderStateMixin {
         controller: controller,
         builder: (controller) {
           // return _buildItem();
-          return WillPopScope(
-            onWillPop: _onWillPop,
-            child: Scaffold(
-              backgroundColor: const Color(0xfff5f5f5),
-              // body: Column(
-              //   children: [
-              //     Expanded(
-              //       child: TabBarView(
-              //         controller: controller.tabController,
-              //         children: <Widget>[
-              //           HomeScreen(),
-              //           // HomeScreen(size: size),
-              //           Text('home'),
-              //           Text('home'),
-              //           Text('home'),
-              //         ],
-              //       ),
-              //     ),
-              //     FxContainer(
-              //       bordered: true,
-              //       enableBorderRadius: false,
-              //       border: Border(
-              //           top: BorderSide(
-              //               color: theme.dividerColor,
-              //               width: 1,
-              //               style: BorderStyle.solid)),
-              //       padding: FxSpacing.xy(12, 16),
-              //       color: theme.scaffoldBackgroundColor,
-              //       child: TabBar(
-              //         controller: controller.tabController,
-              //         indicator: FxTabIndicator(
-              //             indicatorColor: theme.colorScheme.primary,
-              //             indicatorHeight: 3,
-              //             radius: 3,
-              //             indicatorStyle: FxTabIndicatorStyle.rectangle,
-              //             yOffset: -18),
-              //         indicatorSize: TabBarIndicatorSize.tab,
-              //         indicatorColor: theme.colorScheme.primary,
-              //         tabs: buildTab(),
-              //       ),
-              //     )
-              //   ],
-              // ),
+          return Scaffold(
+            backgroundColor: const Color(0xfff5f5f5),
+            // body: Column(
+            //   children: [
+            //     Expanded(
+            //       child: TabBarView(
+            //         controller: controller.tabController,
+            //         children: <Widget>[
+            //           HomeScreen(),
+            //           // HomeScreen(size: size),
+            //           Text('home'),
+            //           Text('home'),
+            //           Text('home'),
+            //         ],
+            //       ),
+            //     ),
+            //     FxContainer(
+            //       bordered: true,
+            //       enableBorderRadius: false,
+            //       border: Border(
+            //           top: BorderSide(
+            //               color: theme.dividerColor,
+            //               width: 1,
+            //               style: BorderStyle.solid)),
+            //       padding: FxSpacing.xy(12, 16),
+            //       color: theme.scaffoldBackgroundColor,
+            //       child: TabBar(
+            //         controller: controller.tabController,
+            //         indicator: FxTabIndicator(
+            //             indicatorColor: theme.colorScheme.primary,
+            //             indicatorHeight: 3,
+            //             radius: 3,
+            //             indicatorStyle: FxTabIndicatorStyle.rectangle,
+            //             yOffset: -18),
+            //         indicatorSize: TabBarIndicatorSize.tab,
+            //         indicatorColor: theme.colorScheme.primary,
+            //         tabs: buildTab(),
+            //       ),
+            //     )
+            //   ],
+            // ),
 
-              //crt
-              body: Stack(
-                children: [
-                  TabBarView(
-                    controller: controller.tabController,
-                    children: <Widget>[
-                      HomeScreen(widget.cartMeal),
-                      // HomeScreen(size: size),
+            //crt
+            body: Stack(
+              children: [
+                TabBarView(
+                  controller: controller.tabController,
+                  children: <Widget>[
+                    HomeScreen(widget.cartMeal),
+                    // HomeScreen(size: size),
 
-                      // const Center(child: Text('Saved')),
-                      SavedScreen(widget.favouriteMeal),
-                      NewCart(widget.cartMeal),
-                      const HistoryScreen(),
-                      // CartScreen(),
-                      const ProfileScreen()
-                    ],
-                  ),
-                  Positioned(
-                    bottom: 0,
-                    left: 0,
-                    right: 0,
-                    child: Container(
-                      padding: FxSpacing.xy(12, 8),
-                      child: PhysicalModel(
-                        color: theme.cardTheme.color!.withAlpha(200),
-                        elevation: 12,
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(32)),
-                        shadowColor:
-                            theme.colorScheme.onBackground.withAlpha(12),
-                        shape: BoxShape.rectangle,
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: theme.cardTheme.color!.withAlpha(200),
-                            borderRadius:
-                                const BorderRadius.all(Radius.circular(32)),
-                          ),
-                          padding: FxSpacing.xy(16, 12),
-                          child: Row(
-                            children: <Widget>[
-                              singleItem(
-                                  index: 0,
-                                  iconData: FeatherIcons.search,
-                                  activeIconData: FeatherIcons.search,
-                                  title: "search"),
-                              singleItem(
-                                  index: 1,
-                                  iconData: FeatherIcons.heart,
-                                  activeIconData: FeatherIcons.heart,
-                                  title: "Saved"),
-                              singleItem(
-                                  index: 2,
-                                  activeIconData: FeatherIcons.shoppingBag,
-                                  iconData: FeatherIcons.shoppingBag,
-                                  title: "Cart"),
-                              singleItem(
-                                  index: 3,
-                                  // activeIconData: Icons.luggage,
-                                  // iconData: Icons.luggage,
-                                  activeIconData: FeatherIcons.clock,
-                                  iconData: FeatherIcons.clock,
-                                  title: "History"),
-                              singleItem(
-                                  index: 4,
-                                  iconData: FeatherIcons.user,
-                                  activeIconData: FeatherIcons.user,
-                                  title: "Profile"),
-                              Expanded(child: Container())
-                            ],
-                          ),
+                    // const Center(child: Text('Saved')),
+                    SavedScreen(widget.favouriteMeal),
+                    NewCart(widget.cartMeal),
+                    const HistoryScreen(),
+                    // CartScreen(),
+                    const ProfileScreen()
+                  ],
+                ),
+                Positioned(
+                  bottom: 0,
+                  left: 0,
+                  right: 0,
+                  child: Container(
+                    padding: FxSpacing.xy(12, 8),
+                    child: PhysicalModel(
+                      color: theme.cardTheme.color!.withAlpha(200),
+                      elevation: 12,
+                      borderRadius: const BorderRadius.all(Radius.circular(32)),
+                      shadowColor: theme.colorScheme.onBackground.withAlpha(12),
+                      shape: BoxShape.rectangle,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: theme.cardTheme.color!.withAlpha(200),
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(32)),
+                        ),
+                        padding: FxSpacing.xy(16, 12),
+                        child: Row(
+                          children: <Widget>[
+                            singleItem(
+                                index: 0,
+                                iconData: FeatherIcons.search,
+                                activeIconData: FeatherIcons.search,
+                                title: "search"),
+                            singleItem(
+                                index: 1,
+                                iconData: FeatherIcons.heart,
+                                activeIconData: FeatherIcons.heart,
+                                title: "Saved"),
+                            singleItem(
+                                index: 2,
+                                activeIconData: FeatherIcons.shoppingBag,
+                                iconData: FeatherIcons.shoppingBag,
+                                title: "Cart"),
+                            singleItem(
+                                index: 3,
+                                // activeIconData: Icons.luggage,
+                                // iconData: Icons.luggage,
+                                activeIconData: FeatherIcons.clock,
+                                iconData: FeatherIcons.clock,
+                                title: "History"),
+                            singleItem(
+                                index: 4,
+                                iconData: FeatherIcons.user,
+                                activeIconData: FeatherIcons.user,
+                                title: "Profile"),
+                            Expanded(child: Container())
+                          ],
                         ),
                       ),
                     ),
-                  )
-                ],
-              ),
+                  ),
+                )
+              ],
             ),
           );
         });

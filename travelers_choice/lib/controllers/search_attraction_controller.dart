@@ -199,6 +199,7 @@ class SearchAttractionController extends FxController {
             pageBuilder: (_, __, ___) => SearchScreen(
                   // place: Destination.fromJson(jsonDecode(selectedCountry)),
                   place: selectedCountry,
+                  placeId: keyid,
                   currencySymbol: code,
                   conversionRate: Currencyvalue,
                   // currencySymbol: currencySymbol,

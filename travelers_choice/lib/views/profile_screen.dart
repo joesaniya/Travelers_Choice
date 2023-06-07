@@ -43,6 +43,27 @@ class _ProfileScreenState extends State<ProfileScreen> {
     });
   }
 
+  Future<bool> _onWillPop() async {
+    return (await showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: const Text('Are you sure?'),
+            content: const Text('Do you want to exit the App'),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(false),
+                child: const Text('No'),
+              ),
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(true),
+                child: const Text('Yes'),
+              ),
+            ],
+          ),
+        )) ??
+        false;
+  }
+
   void initializingData() {
     SharedPreferences.getInstance().then((sharedPrefValue) {
       setState(() {
@@ -96,455 +117,460 @@ class _ProfileScreenState extends State<ProfileScreen> {
         data: theme.copyWith(
             colorScheme: theme.colorScheme
                 .copyWith(secondary: customTheme.cookifyPrimary.withAlpha(40))),
-        child: SafeArea(
-          child: Scaffold(
-            backgroundColor: const Color(0xfff5f5f5),
-            body: ListView(
-              padding: FxSpacing.fromLTRB(24, 36, 24, 24),
-              children: [
-                profileController.token == null
-                    ? FxContainer(
-                        color: Colors.white,
-                        child: Column(
-                          children: [
-                            GestureDetector(
-                              onTap: () {
-                                Navigator.of(context, rootNavigator: true)
-                                    .pushReplacement(
-                                  MaterialPageRoute(
-                                    builder: (context) => const LogInScreen(),
-                                  ),
-                                );
-                              },
-                              child: FxText.bodyMedium(
-                                'Sign In',
-                              ),
-                            ),
-                            FxSpacing.height(8),
-                            FxButton.outlined(
-                                onPressed: () {
+        child: WillPopScope(
+          onWillPop: _onWillPop,
+          child: SafeArea(
+            child: Scaffold(
+              backgroundColor: const Color(0xfff5f5f5),
+              body: ListView(
+                padding: FxSpacing.fromLTRB(24, 36, 24, 24),
+                children: [
+                  profileController.token == null
+                      ? FxContainer(
+                          color: Colors.white,
+                          child: Column(
+                            children: [
+                              GestureDetector(
+                                onTap: () {
                                   Navigator.of(context, rootNavigator: true)
                                       .pushReplacement(
                                     MaterialPageRoute(
-                                      builder: (context) =>
-                                          const RegisterScreen(),
+                                      builder: (context) => const LogInScreen(),
                                     ),
                                   );
                                 },
-                                splashColor:
-                                    const Color(0xff1529e8).withAlpha(40),
-                                borderColor: const Color(0xff1529e8),
-                                padding: FxSpacing.xy(16, 4),
-                                borderRadiusAll: 32,
-                                child: FxText.bodySmall(
-                                  "Sign Up",
-                                  // color: customTheme.cookifyPrimary
-                                  color: const Color(0xff1529e8),
-                                ))
-                          ],
-                        ),
-                      )
-                    : FxContainer(
-                        color: Colors.white,
-                        child: Row(
-                          children: [
-                            ClipRRect(
-                              borderRadius: BorderRadius.circular(50),
-                              // child: Image(
-                              //   image: AssetImage(profileController.user.url),
-                              //   height: 100,
-                              //   width: 100,
-                              // ),
-                              child: SizedBox(
-                                height: 100,
-                                width: 100,
-                                child: CircleAvatar(
-                                  backgroundColor:
-                                      theme.colorScheme.primary.withAlpha(28),
-                                  child: FxText.bodyLarge(
-                                      profileController.name![0],
-                                      color: theme.colorScheme.primary,
-                                      fontSize: 30,
-                                      fontWeight: 600),
+                                child: FxText.bodyMedium(
+                                  'Sign In',
                                 ),
                               ),
-                            ),
-                            FxSpacing.width(16),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  FxText.bodyLarge(
-                                      // profileController.user.name,
-                                      profileController.name.toString(),
-                                      fontWeight: 700),
-                                  FxSpacing.width(8),
-                                  FxText.bodyMedium(
-                                    // profileController.email.toString()
-                                    profileController.email.toString(),
-                                  ),
-                                  FxSpacing.height(8),
-                                  FxButton.outlined(
-                                      onPressed: () async {
-                                        bool result = await profileController
-                                            .EditProfile();
-                                        if (result) {
-                                          print(
-                                              "resultresultresultresult $result");
-
-                                          initializingData();
-                                        }
-                                      },
-                                      splashColor:
-                                          const Color(0xff1529e8).withAlpha(40),
-                                      borderColor: const Color(0xff1529e8),
-                                      padding: FxSpacing.xy(16, 4),
-                                      borderRadiusAll: 32,
-                                      child: FxText.bodySmall(
-                                        "Edit profile",
-                                        // color: customTheme.cookifyPrimary
-                                        color: const Color(0xff1529e8),
-                                      ))
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                FxSpacing.height(24),
-
-                //wallet
-                // FxContainer.bordered(
-                //   // margin: FxSpacing.fromLTRB(24, 24, 24, 0),
-                //   padding: FxSpacing.all(24),
-                //   color: Colors.white,
-                //   child: Row(
-                //     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                //     children: [
-                //       Column(
-                //         children: [
-                //           FxText.bodySmall("My balance".toUpperCase(),
-                //               fontSize: 12, fontWeight: 600, xMuted: true),
-                //           // FxText.bodyLarge(
-                //           //     // "\$ 24",
-                //           //     // '24 AED',
-                //           //     profileController.balanceamount == null ? 0.0 : 2440,
-                //           //     fontWeight: 800),
-                //           profileController.balanceamount == null
-                //               ? FxText.bodyLarge('0 AED', fontWeight: 800)
-                //               : FxText.bodyLarge(
-                //                   // 'E',
-                //                   '${profileController.balanceamount}AED',
-                //                   fontWeight: 800)
-                //         ],
-                //       ),
-                //       Column(
-                //         children: [
-                //           FxContainer(
-                //             onTap: () {
-                //               showModalBottomSheet(
-                //                 context: context,
-                //                 backgroundColor: Colors.white,
-                //                 shape: const RoundedRectangleBorder(
-                //                     borderRadius: BorderRadius.only(
-                //                         topLeft: Radius.circular(20),
-                //                         topRight: Radius.circular(20))),
-                //                 isScrollControlled: true,
-                //                 builder: (context) {
-                //                   return const addMoney();
-                //                 },
-                //               );
-                //               // showModalBottomSheet(
-                //               //     context: context,
-                //               //     builder: (BuildContext buildContext) {
-                //               //       return const addMoney();
-                //               //     });
-                //             },
-                //             padding: FxSpacing.fromLTRB(16, 8, 16, 8),
-                //             color: theme.colorScheme.primary.withAlpha(28),
-                //             borderRadiusAll: 4,
-                //             child: Row(
-                //               children: [
-                //                 Icon(
-                //                   MdiIcons.plus,
-                //                   color: theme.colorScheme.primary,
-                //                   size: 20,
-                //                 ),
-                //                 Container(
-                //                     margin: FxSpacing.left(8),
-                //                     child: FxText.bodyMedium("Add Money",
-                //                         color: theme.colorScheme.primary,
-                //                         fontWeight: 600))
-                //               ],
-                //             ),
-                //           ),
-                //           FxSpacing.height(20),
-                //           FxContainer(
-                //             onTap: () {
-                //               // showModalBottomSheet(
-                //               //     context: context,
-                //               //     builder: (BuildContext buildContext) {
-                //               //       return const withdrawMoney();
-                //               //     });
-                //               showModalBottomSheet(
-                //                 context: context,
-                //                 backgroundColor: Colors.white,
-                //                 shape: const RoundedRectangleBorder(
-                //                     borderRadius: BorderRadius.only(
-                //                         topLeft: Radius.circular(20),
-                //                         topRight: Radius.circular(20))),
-                //                 isScrollControlled: true,
-                //                 builder: (context) {
-                //                   return const withdrawMoney();
-                //                 },
-                //               );
-                //             },
-                //             padding: FxSpacing.fromLTRB(21, 8, 21, 8),
-                //             color: theme.colorScheme.primary.withAlpha(28),
-                //             borderRadiusAll: 4,
-                //             child: Row(
-                //               children: [
-                //                 Icon(
-                //                   LineIcons.download,
-                //                   color: theme.colorScheme.primary,
-                //                   size: 20,
-                //                 ),
-                //                 Container(
-                //                     margin: FxSpacing.left(8),
-                //                     child: FxText.bodyMedium("Withdraw",
-                //                         color: theme.colorScheme.primary,
-                //                         fontWeight: 600))
-                //               ],
-                //             ),
-                //           )
-                //         ],
-                //       )
-                //     ],
-                //   ),
-                // ),
-                // FxSpacing.height(24),
-                FxContainer(
-                    color: Colors.white,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        FxText.titleMedium(
-                          "Option",
-                          fontWeight: 700,
-                        ),
-                        FxSpacing.height(8),
-                        SwitchListTile(
-                          dense: true,
-                          contentPadding: FxSpacing.zero,
-                          inactiveTrackColor:
-                              const Color(0xff1529e8).withAlpha(100),
-                          activeTrackColor:
-                              const Color(0xff1529e8).withAlpha(150),
-                          activeColor: const Color(0xff1529e8),
-                          title: FxText.bodyMedium(
-                            "Notifications",
-                            letterSpacing: 0,
-                          ),
-                          onChanged: (value) {
-                            setState(() {
-                              profileController.notification = value;
-                            });
-                          },
-                          value: profileController.notification,
-                        ),
-                        // ListTile(
-                        //   dense: true,
-                        //   contentPadding: FxSpacing.zero,
-                        //   visualDensity: VisualDensity.compact,
-                        //   title: FxText.bodyMedium(
-                        //     "Language",
-                        //     letterSpacing: 0,
-                        //   ),
-                        //   trailing: Icon(
-                        //     Icons.chevron_right,
-                        //     size: 20,
-                        //     color: theme.colorScheme.onBackground,
-                        //   ),
-                        // ),
-                        profileController.token == null
-                            ? const SizedBox()
-                            : Column(
-                                children: [
-                                  const Divider(
-                                    thickness: 0.8,
-                                  ),
-                                  FxSpacing.height(8),
-                                  Align(
-                                    alignment: Alignment.centerLeft,
-                                    child: FxText.titleMedium(
-                                      "Account",
-                                      fontWeight: 700,
-                                    ),
-                                  ),
-                                  FxSpacing.height(8),
-                                  ListTile(
-                                    onTap: () {
-                                      log('update password clicked');
-
-                                      Navigator.of(context, rootNavigator: true)
-                                          .push(PageRouteBuilder(
-                                              transitionDuration:
-                                                  const Duration(
-                                                      milliseconds: 500),
-                                              transitionsBuilder: (
-                                                BuildContext context,
-                                                Animation<double> animation,
-                                                Animation<double>
-                                                    secondaryAnimation,
-                                                Widget child,
-                                              ) =>
-                                                  FadeTransition(
-                                                    opacity: animation,
-                                                    child: child,
-                                                  ),
-                                              pageBuilder: (_, __, ___) =>
-                                                  UpdatePasswordScreen(
-                                                      profileController
-                                                          .token)));
-                                    },
-                                    dense: true,
-                                    contentPadding: FxSpacing.zero,
-                                    visualDensity: VisualDensity.compact,
-                                    title: FxText.bodyMedium(
-                                      "Update Password",
-                                      letterSpacing: 0,
-                                    ),
-                                    trailing: Icon(
-                                      Icons.chevron_right,
-                                      size: 20,
-                                      color: theme.colorScheme.onBackground,
-                                    ),
-                                  ),
-                                  ListTile(
-                                    onTap: () {
-                                      log('all bookings clicked');
-
-                                      Navigator.of(context, rootNavigator: true)
-                                          .push(PageRouteBuilder(
-                                              transitionDuration:
-                                                  const Duration(
-                                                      milliseconds: 500),
-                                              transitionsBuilder: (
-                                                BuildContext context,
-                                                Animation<double> animation,
-                                                Animation<double>
-                                                    secondaryAnimation,
-                                                Widget child,
-                                              ) =>
-                                                  FadeTransition(
-                                                    opacity: animation,
-                                                    child: child,
-                                                  ),
-                                              pageBuilder: (_, __, ___) =>
-                                                  const AllBookings()));
-                                    },
-                                    dense: true,
-                                    contentPadding: FxSpacing.zero,
-                                    visualDensity: VisualDensity.compact,
-                                    title: FxText.bodyMedium(
-                                      "All Bookings",
-                                      letterSpacing: 0,
-                                    ),
-                                    trailing: Icon(
-                                      Icons.chevron_right,
-                                      size: 20,
-                                      color: theme.colorScheme.onBackground,
-                                    ),
-                                  ),
-                                  //cmd
-
-                                  // ListTile(
-                                  //   dense: true,
-                                  //   contentPadding: FxSpacing.zero,
-                                  //   visualDensity: VisualDensity.compact,
-                                  //   title: FxText.bodyMedium(
-                                  //     "Bookings Confirmed",
-                                  //     letterSpacing: 0,
-                                  //   ),
-                                  //   trailing: Icon(
-                                  //     Icons.chevron_right,
-                                  //     size: 20,
-                                  //     color: theme.colorScheme.onBackground,
-                                  //   ),
-                                  // ),
-                                  // ListTile(
-                                  //   dense: true,
-                                  //   contentPadding: FxSpacing.zero,
-                                  //   visualDensity: VisualDensity.compact,
-                                  //   title: FxText.bodyMedium(
-                                  //     "Bookings Cancelled",
-                                  //     letterSpacing: 0,
-                                  //   ),
-                                  //   trailing: Icon(
-                                  //     Icons.chevron_right,
-                                  //     size: 20,
-                                  //     color: theme.colorScheme.onBackground,
-                                  //   ),
-                                  // ),
-                                  // ListTile(
-                                  //   dense: true,
-                                  //   contentPadding: FxSpacing.zero,
-                                  //   visualDensity: VisualDensity.compact,
-                                  //   title: FxText.bodyMedium(
-                                  //     "Transaction History",
-                                  //     letterSpacing: 0,
-                                  //   ),
-                                  //   trailing: Icon(
-                                  //     Icons.chevron_right,
-                                  //     size: 20,
-                                  //     color: theme.colorScheme.onBackground,
-                                  //   ),
-                                  // ),
-
-                                  FxSpacing.height(16),
-                                  Center(
-                                      child: FxButton.rounded(
-                                    onPressed: () {
-                                      // logout(context);
-                                      log('logout clicked');
-                                      profileController.logout(context);
-                                      // Navigator.of(context, rootNavigator: true).push(
-                                      //   MaterialPageRoute(
-                                      //       builder: (context) => CookifySplashScreen()),
-                                      // );
-                                    },
-                                    elevation: 2,
-                                    backgroundColor: const Color(0xff1529e8),
-                                    child: FxText.labelLarge(
-                                      "LOGOUT",
-                                      color: customTheme.cookifyOnPrimary,
-                                    ),
+                              FxSpacing.height(8),
+                              FxButton.outlined(
+                                  onPressed: () {
+                                    Navigator.of(context, rootNavigator: true)
+                                        .pushReplacement(
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            const RegisterScreen(),
+                                      ),
+                                    );
+                                  },
+                                  splashColor:
+                                      const Color(0xff1529e8).withAlpha(40),
+                                  borderColor: const Color(0xff1529e8),
+                                  padding: FxSpacing.xy(16, 4),
+                                  borderRadiusAll: 32,
+                                  child: FxText.bodySmall(
+                                    "Sign Up",
+                                    // color: customTheme.cookifyPrimary
+                                    color: const Color(0xff1529e8),
                                   ))
-                                ],
-                              )
-                      ],
-                    )),
-                FxSpacing.height(24),
-                // FxContainer(
-                //     color: customTheme.cookifyPrimary.withAlpha(40),
-                //     padding: FxSpacing.xy(16, 20),
-                //     child: Row(
-                //       mainAxisAlignment: MainAxisAlignment.center,
-                //       children: [
-                //         FxTwoToneIcon(
-                //           FxTwoToneMdiIcons.headset_mic,
-                //           size: 32,
-                //           color: customTheme.cookifyPrimary,
-                //         ),
-                //         FxSpacing.width(12),
-                //         FxText.bodySmall(
-                //           "Feel Free to Ask, We Ready to Help",
-                //           color: customTheme.cookifyPrimary,
-                //           letterSpacing: 0,
-                //         )
-                //       ],
-                //     ))
-              ],
+                            ],
+                          ),
+                        )
+                      : FxContainer(
+                          color: Colors.white,
+                          child: Row(
+                            children: [
+                              ClipRRect(
+                                borderRadius: BorderRadius.circular(50),
+                                // child: Image(
+                                //   image: AssetImage(profileController.user.url),
+                                //   height: 100,
+                                //   width: 100,
+                                // ),
+                                child: SizedBox(
+                                  height: 100,
+                                  width: 100,
+                                  child: CircleAvatar(
+                                    backgroundColor:
+                                        theme.colorScheme.primary.withAlpha(28),
+                                    child: FxText.bodyLarge(
+                                        profileController.name![0],
+                                        color: theme.colorScheme.primary,
+                                        fontSize: 30,
+                                        fontWeight: 600),
+                                  ),
+                                ),
+                              ),
+                              FxSpacing.width(16),
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    FxText.bodyLarge(
+                                        // profileController.user.name,
+                                        profileController.name.toString(),
+                                        fontWeight: 700),
+                                    FxSpacing.width(8),
+                                    FxText.bodyMedium(
+                                      // profileController.email.toString()
+                                      profileController.email.toString(),
+                                    ),
+                                    FxSpacing.height(8),
+                                    FxButton.outlined(
+                                        onPressed: () async {
+                                          bool result = await profileController
+                                              .EditProfile();
+                                          if (result) {
+                                            print(
+                                                "resultresultresultresult $result");
+
+                                            initializingData();
+                                          }
+                                        },
+                                        splashColor: const Color(0xff1529e8)
+                                            .withAlpha(40),
+                                        borderColor: const Color(0xff1529e8),
+                                        padding: FxSpacing.xy(16, 4),
+                                        borderRadiusAll: 32,
+                                        child: FxText.bodySmall(
+                                          "Edit profile",
+                                          // color: customTheme.cookifyPrimary
+                                          color: const Color(0xff1529e8),
+                                        ))
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                  FxSpacing.height(24),
+
+                  //wallet
+                  // FxContainer.bordered(
+                  //   // margin: FxSpacing.fromLTRB(24, 24, 24, 0),
+                  //   padding: FxSpacing.all(24),
+                  //   color: Colors.white,
+                  //   child: Row(
+                  //     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  //     children: [
+                  //       Column(
+                  //         children: [
+                  //           FxText.bodySmall("My balance".toUpperCase(),
+                  //               fontSize: 12, fontWeight: 600, xMuted: true),
+                  //           // FxText.bodyLarge(
+                  //           //     // "\$ 24",
+                  //           //     // '24 AED',
+                  //           //     profileController.balanceamount == null ? 0.0 : 2440,
+                  //           //     fontWeight: 800),
+                  //           profileController.balanceamount == null
+                  //               ? FxText.bodyLarge('0 AED', fontWeight: 800)
+                  //               : FxText.bodyLarge(
+                  //                   // 'E',
+                  //                   '${profileController.balanceamount}AED',
+                  //                   fontWeight: 800)
+                  //         ],
+                  //       ),
+                  //       Column(
+                  //         children: [
+                  //           FxContainer(
+                  //             onTap: () {
+                  //               showModalBottomSheet(
+                  //                 context: context,
+                  //                 backgroundColor: Colors.white,
+                  //                 shape: const RoundedRectangleBorder(
+                  //                     borderRadius: BorderRadius.only(
+                  //                         topLeft: Radius.circular(20),
+                  //                         topRight: Radius.circular(20))),
+                  //                 isScrollControlled: true,
+                  //                 builder: (context) {
+                  //                   return const addMoney();
+                  //                 },
+                  //               );
+                  //               // showModalBottomSheet(
+                  //               //     context: context,
+                  //               //     builder: (BuildContext buildContext) {
+                  //               //       return const addMoney();
+                  //               //     });
+                  //             },
+                  //             padding: FxSpacing.fromLTRB(16, 8, 16, 8),
+                  //             color: theme.colorScheme.primary.withAlpha(28),
+                  //             borderRadiusAll: 4,
+                  //             child: Row(
+                  //               children: [
+                  //                 Icon(
+                  //                   MdiIcons.plus,
+                  //                   color: theme.colorScheme.primary,
+                  //                   size: 20,
+                  //                 ),
+                  //                 Container(
+                  //                     margin: FxSpacing.left(8),
+                  //                     child: FxText.bodyMedium("Add Money",
+                  //                         color: theme.colorScheme.primary,
+                  //                         fontWeight: 600))
+                  //               ],
+                  //             ),
+                  //           ),
+                  //           FxSpacing.height(20),
+                  //           FxContainer(
+                  //             onTap: () {
+                  //               // showModalBottomSheet(
+                  //               //     context: context,
+                  //               //     builder: (BuildContext buildContext) {
+                  //               //       return const withdrawMoney();
+                  //               //     });
+                  //               showModalBottomSheet(
+                  //                 context: context,
+                  //                 backgroundColor: Colors.white,
+                  //                 shape: const RoundedRectangleBorder(
+                  //                     borderRadius: BorderRadius.only(
+                  //                         topLeft: Radius.circular(20),
+                  //                         topRight: Radius.circular(20))),
+                  //                 isScrollControlled: true,
+                  //                 builder: (context) {
+                  //                   return const withdrawMoney();
+                  //                 },
+                  //               );
+                  //             },
+                  //             padding: FxSpacing.fromLTRB(21, 8, 21, 8),
+                  //             color: theme.colorScheme.primary.withAlpha(28),
+                  //             borderRadiusAll: 4,
+                  //             child: Row(
+                  //               children: [
+                  //                 Icon(
+                  //                   LineIcons.download,
+                  //                   color: theme.colorScheme.primary,
+                  //                   size: 20,
+                  //                 ),
+                  //                 Container(
+                  //                     margin: FxSpacing.left(8),
+                  //                     child: FxText.bodyMedium("Withdraw",
+                  //                         color: theme.colorScheme.primary,
+                  //                         fontWeight: 600))
+                  //               ],
+                  //             ),
+                  //           )
+                  //         ],
+                  //       )
+                  //     ],
+                  //   ),
+                  // ),
+                  // FxSpacing.height(24),
+                  FxContainer(
+                      color: Colors.white,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          FxText.titleMedium(
+                            "Option",
+                            fontWeight: 700,
+                          ),
+                          FxSpacing.height(8),
+                          SwitchListTile(
+                            dense: true,
+                            contentPadding: FxSpacing.zero,
+                            inactiveTrackColor:
+                                const Color(0xff1529e8).withAlpha(100),
+                            activeTrackColor:
+                                const Color(0xff1529e8).withAlpha(150),
+                            activeColor: const Color(0xff1529e8),
+                            title: FxText.bodyMedium(
+                              "Notifications",
+                              letterSpacing: 0,
+                            ),
+                            onChanged: (value) {
+                              setState(() {
+                                profileController.notification = value;
+                              });
+                            },
+                            value: profileController.notification,
+                          ),
+                          // ListTile(
+                          //   dense: true,
+                          //   contentPadding: FxSpacing.zero,
+                          //   visualDensity: VisualDensity.compact,
+                          //   title: FxText.bodyMedium(
+                          //     "Language",
+                          //     letterSpacing: 0,
+                          //   ),
+                          //   trailing: Icon(
+                          //     Icons.chevron_right,
+                          //     size: 20,
+                          //     color: theme.colorScheme.onBackground,
+                          //   ),
+                          // ),
+                          profileController.token == null
+                              ? const SizedBox()
+                              : Column(
+                                  children: [
+                                    const Divider(
+                                      thickness: 0.8,
+                                    ),
+                                    FxSpacing.height(8),
+                                    Align(
+                                      alignment: Alignment.centerLeft,
+                                      child: FxText.titleMedium(
+                                        "Account",
+                                        fontWeight: 700,
+                                      ),
+                                    ),
+                                    FxSpacing.height(8),
+                                    ListTile(
+                                      onTap: () {
+                                        log('update password clicked');
+
+                                        Navigator.of(context,
+                                                rootNavigator: true)
+                                            .push(PageRouteBuilder(
+                                                transitionDuration:
+                                                    const Duration(
+                                                        milliseconds: 500),
+                                                transitionsBuilder: (
+                                                  BuildContext context,
+                                                  Animation<double> animation,
+                                                  Animation<double>
+                                                      secondaryAnimation,
+                                                  Widget child,
+                                                ) =>
+                                                    FadeTransition(
+                                                      opacity: animation,
+                                                      child: child,
+                                                    ),
+                                                pageBuilder: (_, __, ___) =>
+                                                    UpdatePasswordScreen(
+                                                        profileController
+                                                            .token)));
+                                      },
+                                      dense: true,
+                                      contentPadding: FxSpacing.zero,
+                                      visualDensity: VisualDensity.compact,
+                                      title: FxText.bodyMedium(
+                                        "Update Password",
+                                        letterSpacing: 0,
+                                      ),
+                                      trailing: Icon(
+                                        Icons.chevron_right,
+                                        size: 20,
+                                        color: theme.colorScheme.onBackground,
+                                      ),
+                                    ),
+                                    ListTile(
+                                      onTap: () {
+                                        log('all bookings clicked');
+
+                                        Navigator.of(context,
+                                                rootNavigator: true)
+                                            .push(PageRouteBuilder(
+                                                transitionDuration:
+                                                    const Duration(
+                                                        milliseconds: 500),
+                                                transitionsBuilder: (
+                                                  BuildContext context,
+                                                  Animation<double> animation,
+                                                  Animation<double>
+                                                      secondaryAnimation,
+                                                  Widget child,
+                                                ) =>
+                                                    FadeTransition(
+                                                      opacity: animation,
+                                                      child: child,
+                                                    ),
+                                                pageBuilder: (_, __, ___) =>
+                                                    const AllBookings()));
+                                      },
+                                      dense: true,
+                                      contentPadding: FxSpacing.zero,
+                                      visualDensity: VisualDensity.compact,
+                                      title: FxText.bodyMedium(
+                                        "All Bookings",
+                                        letterSpacing: 0,
+                                      ),
+                                      trailing: Icon(
+                                        Icons.chevron_right,
+                                        size: 20,
+                                        color: theme.colorScheme.onBackground,
+                                      ),
+                                    ),
+                                    //cmd
+
+                                    // ListTile(
+                                    //   dense: true,
+                                    //   contentPadding: FxSpacing.zero,
+                                    //   visualDensity: VisualDensity.compact,
+                                    //   title: FxText.bodyMedium(
+                                    //     "Bookings Confirmed",
+                                    //     letterSpacing: 0,
+                                    //   ),
+                                    //   trailing: Icon(
+                                    //     Icons.chevron_right,
+                                    //     size: 20,
+                                    //     color: theme.colorScheme.onBackground,
+                                    //   ),
+                                    // ),
+                                    // ListTile(
+                                    //   dense: true,
+                                    //   contentPadding: FxSpacing.zero,
+                                    //   visualDensity: VisualDensity.compact,
+                                    //   title: FxText.bodyMedium(
+                                    //     "Bookings Cancelled",
+                                    //     letterSpacing: 0,
+                                    //   ),
+                                    //   trailing: Icon(
+                                    //     Icons.chevron_right,
+                                    //     size: 20,
+                                    //     color: theme.colorScheme.onBackground,
+                                    //   ),
+                                    // ),
+                                    // ListTile(
+                                    //   dense: true,
+                                    //   contentPadding: FxSpacing.zero,
+                                    //   visualDensity: VisualDensity.compact,
+                                    //   title: FxText.bodyMedium(
+                                    //     "Transaction History",
+                                    //     letterSpacing: 0,
+                                    //   ),
+                                    //   trailing: Icon(
+                                    //     Icons.chevron_right,
+                                    //     size: 20,
+                                    //     color: theme.colorScheme.onBackground,
+                                    //   ),
+                                    // ),
+
+                                    FxSpacing.height(16),
+                                    Center(
+                                        child: FxButton.rounded(
+                                      onPressed: () {
+                                        // logout(context);
+                                        log('logout clicked');
+                                        profileController.logout(context);
+                                        // Navigator.of(context, rootNavigator: true).push(
+                                        //   MaterialPageRoute(
+                                        //       builder: (context) => CookifySplashScreen()),
+                                        // );
+                                      },
+                                      elevation: 2,
+                                      backgroundColor: const Color(0xff1529e8),
+                                      child: FxText.labelLarge(
+                                        "LOGOUT",
+                                        color: customTheme.cookifyOnPrimary,
+                                      ),
+                                    ))
+                                  ],
+                                )
+                        ],
+                      )),
+                  FxSpacing.height(24),
+                  // FxContainer(
+                  //     color: customTheme.cookifyPrimary.withAlpha(40),
+                  //     padding: FxSpacing.xy(16, 20),
+                  //     child: Row(
+                  //       mainAxisAlignment: MainAxisAlignment.center,
+                  //       children: [
+                  //         FxTwoToneIcon(
+                  //           FxTwoToneMdiIcons.headset_mic,
+                  //           size: 32,
+                  //           color: customTheme.cookifyPrimary,
+                  //         ),
+                  //         FxSpacing.width(12),
+                  //         FxText.bodySmall(
+                  //           "Feel Free to Ask, We Ready to Help",
+                  //           color: customTheme.cookifyPrimary,
+                  //           letterSpacing: 0,
+                  //         )
+                  //       ],
+                  //     ))
+                ],
+              ),
             ),
           ),
         ),

@@ -32,6 +32,27 @@ class _SavedScreenState extends State<SavedScreen>
   List<AllattractionModal>? allattractionList;
   SharedPreferences? sharedPreferences;
 
+  Future<bool> _onWillPop() async {
+    return (await showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: const Text('Are you sure?'),
+            content: const Text('Do you want to exit the App'),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(false),
+                child: const Text('No'),
+              ),
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(true),
+                child: const Text('Yes'),
+              ),
+            ],
+          ),
+        )) ??
+        false;
+  }
+
   bool isLoading = true;
   getAttraction(BuildContext context) async {
     // await AuthService().getCountry();
@@ -273,66 +294,70 @@ class _SavedScreenState extends State<SavedScreen>
             )),
       );
     } else {
-      return Scaffold(
-        backgroundColor: const Color(0xfff5f5f5),
-        appBar: AppBar(
-          elevation: 0,
-          automaticallyImplyLeading: false,
-          title: FxText.titleMedium(
-            'Saved',
-            fontWeight: 700,
-          ),
-          centerTitle: true,
+      return WillPopScope(
+        onWillPop: _onWillPop,
+        child: Scaffold(
           backgroundColor: const Color(0xfff5f5f5),
+          appBar: AppBar(
+            elevation: 0,
+            automaticallyImplyLeading: false,
+            title: FxText.titleMedium(
+              'Saved',
+              fontWeight: 700,
+            ),
+            centerTitle: true,
+            backgroundColor: const Color(0xfff5f5f5),
+          ),
+          body: favouriteList.isEmpty
+              ? Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: const [
+                      // Lottie.asset('assets/lottie/confirmation.json',
+                      //     height: 300, width: 300),
+                      Text(
+                          'You have no favourite yet - start adding some item!',
+                          style: TextStyle(
+                              fontFamily: 'inter',
+                              fontWeight: FontWeight.w400,
+                              fontSize: 16))
+                    ],
+                  ),
+                )
+              :
+
+              /////
+              // Container(
+              //     child: SingleChildScrollView(
+              //         child: Column(
+              //       children: const [Text('data')],
+              //     )),
+              //   )
+              GridView.builder(
+
+                  // padding: FxSpacing.zero,
+                  padding: FxSpacing.fromLTRB(
+                      20,
+                      // FxSpacing.safeAreaTop(context) + 20,
+                      0,
+                      20,
+                      20),
+                  shrinkWrap: true,
+                  itemCount: favouriteList.length,
+                  // itemCount: controller.products!.length,
+                  physics: const ClampingScrollPhysics(),
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    childAspectRatio: controller.findAspectRatio(),
+                    mainAxisSpacing: 20,
+                    crossAxisSpacing: 20,
+                  ),
+                  itemBuilder: (BuildContext context, int index) {
+                    return _buildSingleProduct(
+                        // widget.favouriteMeals.first.attractions.data.first
+                        favouriteList[index]);
+                  }),
         ),
-        body: favouriteList.isEmpty
-            ? Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: const [
-                    // Lottie.asset('assets/lottie/confirmation.json',
-                    //     height: 300, width: 300),
-                    Text('You have no favourite yet - start adding some item!',
-                        style: TextStyle(
-                            fontFamily: 'inter',
-                            fontWeight: FontWeight.w400,
-                            fontSize: 16))
-                  ],
-                ),
-              )
-            :
-
-            /////
-            // Container(
-            //     child: SingleChildScrollView(
-            //         child: Column(
-            //       children: const [Text('data')],
-            //     )),
-            //   )
-            GridView.builder(
-
-                // padding: FxSpacing.zero,
-                padding: FxSpacing.fromLTRB(
-                    20,
-                    // FxSpacing.safeAreaTop(context) + 20,
-                    0,
-                    20,
-                    20),
-                shrinkWrap: true,
-                itemCount: favouriteList.length,
-                // itemCount: controller.products!.length,
-                physics: const ClampingScrollPhysics(),
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  childAspectRatio: controller.findAspectRatio(),
-                  mainAxisSpacing: 20,
-                  crossAxisSpacing: 20,
-                ),
-                itemBuilder: (BuildContext context, int index) {
-                  return _buildSingleProduct(
-                      // widget.favouriteMeals.first.attractions.data.first
-                      favouriteList[index]);
-                }),
       );
     }
   }
