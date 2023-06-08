@@ -76,15 +76,18 @@ class ActivityController extends FxController {
     // log('Select:${selectedtour.map((e) => e.selectedDate)}');
     update();
   }
-
-  // double amount = 0;
-
   grandSelectedTourAmount() {
     double amount = 0;
 
     for (Activity tour in selectedtour) {
       log('tour.grandTotal:${tour.grandTotal}');
-      if (tour.privateTransfers!.isEmpty) {
+      // if(tour.activityType=='transfer'){
+      //   if(tour.privateTransfers!.first.maxCapacity<!tour.adultCount){
+         
+      //   }
+      // }
+      // else
+       if (tour.privateTransfers!.isEmpty) {
         log('no transfers');
         amount = amount + (tour.grandTotal);
       } else {
@@ -102,6 +105,32 @@ class ActivityController extends FxController {
     // update();
     // log('Amount:$amount');
   }
+
+  // double amount = 0;
+
+  // grandSelectedTourAmount() {
+  //   double amount = 0;
+
+  //   for (Activity tour in selectedtour) {
+  //     log('tour.grandTotal:${tour.grandTotal}');
+  //     if (tour.privateTransfers!.isEmpty) {
+  //       log('no transfers');
+  //       amount = amount + (tour.grandTotal);
+  //     } else {
+  //       // amount =
+  //       //     amount + (tour.grandTotal + tour.privateTransfers!.first.price);
+  //       amount = amount + (tour.grandTotal);
+  //       log('amount:$amount');
+  //     }
+  //     // amount = amount + (tour.grandTotal + tour.privateTransfers!.first.price);
+  //     // // amount = amount + (tour.grandTotal);
+  //     // log('amount:$amount');
+  //   }
+
+  //   return amount;
+  //   // update();
+  //   // log('Amount:$amount');
+  // }
 
   void Total(Activity tour) {}
 

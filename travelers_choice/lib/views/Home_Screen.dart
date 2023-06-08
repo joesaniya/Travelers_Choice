@@ -51,6 +51,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     Future.delayed(Duration.zero, () async {
       await AttractionController().getAllattractionList(context).then((value) {
         if (value != null) {
+          log('first data');
           isLoading = false;
           allattractionList = [];
           allattractionList!.add(value);
@@ -67,7 +68,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       });
     });
   }
-Future<bool> _onWillPop() async {
+
+  Future<bool> _onWillPop() async {
     return (await showDialog(
           context: context,
           builder: (context) => AlertDialog(

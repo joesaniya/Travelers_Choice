@@ -164,7 +164,8 @@ class _SearchScreenState extends State<SearchScreen>
     getAttraction(widget.place);
     // getAttraction(widget.placeId);
     log('${widget.place}Place Search2');
-
+    log('controllerlist:${controller.allattractionList}');
+    log('listtemp:$temp');
     theme = AppTheme.shoppingTheme;
     theme1 = AppTheme.learningTheme;
     initializingData();

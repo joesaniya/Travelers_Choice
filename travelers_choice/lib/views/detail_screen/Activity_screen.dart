@@ -767,6 +767,13 @@ class _ActivityScreenState extends State<ActivityScreen>
                                           'Amount',
                                           fontWeight: 600,
                                         ),
+                                        // widget.excursions[i].activityType ==
+                                        //         'transfer'
+                                        //     ? FxText.bodyMedium(
+                                        //         'Transfer',
+                                        //         fontWeight: 700,
+                                        //       )
+                                        //     :
                                         FxText.bodyMedium(
                                           controller
                                               .getTotal(widget.excursions[i])
