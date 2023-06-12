@@ -90,6 +90,8 @@ class SearchAttractionController extends FxController {
     searchController.dispose();
     locationController.dispose();
     dateController.dispose();
+    locationTE.dispose();
+    selectedCountry = '';
     focus.dispose();
     visaFocus.dispose();
     super.dispose();
@@ -125,6 +127,7 @@ class SearchAttractionController extends FxController {
   Future<void> searchbtn(
     // Destination locationplace
     // Destination selectedCountry,
+
     String selectedCountry,
     String keyid,
     String code,

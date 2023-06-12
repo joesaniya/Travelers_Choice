@@ -760,9 +760,10 @@ class _DetailScreenState extends State<DetailScreen>
                           ListView.separated(
                             shrinkWrap: true,
                             padding: EdgeInsets.zero,
-                            // itemCount: 1,
-                            itemCount: controller
-                                .detailattraction!.first.sections!.length,
+                            itemCount: 1,
+                            // itemCount: controller
+                            //     .detailattraction!.first.sections!.length,
+
                             // itemCount: controller.product.description.length,
                             physics: const NeverScrollableScrollPhysics(),
                             separatorBuilder: (context, index) {
@@ -821,15 +822,55 @@ class _DetailScreenState extends State<DetailScreen>
                               //             //   'h4': Style(color: Colors.redAccent)
                               //             // },
                               //           ));
+
+                              // return controller.detailattraction!.first
+                              //             .sections!.isEmpty ||
+                              //         controller.detailattraction!.first
+                              //                 .sections ==
+                              //             null
                               return controller
                                       .detailattraction!.first.sections!.isEmpty
-                                  ? FxText.bodyMedium(
-                                      'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.',
-                                      // color: theme.colorScheme.onPrimary,
-                                      // color: Colors.black,
-                                      letterSpacing: 0.4,
-                                      fontSize: 11,
-                                    )
+                                  //      ||
+                                  // controller.detailattraction!.first
+                                  //         .sections ==
+                                  //     null
+                                  ?
+                                  // Html(
+                                  //     data: controller.detailattraction!.first
+                                  //         .itineraryDescription)
+                                  SizedBox(
+                                      child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        // FxText.bodyLarge(
+                                        //   controller.detailattraction!.first
+                                        //       .sections![index].title
+                                        //       .toString(),
+                                        //   color: Colors.indigo,
+                                        //   fontWeight: 900,
+                                        //   textAlign: TextAlign.left,
+                                        // ),
+
+                                        Html(
+                                          // data: controller
+                                          //         .detailattraction!
+                                          //         .first
+                                          //         .itineraryDescription ??
+                                          //     'hhh'
+                                          data:
+                                              "<p>Experience “At The Top at Burj Khalifa” it is an unmissable\r\nextraordinary experience of being on top of the world’s tallest building, while\r\nyou visit the 124th &amp; 125th floor. </p><p><br></p><p>After seeing the Burj Khalifa, you can relax at the Dubai Mall and\r\nyou can enjoy the world’s largest mall, you can spend time shopping for all\r\nkind of stuff. \r\n&nbsp;</p><p><br></p><p>At the end of the evening, enjoy a captivating water, music and\r\nlight spectacle while viewing the Dubai Fountain which is the world’s tallest\r\nperforming fountain. At over 900 ft in length – equivalent to over two football\r\npitches – The Dubai Fountain is situated on the 30-acre Burj Lake and performs\r\nto a selection of different melodies.</p>",
+                                        ),
+                                      ],
+                                    ))
+
+                                  // FxText.bodyMedium(
+                                  //     'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.',
+                                  //     // color: theme.colorScheme.onPrimary,
+                                  //     // color: Colors.black,
+                                  //     letterSpacing: 0.4,
+                                  //     fontSize: 11,
+                                  //   )
                                   : SizedBox(
                                       child: Column(
                                       crossAxisAlignment:

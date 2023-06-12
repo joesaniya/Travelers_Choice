@@ -76,18 +76,30 @@ class ActivityController extends FxController {
     // log('Select:${selectedtour.map((e) => e.selectedDate)}');
     update();
   }
+
   grandSelectedTourAmount() {
     double amount = 0;
+    // double privateamount = 0;
 
     for (Activity tour in selectedtour) {
       log('tour.grandTotal:${tour.grandTotal}');
-      // if(tour.activityType=='transfer'){
-      //   if(tour.privateTransfers!.first.maxCapacity<!tour.adultCount){
-         
-      //   }
-      // }
-      // else
-       if (tour.privateTransfers!.isEmpty) {
+      // var Estheramount =
+      //     tour.adultCount / tour.privateTransfers!.first.maxCapacity!.toInt();
+      // log('Esther:$Estheramount');
+      // var totalmembercount = Estheramount.toInt();
+      // log('totalmembercount:$totalmembercount');
+
+      // amount = membercount * tour.totalAmount;
+      // log('Amount Transfer:$amount');
+      // if (tour.activityType == 'transfer') {
+      //   // // if(tour.privateTransfers!.first.maxCapacity<!tour.adultCount)
+      //   // if(tour.adultCount/)
+      //   // {
+
+      //   // }
+      //   log('Esther1:${Estheramount.toInt()}');
+      // } else
+      if (tour.privateTransfers!.isEmpty) {
         log('no transfers');
         amount = amount + (tour.grandTotal);
       } else {

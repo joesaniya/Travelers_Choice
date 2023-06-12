@@ -772,6 +772,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.8.0"
+  lazy_load_listview:
+    dependency: "direct main"
+    description:
+      name: lazy_load_listview
+      sha256: de1c033fffb20ee7fb8abdf019f2f2fbcebcf8998a05d256ab3a8714d276b88d
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.4"
   libphonenumber_platform_interface:
     dependency: transitive
     description:

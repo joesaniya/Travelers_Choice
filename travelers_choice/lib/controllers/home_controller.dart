@@ -11,7 +11,6 @@ import '../models/product.dart';
 
 import '../views/detail_screen/detail_Screen.dart';
 import '../views/hotel_travel_constants.dart';
-import 'attraction_Controller.dart';
 
 class HomeController extends FxController {
   TickerProvider ticker;
@@ -34,10 +33,36 @@ class HomeController extends FxController {
   late Intro intro;
   String? selectedCountryCode;
   final focus = FocusNode();
+  final scrollController = ScrollController();
+  final itemsPerPage = 10;
+  var loadedItems = 0;
+  var items = <String>[];
+
+  void scrollListener() {
+    log('scroll listener calling');
+    if (scrollController.offset >= scrollController.position.maxScrollExtent &&
+        !scrollController.position.outOfRange) {
+      _loadMoreItems();
+    }
+  }
+
+  Future<void> _loadMoreItems() async {
+    await Future.delayed(
+        const Duration(seconds: 1)); // simulate network latency
+    log('loadmore items calling');
+    items.addAll(_generateItems(loadedItems, itemsPerPage));
+    loadedItems += itemsPerPage;
+    update();
+  }
+
+  List<String> _generateItems(int start, int count) {
+    return List.generate(count, (index) => 'Item ${start + index + 1}');
+  }
 
   @override
   void initState() {
     super.initState();
+    scrollController.addListener(scrollListener);
     fetchData();
     fetchloader();
     animationController = AnimationController(
@@ -139,6 +164,7 @@ Country Code => $countryCode
   @override
   void dispose() {
     animationController.dispose();
+    scrollController.dispose();
     bellController.dispose();
     super.dispose();
   }
@@ -160,7 +186,7 @@ Country Code => $countryCode
   // }
 
   void fetchloader() async {
-    await Future.delayed(const Duration(seconds: 4));
+    await Future.delayed(const Duration(seconds: 1));
 
     uiLoading = false;
     log('fetchloader');
@@ -173,9 +199,10 @@ Country Code => $countryCode
   //   update();
   // }
 
-  void goToSingleProduct(Datum product,
-      // currencySymbol, conversionRate
-      ) {
+  void goToSingleProduct(
+    Datum product,
+    // currencySymbol, conversionRate
+  ) {
     log(product.id);
     log('message');
     // print(currencySymbol);
@@ -192,10 +219,10 @@ Country Code => $countryCode
               opacity: animation,
               child: child,
             ),
-        pageBuilder: (_, __, ___) =>
-            DetailScreen(product.id,
-            //  _toggleFavorite, _isMealFavorite,
-             product,
+        pageBuilder: (_, __, ___) => DetailScreen(
+              product.id,
+              //  _toggleFavorite, _isMealFavorite,
+              product,
               //   currencySymbol:currencySymbol,
               // conversionRate: conversionRate
             )

@@ -20,6 +20,7 @@ class DetailattractionModal {
   String? youtubeLink;
   List<String>? images;
   String? highlights;
+  String? itineraryDescription;
   List<Sections>? sections;
   String? createdAt;
   String? updatedAt;
@@ -63,6 +64,7 @@ class DetailattractionModal {
     this.youtubeLink,
     this.images,
     this.highlights,
+    required this.itineraryDescription,
     this.sections,
     this.createdAt,
     this.updatedAt,
@@ -113,6 +115,8 @@ class DetailattractionModal {
     youtubeLink = json['youtubeLink'];
     images = json['images'].cast<String>();
     highlights = json['highlights'];
+    itineraryDescription:
+    json["itineraryDescription"];
     if (json['sections'] != null) {
       sections = <Sections>[];
       json['sections'].forEach((v) {
@@ -192,6 +196,7 @@ class DetailattractionModal {
     data['youtubeLink'] = youtubeLink;
     data['images'] = images;
     data['highlights'] = highlights;
+    data['itineraryDescription'] = itineraryDescription;
     if (sections != null) {
       data['sections'] = sections!.map((v) => v.toJson()).toList();
     }

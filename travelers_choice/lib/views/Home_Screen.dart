@@ -113,9 +113,40 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     // });
   }
 
+  // final scrollController = ScrollController();
+  // final itemsPerPage = 10;
+  // var loadedItems = 0;
+  // // var items = <String>[];
+
+  // void scrollListener() {
+  //   log('scroll listener calling');
+  //   if (scrollController.offset >= scrollController.position.maxScrollExtent &&
+  //       !scrollController.position.outOfRange) {
+  //     _loadMoreItems();
+  //   }
+  // }
+
+  // Future<void> _loadMoreItems() async {
+  //   await Future.delayed(
+  //       const Duration(seconds: 10)); // simulate network latency
+  //   log('loadmore items calling');
+
+  //   setState(() {
+  //     allattractionList!.addAll(_generateItems(loadedItems, itemsPerPage));
+  //     loadedItems += itemsPerPage;
+  //   });
+  // }
+
+  // List<AllattractionModal> _generateItems(int start, int count) {
+  //   return List.generate(count, (index) => 'Item ${start + index + 1}');
+  // }
+
   @override
   void initState() {
     super.initState();
+    // scrollController.addListener(scrollListener);
+    // controller.scrollController.addListener(controller.scrollListener);
+    // getData();
     getCountryList();
     getAttraction(context);
     getVisa(context);
@@ -162,6 +193,44 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   }
 
   Currency? selectedCountry;
+
+  // List? newsData, topNews1;
+
+  // Future getData() async {
+  //   List<Future> responseFutures = [
+  //     http.get(
+  //       Uri.parse(
+  //           'https://secure.mytravellerschoice.com/api/v1/attractions/all?limit=1000'),
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //         // HttpHeaders.authorizationHeader: ""
+  //       },
+  //     ),
+  //     http.get(
+  //       Uri.parse(
+  //           'https://secure.mytravellerschoice.com/api/v1/home/initial-data'),
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //         // HttpHeaders.authorizationHeader: ""
+  //       },
+  //     ),
+  //   ];
+  //   List responses = await Future.wait(responseFutures);
+
+  //   List data = jsonDecode(responses[0].body)['articles'];
+  //   List topNewsData = jsonDecode(responses[1].body)['stories'];
+
+  //   setState(() {
+  //     List newsData = data;
+  //     List topNews1 = topNewsData;
+
+  //     isLoading =
+  //         false; //this is for the initial loading, this is taking too much of time.
+  //   });
+
+  //   log('newsData:$newsData');
+  //   log('topNews1:$topNews1');
+  // }
 
   List<CountryModal> countryList = <CountryModal>[];
   bool isCountryListLoading = true;
@@ -799,6 +868,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     }
 
     return SingleChildScrollView(
+      controller: controller.scrollController,
       scrollDirection: Axis.horizontal,
       child: Row(
         children: list,
@@ -1448,10 +1518,22 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
 
                       FxSpacing.height(20),
                       SingleChildScrollView(
+                        controller: controller.scrollController,
                         scrollDirection: Axis.vertical,
                         child: _buildProductList(),
                       ),
                       FxSpacing.height(60),
+                      // LazyLoadListView(
+                      //   listItems: _herosList,
+                      //   listItemType:
+                      //       LazyLoadListViewItemType.customListItemType,
+                      //   customListItemWidgetBuilder: (context, index) {
+                      //     final hero = _herosList[index];
+                      //     return CustomListTile(hero: hero);
+                      //   },
+                      //   onScrollDidReachEnd: _loadMorePhotos,
+                      //   shouldEndLoad: _shouldEndLoadingPhotos,
+                      // ),
                     ],
                   ),
                 )

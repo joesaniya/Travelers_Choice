@@ -107,8 +107,8 @@ class _SearchAttractionScreenState extends State<SearchAttractionScreen>
     });
     await Future.delayed(const Duration(seconds: 2));
     controller.searchbtn(
-      // controller.locationTE.text
-      controller.selectedCountry!,
+      controller.locationTE.text,
+      // controller.selectedCountry!,
       keydata!,
 
       widget.isocode,
@@ -309,7 +309,7 @@ class _SearchAttractionScreenState extends State<SearchAttractionScreen>
               log('keydata:$keydata');
               controller.selectedCountry = controller.locationTE.text;
               // controller.locationTE.text = controller.locationplace!;
-              log('controller:${controller.locationTE.text}');
+              log('controller TE:${controller.locationTE.text}');
             });
           },
 
