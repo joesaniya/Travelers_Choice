@@ -152,7 +152,27 @@ class _ViewOptionsState extends State<ViewOptions>
                               child: FadeTransition(
                                 opacity: controller.fadeAnimation,
                                 child: FxButton.block(
-                                    onPressed: () {},
+                                    onPressed: () {
+                                      log('checkout calling');
+                                      // Navigator.of(context, rootNavigator: true)
+                                      //     .push(PageRouteBuilder(
+                                      //         transitionDuration:
+                                      //             const Duration(
+                                      //                 milliseconds: 500),
+                                      //         transitionsBuilder: (
+                                      //           BuildContext context,
+                                      //           Animation<double> animation,
+                                      //           Animation<double>
+                                      //               secondaryAnimation,
+                                      //           Widget child,
+                                      //         ) =>
+                                      //             FadeTransition(
+                                      //               opacity: animation,
+                                      //               child: child,
+                                      //             ),
+                                      //         pageBuilder: (_, __, ___) =>
+                                      //             HotelCheckOutScreen()));
+                                    },
                                     backgroundColor: const Color(0xff1529e8),
                                     // backgroundColor: theme.colorScheme.primary,
                                     elevation: 0,

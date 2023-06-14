@@ -187,46 +187,96 @@ final cancellationTypeValues = EnumValues({
   "nonRefundable": CancellationType.NON_REFUNDABLE
 });
 
+// class Category {
+//   Category({
+//     required this.categoryName,
+//     required this.slug,
+//   });
+
+//   CategoryName categoryName;
+//   Slug slug;
+
+//   factory Category.fromJson(Map<String, dynamic> json) => Category(
+//         categoryName:
+//             categoryNameValues.map[json["categoryName"]] ?? CategoryName.TOUR,
+//         slug: slugValues.map[json["slug"]] ?? Slug.ATTRACTIONS,
+//       );
+
+//   Map<String, dynamic> toJson() => {
+//         "categoryName": categoryNameValues.reverse[categoryName],
+//         "slug": slugValues.reverse[slug],
+//       };
+// }
+
+// enum CategoryName {
+//   THEME_PARK,
+//   ATTRACTIONS,
+//   SKY_DIVING,
+//   MUSEUM,
+//   TOUR,
+//   OBSERVATION_DESK,
+//   ADVENTURE,
+//   SHOW,
+//   WATER_ADVENTURE
+// }
+
+// final categoryNameValues = EnumValues({
+//   "attractions": CategoryName.ATTRACTIONS,
+//   "museum": CategoryName.MUSEUM,
+//   "sky diving": CategoryName.SKY_DIVING,
+//   "theme park": CategoryName.THEME_PARK,
+//   "tour": CategoryName.TOUR,
+//   //todo
+//   "observation deck": CategoryName.OBSERVATION_DESK,
+//   "adventure": CategoryName.ADVENTURE,
+//   "show": CategoryName.SHOW,
+//   "water adventure ": CategoryName.WATER_ADVENTURE
+//   //todo
+// });
+
+// enum Slug {
+//   THEME_PARK,
+//   ATTRACTIONS,
+//   SKY_DIVING,
+//   MUSEUM,
+//   TOUR,
+//   OBSERVATION_DESK,
+//   ADVENTURE,
+//   SHOW,
+//   WATER_ADVENTURE
+// }
+
+// final slugValues = EnumValues({
+//   "attractions": Slug.ATTRACTIONS,
+//   "museum": Slug.MUSEUM,
+//   "sky-diving": Slug.SKY_DIVING,
+//   "theme-park": Slug.THEME_PARK,
+//   "tour": Slug.TOUR,
+//   "observation-desk": Slug.OBSERVATION_DESK, //TODO
+//   "adventure": Slug.ADVENTURE, //TODO
+//   "show": Slug.SHOW, //TODO
+//   "water-activities": Slug.WATER_ADVENTURE //TODO
+// });
+
 class Category {
+  String categoryName;
+  String slug;
+
   Category({
     required this.categoryName,
     required this.slug,
   });
 
-  CategoryName categoryName;
-  Slug slug;
-
   factory Category.fromJson(Map<String, dynamic> json) => Category(
-        categoryName:
-            categoryNameValues.map[json["categoryName"]] ?? CategoryName.TOUR,
-        slug: slugValues.map[json["slug"]] ?? Slug.ATTRACTIONS,
+        categoryName: json["categoryName"] ?? 'tourr',
+        slug: json["slug"] ?? 'tour',
       );
 
   Map<String, dynamic> toJson() => {
-        "categoryName": categoryNameValues.reverse[categoryName],
-        "slug": slugValues.reverse[slug],
+        "categoryName": categoryName,
+        "slug": slug,
       };
 }
-
-enum CategoryName { THEME_PARK, ATTRACTIONS, SKY_DIVING, MUSEUM, TOUR }
-
-final categoryNameValues = EnumValues({
-  "attractions": CategoryName.ATTRACTIONS,
-  "museum": CategoryName.MUSEUM,
-  "sky diving": CategoryName.SKY_DIVING,
-  "theme park": CategoryName.THEME_PARK,
-  "tour": CategoryName.TOUR
-});
-
-enum Slug { THEME_PARK, ATTRACTIONS, SKY_DIVING, MUSEUM, TOUR }
-
-final slugValues = EnumValues({
-  "attractions": Slug.ATTRACTIONS,
-  "museum": Slug.MUSEUM,
-  "sky-diving": Slug.SKY_DIVING,
-  "theme-park": Slug.THEME_PARK,
-  "tour": Slug.TOUR
-});
 
 enum Country {
   THE_63_AC33_ECFF04_E5652_A2583_F5,

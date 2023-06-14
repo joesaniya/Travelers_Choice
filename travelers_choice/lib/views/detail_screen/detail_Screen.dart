@@ -776,6 +776,9 @@ class _DetailScreenState extends State<DetailScreen>
                               );
                             },
                             itemBuilder: (context, index) {
+                              log('detail iternary');
+                              log('Iternary:${controller.detailattraction!.first.itineraryDescription}');
+                              log('HighLights:${controller.detailattraction!.first.highlights}');
                               // return Html(
                               //   data: controller
                               //       .detailattraction.first.sections.first.body
@@ -851,16 +854,25 @@ class _DetailScreenState extends State<DetailScreen>
                                         //   fontWeight: 900,
                                         //   textAlign: TextAlign.left,
                                         // ),
-
-                                        Html(
-                                          // data: controller
-                                          //         .detailattraction!
-                                          //         .first
-                                          //         .itineraryDescription ??
-                                          //     'hhh'
-                                          data:
-                                              "<p>Experience “At The Top at Burj Khalifa” it is an unmissable\r\nextraordinary experience of being on top of the world’s tallest building, while\r\nyou visit the 124th &amp; 125th floor. </p><p><br></p><p>After seeing the Burj Khalifa, you can relax at the Dubai Mall and\r\nyou can enjoy the world’s largest mall, you can spend time shopping for all\r\nkind of stuff. \r\n&nbsp;</p><p><br></p><p>At the end of the evening, enjoy a captivating water, music and\r\nlight spectacle while viewing the Dubai Fountain which is the world’s tallest\r\nperforming fountain. At over 900 ft in length – equivalent to over two football\r\npitches – The Dubai Fountain is situated on the 30-acre Burj Lake and performs\r\nto a selection of different melodies.</p>",
-                                        ),
+//todo
+                                        controller.detailattraction!.first
+                                                    .itineraryDescription ==
+                                                null
+                                            ? Html(
+                                                // data: controller
+                                                //         .detailattraction!
+                                                //         .first
+                                                //         .itineraryDescription ??
+                                                //     'hhh'
+                                                data:
+                                                    "<p>Experience “At The Top at Burj Khalifa” it is an unmissable\r\nextraordinary experience of being on top of the world’s tallest building, while\r\nyou visit the 124th &amp; 125th floor. </p><p><br></p><p>After seeing the Burj Khalifa, you can relax at the Dubai Mall and\r\nyou can enjoy the world’s largest mall, you can spend time shopping for all\r\nkind of stuff. \r\n&nbsp;</p><p><br></p><p>At the end of the evening, enjoy a captivating water, music and\r\nlight spectacle while viewing the Dubai Fountain which is the world’s tallest\r\nperforming fountain. At over 900 ft in length – equivalent to over two football\r\npitches – The Dubai Fountain is situated on the 30-acre Burj Lake and performs\r\nto a selection of different melodies.</p>",
+                                              )
+                                            : Html(
+                                                data: controller
+                                                    .detailattraction!
+                                                    .first
+                                                    .itineraryDescription,
+                                              ),
                                       ],
                                     ))
 

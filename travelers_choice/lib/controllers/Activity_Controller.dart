@@ -91,15 +91,15 @@ class ActivityController extends FxController {
 
       // amount = membercount * tour.totalAmount;
       // log('Amount Transfer:$amount');
-      // if (tour.activityType == 'transfer') {
-      //   // // if(tour.privateTransfers!.first.maxCapacity<!tour.adultCount)
-      //   // if(tour.adultCount/)
-      //   // {
+      if (tour.activityType == 'transfer') {
+        // // if(tour.privateTransfers!.first.maxCapacity<!tour.adultCount)
+        // if(tour.adultCount/)
+        // {
 
-      //   // }
-      //   log('Esther1:${Estheramount.toInt()}');
-      // } else
-      if (tour.privateTransfers!.isEmpty) {
+        // }
+        // log('Esther1:${Estheramount.toInt()}');
+        log('activity type');
+      } else if (tour.privateTransfers!.isEmpty) {
         log('no transfers');
         amount = amount + (tour.grandTotal);
       } else {

@@ -5,6 +5,7 @@ import 'package:iconsax/iconsax.dart';
 import 'package:searchfield/searchfield.dart';
 import '../../controllers/search_controller.dart';
 import '../../models/Country_modal.dart';
+// import '../../models/attraction_search_modal.dart';
 import '../../services/auth_service.dart';
 import '../../theme/app_theme.dart';
 
@@ -205,6 +206,57 @@ class _SearchPlaceState extends State<SearchPlace>
     return Expanded(
       child: SlideTransition(
         position: controller.locationAnimation,
+        // child: TypeAheadField(
+        //   textFieldConfiguration: TextFieldConfiguration(
+        //       controller: controller.locationTE,
+        //       autofocus: true,
+        //       style: DefaultTextStyle.of(context)
+        //           .style
+        //           .copyWith(fontStyle: FontStyle.italic),
+        //       decoration: InputDecoration(border: OutlineInputBorder())),
+        //   suggestionsCallback: (pattern) async {
+        //     if (pattern.length < 3) {
+        //       return [];
+        //     }
+        //     var result = [];
+        //     AttractionSearchDataModal? hotelSearchResponse =
+        //         await AuthService().getSearch();
+        //     result.addAll(hotelSearchResponse!.attractions);
+        //     result.addAll(hotelSearchResponse.destinations);
+           
+        //     return result;
+        //   },
+        //   itemBuilder: (context, suggestion) {
+        //     var title = "";
+        //     if (suggestion.runtimeType ==Destination) {
+        //       title = suggestion.destinations;
+        //     }
+        //     if (suggestion.runtimeType == Cities) {
+        //       title = suggestion.cityName;
+        //     }
+        //     if (suggestion.runtimeType == Hotels) {
+        //       title = suggestion.hotelName;
+        //     }
+        //     return ListTile(
+        //       // leading: Icon(Icons.shopping_cart),
+        //       title: Text(title),
+        //       // subtitle: Text("data"),
+        //     );
+        //   },
+        //   onSuggestionSelected: (suggestion) {
+        //     if (suggestion.runtimeType == Attraction) {
+        //       hotelController.text = suggestion.stateName;
+        //     }
+
+        //     if (suggestion.runtimeType == Cities) {
+        //       hotelController.text = suggestion.cityName;
+        //     }
+
+        //     if (suggestion.runtimeType == Hotels) {
+        //       hotelController.text = suggestion.hotelName;
+        //     }
+        //   },
+        // ),
         child: SearchField<Destination>(
           focusNode: controller.focus,
 
@@ -305,6 +357,7 @@ class _SearchPlaceState extends State<SearchPlace>
                       )))
                   .toList(),
         ),
+      
       ),
     );
   }

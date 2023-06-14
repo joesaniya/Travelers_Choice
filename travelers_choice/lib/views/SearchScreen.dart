@@ -974,26 +974,42 @@ class _SearchScreenState extends State<SearchScreen>
     }
   }
 
+  //capital
+  String capitalizeAllWord(String value) {
+    var result = value[0].toUpperCase();
+    for (int i = 1; i < value.length; i++) {
+      if (value[i - 1] == " ") {
+        result = result + value[i].toUpperCase();
+      } else {
+        result = result + value[i];
+      }
+    }
+    return result;
+  }
+
   //topatt
   Widget _buildProductListUi() {
     List<Widget> list = [];
 
     // for (Product product in controller.products!)
     for (var product in controller.allattractionList!.first.attractions.data) {
-      String text = product.category.categoryName.name;
+      // String text = product.category.categoryName.name;
+      String text = product.category.categoryName;
+      log('category name:${product.category.categoryName}');
+      log('title:${product.title}');
       // String text = "Theme Park,Theme Park";
 
-      text = text.replaceAll("_", " ");
+      // text = text.replaceAll("_", " ");
+//todo
+      // List<String> words = text.split(" ");
+      // // var currencySymbol = selectedCountry!.isocode;
+      // // var conversionRate = selectedCountry!.conversionRate;
+      // for (int i = 0; i < words.length; i++) {
+      //   words[i] =
+      //       words[i][0].toUpperCase() + words[i].substring(1).toLowerCase();
+      // }
 
-      List<String> words = text.split(" ");
-      // var currencySymbol = selectedCountry!.isocode;
-      // var conversionRate = selectedCountry!.conversionRate;
-      for (int i = 0; i < words.length; i++) {
-        words[i] =
-            words[i][0].toUpperCase() + words[i].substring(1).toLowerCase();
-      }
-
-      text = words.join(" ");
+      // text = words.join(" ");//todo
       list.add(FadeTransition(
         opacity: controller.fadeAnimation,
         child: InkWell(
@@ -1074,7 +1090,9 @@ class _SearchScreenState extends State<SearchScreen>
                                     child: FxText.bodySmall(
                                       // overflow: TextOverflow.ellipsis,
                                       // maxLines: 1,
-                                      text,
+                                      capitalizeAllWord(
+                                          product.category.categoryName),
+                                      // text,
 
                                       fontWeight: 300,
                                       color: Colors.white,

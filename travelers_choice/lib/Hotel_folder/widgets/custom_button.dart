@@ -1,5 +1,9 @@
+import 'dart:developer';
+
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
+
+import '../views/hotel_checkout.dart';
 
 class CustomButton extends StatelessWidget {
   const CustomButton({Key? key}) : super(key: key);
@@ -17,7 +21,7 @@ class CustomButton extends StatelessWidget {
             width: MediaQuery.of(context).size.width * 0.5,
             child: TextButton(
               onPressed: () {
-                Navigator.of(context).pop();
+                // Navigator.of(context).pop();
               },
               style: TextButton.styleFrom(
                 foregroundColor: Colors.white, backgroundColor: Colors.indigo,

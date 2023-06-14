@@ -62,7 +62,7 @@ class AttractionService {
       // log("search data:${response.body}");
 
       if (response.statusCode == 200) {
-        // log("search data:${response.body}");
+        log("search data:${response.body}");
 
         return allattractionModalFromJson(response.body);
       } else {

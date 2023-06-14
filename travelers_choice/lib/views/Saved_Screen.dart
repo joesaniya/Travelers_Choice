@@ -131,19 +131,37 @@ class _SavedScreenState extends State<SavedScreen>
     }
   }
 
-  Widget _buildSingleProduct(Datum product) {
-    String text = product.category.categoryName.name;
-
-    text = text.replaceAll("_", " ");
-
-    List<String> words = text.split(" ");
-
-    for (int i = 0; i < words.length; i++) {
-      words[i] =
-          words[i][0].toUpperCase() + words[i].substring(1).toLowerCase();
+//capital
+  String capitalizeAllWord(String value) {
+    var result = value[0].toUpperCase();
+    for (int i = 1; i < value.length; i++) {
+      if (value[i - 1] == " ") {
+        result = result + value[i].toUpperCase();
+      } else {
+        result = result + value[i];
+      }
     }
+    return result;
+  }
 
-    text = words.join(" ");
+  Widget _buildSingleProduct(Datum product) {
+    // String text = product.category.categoryName.name;
+    String text = product.category.categoryName;
+
+    //todo
+
+    // text = text.replaceAll("_", " ");
+
+    // List<String> words = text.split(" ");
+
+    // for (int i = 0; i < words.length; i++) {
+    //   words[i] =
+    //       words[i][0].toUpperCase() + words[i].substring(1).toLowerCase();
+    // }
+
+    // text = words.join(" ");
+
+    //todo
 
     return FadeTransition(
       opacity: controller.fadeAnimation,

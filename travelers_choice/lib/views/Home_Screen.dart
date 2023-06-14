@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutx/flutx.dart';
 import 'package:hotel_travel/services/auth_service.dart';
 import 'package:hotel_travel/services/visa_service.dart';
-import 'package:hotel_travel/views/search_screens/visa_search.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import '../Hotel_folder/views/hotel_search.dart';
@@ -266,8 +265,22 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     }
   }
 
+//capital
+  String capitalizeAllWord(String value) {
+    var result = value[0].toUpperCase();
+    for (int i = 1; i < value.length; i++) {
+      if (value[i - 1] == " ") {
+        result = result + value[i].toUpperCase();
+      } else {
+        result = result + value[i];
+      }
+    }
+    return result;
+  }
+
   String? currencySymbol;
-  double? conversionRate;
+  // double? conversionRate;
+  double conversionRate = 0.0;
 
 //topatt
   Widget _buildProductList() {
@@ -275,24 +288,31 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
 
     // for (Product product in controller.products!)
     for (var product in allattractionList!.first.attractions.data) {
-      String text = product.category.categoryName.name;
+      // String text = product.category.categoryName.name;
+      String text = product.category.categoryName;
       // String text = "Theme Park,Theme Park";
+      //todo
+      // text = text.replaceAll("_", " ");
 
-      text = text.replaceAll("_", " ");
-
-      List<String> words = text.split(" ");
+      // List<String> words = text.split(" ");
+      //todo
       currencySymbol = selectedCountry!.isocode;
       conversionRate = selectedCountry!.conversionRate;
       sharedPreferences!
           .setString(AppConstants.symbol, selectedCountry!.isocode);
       sharedPreferences!
           .setDouble(AppConstants.rate, selectedCountry!.conversionRate);
-      for (int i = 0; i < words.length; i++) {
-        words[i] =
-            words[i][0].toUpperCase() + words[i].substring(1).toLowerCase();
-      }
+      //todo
+      // text = text.replaceAll("_", " ");
 
-      text = words.join(" ");
+      // List<String> words = text.split(" ");
+      // for (int i = 0; i < words.length; i++) {
+      //   words[i] =
+      //       words[i][0].toUpperCase() + words[i].substring(1).toLowerCase();
+      // }
+
+      // text = words.join(" ");
+      //todo
       list.add(FadeTransition(
         opacity: controller.fadeAnimation,
         child: InkWell(
@@ -374,7 +394,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                     child: FxText.bodySmall(
                                       // overflow: TextOverflow.ellipsis,
                                       // maxLines: 1,
-                                      text,
+                                      // text,
+                                      capitalizeAllWord(
+                                          product.category.categoryName),
 
                                       fontWeight: 300,
                                       color: Colors.white,
@@ -572,22 +594,24 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     // }
     // for (Product product in controller.products!)
     for (Datum product in allattractionList!.first.attractions.data) {
-      String text = product.category.categoryName.name;
+      // String text = product.category.categoryName.name;
+      String text = product.category.categoryName;
+      //todo
+      // text = text.replaceAll("_", " ");
 
-      text = text.replaceAll("_", " ");
+      // List<String> words = text.split(" ");
 
-      List<String> words = text.split(" ");
+      // for (int i = 0; i < words.length; i++) {
+      //   words[i] =
+      //       words[i][0].toUpperCase() + words[i].substring(1).toLowerCase();
+      // }
 
-      for (int i = 0; i < words.length; i++) {
-        words[i] =
-            words[i][0].toUpperCase() + words[i].substring(1).toLowerCase();
-      }
-
-      text = words.join(" ");
+      // text = words.join(" ");
 
       // var currencySymbol = selectedCountry!.isocode;
       // var conversionRate = selectedCountry!.conversionRate;
       print(text);
+      //todo
       list.add(
           // car(controller.products![i])
           InkWell(
@@ -677,7 +701,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                           color: Colors.blueGrey,
                           child: Center(
                             child: FxText.bodySmall(
-                              text,
+                              // text,
+                              capitalizeAllWord(product.category.categoryName),
+
                               // product.category.categoryName.name[0]
                               //         .toUpperCase() +
                               //     product.category.categoryName.name
@@ -879,8 +905,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   Widget _buildBody() {
     double width = MediaQuery.of(context).size.width;
     double containerWidth = width / 2;
-    // if (controller.uiLoading)
-    if (allattractionList == null) {
+    if (controller.uiLoading)
+    // if (allattractionList == null)
+    {
       return Scaffold(
           body: Padding(
         padding: FxSpacing.top(FxSpacing.safeAreaTop(context) + 20),
@@ -894,7 +921,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         ),
       ));
     } else {
-      if (allattractionList!.isEmpty) {
+      // if (allattractionList!.isEmpty)
+      if (controller.uiLoading) {
         return const Scaffold(body: Center(child: Text("No Data found")));
       } else {
         return WillPopScope(
@@ -903,6 +931,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
           child: Scaffold(
             backgroundColor: const Color(0xfff5f5f5),
             body: ListView(
+              shrinkWrap: true,
               padding: FxSpacing.fromLTRB(
                   20, FxSpacing.safeAreaTop(context) + 20, 20, 0),
               children: [
@@ -1176,14 +1205,18 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                 // FxSpacing.height(29),
                 _tabbed == '1'
                     ? SearchAttractionScreen(
-                        isocode: selectedCountry!.isocode,
-                        conversionRate: selectedCountry!.conversionRate)
+                        isocode: currencySymbol.toString(),
+                        conversionRate: conversionRate.toDouble(),
+                        //isocode: selectedCountry!.isocode,
+                        //conversionRate: selectedCountry!.conversionRate
+                      )
                     // SearchPlace(
                     //     isocode: selectedCountry!.isocode,
                     //     conversionRate: selectedCountry!.conversionRate)
                     : _tabbed == '3'
                         ? const HotelSearch()
-                        : const SearchVisa(),
+                        : const SizedBox(),
+                // : const SearchVisa(),
 
                 Listener(
                   behavior: HitTestBehavior.opaque,
@@ -1496,32 +1529,56 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                       ),
 
                       FxSpacing.height(20),
-                      TopAttraction(),
+                      allattractionList == null || allattractionList!.isEmpty
+                          ? SizedBox(
+                              width: MediaQuery.of(context).size.width *
+                                  0.8, // 80% of the screen width
+                              height: MediaQuery.of(context).size.height * 0.6,
+                              // height: double.infinity,
+                              // width: double.infinity,
+                              child: Center(
+                                child: FxText.bodySmall(
+                                  "Wait here, we are fetching data",
+                                ),
+                              ),
+                            )
+                          : const SizedBox(),
+                      allattractionList == null || allattractionList!.isEmpty
+                          ? const SizedBox()
+                          : TopAttraction(),
                       // const TopAttractionCard(),->crt
                       // _buildAttractionList(),
-                      FxSpacing.height(20),
+                      allattractionList == null || allattractionList!.isEmpty
+                          ? const SizedBox()
+                          : FxSpacing.height(20),
 
-                      FadeTransition(
-                        opacity: controller.fadeAnimation,
-                        // key: controller.intro.keys[1],
-                        child: Align(
-                          alignment: Alignment.centerLeft,
-                          child: Container(
-                            child: FxText.bodyLarge(
-                              'Top Attractions',
-                              letterSpacing: 0,
-                              fontWeight: 600,
+                      allattractionList == null || allattractionList!.isEmpty
+                          ? const SizedBox()
+                          : FadeTransition(
+                              opacity: controller.fadeAnimation,
+                              // key: controller.intro.keys[1],
+                              child: Align(
+                                alignment: Alignment.centerLeft,
+                                child: Container(
+                                  child: FxText.bodyLarge(
+                                    'Top Attractions',
+                                    letterSpacing: 0,
+                                    fontWeight: 600,
+                                  ),
+                                ),
+                              ),
                             ),
-                          ),
-                        ),
-                      ),
 
-                      FxSpacing.height(20),
-                      SingleChildScrollView(
-                        controller: controller.scrollController,
-                        scrollDirection: Axis.vertical,
-                        child: _buildProductList(),
-                      ),
+                      allattractionList == null || allattractionList!.isEmpty
+                          ? const SizedBox()
+                          : FxSpacing.height(20),
+                      allattractionList == null || allattractionList!.isEmpty
+                          ? const SizedBox()
+                          : SingleChildScrollView(
+                              controller: controller.scrollController,
+                              scrollDirection: Axis.vertical,
+                              child: _buildProductList(),
+                            ),
                       FxSpacing.height(60),
                       // LazyLoadListView(
                       //   listItems: _herosList,
