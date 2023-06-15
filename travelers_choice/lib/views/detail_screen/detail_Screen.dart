@@ -307,18 +307,22 @@ class _DetailScreenState extends State<DetailScreen>
                                       // categoryname(controller.detailattraction
                                       //         .first.category!.categoryName)
                                       // 'Theme Park',
-                                      controller.detailattraction!.first
-                                                  .category!.categoryName![0]
-                                                  .toUpperCase() +
-                                              controller.detailattraction!.first
-                                                  .category!.categoryName!
-                                                  .substring(1)
-                                                  .toLowerCase() ??
-                                          '',
+                                      // controller.detailattraction!.first
+                                      //             .category!.categoryName![0]
+                                      //             .toUpperCase() +
+                                      //         controller.detailattraction!.first
+                                      //             .category!.categoryName!
+                                      //             .substring(1)
+                                      //             .toLowerCase() ??
+                                      //     '',
+                                      capitalizeAllWord(controller
+                                          .detailattraction!
+                                          .first
+                                          .category!
+                                          .categoryName!),
                                       // controller.product.bookingType.toString(),
                                       fontWeight: 300,
                                       color: Colors.white,
-                                      // color: theme.colorScheme.onPrimary,
                                     ),
                                   ),
                                 ),
@@ -333,14 +337,17 @@ class _DetailScreenState extends State<DetailScreen>
                                   color: Colors.blueGrey,
                                   child: Center(
                                     child: FxText.bodySmall(
-                                      controller.detailattraction!.first
-                                                  .bookingType![0]
-                                                  .toUpperCase() +
-                                              controller.detailattraction!.first
-                                                  .bookingType!
-                                                  .substring(1)
-                                                  .toLowerCase() ??
-                                          '',
+                                      // controller.detailattraction!.first
+                                      //             .bookingType![0]
+                                      //             .toUpperCase() +
+                                      //         controller.detailattraction!.first
+                                      //             .bookingType!
+                                      //             .substring(1)
+                                      //             .toLowerCase() ??
+                                      //     '',
+                                      capitalizeAllWord(controller
+                                          .detailattraction!.first.bookingType
+                                          .toString()),
                                       fontWeight: 300,
                                       color: Colors.white,
                                       // color: theme.colorScheme.onPrimary,
@@ -380,13 +387,16 @@ class _DetailScreenState extends State<DetailScreen>
                                   "product_title_${controller.detailattraction!.first.title}",
                               child: FxText.titleMedium(
                                   // controller.product.title,
-                                  controller.detailattraction!.first.title![0]
-                                              .toUpperCase() +
-                                          controller
-                                              .detailattraction!.first.title!
-                                              .substring(1)
-                                              .toLowerCase() ??
-                                      '',
+                                  // controller.detailattraction!.first.title![0]
+                                  //             .toUpperCase() +
+                                  //         controller
+                                  //             .detailattraction!.first.title!
+                                  //             .substring(1)
+                                  //             .toLowerCase() ??
+                                  //     '',
+                                  capitalizelocation(controller
+                                      .detailattraction!.first.title
+                                      .toString()),
                                   fontWeight: 600,
                                   letterSpacing: 0),
                             ),
@@ -402,13 +412,18 @@ class _DetailScreenState extends State<DetailScreen>
                                   Container(
                                       margin: const EdgeInsets.only(left: 2),
                                       child: FxText.bodySmall(
-                                          controller.detailattraction!.first
-                                                      .destination!.name[0]
-                                                      .toUpperCase() +
-                                                  controller.detailattraction!
-                                                      .first.destination!.name
-                                                      .substring(1) ??
-                                              '',
+                                          // controller.detailattraction!.first
+                                          //             .destination!.name[0]
+                                          //             .toUpperCase() +
+                                          //         controller.detailattraction!
+                                          //             .first.destination!.name
+                                          //             .substring(1) ??
+                                          //     '',
+                                          capitalizelocation(controller
+                                              .detailattraction!
+                                              .first
+                                              .destination!
+                                              .name),
                                           fontWeight: 500)),
                                 ],
                               ),
@@ -1047,6 +1062,31 @@ class _DetailScreenState extends State<DetailScreen>
     }
   }
 
+  //capital
+  String capitalizeAllWord(String value) {
+    var result = value[0].toUpperCase();
+    for (int i = 1; i < value.length; i++) {
+      if (value[i - 1] == " ") {
+        result = result + value[i].toUpperCase();
+      } else {
+        result = result + value[i];
+      }
+    }
+    return result;
+  }
+
+  String capitalizelocation(String value) {
+    var result = value[0].toUpperCase();
+    for (int i = 1; i < value.length; i++) {
+      if (value[i - 1] == " ") {
+        result = result + value[i].toUpperCase();
+      } else {
+        result = result + value[i];
+      }
+    }
+    return result;
+  }
+
   favouriteListCheck() async {
     isSelected = favouriteList.any((e) => e.id == widget.productid);
     setState(() {
@@ -1093,13 +1133,16 @@ class _DetailScreenState extends State<DetailScreen>
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               FxText.titleMedium(
-                                  controller.detailattraction!.first.title![0]
-                                              .toUpperCase() +
-                                          controller
-                                              .detailattraction!.first.title!
-                                              .substring(1)
-                                              .toLowerCase() ??
-                                      '',
+                                  // controller.detailattraction!.first.title![0]
+                                  //             .toUpperCase() +
+                                  //         controller
+                                  //             .detailattraction!.first.title!
+                                  //             .substring(1)
+                                  //             .toLowerCase() ??
+                                  //     '',
+                                  capitalizeAllWord(controller
+                                      .detailattraction!.first.title
+                                      .toString()),
                                   // 'Yas',
                                   fontWeight: 600,
                                   maxLines: 2,

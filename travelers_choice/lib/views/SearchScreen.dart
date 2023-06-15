@@ -995,8 +995,8 @@ class _SearchScreenState extends State<SearchScreen>
     for (var product in controller.allattractionList!.first.attractions.data) {
       // String text = product.category.categoryName.name;
       String text = product.category.categoryName;
-      log('category name:${product.category.categoryName}');
-      log('title:${product.title}');
+      // log('category name:${product.category.categoryName}');
+      // log('title:${product.title}');
       // String text = "Theme Park,Theme Park";
 
       // text = text.replaceAll("_", " ");
@@ -1207,8 +1207,9 @@ class _SearchScreenState extends State<SearchScreen>
                             //   // fontWeight: 500,
                             // ),
                             child: FxText.bodyLarge(
-                              product.title[0].toUpperCase() +
-                                  product.title.substring(1).toLowerCase(),
+                              // product.title[0].toUpperCase() +
+                              //     product.title.substring(1).toLowerCase(),
+                              capitalizeAllWord(product.title),
                               fontWeight: 800,
                               overflow: TextOverflow.ellipsis,
                               maxLines: 2,
@@ -1239,11 +1240,11 @@ class _SearchScreenState extends State<SearchScreen>
                               ),
                               FxSpacing.width(4),
                               FxText.labelLarge(
-                                // '\$' + product.price.toString(),
-                                product.destination.name[0].toUpperCase() +
-                                    product.destination.name
-                                        .substring(1)
-                                        .toLowerCase(),
+                                // product.destination.name[0].toUpperCase() +
+                                //     product.destination.name
+                                //         .substring(1)
+                                //         .toLowerCase(),
+                                capitalizeAllWord(product.destination.name),
 
                                 // product.price.toString() + " " + "AED",
                                 // "\$" + product.price.toString() + "/hour",

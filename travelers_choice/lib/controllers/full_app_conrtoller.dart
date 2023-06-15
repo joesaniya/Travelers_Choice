@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutx/flutx.dart';
-
+import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:internet_connectivity_checker/internet_connectivity_checker.dart';
 class NavItem {
   final String title;
   final IconData iconData;
@@ -17,9 +18,14 @@ class FullAppController extends FxController {
   final TickerProvider tickerProvider;
 
   late List<NavItem> navItems;
+
+ 
+  //
   onTapped(value) {
     tabController.animateTo(value);
   }
+
+
 
   FullAppController(this.tickerProvider) {
     tabController =
@@ -55,6 +61,9 @@ class FullAppController extends FxController {
     currentIndex = tabController.index;
     update();
   }
+    @override
+  
+
 
   @override
   String getTag() {

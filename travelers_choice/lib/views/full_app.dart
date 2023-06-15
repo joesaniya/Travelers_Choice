@@ -1,3 +1,6 @@
+import 'dart:async';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutx/flutx.dart';
@@ -11,6 +14,9 @@ import '../controllers/full_app_conrtoller.dart';
 import '../models/atteraction_model.dart';
 import '../theme/app_theme.dart';
 import 'Saved_Screen.dart';
+
+import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 
 List<Datum> favouriteList = <Datum>[];
 
@@ -30,30 +36,7 @@ class _FullAppState extends State<FullApp> with SingleTickerProviderStateMixin {
 
   late FullAppController controller;
 
-  @override
-  void initState() {
-    super.initState();
-
-    theme = AppTheme.shoppingTheme;
-    controller = FxControllerStore.putOrFind(FullAppController(this));
-  }
-
-  List<Widget> buildTab() {
-    List<Widget> tabs = [];
-
-    for (int i = 0; i < controller.navItems.length; i++) {
-      tabs.add(Container(
-        child: Icon(
-          controller.navItems[i].iconData,
-          size: 20,
-          color: (controller.currentIndex == i)
-              ? theme.colorScheme.primary
-              : theme.colorScheme.onBackground,
-        ),
-      ));
-    }
-    return tabs;
-  }
+  
 
   @override
   Widget build(BuildContext context) {

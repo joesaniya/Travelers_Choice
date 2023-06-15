@@ -234,7 +234,8 @@ class _SavedScreenState extends State<SavedScreen>
                 Hero(
                   tag: "product_${product.title}",
                   child: FxText.bodyMedium(
-                    product.title,
+                    // product.title,
+                    capitalizeAllWord(product.title),
                     fontWeight: 600,
                     overflow: TextOverflow.ellipsis,
                     maxLines: 2,

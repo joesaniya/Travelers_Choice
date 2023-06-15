@@ -278,6 +278,19 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     return result;
   }
 
+  //location
+  String capitalizelocation(String value) {
+    var result = value[0].toUpperCase();
+    for (int i = 1; i < value.length; i++) {
+      if (value[i - 1] == " ") {
+        result = result + value[i].toUpperCase();
+      } else {
+        result = result + value[i];
+      }
+    }
+    return result;
+  }
+
   String? currencySymbol;
   // double? conversionRate;
   double conversionRate = 0.0;
@@ -511,8 +524,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                             //   // fontWeight: 500,
                             // ),
                             child: FxText.bodyLarge(
-                              product.title[0].toUpperCase() +
-                                  product.title.substring(1).toLowerCase(),
+                              // product.title[0].toUpperCase() +
+                              //     product.title.substring(1).toLowerCase(),
+                              capitalizeAllWord(product.title),
                               fontWeight: 800,
                               overflow: TextOverflow.ellipsis,
                               maxLines: 2,
@@ -785,8 +799,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 8),
                       child: FxText.bodyLarge(
-                        product.title[0].toUpperCase() +
-                            product.title.substring(1).toLowerCase(),
+                        // product.title[0].toUpperCase() +
+                        //     product.title.substring(1).toLowerCase(),
+                        capitalizeAllWord(product.title),
                         fontWeight: 800,
                         overflow: TextOverflow.ellipsis,
                         maxLines: 1,
@@ -852,10 +867,15 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                               FxSpacing.width(4),
                               FxText.labelLarge(
                                 // '\$' + product.price.toString(),
-                                product.destination.name[0].toUpperCase() +
-                                    product.destination.name
-                                        .substring(1)
-                                        .toLowerCase(),
+                                capitalizelocation(
+                                    product.destination.name[0].toUpperCase() +
+                                        product.destination.name),
+
+                                //crt
+                                // product.destination.name[0].toUpperCase() +
+                                //     product.destination.name
+                                //         .substring(1)
+                                //         .toLowerCase(),
 
                                 // product.price.toString() + " " + "AED",
                                 // "\$" + product.price.toString() + "/hour",
