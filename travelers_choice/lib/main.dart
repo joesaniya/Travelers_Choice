@@ -17,6 +17,8 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutx/themes/app_theme_notifier.dart';
 import 'package:provider/provider.dart';
 
+import 'network/connection_check.dart';
+
 Future<void> main() async {
   //You will need to initialize AppThemeNotifier class for theme changes.
   WidgetsFlutterBinding.ensureInitialized();
@@ -71,6 +73,7 @@ class MyApp extends StatelessWidget {
           ],
           supportedLocales: Language.getLocales(),
           // home: const LogInScreen(),
+          // home: const ConnectionCheck(),
           home: const SplashScreen2(),
           // home: const AuthContainer(),
           // home: const BookingSuccess(),

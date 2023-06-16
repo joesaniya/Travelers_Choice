@@ -36,7 +36,68 @@ class _FullAppState extends State<FullApp> with SingleTickerProviderStateMixin {
 
   late FullAppController controller;
 
-  
+  //todo
+  late StreamSubscription subscription;
+  bool isDeviceConnected = false;
+  bool isAlertSet = false;
+  getConnectivity() =>
+      subscription = Connectivity().onConnectivityChanged.listen(
+        (ConnectivityResult result) async {
+          isDeviceConnected = await InternetConnectionChecker().hasConnection;
+          if (!isDeviceConnected && isAlertSet == false) {
+            showDialogBox();
+            setState(() => isAlertSet = true);
+          }
+        },
+      );
+
+  showDialogBox() => showCupertinoDialog<String>(
+        context: context,
+        builder: (BuildContext context) => CupertinoAlertDialog(
+          title: const Text('No Connection'),
+          content: const Text('Please check your internet connectivity'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () async {
+                Navigator.pop(context, 'Cancel');
+                setState(() => isAlertSet = false);
+                isDeviceConnected =
+                    await InternetConnectionChecker().hasConnection;
+                if (!isDeviceConnected && isAlertSet == false) {
+                  showDialogBox();
+                  setState(() => isAlertSet = true);
+                }
+              },
+              child: const Text('OK'),
+            ),
+          ],
+        ),
+      );
+
+  @override
+  void initState() {
+    super.initState();
+    // getConnectivity();
+    theme = AppTheme.shoppingTheme;
+    controller = FxControllerStore.putOrFind(FullAppController(this));
+  }
+
+  List<Widget> buildTab() {
+    List<Widget> tabs = [];
+
+    for (int i = 0; i < controller.navItems.length; i++) {
+      tabs.add(Container(
+        child: Icon(
+          controller.navItems[i].iconData,
+          size: 20,
+          color: (controller.currentIndex == i)
+              ? theme.colorScheme.primary
+              : theme.colorScheme.onBackground,
+        ),
+      ));
+    }
+    return tabs;
+  }
 
   @override
   Widget build(BuildContext context) {

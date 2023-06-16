@@ -15,6 +15,8 @@ class _SplashScreen2State extends State<SplashScreen2> {
 
   late SplashScreen2Controller controller;
 
+  
+
   @override
   void initState() {
     super.initState();
