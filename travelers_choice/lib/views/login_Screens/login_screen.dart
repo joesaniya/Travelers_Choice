@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutx/flutx.dart';
+import '../../theme/constant.dart';
 import '/theme/app_theme.dart';
 
 import '/controllers/login_controller.dart';
@@ -61,6 +62,65 @@ class _LogInScreenState extends State<LogInScreen>
     } on PlatformException {
       log('PlatformException');
     }
+  }
+
+  Widget google() {
+    return FxButton.block(
+      elevation: 0,
+      padding: FxSpacing.y(12),
+      backgroundColor: theme.cardTheme.color,
+      borderRadiusAll: Constant.buttonRadius.xs,
+      onPressed: () {},
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const Image(
+            height: 20,
+            width: 20,
+            // color: theme.colorScheme.primary,
+            color: Color(0xff1529e8),
+            image: AssetImage('assets/icons/google.png'
+                // 'assets/images/full_apps/nft/icons/google.png',
+                ),
+          ),
+          FxSpacing.width(12),
+          FxText.labelLarge(
+            "Continue with Google",
+            fontWeight: 700,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget facebook() {
+    return FxButton.block(
+      elevation: 0,
+      padding: FxSpacing.y(12),
+      backgroundColor: theme.cardTheme.color,
+      borderRadiusAll: Constant.buttonRadius.xs,
+      onPressed: () {},
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const Image(
+            height: 20,
+            width: 20,
+            // color: theme.colorScheme.primary,
+            color: Color(0xff1529e8),
+            image: AssetImage(
+              'assets/icons/facebook.png',
+              // 'assets/images/full_apps/nft/icons/facebook.png'
+            ),
+          ),
+          FxSpacing.width(12),
+          FxText.labelLarge(
+            "Continue with Facebook",
+            fontWeight: 700,
+          ),
+        ],
+      ),
+    );
   }
 
   @override
@@ -289,6 +349,11 @@ class _LogInScreenState extends State<LogInScreen>
                           // color: theme.colorScheme.primary
                         )),
                   ),
+                  FxSpacing.height(20),
+                  google(),
+                  FxSpacing.height(20),
+                  facebook(),
+                  FxSpacing.height(20),
                 ],
               ),
             ),

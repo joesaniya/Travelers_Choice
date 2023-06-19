@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutx/core/state_management/controller.dart';
 import 'package:hotel_travel/models/cart.dart';
@@ -45,6 +47,15 @@ class SplashScreen2Controller extends FxController {
 
   bool _isMealFavorite(String id) {
     return _favouriteMeals.any((meal) => meal.attractions.data.first.id == id);
+  }
+
+  noInternet() {
+    log('no Inernet');
+    Navigator.of(context, rootNavigator: true).pushReplacement(
+      PageRouteBuilder(
+          transitionDuration: const Duration(seconds: 2),
+          pageBuilder: (_, __, ___) => noInternet()),
+    );
   }
 
   goToFullApp() async {
