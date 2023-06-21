@@ -107,8 +107,8 @@ class CheckOutController extends FxController {
     CustomSnackbar.show(
       context: context,
       message: response.message ?? '',
-      backgroundColor: Color(0xff1529e8),
-      duration: Duration(seconds: 2),
+      backgroundColor: const Color(0xff1529e8),
+      duration: const Duration(seconds: 2),
     );
   }
 
@@ -124,8 +124,8 @@ class CheckOutController extends FxController {
     CustomSnackbar.show(
       context: context,
       message: response.walletName ?? '',
-      backgroundColor: Color(0xff1529e8),
-      duration: Duration(seconds: 2),
+      backgroundColor: const Color(0xff1529e8),
+      duration: const Duration(seconds: 2),
     );
   }
 
@@ -152,6 +152,7 @@ class CheckOutController extends FxController {
     SharedPreferences.getInstance().then((sharedPrefValue) {
       token = sharedPrefValue.getString(AppConstants.KEY_ACCESS_TOKEN);
       log(token.toString());
+      log('Token:${token.toString()}');
     });
     // details=;
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
@@ -373,8 +374,8 @@ class CheckOutController extends FxController {
     CustomSnackbar.show(
       context: context,
       message: 'Please Login Your account',
-      backgroundColor: Color(0xff1529e8),
-      duration: Duration(seconds: 2),
+      backgroundColor: const Color(0xff1529e8),
+      duration: const Duration(seconds: 2),
     );
     Navigator.of(context, rootNavigator: true).pushReplacement(
       MaterialPageRoute(
@@ -446,9 +447,9 @@ class CheckOutController extends FxController {
       if (selectedname == null || selectedname!.isEmpty) {
         CustomSnackbar.show(
           context: context,
-          message:'Please Select Mr/Ms/Mrs',
-          backgroundColor: Color(0xff1529e8),
-          duration: Duration(seconds: 2),
+          message: 'Please Select Mr/Ms/Mrs',
+          backgroundColor: const Color(0xff1529e8),
+          duration: const Duration(seconds: 2),
         );
         // ScaffoldMessenger.of(context).showSnackBar(
         //     const SnackBar(content: Text("Please Select Mr/Ms/Mrs")));
@@ -456,8 +457,8 @@ class CheckOutController extends FxController {
         CustomSnackbar.show(
           context: context,
           message: 'Please Enter First Name',
-          backgroundColor: Color(0xff1529e8),
-          duration: Duration(seconds: 2),
+          backgroundColor: const Color(0xff1529e8),
+          duration: const Duration(seconds: 2),
         );
         // ScaffoldMessenger.of(context).showSnackBar(
         //     const SnackBar(content: Text("Please Enter First Name")));
@@ -465,8 +466,8 @@ class CheckOutController extends FxController {
         CustomSnackbar.show(
           context: context,
           message: 'Please Enter Last Name',
-          backgroundColor: Color(0xff1529e8),
-          duration: Duration(seconds: 2),
+          backgroundColor: const Color(0xff1529e8),
+          duration: const Duration(seconds: 2),
         );
         // ScaffoldMessenger.of(context).showSnackBar(
         //     const SnackBar(content: Text("Please Enter Last Name")));
@@ -474,8 +475,8 @@ class CheckOutController extends FxController {
         CustomSnackbar.show(
           context: context,
           message: 'Please Enter email',
-          backgroundColor: Color(0xff1529e8),
-          duration: Duration(seconds: 2),
+          backgroundColor: const Color(0xff1529e8),
+          duration: const Duration(seconds: 2),
         );
         // ScaffoldMessenger.of(context)
         //     .showSnackBar(const SnackBar(content: Text("Please Enter Email")));
@@ -487,8 +488,8 @@ class CheckOutController extends FxController {
         CustomSnackbar.show(
           context: context,
           message: 'Please Select Country',
-          backgroundColor: Color(0xff1529e8),
-          duration: Duration(seconds: 2),
+          backgroundColor: const Color(0xff1529e8),
+          duration: const Duration(seconds: 2),
         );
       } else if (selectedCountryCode == null || selectedCountryCode!.isEmpty) {
         // ScaffoldMessenger.of(context).showSnackBar(
@@ -496,17 +497,17 @@ class CheckOutController extends FxController {
         CustomSnackbar.show(
           context: context,
           message: 'Please Select Phone Code',
-          backgroundColor: Color(0xff1529e8),
-          duration: Duration(seconds: 2),
+          backgroundColor: const Color(0xff1529e8),
+          duration: const Duration(seconds: 2),
         );
       } else if (phoneTE.text.isEmpty
           // || phoneTE.text.length != 10
           ) {
-            CustomSnackbar.show(
+        CustomSnackbar.show(
           context: context,
           message: 'Please Enter Phone Number',
-          backgroundColor: Color(0xff1529e8),
-          duration: Duration(seconds: 2),
+          backgroundColor: const Color(0xff1529e8),
+          duration: const Duration(seconds: 2),
         );
         // ScaffoldMessenger.of(context).showSnackBar(
         //     const SnackBar(content: Text("Please Enter Phone Number")));
@@ -744,8 +745,8 @@ class CheckOutController extends FxController {
       CustomSnackbar.show(
         context: context,
         message: jsondata['error'],
-        backgroundColor: Color(0xff1529e8),
-        duration: Duration(seconds: 2),
+        backgroundColor: const Color(0xff1529e8),
+        duration: const Duration(seconds: 2),
       );
       // ScaffoldMessenger.of(context)
       //     .showSnackBar(SnackBar(content: Text(jsondata['error'])));
@@ -836,9 +837,9 @@ class CheckOutController extends FxController {
       // );
       CustomSnackbar.show(
         context: context,
-        message:res.body,
-        backgroundColor: Color(0xff1529e8),
-        duration: Duration(seconds: 2),
+        message: res.body,
+        backgroundColor: const Color(0xff1529e8),
+        duration: const Duration(seconds: 2),
       );
     }
   }
@@ -933,8 +934,8 @@ class CheckOutController extends FxController {
       CustomSnackbar.show(
         context: context,
         message: jsondata['error'],
-        backgroundColor: Color(0xff1529e8),
-        duration: Duration(seconds: 2),
+        backgroundColor: const Color(0xff1529e8),
+        duration: const Duration(seconds: 2),
       );
       // ScaffoldMessenger.of(context)
       //     .showSnackBar(SnackBar(content: Text(jsondata['error'])));

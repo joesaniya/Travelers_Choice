@@ -129,6 +129,7 @@ class _LogInScreenState extends State<LogInScreen>
         controller: controller,
         builder: (controller) {
           return Scaffold(
+            resizeToAvoidBottomInset: false,
             body: Padding(
               padding: FxSpacing.fromLTRB(
                   20,

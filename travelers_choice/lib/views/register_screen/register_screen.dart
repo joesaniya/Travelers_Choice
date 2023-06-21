@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutx/flutx.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
+import '../../images.dart';
 import '../../models/Country_modal.dart';
 import '../../services/auth_service.dart';
 import '/theme/app_theme.dart';
@@ -626,6 +627,47 @@ class _RegisterScreenState extends State<RegisterScreen>
             //     ),
             //   ],
             // ),
+            FxSpacing.height(20),
+            Row(
+              children: [
+                const Expanded(child: Divider()),
+                Padding(
+                  padding: FxSpacing.x(20),
+                  child: FxText.bodySmall(
+                    'Continue with',
+                    muted: true,
+                    fontWeight: 600,
+                    fontSize: 10,
+                  ),
+                ),
+                const Expanded(child: Divider()),
+              ],
+            ),
+            FxSpacing.height(24),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                FxContainer.bordered(
+                  padding: FxSpacing.all(16),
+                  borderRadiusAll: 8,
+                  child: Image(
+                    height: 24,
+                    width: 24,
+                    image: AssetImage(Images.google),
+                  ),
+                ),
+                FxContainer.bordered(
+                  padding: FxSpacing.all(16),
+                  borderRadiusAll: 8,
+                  child: Image(
+                    height: 24,
+                    width: 24,
+                    image: AssetImage(Images.facebook),
+                  ),
+                ),
+              ],
+            ),
+            FxSpacing.height(20),
             FxSpacing.height(20),
             Center(
               child: FxButton.text(
