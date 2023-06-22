@@ -1,7 +1,4 @@
-import 'dart:developer';
-import 'package:cc_avenue/cc_avenue.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutx/flutx.dart';
 import '../../theme/constant.dart';
@@ -43,34 +40,16 @@ class _LogInScreenState extends State<LogInScreen>
     );
   }
 
-  /// [initPlatformState] this calls the [cCAvenueInit]
-  // Platform messages are asynchronous, so we initialize in an async method.
-  Future<void> initPlatformState() async {
-    log('initPlatformState');
-    // Platform messages may fail, so we use a try/catch PlatformException.
-    try {
-      await CcAvenue.cCAvenueInit(
-          transUrl: 'https://secure.ccavenue.com/transaction/initTrans',
-          accessCode: '4YRUXLSRO20O8NIH',
-          amount: '10',
-          cancelUrl: 'http://122.182.6.216/merchant/ccavResponseHandler.jsp',
-          currencyType: 'INR',
-          merchantId: '2',
-          orderId: '519',
-          redirectUrl: 'http://122.182.6.216/merchant/ccavResponseHandler.jsp',
-          rsaKeyUrl: 'https://secure.ccavenue.com/transaction/jsp/GetRSA.jsp');
-    } on PlatformException {
-      log('PlatformException');
-    }
-  }
-
   Widget google() {
     return FxButton.block(
       elevation: 0,
       padding: FxSpacing.y(12),
       backgroundColor: theme.cardTheme.color,
       borderRadiusAll: Constant.buttonRadius.xs,
-      onPressed: () {},
+      onPressed: () {
+        // controller.googlesign();
+        controller.googleSignIn();
+      },
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [

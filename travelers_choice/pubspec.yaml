@@ -62,7 +62,6 @@ dependencies:
   dropdown_button2: ^1.9.2
   flutter_html: ^2.2.1
 
-  cc_avenue: ^1.0.3
   lottie: ^1.4.2
   cached_network_image: ^3.2.1
   tab_indicator_styler: ^2.0.0
@@ -104,6 +103,10 @@ dependencies:
   internet_connectivity_checker: ^1.0.0
   connectivity_plus: ^2.1.0
   internet_connection_checker: ^1.0.0+1
+  firebase_auth: ^4.6.3
+  firebase_core: ^2.14.0
+  google_sign_in: ^6.1.4
+  cloud_firestore: ^4.8.1
 
 dev_dependencies:
   flutter_test:

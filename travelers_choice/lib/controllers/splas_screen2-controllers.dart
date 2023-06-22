@@ -11,8 +11,13 @@ import '../models/product.dart';
 import '../models/tickets.dart';
 import '../views/full_app.dart';
 import '../views/hotel_travel_constants.dart';
-
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:firebase_core/firebase_core.dart';
 class SplashScreen2Controller extends FxController {
+
+   bool _isLoggedIn = false;
+  GoogleSignInAccount? _userObj;
+  GoogleSignIn _googleSignIn = GoogleSignIn();
   @override
   void initState() {
     super.initState();

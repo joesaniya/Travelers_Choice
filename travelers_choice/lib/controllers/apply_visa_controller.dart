@@ -23,7 +23,7 @@ import '../models/product.dart';
 import '../models/shipping_address.dart';
 import '../models/visaModels/visa_document_model.dart';
 import 'razor_credentials.dart' as razorCredentials;
-import 'package:cc_avenue/cc_avenue.dart';
+
 import '../views/payment_cc.dart';
 import '../views/checkout_screen.dart';
 import '../../controllers/attraction_Controller.dart';

@@ -16,12 +16,12 @@ import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutx/themes/app_theme_notifier.dart';
 import 'package:provider/provider.dart';
-
-import 'network/connection_check.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 Future<void> main() async {
   //You will need to initialize AppThemeNotifier class for theme changes.
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
 
   AppTheme.init();
 
