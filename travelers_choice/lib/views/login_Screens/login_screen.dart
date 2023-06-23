@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutx/flutx.dart';
@@ -78,7 +80,17 @@ class _LogInScreenState extends State<LogInScreen>
       padding: FxSpacing.y(12),
       backgroundColor: theme.cardTheme.color,
       borderRadiusAll: Constant.buttonRadius.xs,
-      onPressed: () {},
+      onPressed: () {
+        // controller.fblogin();
+        controller.signInWithFacebook().then((userCredential) {
+          // Successful login
+          log('Logged in as: ${userCredential.user!.displayName}');
+          print('Logged in as: ${userCredential.user!.displayName}');
+        }).catchError((e) {
+          // Error occurred during login
+          print('Error logging in with Facebook: $e');
+        });
+      },
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [

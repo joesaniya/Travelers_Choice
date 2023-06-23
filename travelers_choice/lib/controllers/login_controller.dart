@@ -10,6 +10,7 @@ import '../views/register_screen/register_screen.dart';
 import '../views/splash_screens/splash_screen2.dart';
 import 'auth_controller.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 
 class LogInController extends FxController {
   TickerProvider ticker;
@@ -28,6 +29,54 @@ class LogInController extends FxController {
   String name = "";
   String email = "";
   String accesstoken = "";
+
+  //fb
+  Map<String, dynamic>? userData1;
+  AccessToken? accessToken1;
+  bool checking = true;
+  checkIfisLoggedIn() async {
+    final accessToken = await FacebookAuth.instance.accessToken;
+
+    checking = false;
+    update();
+
+    if (accessToken != null) {
+      print(accessToken.toJson());
+      final userData = await FacebookAuth.instance.getUserData();
+      accessToken1 = accessToken;
+
+      userData1 = userData;
+      update();
+    } else {
+      fblogin();
+    }
+  }
+
+  fblogin() async {
+    log('fb login');
+    final LoginResult result = await FacebookAuth.instance.login();
+
+    if (result.status == LoginStatus.success) {
+      accessToken1 = result.accessToken;
+
+      final userData = await FacebookAuth.instance.getUserData();
+      userData1 = userData;
+    } else {
+      log('result:${result.status}');
+      log('message${result.message}');
+      print(result.status);
+      print(result.message);
+    }
+
+    checking = false;
+    update();
+  }
+
+  logout() async {
+    await FacebookAuth.instance.logOut();
+    accessToken1 = null;
+    userData1 = null;
+  }
 
   @override
   void initState() {
@@ -170,6 +219,17 @@ class LogInController extends FxController {
       throw StateError('Sign in Aborted');
     }
   }
+
+
+  //fb
+  Future<UserCredential> signInWithFacebook() async {
+    final LoginResult result = await FacebookAuth.instance.login();
+    final facebookAuthCredential =
+        FacebookAuthProvider.credential(result.accessToken!.token);
+
+    return await _auth.signInWithCredential(facebookAuthCredential);
+  }
+
 
   @override
   void dispose() {
