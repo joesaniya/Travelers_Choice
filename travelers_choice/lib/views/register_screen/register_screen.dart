@@ -648,6 +648,9 @@ class _RegisterScreenState extends State<RegisterScreen>
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 FxContainer.bordered(
+                  onTap: (){
+                    controller.googleSignIn();
+                  },
                   padding: FxSpacing.all(16),
                   borderRadiusAll: 8,
                   child: Image(

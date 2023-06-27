@@ -1,8 +1,6 @@
 import 'dart:developer';
 
-
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutx/flutx.dart';
 // import 'package:global_snack_bar/global_snack_bar.dart';
 import 'package:hotel_travel/models/atteraction_model.dart';
@@ -41,6 +39,8 @@ class ActivityController extends FxController {
   List<Map<String, dynamic>> child_count = [];
   List<Activity> selectedtour = [];
   double grandTotal = 0;
+
+  GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
   void updateTours(Activity tour) {
     log('updateTours Calling');
@@ -239,13 +239,21 @@ class ActivityController extends FxController {
     List<Activity> value =
         person_count.where((element) => element.sId == tour.sId).toList();
     if (value.isEmpty) {
+      log('adult:${tour.adultCost}');
+      log('ticket:${tour.transferPricing}');
+      log('qtn:${tour.qtnActivityType}');
       // return tour.adultPrice!.toDouble();//without transfer
       // return tour.adultPrice == null
       //     ? tour.privateTransfers!.first.price
       //     : tour.adultPrice!.toDouble();//added transfer fee+total
       // : tour.privateTransfers!.first.price;
+      // log('vec:${tour.ticketPricing.adultPrice}');
+      log('adult 2:${tour.adultPrice}');
       return tour.adultPrice == null
-          ? tour.privateTransfers!.first.price
+          // ? tour.privateTransfers!.first.price
+          ? tour.privateTransfers == null || tour.privateTransfers!.isEmpty
+              ? tour.adultCost
+              : tour.privateTransfers!.first.price
           : tour.adultPrice!.toDouble();
     } else {
       return (value[0].adultCount * (value[0].adultPrice ?? 1.0)) +
@@ -372,6 +380,7 @@ class ActivityController extends FxController {
   @override
   void initState() {
     super.initState();
+    defaultChoiceIndex;
     fetchloader();
     fetchData();
     dateTE = TextEditingController();
@@ -448,6 +457,48 @@ class ActivityController extends FxController {
     });
   }
 
+  int? defaultChoiceIndex;
+
+  final List<String> timeslotstart = [
+    '10.00.00',
+    '11.00.00',
+    '12.00.00',
+    '13.00.00',
+    '14.00.00',
+    '15.00.00',
+    '16.00.00',
+    '17.00.00',
+    '18.00.00'
+  ];
+  final List<String> timeslotend = [
+    '11.00.00',
+    '12.00.00',
+    '13.00.00',
+    '14.00.00',
+    '15.00.00',
+    '16.00.00',
+    '17.00.00',
+    '18.00.00',
+    '19.00.00'
+  ];
+//drawer
+  void openendDrawer() {
+    scaffoldKey.currentState?.openEndDrawer();
+  }
+
+  void closeEndDrawer() {
+    log('close drawer');
+    // scaffoldKey.currentState?.closeEndDrawer();
+    Navigator.of(context).pop();
+    // scaffoldKey.currentState?.openDrawer();
+  }
+
+  void getslot(dynamic result) {
+    log('Result:$result');
+  }
+
+  String drawerData = 'Esther';
+
   dateselect(index) async {
     DateTime? pickedDate = await showDatePicker(
         context: context,
@@ -492,8 +543,6 @@ class ActivityController extends FxController {
   void goBack() {
     Navigator.pop(context);
   }
-
- 
 
   void Login() {
     log('calling login....');
@@ -679,6 +728,7 @@ class ActivityController extends FxController {
           //     selectedtransfer,
 
           //     // excursions.activities!
+
           //     // amount
           //     grandSelectedTourAmount())
           ));

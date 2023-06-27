@@ -4,10 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:flutx/flutx.dart';
 
 import '../card_widgets/customsnackbar.dart';
-import '../models/Country_modal.dart';
 import '../views/login_Screens/login_screen.dart';
 import '../views/splash_screens/splash_screen2.dart';
 import 'auth_controller.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class RegisterController extends FxController {
   TickerProvider ticker;
@@ -137,6 +139,59 @@ class RegisterController extends FxController {
         phoneCounter++;
       }
     });
+  }
+
+//google
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+
+  Future<UserCredential> googleSignIn() async {
+    print('googe sign in');
+    GoogleSignIn googleSignIn = GoogleSignIn();
+    GoogleSignInAccount? googleUser = await googleSignIn.signIn();
+    if (googleUser != null) {
+      GoogleSignInAuthentication googleAuth = await googleUser.authentication;
+
+      if (googleAuth.idToken != null && googleAuth.accessToken != null) {
+        final AuthCredential credential = GoogleAuthProvider.credential(
+            accessToken: googleAuth.accessToken, idToken: googleAuth.idToken);
+
+        final UserCredential user =
+            await _auth.signInWithCredential(credential);
+        log('user:${user.credential!.accessToken}');
+        log('userData:$user');
+        // ref.add({
+        //   'name': user.additionalUserInfo!.username,
+        //   'url': user.user!.photoURL,
+        //   'email': user.user!.email,
+        // });
+        Map<String, dynamic> data = {
+          'name': user.user!.displayName,
+          'url': user.user!.photoURL,
+          'email': user.user!.email,
+          'accesstoken': user.credential!.accessToken
+        };
+        FirebaseFirestore.instance.collection("test").add(data).then((data) {
+          print(data);
+          log('Success data:$data');
+          print("Success!!");
+          print(data);
+        }).catchError((onError) {
+          print('error');
+          log('Error:$onError');
+        });
+
+        // Navigator.push(
+        //   context,
+        //   MaterialPageRoute(builder: (context) => PageSwitcher(_favouriteMeals as List)),
+        // );
+
+        return user;
+      } else {
+        throw StateError('Missing Google Auth Token');
+      }
+    } else {
+      throw StateError('Sign in Aborted');
+    }
   }
 
   String? validateEmail(String? text) {

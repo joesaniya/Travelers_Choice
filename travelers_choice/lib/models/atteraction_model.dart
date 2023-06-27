@@ -495,7 +495,7 @@ class Activity {
   int? adultAgeLimit;
   dynamic? adultPrice;
   dynamic childAgeLimit;
-  int? childPrice;
+  dynamic? childPrice;
   dynamic infantAgeLimit;
   int? infantPrice;
   bool? isVat;
@@ -534,6 +534,11 @@ class Activity {
 
   double GrandTotalAmount = 0.0;
   bool expand = true;
+
+   bool? isQuotation;
+  String? qtnActivityType;
+  TicketPricing? ticketPricing;
+  TransferPricing? transferPricing;
 
   Activity(
       {this.sId,
@@ -577,7 +582,12 @@ class Activity {
       this.selectedDate,
       this.GrandTotalAmount = 0.0,
       this.transferType = 'private',
-      this.expand = true});
+      this.expand = true,
+      this.isQuotation,
+    this.qtnActivityType,
+    this.ticketPricing,
+    this.transferPricing,
+      });
 
   Activity.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
@@ -624,6 +634,14 @@ class Activity {
     GrandTotalAmount = 0.0;
     transferType = 'private';
     // transferType = json['transferType'] ?? 'private';
+    isQuotation = json['isQuotation'];
+    qtnActivityType = json['qtnActivityType'];
+    ticketPricing = json['ticketPricing'] != null
+        ? TicketPricing.fromJson(json['ticketPricing'])
+        : null;
+    transferPricing = json['transferPricing'] != null
+        ? TransferPricing.fromJson(json['transferPricing'])
+        : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -664,6 +682,106 @@ class Activity {
     data['lowPrice'] = lowPrice;
     data['selectedDate'] = selectedDate;
     data['transferType'] = transferType;
+    data['isQuotation'] = this.isQuotation;
+    data['qtnActivityType'] = this.qtnActivityType;
+    if (this.ticketPricing != null) {
+      data['ticketPricing'] = this.ticketPricing!.toJson();
+    }
+    if (this.transferPricing != null) {
+      data['transferPricing'] = this.transferPricing!.toJson();
+    }
+    return data;
+  }
+}
+
+class TicketPricing {
+  int? adultPrice;
+  int? childPrice;
+  int? sicWithTicketAdultPrice;
+  int? sicWithTicketChildPrice;
+  List<VehicleType>? vehicleType;
+  String? sId;
+
+  TicketPricing(
+      {this.adultPrice,
+      this.childPrice,
+      this.sicWithTicketAdultPrice,
+      this.sicWithTicketChildPrice,
+      this.vehicleType,
+      this.sId});
+
+  TicketPricing.fromJson(Map<String, dynamic> json) {
+    adultPrice = json['adultPrice'];
+    childPrice = json['childPrice'];
+    sicWithTicketAdultPrice = json['sicWithTicketAdultPrice'];
+    sicWithTicketChildPrice = json['sicWithTicketChildPrice'];
+    if (json['vehicleType'] != null) {
+      vehicleType = <VehicleType>[];
+      json['vehicleType'].forEach((v) {
+        vehicleType!.add(new VehicleType.fromJson(v));
+      });
+    }
+    sId = json['_id'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['adultPrice'] = this.adultPrice;
+    data['childPrice'] = this.childPrice;
+    data['sicWithTicketAdultPrice'] = this.sicWithTicketAdultPrice;
+    data['sicWithTicketChildPrice'] = this.sicWithTicketChildPrice;
+    if (this.vehicleType != null) {
+      data['vehicleType'] = this.vehicleType!.map((v) => v.toJson()).toList();
+    }
+    data['_id'] = this.sId;
+    return data;
+  }
+}
+
+class TransferPricing {
+  String? sId;
+  List<VehicleType>? vehicleType;
+
+  TransferPricing({this.sId, this.vehicleType});
+
+  TransferPricing.fromJson(Map<String, dynamic> json) {
+    sId = json['_id'];
+    if (json['vehicleType'] != null) {
+      vehicleType = <VehicleType>[];
+      json['vehicleType'].forEach((v) {
+        vehicleType!.add(new VehicleType.fromJson(v));
+      });
+    }
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['_id'] = this.sId;
+    if (this.vehicleType != null) {
+      data['vehicleType'] = this.vehicleType!.map((v) => v.toJson()).toList();
+    }
+    return data;
+  }
+}
+
+class VehicleType {
+  int? price;
+  String? vehicle;
+  String? sId;
+
+  VehicleType({this.price, this.vehicle, this.sId});
+
+  VehicleType.fromJson(Map<String, dynamic> json) {
+    price = json['price'];
+    vehicle = json['vehicle'];
+    sId = json['_id'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['price'] = this.price;
+    data['vehicle'] = this.vehicle;
+    data['_id'] = this.sId;
     return data;
   }
 }

@@ -195,7 +195,7 @@ class _DetailScreenState extends State<DetailScreen>
                   const EdgeInsets.symmetric(horizontal: 8.0, vertical: 15),
               child: FxButton.block(
                 onPressed: () {
-                  controller.bookNow(controller.detailattraction!.first);
+                  controller.bookNow(controller.detailattraction!.first, widget.productid);
                   // cartController.carts.add(Cart());
                 },
                 backgroundColor: const Color(0xff1529e8),

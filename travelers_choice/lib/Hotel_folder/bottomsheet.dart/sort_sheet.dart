@@ -32,7 +32,7 @@ class _SortSeatState extends State<SortSeat> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
-    defaultChoiceIndex = 0;
+    defaultChoiceIndex;
     theme = AppTheme.shoppingTheme;
     theme1 = AppTheme.learningTheme;
     customTheme = AppTheme.customTheme;

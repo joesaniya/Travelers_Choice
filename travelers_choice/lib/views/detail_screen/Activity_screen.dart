@@ -15,6 +15,7 @@ import '../../loading_effect.dart';
 import '../../models/atteraction_model.dart';
 import '../../services/app_constants.dart';
 import '../../theme/app_theme.dart';
+import '../drawer_folder/slot_drawer.dart';
 import '../full_app.dart';
 
 class ActivityScreen extends StatefulWidget {
@@ -22,10 +23,12 @@ class ActivityScreen extends StatefulWidget {
   // List<DetailattractionModal> Excursions;
   // final String excursions;
   List<Activity> excursions;
+  final String excursionid;
 
   ActivityScreen(
       // this.Excursions,
       this.excursions,
+      this.excursionid,
       {super.key}
       //  {required List<DetailattractionModal> Excursions}
       );
@@ -43,12 +46,14 @@ class _ActivityScreenState extends State<ActivityScreen>
   late CheckOutController controller1;
   bool clickedExcursion = true;
   List<TextEditingController> controllerTE = [];
+  List<TextEditingController> SlotcontrollerTE = [];
   String? token;
   List<Activity> tempFavouriteList = favouriteListCart.map((e) => e).toList();
 
   @override
   void initState() {
     super.initState();
+    log('Excursion Id:${widget.excursionid}');
     favouriteListCheck();
     initializingData();
     theme = AppTheme.shoppingTheme;
@@ -275,7 +280,13 @@ class _ActivityScreenState extends State<ActivityScreen>
 
       print(
           'Selected Tour Date:${controller.selectedtour.map((e) => e.selectedDate)}');
-
+//slot
+      List<TextEditingController> Slotcontrollers = List.generate(
+        widget.excursions.length,
+        (index) => TextEditingController(),
+      );
+      SlotcontrollerTE.add(TextEditingController());
+      //
       list.add(FadeTransition(
         opacity: controller.fadeAnimation,
         child: Column(
@@ -651,6 +662,152 @@ class _ActivityScreenState extends State<ActivityScreen>
                                       ],
                                     ),
                                     FxSpacing.height(4),
+                                    //timeslot
+                                    widget.excursionid ==
+                                            '63ff12f5d7333637a938cad4'
+                                        ? Column(
+                                            children: [
+                                              FxText.bodyMedium(
+                                                controller.drawerData
+                                                    .toString(),
+                                                color: Colors.red,
+                                              ),
+                                              Row(
+                                                children: [
+                                                  Expanded(
+                                                    child: Container(
+                                                      decoration: BoxDecoration(
+                                                          color: theme
+                                                              .cardTheme.color,
+                                                          // color: const Color(0xff1529e8),
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(8)),
+                                                      height: 50,
+                                                      width: 150,
+                                                      child: TextFormField(
+                                                        style: FxTextStyle
+                                                            .bodyMedium(),
+                                                        // controller: controller.dateTE,
+                                                        // controller: controllers[i],
+                                                        controller:
+                                                            SlotcontrollerTE[i],
+                                                        readOnly:
+                                                            true, //set it true, so that user will not able to edit text
+
+                                                        // onTap: () async {
+                                                        //   DateTime? pickedDate =
+                                                        //       await showDatePicker(
+                                                        //           context: context,
+                                                        //           initialDate:
+                                                        //               DateTime
+                                                        //                   .now(),
+                                                        //           firstDate: DateTime(
+                                                        //               1900), //DateTime.now() - not to allow to choose before today.
+                                                        //           lastDate:
+                                                        //               DateTime(
+                                                        //                   2101));
+
+                                                        //   if (pickedDate != null) {
+                                                        //     print(
+                                                        //         pickedDate); //pickedDate output format => 2021-03-10 00:00:00.000
+                                                        //     String formattedDate =
+                                                        //         DateFormat(
+                                                        //                 'yyyy-MM-dd')
+                                                        //             .format(
+                                                        //                 pickedDate);
+                                                        //     print(formattedDate);
+                                                        //     // dateTE.text = formattedDate;
+                                                        //     controllerTE[i].text =
+                                                        //         formattedDate;
+                                                        //     widget.excursions[i]
+                                                        //             .selectedDate =
+                                                        //         formattedDate;
+
+                                                        //     // setState(() {
+                                                        //     //   dateinput.text = formattedDate; //set output date to TextField value.
+                                                        //     // });
+                                                        //   } else {
+                                                        //     print(
+                                                        //         "Date is not selected");
+                                                        //   }
+                                                        // },
+                                                        decoration:
+                                                            InputDecoration(
+                                                                floatingLabelBehavior:
+                                                                    FloatingLabelBehavior
+                                                                        .never,
+                                                                filled: true,
+                                                                isDense: true,
+                                                                fillColor: theme
+                                                                    .cardTheme
+                                                                    .color,
+                                                                hintText:
+                                                                    "HH-MM-SS",
+                                                                border:
+                                                                    InputBorder
+                                                                        .none,
+                                                                enabledBorder:
+                                                                    InputBorder
+                                                                        .none,
+                                                                focusedBorder:
+                                                                    InputBorder
+                                                                        .none,
+                                                                // enabledBorder: outlineInputBorder,
+                                                                // focusedBorder: outlineInputBorder,
+                                                                // border: outlineInputBorder,
+                                                                contentPadding:
+                                                                    FxSpacing
+                                                                        .all(
+                                                                            16),
+                                                                hintStyle:
+                                                                    const TextStyle(
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w600,
+                                                                  color: Colors
+                                                                      .black,
+                                                                  letterSpacing:
+                                                                      0.4,
+                                                                ),
+                                                                // hintStyle: FxTextStyle.bodyMedium(),
+                                                                isCollapsed:
+                                                                    true),
+                                                        autofocus: false,
+                                                        keyboardType:
+                                                            TextInputType
+                                                                .datetime,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  FxSpacing.width(10),
+                                                  FxContainer(
+                                                    onTap: () {
+                                                      controller
+                                                          .openendDrawer();
+                                                    },
+                                                    borderRadiusAll: 10,
+                                                    // padding: FxSpacing.xy(8, 4),
+                                                    padding:
+                                                        FxSpacing.xy(15, 10),
+                                                    color:
+                                                        const Color(0xff1529e8),
+                                                    // color: Colors.blueGrey,
+                                                    child: Center(
+                                                      child: FxText.bodySmall(
+                                                        'Time Slot',
+                                                        fontWeight: 300,
+                                                        color: Colors.white,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ],
+                                          )
+                                        : const SizedBox(),
+
+                                    FxSpacing.height(4),
                                     // Row(
                                     //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     //   children: [
@@ -892,7 +1049,7 @@ class _ActivityScreenState extends State<ActivityScreen>
                                     ),
                                   ],
                                 )
-                        ])
+                        ]),
                       ],
                     ),
                   ),
@@ -1127,6 +1284,291 @@ class _ActivityScreenState extends State<ActivityScreen>
     );
   }
 
+  //drawer
+  //   List<Widget> _buildType() {
+  //   List<String> categoryList = [
+  //     "ECom",
+  //     "Automobile",
+  //     "Crimes",
+  //     "Business",
+  //     "Fitness",
+  //     "Astro",
+  //     "Politics",
+  //     "Relationship",
+  //     "Food",
+  //     "Electronics",
+  //     "Health",
+  //     "Tech",
+  //     "Entertainment",
+  //     "World",
+  //     "Sports",
+  //     "Other",
+  //   ];
+
+  //   List<Widget> choices = [];
+  //   categoryList.forEach((item) {
+  //     bool selected = searchController.selectedChoices.contains(item);
+  //     if (selected) {
+  //       choices.add(FxContainer.none(
+  //           color: customTheme.homemadePrimary.withAlpha(28),
+  //           bordered: true,
+  //           borderRadiusAll: 12,
+  //           paddingAll: 8,
+  //           border: Border.all(color: customTheme.homemadePrimary),
+  //           onTap: () {
+  //             searchController.removeChoice(item);
+  //           },
+  //           child: Row(
+  //             mainAxisSize: MainAxisSize.min,
+  //             children: [
+  //               Icon(
+  //                 Icons.check,
+  //                 size: 14,
+  //                 color: customTheme.homemadePrimary,
+  //               ),
+  //               FxSpacing.width(6),
+  //               FxText.bodySmall(
+  //                 item,
+  //                 fontSize: 11,
+  //                 color: customTheme.homemadePrimary,
+  //               )
+  //             ],
+  //           )));
+  //     } else {
+  //       choices.add(FxContainer.none(
+  //         color: customTheme.border,
+  //         borderRadiusAll: 12,
+  //         padding: FxSpacing.xy(12, 8),
+  //         onTap: () {
+  //           searchController.addChoice(item);
+  //         },
+  //         child: FxText.bodySmall(
+  //           item,
+  //           color: theme.colorScheme.onBackground,
+  //           fontSize: 11,
+  //         ),
+  //       ));
+  //     }
+  //   });
+  //   return choices;
+  // }
+
+  Widget _endDrawer() {
+    return SafeArea(
+      child: Container(
+        margin: FxSpacing.fromLTRB(16, 16, 16, 80),
+        width: 300,
+        decoration: const BoxDecoration(
+          borderRadius: BorderRadius.all(Radius.circular(8)),
+          color: Color(0xff1529e8),
+        ),
+        clipBehavior: Clip.antiAliasWithSaveLayer,
+        child: Drawer(
+          child: Container(
+            // color: const Color(0xff1529e8),
+            color: const Color(0xfff5f5f5),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  padding: FxSpacing.xy(16, 12),
+                  color: const Color(0xff1529e8),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Center(
+                          child: FxText(
+                            "Pick Your Time Slot",
+                            fontWeight: 700,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                      FxContainer.rounded(
+                          onTap: () {
+                            controller.closeEndDrawer();
+                          },
+                          paddingAll: 6,
+                          color: const Color(0xff1529e8).withAlpha(24),
+                          child: const Icon(
+                            FeatherIcons.x,
+                            size: 12,
+                            color: Color(0xff1529e8),
+                          ))
+                    ],
+                  ),
+                ),
+                Expanded(
+                    child: ListView(
+                  padding: FxSpacing.all(16),
+                  children: [
+                    Container(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          FxText.bodyMedium(
+                            "Selected Date:",
+                            color: theme.colorScheme.onBackground,
+                            fontWeight: 600,
+                          ),
+                          FxText.bodySmall(
+                            '24.05.2023',
+                            color: theme.colorScheme.onBackground,
+                            fontWeight: 600,
+                            xMuted: true,
+                          ),
+                        ],
+                      ),
+                    ),
+                    FxSpacing.height(16),
+                    // Container(
+                    //   child: Wrap(
+                    //     spacing: 10,
+                    //     runSpacing: 10,
+                    //     // children: _buildType(),
+                    //   ),
+                    Container(
+                      child: GridView(
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          crossAxisSpacing: 10.0,
+                          mainAxisSpacing: 10.0,
+                          mainAxisExtent: 170, // ** add this **
+                        ),
+                        // crossAxisCount: 2,
+                        // crossAxisSpacing: 10.0,
+                        // // mainAxisSpacing: 10.0,
+                        // mainAxisExtent: 300,
+                        shrinkWrap: true,
+                        physics: const AlwaysScrollableScrollPhysics(),
+                        children: List.generate(
+                          // controller.timeslotstart,
+                          9,
+                          (index) {
+                            // return Padding(
+                            //   padding: const EdgeInsets.all(10.0),
+                            //   child: Container(
+                            //     decoration: const BoxDecoration(
+                            //       // image: DecorationImage(
+                            //       //   image: NetworkImage('img.png'),
+                            //       //   fit: BoxFit.cover,
+                            //       // ),
+                            //       color: Color(0xff22C55E),
+                            //       borderRadius: BorderRadius.all(
+                            //         Radius.circular(20.0),
+                            //       ),
+                            //     ),
+                            //   ),
+                            // );
+                            return FxContainer(
+                              onTap: () {
+                                // controller.closeEndDrawer();
+                                setState(() {
+                                  controller.defaultChoiceIndex = index;
+                                });
+                                log('selected:${controller.defaultChoiceIndex}');
+                              },
+                              padding: FxSpacing.y(12),
+                              color: controller.defaultChoiceIndex == index
+                                  ? Colors.red
+                                  : const Color(0xff22C55E),
+                              child: Column(
+                                children: [
+                                  FxText.bodyMedium(
+                                    "Start Time",
+                                    color: Colors.white,
+                                    fontWeight: 600,
+                                  ),
+                                  FxText.bodyMedium(
+                                    controller.timeslotstart[index],
+                                    color: Colors.white,
+                                    fontWeight: 600,
+                                  ),
+                                  FxText.bodyMedium(
+                                    "End Time",
+                                    color: Colors.white,
+                                    fontWeight: 600,
+                                  ),
+                                  FxText.bodyMedium(
+                                    controller.timeslotend[index],
+                                    color: Colors.white,
+                                    fontWeight: 600,
+                                  ),
+                                  FxText.bodyMedium(
+                                    "Adult Price",
+                                    color: Colors.white,
+                                    fontWeight: 600,
+                                  ),
+                                  FxText.bodyMedium(
+                                    '554 AED',
+                                    color: Colors.white,
+                                    fontWeight: 600,
+                                  ),
+                                  FxText.bodyMedium(
+                                    "Child Price",
+                                    color: Colors.white,
+                                    fontWeight: 600,
+                                  ),
+                                  FxText.bodyMedium(
+                                    '0 AED',
+                                    color: Colors.white,
+                                    fontWeight: 600,
+                                  ),
+                                  Expanded(child: Container())
+                                ],
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                    ),
+                    FxSpacing.height(16),
+                  ],
+                )),
+                Container(
+                  child: Row(
+                    children: [
+                      Expanded(
+                          child: FxContainer(
+                        onTap: () {
+                          controller.closeEndDrawer();
+                        },
+                        padding: FxSpacing.y(12),
+                        child: Center(
+                          child: FxText(
+                            "Clear",
+                            color: Colors.black,
+                            fontWeight: 600,
+                          ),
+                        ),
+                      )),
+                      Expanded(
+                          child: FxContainer.none(
+                        onTap: () {
+                          controller.closeEndDrawer();
+                        },
+                        padding: FxSpacing.y(12),
+                        color: const Color(0xff1529e8),
+                        child: Center(
+                          child: FxText(
+                            "Apply",
+                            color: Colors.white,
+                            fontWeight: 600,
+                          ),
+                        ),
+                      )),
+                    ],
+                  ),
+                )
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
   Widget _buildBody() {
     if (controller.uiLoading) {
       return Scaffold(
@@ -1139,6 +1581,19 @@ class _ActivityScreenState extends State<ActivityScreen>
     } else {
       return Scaffold(
         backgroundColor: const Color(0xfff5f5f5),
+        key: controller.scaffoldKey,
+        // endDrawer: _endDrawer(),
+        endDrawer: SlotTimeDrawer(
+          excursionSlot: widget.excursions,
+          excursionidSlot: widget.excursionid,
+          onOptionSelected: (String option) {
+            option = controller.drawerData;
+            // option = controller.defaultChoiceIndex;
+            log('Sel:${controller.defaultChoiceIndex}');
+            print('Selected option: $option');
+          },
+          // getdataSlot: controller.getslot
+        ),
         appBar: AppBar(
           leading: InkWell(
             onTap: () {
@@ -1159,6 +1614,7 @@ class _ActivityScreenState extends State<ActivityScreen>
             color: Colors.white,
           ),
           centerTitle: true,
+          actions: [Container()],
         ),
         // backgroundColor: const Color(0xfff5f5f5),
         body: Stack(

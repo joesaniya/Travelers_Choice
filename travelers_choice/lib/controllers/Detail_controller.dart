@@ -355,8 +355,9 @@ Country Code => $countryCode
   //   update();
   // }
 
-  Future<void> bookNow(DetailattractionModal excursions) async {
+  Future<void> bookNow(DetailattractionModal excursions, String eid) async {
     animationController.forward();
+    log('Product Id:$eid');
     await Future.delayed(const Duration(seconds: 1));
     Navigator.of(context, rootNavigator: true).push(PageRouteBuilder(
         transitionDuration: const Duration(microseconds: 0
@@ -372,7 +373,7 @@ Country Code => $countryCode
               opacity: animation,
               child: child,
             ),
-        pageBuilder: (_, __, ___) => ActivityScreen(excursions.activities!)
+        pageBuilder: (_, __, ___) => ActivityScreen(excursions.activities!,eid)
         // ActivityScreen(
         //   Excursions: widget.detailattraction
         //   )
