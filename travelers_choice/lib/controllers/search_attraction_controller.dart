@@ -126,6 +126,9 @@ class SearchAttractionController extends FxController {
   List<AttractionSearchDataModal> countryList = <AttractionSearchDataModal>[];
   String? currencies, countryCode;
   List<AllattractionModal>? allattractionList;
+  Future<void> Destinationbtn()async {
+    log('searchDestinationbtn');
+  }
 
   Future<void> searchbtn(
     // Destination locationplace

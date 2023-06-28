@@ -113,8 +113,10 @@ class _SearchAttractionScreenState extends State<SearchAttractionScreen>
         keydata!,
         widget.isocode,
         widget.conversionRate,
-        controller.SlugnameId.last
-        // 'burj-khalifa-:-at-the-top'
+        // controller.SlugnameId.last
+        controller.SlugnameId.isEmpty
+            ? 'burj-khalifa-:-at-the-top'
+            : controller.SlugnameId.last
         // slugname.toString()
 
         // controller.allattractionList.first
@@ -290,16 +292,29 @@ class _SearchAttractionScreenState extends State<SearchAttractionScreen>
             log('ONSUBIT');
           },
           onSuggestionTap: (value) {
-            controller.slugslist =
-                controller.countryList.first.attractions.where((element) {
-              return element.id == value.item;
-            }).toList();
+            if (controller.countryList.first.attractions.isNotEmpty) {
+              controller.slugslist =
+                  controller.countryList.first.attractions.where((element) {
+                return element.id == value.item;
+              }).toList();
 
-            log('Slug List:${controller.slugslist.map((e) => e.slug).toList()}');
-            controller.SlugnameId =
-                controller.slugslist.map((e) => e.slug).toList();
+              log('Slug List:${controller.slugslist.map((e) => e.slug).toList()}');
+              controller.SlugnameId =
+                  controller.slugslist.map((e) => e.slug).toList();
+            } else {
+              // controller.SlugnameId = [];
+              log('slug destination nuull');
+              controller.Destinationbtn();
+            }
 
-            // controller.slugslist = slugname as List<Attraction>;
+            //  controller.slugslist =
+            //     controller.countryList.first.attractions.where((element) {
+            //   return element.id == value.item;
+            // }).toList();
+
+            // log('Slug List:${controller.slugslist.map((e) => e.slug).toList()}');
+            // controller.SlugnameId =
+            //     controller.slugslist.map((e) => e.slug).toList();
 
             log('Slug.searchKey:${value.searchKey}');
             log('SearchKey Id:${value.key}');
