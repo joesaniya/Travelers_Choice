@@ -45,23 +45,27 @@ class Attraction {
   String id;
   Destination destination;
   String title;
+  String slug;
 
   Attraction({
     required this.id,
     required this.destination,
     required this.title,
+    required this.slug,
   });
 
   factory Attraction.fromJson(Map<String, dynamic> json) => Attraction(
         id: json["_id"],
         destination: Destination.fromJson(json["destination"]),
         title: json["title"],
+        slug: json["slug"],
       );
 
   Map<String, dynamic> toJson() => {
         "_id": id,
         "destination": destination.toJson(),
         "title": title,
+        "slug": slug,
       };
 }
 
@@ -77,9 +81,9 @@ class Destination {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['_id'] = this.sId;
-    data['name'] = this.name;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['_id'] = sId;
+    data['name'] = name;
     return data;
   }
 }

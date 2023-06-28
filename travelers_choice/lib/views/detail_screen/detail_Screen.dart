@@ -24,6 +24,7 @@ class DetailScreen extends StatefulWidget {
 
   // final Function isFavourite;
   final Datum productdatum;
+  final String productSlug;
   String? currencySymbol;
   double? conversionRate;
 
@@ -31,6 +32,7 @@ class DetailScreen extends StatefulWidget {
       this.productid,
       // this.toggleFavourite, this.isFavourite,
       this.productdatum,
+      this.productSlug,
       {super.key,
       this.currencySymbol,
       this.conversionRate});
@@ -125,7 +127,10 @@ class _DetailScreenState extends State<DetailScreen>
       //  widget.productid
     ));
     log('isSelected:$isSelected');
-    controller.getDetailAttraction(widget.productid, setState);
+    log('widget.productSlug${widget.productSlug}');
+
+    controller.getDetailAttraction(
+        widget.productid, widget.productSlug, setState);
 
     log('isSelected:$isSelected');
     theme = AppTheme.shoppingTheme;
@@ -195,7 +200,8 @@ class _DetailScreenState extends State<DetailScreen>
                   const EdgeInsets.symmetric(horizontal: 8.0, vertical: 15),
               child: FxButton.block(
                 onPressed: () {
-                  controller.bookNow(controller.detailattraction!.first, widget.productid);
+                  controller.bookNow(
+                      controller.detailattraction!.first, widget.productid);
                   // cartController.carts.add(Cart());
                 },
                 backgroundColor: const Color(0xff1529e8),

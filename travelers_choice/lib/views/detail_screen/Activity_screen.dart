@@ -15,7 +15,6 @@ import '../../loading_effect.dart';
 import '../../models/atteraction_model.dart';
 import '../../services/app_constants.dart';
 import '../../theme/app_theme.dart';
-import '../drawer_folder/slot_drawer.dart';
 import '../full_app.dart';
 
 class ActivityScreen extends StatefulWidget {
@@ -50,11 +49,85 @@ class _ActivityScreenState extends State<ActivityScreen>
   String? token;
   List<Activity> tempFavouriteList = favouriteListCart.map((e) => e).toList();
 
+// //slot
+//   List<SlotTime>? slottimeget;
+//   bool isLoadingg = true;
+//   getSlot(String productid, String productcode, String date,
+//       BuildContext context) async {
+//     log('getSlot function called');
+//     Future.delayed(Duration.zero, () async {
+//       await SlotTimeService()
+//           .getSlotTime(productid, productcode, date, context)
+//           .then((value) {
+//         if (value != null) {
+//           log('first data');
+//           isLoadingg = false;
+//           slottimeget = [];
+//           slottimeget!.add(value);
+//           log('All Slot:$slottimeget');
+
+//           setState(() {});
+//         }
+//       });
+//     });
+//   }
+
+//   Future<SlotTime?> Slotdate(String productid, String productcode, String date,
+//       BuildContext context) async {
+//     log('product Id:$productid');
+//     log('product code:$productcode');
+//     log('date:$date');
+
+//     try {
+//       var data = await SlotTimeService()
+//           .getSlotTime(productid, productcode, date, context);
+//       slottimeget!.clear();
+//       if (data != null) {
+//         slottimeget!.add(data);
+//         log('SlotD:$slottimeget');
+
+//         return data; //removed true
+//       } else {
+//         return null; //falseremoved
+//       }
+//     } catch (e) {
+//       rethrow;
+//     }
+//   }
+
   @override
   void initState() {
     super.initState();
     log('Excursion Id:${widget.excursionid}');
+    log('Selected Dateinitial:${widget.excursions.first.selectedDate}');
+
     favouriteListCheck();
+    // getSlot("83", "54", "2023-08-20", context);
+    // Slotdate("83", "54", "2023-08-20", context);
+    //                   controller.SlotPick(
+    //                     widget.excursions[i]
+    //                         .productId
+    //                         .toString(),
+    //                     widget.excursions[i]
+    //                         .productCode
+    //                         .toString(),
+    //                     widget.excursions[i]
+    //                         .selectedDate!
+    //                         .toString(),
+    //                   );
+    String originalDateTime = '2023-08-20T17:45:00';
+
+    DateTime parsedDateTime = DateTime.parse(originalDateTime);
+    String formattedTime = DateFormat('HH:mm:ss').format(parsedDateTime);
+
+    log('formattedTime:$formattedTime');
+
+    String originalTime = formattedTime;
+
+    DateTime parsedTime = DateFormat('HH:mm:ss').parseStrict(originalTime);
+    String formattedAMPN = DateFormat('h:mm a').format(parsedTime);
+
+    log('formattedAMPm:$formattedAMPN');
     initializingData();
     theme = AppTheme.shoppingTheme;
     var selectedData = widget.excursions;
@@ -102,6 +175,40 @@ class _ActivityScreenState extends State<ActivityScreen>
       isSelected;
     });
     log('Fav List Check:$isSelected');
+  }
+
+  Widget _buildSelectBurj() {
+    if (controller.selectedtour.isNotEmpty) {
+      return Container(
+          padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 20),
+          decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: const BorderRadius.all(Radius.circular(10)),
+              border: Border.all(color: Colors.grey.shade300, width: 1)),
+          child: Column(
+            children: [
+              Row(
+                children: [
+                  Expanded(
+                      child: FxText.bodyMedium(
+                    '${controller.selectedtour.length} Selected',
+                    fontWeight: 800,
+                  )),
+                  FxText.bodyLarge(
+                    // controller.selectedtour.first.GrandTotalAmount.toString(),
+                    // '${controller.grandSelectedTourAmount().toString()} AED',
+                    '${((controller.grandSelectedTourAmount() * conversionRate) as double).toStringAsFixed(2)} $currencySymbol',
+
+                    fontWeight: 700,
+                    color: const Color(0xff1529e8),
+                  ),
+                ],
+              )
+            ],
+          ));
+    } else {
+      return const SizedBox();
+    }
   }
 
   Widget _buildSelect1() {
@@ -301,7 +408,11 @@ class _ActivityScreenState extends State<ActivityScreen>
 
                 controller.updateTours(widget.excursions[i]);
                 // log('Count:${widget.excursions[i].adultCount}${widget.excursions[i].childCount}${widget.excursions[i].infantCount}');
-
+                // controller.SlotPick(
+                //   widget.excursions[i].productId.toString(),
+                //   widget.excursions[i].productCode.toString(),
+                //   widget.excursions[i].selectedDate!.toString(),
+                // );
                 ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                     content: !clickedExcursion
                         ? const Text("Added this Excursion!!")
@@ -620,6 +731,21 @@ class _ActivityScreenState extends State<ActivityScreen>
                                                         .selectedDate =
                                                     formattedDate;
 
+                                                log('Selected Date:${widget.excursions[i].selectedDate}');
+                                                setState(() {});
+                                                // controller.SlotPick(
+                                                //     "83", "54", "2023-08-20");
+                                                controller.SlotPick(
+                                                  widget.excursions[i].productId
+                                                      .toString(),
+                                                  widget
+                                                      .excursions[i].productCode
+                                                      .toString(),
+                                                  widget.excursions[i]
+                                                      .selectedDate!
+                                                      .toString(),
+                                                );
+
                                                 // setState(() {
                                                 //   dateinput.text = formattedDate; //set output date to TextField value.
                                                 // });
@@ -661,153 +787,339 @@ class _ActivityScreenState extends State<ActivityScreen>
                                         ),
                                       ],
                                     ),
-                                    FxSpacing.height(4),
-                                    //timeslot
+                                    FxSpacing.height(10),
+
                                     widget.excursionid ==
                                             '63ff12f5d7333637a938cad4'
-                                        ? Column(
-                                            children: [
-                                              FxText.bodyMedium(
-                                                controller.drawerData
-                                                    .toString(),
-                                                color: Colors.red,
-                                              ),
-                                              Row(
-                                                children: [
-                                                  Expanded(
-                                                    child: Container(
-                                                      decoration: BoxDecoration(
-                                                          color: theme
-                                                              .cardTheme.color,
-                                                          // color: const Color(0xff1529e8),
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(8)),
-                                                      height: 50,
-                                                      width: 150,
-                                                      child: TextFormField(
-                                                        style: FxTextStyle
-                                                            .bodyMedium(),
-                                                        // controller: controller.dateTE,
-                                                        // controller: controllers[i],
-                                                        controller:
-                                                            SlotcontrollerTE[i],
-                                                        readOnly:
-                                                            true, //set it true, so that user will not able to edit text
+                                        //     &&
+                                        // controllerTE[i].text.isEmpty
+                                        // &&
+                                        // controller.selectedtour.contains(
+                                        //     // controllerTE[i].text
+                                        //     widget.excursions[i]
+                                        //             .selectedDate![i] ==
+                                        //         null)
+                                        // controller.selectedtour
+                                        //     .contains(widget.excursions[i])
+                                        //      &&
+                                        // widget.excursions[i].selectedDate!
+                                        //     .isNotEmpty
+                                        ? SizedBox(
+                                            child: Container(
+                                            height: MediaQuery.of(context)
+                                                    .size
+                                                    .height *
+                                                0.29,
+                                            padding: const EdgeInsets.only(
+                                                bottom: 10),
+                                            width: double.infinity,
+                                            decoration: BoxDecoration(
+                                                color: Colors.white,
+                                                // color: Color(0xffe5fdfd),
+                                                borderRadius:
+                                                    const BorderRadius.all(
+                                                        Radius.circular(10)),
+                                                border: Border.all(
+                                                    color: Colors.blue.shade300,
+                                                    width: 1)),
+                                            child:
+                                                // GridView(
+                                                //   gridDelegate:
+                                                //       const SliverGridDelegateWithFixedCrossAxisCount(
+                                                //     crossAxisCount: 3,
+                                                //     crossAxisSpacing: 10.0,
+                                                //     mainAxisSpacing: 10.0,
+                                                //     mainAxisExtent:
+                                                //         120, // ** add this **
+                                                //   ),
+                                                controller.slottimeget.isEmpty
+                                                    ? const CircularProgressIndicator()
+                                                    : GridView.extent(
+                                                        primary: false,
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .all(16),
+                                                        crossAxisSpacing: 10,
+                                                        mainAxisSpacing: 10,
+                                                        // maxCrossAxisExtent: 140.0,
+                                                        maxCrossAxisExtent:
+                                                            150.0,
+                                                        shrinkWrap: true,
+                                                        physics:
+                                                            const AlwaysScrollableScrollPhysics(),
+                                                        children: List.generate(
+                                                          // controller.timeslotstart,
+                                                          9,
+                                                          // controller.slottimeget!.length,
+                                                          (index) {
+                                                            String StartTime =
+                                                                controller
+                                                                    .slottimeget[
+                                                                        index]
+                                                                    .startDateTime
+                                                                    .toString();
 
-                                                        // onTap: () async {
-                                                        //   DateTime? pickedDate =
-                                                        //       await showDatePicker(
-                                                        //           context: context,
-                                                        //           initialDate:
-                                                        //               DateTime
-                                                        //                   .now(),
-                                                        //           firstDate: DateTime(
-                                                        //               1900), //DateTime.now() - not to allow to choose before today.
-                                                        //           lastDate:
-                                                        //               DateTime(
-                                                        //                   2101));
+                                                            DateTime
+                                                                parsedStartTime =
+                                                                DateTime.parse(
+                                                                    StartTime);
+                                                            String
+                                                                formattedStartTime =
+                                                                DateFormat(
+                                                                        'HH:mm:ss')
+                                                                    .format(
+                                                                        parsedStartTime);
 
-                                                        //   if (pickedDate != null) {
-                                                        //     print(
-                                                        //         pickedDate); //pickedDate output format => 2021-03-10 00:00:00.000
-                                                        //     String formattedDate =
-                                                        //         DateFormat(
-                                                        //                 'yyyy-MM-dd')
-                                                        //             .format(
-                                                        //                 pickedDate);
-                                                        //     print(formattedDate);
-                                                        //     // dateTE.text = formattedDate;
-                                                        //     controllerTE[i].text =
-                                                        //         formattedDate;
-                                                        //     widget.excursions[i]
-                                                        //             .selectedDate =
-                                                        //         formattedDate;
+                                                            log('formattedTime:$formattedStartTime');
 
-                                                        //     // setState(() {
-                                                        //     //   dateinput.text = formattedDate; //set output date to TextField value.
-                                                        //     // });
-                                                        //   } else {
-                                                        //     print(
-                                                        //         "Date is not selected");
-                                                        //   }
-                                                        // },
-                                                        decoration:
-                                                            InputDecoration(
-                                                                floatingLabelBehavior:
-                                                                    FloatingLabelBehavior
-                                                                        .never,
-                                                                filled: true,
-                                                                isDense: true,
-                                                                fillColor: theme
-                                                                    .cardTheme
-                                                                    .color,
-                                                                hintText:
-                                                                    "HH-MM-SS",
-                                                                border:
-                                                                    InputBorder
-                                                                        .none,
-                                                                enabledBorder:
-                                                                    InputBorder
-                                                                        .none,
-                                                                focusedBorder:
-                                                                    InputBorder
-                                                                        .none,
-                                                                // enabledBorder: outlineInputBorder,
-                                                                // focusedBorder: outlineInputBorder,
-                                                                // border: outlineInputBorder,
-                                                                contentPadding:
-                                                                    FxSpacing
-                                                                        .all(
-                                                                            16),
-                                                                hintStyle:
-                                                                    const TextStyle(
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w600,
-                                                                  color: Colors
-                                                                      .black,
-                                                                  letterSpacing:
-                                                                      0.4,
-                                                                ),
-                                                                // hintStyle: FxTextStyle.bodyMedium(),
-                                                                isCollapsed:
-                                                                    true),
-                                                        autofocus: false,
-                                                        keyboardType:
-                                                            TextInputType
-                                                                .datetime,
+                                                            String
+                                                                originalStartTime =
+                                                                formattedStartTime;
+
+                                                            DateTime
+                                                                parsedTimeStart =
+                                                                DateFormat(
+                                                                        'HH:mm:ss')
+                                                                    .parseStrict(
+                                                                        originalStartTime);
+                                                            String
+                                                                formattedStartAMPN =
+                                                                DateFormat(
+                                                                        'h:mm a')
+                                                                    .format(
+                                                                        parsedTimeStart);
+
+                                                            log('Start:$formattedStartAMPN');
+                                                            // log('controller.slottimeget!.length:${controller.slottimeget!.length}');
+
+                                                            //end
+                                                            String EndTime =
+                                                                controller
+                                                                    .slottimeget[
+                                                                        index]
+                                                                    .endDateTime
+                                                                    .toString();
+
+                                                            DateTime
+                                                                parsedEndTime =
+                                                                DateTime.parse(
+                                                                    StartTime);
+                                                            String
+                                                                formattedEndTime =
+                                                                DateFormat(
+                                                                        'HH:mm:ss')
+                                                                    .format(
+                                                                        parsedEndTime);
+
+                                                            log('formattedTime:$formattedEndTime');
+
+                                                            String
+                                                                originalEndTime =
+                                                                formattedEndTime;
+
+                                                            DateTime
+                                                                parsedTimeEnd =
+                                                                DateFormat(
+                                                                        'HH:mm:ss')
+                                                                    .parseStrict(
+                                                                        originalEndTime);
+                                                            String
+                                                                formattedEndAMPN =
+                                                                DateFormat(
+                                                                        'h:mm a')
+                                                                    .format(
+                                                                        parsedTimeEnd);
+
+                                                            log('End:$formattedEndAMPN');
+                                                            return FxContainer(
+                                                              onTap: () {
+                                                                // controller.closeEndDrawer();
+                                                                setState(() {
+                                                                  controller
+                                                                          .defaultChoiceIndex =
+                                                                      index;
+                                                                });
+                                                                log('selected:${controller.defaultChoiceIndex}');
+                                                              },
+                                                              padding:
+                                                                  FxSpacing.xy(
+                                                                      5, 12),
+                                                              // color: controller
+                                                              //             .defaultChoiceIndex ==
+                                                              //         index
+                                                              //     ? Colors.red
+                                                              //     : const Color(
+                                                              //         0xff22C55E),
+                                                              color: controller
+                                                                          .defaultChoiceIndex ==
+                                                                      index
+                                                                  ? Colors.blue
+                                                                  : Colors.grey
+                                                                      .shade300,
+                                                              child: Column(
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .center,
+                                                                crossAxisAlignment:
+                                                                    CrossAxisAlignment
+                                                                        .center,
+                                                                children: [
+                                                                  FxText
+                                                                      .bodyMedium(
+                                                                    // '11.00 am',
+                                                                    // "${controller.slottimeget![index].startDateTime}- ${controller.slottimeget![index].endDateTime}",
+                                                                    "$formattedStartAMPN- $formattedEndAMPN",
+                                                                    color: Colors
+                                                                        .black,
+                                                                    fontWeight:
+                                                                        600,
+                                                                  ),
+                                                                  FxSpacing
+                                                                      .height(
+                                                                          5),
+                                                                  Row(
+                                                                    mainAxisAlignment:
+                                                                        MainAxisAlignment
+                                                                            .center,
+                                                                    crossAxisAlignment:
+                                                                        CrossAxisAlignment
+                                                                            .center,
+                                                                    children: [
+                                                                      const Image(
+                                                                        height:
+                                                                            20,
+                                                                        width:
+                                                                            20,
+                                                                        color: Colors
+                                                                            .black,
+                                                                        image:
+                                                                            AssetImage(
+                                                                          'assets/icons/icons8-person.png',
+                                                                        ),
+                                                                      ),
+                                                                      FxText
+                                                                          .bodyMedium(
+                                                                        '554 AEd',
+                                                                        // '${controller.slottimeget![index].adultPrice} AED',
+                                                                        color: Colors
+                                                                            .black,
+                                                                        fontWeight:
+                                                                            600,
+                                                                      ),
+                                                                    ],
+                                                                  ),
+
+                                                                  // FxSpacing.height(5),
+                                                                  // Row(
+                                                                  //   mainAxisAlignment:
+                                                                  //       MainAxisAlignment
+                                                                  //           .center,
+                                                                  //   crossAxisAlignment:
+                                                                  //       CrossAxisAlignment
+                                                                  //           .center,
+                                                                  //   children: [
+                                                                  //     const Image(
+                                                                  //       height: 20,
+                                                                  //       width: 20,
+                                                                  //       color:
+                                                                  //           Colors.black,
+                                                                  //       image: AssetImage(
+                                                                  //         'assets/icons/childicon.png',
+                                                                  //       ),
+                                                                  //     ),
+                                                                  //     FxText.bodyMedium(
+                                                                  //       '${controller.slottimeget![index].childPrice} AED',
+                                                                  //       // '${widget.Slots[index].adultPrice}AED',
+                                                                  //       // '${((widget.Slots[index].childPrice.toDouble() * conversionRate!)).toStringAsFixed(2)} $currencySymbol',
+                                                                  //       color:
+                                                                  //           Colors.black,
+                                                                  //       fontWeight: 600,
+                                                                  //     ),
+                                                                  //   ],
+                                                                  // ),
+
+                                                                  //todo
+                                                                  // Row(children: [
+                                                                  //   Expanded(
+                                                                  //     child: Row(
+                                                                  //       children: [
+                                                                  //         // const Icon(
+                                                                  //         //   Iconsax.user,
+                                                                  //         //   color: Colors.black,
+                                                                  //         //   // color: theme.colorScheme.onPrimary,
+                                                                  //         //   size: 12,
+                                                                  //         // ),
+                                                                  //         const Image(
+                                                                  //           height: 12,
+                                                                  //           width: 12,
+                                                                  //           color: Colors
+                                                                  //               .black,
+                                                                  //           // color: Color(
+                                                                  //           //     0xff1529e8),
+                                                                  //           image:
+                                                                  //               AssetImage(
+                                                                  //             'assets/icons/icons8-person.png',
+                                                                  //           ),
+                                                                  //         ),
+                                                                  //         FxText
+                                                                  //             .bodyMedium(
+                                                                  //           // '${widget.Slots![index].adultPrice}AED',
+                                                                  //           // '${((widget.Slots[index].adultPrice.toDouble() * conversionRate!)).toStringAsFixed(2)} $currencySymbol',
+                                                                  //           '554 AED',
+                                                                  //           color: Colors
+                                                                  //               .black,
+                                                                  //           fontWeight:
+                                                                  //               600,
+                                                                  //         ),
+                                                                  //       ],
+                                                                  //     ),
+                                                                  //   ),
+                                                                  //   Expanded(
+                                                                  //     child: Row(
+                                                                  //       children: [
+                                                                  //         // const Icon(
+                                                                  //         //   LineIcons.baby,
+                                                                  //         //   // MdiIcons.user,
+                                                                  //         //   color: Colors.black,
+
+                                                                  //         //   size: 20,
+                                                                  //         // ),
+                                                                  //         const Image(
+                                                                  //           height: 12,
+                                                                  //           width: 12,
+                                                                  //           color: Colors
+                                                                  //               .black,
+                                                                  //           // color: Color(
+                                                                  //           //     0xff1529e8),
+                                                                  //           image:
+                                                                  //               AssetImage(
+                                                                  //             'assets/icons/childicon.png',
+                                                                  //           ),
+                                                                  //         ),
+                                                                  //         FxText
+                                                                  //             .bodyMedium(
+                                                                  //           '0 AED',
+                                                                  //           // '${widget.Slots[index].adultPrice}AED',
+                                                                  //           // '${((widget.Slots[index].childPrice.toDouble() * conversionRate!)).toStringAsFixed(2)} $currencySymbol',
+                                                                  //           color: Colors
+                                                                  //               .black,
+                                                                  //           fontWeight:
+                                                                  //               600,
+                                                                  //         ),
+                                                                  //       ],
+                                                                  //     ),
+                                                                  //   )
+                                                                  // ]),
+                                                                ],
+                                                              ),
+                                                            );
+                                                          },
+                                                        ),
                                                       ),
-                                                    ),
-                                                  ),
-                                                  FxSpacing.width(10),
-                                                  FxContainer(
-                                                    onTap: () {
-                                                      controller
-                                                          .openendDrawer();
-                                                    },
-                                                    borderRadiusAll: 10,
-                                                    // padding: FxSpacing.xy(8, 4),
-                                                    padding:
-                                                        FxSpacing.xy(15, 10),
-                                                    color:
-                                                        const Color(0xff1529e8),
-                                                    // color: Colors.blueGrey,
-                                                    child: Center(
-                                                      child: FxText.bodySmall(
-                                                        'Time Slot',
-                                                        fontWeight: 300,
-                                                        color: Colors.white,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ],
-                                          )
+                                          ))
                                         : const SizedBox(),
-
                                     FxSpacing.height(4),
+
                                     // Row(
                                     //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     //   children: [
@@ -1284,291 +1596,6 @@ class _ActivityScreenState extends State<ActivityScreen>
     );
   }
 
-  //drawer
-  //   List<Widget> _buildType() {
-  //   List<String> categoryList = [
-  //     "ECom",
-  //     "Automobile",
-  //     "Crimes",
-  //     "Business",
-  //     "Fitness",
-  //     "Astro",
-  //     "Politics",
-  //     "Relationship",
-  //     "Food",
-  //     "Electronics",
-  //     "Health",
-  //     "Tech",
-  //     "Entertainment",
-  //     "World",
-  //     "Sports",
-  //     "Other",
-  //   ];
-
-  //   List<Widget> choices = [];
-  //   categoryList.forEach((item) {
-  //     bool selected = searchController.selectedChoices.contains(item);
-  //     if (selected) {
-  //       choices.add(FxContainer.none(
-  //           color: customTheme.homemadePrimary.withAlpha(28),
-  //           bordered: true,
-  //           borderRadiusAll: 12,
-  //           paddingAll: 8,
-  //           border: Border.all(color: customTheme.homemadePrimary),
-  //           onTap: () {
-  //             searchController.removeChoice(item);
-  //           },
-  //           child: Row(
-  //             mainAxisSize: MainAxisSize.min,
-  //             children: [
-  //               Icon(
-  //                 Icons.check,
-  //                 size: 14,
-  //                 color: customTheme.homemadePrimary,
-  //               ),
-  //               FxSpacing.width(6),
-  //               FxText.bodySmall(
-  //                 item,
-  //                 fontSize: 11,
-  //                 color: customTheme.homemadePrimary,
-  //               )
-  //             ],
-  //           )));
-  //     } else {
-  //       choices.add(FxContainer.none(
-  //         color: customTheme.border,
-  //         borderRadiusAll: 12,
-  //         padding: FxSpacing.xy(12, 8),
-  //         onTap: () {
-  //           searchController.addChoice(item);
-  //         },
-  //         child: FxText.bodySmall(
-  //           item,
-  //           color: theme.colorScheme.onBackground,
-  //           fontSize: 11,
-  //         ),
-  //       ));
-  //     }
-  //   });
-  //   return choices;
-  // }
-
-  Widget _endDrawer() {
-    return SafeArea(
-      child: Container(
-        margin: FxSpacing.fromLTRB(16, 16, 16, 80),
-        width: 300,
-        decoration: const BoxDecoration(
-          borderRadius: BorderRadius.all(Radius.circular(8)),
-          color: Color(0xff1529e8),
-        ),
-        clipBehavior: Clip.antiAliasWithSaveLayer,
-        child: Drawer(
-          child: Container(
-            // color: const Color(0xff1529e8),
-            color: const Color(0xfff5f5f5),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  padding: FxSpacing.xy(16, 12),
-                  color: const Color(0xff1529e8),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: Center(
-                          child: FxText(
-                            "Pick Your Time Slot",
-                            fontWeight: 700,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ),
-                      FxContainer.rounded(
-                          onTap: () {
-                            controller.closeEndDrawer();
-                          },
-                          paddingAll: 6,
-                          color: const Color(0xff1529e8).withAlpha(24),
-                          child: const Icon(
-                            FeatherIcons.x,
-                            size: 12,
-                            color: Color(0xff1529e8),
-                          ))
-                    ],
-                  ),
-                ),
-                Expanded(
-                    child: ListView(
-                  padding: FxSpacing.all(16),
-                  children: [
-                    Container(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          FxText.bodyMedium(
-                            "Selected Date:",
-                            color: theme.colorScheme.onBackground,
-                            fontWeight: 600,
-                          ),
-                          FxText.bodySmall(
-                            '24.05.2023',
-                            color: theme.colorScheme.onBackground,
-                            fontWeight: 600,
-                            xMuted: true,
-                          ),
-                        ],
-                      ),
-                    ),
-                    FxSpacing.height(16),
-                    // Container(
-                    //   child: Wrap(
-                    //     spacing: 10,
-                    //     runSpacing: 10,
-                    //     // children: _buildType(),
-                    //   ),
-                    Container(
-                      child: GridView(
-                        gridDelegate:
-                            const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                          crossAxisSpacing: 10.0,
-                          mainAxisSpacing: 10.0,
-                          mainAxisExtent: 170, // ** add this **
-                        ),
-                        // crossAxisCount: 2,
-                        // crossAxisSpacing: 10.0,
-                        // // mainAxisSpacing: 10.0,
-                        // mainAxisExtent: 300,
-                        shrinkWrap: true,
-                        physics: const AlwaysScrollableScrollPhysics(),
-                        children: List.generate(
-                          // controller.timeslotstart,
-                          9,
-                          (index) {
-                            // return Padding(
-                            //   padding: const EdgeInsets.all(10.0),
-                            //   child: Container(
-                            //     decoration: const BoxDecoration(
-                            //       // image: DecorationImage(
-                            //       //   image: NetworkImage('img.png'),
-                            //       //   fit: BoxFit.cover,
-                            //       // ),
-                            //       color: Color(0xff22C55E),
-                            //       borderRadius: BorderRadius.all(
-                            //         Radius.circular(20.0),
-                            //       ),
-                            //     ),
-                            //   ),
-                            // );
-                            return FxContainer(
-                              onTap: () {
-                                // controller.closeEndDrawer();
-                                setState(() {
-                                  controller.defaultChoiceIndex = index;
-                                });
-                                log('selected:${controller.defaultChoiceIndex}');
-                              },
-                              padding: FxSpacing.y(12),
-                              color: controller.defaultChoiceIndex == index
-                                  ? Colors.red
-                                  : const Color(0xff22C55E),
-                              child: Column(
-                                children: [
-                                  FxText.bodyMedium(
-                                    "Start Time",
-                                    color: Colors.white,
-                                    fontWeight: 600,
-                                  ),
-                                  FxText.bodyMedium(
-                                    controller.timeslotstart[index],
-                                    color: Colors.white,
-                                    fontWeight: 600,
-                                  ),
-                                  FxText.bodyMedium(
-                                    "End Time",
-                                    color: Colors.white,
-                                    fontWeight: 600,
-                                  ),
-                                  FxText.bodyMedium(
-                                    controller.timeslotend[index],
-                                    color: Colors.white,
-                                    fontWeight: 600,
-                                  ),
-                                  FxText.bodyMedium(
-                                    "Adult Price",
-                                    color: Colors.white,
-                                    fontWeight: 600,
-                                  ),
-                                  FxText.bodyMedium(
-                                    '554 AED',
-                                    color: Colors.white,
-                                    fontWeight: 600,
-                                  ),
-                                  FxText.bodyMedium(
-                                    "Child Price",
-                                    color: Colors.white,
-                                    fontWeight: 600,
-                                  ),
-                                  FxText.bodyMedium(
-                                    '0 AED',
-                                    color: Colors.white,
-                                    fontWeight: 600,
-                                  ),
-                                  Expanded(child: Container())
-                                ],
-                              ),
-                            );
-                          },
-                        ),
-                      ),
-                    ),
-                    FxSpacing.height(16),
-                  ],
-                )),
-                Container(
-                  child: Row(
-                    children: [
-                      Expanded(
-                          child: FxContainer(
-                        onTap: () {
-                          controller.closeEndDrawer();
-                        },
-                        padding: FxSpacing.y(12),
-                        child: Center(
-                          child: FxText(
-                            "Clear",
-                            color: Colors.black,
-                            fontWeight: 600,
-                          ),
-                        ),
-                      )),
-                      Expanded(
-                          child: FxContainer.none(
-                        onTap: () {
-                          controller.closeEndDrawer();
-                        },
-                        padding: FxSpacing.y(12),
-                        color: const Color(0xff1529e8),
-                        child: Center(
-                          child: FxText(
-                            "Apply",
-                            color: Colors.white,
-                            fontWeight: 600,
-                          ),
-                        ),
-                      )),
-                    ],
-                  ),
-                )
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
   Widget _buildBody() {
     if (controller.uiLoading) {
       return Scaffold(
@@ -1583,17 +1610,18 @@ class _ActivityScreenState extends State<ActivityScreen>
         backgroundColor: const Color(0xfff5f5f5),
         key: controller.scaffoldKey,
         // endDrawer: _endDrawer(),
-        endDrawer: SlotTimeDrawer(
-          excursionSlot: widget.excursions,
-          excursionidSlot: widget.excursionid,
-          onOptionSelected: (String option) {
-            option = controller.drawerData;
-            // option = controller.defaultChoiceIndex;
-            log('Sel:${controller.defaultChoiceIndex}');
-            print('Selected option: $option');
-          },
-          // getdataSlot: controller.getslot
-        ),
+        // endDrawer: SlotTimeDrawer(
+        //   excursionSlot: widget.excursions,
+        //   excursionidSlot: widget.excursionid,
+        //   Slots: controller.slottimeget,
+        //   // selectedDate:widget.excursions.first.selectedDate.toString(),
+        //   onOptionSelected: (SlotTime option) {
+        //     log('Sel:${controller.defaultChoiceIndex}');
+        //     print('Selected option: $option');
+        //   },
+
+        //   // getdataSlot: controller.getslot
+        // ),
         appBar: AppBar(
           leading: InkWell(
             onTap: () {
@@ -1641,7 +1669,9 @@ class _ActivityScreenState extends State<ActivityScreen>
                     padding: FxSpacing.xy(16, 12),
                     child: Column(
                       children: <Widget>[
-                        _buildSelect1(),
+                        widget.excursionid == '63ff12f5d7333637a938cad4'
+                            ? _buildSelectBurj()
+                            : _buildSelect1(),
                         Row(
                           children: [
                             AnimatedBuilder(

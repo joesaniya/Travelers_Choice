@@ -163,7 +163,8 @@ class SavedController extends FxController {
         pageBuilder: (_, __, ___) => DetailScreen(
             product.id,
             //  _toggleFavorite, _isMealFavorite,
-            product)
+            product,
+            product.slug)
         // SingleProductScreen(product.id)
         ));
   }

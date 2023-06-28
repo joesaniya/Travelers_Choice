@@ -100,6 +100,7 @@ class _SearchAttractionScreenState extends State<SearchAttractionScreen>
   double? _width;
   String? _btnText;
   String? keydata;
+  String? slugname;
   Future _pretendSearch() async {
     setState(() {
       _btnText = "";
@@ -107,15 +108,17 @@ class _SearchAttractionScreenState extends State<SearchAttractionScreen>
     });
     await Future.delayed(const Duration(seconds: 2));
     controller.searchbtn(
-      controller.locationTE.text,
-      // controller.selectedCountry!,
-      keydata!,
+        controller.locationTE.text,
+        // controller.selectedCountry!,
+        keydata!,
+        widget.isocode,
+        widget.conversionRate,
+        controller.SlugnameId.last
+        // 'burj-khalifa-:-at-the-top'
+        // slugname.toString()
 
-      widget.isocode,
-      widget.conversionRate,
-
-      // controller.allattractionList.first
-    );
+        // controller.allattractionList.first
+        );
     setState(() {
       _btnText = "Search";
       _width = 120;
@@ -287,20 +290,32 @@ class _SearchAttractionScreenState extends State<SearchAttractionScreen>
             log('ONSUBIT');
           },
           onSuggestionTap: (value) {
-            log('tap');
+            controller.slugslist =
+                controller.countryList.first.attractions.where((element) {
+              return element.id == value.item;
+            }).toList();
 
+            log('Slug List:${controller.slugslist.map((e) => e.slug).toList()}');
+            controller.SlugnameId =
+                controller.slugslist.map((e) => e.slug).toList();
+
+            // controller.slugslist = slugname as List<Attraction>;
+
+            log('Slug.searchKey:${value.searchKey}');
+            log('SearchKey Id:${value.key}');
             controller.selectedCountry = value.searchKey;
+            log('controller.selectedCountry Sluf${controller.selectedCountry}');
 
-            log('onSuggestionTap');
-            print('onsugguest');
-            print('value Country-->${value.item!}');
             log('value Country-->${value.item!}');
 
             // log(value.searchKey.toString());
             log(value.item.toString());
             controller.focus.unfocus();
             keydata = value.item.toString();
+
             log('keydata1:$keydata');
+            // slugname = value.item.toString();
+            // log('keydataslug:$slugname');
             setState(() {
               // _selectedCountry!.country = controller.locationTE.text;
               // _selectedCountry.attractions.first.id =
@@ -319,6 +334,7 @@ class _SearchAttractionScreenState extends State<SearchAttractionScreen>
               : controller.countryList.first.destinations
                       .map((e) => SearchFieldListItem<dynamic>(
                           // e,
+                          // 'Esther',
 
                           e.name.toString()[0].toUpperCase() +
                               e.name.toString().substring(1).toLowerCase(),
@@ -343,6 +359,8 @@ class _SearchAttractionScreenState extends State<SearchAttractionScreen>
                           e.title.toString()[0].toUpperCase() +
                               e.title.toString().substring(1).toLowerCase(),
                           item: e.id,
+
+                          // key: e.slug,
                           child: Padding(
                             padding:
                                 const EdgeInsets.symmetric(horizontal: 8.0),

@@ -128,12 +128,12 @@ Country Code => $countryCode
 
   bool isLoading = true;
 
-  getDetailAttraction(productid, setState) {
+  getDetailAttraction(productid,productslug ,setState) {
     log('getDetail Attraction function called');
 
     Future.delayed(Duration.zero, () async {
       await AttractionController()
-          .getDetailattractionList(productid: productid)
+          .getDetailattractionList(productid: productid, productslug: productslug)
           .then((value) {
         log('Details => $value');
         if (value != null) {

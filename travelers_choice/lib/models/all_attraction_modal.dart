@@ -84,6 +84,7 @@ class Datum {
     this.cancellationFee,
     required this.cancellationType,
     required this.isCombo,
+    required this.slug,
     required this.activity,
     required this.totalReviews,
     required this.averageRating,
@@ -105,6 +106,7 @@ class Datum {
   int? cancellationFee;
   CancellationType cancellationType;
   bool isCombo;
+  String slug;
   Activity activity;
   int totalReviews;
   double averageRating;
@@ -131,6 +133,7 @@ class Datum {
             cancellationTypeValues.map[json["cancellationType"]] ??
                 CancellationType.FREE_CANCELLATION,
         isCombo: json["isCombo"],
+        slug: json["slug"],
         activity: Activity.fromJson(json["activity"]),
         totalReviews: json["totalReviews"],
         averageRating: json["averageRating"]?.toDouble(),
@@ -153,6 +156,7 @@ class Datum {
         "cancellationType":
             cancellationTypeValues.reverse[cancellationType] ?? cancellationFee,
         "isCombo": isCombo,
+                "slug": slug,
         "activity": activity.toJson(),
         "totalReviews": totalReviews,
         "averageRating": averageRating,

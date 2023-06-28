@@ -204,6 +204,7 @@ Country Code => $countryCode
     // currencySymbol, conversionRate
   ) {
     log(product.id);
+    log('Slug:${product.slug}');
     log('message');
     // print(currencySymbol);
     // print("utfyjhvbn  $conversionRate");
@@ -220,11 +221,13 @@ Country Code => $countryCode
               child: child,
             ),
         pageBuilder: (_, __, ___) => DetailScreen(
-              product.id,
-              //  _toggleFavorite, _isMealFavorite,
-              product,
-              //   currencySymbol:currencySymbol,
-              // conversionRate: conversionRate
+            product.id,
+
+            //  _toggleFavorite, _isMealFavorite,
+            product,
+            product.slug
+            //   currencySymbol:currencySymbol,
+            // conversionRate: conversionRate
             )
         // SingleProductScreen(product.id)
         ));

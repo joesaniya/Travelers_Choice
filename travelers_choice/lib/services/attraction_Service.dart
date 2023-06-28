@@ -78,11 +78,14 @@ class AttractionService {
   // //detailAttraction
 
   Future<DetailattractionModal?> getdetailAttraction(
-      {required productid}) async {
+      {required productid,required productslug}) async {
     try {
       var response = await http.get(
-        Uri.parse(
-          'https://secure.mytravellerschoice.com/api/v1/attractions/single/$productid',
+        // Uri.parse(
+        //   'https://secure.mytravellerschoice.com/api/v1/attractions/single/$productid',
+        // ),
+         Uri.parse(
+          'https://secure.mytravellerschoice.com/api/v1/attractions/single/$productslug',
         ),
         headers: {
           'Content-Type': 'application/json',

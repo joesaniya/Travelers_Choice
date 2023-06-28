@@ -258,6 +258,7 @@ class HomeSearchController extends FxController {
 
             //  _toggleFavorite, _isMealFavorite,
             product,
+            product.slug,
             currencySymbol: currencySymbol,
             conversionRate: conversionRate)));
   }

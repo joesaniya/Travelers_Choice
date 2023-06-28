@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
@@ -7,10 +8,13 @@ import 'package:hotel_travel/models/atteraction_model.dart';
 import 'package:hotel_travel/views/new_cart.dart';
 import 'package:intl/intl.dart';
 import '../card_widgets/customsnackbar.dart';
+import '../models/Slot_Time.dart';
 import '../models/cart.dart';
+import '../services/Slot_Time_Service.dart';
 import '../views/checkout_screen.dart';
 import '../views/hotel_travel_constants.dart';
 import '../views/login_Screens/login_screen.dart';
+import 'package:http/http.dart' as http;
 
 List<TextEditingController> controllerTE = [];
 // double amount = 0;
@@ -41,6 +45,63 @@ class ActivityController extends FxController {
   double grandTotal = 0;
 
   GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+
+  SlotTime? selectedslot;
+
+  List<SlotTime> slottimeget = [];
+
+  Future<List<SlotTime>?> SlotPick(
+    String productid,
+    String productcode,
+    String date,
+  ) async {
+    log('product Id:$productid');
+    log('product code:$productcode');
+    log('date:$date');
+
+    try {
+      var data = await SlotTimeService()
+          .getSlotTime1(productid, productcode, date, context);
+
+      if (data != null) {
+        // slottimeget.add(data);
+        // var slots = slotTimeFromJson(data);
+        slottimeget.addAll(data);
+
+        log('Slots:$slottimeget');
+
+        return slottimeget; //removed true
+      } else {
+        return null; //falseremoved
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  void listPickSlot(
+    String productid,
+    String productcode,
+    String date,
+  ) async {
+    log('calling');
+    {
+      var response = await http.post(
+          Uri.parse("http://servisjer.me-tech.com.my/api/Car/GetUserCar"),
+          body: ({
+            "productId": productid,
+            "productCode": productcode,
+            "timeSlotDate": date
+          }));
+      if (response.statusCode == 200) {
+        final body = jsonDecode(response.body);
+
+        log('list Pick:$body');
+        ScaffoldMessenger.of(context)
+            .showSnackBar(const SnackBar(content: Text("Successfully Login")));
+      }
+    }
+  }
 
   void updateTours(Activity tour) {
     log('updateTours Calling');
@@ -460,26 +521,26 @@ class ActivityController extends FxController {
   int? defaultChoiceIndex;
 
   final List<String> timeslotstart = [
-    '10.00.00',
-    '11.00.00',
-    '12.00.00',
-    '13.00.00',
-    '14.00.00',
-    '15.00.00',
-    '16.00.00',
-    '17.00.00',
-    '18.00.00'
+    '10.00 am',
+    '11.00 am',
+    '12.00 pm',
+    '13.00 pm',
+    '14.00 pm',
+    '15.00 pm',
+    '16.00 pm',
+    '17.00 pm',
+    '18.00 pm'
   ];
   final List<String> timeslotend = [
-    '11.00.00',
-    '12.00.00',
-    '13.00.00',
-    '14.00.00',
-    '15.00.00',
-    '16.00.00',
-    '17.00.00',
-    '18.00.00',
-    '19.00.00'
+    '11.00 am',
+    '12.00 pm',
+    '13.00 pm',
+    '14.00 pm',
+    '15.00 pm',
+    '16.00 pm',
+    '17.00 pm',
+    '18.00 pm',
+    '19.00 pm'
   ];
 //drawer
   void openendDrawer() {
@@ -496,8 +557,6 @@ class ActivityController extends FxController {
   void getslot(dynamic result) {
     log('Result:$result');
   }
-
-  String drawerData = 'Esther';
 
   dateselect(index) async {
     DateTime? pickedDate = await showDatePicker(

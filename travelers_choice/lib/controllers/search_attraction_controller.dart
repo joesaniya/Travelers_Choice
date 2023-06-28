@@ -119,6 +119,9 @@ class SearchAttractionController extends FxController {
     }
   }
 
+  List<Attraction> slugslist = [];
+  List<String> SlugnameId = [];
+
   String? selectedCountry;
   List<AttractionSearchDataModal> countryList = <AttractionSearchDataModal>[];
   String? currencies, countryCode;
@@ -132,10 +135,12 @@ class SearchAttractionController extends FxController {
     String keyid,
     String code,
     double Currencyvalue,
+    String slugname,
     // Datum product
   ) async {
     log('search btn');
     log('Key Id:$keyid');
+    log('controller slug:$slugname');
     locationCounter = 0;
     dateCounter = 0;
     // log('Currency Symbol:$currencySymbol');
@@ -156,8 +161,7 @@ class SearchAttractionController extends FxController {
     //       .showSnackBar(const SnackBar(content: Text("Please select date")));
     // }
     else {
-      log('country22');
-      log(selectedCountry.toString());
+      log('Slug:$slugname');
       print('SElected$selectedCountry');
       log('location:${locationTE.text}');
       if (countryList.first.attractions
@@ -165,6 +169,7 @@ class SearchAttractionController extends FxController {
           .toList()
           .contains(keyid)) {
         log('attraction name');
+        log('Slug Id:${SlugnameId.last}');
         Navigator.of(context, rootNavigator: true).push(PageRouteBuilder(
             transitionDuration: const Duration(milliseconds: 500),
             transitionsBuilder: (
@@ -177,11 +182,13 @@ class SearchAttractionController extends FxController {
                   opacity: animation,
                   child: child,
                 ),
-            pageBuilder: (_, __, ___) => DetailScreen(
-                keyid, allattractionList!.first.attractions.data.first
+            pageBuilder: (_, __, ___) => DetailScreen(keyid,
+                allattractionList!.first.attractions.data.first, SlugnameId.last
+                //  slugname
 
                 // product,
-
+                // allattractionList!.first.attractions.data.first.slug
+//  product.category.slug
                 )
             // SingleProductScreen(product.id)
             ));

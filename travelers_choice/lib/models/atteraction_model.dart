@@ -535,59 +535,63 @@ class Activity {
   double GrandTotalAmount = 0.0;
   bool expand = true;
 
-   bool? isQuotation;
+  bool? isQuotation;
   String? qtnActivityType;
   TicketPricing? ticketPricing;
   TransferPricing? transferPricing;
+  String? productId;
+  String? productCode;
 
-  Activity(
-      {this.sId,
-      this.attraction,
-      this.name,
-      this.facilities,
-      this.adultAgeLimit,
-      this.adultPrice,
-      this.childAgeLimit,
-      this.childPrice,
-      this.infantAgeLimit,
-      this.infantPrice,
-      this.isVat,
-      this.vat,
-      this.base,
-      this.isTransferAvailable,
-      this.privateTransferPrice,
-      this.sharedTransferPrice,
-      this.isActive,
-      this.createdAt,
-      this.updatedAt,
-      this.iV,
-      this.isDeleted,
-      this.adultCost,
-      this.childCost,
-      this.infantCost,
-      this.adultCount = 1,
-      this.childCount = 0,
-      this.infantCount = 0,
-      this.totalAmount = 0,
-      this.grandTotal = 0,
-      this.isPrivate = false,
-      this.isSharing = false,
-      this.activityType,
-      this.description,
-      this.isPrivateTransferAvailable,
-      this.isSharedTransferAvailable,
-      this.privateTransfers,
-      this.sharedTransferCost,
-      this.lowPrice,
-      this.selectedDate,
-      this.GrandTotalAmount = 0.0,
-      this.transferType = 'private',
-      this.expand = true,
-      this.isQuotation,
+  Activity({
+    this.sId,
+    this.attraction,
+    this.name,
+    this.facilities,
+    this.adultAgeLimit,
+    this.adultPrice,
+    this.childAgeLimit,
+    this.childPrice,
+    this.infantAgeLimit,
+    this.infantPrice,
+    this.isVat,
+    this.vat,
+    this.base,
+    this.isTransferAvailable,
+    this.privateTransferPrice,
+    this.sharedTransferPrice,
+    this.isActive,
+    this.createdAt,
+    this.updatedAt,
+    this.iV,
+    this.isDeleted,
+    this.adultCost,
+    this.childCost,
+    this.infantCost,
+    this.adultCount = 1,
+    this.childCount = 0,
+    this.infantCount = 0,
+    this.totalAmount = 0,
+    this.grandTotal = 0,
+    this.isPrivate = false,
+    this.isSharing = false,
+    this.activityType,
+    this.description,
+    this.isPrivateTransferAvailable,
+    this.isSharedTransferAvailable,
+    this.privateTransfers,
+    this.sharedTransferCost,
+    this.lowPrice,
+    this.selectedDate,
+    this.GrandTotalAmount = 0.0,
+    this.transferType = 'private',
+    this.expand = true,
+    this.isQuotation,
     this.qtnActivityType,
     this.ticketPricing,
     this.transferPricing,
-      });
+    this.productId,
+    this.productCode,
+  });
 
   Activity.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
@@ -642,6 +646,8 @@ class Activity {
     transferPricing = json['transferPricing'] != null
         ? TransferPricing.fromJson(json['transferPricing'])
         : null;
+    productId = json['productId'];
+    productCode = json['productCode'];
   }
 
   Map<String, dynamic> toJson() {
@@ -682,14 +688,16 @@ class Activity {
     data['lowPrice'] = lowPrice;
     data['selectedDate'] = selectedDate;
     data['transferType'] = transferType;
-    data['isQuotation'] = this.isQuotation;
-    data['qtnActivityType'] = this.qtnActivityType;
-    if (this.ticketPricing != null) {
-      data['ticketPricing'] = this.ticketPricing!.toJson();
+    data['isQuotation'] = isQuotation;
+    data['qtnActivityType'] = qtnActivityType;
+    if (ticketPricing != null) {
+      data['ticketPricing'] = ticketPricing!.toJson();
     }
-    if (this.transferPricing != null) {
-      data['transferPricing'] = this.transferPricing!.toJson();
+    if (transferPricing != null) {
+      data['transferPricing'] = transferPricing!.toJson();
     }
+    data['productId'] = productId;
+    data['productCode'] = productCode;
     return data;
   }
 }
@@ -718,22 +726,22 @@ class TicketPricing {
     if (json['vehicleType'] != null) {
       vehicleType = <VehicleType>[];
       json['vehicleType'].forEach((v) {
-        vehicleType!.add(new VehicleType.fromJson(v));
+        vehicleType!.add(VehicleType.fromJson(v));
       });
     }
     sId = json['_id'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['adultPrice'] = this.adultPrice;
-    data['childPrice'] = this.childPrice;
-    data['sicWithTicketAdultPrice'] = this.sicWithTicketAdultPrice;
-    data['sicWithTicketChildPrice'] = this.sicWithTicketChildPrice;
-    if (this.vehicleType != null) {
-      data['vehicleType'] = this.vehicleType!.map((v) => v.toJson()).toList();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['adultPrice'] = adultPrice;
+    data['childPrice'] = childPrice;
+    data['sicWithTicketAdultPrice'] = sicWithTicketAdultPrice;
+    data['sicWithTicketChildPrice'] = sicWithTicketChildPrice;
+    if (vehicleType != null) {
+      data['vehicleType'] = vehicleType!.map((v) => v.toJson()).toList();
     }
-    data['_id'] = this.sId;
+    data['_id'] = sId;
     return data;
   }
 }
@@ -749,16 +757,16 @@ class TransferPricing {
     if (json['vehicleType'] != null) {
       vehicleType = <VehicleType>[];
       json['vehicleType'].forEach((v) {
-        vehicleType!.add(new VehicleType.fromJson(v));
+        vehicleType!.add(VehicleType.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['_id'] = this.sId;
-    if (this.vehicleType != null) {
-      data['vehicleType'] = this.vehicleType!.map((v) => v.toJson()).toList();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['_id'] = sId;
+    if (vehicleType != null) {
+      data['vehicleType'] = vehicleType!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -778,10 +786,10 @@ class VehicleType {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['price'] = this.price;
-    data['vehicle'] = this.vehicle;
-    data['_id'] = this.sId;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['price'] = price;
+    data['vehicle'] = vehicle;
+    data['_id'] = sId;
     return data;
   }
 }

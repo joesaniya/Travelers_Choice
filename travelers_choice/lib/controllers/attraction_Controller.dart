@@ -39,7 +39,7 @@ class AttractionController {
         log('controllergetsearch');
         allattractionList.add(data);
         // isCountryListLoading = false;
-       
+
         return data; //removed true
       } else {
         log('null data');
@@ -56,11 +56,13 @@ class AttractionController {
   List<DetailattractionModal> detailattractionList = <DetailattractionModal>[];
   bool isdetailAttractionListLoading = true;
   Future<List<DetailattractionModal>?> getDetailattractionList(
-      {required productid}) async {
+      {required productid, required productslug}) async {
     // isCountryListLoading = true;
     try {
-      var data =
-          await AttractionService().getdetailAttraction(productid: productid);
+      // var data =
+      //     await AttractionService().getdetailAttraction(productid: productid);
+      var data = await AttractionService()
+          .getdetailAttraction(productid: productid, productslug: productslug);
       detailattractionList.clear();
       if (data != null) {
         detailattractionList.add(data);
