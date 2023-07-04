@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:developer';
 
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutx/flutx.dart';
 // import 'package:global_snack_bar/global_snack_bar.dart';
@@ -10,6 +11,7 @@ import 'package:intl/intl.dart';
 import '../card_widgets/customsnackbar.dart';
 import '../models/Slot_Time.dart';
 import '../models/cart.dart';
+import '../models/slot_pick.dart';
 import '../services/Slot_Time_Service.dart';
 import '../views/checkout_screen.dart';
 import '../views/hotel_travel_constants.dart';
@@ -48,7 +50,58 @@ class ActivityController extends FxController {
 
   SlotTime? selectedslot;
 
-  List<SlotTime> slottimeget = [];
+  List<CustomSlots> slottimeget = [];
+
+  // List<SlotTime> events = [];
+  // Dio? dio;
+  BaseOptions options = BaseOptions(
+      connectTimeout: const Duration(milliseconds: 15000),
+      receiveTimeout: const Duration(milliseconds: 15000));
+  final dio = Dio();
+
+  Future<List<SlotTime>> processGetTimeSlot(
+      String productId, String productCode, String date) async {
+    try {
+      print("time Slot api hit");
+      var response = await dio.post(
+        'https://a.walletbot.online/api/v1/attractions/timeslot',
+        data: {
+          "productId": productId,
+          "productCode": productCode,
+          "timeSlotDate": date
+        },
+        options: Options(headers: {
+          // "Authorization": token
+          'Content-Type': 'application/json',
+        }),
+      );
+      log("time Slot ${response.data}");
+
+      if (response.statusCode == 200) {
+        List res = response.data;
+
+        List<SlotTime> timeSlotList = [];
+
+        for (var element in res) {
+          String str = json.encode(element);
+
+          var timeResponse = SlotTime.fromJson(json.decode(str));
+          timeSlotList.add(timeResponse);
+        }
+
+        print("RRRRRRR ${response.data.runtimeType}");
+
+        return timeSlotList;
+      } else {
+        var jsondata = jsonDecode(response.data);
+        log(jsondata['error']);
+        return [];
+      }
+    } catch (error) {
+      print("erorrr $error");
+      rethrow;
+    }
+  }
 
   Future<List<SlotTime>?> SlotPick(
     String productid,
@@ -60,17 +113,34 @@ class ActivityController extends FxController {
     log('date:$date');
 
     try {
+      List<SlotTime> slots;
       var data = await SlotTimeService()
+          // .getSlotTime(productid, productcode, date, context);
           .getSlotTime1(productid, productcode, date, context);
 
       if (data != null) {
         // slottimeget.add(data);
         // var slots = slotTimeFromJson(data);
-        slottimeget.addAll(data);
 
-        log('Slots:$slottimeget');
+        CustomSlots currentSlot = CustomSlots(id: productid, slots: data);
+        if (slottimeget.contains(currentSlot)) {
+          int index = slottimeget.indexOf(currentSlot);
+          slottimeget[index].slots = data;
 
-        return slottimeget; //removed true
+          slots = slottimeget[index].slots!;
+        } else {
+          log('slot length 1:$slottimeget');
+          // slottimeget[0].id = productid;
+          // slottimeget[0].slots = [];
+          // slottimeget[0].slots!.addAll(data);
+          slottimeget.add(currentSlot);
+          log('slot length 2:$slottimeget');
+          log('Slots:$slottimeget');
+          log('Slot Ebentname:${slottimeget[0].slots!.map((e) => e.eventName).toList()}');
+          slots = slottimeget[0].slots!;
+        }
+
+        return slots; //removed true
       } else {
         return null; //falseremoved
       }
@@ -103,6 +173,44 @@ class ActivityController extends FxController {
     }
   }
 
+  //slotsupdate
+  // void updateTourSlot(SlotTime tour) {
+  void updateTourSlot(Activity tour) {
+    log('updateTourSlot calling');
+    // log('Selected Tour Date:${tour.selectedDate}');
+    log('Name Event:${tour.slotsdata}');
+
+    // List<SlotTime> value =
+    //     slottimeget.where((element) => element.eventId == tour.eventId).toList();
+    // print("Coutn => ${value.length}");
+    // if (value.isEmpty) {
+    //   double val = getGrandTotalSlots(tour);
+    //   tour.grandTotal = val;
+    //   log('Value Total:$val');
+
+    //   if (selectedtour.contains(tour)) {
+    //     selectedtour.remove(tour);
+    //   } else {
+    //     tour.grandTotal = tour.adultCount!.toDouble();
+    //     // tour.grandTotal = tour.adultPrice!.toDouble();
+    //     selectedtour.add(tour);
+    //   }
+    // } else {
+    //   int index = person_count.indexOf(value[0]);
+    //   double val = getGrandTotal(person_count[index]);
+    //   person_count[index].grandTotal = val;
+    //   if (selectedtour.contains(person_count[index])) {
+    //     selectedtour.remove(person_count[index]);
+    //   } else {
+    //     selectedtour.add(person_count[index]);
+    //   }
+
+    //   print(person_count[index].grandTotal);
+    // }
+    // // log('Select:${selectedtour.map((e) => e.selectedDate)}');
+    // update();
+  }
+
   void updateTours(Activity tour) {
     log('updateTours Calling');
     // log('Selected Tour Date:${tour.selectedDate}');
@@ -117,7 +225,22 @@ class ActivityController extends FxController {
 
       if (selectedtour.contains(tour)) {
         selectedtour.remove(tour);
+      } else if (tour.activityType == 'transfer') {
+        if (person_count.length <=
+            tour.privateTransfers!.first.maxCapacity!.toInt()) {
+          log('length:${person_count.length}');
+          log('low Price transfer:${tour.lowPrice}');
+          tour.grandTotal = tour.lowPrice!.toDouble();
+          // tour.grandTotal = tour.adultPrice!.toDouble();
+          selectedtour.add(tour);
+        }
+        // if (tour.privateTransfers!.map((e) => e.maxCapacity).toList() ==
+        //     value) {
+        //   log('transfer adult count:');
+        // } else if (tour.privateTransfers!.map((e) => e.maxCapacity).toList() ==
+        //     value.map((e) => e.childCount).toList()) {}
       } else {
+        log('low Price:${tour.lowPrice}');
         tour.grandTotal = tour.lowPrice!.toDouble();
         // tour.grandTotal = tour.adultPrice!.toDouble();
         selectedtour.add(tour);
@@ -132,7 +255,7 @@ class ActivityController extends FxController {
         selectedtour.add(person_count[index]);
       }
 
-      print(person_count[index].grandTotal);
+      log('Person count Grand Total:${person_count[index].grandTotal}');
     }
     // log('Select:${selectedtour.map((e) => e.selectedDate)}');
     update();
@@ -310,6 +433,7 @@ class ActivityController extends FxController {
       // : tour.privateTransfers!.first.price;
       // log('vec:${tour.ticketPricing.adultPrice}');
       log('adult 2:${tour.adultPrice}');
+      log('Pvt:${tour.privateTransfers!.map((e) => e.price).toList()}');
       return tour.adultPrice == null
           // ? tour.privateTransfers!.first.price
           ? tour.privateTransfers == null || tour.privateTransfers!.isEmpty
@@ -373,6 +497,35 @@ class ActivityController extends FxController {
     }
   }
 
+  // //slotstotal
+  //   double getGrandTotalSlots(SlotTime tour) {
+  //   // log(getTotal(tour).toString());
+
+  //   List<SlotTime> value =
+  //       slottimeget.where((element) => element.eventId == tour.eventId).toList();
+  //   log("Current Tour => ${value.length}");
+  //   if (value.isEmpty) {
+  //   } else {
+  //     tour = value[0];
+  //   }
+  //   double amount = double.parse(getTotal(tour).toString());
+
+  //   if (tour.isPrivate) {
+  //     // amount = amount + tour.privateTransferPrice!;//added transfer fee
+  //     amount = amount;
+  //     // amount = amount +
+  //     //     tour.privateTransferPrice! +
+  //     //     tour.privateTransfers!.first.cost!.toDouble();
+  //   }
+  //   if (tour.isSharing) {
+  //     // amount = amount + tour.sharedTransferPrice!;
+  //     amount = amount; //added transfer fee
+  //   }
+  //   log("Current Grand Total => $amount");
+  //   return amount;
+  //   update();
+  // }
+
   double getGrandTotal(Activity tour) {
     log(getTotal(tour).toString());
 
@@ -388,13 +541,16 @@ class ActivityController extends FxController {
     if (tour.isPrivate) {
       // amount = amount + tour.privateTransferPrice!;//added transfer fee
       amount = amount;
+
       // amount = amount +
       //     tour.privateTransferPrice! +
       //     tour.privateTransfers!.first.cost!.toDouble();
+      log('Grand Total Privat:$amount');
     }
     if (tour.isSharing) {
       // amount = amount + tour.sharedTransferPrice!;
       amount = amount; //added transfer fee
+      log('Grand Total sharing:$amount');
     }
     log("Current Grand Total => $amount");
     return amount;
@@ -441,7 +597,7 @@ class ActivityController extends FxController {
   @override
   void initState() {
     super.initState();
-    defaultChoiceIndex;
+    // defaultChoiceIndex = -1;
     fetchloader();
     fetchData();
     dateTE = TextEditingController();
@@ -518,7 +674,7 @@ class ActivityController extends FxController {
     });
   }
 
-  int? defaultChoiceIndex;
+  int defaultChoiceIndex = -1;
 
   final List<String> timeslotstart = [
     '10.00 am',

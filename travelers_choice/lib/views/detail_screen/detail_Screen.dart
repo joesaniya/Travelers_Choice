@@ -593,7 +593,7 @@ class _DetailScreenState extends State<DetailScreen>
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-                          FxText.bodyMedium("Price", fontWeight: 500),
+                          FxText.bodyMedium("Starting From", fontWeight: 500),
                           FxText.bodyMedium(
                               // "350 \$",
                               // controller.detailattraction!.first.activities!

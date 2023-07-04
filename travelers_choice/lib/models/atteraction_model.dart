@@ -1,3 +1,5 @@
+import 'package:hotel_travel/models/Slot_Time.dart';
+
 import 'Country_modal.dart';
 
 class DetailattractionModal {
@@ -541,57 +543,58 @@ class Activity {
   TransferPricing? transferPricing;
   String? productId;
   String? productCode;
+  List<SlotTime>? slotsdata;
 
-  Activity({
-    this.sId,
-    this.attraction,
-    this.name,
-    this.facilities,
-    this.adultAgeLimit,
-    this.adultPrice,
-    this.childAgeLimit,
-    this.childPrice,
-    this.infantAgeLimit,
-    this.infantPrice,
-    this.isVat,
-    this.vat,
-    this.base,
-    this.isTransferAvailable,
-    this.privateTransferPrice,
-    this.sharedTransferPrice,
-    this.isActive,
-    this.createdAt,
-    this.updatedAt,
-    this.iV,
-    this.isDeleted,
-    this.adultCost,
-    this.childCost,
-    this.infantCost,
-    this.adultCount = 1,
-    this.childCount = 0,
-    this.infantCount = 0,
-    this.totalAmount = 0,
-    this.grandTotal = 0,
-    this.isPrivate = false,
-    this.isSharing = false,
-    this.activityType,
-    this.description,
-    this.isPrivateTransferAvailable,
-    this.isSharedTransferAvailable,
-    this.privateTransfers,
-    this.sharedTransferCost,
-    this.lowPrice,
-    this.selectedDate,
-    this.GrandTotalAmount = 0.0,
-    this.transferType = 'private',
-    this.expand = true,
-    this.isQuotation,
-    this.qtnActivityType,
-    this.ticketPricing,
-    this.transferPricing,
-    this.productId,
-    this.productCode,
-  });
+  Activity(
+      {this.sId,
+      this.attraction,
+      this.name,
+      this.facilities,
+      this.adultAgeLimit,
+      this.adultPrice,
+      this.childAgeLimit,
+      this.childPrice,
+      this.infantAgeLimit,
+      this.infantPrice,
+      this.isVat,
+      this.vat,
+      this.base,
+      this.isTransferAvailable,
+      this.privateTransferPrice,
+      this.sharedTransferPrice,
+      this.isActive,
+      this.createdAt,
+      this.updatedAt,
+      this.iV,
+      this.isDeleted,
+      this.adultCost,
+      this.childCost,
+      this.infantCost,
+      this.adultCount = 1,
+      this.childCount = 0,
+      this.infantCount = 0,
+      this.totalAmount = 0,
+      this.grandTotal = 0,
+      this.isPrivate = false,
+      this.isSharing = false,
+      this.activityType,
+      this.description,
+      this.isPrivateTransferAvailable,
+      this.isSharedTransferAvailable,
+      this.privateTransfers,
+      this.sharedTransferCost,
+      this.lowPrice,
+      this.selectedDate,
+      this.GrandTotalAmount = 0.0,
+      this.transferType = 'private',
+      this.expand = true,
+      this.isQuotation,
+      this.qtnActivityType,
+      this.ticketPricing,
+      this.transferPricing,
+      this.productId,
+      this.productCode,
+      this.slotsdata});
 
   Activity.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
@@ -648,6 +651,13 @@ class Activity {
         : null;
     productId = json['productId'];
     productCode = json['productCode'];
+    if (json['slotsdata'] != null) {
+      slotsdata = <SlotTime>[];
+      json['slotsdata'].forEach((v) {
+        slotsdata!.add(SlotTime.fromJson(v));
+      });
+    }
+    // slotsdata=(json['slotsdata']!=null?SlotTime.fromJson(json['slotsdata']):null) as List<SlotTime>?;
   }
 
   Map<String, dynamic> toJson() {
@@ -698,6 +708,12 @@ class Activity {
     }
     data['productId'] = productId;
     data['productCode'] = productCode;
+    if (slotsdata != null) {
+      data['slotsdata'] = slotsdata!.map((v) => v.toJson()).toList();
+    }
+    // if (slotsdata != null) {
+    //   data['slotsdata'] = slotsdata!.toJson();
+    // }
     return data;
   }
 }

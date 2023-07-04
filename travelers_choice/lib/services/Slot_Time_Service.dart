@@ -56,26 +56,27 @@ class SlotTimeService {
     }
   }
 
-
-   Future<List<SlotTime>?> getSlotTime1(String productid, String productcode,
+  Future<List<SlotTime>?> getSlotTime1(String productid, String productcode,
       String date, BuildContext context) async {
     try {
-       var body = {
+      var body = {
         "productId": productid,
         "productCode": productcode,
         "timeSlotDate": date
       };
       var response = await http.post(
-        Uri.parse(
-            'https://a.walletbot.online/api/v1/attractions/timeslot'),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: jsonEncode(body)
-      );
+          Uri.parse('https://a.walletbot.online/api/v1/attractions/timeslot'),
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: jsonEncode(body));
       if (response.statusCode == 200) {
         log("https://a.walletbot.online/api/v1/attractions/timeslot"
             "Category LIst          ${response.body}");
+        // List<dynamic> result = json.decode(response.body);
+        // List<SlotTime> posts = List<SlotTime>.from(
+        //     result['data'].map((dynamic row) => SlotTime.fromJson(row)));
+        // log('Datas:$posts');
 
         return slotTimeFromJson(response.body);
       } else {
@@ -86,6 +87,6 @@ class SlotTimeService {
     } catch (e) {
       rethrow;
     }
+    return null;
   }
-
 }

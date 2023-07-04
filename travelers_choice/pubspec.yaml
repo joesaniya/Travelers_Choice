@@ -81,7 +81,7 @@ dependencies:
   flutter_cached_pdfview: ^0.4.1
   flutter_pdfview: ^1.2.5
   # downloads_path_provider_28: ^0.1.2
-  dio: ^5.0.1
+  dio: ^5.2.1+1
   permission_handler: ^10.2.0
   path_provider: ^2.0.13
   external_path: ^1.0.3

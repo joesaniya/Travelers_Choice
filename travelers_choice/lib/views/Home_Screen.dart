@@ -647,7 +647,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
           // width: 300,
           width: 260,
           // height: 274,
-          height: 280,
+          // height: 280,
+          height: 296,
           // height: MediaQuery.of(context).size.height * 0.360,
 
           decoration: BoxDecoration(
@@ -896,13 +897,18 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                       ],
                     ),
                     //currencyChange
-                    FxText(
-                      // "76",
-                      // "${product.activity.adultPrice.toString()} AED",,
-                      " ${(selectedCountry != null ? "${((product.activity.lowPrice * selectedCountry!.conversionRate) as double).toStringAsFixed(2)} ${selectedCountry!.isocode} " : "")}",
-                      // "${product.activity.lowPrice.toString()} AED",
-                      // '${controller.currency() ?? '\$'} ${product.activity.adultPrice.toString()}',
-                      color: const Color(0xff1529e8),
+                    Column(
+                      children: [
+                        FxText.bodyMedium("Starting From", fontWeight: 500),
+                        FxText(
+                          // "76",
+                          // "${product.activity.adultPrice.toString()} AED",,
+                          " ${(selectedCountry != null ? "${((product.activity.lowPrice * selectedCountry!.conversionRate) as double).toStringAsFixed(2)} ${selectedCountry!.isocode} " : "")}",
+                          // "${product.activity.lowPrice.toString()} AED",
+                          // '${controller.currency() ?? '\$'} ${product.activity.adultPrice.toString()}',
+                          color: const Color(0xff1529e8),
+                        ),
+                      ],
                     ),
                   ],
                 ),
