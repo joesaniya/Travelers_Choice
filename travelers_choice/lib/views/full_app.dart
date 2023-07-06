@@ -11,6 +11,7 @@ import 'package:hotel_travel/views/history_page.dart';
 import 'package:hotel_travel/views/profile_screen.dart';
 
 import '../controllers/full_app_conrtoller.dart';
+import '../models/Slot_Time.dart';
 import '../models/atteraction_model.dart';
 import '../theme/app_theme.dart';
 import 'Saved_Screen.dart';
@@ -25,7 +26,8 @@ List<Activity> favouriteListCart = <Activity>[];
 class FullApp extends StatefulWidget {
   List<AllattractionModal> favouriteMeal;
   List<Activity> cartMeal;
-  FullApp(this.favouriteMeal, this.cartMeal, {super.key});
+   SlotTime? event;
+  FullApp(this.favouriteMeal, this.cartMeal,this.event, {super.key});
 
   @override
   _FullAppState createState() => _FullAppState();
@@ -159,7 +161,9 @@ class _FullAppState extends State<FullApp> with SingleTickerProviderStateMixin {
 
                     // const Center(child: Text('Saved')),
                     SavedScreen(widget.favouriteMeal),
-                    NewCart(widget.cartMeal),
+                    NewCart(widget.cartMeal,
+                    // widget.event
+                    ),
                     const HistoryScreen(),
                     // CartScreen(),
                     const ProfileScreen()
@@ -242,7 +246,9 @@ class _FullAppState extends State<FullApp> with SingleTickerProviderStateMixin {
           [
             HomeScreen(widget.cartMeal),
             SavedScreen(widget.favouriteMeal),
-            NewCart(widget.cartMeal),
+            NewCart(widget.cartMeal
+            // ,widget.event
+            ),
             const HistoryScreen(),
             const ProfileScreen()
           ][_selectedIndex],

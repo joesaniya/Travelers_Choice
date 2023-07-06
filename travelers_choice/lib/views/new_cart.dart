@@ -3,10 +3,12 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutx/flutx.dart';
+import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../controllers/Activity_Controller.dart';
 import '../controllers/checkout_controller.dart';
+import '../models/Slot_Time.dart';
 import '../models/atteraction_model.dart';
 import '../services/app_constants.dart';
 import '../theme/app_theme.dart';
@@ -20,12 +22,14 @@ class NewCartPage extends StatefulWidget {
   String textdate;
   String? Transfer;
   double? totalAmount;
+  // SlotTime? event;
 
   @override
   Key? key;
 
   NewCartPage(this.length, this.selectedtourOption, this.textdate,
       this.Transfer, this.totalAmount,
+      //  this.event,
       {super.key});
 
   @override
@@ -47,6 +51,7 @@ class _NewCartPageState extends State<NewCartPage>
     selectedExcursions = widget.selectedtourOption;
     log('Selected Tour length:${widget.selectedtourOption.first.sId}');
     log('Selected Total Amount:${widget.totalAmount}');
+    // log('Selected Slots:${widget.event!.endDateTime}');
 
     fetchlog();
     initializingData();
@@ -163,6 +168,40 @@ class _NewCartPageState extends State<NewCartPage>
   String? rateselectedtourOption;
 
   Widget _billingWidget() {
+    // // //selectedslotdate
+
+    // String StartTime = widget.event!.startDateTime.toString();
+
+    // DateTime parsedStartTime = DateTime.parse(StartTime);
+    // String formattedStartTime = DateFormat('HH:mm:ss').format(parsedStartTime);
+
+    // log('formattedTime:$formattedStartTime');
+
+    // String originalStartTime = formattedStartTime;
+
+    // DateTime parsedTimeStart =
+    //     DateFormat('HH:mm:ss').parseStrict(originalStartTime);
+    // String formattedStartAMPN = DateFormat('h:mm a').format(parsedTimeStart);
+
+    // log('Start:$formattedStartAMPN');
+    // // log('currentSlot!.length:${currentSlot!.length}');
+
+    // //end
+    // String EndTime = widget.event!.endDateTime.toString();
+
+    // DateTime parsedEndTime = DateTime.parse(EndTime);
+    // String formattedEndTime = DateFormat('HH:mm:ss').format(parsedEndTime);
+
+    // log('formattedTime:$formattedEndTime');
+
+    // String originalEndTime = formattedEndTime;
+
+    // DateTime parsedTimeEnd =
+    //     DateFormat('HH:mm:ss').parseStrict(originalEndTime);
+    // String formattedEndAMPN = DateFormat('h:mm a').format(parsedTimeEnd);
+
+    // log('End:$formattedEndAMPN');
+
     List<Widget> list = [];
     log('message');
     log(widget.length.toString());
@@ -239,6 +278,23 @@ class _NewCartPageState extends State<NewCartPage>
                     ],
                   ),
                   FxSpacing.height(4),
+                  // widget.event!.endDateTime == null
+                  //     ? const SizedBox()
+                  //     : Row(
+                  //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  //         children: [
+                  //           FxText.bodyMedium(
+                  //             'Selected Slot',
+                  //             fontWeight: 600,
+                  //           ),
+                  //           FxText.bodyMedium(
+                  //             // widget.event!.endDateTime,
+                  //             "$formattedStartAMPN- $formattedEndAMPN",
+                  //             fontWeight: 700,
+                  //           ),
+                  //         ],
+                  //       ),
+                  // FxSpacing.height(4),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -483,7 +539,9 @@ class _NewCartPageState extends State<NewCartPage>
                       widget.selectedtourOption,
                       widget.textdate,
                       widget.Transfer,
-                      widget.totalAmount)));
+                      widget.totalAmount
+                      // widget.event
+                      )));
             },
             borderRadiusAll: 4,
             elevation: 0,

@@ -331,31 +331,7 @@ class HotelCheckOutController extends FxController {
   late TextEditingController dateTE = TextEditingController();
   String? selectedtransfer;
 
-  Cartnext(selectedExcursionsDatas, context, total) async {
-    log('cartnext');
-    Navigator.of(context, rootNavigator: true).push(PageRouteBuilder(
-        transitionDuration: const Duration(milliseconds: 500),
-        transitionsBuilder: (
-          BuildContext context,
-          Animation<double> animation,
-          Animation<double> secondaryAnimation,
-          Widget child,
-        ) =>
-            FadeTransition(
-              opacity: animation,
-              child: child,
-            ),
-        pageBuilder: (_, __, ___) => CheckOutScreen(
-            selectedtour.length,
-            // selectedtours,
-            selectedtour,
-            dateTE.text,
-            selectedtransfer,
 
-            // excursions.activities!
-            // amount
-            grandSelectedTourAmount())));
-  }
 
   //next button
   nextPage( context,  token) async {

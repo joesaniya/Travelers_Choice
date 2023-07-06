@@ -121,6 +121,33 @@ class _ActivityScreenState extends State<ActivityScreen>
     return result;
   }
 
+  String getFormattedDate(String date) {
+    //selectedslotdate
+    // DateTime now = date;
+
+    // String formattedSlotDate = DateFormat.yMMMd().format(now);
+    // log('formattedSlotDate:$formattedSlotDate');
+    // log('Start Time:${controller.customSlots!.event!.startDateTime}');
+    String StartTime = date;
+
+    // String StartTime=date;
+    DateTime parsedStartTime = DateTime.parse(StartTime);
+    String formattedStartTime = DateFormat('HH:mm:ss').format(parsedStartTime);
+
+    log('formattedTime:$formattedStartTime');
+
+    String originalStartTime = formattedStartTime;
+
+    DateTime parsedTimeStart =
+        DateFormat('HH:mm:ss').parseStrict(originalStartTime);
+    String formattedStartAMPN = DateFormat('h:mm a').format(parsedTimeStart);
+
+    log('Start:$formattedStartAMPN');
+    // log('currentSlot!.length:${currentSlot!.length}');
+
+    return formattedStartAMPN;
+  }
+
   @override
   void initState() {
     super.initState();
@@ -390,20 +417,20 @@ class _ActivityScreenState extends State<ActivityScreen>
         log('for Each');
         if (e.id == productId) {
           log('for ech if');
-          customSlots = e;
+          controller.customSlots = e;
           log("event => ${e.event}");
-          customSlots!.slots = e.slots!;
+          controller.customSlots!.slots = e.slots!;
           break;
         }
       }
     } else {}
-    return customSlots;
+    return controller.customSlots;
   }
 
   Widget _slotsUiGrid(String productId) {
     log('Id:$productId');
-    customSlots = FunctionGetSlots(productId);
-    List<SlotTime> currentSlot = customSlots!.slots!;
+    controller.customSlots = FunctionGetSlots(productId);
+    List<SlotTime> currentSlot = controller.customSlots!.slots!;
     return GridView(
       primary: false,
       padding: const EdgeInsets.all(16),
@@ -469,11 +496,6 @@ class _ActivityScreenState extends State<ActivityScreen>
             onTap: () {
               // controller.closeEndDrawer();
               setState(() {
-                // controller
-                //         .clickedSlot[
-                //     i] = controller
-                //         .slottimeget[
-                //     index];
                 log('Clicked Index:$index');
 
                 for (var e in controller.slottimeget) {
@@ -481,11 +503,12 @@ class _ActivityScreenState extends State<ActivityScreen>
                   if (e.id == productId) {
                     log('for ech if');
                     currentSlot = e.slots!;
-                    customSlots!.SelectedIndex = index;
+                    controller.customSlots!.SelectedIndex = index;
+
                     log("before update event -> ${e.event}");
                     e.event = currentSlot[index];
-                    customSlots!.event = e.event;
-                    log('Clicked Event:${e.event}');
+                    controller.customSlots!.event = e.event;
+                    log('Clicked Event:${controller.customSlots!.event}');
                   }
                 }
 
@@ -495,17 +518,11 @@ class _ActivityScreenState extends State<ActivityScreen>
                 // log('Events:${controller.events.map((e) => e.eventName).toList()}');
                 log('selected card Id:${currentSlot[index].eventId}');
                 log('selected card:${controller.defaultChoiceIndex}');
-                // controller
-                //         .defaultChoiceIndex =
-                //     controller
-                //         .slottimeget[
-                //             index]
-                //         .eventId;
               });
             },
             child: Container(
               decoration: BoxDecoration(
-                color: customSlots!.SelectedIndex == index
+                color: controller.customSlots!.SelectedIndex == index
                     ? const Color(0xffB9DDFF)
                     : const Color(0xffF5F5F4),
                 boxShadow: const [
@@ -516,15 +533,6 @@ class _ActivityScreenState extends State<ActivityScreen>
                     color: Colors.black26,
                   ),
                 ],
-                // color: controller
-                //         .events
-                //         .contains(
-                //             currentSlot[
-                //                 index])
-                //     ? Colors.red
-                //     : Colors
-                //         .amber,
-                // color: 1 == 1 ? Colors.blue : Colors.grey.shade300,
                 borderRadius: const BorderRadius.all(Radius.circular(40)),
               ),
               padding: FxSpacing.xy(5, 5),
@@ -801,7 +809,7 @@ class _ActivityScreenState extends State<ActivityScreen>
                                       children: [
                                         GestureDetector(
                                           onTap: () {
-                                            log('transfer clicked');
+                                            log('transfer clicked DropDown');
                                             log(controller.selectedtransfer ==
                                                     'private'
                                                 ? widget.excursions[i]
@@ -827,29 +835,43 @@ class _ActivityScreenState extends State<ActivityScreen>
                                                   children: [
                                                     Expanded(
                                                         child:
-                                                            // controller.TransferCodes[0] ==
-                                                            //         'without'
-                                                            //     ? FxText.labelLarge(
-                                                            //         // "Code",
-                                                            //         // "Without Transfer",
-                                                            //         controller
-                                                            //             .TransferCodes[0],
-                                                            //         // controller.selectedtransfer![0],
-                                                            //         fontWeight: 600,
-                                                            //         color: Colors.black,
-                                                            //         // color: theme.colorScheme.onPrimary,
-                                                            //         letterSpacing: 0.4,
-                                                            //       )
-                                                            //     :
                                                             FxText.labelLarge(
-                                                      // "Code",
-                                                      // "Without Transfer",
+                                                      // widget.excursions[i].isPrivateTransferAvailable ==
+                                                      //             false &&
+                                                      //         widget
+                                                      //                 .excursions[
+                                                      //                     i]
+                                                      //                 .isSharedTransferAvailable ==
+                                                      //             false
+                                                      //     ? controller
+                                                      //         .TransferCodes[0]
+                                                      //     : widget.excursions[i]
+                                                      //                     .isPrivateTransferAvailable ==
+                                                      //                 false ||
+                                                      //             widget
+                                                      //                     .excursions[
+                                                      //                         i]
+                                                      //                     .isSharedTransferAvailable ==
+                                                      //                 true
+                                                      //         ? controller
+                                                      //                 .TransferCodes[
+                                                      //             1]
+                                                      //         : widget.excursions[i].isPrivateTransferAvailable ==
+                                                      //                     true &&
+                                                      //                 widget.excursions[i].isSharedTransferAvailable ==
+                                                      //                     true
+                                                      //             ? controller
+                                                      //                     .TransferCodes[
+                                                      //                 0]
+                                                      //             : controller
+                                                      //                 .TransferCodes[0],
+
                                                       controller
                                                           .TransferCodes[0],
-                                                      // controller.selectedtransfer![0],
+
                                                       fontWeight: 600,
                                                       color: Colors.black,
-                                                      // color: theme.colorScheme.onPrimary,
+
                                                       letterSpacing: 0.4,
                                                     )),
                                                   ],
@@ -864,6 +886,30 @@ class _ActivityScreenState extends State<ActivityScreen>
                                                             .TransferCodes[1]
                                                         : controller
                                                             .TransferCodes[0],
+                                                // value: widget.excursions[i]
+                                                //                 .isPrivateTransferAvailable ==
+                                                //             false &&
+                                                //         widget.excursions[i]
+                                                //                 .isSharedTransferAvailable ==
+                                                //             false
+                                                //     ? controller
+                                                //         .TransferCodes[0]
+                                                //     : widget.excursions[i]
+                                                //                     .isPrivateTransferAvailable ==
+                                                //                 false ||
+                                                //             widget.excursions[i]
+                                                //                     .isSharedTransferAvailable ==
+                                                //                 true
+                                                //         ? controller
+                                                //             .TransferCodes[1]
+                                                //         : widget.excursions[i]
+                                                //                         .isPrivateTransferAvailable ==
+                                                //                     true &&
+                                                //                 widget.excursions[i]
+                                                //                         .isSharedTransferAvailable ==
+                                                //                     true
+                                                //             ? controller.TransferCodes[0]
+                                                //             : controller.TransferCodes[0],
                                                 items: controller.TransferCodes
                                                     .map((String value) {
                                                   return DropdownMenuItem<
@@ -882,6 +928,7 @@ class _ActivityScreenState extends State<ActivityScreen>
                                                     controller
                                                             .selectedtransfer =
                                                         value.toString();
+                                                    log('Transfer:${controller.selectedtransfer}');
                                                   });
                                                   controller.addisPrivateORsharing(
                                                       widget.excursions[i],
@@ -1427,7 +1474,6 @@ class _ActivityScreenState extends State<ActivityScreen>
     );
   }
 
-  CustomSlots? customSlots;
 //slotui
   Widget _buildCartSlotUIList() {
     List<Widget> list = [];
@@ -1438,45 +1484,44 @@ class _ActivityScreenState extends State<ActivityScreen>
       // CustomSlots? customslot =
       //     FunctionGetSlots(widget.excursions[i].productId.toString());
 
-      //selectedslotdate
-      DateTime now = customSlots!.event!.startDateTime;
-      // String formattedDate = DateFormat.yMMMEd().format(now);
-      // print(formattedDate);
-      String formattedSlotDate = DateFormat.yMMMd().format(now);
-      log('formattedSlotDate:$formattedSlotDate');
-      log('Start Time:${customSlots!.event!.startDateTime}');
-      String StartTime = customSlots!.event!.startDateTime.toString();
+      // //selectedslotdate
+      // DateTime now = customSlots!.event!.startDateTime;
 
-      DateTime parsedStartTime = DateTime.parse(StartTime);
-      String formattedStartTime =
-          DateFormat('HH:mm:ss').format(parsedStartTime);
+      // String formattedSlotDate = DateFormat.yMMMd().format(now);
+      // log('formattedSlotDate:$formattedSlotDate');
+      // log('Start Time:${customSlots!.event!.startDateTime}');
+      // String StartTime = customSlots!.event!.startDateTime.toString();
 
-      log('formattedTime:$formattedStartTime');
+      // DateTime parsedStartTime = DateTime.parse(StartTime);
+      // String formattedStartTime =
+      //     DateFormat('HH:mm:ss').format(parsedStartTime);
 
-      String originalStartTime = formattedStartTime;
+      // log('formattedTime:$formattedStartTime');
 
-      DateTime parsedTimeStart =
-          DateFormat('HH:mm:ss').parseStrict(originalStartTime);
-      String formattedStartAMPN = DateFormat('h:mm a').format(parsedTimeStart);
+      // String originalStartTime = formattedStartTime;
 
-      log('Start:$formattedStartAMPN');
-      // log('currentSlot!.length:${currentSlot!.length}');
+      // DateTime parsedTimeStart =
+      //     DateFormat('HH:mm:ss').parseStrict(originalStartTime);
+      // String formattedStartAMPN = DateFormat('h:mm a').format(parsedTimeStart);
 
-      //end
-      String EndTime = customSlots!.event!.endDateTime.toString();
+      // log('Start:$formattedStartAMPN');
+      // // log('currentSlot!.length:${currentSlot!.length}');
 
-      DateTime parsedEndTime = DateTime.parse(EndTime);
-      String formattedEndTime = DateFormat('HH:mm:ss').format(parsedEndTime);
+      // //end
+      // String EndTime = customSlots!.event!.endDateTime.toString();
 
-      log('formattedTime:$formattedEndTime');
+      // DateTime parsedEndTime = DateTime.parse(EndTime);
+      // String formattedEndTime = DateFormat('HH:mm:ss').format(parsedEndTime);
 
-      String originalEndTime = formattedEndTime;
+      // log('formattedTime:$formattedEndTime');
 
-      DateTime parsedTimeEnd =
-          DateFormat('HH:mm:ss').parseStrict(originalEndTime);
-      String formattedEndAMPN = DateFormat('h:mm a').format(parsedTimeEnd);
+      // String originalEndTime = formattedEndTime;
 
-      log('End:$formattedEndAMPN');
+      // DateTime parsedTimeEnd =
+      //     DateFormat('HH:mm:ss').parseStrict(originalEndTime);
+      // String formattedEndAMPN = DateFormat('h:mm a').format(parsedTimeEnd);
+
+      // log('End:$formattedEndAMPN');
       //
 
       List<TextEditingController> controllers = List.generate(
@@ -1589,7 +1634,7 @@ class _ActivityScreenState extends State<ActivityScreen>
                                       children: [
                                         GestureDetector(
                                           onTap: () {
-                                            log('transfer clicked');
+                                            log('transfer clicked DropDown');
                                             log(controller.selectedtransfer ==
                                                     'private'
                                                 ? widget.excursions[i]
@@ -1616,14 +1661,42 @@ class _ActivityScreenState extends State<ActivityScreen>
                                                     Expanded(
                                                         child:
                                                             FxText.labelLarge(
-                                                      // "Code",
-                                                      // "Without Transfer",
+                                                      // widget.excursions[i].isPrivateTransferAvailable ==
+                                                      //             false &&
+                                                      //         widget
+                                                      //                 .excursions[
+                                                      //                     i]
+                                                      //                 .isSharedTransferAvailable ==
+                                                      //             false
+                                                      //     ? controller
+                                                      //         .TransferCodes[0]
+                                                      //     : widget.excursions[i]
+                                                      //                     .isPrivateTransferAvailable ==
+                                                      //                 false ||
+                                                      //             widget
+                                                      //                     .excursions[
+                                                      //                         i]
+                                                      //                     .isSharedTransferAvailable ==
+                                                      //                 true
+                                                      //         ? controller
+                                                      //                 .TransferCodes[
+                                                      //             1]
+                                                      //         : widget.excursions[i].isPrivateTransferAvailable ==
+                                                      //                     true &&
+                                                      //                 widget.excursions[i].isSharedTransferAvailable ==
+                                                      //                     true
+                                                      //             ? controller
+                                                      //                     .TransferCodes[
+                                                      //                 0]
+                                                      //             : controller
+                                                      //                 .TransferCodes[0],
+
                                                       controller
                                                           .TransferCodes[0],
-                                                      // controller.selectedtransfer![0],
+
                                                       fontWeight: 600,
                                                       color: Colors.black,
-                                                      // color: theme.colorScheme.onPrimary,
+
                                                       letterSpacing: 0.4,
                                                     )),
                                                   ],
@@ -1638,6 +1711,30 @@ class _ActivityScreenState extends State<ActivityScreen>
                                                             .TransferCodes[1]
                                                         : controller
                                                             .TransferCodes[0],
+                                                // value: widget.excursions[i]
+                                                //                 .isPrivateTransferAvailable ==
+                                                //             false &&
+                                                //         widget.excursions[i]
+                                                //                 .isSharedTransferAvailable ==
+                                                //             false
+                                                //     ? controller
+                                                //         .TransferCodes[0]
+                                                //     : widget.excursions[i]
+                                                //                     .isPrivateTransferAvailable ==
+                                                //                 false ||
+                                                //             widget.excursions[i]
+                                                //                     .isSharedTransferAvailable ==
+                                                //                 true
+                                                //         ? controller
+                                                //             .TransferCodes[1]
+                                                //         : widget.excursions[i]
+                                                //                         .isPrivateTransferAvailable ==
+                                                //                     true &&
+                                                //                 widget.excursions[i]
+                                                //                         .isSharedTransferAvailable ==
+                                                //                     true
+                                                //             ? controller.TransferCodes[0]
+                                                //             : controller.TransferCodes[0],
                                                 items: controller.TransferCodes
                                                     .map((String value) {
                                                   return DropdownMenuItem<
@@ -1656,6 +1753,7 @@ class _ActivityScreenState extends State<ActivityScreen>
                                                     controller
                                                             .selectedtransfer =
                                                         value.toString();
+                                                    log('Transfer:${controller.selectedtransfer}');
                                                   });
                                                   controller.addisPrivateORsharing(
                                                       widget.excursions[i],
@@ -1978,11 +2076,11 @@ class _ActivityScreenState extends State<ActivityScreen>
                                     // ),
 
                                     //selected
-                                    customSlots == null
+                                    controller.customSlots == null
                                         ? const SizedBox()
-                                        : customSlots!.event == null
+                                        : controller.customSlots!.event == null
                                             ? const SizedBox()
-                                            : customSlots!.id !=
+                                            : controller.customSlots!.id !=
                                                     widget
                                                         .excursions[i].productId
                                                         .toString()
@@ -2128,7 +2226,8 @@ class _ActivityScreenState extends State<ActivityScreen>
                                                             ),
                                                             FxSpacing.width(20),
                                                             FxText.bodyMedium(
-                                                              customSlots!
+                                                              controller
+                                                                  .customSlots!
                                                                   .event!
                                                                   .eventName,
                                                               color:
@@ -2147,29 +2246,53 @@ class _ActivityScreenState extends State<ActivityScreen>
                                                               MainAxisAlignment
                                                                   .spaceBetween,
                                                           children: [
-                                                            // FxText.bodyMedium(
-                                                            //   'Event Name:',
-                                                            //   color:
-                                                            //       Colors.black,
-                                                            //   fontWeight: 900,
-                                                            // ),
-                                                            // FxSpacing.width(20),
                                                             FxText.bodyMedium(
-                                                              // customSlots!
-                                                              //     .event!
-                                                              //     .startDateTime
-                                                              //     .toString(),
-                                                              formattedSlotDate,
+                                                              " ${controller.customSlots!.event!.startDateTime.monthName} ${controller.customSlots!.event!.startDateTime.weekday}, ${controller.customSlots!.event!.startDateTime.year}",
+                                                              // formattedSlotDate,
                                                               color:
                                                                   Colors.black,
                                                               fontWeight: 600,
                                                             ),
                                                             FxSpacing.width(5),
-                                                            FxText.bodyMedium(
-                                                              "$formattedStartAMPN- $formattedEndAMPN",
-                                                              color:
-                                                                  Colors.black,
-                                                              fontWeight: 600,
+                                                            Row(
+                                                              children: [
+                                                                FxText
+                                                                    .bodyMedium(
+                                                                  // '20 Jul',
+                                                                  getFormattedDate(controller
+                                                                      .customSlots!
+                                                                      .event!
+                                                                      .startDateTime
+                                                                      .toString()),
+                                                                  // "$formattedStartAMPN- $formattedEndAMPN",
+                                                                  color: Colors
+                                                                      .black,
+                                                                  fontWeight:
+                                                                      600,
+                                                                ),
+                                                                FxText
+                                                                    .bodyMedium(
+                                                                  ' - ',
+                                                                  color: Colors
+                                                                      .black,
+                                                                  fontWeight:
+                                                                      600,
+                                                                ),
+                                                                FxText
+                                                                    .bodyMedium(
+                                                                  // '20 Jul',
+                                                                  getFormattedDate(controller
+                                                                      .customSlots!
+                                                                      .event!
+                                                                      .endDateTime
+                                                                      .toString()),
+                                                                  // "$formattedStartAMPN- $formattedEndAMPN",
+                                                                  color: Colors
+                                                                      .black,
+                                                                  fontWeight:
+                                                                      600,
+                                                                ),
+                                                              ],
                                                             ),
                                                             Expanded(
                                                                 child:
@@ -2209,7 +2332,9 @@ class _ActivityScreenState extends State<ActivityScreen>
                                                                 const Icon(
                                                                   Icons.delete,
                                                                   color: Colors
-                                                                      .red,
+                                                                      .transparent,
+                                                                  // color: Colors
+                                                                  //     .red,
                                                                 ),
                                                                 AnimatedBuilder(
                                                                   animation:
@@ -2222,7 +2347,43 @@ class _ActivityScreenState extends State<ActivityScreen>
                                                                     return GestureDetector(
                                                                       onTap:
                                                                           () async {
-                                                                        // controller.goToCheckout();
+                                                                        controller.selectedtour.map((e) => e.selectedDate) ==
+                                                                                null
+                                                                            ? CustomSnackbar.show(
+                                                                                context: context,
+                                                                                message: 'Select Your Tour date',
+                                                                                backgroundColor: const Color(0xff1529e8),
+                                                                                duration: const Duration(seconds: 2),
+                                                                              )
+                                                                            : controller.goToCheckout1();
+                                                                        // bool
+                                                                        //     existing =
+                                                                        //     false;
+
+                                                                        // log('Fav Item:${favouriteListCart.map((e) => e.sId)}');
+                                                                        // log('Sel Id:${widget.excursions.first.sId}');
+
+                                                                        // print(
+                                                                        //     "controller.selectedtour Checkout ${controller.selectedtour}");
+
+                                                                        // favouriteListCart
+                                                                        //     .addAll(controller.selectedtour);
+
+                                                                        // SharedPreferences
+                                                                        //     prefs =
+                                                                        //     await SharedPreferences.getInstance();
+                                                                        // prefs.setBool(
+                                                                        //     "youKey",
+                                                                        //     isSelected);
+                                                                        // setState(
+                                                                        //     () {
+                                                                        //   favouriteListCart;
+                                                                        //   isSelected =
+                                                                        //       !isSelected;
+                                                                        // });
+
+                                                                        // controller
+                                                                        //     .goToCheckout();
                                                                       },
                                                                       child:
                                                                           FxContainer(
@@ -2371,8 +2532,8 @@ class _ActivityScreenState extends State<ActivityScreen>
                                         onTap: () async {
                                           bool existing = false;
 
-                                          log('Fav Item:${favouriteListCart.map((e) => e.sId)}');
-                                          log('Sel Id:${widget.excursions.first.sId}');
+                                          log('Fav Item Slot:${favouriteListCart.map((e) => e.sId)}');
+                                          log('Sel Id Slot:${widget.excursions.first.sId}');
 
                                           print(
                                               "controller.selectedtour ${controller.selectedtour}");

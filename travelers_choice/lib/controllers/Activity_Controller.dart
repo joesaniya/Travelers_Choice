@@ -52,6 +52,8 @@ class ActivityController extends FxController {
 
   List<CustomSlots> slottimeget = [];
 
+  CustomSlots? customSlots;
+
   // List<SlotTime> events = [];
   // Dio? dio;
   BaseOptions options = BaseOptions(
@@ -225,21 +227,23 @@ class ActivityController extends FxController {
 
       if (selectedtour.contains(tour)) {
         selectedtour.remove(tour);
-      } else if (tour.activityType == 'transfer') {
-        if (person_count.length <=
-            tour.privateTransfers!.first.maxCapacity!.toInt()) {
-          log('length:${person_count.length}');
-          log('low Price transfer:${tour.lowPrice}');
-          tour.grandTotal = tour.lowPrice!.toDouble();
-          // tour.grandTotal = tour.adultPrice!.toDouble();
-          selectedtour.add(tour);
-        }
-        // if (tour.privateTransfers!.map((e) => e.maxCapacity).toList() ==
-        //     value) {
-        //   log('transfer adult count:');
-        // } else if (tour.privateTransfers!.map((e) => e.maxCapacity).toList() ==
-        //     value.map((e) => e.childCount).toList()) {}
-      } else {
+      }
+      // else if (tour.activityType == 'transfer') {
+      //   if (person_count.length <=
+      //       tour.privateTransfers!.first.maxCapacity!.toInt()) {
+      //     log('length:${person_count.length}');
+      //     log('low Price transfer:${tour.lowPrice}');
+      //     tour.grandTotal = tour.lowPrice!.toDouble();
+      //     // tour.grandTotal = tour.adultPrice!.toDouble();
+      //     selectedtour.add(tour);
+      //   }
+      //   // if (tour.privateTransfers!.map((e) => e.maxCapacity).toList() ==
+      //   //     value) {
+      //   //   log('transfer adult count:');
+      //   // } else if (tour.privateTransfers!.map((e) => e.maxCapacity).toList() ==
+      //   //     value.map((e) => e.childCount).toList()) {}
+      // }
+      else {
         log('low Price:${tour.lowPrice}');
         tour.grandTotal = tour.lowPrice!.toDouble();
         // tour.grandTotal = tour.adultPrice!.toDouble();
@@ -796,6 +800,7 @@ class ActivityController extends FxController {
 
   Future<void> goToCheckout1() async {
     await Future.delayed(const Duration(seconds: 1));
+    log('slot checkout');
 
     // log(selectedtour.length.toString());
     // log(selectedtour.first.name.toString());
@@ -818,14 +823,18 @@ class ActivityController extends FxController {
               child: child,
             ),
         pageBuilder: (_, __, ___) => CheckOutScreen(
-            selectedtour.length,
-            selectedtour,
-            dateTE.text,
-            selectedtransfer,
-            grandSelectedTourAmount())));
+              selectedtour.length,
+              selectedtour,
+              dateTE.text,
+              selectedtransfer,
+              grandSelectedTourAmount(),
+              // customSlots!.event,
+            )));
   }
 
   Future<void> goToCheckout() async {
+    // log('SLots Checkout:${selectedtour.first.customSlots!.slots!.first.endDateTime}');
+    // log('SLots Checkout:${selectedtour.first.event!.eventName}');
     await Future.delayed(const Duration(seconds: 1));
     if (selectedtour.isEmpty) {
       // ScaffoldMessenger.of(context).showSnackBar(
@@ -873,15 +882,15 @@ class ActivityController extends FxController {
           //     grandSelectedTourAmount())
 
           pageBuilder: (_, __, ___) => NewCartPage(
-              selectedtour.length,
-              // selectedtours,
-              selectedtour,
-              dateTE.text,
-              selectedtransfer,
+                selectedtour.length,
+                // selectedtours,
+                selectedtour,
+                dateTE.text,
+                selectedtransfer,
 
-              // excursions.activities!
-              // amount
-              grandSelectedTourAmount())
+                grandSelectedTourAmount(),
+                //  customSlots!.event,
+              )
 
           // CheckOutScreen(
           //     selectedtour.length,
@@ -925,15 +934,17 @@ class ActivityController extends FxController {
                 child: child,
               ),
           pageBuilder: (_, __, ___) => NewCartPage(
-              selectedtour.length,
-              // selectedtours,
-              selectedtour,
-              dateTE.text,
-              selectedtransfer,
+                selectedtour.length,
+                // selectedtours,
+                selectedtour,
+                dateTE.text,
+                selectedtransfer,
 
-              // excursions.activities!
-              // amount
-              grandSelectedTourAmount())
+                // excursions.activities!
+                // amount
+                grandSelectedTourAmount(),
+                // customSlots!.event
+              )
 
           // CheckOutScreen(
           //     selectedtour.length,

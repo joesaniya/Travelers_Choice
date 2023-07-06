@@ -868,9 +868,10 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                               FxSpacing.width(4),
                               FxText.labelLarge(
                                 // '\$' + product.price.toString(),
-                                capitalizelocation(
-                                    product.destination.name[0].toUpperCase() +
-                                        product.destination.name),
+                                capitalizeAllWord(product.destination.name),
+                                // capitalizelocation(
+                                //     product.destination.name[0].toUpperCase() +
+                                //         product.destination.name),
 
                                 //crt
                                 // product.destination.name[0].toUpperCase() +

@@ -6,7 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutx/flutx.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
+import '../models/Slot_Time.dart';
 import '../card_widgets/customsnackbar.dart';
 import '../controllers/checkout_controller.dart';
 import '../localizations/language.dart';
@@ -17,6 +17,7 @@ import '../services/app_constants.dart';
 import '../services/auth_service.dart';
 import '../theme/app_theme.dart';
 import 'package:lottie/lottie.dart';
+import 'package:intl/intl.dart';
 
 class CheckOutScreen extends StatefulWidget {
   dynamic? length;
@@ -36,6 +37,7 @@ class CheckOutScreen extends StatefulWidget {
   String textdate;
   String? Transfer;
   double? totalAmount;
+  // SlotTime? event;
   // double? TotalCalculation;
   // final VoidCallback onButtonTap;
   @override
@@ -50,6 +52,7 @@ class CheckOutScreen extends StatefulWidget {
       // this.onButtonTap,
       // this.TotalCalculation,
       this.totalAmount,
+      // this.event,
       {super.key});
 
   @override
@@ -83,6 +86,7 @@ class _CheckOutScreenState extends State<CheckOutScreen>
     // log('date:${widget.textdate}');
     // log('Transfer:${widget.Transfer}');
     // log('final' + $finalAmount.toString());
+    // log('Selected Slot Checkout:${widget.event!.eventName}');
 
     fetchData();
     theme = AppTheme.shoppingTheme;
@@ -158,6 +162,33 @@ class _CheckOutScreenState extends State<CheckOutScreen>
     });
   }
 
+  String getFormattedDate(String date) {
+    //selectedslotdate
+    // DateTime now = date;
+
+    // String formattedSlotDate = DateFormat.yMMMd().format(now);
+    // log('formattedSlotDate:$formattedSlotDate');
+    // log('Start Time:${controller.customSlots!.event!.startDateTime}');
+    String StartTime = date;
+
+    // String StartTime=date;
+    DateTime parsedStartTime = DateTime.parse(StartTime);
+    String formattedStartTime = DateFormat('HH:mm:ss').format(parsedStartTime);
+
+    log('formattedTime:$formattedStartTime');
+
+    String originalStartTime = formattedStartTime;
+
+    DateTime parsedTimeStart =
+        DateFormat('HH:mm:ss').parseStrict(originalStartTime);
+    String formattedStartAMPN = DateFormat('h:mm a').format(parsedTimeStart);
+
+    log('Start:$formattedStartAMPN');
+    // log('currentSlot!.length:${currentSlot!.length}');
+
+    return formattedStartAMPN;
+  }
+
   String? _selectedCountry;
 
   List<CountryModal> countryList = <CountryModal>[];
@@ -225,6 +256,39 @@ class _CheckOutScreenState extends State<CheckOutScreen>
   String? rateconversion;
   String? rateselectedtourOption;
   Widget _billingWidget() {
+    // //selectedslotdate
+
+    // String StartTime = widget.event!.startDateTime.toString();
+
+    // DateTime parsedStartTime = DateTime.parse(StartTime);
+    // String formattedStartTime = DateFormat('HH:mm:ss').format(parsedStartTime);
+
+    // log('formattedTime:$formattedStartTime');
+
+    // String originalStartTime = formattedStartTime;
+
+    // DateTime parsedTimeStart =
+    //     DateFormat('HH:mm:ss').parseStrict(originalStartTime);
+    // String formattedStartAMPN = DateFormat('h:mm a').format(parsedTimeStart);
+
+    // log('Start:$formattedStartAMPN');
+    // // log('currentSlot!.length:${currentSlot!.length}');
+
+    // //end
+    // String EndTime = widget.event!.endDateTime.toString();
+
+    // DateTime parsedEndTime = DateTime.parse(EndTime);
+    // String formattedEndTime = DateFormat('HH:mm:ss').format(parsedEndTime);
+
+    // log('formattedTime:$formattedEndTime');
+
+    // String originalEndTime = formattedEndTime;
+
+    // DateTime parsedTimeEnd =
+    //     DateFormat('HH:mm:ss').parseStrict(originalEndTime);
+    // String formattedEndAMPN = DateFormat('h:mm a').format(parsedTimeEnd);
+
+    // log('End:$formattedEndAMPN');
     List<Widget> list = [];
     log('message');
     log(widget.length.toString());
@@ -313,6 +377,44 @@ class _CheckOutScreenState extends State<CheckOutScreen>
                     ],
                   ),
                   FxSpacing.height(4),
+                  // widget.event!.endDateTime == null
+                  //     ? const SizedBox()
+                  //     : Row(
+                  //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  //         children: [
+                  //           FxText.bodyMedium(
+                  //             'Selected Slot',
+                  //             fontWeight: 600,
+                  //           ),
+                  //           Row(
+                  //             children: [
+                  //               FxText.bodyMedium(
+                  //                 // '20 Jul',
+                  //                 getFormattedDate(
+                  //                     widget.event!.endDateTime.toString()),
+                  //                 // "$formattedStartAMPN- $formattedEndAMPN",
+                  //                 color: Colors.black,
+                  //                 fontWeight: 600,
+                  //               ),
+                  //               FxText.bodyMedium(
+                  //                 ' - ',
+                  //                 color: Colors.black,
+                  //                 fontWeight: 600,
+                  //               ),
+                  //               FxText.bodyMedium(
+                  //                 // '20 Jul',
+                  //                 getFormattedDate(
+                  //                     widget.event!.endDateTime.toString()),
+                  //                 // "$formattedStartAMPN- $formattedEndAMPN",
+                  //                 color: Colors.black,
+                  //                 fontWeight: 600,
+                  //               ),
+                  //             ],
+                  //           ),
+                  //           Expanded(child: Container())
+                  //         ],
+                  //       ),
+                  // FxSpacing.height(4),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutx/flutx.dart';
 import '../controllers/new_cart_controller.dart';
 import '../loading_effect.dart';
+import '../models/Slot_Time.dart';
 import '../models/atteraction_model.dart';
 import '../services/app_constants.dart';
 import '../theme/app_theme.dart';
@@ -12,7 +13,10 @@ import 'full_app.dart';
 
 class NewCart extends StatefulWidget {
   final List<Activity> cartMeal;
-  const NewCart(this.cartMeal, {super.key});
+  // SlotTime? event;
+   NewCart(this.cartMeal, 
+  //  this.event,{super.key}
+   );
 
   @override
   _NewCartState createState() => _NewCartState();
@@ -26,21 +30,7 @@ class _NewCartState extends State<NewCart> with TickerProviderStateMixin {
   SharedPreferences? sharedPreferences;
 
   bool isLoading = true;
-  // getAttraction(BuildContext context) async {
-  //   // await AuthService().getCountry();
-  //   log('getAttraction function called');
-  //   sharedPreferences = await SharedPreferences.getInstance();
-  //   Future.delayed(Duration.zero, () async {
-  //     await AttractionController().getAllattractionList(context).then((value) {
-  //       if (value != null) {
-  //         isLoading = false;
-  //         allattractionList = [];
-  //         allattractionList!.add(value);
-  //         log('All1:$allattractionList');
-  //       }
-  //     });
-  //   });
-  // }
+
 
   @override
   void initState() {
@@ -396,7 +386,9 @@ class _NewCartState extends State<NewCart> with TickerProviderStateMixin {
                                                 value + element);
 
                                         controller.goToCheckout(
-                                            favouriteListCart, grandTotal);
+                                            favouriteListCart, grandTotal,
+                                          // widget.event,
+                                        );
                                       },
                                       backgroundColor: const Color(0xff1529e8),
                                       // backgroundColor: theme.colorScheme.primary,

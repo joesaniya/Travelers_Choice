@@ -8,7 +8,6 @@ import 'package:hotel_travel/views/checkout_screen.dart';
 import '../models/all_attraction_modal.dart';
 import '../models/cart.dart';
 import '../models/product.dart';
-import '../views/hotel_travel_constants.dart';
 import '../views/detail_screen/detail_Screen.dart';
 
 class NewCartController extends FxController {
@@ -63,11 +62,11 @@ class NewCartController extends FxController {
     animation =
         Tween<Offset>(begin: const Offset(0, 0), end: const Offset(15, 0))
             .animate(
-          CurvedAnimation(
-            parent: animationController,
-            curve: Curves.easeIn,
-          ),
-        );
+      CurvedAnimation(
+        parent: animationController,
+        curve: Curves.easeIn,
+      ),
+    );
     fadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
       CurvedAnimation(
         parent: fadeController,
@@ -151,11 +150,11 @@ class NewCartController extends FxController {
     Navigator.of(context, rootNavigator: true).push(PageRouteBuilder(
         transitionDuration: const Duration(milliseconds: 500),
         transitionsBuilder: (
-            BuildContext context,
-            Animation<double> animation,
-            Animation<double> secondaryAnimation,
-            Widget child,
-            ) =>
+          BuildContext context,
+          Animation<double> animation,
+          Animation<double> secondaryAnimation,
+          Widget child,
+        ) =>
             FadeTransition(
               opacity: animation,
               child: child,
@@ -164,9 +163,9 @@ class NewCartController extends FxController {
             product.id,
             //  _toggleFavorite, _isMealFavorite,
             product,
-             product.slug)
-      // SingleProductScreen(product.id)
-    ));
+            product.slug)
+        // SingleProductScreen(product.id)
+        ));
   }
 
   @override
@@ -174,45 +173,48 @@ class NewCartController extends FxController {
     return "new_cart_controller";
   }
 
-  Future<void> goToCheckout(List<Activity> favouriteListCart, double grandTotal) async {
+  Future<void> goToCheckout(
+    List<Activity> favouriteListCart,
+    double grandTotal,
+    // SlotTime? event
+  ) async {
     await Future.delayed(const Duration(seconds: 1));
     // print("product${product}");
     Navigator.of(context, rootNavigator: true).push(PageRouteBuilder(
         transitionDuration: const Duration(milliseconds: 500),
         transitionsBuilder: (
-            BuildContext context,
-            Animation<double> animation,
-            Animation<double> secondaryAnimation,
-            Widget child,
-            ) =>
+          BuildContext context,
+          Animation<double> animation,
+          Animation<double> secondaryAnimation,
+          Widget child,
+        ) =>
             FadeTransition(
               opacity: animation,
               child: child,
             ),
-
         pageBuilder: (_, __, ___) => CheckOutScreen(
-            favouriteListCart.length,
-            // selectedtours,
-            favouriteListCart,
-            favouriteListCart.first.selectedDate!,
-            favouriteListCart.first.transferType,
+              favouriteListCart.length,
+              // selectedtours,
+              favouriteListCart,
+              favouriteListCart.first.selectedDate!,
+              favouriteListCart.first.transferType,
 
-            // excursions.activities!
-            // amount
-            grandTotal
-        )
+              // excursions.activities!
+              // amount
+              grandTotal,
+              // event
+            )
 
-      // CheckOutScreen(
-      //     selectedtour.length,
-      //     // selectedtours,
-      //     selectedtour,
-      //     dateTE.text,
-      //     selectedtransfer,
+        // CheckOutScreen(
+        //     selectedtour.length,
+        //     // selectedtours,
+        //     selectedtour,
+        //     dateTE.text,
+        //     selectedtransfer,
 
-      //     // excursions.activities!
-      //     // amount
-      //     grandSelectedTourAmount())
-    ));
+        //     // excursions.activities!
+        //     // amount
+        //     grandSelectedTourAmount())
+        ));
   }
-
 }
