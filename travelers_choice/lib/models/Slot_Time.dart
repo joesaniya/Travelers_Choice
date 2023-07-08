@@ -29,6 +29,7 @@ class SlotTime {
   int infantCount = 0;
   double totalAmount = 0;
   double grandTotal = 0;
+  bool? isSelected = false;
 
   SlotTime({
     required this.eventId,
@@ -48,6 +49,7 @@ class SlotTime {
     this.infantCount = 0,
     this.totalAmount = 0,
     this.grandTotal = 0,
+    this.isSelected = false,
   });
 
   factory SlotTime.fromJson(Map<String, dynamic> json) => SlotTime(

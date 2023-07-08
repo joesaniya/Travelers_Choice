@@ -85,18 +85,6 @@ class SearchAttractionController extends FxController {
     });
   }
 
-  @override
-  void dispose() {
-    searchController.dispose();
-    locationController.dispose();
-    dateController.dispose();
-    locationTE.dispose();
-    selectedCountry = '';
-    focus.dispose();
-    visaFocus.dispose();
-    super.dispose();
-  }
-
   Future<void> dateselect() async {
     DateTime? pickedDate = await showDatePicker(
         context: context,
@@ -126,7 +114,7 @@ class SearchAttractionController extends FxController {
   List<AttractionSearchDataModal> countryList = <AttractionSearchDataModal>[];
   String? currencies, countryCode;
   List<AllattractionModal>? allattractionList;
-  Future<void> Destinationbtn()async {
+  Future<void> Destinationbtn() async {
     log('searchDestinationbtn');
   }
 
@@ -294,6 +282,18 @@ class SearchAttractionController extends FxController {
   //     ),
   //   );
   // }
+
+  @override
+  void dispose() {
+    searchController.dispose();
+    locationController.dispose();
+    dateController.dispose();
+    locationTE.dispose();
+    selectedCountry = '';
+    focus.dispose();
+    visaFocus.dispose();
+    super.dispose();
+  }
 
   @override
   String getTag() {

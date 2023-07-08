@@ -689,14 +689,24 @@ class _DetailScreenState extends State<DetailScreen>
                     ],
                   ),
                 ),
+
+                //tour options
+                // Container(
+                //   padding: const EdgeInsets.all(16),
+                //   child: FxText.titleMedium('Tour Options',
+                //       fontWeight: 600, letterSpacing: 0),
+
+                // ),
                 Container(
                   // padding: const EdgeInsets.all(32.0),
                   padding: const EdgeInsets.all(16),
                   decoration: const BoxDecoration(
-                      borderRadius: BorderRadius.only(
-                          topRight: Radius.circular(30),
-                          topLeft: Radius.circular(30)),
-                      color: Color(0xfff5f5f5)),
+                    borderRadius: BorderRadius.only(
+                        topRight: Radius.circular(30),
+                        topLeft: Radius.circular(30)),
+                    color: Color(0xfff5f5f5),
+                    // color: Colors.red
+                  ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     // mainAxisSize: MainAxisSize.min,

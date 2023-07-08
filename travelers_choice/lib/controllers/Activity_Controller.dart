@@ -1,3 +1,4 @@
+
 import 'dart:convert';
 import 'dart:developer';
 
@@ -44,6 +45,7 @@ class ActivityController extends FxController {
   List<Activity> person_count = [];
   List<Map<String, dynamic>> child_count = [];
   List<Activity> selectedtour = [];
+
   double grandTotal = 0;
 
   GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
@@ -52,15 +54,27 @@ class ActivityController extends FxController {
 
   List<CustomSlots> slottimeget = [];
 
+  List<SlotTime> timeSlotList = [];
+
   CustomSlots? customSlots;
+  List<List<String>> itemValue = [];
+  List<DropdownMenuItem<String>> AdropDownItem(index) {
+    return itemValue[index]
+        .map((value) => DropdownMenuItem(
+              value: value,
+              child: Text(value.toString()),
+            ))
+        .toList();
+  }
 
   // List<SlotTime> events = [];
+
   // Dio? dio;
   BaseOptions options = BaseOptions(
       connectTimeout: const Duration(milliseconds: 15000),
       receiveTimeout: const Duration(milliseconds: 15000));
   final dio = Dio();
-
+  List<SlotTime> listSLotDetails = <SlotTime>[];
   Future<List<SlotTime>> processGetTimeSlot(
       String productId, String productCode, String date) async {
     try {
@@ -604,6 +618,7 @@ class ActivityController extends FxController {
     // defaultChoiceIndex = -1;
     fetchloader();
     fetchData();
+   
     dateTE = TextEditingController();
     dateController = AnimationController(
         vsync: ticker, duration: const Duration(milliseconds: 50));
@@ -679,8 +694,7 @@ class ActivityController extends FxController {
   }
 
   int defaultChoiceIndex = -1;
-
-  final List<String> timeslotstart = [
+ final List<String> timeslotstart = [
     '10.00 am',
     '11.00 am',
     '12.00 pm',

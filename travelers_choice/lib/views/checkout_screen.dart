@@ -6,7 +6,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutx/flutx.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../models/Slot_Time.dart';
 import '../card_widgets/customsnackbar.dart';
 import '../controllers/checkout_controller.dart';
 import '../localizations/language.dart';
@@ -386,6 +385,7 @@ class _CheckOutScreenState extends State<CheckOutScreen>
                   //             'Selected Slot',
                   //             fontWeight: 600,
                   //           ),
+                  //           Expanded(child:Container()),
                   //           Row(
                   //             children: [
                   //               FxText.bodyMedium(
@@ -411,10 +411,11 @@ class _CheckOutScreenState extends State<CheckOutScreen>
                   //               ),
                   //             ],
                   //           ),
-                  //           Expanded(child: Container())
+
                   //         ],
                   //       ),
                   // FxSpacing.height(4),
+
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [

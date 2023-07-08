@@ -547,6 +547,8 @@ class Activity {
   List<SlotTime>? slotsdata;
   CustomSlots? customSlots;
   SlotTime? event;
+  SlotTime? activityTimeSlot;
+  String? selectedValue;
 
   Activity({
     this.sId,
@@ -600,6 +602,7 @@ class Activity {
     this.slotsdata,
     this.customSlots,
     this.event,
+    this.activityTimeSlot,
   });
 
   Activity.fromJson(Map<String, dynamic> json) {
@@ -663,6 +666,9 @@ class Activity {
         slotsdata!.add(SlotTime.fromJson(v));
       });
     }
+    activityTimeSlot = json['activityTimeSlot'] != null
+        ? SlotTime.fromJson(json['activityTimeSlot'])
+        : null;
     // slotsdata=(json['slotsdata']!=null?SlotTime.fromJson(json['slotsdata']):null) as List<SlotTime>?;
   }
 
@@ -720,6 +726,9 @@ class Activity {
     // if (slotsdata != null) {
     //   data['slotsdata'] = slotsdata!.toJson();
     // }
+    if (activityTimeSlot != null) {
+      data['activityTimeSlot'] = activityTimeSlot!.toJson();
+    }
     return data;
   }
 }
