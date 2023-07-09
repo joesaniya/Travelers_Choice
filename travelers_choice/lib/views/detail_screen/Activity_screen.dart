@@ -17,7 +17,6 @@ import '../../models/atteraction_model.dart';
 import '../../models/slot_pick.dart';
 import '../../services/app_constants.dart';
 import '../../theme/app_theme.dart';
-import '../drawer_folder/slot_drawer.dart';
 import '../full_app.dart';
 
 class ActivityScreen extends StatefulWidget {
@@ -98,9 +97,92 @@ class _ActivityScreenState extends State<ActivityScreen>
 //       rethrow;
 //     }
 //   }
+  Widget privatetransferwidget(int i) {
+    log('privatetransferwidget()');
+    return Container(
+        // decoration: BoxDecoration(
+        //     color: theme.cardTheme.color,
+        //     // color: const Color(0xff1529e8),
+        //     borderRadius: BorderRadius.circular(8)),
+        child: ListView.builder(
+            shrinkWrap: true,
+            itemCount: widget.excursions[i].privateTransfers!.length,
+            itemBuilder: (context, index) {
+              return Row(
+                children: [
+                  Expanded(
+                    child: GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          for (var element
+                              in widget.excursions[i].privateTransfers!) {
+                            element.isActive = false;
+                          }
+                          widget.excursions[i].privateTransfers![index]
+                              .isActive = true;
+                        });
+                      },
+                      child: Container(
+                          decoration: BoxDecoration(
+                              color: widget.excursions[i]
+                                      .privateTransfers![index].isActive
+                                  ? Colors.blue
+                                  : theme.cardTheme.color,
+                              borderRadius: BorderRadius.circular(8)),
+                          width: 50,
+                          child: Padding(
+                            padding: FxSpacing.y(5),
+                            child: Column(
+                              // mainAxisAlignment: MainAxisAlignment.start,
+                              // crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                FxText.bodyMedium(
+                                  widget.excursions[i].privateTransfers![index]
+                                      .name
+                                      .toString(),
+                                  fontWeight: 900,
+                                ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    FxText.bodyMedium(
+                                      'Seats:',
+                                      fontWeight: 600,
+                                    ),
+                                    FxText.bodyMedium(widget.excursions[i]
+                                        .privateTransfers![index].maxCapacity
+                                        .toString()),
+                                  ],
+                                ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    FxText.bodyMedium(
+                                      'Cost(1 person):',
+                                      fontWeight: 600,
+                                    ),
+                                    FxText.bodyMedium(widget.excursions[i]
+                                        .privateTransfers![index].cost
+                                        .toString()),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          )),
+                    ),
+                  ),
+                  Expanded(child: Container())
+                ],
+              );
+            }));
+  }
 
 //alert
-  showAlertDialog(index, List<SlotTime> timeSlotList) {
+  showAlertDialog(index, List<SlotTime> timeSlotList) async {
     AlertDialog alert = AlertDialog(
         title: Padding(
           padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 10),
@@ -275,6 +357,9 @@ class _ActivityScreenState extends State<ActivityScreen>
                                   setState(() {
                                     widget.excursions[index].activityTimeSlot =
                                         activitycontroller.listSLotDetails.last;
+                                    // widget.excursions[index].activityTimeSlot
+                                    //     !.add(activitycontroller
+                                    //         .listSLotDetails.last);
                                   });
                                   // activitiesListTime.add(listSLotDetails.last);
                                   // print(activitiesListTime);
@@ -295,12 +380,13 @@ class _ActivityScreenState extends State<ActivityScreen>
         ));
 
     // show the dialog
-    showDialog(
+    await showDialog(
       context: context,
       builder: (BuildContext context) {
         return alert;
       },
     );
+    setState(() {});
   }
 
   String timeconverted(String startEnd) {
@@ -324,6 +410,120 @@ class _ActivityScreenState extends State<ActivityScreen>
 
     log('Start and End:$formattedAMPN');
     return result;
+  }
+
+  Widget dropdownwidget(int i) {
+    ///transfr
+    List<String> tempTransferCodes = [];
+    bool? isPrivate = widget.excursions[i].isPrivateTransferAvailable;
+    bool? isShared = widget.excursions[i].isSharedTransferAvailable;
+
+    log("TransferCode Private => $isPrivate Shared => $isShared");
+    if (((isPrivate != null && !isPrivate) &&
+            (isShared != null && !isShared)) ||
+        ((isPrivate != null && isPrivate) && (isShared != null && isShared))) {
+      if (!tempTransferCodes.contains("Without Transfer")) {
+        tempTransferCodes.add("Without Transfer");
+      }
+    }
+    if (isPrivate != null && isPrivate) {
+      if (!tempTransferCodes.contains("private")) {
+        tempTransferCodes.add("private");
+      }
+    }
+    if (isShared != null && isShared) {
+      if (!tempTransferCodes.contains("shared")) {
+        tempTransferCodes.add("shared");
+      }
+    }
+
+    activitycontroller.TransferCodes = tempTransferCodes;
+
+    log("TransferCode =>   ${activitycontroller.TransferCodes}");
+
+    return Container(
+      decoration: BoxDecoration(
+          color: theme.cardTheme.color,
+          // color: const Color(0xff1529e8),
+          borderRadius: BorderRadius.circular(8)),
+      height: 50,
+      width: 150,
+      child: DropdownButtonHideUnderline(
+        child: DropdownButton2(
+          isExpanded: true,
+          hint: Row(
+            children: [
+              Expanded(
+                  child: FxText.labelLarge(
+                // activitycontroller.TransferCodes[0],
+
+                'Select Transfer',
+                fontWeight: 600,
+                color: Colors.black,
+                letterSpacing: 0.4,
+              )),
+            ],
+          ),
+          value: widget.excursions[i].transferCode
+          // ??
+          //     activitycontroller.TransferCodes[0]
+          /*widget.excursions[i].isSharing
+              ? activitycontroller.TransferCodes[2]
+              : widget.excursions[i].isPrivate
+                  ? activitycontroller.TransferCodes[1]
+                  : activitycontroller.TransferCodes[0]*/
+          ,
+          items: activitycontroller.TransferCodes.map((String value) {
+            return DropdownMenuItem<String>(
+                value: value,
+                child: Center(
+                  child: Text(
+                    value,
+                    style: FxTextStyle.bodyMedium(),
+                  ),
+                ));
+          }).toList(),
+          onChanged: (value) {
+            setState(() {
+              widget.excursions[i].transferCode = value.toString();
+              log('Transfer:${activitycontroller.selectedtransfer}');
+            });
+            activitycontroller.addisPrivateORsharing(widget.excursions[i],
+                isPrivate: activitycontroller.selectedtransfer ==
+                    activitycontroller.TransferCodes[1],
+                isSharing: activitycontroller.selectedtransfer ==
+                    activitycontroller.TransferCodes[2]);
+            // safdfg((activitycontroller.getGrandTotal(widget.excursions[i]) *
+            //         conversionRate!))
+            //     .toStringAsFixed(2);
+          },
+          icon: const Icon(Icons.arrow_drop_down),
+          iconSize: 20,
+          iconEnabledColor: Colors.black,
+          iconDisabledColor: Colors.black,
+          buttonHeight: 30,
+          buttonWidth: 200,
+          buttonPadding:
+              const EdgeInsets.only(left: 14, right: 14, top: 4, bottom: 4),
+          dropdownDecoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(4),
+            color: Colors.white,
+          ),
+          buttonDecoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+            color: theme.cardTheme.color,
+          ),
+          itemHeight: 40,
+          itemPadding: const EdgeInsets.only(left: 14, right: 14),
+          dropdownMaxHeight: 200,
+          dropdownPadding: null,
+          scrollbarRadius: const Radius.circular(40),
+          scrollbarThickness: 2,
+          scrollbarAlwaysShow: true,
+          offset: const Offset(0, 0),
+        ),
+      ),
+    );
   }
 
   String getFormattedDate(String date) {
@@ -828,7 +1028,7 @@ class _ActivityScreenState extends State<ActivityScreen>
 
   Widget _buildCartList() {
     List<Widget> list = [];
-    log('message');
+    log('_buildCartList() calling');
     log(widget.excursions.length.toString());
 
     for (var i = 0; i < widget.excursions.length; i++) {
@@ -836,13 +1036,9 @@ class _ActivityScreenState extends State<ActivityScreen>
         widget.excursions.length,
         (index) => TextEditingController(),
       );
-
+      bool? isPrivate = widget.excursions[i].isPrivateTransferAvailable;
+      bool? isShared = widget.excursions[i].isSharedTransferAvailable;
       controllerTE.add(TextEditingController());
-      // if (i >= controllerTE.length) {
-      //   controllerTE.add(TextEditingController());
-      // }
-
-      // controller.selectedtour[i].selectedDate = controllerTE[i].text;
 
       print(
           'Selected Tour Date:${activitycontroller.selectedtour.map((e) => e.selectedDate)}');
@@ -1044,227 +1240,7 @@ class _ActivityScreenState extends State<ActivityScreen>
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
                                       children: [
-                                        GestureDetector(
-                                          onTap: () {
-                                            log('transfer clicked DropDown');
-                                            log(activitycontroller
-                                                        .selectedtransfer ==
-                                                    'private'
-                                                ? widget.excursions[i]
-                                                    .privateTransferPrice
-                                                    .toString()
-                                                : widget.excursions[i]
-                                                    .sharedTransferPrice
-                                                    .toString());
-                                            setState(() {});
-                                          },
-                                          child: Container(
-                                            decoration: BoxDecoration(
-                                                color: theme.cardTheme.color,
-                                                // color: const Color(0xff1529e8),
-                                                borderRadius:
-                                                    BorderRadius.circular(8)),
-                                            height: 50,
-                                            width: 150,
-                                            // child:
-                                            //     DropdownButtonHideUnderline(
-                                            //   child: DropdownButton(
-                                            //     style:
-                                            //         FxTextStyle.bodyMedium(),
-                                            //     value: widget.excursions[i]
-                                            //         .selectedValue,
-                                            //     items: activitycontroller
-                                            //         .AdropDownItem(i),
-                                            //     onChanged: (value) {
-                                            //       widget.excursions[i]
-                                            //               .selectedValue =
-                                            //           value.toString();
-                                            //       log('DropDown Value:$value');
-
-                                            //       if (value ==
-                                            //           "Without Transfer") {
-                                            //         // calculationWithoutTransfer(
-                                            //         //     index);
-                                            //       } else if (value ==
-                                            //           "Private Transfer") {
-                                            //         // calculationPrivateTransfer(
-                                            //         //     index);
-                                            //       } else {
-                                            //         // calculationSharedTransfer(
-                                            //         //     index);
-                                            //       }
-
-                                            //       setState(() {});
-                                            //     },
-                                            //     // hint: FxText.displayMedium(
-                                            //     //   "Select Transfer",
-                                            //     //   fontWeight: 600,
-                                            //     //   color: Colors.black,
-
-                                            //     //   letterSpacing: 0.4,
-                                            //     //   //    style: FxTextStyle
-                                            //     //   // .bodyMedium(),
-                                            //     // ),
-                                            //     hint: const Text(
-                                            //         "Select Transfer",
-                                            //         style: TextStyle(
-                                            //             color: Colors.black)),
-                                            //   ),
-                                            // )
-
-                                            child: DropdownButtonHideUnderline(
-                                              child: DropdownButton2(
-                                                isExpanded: true,
-                                                hint: Row(
-                                                  children: [
-                                                    Expanded(
-                                                        child:
-                                                            FxText.labelLarge(
-                                                      // widget.excursions[i].isPrivateTransferAvailable ==
-                                                      //             false &&
-                                                      //         widget
-                                                      //                 .excursions[
-                                                      //                     i]
-                                                      //                 .isSharedTransferAvailable ==
-                                                      //             false
-                                                      //     ? controller
-                                                      //         .TransferCodes[0]
-                                                      //     : widget.excursions[i]
-                                                      //                     .isPrivateTransferAvailable ==
-                                                      //                 false ||
-                                                      //             widget
-                                                      //                     .excursions[
-                                                      //                         i]
-                                                      //                     .isSharedTransferAvailable ==
-                                                      //                 true
-                                                      //         ? controller
-                                                      //                 .TransferCodes[
-                                                      //             1]
-                                                      //         : widget.excursions[i].isPrivateTransferAvailable ==
-                                                      //                     true &&
-                                                      //                 widget.excursions[i].isSharedTransferAvailable ==
-                                                      //                     true
-                                                      //             ? controller
-                                                      //                     .TransferCodes[
-                                                      //                 0]
-                                                      //             : controller
-                                                      //                 .TransferCodes[0],
-
-                                                      activitycontroller
-                                                          .TransferCodes[0],
-
-                                                      fontWeight: 600,
-                                                      color: Colors.black,
-
-                                                      letterSpacing: 0.4,
-                                                    )),
-                                                  ],
-                                                ),
-                                                value: widget
-                                                        .excursions[i].isSharing
-                                                    ? activitycontroller
-                                                        .TransferCodes[2]
-                                                    : widget.excursions[i]
-                                                            .isPrivate
-                                                        ? activitycontroller
-                                                            .TransferCodes[1]
-                                                        : activitycontroller
-                                                            .TransferCodes[0],
-                                                // value: widget.excursions[i]
-                                                //                 .isPrivateTransferAvailable ==
-                                                //             false &&
-                                                //         widget.excursions[i]
-                                                //                 .isSharedTransferAvailable ==
-                                                //             false
-                                                //     ? controller
-                                                //         .TransferCodes[0]
-                                                //     : widget.excursions[i]
-                                                //                     .isPrivateTransferAvailable ==
-                                                //                 false ||
-                                                //             widget.excursions[i]
-                                                //                     .isSharedTransferAvailable ==
-                                                //                 true
-                                                //         ? controller
-                                                //             .TransferCodes[1]
-                                                //         : widget.excursions[i]
-                                                //                         .isPrivateTransferAvailable ==
-                                                //                     true &&
-                                                //                 widget.excursions[i]
-                                                //                         .isSharedTransferAvailable ==
-                                                //                     true
-                                                //             ? controller.TransferCodes[0]
-                                                //             : controller.TransferCodes[0],
-                                                items: activitycontroller
-                                                        .TransferCodes
-                                                    .map((String value) {
-                                                  return DropdownMenuItem<
-                                                          String>(
-                                                      value: value,
-                                                      child: Center(
-                                                        child: Text(
-                                                          value,
-                                                          style: FxTextStyle
-                                                              .bodyMedium(),
-                                                        ),
-                                                      ));
-                                                }).toList(),
-                                                onChanged: (value) {
-                                                  setState(() {
-                                                    activitycontroller
-                                                            .selectedtransfer =
-                                                        value.toString();
-                                                    log('Transfer:${activitycontroller.selectedtransfer}');
-                                                  });
-                                                  activitycontroller.addisPrivateORsharing(
-                                                      widget.excursions[i],
-                                                      isPrivate: activitycontroller
-                                                              .selectedtransfer ==
-                                                          activitycontroller
-                                                              .TransferCodes[1],
-                                                      isSharing: activitycontroller
-                                                              .selectedtransfer ==
-                                                          activitycontroller
-                                                              .TransferCodes[2]);
-                                                },
-                                                icon: const Icon(
-                                                    Icons.arrow_drop_down),
-                                                iconSize: 20,
-                                                iconEnabledColor: Colors.black,
-                                                iconDisabledColor: Colors.black,
-                                                buttonHeight: 30,
-                                                buttonWidth: 200,
-                                                buttonPadding:
-                                                    const EdgeInsets.only(
-                                                        left: 14,
-                                                        right: 14,
-                                                        top: 4,
-                                                        bottom: 4),
-                                                dropdownDecoration:
-                                                    BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.circular(4),
-                                                  color: Colors.white,
-                                                ),
-                                                buttonDecoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.circular(10),
-                                                  color: theme.cardTheme.color,
-                                                ),
-                                                itemHeight: 40,
-                                                itemPadding:
-                                                    const EdgeInsets.only(
-                                                        left: 14, right: 14),
-                                                dropdownMaxHeight: 200,
-                                                dropdownPadding: null,
-                                                scrollbarRadius:
-                                                    const Radius.circular(40),
-                                                scrollbarThickness: 2,
-                                                scrollbarAlwaysShow: true,
-                                                offset: const Offset(0, 0),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
+                                        dropdownwidget(i),
                                         Container(
                                           decoration: BoxDecoration(
                                               color: theme.cardTheme.color,
@@ -1308,19 +1284,47 @@ class _ActivityScreenState extends State<ActivityScreen>
 
                                                   log('Selected Date:${widget.excursions[i].selectedDate}');
 
-                                                  // await controller.SlotPick(
-                                                  //   widget
-                                                  //       .excursions[i].productId
+                                                  var data =
+                                                      await activitycontroller
+                                                          .SlotPick(
+                                                    // controller
+                                                    //     .processGetTimeSlot(
+                                                    widget
+                                                        .excursions[i].productId
+                                                        .toString(),
+                                                    widget.excursions[i]
+                                                        .productCode
+                                                        .toString(),
+                                                    widget.excursions[i]
+                                                        .selectedDate!
+                                                        .toString(),
+                                                  );
+                                                  setState(() {
+                                                    // controller.slottimeget =
+                                                    //     data!;
+                                                    // CustomSlots? customslot =
+                                                    //     FunctionGetSlots(widget
+                                                    //         .excursions[i]
+                                                    //         .productId
+                                                    //         .toString());
+                                                    // currentEvent =
+                                                    //     customslot!.event;
+                                                  });
+                                                  log('controller.slottimeget:${activitycontroller.slottimeget}');
+                                                  // dataslot =
+                                                  //     await controller.SlotPick(
+                                                  //   widget.excursions[i].productId
                                                   //       .toString(),
-                                                  //   widget.excursions[i]
-                                                  //       .productCode
+                                                  //   widget
+                                                  //       .excursions[i].productCode
                                                   //       .toString(),
                                                   //   widget.excursions[i]
                                                   //       .selectedDate!
                                                   //       .toString(),
                                                   // );
+
                                                   // setState(() {
-                                                  //   currentSlot;
+                                                  //   dateinput.text = formattedDate; //set output date to TextField value.
                                                   // });
                                                 } else {
                                                   print("Date is not selected");
@@ -1335,17 +1339,10 @@ class _ActivityScreenState extends State<ActivityScreen>
                                                 isDense: true,
                                                 fillColor:
                                                     theme.cardTheme.color,
-                                                // suffixIcon: Icon(
-                                                //   FeatherIcons.calendar,
-                                                //   color: theme.colorScheme.onBackground,
-                                                // ),
                                                 hintText: "yyyy-mm-dd",
                                                 border: InputBorder.none,
                                                 enabledBorder: InputBorder.none,
                                                 focusedBorder: InputBorder.none,
-                                                // enabledBorder: outlineInputBorder,
-                                                // focusedBorder: outlineInputBorder,
-                                                // border: outlineInputBorder,
                                                 contentPadding:
                                                     FxSpacing.all(16),
                                                 hintStyle: const TextStyle(
@@ -1362,6 +1359,125 @@ class _ActivityScreenState extends State<ActivityScreen>
                                         ),
                                       ],
                                     ),
+
+                                    FxSpacing.height(10),
+
+                                    //buton
+                                    widget.excursionid ==
+                                                '63ff12f5d7333637a938cad4' &&
+                                            controllerTE[i].text.isNotEmpty
+                                        ? Row(
+                                            children: [
+                                              FxContainer(
+                                                onTap: () async {
+                                                  if (controllerTE[i]
+                                                      .text
+                                                      .isEmpty) {
+                                                    CustomSnackbar.show(
+                                                      context: context,
+                                                      message:
+                                                          'Select Your Tour date',
+                                                      backgroundColor:
+                                                          const Color(
+                                                              0xff1529e8),
+                                                      duration: const Duration(
+                                                          seconds: 2),
+                                                    );
+                                                  } else {
+                                                    var data =
+                                                        await activitycontroller
+                                                            .processGetTimeSlot(
+                                                      widget.excursions[i]
+                                                          .productId
+                                                          .toString(),
+                                                      widget.excursions[i]
+                                                          .productCode
+                                                          .toString(),
+                                                      widget.excursions[i]
+                                                          .selectedDate!
+                                                          .toString(),
+                                                    );
+                                                    setState(() {});
+
+                                                    activitycontroller
+                                                        .timeSlotList = data;
+                                                    log("timeSlot $data");
+
+                                                    activitycontroller
+                                                                .timeSlotList !=
+                                                            null
+                                                        ? showAlertDialog(
+                                                            i,
+                                                            activitycontroller
+                                                                .timeSlotList)
+                                                        : log('none');
+                                                  }
+                                                },
+                                                borderRadiusAll: 10,
+                                                // padding: FxSpacing.xy(8, 4),
+                                                padding: FxSpacing.xy(6, 15),
+                                                color: const Color(0xff1529e8),
+
+                                                child: FxText.bodySmall(
+                                                  'Select Time SLot',
+
+                                                  fontWeight: 900,
+                                                  maxLines: 1,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  color: Colors.white,
+                                                  // color: theme.colorScheme.onPrimary,
+                                                ),
+                                              ),
+                                              Expanded(
+                                                child: widget.excursions[i]
+                                                            .activityTimeSlot ==
+                                                        null
+                                                    ? Container()
+                                                    : Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .center,
+                                                        children: [
+                                                          FxText.bodyMedium(
+                                                            getFormattedDate(widget
+                                                                .excursions[i]
+                                                                .activityTimeSlot!
+                                                                .startDateTime
+                                                                .toString()),
+                                                            color: Colors.black,
+                                                            fontWeight: 600,
+                                                          ),
+                                                          FxText.bodyMedium(
+                                                            ' - ',
+                                                            color: Colors.black,
+                                                            fontWeight: 600,
+                                                          ),
+                                                          FxText.bodyMedium(
+                                                            getFormattedDate(widget
+                                                                .excursions[i]
+                                                                .activityTimeSlot!
+                                                                .endDateTime
+                                                                .toString()),
+                                                            color: Colors.black,
+                                                            fontWeight: 600,
+                                                          ),
+                                                        ],
+                                                      ),
+                                              ),
+                                            ],
+                                          )
+                                        : const SizedBox(),
+
+                                    FxSpacing.height(10),
+
+                                    //transfer
+                                    widget.excursions[i].privateTransfers!
+                                                .isNotEmpty &&
+                                            widget.excursions[i].transferCode ==
+                                                'private'
+                                        ? privatetransferwidget(i)
+                                        : const SizedBox(),
                                     FxSpacing.height(10),
 
                                     personCount(activitycontroller,
@@ -1380,14 +1496,14 @@ class _ActivityScreenState extends State<ActivityScreen>
                                     personCount(activitycontroller,
                                         widget.excursions[i], setState, theme,
                                         isInfant: true),
-                                    if (widget.excursions[i].isPrivate)
+                                    if (isPrivate != null && isPrivate)
                                       FxSpacing.height(4),
-                                    if (widget.excursions[i].isPrivate)
+                                    if (isPrivate != null && isPrivate)
                                       cost(widget.excursions[i],
                                           isPrivate: true),
-                                    if (widget.excursions[i].isSharing)
+                                    if (isShared != null && isShared)
                                       FxSpacing.height(4),
-                                    if (widget.excursions[i].isSharing)
+                                    if (isShared != null && isShared)
                                       cost(widget.excursions[i],
                                           isSharing: true), //aount
                                     FxSpacing.height(4),
@@ -1399,17 +1515,9 @@ class _ActivityScreenState extends State<ActivityScreen>
                                           'Amount',
                                           fontWeight: 600,
                                         ),
-                                        // widget.excursions[i].activityType ==
-                                        //         'transfer'
-                                        //     ? FxText.bodyMedium(
-                                        //         'Transfer',
-                                        //         fontWeight: 700,
-                                        //       )
-                                        //     :
+                                      
                                         FxText.bodyMedium(
-                                          // controller
-                                          //     .getTotal(widget.excursions[i])
-                                          //     .toString(),
+                                          
                                           '${((activitycontroller.getTotal(widget.excursions[i]) * conversionRate!)).toStringAsFixed(2)} $currencySymbol',
                                           fontWeight: 700,
                                         ),
@@ -1760,1090 +1868,6 @@ class _ActivityScreenState extends State<ActivityScreen>
   }
 
 //slotui
-  Widget _buildCartSlotUIList() {
-    List<Widget> list = [];
-    log('message');
-    log(widget.excursions.length.toString());
-
-    for (var i = 0; i < widget.excursions.length; i++) {
-      List<TextEditingController> controllers = List.generate(
-        widget.excursions.length,
-        (index) => TextEditingController(),
-      );
-      controllerTE.add(TextEditingController());
-
-      print(
-          'Selected Tour Date:${activitycontroller.selectedtour.map((e) => e.selectedDate)}');
-//slot
-      List<TextEditingController> Slotcontrollers = List.generate(
-        widget.excursions.length,
-        (index) => TextEditingController(),
-      );
-      SlotcontrollerTE.add(TextEditingController());
-      //
-      list.add(FadeTransition(
-        opacity: activitycontroller.fadeAnimation,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            FxSpacing.height(10),
-            GestureDetector(
-              onTap: () {
-                clickedExcursion = !clickedExcursion;
-
-                setState(() {});
-
-                widget.excursionid == '63ff12f5d7333637a938cad4'
-                    ? activitycontroller.updateTours(widget.excursions[i])
-                    // controller.updateTourSlot(currentSlot[i])
-                    : activitycontroller.updateTours(widget.excursions[i]);
-
-                // ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                //     content: !clickedExcursion
-                //         ? const Text("Added this Excursion!!")
-                //         : const Text("Removed this Excursion!!")));
-              },
-              child: Card(
-                shadowColor: Colors.black,
-                elevation: 7,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(15),
-                ),
-                // color: const Color(0xff5c69e0),
-                color: Colors.transparent,
-                child: Container(
-                  margin: const EdgeInsets.only(
-                    top: 8,
-                  ),
-                  decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: const BorderRadius.all(Radius.circular(10)),
-                      border:
-                          Border.all(color: Colors.grey.shade300, width: 1)),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 8.0, vertical: 20),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        // FxSpacing.height(10),
-                        // FxText.bodyLarge(
-                        //   widget.excursions[i].name ?? '',
-                        //   muted: true,
-                        //   fontWeight: 900,
-                        // ),
-                        Align(
-                          alignment: Alignment.centerLeft,
-                          child: FxText.bodyLarge(
-                            widget.excursions[i].name ?? '',
-                            muted: true,
-                            fontWeight: 900,
-                          ),
-                        ),
-
-                        FxSpacing.height(20),
-
-                        Column(children: [
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              FxText.bodySmall('per person*'),
-                              widget.excursions[i].adultPrice == null
-                                  ? FxText.bodyLarge(
-                                      '0',
-                                      fontWeight: 900,
-                                    )
-                                  : FxText.bodyLarge(
-                                      '${((widget.excursions[i].lowPrice * conversionRate) as double).toStringAsFixed(2)} $currencySymbol',
-
-                                      // '${widget.excursions[i].lowPrice.toString()} AED',
-                                      fontWeight: 900,
-                                    )
-                            ],
-                          ),
-                          !activitycontroller.selectedtour
-                                  .contains(widget.excursions[i])
-                              ? const SizedBox(height: 0)
-                              : Column(
-                                  children: [
-                                    // selectedIndex == i
-                                    //     ? const SizedBox()
-                                    //     : const Text('data'),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        GestureDetector(
-                                          onTap: () {
-                                            log('transfer clicked DropDown');
-                                            log(activitycontroller
-                                                        .selectedtransfer ==
-                                                    'private'
-                                                ? widget.excursions[i]
-                                                    .privateTransferPrice
-                                                    .toString()
-                                                : widget.excursions[i]
-                                                    .sharedTransferPrice
-                                                    .toString());
-                                            setState(() {});
-                                          },
-                                          child: Container(
-                                            decoration: BoxDecoration(
-                                                color: theme.cardTheme.color,
-                                                // color: const Color(0xff1529e8),
-                                                borderRadius:
-                                                    BorderRadius.circular(8)),
-                                            height: 50,
-                                            width: 150,
-                                            // child:
-                                            //     DropdownButtonHideUnderline(
-                                            //   child: DropdownButton(
-                                            //     style:
-                                            //         FxTextStyle.bodyMedium(),
-                                            //     value: widget.excursions[i]
-                                            //         .selectedValue,
-                                            //     items: activitycontroller
-                                            //         .AdropDownItem(i),
-                                            //     onChanged: (value) {
-                                            //       widget.excursions[i]
-                                            //               .selectedValue =
-                                            //           value.toString();
-                                            //       log('DropDown Value:$value');
-
-                                            //       if (value ==
-                                            //           "Without Transfer") {
-                                            //         // calculationWithoutTransfer(
-                                            //         //     index);
-                                            //       } else if (value ==
-                                            //           "Private Transfer") {
-                                            //         // calculationPrivateTransfer(
-                                            //         //     index);
-                                            //       } else {
-                                            //         // calculationSharedTransfer(
-                                            //         //     index);
-                                            //       }
-
-                                            //       setState(() {});
-                                            //     },
-                                            //     hint: const Text(
-                                            //         "Select Transfer",
-                                            //         style: TextStyle(
-                                            //             color: Colors.black)),
-                                            //     // hint: FxText.bodySmall(
-                                            //     //   "Select Transfer",
-                                            //     //   fontWeight: 600,
-                                            //     //   color: Colors.black,
-
-                                            //     //   letterSpacing: 0.4,
-                                            //     //   //    style: FxTextStyle
-                                            //     //   // .bodyMedium(),
-                                            //     // ),
-                                            //   ),
-                                            // )
-
-                                            child: DropdownButtonHideUnderline(
-                                              child: DropdownButton2(
-                                                isExpanded: true,
-                                                hint: Row(
-                                                  children: [
-                                                    Expanded(
-                                                        child:
-                                                            FxText.labelLarge(
-                                                      // widget.excursions[i].isPrivateTransferAvailable ==
-                                                      //             false &&
-                                                      //         widget
-                                                      //                 .excursions[
-                                                      //                     i]
-                                                      //                 .isSharedTransferAvailable ==
-                                                      //             false
-                                                      //     ? controller
-                                                      //         .TransferCodes[0]
-                                                      //     : widget.excursions[i]
-                                                      //                     .isPrivateTransferAvailable ==
-                                                      //                 false ||
-                                                      //             widget
-                                                      //                     .excursions[
-                                                      //                         i]
-                                                      //                     .isSharedTransferAvailable ==
-                                                      //                 true
-                                                      //         ? controller
-                                                      //                 .TransferCodes[
-                                                      //             1]
-                                                      //         : widget.excursions[i].isPrivateTransferAvailable ==
-                                                      //                     true &&
-                                                      //                 widget.excursions[i].isSharedTransferAvailable ==
-                                                      //                     true
-                                                      //             ? controller
-                                                      //                     .TransferCodes[
-                                                      //                 0]
-                                                      //             : controller
-                                                      //                 .TransferCodes[0],
-
-                                                      activitycontroller
-                                                          .TransferCodes[0],
-
-                                                      fontWeight: 600,
-                                                      color: Colors.black,
-
-                                                      letterSpacing: 0.4,
-                                                    )),
-                                                  ],
-                                                ),
-                                                value: widget
-                                                        .excursions[i].isSharing
-                                                    ? activitycontroller
-                                                        .TransferCodes[2]
-                                                    : widget.excursions[i]
-                                                            .isPrivate
-                                                        ? activitycontroller
-                                                            .TransferCodes[1]
-                                                        : activitycontroller
-                                                            .TransferCodes[0],
-                                                // value: widget.excursions[i]
-                                                //                 .isPrivateTransferAvailable ==
-                                                //             false &&
-                                                //         widget.excursions[i]
-                                                //                 .isSharedTransferAvailable ==
-                                                //             false
-                                                //     ? controller
-                                                //         .TransferCodes[0]
-                                                //     : widget.excursions[i]
-                                                //                     .isPrivateTransferAvailable ==
-                                                //                 false ||
-                                                //             widget.excursions[i]
-                                                //                     .isSharedTransferAvailable ==
-                                                //                 true
-                                                //         ? controller
-                                                //             .TransferCodes[1]
-                                                //         : widget.excursions[i]
-                                                //                         .isPrivateTransferAvailable ==
-                                                //                     true &&
-                                                //                 widget.excursions[i]
-                                                //                         .isSharedTransferAvailable ==
-                                                //                     true
-                                                //             ? controller.TransferCodes[0]
-                                                //             : controller.TransferCodes[0],
-                                                items: activitycontroller
-                                                        .TransferCodes
-                                                    .map((String value) {
-                                                  return DropdownMenuItem<
-                                                          String>(
-                                                      value: value,
-                                                      child: Center(
-                                                        child: Text(
-                                                          value,
-                                                          style: FxTextStyle
-                                                              .bodyMedium(),
-                                                        ),
-                                                      ));
-                                                }).toList(),
-                                                onChanged: (value) {
-                                                  setState(() {
-                                                    activitycontroller
-                                                            .selectedtransfer =
-                                                        value.toString();
-                                                    log('Transfer:${activitycontroller.selectedtransfer}');
-                                                  });
-                                                  activitycontroller.addisPrivateORsharing(
-                                                      widget.excursions[i],
-                                                      isPrivate: activitycontroller
-                                                              .selectedtransfer ==
-                                                          activitycontroller
-                                                              .TransferCodes[1],
-                                                      isSharing: activitycontroller
-                                                              .selectedtransfer ==
-                                                          activitycontroller
-                                                              .TransferCodes[2]);
-                                                },
-                                                icon: const Icon(
-                                                    Icons.arrow_drop_down),
-                                                iconSize: 20,
-                                                iconEnabledColor: Colors.black,
-                                                iconDisabledColor: Colors.black,
-                                                buttonHeight: 30,
-                                                buttonWidth: 200,
-                                                buttonPadding:
-                                                    const EdgeInsets.only(
-                                                        left: 14,
-                                                        right: 14,
-                                                        top: 4,
-                                                        bottom: 4),
-                                                dropdownDecoration:
-                                                    BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.circular(4),
-                                                  color: Colors.white,
-                                                ),
-                                                buttonDecoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.circular(10),
-                                                  color: theme.cardTheme.color,
-                                                ),
-                                                itemHeight: 40,
-                                                itemPadding:
-                                                    const EdgeInsets.only(
-                                                        left: 14, right: 14),
-                                                dropdownMaxHeight: 200,
-                                                dropdownPadding: null,
-                                                scrollbarRadius:
-                                                    const Radius.circular(40),
-                                                scrollbarThickness: 2,
-                                                scrollbarAlwaysShow: true,
-                                                offset: const Offset(0, 0),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                        Container(
-                                          decoration: BoxDecoration(
-                                              color: theme.cardTheme.color,
-                                              // color: const Color(0xff1529e8),
-                                              borderRadius:
-                                                  BorderRadius.circular(8)),
-                                          height: 50,
-                                          width: 150,
-                                          child: TextFormField(
-                                            style: FxTextStyle.bodyMedium(),
-                                            // controller: controller.dateTE,
-                                            // controller: controllers[i],
-                                            controller: controllerTE[i],
-                                            readOnly:
-                                                true, //set it true, so that user will not able to edit text
-
-                                            onTap: () async {
-                                              DateTime? pickedDate =
-                                                  await showDatePicker(
-                                                          context: context,
-                                                          initialDate:
-                                                              DateTime.now(),
-                                                          firstDate: DateTime
-                                                              .now(), //DateTime.now() - not to allow to choose before today.
-                                                          lastDate:
-                                                              DateTime(2101))
-                                                      .then((value) async {
-                                                if (value != null) {
-                                                  print(
-                                                      value); //pickedDate output format => 2021-03-10 00:00:00.000
-                                                  String formattedDate =
-                                                      DateFormat('yyyy-MM-dd')
-                                                          .format(value);
-                                                  print(formattedDate);
-                                                  // dateTE.text = formattedDate;
-                                                  controllerTE[i].text =
-                                                      formattedDate;
-                                                  widget.excursions[i]
-                                                          .selectedDate =
-                                                      formattedDate;
-
-                                                  log('Selected Date:${widget.excursions[i].selectedDate}');
-
-                                                  var data =
-                                                      await activitycontroller
-                                                          .SlotPick(
-                                                    // controller
-                                                    //     .processGetTimeSlot(
-                                                    widget
-                                                        .excursions[i].productId
-                                                        .toString(),
-                                                    widget.excursions[i]
-                                                        .productCode
-                                                        .toString(),
-                                                    widget.excursions[i]
-                                                        .selectedDate!
-                                                        .toString(),
-                                                  );
-                                                  setState(() {
-                                                    // controller.slottimeget =
-                                                    //     data!;
-                                                    // CustomSlots? customslot =
-                                                    //     FunctionGetSlots(widget
-                                                    //         .excursions[i]
-                                                    //         .productId
-                                                    //         .toString());
-                                                    // currentEvent =
-                                                    //     customslot!.event;
-                                                  });
-                                                  log('controller.slottimeget:${activitycontroller.slottimeget}');
-                                                  // dataslot =
-                                                  //     await controller.SlotPick(
-                                                  //   widget.excursions[i].productId
-                                                  //       .toString(),
-                                                  //   widget
-                                                  //       .excursions[i].productCode
-                                                  //       .toString(),
-                                                  //   widget.excursions[i]
-                                                  //       .selectedDate!
-                                                  //       .toString(),
-                                                  // );
-
-                                                  // setState(() {
-                                                  //   dateinput.text = formattedDate; //set output date to TextField value.
-                                                  // });
-                                                } else {
-                                                  print("Date is not selected");
-                                                }
-                                                return null;
-                                              });
-                                            },
-                                            decoration: InputDecoration(
-                                                floatingLabelBehavior:
-                                                    FloatingLabelBehavior.never,
-                                                filled: true,
-                                                isDense: true,
-                                                fillColor:
-                                                    theme.cardTheme.color,
-                                                hintText: "yyyy-mm-dd",
-                                                border: InputBorder.none,
-                                                enabledBorder: InputBorder.none,
-                                                focusedBorder: InputBorder.none,
-                                                contentPadding:
-                                                    FxSpacing.all(16),
-                                                hintStyle: const TextStyle(
-                                                  fontWeight: FontWeight.w600,
-                                                  color: Colors.black,
-                                                  letterSpacing: 0.4,
-                                                ),
-                                                // hintStyle: FxTextStyle.bodyMedium(),
-                                                isCollapsed: true),
-                                            autofocus: false,
-                                            keyboardType:
-                                                TextInputType.datetime,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    FxSpacing.height(10),
-                                    widget.excursionid ==
-                                                '63ff12f5d7333637a938cad4' &&
-                                            controllerTE[i].text.isNotEmpty
-                                        ? Row(
-                                            // mainAxisAlignment:
-                                            //     MainAxisAlignment.end,
-                                            children: [
-                                              FxContainer(
-                                                // onTap: () {
-                                                //   controller.openendDrawer();
-                                                // },
-                                                onTap: () async {
-                                                  if (controllerTE[i]
-                                                      .text
-                                                      .isEmpty) {
-                                                    log('Click date');
-                                                    // MySnackBar().showSnackBar(
-                                                    //     context,
-                                                    //     "Please select date");
-                                                  } else {
-                                                    var data =
-                                                        await activitycontroller
-                                                            .processGetTimeSlot(
-                                                      widget.excursions[i]
-                                                          .productId
-                                                          .toString(),
-                                                      widget.excursions[i]
-                                                          .productCode
-                                                          .toString(),
-                                                      widget.excursions[i]
-                                                          .selectedDate!
-                                                          .toString(),
-                                                    );
-                                                    setState(() {});
-
-                                                    activitycontroller
-                                                        .timeSlotList = data;
-                                                    log("timeSlot $data");
-
-                                                    activitycontroller
-                                                                .timeSlotList !=
-                                                            null
-                                                        ? showAlertDialog(
-                                                            i,
-                                                            activitycontroller
-                                                                .timeSlotList)
-                                                        : log('none');
-                                                  }
-                                                },
-                                                borderRadiusAll: 10,
-                                                // padding: FxSpacing.xy(8, 4),
-                                                padding: FxSpacing.xy(6, 15),
-                                                color: const Color(0xff1529e8),
-
-                                                child: FxText.bodySmall(
-                                                  'Select Time SLot',
-
-                                                  fontWeight: 900,
-                                                  maxLines: 1,
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
-                                                  color: Colors.white,
-                                                  // color: theme.colorScheme.onPrimary,
-                                                ),
-                                              ),
-                                              Expanded(
-                                                child: widget.excursions[i]
-                                                            .activityTimeSlot ==
-                                                        null
-                                                    ? Container()
-                                                    : Row(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .center,
-                                                        children: [
-                                                          FxText.bodyMedium(
-                                                            getFormattedDate(widget
-                                                                .excursions[i]
-                                                                .activityTimeSlot!
-                                                                .startDateTime
-                                                                .toString()),
-                                                            color: Colors.black,
-                                                            fontWeight: 600,
-                                                          ),
-                                                          FxText.bodyMedium(
-                                                            ' - ',
-                                                            color: Colors.black,
-                                                            fontWeight: 600,
-                                                          ),
-                                                          FxText.bodyMedium(
-                                                            getFormattedDate(widget
-                                                                .excursions[i]
-                                                                .activityTimeSlot!
-                                                                .endDateTime
-                                                                .toString()),
-                                                            color: Colors.black,
-                                                            fontWeight: 600,
-                                                          ),
-                                                        ],
-                                                      ),
-                                              ),
-                                            ],
-                                          )
-                                        : const SizedBox(),
-
-                                    FxSpacing.height(10),
-
-                                    // widget.excursionid == '63ff12f5d7333637a938cad4' &&
-                                    //         controllerTE[i].text.isNotEmpty
-                                    //     ? SizedBox(
-                                    //         child: Container(
-                                    //             height: MediaQuery.of(context)
-                                    //                     .size
-                                    //                     .height *
-                                    //                 0.29,
-                                    //             padding: const EdgeInsets.only(
-                                    //                 bottom: 10),
-                                    //             width: double.infinity,
-                                    //             decoration: BoxDecoration(
-                                    //                 color: Colors.white,
-                                    //                 // color: Color(0xffe5fdfd),
-                                    //                 borderRadius:
-                                    //                     const BorderRadius.all(
-                                    //                         Radius.circular(
-                                    //                             10)),
-                                    //                 border: Border.all(
-                                    //                     color: Colors
-                                    //                         .blue.shade300,
-                                    //                     width: 1)),
-                                    //             child:
-                                    //                 // GridView(
-                                    //                 //   gridDelegate:
-                                    //                 //       const SliverGridDelegateWithFixedCrossAxisCount(
-                                    //                 //     crossAxisCount: 3,
-                                    //                 //     crossAxisSpacing: 10.0,
-                                    //                 //     mainAxisSpacing: 10.0,
-                                    //                 //     mainAxisExtent:
-                                    //                 //         120, // ** add this **
-                                    //                 //   ),
-                                    //                 activitycontroller
-                                    //                             .slottimeget
-                                    //                             .isEmpty ||
-                                    //                         widget.excursions[i]
-                                    //                                 .selectedDate ==
-                                    //                             null
-                                    //                     ? SizedBox(
-                                    //                         // width: MediaQuery.of(context).size.width *
-                                    //                         //     0.8, // 80% of the screen width
-                                    //                         height: MediaQuery.of(
-                                    //                                     context)
-                                    //                                 .size
-                                    //                                 .height *
-                                    //                             0.6,
-                                    //                         // height: double.infinity,
-                                    //                         width:
-                                    //                             double.infinity,
-                                    //                         child: Center(
-                                    //                           child: FxText
-                                    //                               .bodySmall(
-                                    //                             "No Data!!",
-                                    //                           ),
-                                    //                         ),
-                                    //                       )
-                                    //                     : _slotsUiGrid(
-                                    //                         widget.excursions[i]
-                                    //                             .productId
-                                    //                             .toString(),
-                                    //                       )))
-                                    //     : const SizedBox(),
-                                    // FxSpacing.height(4),
-
-                                    personCount(activitycontroller,
-                                        widget.excursions[i], setState, theme,
-                                        isAdult: true),
-                                    //child
-                                    FxSpacing.height(4),
-
-                                    personCount(activitycontroller,
-                                        widget.excursions[i], setState, theme,
-                                        isChild: true),
-                                    FxSpacing.height(4),
-
-                                    //infant
-
-                                    personCount(activitycontroller,
-                                        widget.excursions[i], setState, theme,
-                                        isInfant: true),
-                                    if (widget.excursions[i].isPrivate)
-                                      FxSpacing.height(4),
-                                    if (widget.excursions[i].isPrivate)
-                                      cost(widget.excursions[i],
-                                          isPrivate: true),
-                                    if (widget.excursions[i].isSharing)
-                                      FxSpacing.height(4),
-                                    if (widget.excursions[i].isSharing)
-                                      cost(widget.excursions[i],
-                                          isSharing: true), //aount
-                                    FxSpacing.height(4),
-                                    // Row(
-                                    //   mainAxisAlignment:
-                                    //       MainAxisAlignment.spaceBetween,
-                                    //   children: [
-                                    //     FxText.bodyMedium(
-                                    //       'Amount',
-                                    //       fontWeight: 600,
-                                    //     ),
-                                    //     FxText.bodyMedium(
-                                    //       controller
-                                    //           .getTotal(widget.excursions[i])
-                                    //           .toString(),
-                                    //       // 'IMG Worlds of Adventure',
-                                    //       fontWeight: 700,
-                                    //     ),
-                                    //   ],
-                                    // ),
-
-                                    // FxSpacing.height(12),
-                                    // Row(
-                                    //   children: [
-                                    //     Expanded(
-                                    //       flex: 2,
-                                    //       child: Container(),
-                                    //     ),
-                                    //     Expanded(
-                                    //       child: FxDashedDivider(
-                                    //         dashSpace: 4,
-                                    //         dashWidth: 8,
-                                    //         color: theme
-                                    //             .colorScheme.onBackground
-                                    //             .withAlpha(180),
-                                    //         height: 1.2,
-                                    //       ),
-                                    //     )
-                                    //   ],
-                                    // ),
-                                    // FxSpacing.height(12),
-                                    // Row(
-                                    //   mainAxisAlignment:
-                                    //       MainAxisAlignment.spaceBetween,
-                                    //   children: [
-                                    //     FxText.bodyMedium(
-                                    //       'Grand Total',
-                                    //       fontWeight: 700,
-                                    //       color: const Color(0xff1529e8),
-                                    //     ),
-                                    //     FxText.bodyMedium(
-                                    //       // '\$' + controller.total.precise,
-                                    //       // controller
-                                    //       //     .getGrandTotal(
-                                    //       //         widget.excursions[i])
-                                    //       //     .toString(),
-                                    //       '${((controller.getGrandTotal(widget.excursions[i]) * conversionRate!)).toStringAsFixed(2)} $currencySymbol',
-
-                                    //       fontWeight: 800,
-                                    //       color: const Color(0xff1529e8),
-                                    //     ),
-                                    //   ],
-                                    // ),
-
-                                    //selected
-                                    activitycontroller.customSlots == null
-                                        ? const SizedBox()
-                                        : activitycontroller
-                                                    .customSlots!.event ==
-                                                null
-                                            ? const SizedBox()
-                                            : activitycontroller
-                                                        .customSlots!.id !=
-                                                    widget
-                                                        .excursions[i].productId
-                                                        .toString()
-                                                ? const SizedBox()
-                                                : FxContainer(
-                                                    color:
-                                                        const Color(0xffE6E6E9),
-                                                    width: double.infinity,
-                                                    paddingAll:
-                                                        activitycontroller
-                                                            .paddingAnimation
-                                                            .value,
-                                                    child: Column(
-                                                      children: [
-                                                        Align(
-                                                          alignment: Alignment
-                                                              .centerLeft,
-                                                          child:
-                                                              FxText.bodyLarge(
-                                                            'Selected Slots',
-                                                            muted: true,
-                                                            fontWeight: 900,
-                                                          ),
-                                                        ),
-                                                        Row(
-                                                          children: [
-                                                            Expanded(
-                                                              child:
-                                                                  FxDashedDivider(
-                                                                dashSpace: 4,
-                                                                dashWidth: 8,
-                                                                color: theme
-                                                                    .colorScheme
-                                                                    .onBackground
-                                                                    .withAlpha(
-                                                                        180),
-                                                                height: 1.2,
-                                                              ),
-                                                            ),
-                                                            Expanded(
-                                                              flex: 3,
-                                                              child:
-                                                                  Container(),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                        FxSpacing.height(12),
-
-                                                        // Row(
-                                                        //   children: [
-                                                        //     FxText.bodyMedium(
-                                                        //       'Adult',
-                                                        //       fontWeight: 600,
-                                                        //     ),
-                                                        //     FxText.bodyMedium(
-                                                        //       '*',
-                                                        //       fontWeight: 600,
-                                                        //     ),
-                                                        //     FxText.bodyMedium(
-                                                        //       widget
-                                                        //           .excursions[i]
-                                                        //           .adultCount
-                                                        //           .toString(),
-                                                        //       fontWeight: 700,
-                                                        //     ),
-                                                        //     FxText.bodyMedium(
-                                                        //       '=',
-                                                        //       fontWeight: 600,
-                                                        //     ),
-                                                        //     FxText.bodyMedium(
-                                                        //       '24.00 AED',
-                                                        //       fontWeight: 700,
-                                                        //     ),
-                                                        //   ],
-                                                        // ),
-
-                                                        // //child
-                                                        // Row(
-                                                        //   children: [
-                                                        //     FxText.bodyMedium(
-                                                        //       'Child',
-                                                        //       fontWeight: 600,
-                                                        //     ),
-                                                        //     FxText.bodyMedium(
-                                                        //       '*',
-                                                        //       fontWeight: 600,
-                                                        //     ),
-                                                        //     FxText.bodyMedium(
-                                                        //       widget
-                                                        //           .excursions[i]
-                                                        //           .childCount
-                                                        //           .toString(),
-                                                        //       fontWeight: 700,
-                                                        //     ),
-                                                        //     FxText.bodyMedium(
-                                                        //       '=',
-                                                        //       fontWeight: 600,
-                                                        //     ),
-                                                        //     FxText.bodyMedium(
-                                                        //       '24.00 AED',
-                                                        //       fontWeight: 700,
-                                                        //     ),
-                                                        //   ],
-                                                        // ),
-
-                                                        // //infant
-                                                        // Row(
-                                                        //   children: [
-                                                        //     FxText.bodyMedium(
-                                                        //       'Infant',
-                                                        //       fontWeight: 600,
-                                                        //     ),
-                                                        //     FxText.bodyMedium(
-                                                        //       '*',
-                                                        //       fontWeight: 600,
-                                                        //     ),
-                                                        //     FxText.bodyMedium(
-                                                        //       widget
-                                                        //           .excursions[i]
-                                                        //           .infantCount
-                                                        //           .toString(),
-                                                        //       fontWeight: 700,
-                                                        //     ),
-                                                        //     FxText.bodyMedium(
-                                                        //       '=',
-                                                        //       fontWeight: 600,
-                                                        //     ),
-                                                        //     FxText.bodyMedium(
-                                                        //       '24.00 AED',
-                                                        //       fontWeight: 700,
-                                                        //     ),
-                                                        //   ],
-                                                        // ),
-
-                                                        Row(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .spaceBetween,
-                                                          children: [
-                                                            FxText.bodyMedium(
-                                                              'Event Name:',
-                                                              color:
-                                                                  Colors.black,
-                                                              fontWeight: 900,
-                                                            ),
-                                                            FxSpacing.width(20),
-                                                            FxText.bodyMedium(
-                                                              activitycontroller
-                                                                  .customSlots!
-                                                                  .event!
-                                                                  .eventName,
-                                                              color:
-                                                                  Colors.black,
-                                                              fontWeight: 600,
-                                                            ),
-                                                            Expanded(
-                                                                child:
-                                                                    Container())
-                                                          ],
-                                                        ),
-
-                                                        //slotdate
-                                                        Row(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .spaceBetween,
-                                                          children: [
-                                                            FxText.bodyMedium(
-                                                              " ${activitycontroller.customSlots!.event!.startDateTime.monthName} ${activitycontroller.customSlots!.event!.startDateTime.weekday}, ${activitycontroller.customSlots!.event!.startDateTime.year}",
-                                                              // formattedSlotDate,
-                                                              color:
-                                                                  Colors.black,
-                                                              fontWeight: 600,
-                                                            ),
-                                                            FxSpacing.width(5),
-                                                            Row(
-                                                              children: [
-                                                                FxText
-                                                                    .bodyMedium(
-                                                                  // '20 Jul',
-                                                                  getFormattedDate(activitycontroller
-                                                                      .customSlots!
-                                                                      .event!
-                                                                      .startDateTime
-                                                                      .toString()),
-                                                                  // "$formattedStartAMPN- $formattedEndAMPN",
-                                                                  color: Colors
-                                                                      .black,
-                                                                  fontWeight:
-                                                                      600,
-                                                                ),
-                                                                FxText
-                                                                    .bodyMedium(
-                                                                  ' - ',
-                                                                  color: Colors
-                                                                      .black,
-                                                                  fontWeight:
-                                                                      600,
-                                                                ),
-                                                                FxText
-                                                                    .bodyMedium(
-                                                                  // '20 Jul',
-                                                                  getFormattedDate(activitycontroller
-                                                                      .customSlots!
-                                                                      .event!
-                                                                      .endDateTime
-                                                                      .toString()),
-                                                                  // "$formattedStartAMPN- $formattedEndAMPN",
-                                                                  color: Colors
-                                                                      .black,
-                                                                  fontWeight:
-                                                                      600,
-                                                                ),
-                                                              ],
-                                                            ),
-                                                            Expanded(
-                                                                child:
-                                                                    Container())
-                                                          ],
-                                                        ),
-
-                                                        Row(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .spaceBetween,
-                                                          children: [
-                                                            Row(
-                                                              children: [
-                                                                FxText
-                                                                    .bodyMedium(
-                                                                  'Grand Total:',
-                                                                  fontWeight:
-                                                                      700,
-                                                                  color: const Color(
-                                                                      0xff1529e8),
-                                                                ),
-                                                                FxSpacing.width(
-                                                                    6),
-                                                                FxText
-                                                                    .bodyMedium(
-                                                                  '${((activitycontroller.getGrandTotal(widget.excursions[i]) * conversionRate!)).toStringAsFixed(2)} $currencySymbol',
-                                                                  fontWeight:
-                                                                      800,
-                                                                  color: const Color(
-                                                                      0xff1529e8),
-                                                                ),
-                                                              ],
-                                                            ),
-                                                            Row(
-                                                              children: [
-                                                                const Icon(
-                                                                  Icons.delete,
-                                                                  color: Colors
-                                                                      .transparent,
-                                                                  // color: Colors
-                                                                  //     .red,
-                                                                ),
-                                                                AnimatedBuilder(
-                                                                  animation:
-                                                                      activitycontroller
-                                                                          .cartController,
-                                                                  builder:
-                                                                      (BuildContext
-                                                                              context,
-                                                                          _) {
-                                                                    return GestureDetector(
-                                                                      onTap:
-                                                                          () async {
-                                                                        activitycontroller.selectedtour.map((e) => e.selectedDate) ==
-                                                                                null
-                                                                            ? CustomSnackbar.show(
-                                                                                context: context,
-                                                                                message: 'Select Your Tour date',
-                                                                                backgroundColor: const Color(0xff1529e8),
-                                                                                duration: const Duration(seconds: 2),
-                                                                              )
-                                                                            : activitycontroller.goToCheckout1();
-                                                                        // bool
-                                                                        //     existing =
-                                                                        //     false;
-
-                                                                        // log('Fav Item:${favouriteListCart.map((e) => e.sId)}');
-                                                                        // log('Sel Id:${widget.excursions.first.sId}');
-
-                                                                        // print(
-                                                                        //     "controller.selectedtour Checkout ${controller.selectedtour}");
-
-                                                                        // favouriteListCart
-                                                                        //     .addAll(controller.selectedtour);
-
-                                                                        // SharedPreferences
-                                                                        //     prefs =
-                                                                        //     await SharedPreferences.getInstance();
-                                                                        // prefs.setBool(
-                                                                        //     "youKey",
-                                                                        //     isSelected);
-                                                                        // setState(
-                                                                        //     () {
-                                                                        //   favouriteListCart;
-                                                                        //   isSelected =
-                                                                        //       !isSelected;
-                                                                        // });
-
-                                                                        // controller
-                                                                        //     .goToCheckout();
-                                                                      },
-                                                                      child:
-                                                                          FxContainer(
-                                                                        color: const Color(0xff1529e8)
-                                                                            .withAlpha(40),
-                                                                        // paddingAll: controller
-                                                                        //     .paddingAnimation
-                                                                        //     .value,
-                                                                        paddingAll:
-                                                                            10,
-                                                                        child:
-                                                                            SlideTransition(
-                                                                          position:
-                                                                              activitycontroller.animation,
-                                                                          child:
-                                                                              const Image(
-                                                                            height:
-                                                                                20,
-                                                                            width:
-                                                                                20,
-                                                                            color:
-                                                                                Color(0xff1529e8),
-                                                                            image:
-                                                                                AssetImage('assets/images/apps/shopping2/icons/clear_cart_outline.png'),
-                                                                          ),
-                                                                        ),
-                                                                      ),
-                                                                    );
-                                                                  },
-                                                                ),
-                                                              ],
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ),
-                                  ],
-                                )
-                        ]),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-            )
-          ],
-        ),
-      ));
-    }
-    return ListView(
-      physics: const AlwaysScrollableScrollPhysics(),
-      // padding: FxSpacing.nTop(20),
-      padding: const EdgeInsets.only(top: 20, right: 20, left: 20, bottom: 140),
-      children: list,
-    );
-  }
 
   Widget _buildBody() {
     if (activitycontroller.uiLoading) {
@@ -2859,20 +1883,21 @@ class _ActivityScreenState extends State<ActivityScreen>
         backgroundColor: const Color(0xfff5f5f5),
         key: activitycontroller.scaffoldKey,
         // endDrawer: _endDrawer(),
-        endDrawer: SlotTimeDrawer(
-          excursionSlot: widget.excursions,
-          excursionidSlot: widget.excursionid,
+        // endDrawer: SlotTimeDrawer(
+        //   excursionSlot: widget.excursions,
+        //   excursionidSlot: widget.excursionid,
 
-          Slots: activitycontroller.slottimeget,
-          // Slots: currentSlot,
-          // selectedDate:widget.excursions.first.selectedDate.toString(),
-          onOptionSelected: (SlotTime option) {
-            log('Sel:${activitycontroller.defaultChoiceIndex}');
-            print('Selected option: $option');
-          },
+        //   Slots: activitycontroller.slottimeget,
+        //   // Slots: currentSlot,
+        //   // selectedDate:widget.excursions.first.selectedDate.toString(),
+        //   onOptionSelected: (SlotTime option) {
+        //     log('Sel:${activitycontroller.defaultChoiceIndex}');
+        //     print('Selected option: $option');
+        //   },
 
-          // getdataSlot: controller.getslot
-        ),
+        //   // getdataSlot: controller.getslot
+        // ),
+
         appBar: AppBar(
           leading: InkWell(
             onTap: () {
@@ -2898,194 +1923,172 @@ class _ActivityScreenState extends State<ActivityScreen>
         // backgroundColor: const Color(0xfff5f5f5),
         body: Stack(
           children: [
-            widget.excursionid == '63ff12f5d7333637a938cad4'
-                ? _buildCartSlotUIList()
-                : _buildCartList(),
+            // widget.excursionid == '63ff12f5d7333637a938cad4'
+            //     ? _buildCartSlotUIList()
+            //     :
+            _buildCartList(),
             // FxSpacing.height(20),
-            widget.excursionid == '63ff12f5d7333637a938cad4'
-                ? const SizedBox()
-                : Positioned(
-                    bottom: 0,
-                    left: 0,
-                    right: 0,
-                    child: Container(
-                      padding: FxSpacing.xy(12, 8),
-                      child: PhysicalModel(
-                        color: theme.cardTheme.color!.withAlpha(200),
-                        elevation: 12,
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(32)),
-                        shadowColor:
-                            theme.colorScheme.onBackground.withAlpha(12),
-                        shape: BoxShape.rectangle,
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: theme.cardTheme.color!.withAlpha(200),
-                            borderRadius:
-                                const BorderRadius.all(Radius.circular(32)),
-                          ),
-                          padding: FxSpacing.xy(16, 12),
-                          child: Column(
-                            children: <Widget>[
-                              widget.excursionid == '63ff12f5d7333637a938cad4'
-                                  ? const SizedBox()
-                                  // ? _buildSelectBurj()
-                                  : _buildSelect1(),
-                              widget.excursionid == '63ff12f5d7333637a938cad4'
-                                  ? const SizedBox()
-                                  : Row(
-                                      children: [
-                                        AnimatedBuilder(
-                                          animation:
-                                              activitycontroller.cartController,
-                                          builder: (BuildContext context, _) {
-                                            return GestureDetector(
-                                              onTap: () async {
-                                                bool existing = false;
+            // widget.excursionid == '63ff12f5d7333637a938cad4'
+            //     ? const SizedBox()
+            //     :
+            Positioned(
+              bottom: 0,
+              left: 0,
+              right: 0,
+              child: Container(
+                padding: FxSpacing.xy(12, 8),
+                child: PhysicalModel(
+                  color: theme.cardTheme.color!.withAlpha(200),
+                  elevation: 12,
+                  borderRadius: const BorderRadius.all(Radius.circular(32)),
+                  shadowColor: theme.colorScheme.onBackground.withAlpha(12),
+                  shape: BoxShape.rectangle,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: theme.cardTheme.color!.withAlpha(200),
+                      borderRadius: const BorderRadius.all(Radius.circular(32)),
+                    ),
+                    padding: FxSpacing.xy(16, 12),
+                    child: Column(
+                      children: <Widget>[
+                        // widget.excursionid == '63ff12f5d7333637a938cad4'
+                        //     ? const SizedBox()
+                        //     // ? _buildSelectBurj()
+                        //     :
+                        _buildSelect1(),
+                        // widget.excursionid == '63ff12f5d7333637a938cad4'
+                        //     ? const SizedBox()
+                        //     :
+                        Row(
+                          children: [
+                            AnimatedBuilder(
+                              animation: activitycontroller.cartController,
+                              builder: (BuildContext context, _) {
+                                return GestureDetector(
+                                  onTap: () async {
+                                    bool existing = false;
 
-                                                log('Fav Item Slot:${favouriteListCart.map((e) => e.sId)}');
-                                                log('Sel Id Slot:${widget.excursions.first.sId}');
+                                    log('Fav Item Slot:${favouriteListCart.map((e) => e.sId)}');
+                                    log('Sel Id Slot:${widget.excursions.first.sId}');
 
-                                                print(
-                                                    "controller.selectedtour ${activitycontroller.selectedtour}");
+                                    print(
+                                        "controller.selectedtour ${activitycontroller.selectedtour}");
 
-                                                favouriteListCart.addAll(
-                                                    activitycontroller
-                                                        .selectedtour);
+                                    favouriteListCart.addAll(
+                                        activitycontroller.selectedtour);
 
-                                                SharedPreferences prefs =
-                                                    await SharedPreferences
-                                                        .getInstance();
-                                                prefs.setBool(
-                                                    "youKey", isSelected);
-                                                setState(() {
-                                                  favouriteListCart;
-                                                  isSelected = !isSelected;
-                                                });
+                                    SharedPreferences prefs =
+                                        await SharedPreferences.getInstance();
+                                    prefs.setBool("youKey", isSelected);
+                                    setState(() {
+                                      favouriteListCart;
+                                      isSelected = !isSelected;
+                                    });
 
-                                                activitycontroller
-                                                    .goToCheckout();
-                                              },
-                                              child: Stack(
-                                                children: [
-                                                  FxContainer(
-                                                    color:
-                                                        const Color(0xff1529e8)
-                                                            .withAlpha(40),
-                                                    paddingAll:
-                                                        activitycontroller
-                                                            .paddingAnimation
-                                                            .value,
-                                                    child: Icon(
-                                                      FeatherIcons.shoppingBag,
-                                                      color: const Color(
-                                                          0xff1529e8),
-                                                      size: activitycontroller
-                                                          .cartAnimation.value,
-                                                    ),
-                                                  ),
-                                                  // controller.addCart
-                                                  //     ?
-                                                  Positioned(
-                                                    right: 10,
-                                                    top: 8,
-                                                    child: FxContainer.rounded(
-                                                      color: const Color(
-                                                          0xff1529e8),
-                                                      paddingAll: 4,
-                                                      child: FxText.bodySmall(
-                                                        activitycontroller
-                                                            .selectedtour.length
-                                                            .toString(),
-                                                        color: theme.colorScheme
-                                                            .onPrimary,
-                                                        fontSize: 8,
-                                                        fontWeight: 700,
-                                                      ),
-                                                    ),
-                                                  )
-                                                  // : Container(),
-                                                ],
-                                              ),
-                                            );
-                                          },
+                                    activitycontroller.goToCheckout();
+                                  },
+                                  child: Stack(
+                                    children: [
+                                      FxContainer(
+                                        color: const Color(0xff1529e8)
+                                            .withAlpha(40),
+                                        paddingAll: activitycontroller
+                                            .paddingAnimation.value,
+                                        child: Icon(
+                                          FeatherIcons.shoppingBag,
+                                          color: const Color(0xff1529e8),
+                                          size: activitycontroller
+                                              .cartAnimation.value,
                                         ),
-                                        FxSpacing.width(20),
+                                      ),
+                                      // controller.addCart
+                                      //     ?
+                                      Positioned(
+                                        right: 10,
+                                        top: 8,
+                                        child: FxContainer.rounded(
+                                          color: const Color(0xff1529e8),
+                                          paddingAll: 4,
+                                          child: FxText.bodySmall(
+                                            activitycontroller
+                                                .selectedtour.length
+                                                .toString(),
+                                            color: theme.colorScheme.onPrimary,
+                                            fontSize: 8,
+                                            fontWeight: 700,
+                                          ),
+                                        ),
+                                      )
+                                      // : Container(),
+                                    ],
+                                  ),
+                                );
+                              },
+                            ),
+                            FxSpacing.width(20),
+                            Expanded(
+                              child: FadeTransition(
+                                opacity: activitycontroller.fadeAnimation,
+                                child: FxButton.block(
+                                    onPressed: () {
+                                      // token == null
+                                      //     ? controller.Login()
+                                      //
+                                      activitycontroller.selectedtour.first
+                                                  .selectedDate ==
+                                              null
+                                          ? CustomSnackbar.show(
+                                              context: context,
+                                              message: 'Select Your Tour date',
+                                              backgroundColor:
+                                                  const Color(0xff1529e8),
+                                              duration:
+                                                  const Duration(seconds: 2),
+                                            )
+                                          : activitycontroller.goToCheckout1();
+                                      // controller.goToCheckout1();
+                                      // favouriteListCart
+                                      //     .add(controller.selectedtour as Activity);
+                                    },
+                                    backgroundColor: const Color(0xff1529e8),
+                                    // backgroundColor: theme.colorScheme.primary,
+                                    elevation: 0,
+                                    borderRadiusAll: 4,
+                                    child: Row(
+                                      children: [
+                                        SlideTransition(
+                                          position:
+                                              activitycontroller.animation,
+                                          child: Image(
+                                            height: 22,
+                                            width: 22,
+                                            color: theme.colorScheme.onPrimary,
+                                            image: const AssetImage(
+                                                'assets/images/apps/shopping2/icons/clear_cart_outline.png'),
+                                          ),
+                                        ),
                                         Expanded(
-                                          child: FadeTransition(
-                                            opacity: activitycontroller
-                                                .fadeAnimation,
-                                            child: FxButton.block(
-                                                onPressed: () {
-                                                  // token == null
-                                                  //     ? controller.Login()
-                                                  //
-                                                  activitycontroller
-                                                              .selectedtour
-                                                              .first
-                                                              .selectedDate ==
-                                                          null
-                                                      ? CustomSnackbar.show(
-                                                          context: context,
-                                                          message:
-                                                              'Select Your Tour date',
-                                                          backgroundColor:
-                                                              const Color(
-                                                                  0xff1529e8),
-                                                          duration:
-                                                              const Duration(
-                                                                  seconds: 2),
-                                                        )
-                                                      : activitycontroller
-                                                          .goToCheckout1();
-                                                  // controller.goToCheckout1();
-                                                  // favouriteListCart
-                                                  //     .add(controller.selectedtour as Activity);
-                                                },
-                                                backgroundColor:
-                                                    const Color(0xff1529e8),
-                                                // backgroundColor: theme.colorScheme.primary,
-                                                elevation: 0,
-                                                borderRadiusAll: 4,
-                                                child: Row(
-                                                  children: [
-                                                    SlideTransition(
-                                                      position:
-                                                          activitycontroller
-                                                              .animation,
-                                                      child: Image(
-                                                        height: 22,
-                                                        width: 22,
-                                                        color: theme.colorScheme
-                                                            .onPrimary,
-                                                        image: const AssetImage(
-                                                            'assets/images/apps/shopping2/icons/clear_cart_outline.png'),
-                                                      ),
-                                                    ),
-                                                    Expanded(
-                                                      child: Center(
-                                                        child:
-                                                            FxText.bodyMedium(
-                                                          'Checkout',
-                                                          fontWeight: 600,
-                                                          color: theme
-                                                              .colorScheme
-                                                              .onPrimary,
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ],
-                                                )),
+                                          child: Center(
+                                            child: FxText.bodyMedium(
+                                              'Checkout',
+                                              fontWeight: 600,
+                                              color:
+                                                  theme.colorScheme.onPrimary,
+                                            ),
                                           ),
                                         ),
                                       ],
-                                    ),
-                            ],
-                          ),
+                                    )),
+                              ),
+                            ),
+                          ],
                         ),
-                      ),
+                      ],
                     ),
-                  )
+                  ),
+                ),
+              ),
+            )
           ],
         ),
       );

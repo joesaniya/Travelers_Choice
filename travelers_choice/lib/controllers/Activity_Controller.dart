@@ -1,4 +1,3 @@
-
 import 'dart:convert';
 import 'dart:developer';
 
@@ -26,7 +25,7 @@ class ActivityController extends FxController {
   TickerProvider ticker;
   ActivityController(this.ticker);
   bool showLoading = true, uiLoading = true;
-  final List<String> TransferCodes = ['Without Transfer', 'private', 'shared'];
+  List<String> TransferCodes = ['Without Transfer', 'private', 'shared'];
   final List<String> SharedwithoutCodes = [
     'without',
     'private',
@@ -430,16 +429,19 @@ class ActivityController extends FxController {
                 : 0;
       }
     }
-    int index = person_count.indexOf(value[0]);
-    double val = getGrandTotal(person_count[index]);
-    person_count[index].grandTotal = val;
-    print('List Value=> ${person_count.length}');
+    if (value.isNotEmpty) {
+      int index = person_count.indexOf(value[0]);
+      double val = getGrandTotal(person_count[index]);
+      person_count[index].grandTotal = val;
+      print('List Value=> ${person_count.length}');
+    }
     update();
   }
 
   getTotal(Activity tour) {
     List<Activity> value =
         person_count.where((element) => element.sId == tour.sId).toList();
+    log('Tour Value==>$value');
     if (value.isEmpty) {
       log('adult:${tour.adultCost}');
       log('ticket:${tour.transferPricing}');
@@ -452,16 +454,32 @@ class ActivityController extends FxController {
       // log('vec:${tour.ticketPricing.adultPrice}');
       log('adult 2:${tour.adultPrice}');
       log('Pvt:${tour.privateTransfers!.map((e) => e.price).toList()}');
+      log('if Adult Price:${tour.adultPrice}');
+      log('if Adult cost:${tour.adultCost}');
+      log('if transfer:${tour.privateTransfers!.first.toJson()}');
+      List<PrivateTransfers>? private =
+          tour.privateTransfers!.where((element) => element.isActive).toList();
       return tour.adultPrice == null
-          // ? tour.privateTransfers!.first.price
-          ? tour.privateTransfers == null || tour.privateTransfers!.isEmpty
+          ? private.isEmpty
               ? tour.adultCost
-              : tour.privateTransfers!.first.price
+              : private[0].price
           : tour.adultPrice!.toDouble();
+      // return tour.adultPrice == null
+      //     // ? tour.privateTransfers!.first.price
+      //     ? tour.privateTransfers == null || tour.privateTransfers!.isEmpty
+      //         ? tour.adultCost
+      //         : tour.privateTransfers!.first.price
+      //     : tour.adultPrice!.toDouble();
     } else {
-      return (value[0].adultCount * (value[0].adultPrice ?? 1.0)) +
-          (value[0].childCount * (value[0].childPrice ?? 1.0)) +
-          (value[0].infantCount * (value[0].infantPrice ?? 1.0));
+      log('Else value ${value[0].toJson()}');
+      List<PrivateTransfers>? private =
+          tour.privateTransfers!.where((element) => element.isActive).toList();
+      return (value[0].adultCount * (value[0].adultPrice ?? private[0].price)) +
+          (value[0].childCount * (value[0].childPrice ?? private[0].price)) +
+          (value[0].infantCount * (value[0].infantPrice ?? private[0].price));
+      // return (value[0].adultCount * (value[0].adultPrice ?? 1.0)) +
+      //     (value[0].childCount * (value[0].childPrice ?? 1.0)) +
+      //     (value[0].infantCount * (value[0].infantPrice ?? 1.0));
     }
   }
 
@@ -471,27 +489,7 @@ class ActivityController extends FxController {
         person_count.where((element) => element.sId == tour.sId).toList();
     if (value.isEmpty) {
       personCountFn(tour, isAdult: true);
-      if (isPrivate) {
-        person_count[0].isPrivate = true;
-        person_count[0].isSharing = false;
-      } else if (isSharing) {
-        person_count[0].isPrivate = false;
-        person_count[0].isSharing = true;
-      } else {
-        person_count[0].isPrivate = false;
-        person_count[0].isSharing = false;
-      }
     } else {
-      if (isPrivate) {
-        value[0].isPrivate = true;
-        value[0].isSharing = false;
-      } else if (isSharing) {
-        value[0].isPrivate = false;
-        value[0].isSharing = true;
-      } else {
-        value[0].isPrivate = false;
-        value[0].isSharing = false;
-      }
       update();
     }
   }
@@ -546,6 +544,7 @@ class ActivityController extends FxController {
 
   double getGrandTotal(Activity tour) {
     log(getTotal(tour).toString());
+    log('person Count:${person_count.map((e) => e.adultCount)}');
 
     List<Activity> value =
         person_count.where((element) => element.sId == tour.sId).toList();
@@ -556,18 +555,23 @@ class ActivityController extends FxController {
     }
     double amount = double.parse(getTotal(tour).toString());
 
-    if (tour.isPrivate) {
+    if (tour.transferCode != null && tour.transferCode == "private") {
       // amount = amount + tour.privateTransferPrice!;//added transfer fee
-      amount = amount;
+      List<PrivateTransfers>? private =
+          tour.privateTransfers!.where((element) => element.isActive).toList();
 
+      amount = amount + (private.isNotEmpty ? private[0].price : 0);
+      log(" Private Amount => $amount");
       // amount = amount +
       //     tour.privateTransferPrice! +
       //     tour.privateTransfers!.first.cost!.toDouble();
       log('Grand Total Privat:$amount');
     }
-    if (tour.isSharing) {
+    if (tour.transferCode != null && tour.transferCode == "shared") {
       // amount = amount + tour.sharedTransferPrice!;
-      amount = amount; //added transfer fee
+      amount = amount +
+          double.parse(
+              (tour.sharedTransferPrice ?? 0).toString()); //added transfer fee
       log('Grand Total sharing:$amount');
     }
     log("Current Grand Total => $amount");
@@ -618,7 +622,7 @@ class ActivityController extends FxController {
     // defaultChoiceIndex = -1;
     fetchloader();
     fetchData();
-   
+
     dateTE = TextEditingController();
     dateController = AnimationController(
         vsync: ticker, duration: const Duration(milliseconds: 50));
@@ -694,7 +698,7 @@ class ActivityController extends FxController {
   }
 
   int defaultChoiceIndex = -1;
- final List<String> timeslotstart = [
+  final List<String> timeslotstart = [
     '10.00 am',
     '11.00 am',
     '12.00 pm',

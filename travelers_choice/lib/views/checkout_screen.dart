@@ -354,67 +354,79 @@ class _CheckOutScreenState extends State<CheckOutScreen>
                         'Transfer',
                         fontWeight: 600,
                       ),
-                      // widget.selectedtourOption[index].isSharing == null
+                      widget.selectedtourOption[index].transferCode == null ||
+                              widget.selectedtourOption[index].transferCode!
+                                  .isEmpty
+                          ? FxText.bodyMedium(
+                              'PrivateDemo',
+                              fontWeight: 700,
+                            )
+                          : FxText.bodyMedium(
+                              widget.selectedtourOption[index].transferCode
+                                  .toString(),
+                              fontWeight: 700,
+                            ),
+
+                      // widget.Transfer == null
                       //     ? FxText.bodyMedium(
-                      //         // '\$' + controller.order.precise,
-                      //         'without',
+                      //         'Private',
                       //         fontWeight: 700,
                       //       )
                       //     : FxText.bodyMedium(
                       //         widget.Transfer.toString(),
                       //         fontWeight: 700,
                       //       ),
-                      widget.Transfer == null
-                          ? FxText.bodyMedium(
-                              'Private',
-                              fontWeight: 700,
-                            )
-                          : FxText.bodyMedium(
-                              widget.Transfer.toString(),
-                              fontWeight: 700,
-                            ),
                     ],
                   ),
                   FxSpacing.height(4),
                   // widget.event!.endDateTime == null
-                  //     ? const SizedBox()
-                  //     : Row(
-                  //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  //         children: [
-                  //           FxText.bodyMedium(
-                  //             'Selected Slot',
-                  //             fontWeight: 600,
-                  //           ),
-                  //           Expanded(child:Container()),
-                  //           Row(
-                  //             children: [
-                  //               FxText.bodyMedium(
-                  //                 // '20 Jul',
-                  //                 getFormattedDate(
-                  //                     widget.event!.endDateTime.toString()),
-                  //                 // "$formattedStartAMPN- $formattedEndAMPN",
-                  //                 color: Colors.black,
-                  //                 fontWeight: 600,
-                  //               ),
-                  //               FxText.bodyMedium(
-                  //                 ' - ',
-                  //                 color: Colors.black,
-                  //                 fontWeight: 600,
-                  //               ),
-                  //               FxText.bodyMedium(
-                  //                 // '20 Jul',
-                  //                 getFormattedDate(
-                  //                     widget.event!.endDateTime.toString()),
-                  //                 // "$formattedStartAMPN- $formattedEndAMPN",
-                  //                 color: Colors.black,
-                  //                 fontWeight: 600,
-                  //               ),
-                  //             ],
-                  //           ),
+                  widget.selectedtourOption[index].activityTimeSlot == null
+                      ? const SizedBox()
+                      : Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            FxText.bodyMedium(
+                              'Selected Slot',
+                              fontWeight: 600,
+                            ),
+                            Expanded(child: Container()),
+                            Row(
+                              children: [
+                                FxText.bodyMedium(
+                                  // '20 Jul',
+                                  getFormattedDate(widget
+                                          .selectedtourOption[index]
+                                          .activityTimeSlot!
+                                          .startDateTime
+                                          .toString()
 
-                  //         ],
-                  //       ),
-                  // FxSpacing.height(4),
+                                      // widget.event!.endDateTime.toString()
+                                      ),
+                                  // "$formattedStartAMPN- $formattedEndAMPN",
+                                  color: Colors.black,
+                                  fontWeight: 600,
+                                ),
+                                FxText.bodyMedium(
+                                  ' - ',
+                                  color: Colors.black,
+                                  fontWeight: 600,
+                                ),
+                                FxText.bodyMedium(
+                                  // '20 Jul',
+                                  getFormattedDate(widget
+                                      .selectedtourOption[index]
+                                      .activityTimeSlot!
+                                      .endDateTime
+                                      .toString()),
+                                  // "$formattedStartAMPN- $formattedEndAMPN",
+                                  color: Colors.black,
+                                  fontWeight: 600,
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                  FxSpacing.height(4),
 
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,

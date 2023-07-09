@@ -1,9 +1,9 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutx/flutx.dart';
+import 'package:intl/intl.dart';
 import '../controllers/new_cart_controller.dart';
 import '../loading_effect.dart';
-import '../models/Slot_Time.dart';
 import '../models/atteraction_model.dart';
 import '../services/app_constants.dart';
 import '../theme/app_theme.dart';
@@ -14,9 +14,9 @@ import 'full_app.dart';
 class NewCart extends StatefulWidget {
   final List<Activity> cartMeal;
   // SlotTime? event;
-   NewCart(this.cartMeal, 
-  //  this.event,{super.key}
-   );
+  const NewCart(this.cartMeal, {super.key}
+      //  this.event,{super.key}
+      );
 
   @override
   _NewCartState createState() => _NewCartState();
@@ -30,7 +30,6 @@ class _NewCartState extends State<NewCart> with TickerProviderStateMixin {
   SharedPreferences? sharedPreferences;
 
   bool isLoading = true;
-
 
   @override
   void initState() {
@@ -55,6 +54,33 @@ class _NewCartState extends State<NewCart> with TickerProviderStateMixin {
         log('currencySymbol:$currencySymbol');
       });
     });
+  }
+
+  String getFormattedDate(String date) {
+    //selectedslotdate
+    // DateTime now = date;
+
+    // String formattedSlotDate = DateFormat.yMMMd().format(now);
+    // log('formattedSlotDate:$formattedSlotDate');
+    // log('Start Time:${controller.customSlots!.event!.startDateTime}');
+    String StartTime = date;
+
+    // String StartTime=date;
+    DateTime parsedStartTime = DateTime.parse(StartTime);
+    String formattedStartTime = DateFormat('HH:mm:ss').format(parsedStartTime);
+
+    log('formattedTime:$formattedStartTime');
+
+    String originalStartTime = formattedStartTime;
+
+    DateTime parsedTimeStart =
+        DateFormat('HH:mm:ss').parseStrict(originalStartTime);
+    String formattedStartAMPN = DateFormat('h:mm a').format(parsedTimeStart);
+
+    log('Start:$formattedStartAMPN');
+    // log('currentSlot!.length:${currentSlot!.length}');
+
+    return formattedStartAMPN;
   }
 
   Future<bool> _onWillPop() async {
@@ -82,16 +108,16 @@ class _NewCartState extends State<NewCart> with TickerProviderStateMixin {
     String text = product.name!;
 
     print("product$product");
-    text = text.replaceAll("_", " ");
+    // text = text.replaceAll("_", " ");
 
-    List<String> words = text.split(" ");
+    // List<String> words = text.split(" ");
 
-    for (int i = 0; i < words.length; i++) {
-      words[i] =
-          words[i][0].toUpperCase() + words[i].substring(1).toLowerCase();
-    }
+    // for (int i = 0; i < words.length; i++) {
+    //   words[i] =
+    //       words[i][0].toUpperCase() + words[i].substring(1).toLowerCase();
+    // }
 
-    text = words.join(" ");
+    // text = words.join(" ");
 
     return FadeTransition(
       opacity: controller.fadeAnimation,
@@ -131,17 +157,70 @@ class _NewCartState extends State<NewCart> with TickerProviderStateMixin {
                   'Transfer',
                   fontWeight: 600,
                 ),
-                product.transferType == null
+                product.transferCode == null || product.transferCode!.isEmpty
                     ? FxText.bodyMedium(
-                        'without',
+                        'PrivateDemo',
                         fontWeight: 700,
                       )
                     : FxText.bodyMedium(
-                        product.transferType.toString(),
+                        product.transferCode.toString(),
                         fontWeight: 700,
                       ),
+                // product.transferType == null
+                //     ? FxText.bodyMedium(
+                //         'without',
+                //         fontWeight: 700,
+                //       )
+                //     : FxText.bodyMedium(
+                //         product.transferType.toString(),
+                //         fontWeight: 700,
+                //       ),
               ],
             ),
+            FxSpacing.height(4),
+            // widget.event!.endDateTime == null
+            product.activityTimeSlot == null
+                ? const SizedBox()
+                : Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      FxText.bodyMedium(
+                        'Selected Slot',
+                        fontWeight: 600,
+                      ),
+                      Expanded(child: Container()),
+                      Row(
+                        children: [
+                          FxText.bodyMedium(
+                            // '20 Jul',
+                            getFormattedDate(product
+                                    .activityTimeSlot!.startDateTime
+                                    .toString()
+
+                                // widget.event!.endDateTime.toString()
+                                ),
+                            // "$formattedStartAMPN- $formattedEndAMPN",
+                            color: Colors.black,
+                            fontWeight: 600,
+                          ),
+                          FxText.bodyMedium(
+                            ' - ',
+                            color: Colors.black,
+                            fontWeight: 600,
+                          ),
+                          FxText.bodyMedium(
+                            // '20 Jul',
+                            getFormattedDate(product
+                                .activityTimeSlot!.endDateTime
+                                .toString()),
+                            // "$formattedStartAMPN- $formattedEndAMPN",
+                            color: Colors.black,
+                            fontWeight: 600,
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
             FxSpacing.height(4),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -386,7 +465,7 @@ class _NewCartState extends State<NewCart> with TickerProviderStateMixin {
                                                 value + element);
 
                                         controller.goToCheckout(
-                                            favouriteListCart, grandTotal,
+                                          favouriteListCart, grandTotal,
                                           // widget.event,
                                         );
                                       },

@@ -8,7 +8,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../controllers/Activity_Controller.dart';
 import '../controllers/checkout_controller.dart';
-import '../models/Slot_Time.dart';
 import '../models/atteraction_model.dart';
 import '../services/app_constants.dart';
 import '../theme/app_theme.dart';
@@ -61,6 +60,33 @@ class _NewCartPageState extends State<NewCartPage>
     theme = AppTheme.shoppingTheme;
     controller1 = FxControllerStore.put(ActivityController(this));
     controller = FxControllerStore.put(CheckOutController(this));
+  }
+
+  String getFormattedDate(String date) {
+    //selectedslotdate
+    // DateTime now = date;
+
+    // String formattedSlotDate = DateFormat.yMMMd().format(now);
+    // log('formattedSlotDate:$formattedSlotDate');
+    // log('Start Time:${controller.customSlots!.event!.startDateTime}');
+    String StartTime = date;
+
+    // String StartTime=date;
+    DateTime parsedStartTime = DateTime.parse(StartTime);
+    String formattedStartTime = DateFormat('HH:mm:ss').format(parsedStartTime);
+
+    log('formattedTime:$formattedStartTime');
+
+    String originalStartTime = formattedStartTime;
+
+    DateTime parsedTimeStart =
+        DateFormat('HH:mm:ss').parseStrict(originalStartTime);
+    String formattedStartAMPN = DateFormat('h:mm a').format(parsedTimeStart);
+
+    log('Start:$formattedStartAMPN');
+    // log('currentSlot!.length:${currentSlot!.length}');
+
+    return formattedStartAMPN;
   }
 
   String? currencySymbol;
@@ -266,35 +292,79 @@ class _NewCartPageState extends State<NewCartPage>
                         'Transfer',
                         fontWeight: 600,
                       ),
-                      widget.Transfer == null
+                        widget.selectedtourOption[index].transferCode == null ||
+                              widget.selectedtourOption[index].transferCode!
+                                  .isEmpty
                           ? FxText.bodyMedium(
-                              'without',
+                              'PrivateDemo',
                               fontWeight: 700,
                             )
                           : FxText.bodyMedium(
-                              widget.Transfer.toString(),
+                              widget.selectedtourOption[index].transferCode
+                                  .toString(),
                               fontWeight: 700,
                             ),
+                      // widget.Transfer == null
+                      //     ? FxText.bodyMedium(
+                      //         'without',
+                      //         fontWeight: 700,
+                      //       )
+                      //     : FxText.bodyMedium(
+                      //         widget.Transfer.toString(),
+                      //         fontWeight: 700,
+                      //       ),
                     ],
                   ),
                   FxSpacing.height(4),
                   // widget.event!.endDateTime == null
-                  //     ? const SizedBox()
-                  //     : Row(
-                  //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  //         children: [
-                  //           FxText.bodyMedium(
-                  //             'Selected Slot',
-                  //             fontWeight: 600,
-                  //           ),
-                  //           FxText.bodyMedium(
-                  //             // widget.event!.endDateTime,
-                  //             "$formattedStartAMPN- $formattedEndAMPN",
-                  //             fontWeight: 700,
-                  //           ),
-                  //         ],
-                  //       ),
-                  // FxSpacing.height(4),
+                  widget.selectedtourOption[index].activityTimeSlot == null
+                      ? const SizedBox()
+                      : Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            FxText.bodyMedium(
+                              'Selected Slot',
+                              fontWeight: 600,
+                            ),
+                            Expanded(child: Container()),
+                            Row(
+                              children: [
+                                FxText.bodyMedium(
+                                  // '20 Jul',
+                                  getFormattedDate(widget
+                                          .selectedtourOption[index]
+                                          .activityTimeSlot!
+                                          .startDateTime
+                                          .toString()
+
+                                      // widget.event!.endDateTime.toString()
+                                      ),
+                                  // "$formattedStartAMPN- $formattedEndAMPN",
+                                  color: Colors.black,
+                                  fontWeight: 600,
+                                ),
+                                FxText.bodyMedium(
+                                  ' - ',
+                                  color: Colors.black,
+                                  fontWeight: 600,
+                                ),
+                                FxText.bodyMedium(
+                                  // '20 Jul',
+                                  getFormattedDate(widget
+                                      .selectedtourOption[index]
+                                      .activityTimeSlot!
+                                      .endDateTime
+                                      .toString()),
+                                  // "$formattedStartAMPN- $formattedEndAMPN",
+                                  color: Colors.black,
+                                  fontWeight: 600,
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                  FxSpacing.height(4),
+
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [

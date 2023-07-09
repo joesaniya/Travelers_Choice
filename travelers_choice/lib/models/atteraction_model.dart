@@ -520,8 +520,7 @@ class Activity {
   int infantCount = 0;
   double totalAmount = 0;
   double grandTotal = 0;
-  bool isPrivate = false;
-  bool isSharing = false;
+  String? transferCode;
   //new
   String? activityType;
   String? description;
@@ -580,8 +579,7 @@ class Activity {
     this.infantCount = 0,
     this.totalAmount = 0,
     this.grandTotal = 0,
-    this.isPrivate = false,
-    this.isSharing = false,
+    this.transferCode,
     this.activityType,
     this.description,
     this.isPrivateTransferAvailable,
@@ -826,6 +824,7 @@ class VehicleType {
 }
 
 class PrivateTransfers {
+  bool isActive = false;
   String? name;
   int? maxCapacity;
   dynamic price;
@@ -833,7 +832,12 @@ class PrivateTransfers {
   String? sId;
 
   PrivateTransfers(
-      {this.name, this.maxCapacity, this.price, this.cost, this.sId});
+      {this.name,
+      this.maxCapacity,
+      this.price,
+      this.cost,
+      this.sId,
+      this.isActive = false});
 
   PrivateTransfers.fromJson(Map<String, dynamic> json) {
     name = json['name'] ?? '';
@@ -841,6 +845,7 @@ class PrivateTransfers {
     price = json['price'] ?? '';
     cost = json['cost'] ?? '';
     sId = json['_id'] ?? '';
+    isActive = false;
   }
 
   Map<String, dynamic> toJson() {
@@ -850,6 +855,7 @@ class PrivateTransfers {
     data['price'] = price;
     data['cost'] = cost;
     data['_id'] = sId;
+    data['is_active'] = isActive;
     return data;
   }
 }
