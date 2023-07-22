@@ -4,29 +4,26 @@ import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutx/flutx.dart';
-import 'package:hotel_travel/extensions/extensions.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
+import '../views/full_app.dart';
 import '../../card_widgets/customsnackbar.dart';
 import '../../controllers/Activity_controller.dart';
 import '../../controllers/checkout_controller.dart';
-import '../../loading_effect.dart';
 import '../../models/Slot_Time.dart';
 import '../../models/atteraction_model.dart';
 import '../../models/slot_pick.dart';
 import '../../services/app_constants.dart';
 import '../../theme/app_theme.dart';
-import '../full_app.dart';
 
-class ActivityScreen extends StatefulWidget {
+class TourWidgets extends StatefulWidget {
   // final DetailattractionModal Excursions;
   // List<DetailattractionModal> Excursions;
   // final String excursions;
   List<Activity> excursions;
   final String excursionid;
 
-  ActivityScreen(
+  TourWidgets(
       // this.Excursions,
       this.excursions,
       this.excursionid,
@@ -38,7 +35,7 @@ class ActivityScreen extends StatefulWidget {
   _ActivityScreenState createState() => _ActivityScreenState();
 }
 
-class _ActivityScreenState extends State<ActivityScreen>
+class _ActivityScreenState extends State<TourWidgets>
     with TickerProviderStateMixin {
   late ThemeData theme;
   bool isSelected = false;
@@ -50,53 +47,7 @@ class _ActivityScreenState extends State<ActivityScreen>
   List<TextEditingController> SlotcontrollerTE = [];
   String? token;
   List<Activity> tempFavouriteList = favouriteListCart.map((e) => e).toList();
-  // List<SlotTime>? dataslot;
 
-// //slot
-//   List<SlotTime>? slottimeget;
-//   bool isLoadingg = true;
-//   getSlot(String productid, String productcode, String date,
-//       BuildContext context) async {
-//     log('getSlot function called');
-//     Future.delayed(Duration.zero, () async {
-//       await SlotTimeService()
-//           .getSlotTime(productid, productcode, date, context)
-//           .then((value) {
-//         if (value != null) {
-//           log('first data');
-//           isLoadingg = false;
-//           slottimeget = [];
-//           slottimeget!.add(value);
-//           log('All Slot:$slottimeget');
-
-//           setState(() {});
-//         }
-//       });
-//     });
-//   }
-
-//   Future<SlotTime?> Slotdate(String productid, String productcode, String date,
-//       BuildContext context) async {
-//     log('product Id:$productid');
-//     log('product code:$productcode');
-//     log('date:$date');
-
-//     try {
-//       var data = await SlotTimeService()
-//           .getSlotTime(productid, productcode, date, context);
-//       slottimeget!.clear();
-//       if (data != null) {
-//         slottimeget!.add(data);
-//         log('SlotD:$slottimeget');
-
-//         return data; //removed true
-//       } else {
-//         return null; //falseremoved
-//       }
-//     } catch (e) {
-//       rethrow;
-//     }
-//   }
   Widget privatetransferwidget(int i) {
     log('privatetransferwidget()');
     return Container(
@@ -1861,231 +1812,8 @@ class _ActivityScreenState extends State<ActivityScreen>
   }
 
 //slotui
-
   Widget _buildBody() {
-    if (activitycontroller.uiLoading) {
-      return Scaffold(
-        body: Container(
-            padding: FxSpacing.top(FxSpacing.safeAreaTop(context) + 20),
-            child: LoadingEffect.getCartLoadingScreen(
-              context,
-            )),
-      );
-    } else {
-      return Scaffold(
-        backgroundColor: const Color(0xfff5f5f5),
-        key: activitycontroller.scaffoldKey,
-        // endDrawer: _endDrawer(),
-        // endDrawer: SlotTimeDrawer(
-        //   excursionSlot: widget.excursions,
-        //   excursionidSlot: widget.excursionid,
-
-        //   Slots: activitycontroller.slottimeget,
-        //   // Slots: currentSlot,
-        //   // selectedDate:widget.excursions.first.selectedDate.toString(),
-        //   onOptionSelected: (SlotTime option) {
-        //     log('Sel:${activitycontroller.defaultChoiceIndex}');
-        //     print('Selected option: $option');
-        //   },
-
-        //   // getdataSlot: controller.getslot
-        // ),
-
-        appBar: AppBar(
-          leading: InkWell(
-            onTap: () {
-              activitycontroller.goBack();
-            },
-            child: const Icon(
-              FeatherIcons.chevronLeft,
-              size: 20,
-              // color: theme.colorScheme.onBackground,
-              color: Colors.white,
-            ).autoDirection(),
-          ),
-          elevation: 0,
-          automaticallyImplyLeading: false,
-          title: FxText.titleMedium(
-            'Tour Options',
-            fontWeight: 700,
-            color: Colors.white,
-          ),
-          centerTitle: true,
-          actions: [Container()],
-        ),
-        // backgroundColor: const Color(0xfff5f5f5),
-        body: Stack(
-          children: [
-            // widget.excursionid == '63ff12f5d7333637a938cad4'
-            //     ? _buildCartSlotUIList()
-            //     :
-            _buildCartList(),
-            // FxSpacing.height(20),
-            // widget.excursionid == '63ff12f5d7333637a938cad4'
-            //     ? const SizedBox()
-            //     :
-            Positioned(
-              bottom: 0,
-              left: 0,
-              right: 0,
-              child: Container(
-                padding: FxSpacing.xy(12, 8),
-                child: PhysicalModel(
-                  color: theme.cardTheme.color!.withAlpha(200),
-                  elevation: 12,
-                  borderRadius: const BorderRadius.all(Radius.circular(32)),
-                  shadowColor: theme.colorScheme.onBackground.withAlpha(12),
-                  shape: BoxShape.rectangle,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: theme.cardTheme.color!.withAlpha(200),
-                      borderRadius: const BorderRadius.all(Radius.circular(32)),
-                    ),
-                    padding: FxSpacing.xy(16, 12),
-                    child: Column(
-                      children: <Widget>[
-                        // widget.excursionid == '63ff12f5d7333637a938cad4'
-                        //     ? const SizedBox()
-                        //     // ? _buildSelectBurj()
-                        //     :
-                        _buildSelect1(),
-                        // widget.excursionid == '63ff12f5d7333637a938cad4'
-                        //     ? const SizedBox()
-                        //     :
-                        Row(
-                          children: [
-                            AnimatedBuilder(
-                              animation: activitycontroller.cartController,
-                              builder: (BuildContext context, _) {
-                                return GestureDetector(
-                                  onTap: () async {
-                                    bool existing = false;
-
-                                    log('Fav Item Slot:${favouriteListCart.map((e) => e.sId)}');
-                                    log('Sel Id Slot:${widget.excursions.first.sId}');
-
-                                    print(
-                                        "controller.selectedtour ${activitycontroller.selectedtour}");
-
-                                    favouriteListCart.addAll(
-                                        activitycontroller.selectedtour);
-
-                                    SharedPreferences prefs =
-                                        await SharedPreferences.getInstance();
-                                    prefs.setBool("youKey", isSelected);
-                                    setState(() {
-                                      favouriteListCart;
-                                      isSelected = !isSelected;
-                                    });
-
-                                    activitycontroller.goToCheckout();
-                                  },
-                                  child: Stack(
-                                    children: [
-                                      FxContainer(
-                                        color: const Color(0xff1529e8)
-                                            .withAlpha(40),
-                                        paddingAll: activitycontroller
-                                            .paddingAnimation.value,
-                                        child: Icon(
-                                          FeatherIcons.shoppingBag,
-                                          color: const Color(0xff1529e8),
-                                          size: activitycontroller
-                                              .cartAnimation.value,
-                                        ),
-                                      ),
-                                      // controller.addCart
-                                      //     ?
-                                      Positioned(
-                                        right: 10,
-                                        top: 8,
-                                        child: FxContainer.rounded(
-                                          color: const Color(0xff1529e8),
-                                          paddingAll: 4,
-                                          child: FxText.bodySmall(
-                                            activitycontroller
-                                                .selectedtour.length
-                                                .toString(),
-                                            color: theme.colorScheme.onPrimary,
-                                            fontSize: 8,
-                                            fontWeight: 700,
-                                          ),
-                                        ),
-                                      )
-                                      // : Container(),
-                                    ],
-                                  ),
-                                );
-                              },
-                            ),
-                            FxSpacing.width(20),
-                            Expanded(
-                              child: FadeTransition(
-                                opacity: activitycontroller.fadeAnimation,
-                                child: FxButton.block(
-                                    onPressed: () {
-                                      // token == null
-                                      //     ? controller.Login()
-                                      //
-                                      activitycontroller.selectedtour.first
-                                                  .selectedDate ==
-                                              null
-                                          ? CustomSnackbar.show(
-                                              context: context,
-                                              message: 'Select Your Tour date',
-                                              backgroundColor:
-                                                  const Color(0xff1529e8),
-                                              duration:
-                                                  const Duration(seconds: 2),
-                                            )
-                                          : activitycontroller.goToCheckout1();
-                                      // controller.goToCheckout1();
-                                      // favouriteListCart
-                                      //     .add(controller.selectedtour as Activity);
-                                    },
-                                    backgroundColor: const Color(0xff1529e8),
-                                    // backgroundColor: theme.colorScheme.primary,
-                                    elevation: 0,
-                                    borderRadiusAll: 4,
-                                    child: Row(
-                                      children: [
-                                        SlideTransition(
-                                          position:
-                                              activitycontroller.animation,
-                                          child: Image(
-                                            height: 22,
-                                            width: 22,
-                                            color: theme.colorScheme.onPrimary,
-                                            image: const AssetImage(
-                                                'assets/images/apps/shopping2/icons/clear_cart_outline.png'),
-                                          ),
-                                        ),
-                                        Expanded(
-                                          child: Center(
-                                            child: FxText.bodyMedium(
-                                              'Checkout',
-                                              fontWeight: 600,
-                                              color:
-                                                  theme.colorScheme.onPrimary,
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    )),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-            )
-          ],
-        ),
-      );
-    }
+    return _buildCartList();
   }
 }
 

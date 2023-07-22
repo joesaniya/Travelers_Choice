@@ -1,11 +1,13 @@
 import 'dart:developer';
 
 import 'package:dropdown_button2/dropdown_button2.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutx/flutx.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../card_widgets/customsnackbar.dart';
 import '../controllers/checkout_controller.dart';
 import '../localizations/language.dart';
@@ -69,6 +71,7 @@ class _CheckOutScreenState extends State<CheckOutScreen>
   late OutlineInputBorder outlineInputBorderenable;
   late OutlineInputBorder outlineInputBorderfocus;
   List? selectedExcursions;
+  // List<Activity>? selectedExcursions;
   String? token;
   @override
   void initState() {
@@ -125,6 +128,24 @@ class _CheckOutScreenState extends State<CheckOutScreen>
     });
   }
 
+  launchingUrl(String Url) async {
+    // String url = "https://www.travellerschoice.ae/terms-and-conditions/";
+    String url = Url;
+    var urllaunchable =
+        await canLaunch(url); //canLaunch is from url_launcher package
+    if (urllaunchable) {
+      await launch(url); //launch is from url_launcher package to launch URL
+    } else {
+      log("URL can't be launched.");
+      CustomSnackbar.show(
+        context: context,
+        message: 'URL can\'t be launched',
+        backgroundColor: const Color(0xff1529e8),
+        duration: const Duration(seconds: 2),
+      );
+    }
+  }
+
   fetchlog() async {
     log('fetch log calling');
     log('Excursions:$selectedExcursions');
@@ -138,7 +159,9 @@ class _CheckOutScreenState extends State<CheckOutScreen>
 
     //   log('Sid:${e.sId.toString()}');
     // });
-    for (var element in selectedExcursions!) {
+    for (var element in widget.selectedtourOption)
+    // for (var element in selectedExcursions!)
+    {
       log('Sid:${element.sId.toString()}');
     }
   }
@@ -358,7 +381,7 @@ class _CheckOutScreenState extends State<CheckOutScreen>
                               widget.selectedtourOption[index].transferCode!
                                   .isEmpty
                           ? FxText.bodyMedium(
-                              'PrivateDemo',
+                              'Without Transfer',
                               fontWeight: 700,
                             )
                           : FxText.bodyMedium(
@@ -1458,8 +1481,12 @@ class _CheckOutScreenState extends State<CheckOutScreen>
                   child: FxButton(
                     padding: FxSpacing.y(12),
                     onPressed: () {
-                      controller.nextPage(selectedExcursions, context,
-                          widget.totalAmount, controller.token);
+                      controller.nextPage(
+                          // selectedExcursions,
+                          widget.selectedtourOption,
+                          context,
+                          widget.totalAmount,
+                          controller.token);
                     },
                     borderRadiusAll: 4,
                     elevation: 0,
@@ -1760,11 +1787,40 @@ class _CheckOutScreenState extends State<CheckOutScreen>
               token == null
                   ? controller.Login()
                   : controller.selectedPayment == 1
-                      ? controller.nextPage(selectedExcursions, context,
-                          widget.totalAmount, controller.token)
+                      ? widget.selectedtourOption.first.activityTimeSlot == null
+                          ? controller.nextPage(
+                              widget.selectedtourOption,
+                              // selectedExcursions,
+                              context,
+                              widget.totalAmount,
+                              controller.token)
+                          : controller.nextPageBurj(
+                              widget.selectedtourOption,
+                              // selectedExcursions,
+                              context,
+                              widget.totalAmount,
+                              controller.token)
+                      //          controller.selectedPayment == 1
+                      // ? controller.nextPage(
+                      //       widget.selectedtourOption,
+                      //       // selectedExcursions,
+                      //        context,
+                      //         widget.totalAmount, controller.token)
                       : controller.selectedPayment == 2
-                          ? controller.nextPage(selectedExcursions, context,
-                              widget.totalAmount, controller.token)
+                          ? widget.selectedtourOption.first.activityTimeSlot ==
+                                  null
+                              ? controller.nextPage(
+                                  widget.selectedtourOption,
+                                  // selectedExcursions,
+                                  context,
+                                  widget.totalAmount,
+                                  controller.token)
+                              : controller.nextPageBurj(
+                                  widget.selectedtourOption,
+                                  // selectedExcursions,
+                                  context,
+                                  widget.totalAmount,
+                                  controller.token)
                           : CustomSnackbar.show(
                               context: context,
                               message: 'Select payment method',
@@ -1781,33 +1837,83 @@ class _CheckOutScreenState extends State<CheckOutScreen>
             elevation: 0,
             splashColor: const Color(0xff1529e8).withAlpha(40),
             backgroundColor: const Color(0xff1529e8),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            child: Column(
               children: [
-                FxText.bodyMedium(
-                  'Book Now',
-                  fontWeight: 600,
-                  color: theme.colorScheme.onPrimary,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    FxText.bodyMedium(
+                      'Book Now',
+                      fontWeight: 600,
+                      color: theme.colorScheme.onPrimary,
+                    ),
+                    conversionRate == null
+                        ? FxText.bodyMedium(
+                            '0 AED',
+                            fontWeight: 700,
+                            color: theme.colorScheme.onPrimary,
+                          )
+                        : FxText.bodyMedium(
+                            // ' ${widget.totalAmount} AED',
+                            // rateconversion,
+                            '$rateconversion1 $currencySymbol',
+                            // '${((widget.totalAmount! * conversionRate!)).toStringAsFixed(2)} $currencySymbol',
+                            // '${widget.selectedtourOption.first.GrandTotalAmount}',
+                            // '${widget.totalAmount} AED',
+                            // widget.finalAmount.toString(),
+                            // widget.TotalCalculation.toString(),
+                            // controller1.grandSelectedTourAmount().toString(),
+                            fontWeight: 700,
+                            color: theme.colorScheme.onPrimary,
+                          )
+                  ],
                 ),
-                conversionRate == null
-                    ? FxText.bodyMedium(
-                        '0 AED',
-                        fontWeight: 700,
-                        color: theme.colorScheme.onPrimary,
-                      )
-                    : FxText.bodyMedium(
-                        // ' ${widget.totalAmount} AED',
-                        // rateconversion,
-                        '$rateconversion1 $currencySymbol',
-                        // '${((widget.totalAmount! * conversionRate!)).toStringAsFixed(2)} $currencySymbol',
-                        // '${widget.selectedtourOption.first.GrandTotalAmount}',
-                        // '${widget.totalAmount} AED',
-                        // widget.finalAmount.toString(),
-                        // widget.TotalCalculation.toString(),
-                        // controller1.grandSelectedTourAmount().toString(),
-                        fontWeight: 700,
-                        color: theme.colorScheme.onPrimary,
-                      )
+                RichText(
+                  text: TextSpan(
+                    // style: TextStyle(color: Colors.black, fontSize: 36),
+                    children: <TextSpan>[
+                      const TextSpan(
+                          text:
+                              'By clicking book now you agree to our terms and conditions please read more about it read at the terms and conditions',
+                          style: TextStyle(
+                              // height: 2,
+                              // letterSpacing: 1.0,
+                              color: Colors.white,
+                              fontSize: 10,
+                              fontWeight: FontWeight.w300)),
+                      TextSpan(
+                          text: ' link',
+                          recognizer: TapGestureRecognizer()
+                            ..onTap = () async {
+                              log('terms and conditions clicked');
+                              String url =
+                                  "https://www.travellerschoice.ae/terms-and-conditions/";
+                              await launchingUrl(url);
+                              // String url =
+                              //     "https://www.travellerschoice.ae/terms-and-conditions/";
+                              // var urllaunchable = await canLaunch(
+                              //     url); //canLaunch is from url_launcher package
+                              // if (urllaunchable) {
+                              //   await launch(
+                              //       url); //launch is from url_launcher package to launch URL
+                              // } else {
+                              //   log("URL can't be launched.");
+                              //   CustomSnackbar.show(
+                              //     context: context,
+                              //     message: 'URL can\'t be launched',
+                              //     backgroundColor: const Color(0xff1529e8),
+                              //     duration: const Duration(seconds: 2),
+                              //   );
+                              // }
+                            },
+                          style: const TextStyle(
+                              color: Colors.white,
+                              decoration: TextDecoration.underline,
+                              fontSize: 10,
+                              fontWeight: FontWeight.w500)),
+                    ],
+                  ),
+                ),
               ],
             ),
           ),
@@ -1819,11 +1925,36 @@ class _CheckOutScreenState extends State<CheckOutScreen>
               ? FxButton.block(
                   onPressed: () {
                     controller.selectedPayment == 1
-                        ? controller.nextPage(selectedExcursions, context,
-                            widget.totalAmount, controller.token)
+                        ? widget.selectedtourOption.first.activityTimeSlot ==
+                                null
+                            ? controller.nextPage(
+                                widget.selectedtourOption,
+                                // selectedExcursions,
+                                context,
+                                widget.totalAmount,
+                                controller.token)
+                            : controller.nextPageBurj(
+                                widget.selectedtourOption,
+                                // selectedExcursions,
+                                context,
+                                widget.totalAmount,
+                                controller.token)
                         : controller.selectedPayment == 2
-                            ? controller.nextPage(selectedExcursions, context,
-                                widget.totalAmount, controller.token)
+                            ? widget.selectedtourOption.first
+                                        .activityTimeSlot ==
+                                    null
+                                ? controller.nextPage(
+                                    widget.selectedtourOption,
+                                    // selectedExcursions,
+                                    context,
+                                    widget.totalAmount,
+                                    controller.token)
+                                : controller.nextPageBurj(
+                                    widget.selectedtourOption,
+                                    // selectedExcursions,
+                                    context,
+                                    widget.totalAmount,
+                                    controller.token)
                             : CustomSnackbar.show(
                                 context: context,
                                 message: 'Select payment method',
@@ -1838,27 +1969,77 @@ class _CheckOutScreenState extends State<CheckOutScreen>
                   elevation: 0,
                   splashColor: const Color(0xff1529e8).withAlpha(40),
                   backgroundColor: const Color(0xff1529e8).withAlpha(40),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  child: Column(
                     children: [
-                      FxText.bodyMedium(
-                        'Payment Without Login',
-                        fontWeight: 600,
-                        color: const Color(0xff1529e8),
-                        // color: theme.colorScheme.onPrimary,
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          FxText.bodyMedium(
+                            'Payment Without Login',
+                            fontWeight: 600,
+                            color: const Color(0xff1529e8),
+                            // color: theme.colorScheme.onPrimary,
+                          ),
+                          FxText.bodyMedium(
+                            // ' ${widget.totalAmount} AED',
+                            '$rateconversion1 $currencySymbol',
+                            // '${((widget.totalAmount! * conversionRate!)).toStringAsFixed(2)} $currencySymbol',
+                            // '${widget.selectedtourOption.first.GrandTotalAmount}',
+                            // '${widget.totalAmount} AED',
+                            // widget.finalAmount.toString(),
+                            // widget.TotalCalculation.toString(),
+                            // controller1.grandSelectedTourAmount().toString(),
+                            fontWeight: 700,
+                            color: const Color(0xff1529e8),
+                            // color: theme.colorScheme.onPrimary,
+                          ),
+                        ],
                       ),
-                      FxText.bodyMedium(
-                        // ' ${widget.totalAmount} AED',
-                        '$rateconversion1 $currencySymbol',
-                        // '${((widget.totalAmount! * conversionRate!)).toStringAsFixed(2)} $currencySymbol',
-                        // '${widget.selectedtourOption.first.GrandTotalAmount}',
-                        // '${widget.totalAmount} AED',
-                        // widget.finalAmount.toString(),
-                        // widget.TotalCalculation.toString(),
-                        // controller1.grandSelectedTourAmount().toString(),
-                        fontWeight: 700,
-                        color: const Color(0xff1529e8),
-                        // color: theme.colorScheme.onPrimary,
+                      RichText(
+                        text: TextSpan(
+                          // style: TextStyle(color: Colors.black, fontSize: 36),
+                          children: <TextSpan>[
+                            const TextSpan(
+                                text:
+                                    'By clicking book now you agree to our terms and conditions please read more about it read at the terms and conditions',
+                                style: TextStyle(
+                                    // height: 2,
+                                    // letterSpacing: 1.0,
+                                    color: Color(0xff1529e8),
+                                    fontSize: 10,
+                                    fontWeight: FontWeight.w300)),
+                            TextSpan(
+                                text: ' link',
+                                recognizer: TapGestureRecognizer()
+                                  ..onTap = () async {
+                                    log('without login terms and conditions clicked');
+                                    String url =
+                                        "https://www.travellerschoice.ae/terms-and-conditions/";
+                                    await launchingUrl(url);
+                                    // String url =
+                                    //     "https://www.travellerschoice.ae/terms-and-conditions/";
+                                    // var urllaunchable = await canLaunch(
+                                    //     url); //canLaunch is from url_launcher package
+                                    // if (urllaunchable) {
+                                    //   await launch(
+                                    //       url); //launch is from url_launcher package to launch URL
+                                    // } else {
+                                    //   log("URL can't be launched.");
+                                    //   CustomSnackbar.show(
+                                    //     context: context,
+                                    //     message: 'URL can\'t be launched',
+                                    //     backgroundColor: const Color(0xff1529e8),
+                                    //     duration: const Duration(seconds: 2),
+                                    //   );
+                                    // }
+                                  },
+                                style: const TextStyle(
+                                    color: Color(0xff1529e8),
+                                    decoration: TextDecoration.underline,
+                                    fontSize: 10,
+                                    fontWeight: FontWeight.w500)),
+                          ],
+                        ),
                       ),
                     ],
                   ),

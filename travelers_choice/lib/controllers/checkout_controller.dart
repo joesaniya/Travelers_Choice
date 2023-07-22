@@ -2,7 +2,6 @@ import 'dart:developer';
 import '../card_widgets/customsnackbar.dart';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutx/flutx.dart';
 import 'package:hotel_travel/views/hotel_travel_constants.dart';
 import 'package:iconsax/iconsax.dart';
@@ -16,16 +15,15 @@ import '../models/shipping_address.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import '../services/app_constants.dart';
-import '../views/checkout_screen.dart';
 import '../views/login_Screens/login_screen.dart';
 import '../views/payment_cc.dart';
 import 'razor_credentials.dart' as razorCredentials;
 
-class Tab {
+class TabWidget {
   String name;
   IconData iconData;
 
-  Tab(this.name, this.iconData);
+  TabWidget(this.name, this.iconData);
 }
 
 class CheckOutController extends FxController {
@@ -46,7 +44,7 @@ class CheckOutController extends FxController {
   String? selectedCountryName;
   bool selected = true;
 
-  List<Tab> tabs = [];
+  List<TabWidget> tabs = [];
   String? token;
 //form
   late Animation<double> fadeAnimation, cartAnimation;
@@ -164,9 +162,9 @@ class CheckOutController extends FxController {
     addressList = ShippingAddress.shipping();
     addressSelected = addressList!.first;
     tabs = [
-      Tab('Personal Details', Iconsax.user),
-      Tab('Payment', Icons.payment),
-      Tab('Booked', Icons.check_circle_outline),
+      TabWidget('Personal Details', Iconsax.user),
+      TabWidget('Payment', Icons.payment),
+      TabWidget('Booked', Icons.check_circle_outline),
     ];
     FnameTE = TextEditingController();
     LnameTE = TextEditingController();
@@ -346,7 +344,6 @@ class CheckOutController extends FxController {
     update();
   }
 
-  
   void Login() {
     log('calling login....');
     // ScaffoldMessenger.of(context).showSnackBar(
@@ -376,14 +373,56 @@ class CheckOutController extends FxController {
   }
 
   List<Activity> selectedtour = [];
+  // grandSelectedTourAmount() {
+  //   double amount = 0;
+
+  //   for (Activity tour in selectedtour) {
+  //     log('tour.grandTotal:${tour.grandTotal}');
+
+  //     amount = amount + (tour.grandTotal);
+  //     log('amount:$amount');
+  //   }
+
+  //   return amount;
+  //   // update();
+  //   // log('Amount:$amount');
+  // }
   grandSelectedTourAmount() {
     double amount = 0;
+    // double privateamount = 0;
 
     for (Activity tour in selectedtour) {
       log('tour.grandTotal:${tour.grandTotal}');
+      // var Estheramount =
+      //     tour.adultCount / tour.privateTransfers!.first.maxCapacity!.toInt();
+      // log('Esther:$Estheramount');
+      // var totalmembercount = Estheramount.toInt();
+      // log('totalmembercount:$totalmembercount');
 
-      amount = amount + (tour.grandTotal);
-      log('amount:$amount');
+      // amount = membercount * tour.totalAmount;
+      // log('Amount Transfer:$amount');
+      if (tour.activityType == 'transfer') {
+        // // if(tour.privateTransfers!.first.maxCapacity<!tour.adultCount)
+        // if(tour.adultCount/)
+        // {
+
+        // }
+        // log('Esther1:${Estheramount.toInt()}');
+        log('activity type');
+        amount = amount + (tour.grandTotal);
+        log('amountgrandSelectedTourAmount() transfer:$amount');
+      } else if (tour.privateTransfers!.isEmpty) {
+        log('no transfers');
+        amount = amount + (tour.grandTotal);
+      } else {
+        // amount =
+        //     amount + (tour.grandTotal + tour.privateTransfers!.first.price);
+        amount = amount + (tour.grandTotal);
+        log('amountgrandSelectedTourAmount():$amount');
+      }
+      // amount = amount + (tour.grandTotal + tour.privateTransfers!.first.price);
+      // // amount = amount + (tour.grandTotal);
+      // log('amount:$amount');
     }
 
     return amount;
@@ -421,7 +460,12 @@ class CheckOutController extends FxController {
   // }
 
   //next button
-  nextPage(selectedExcursionsDatas, context, total, token) async {
+  nextPage(
+      // selectedExcursionsDatas,
+      List<Activity> selectedExcursionsDatas,
+      context,
+      total,
+      token) async {
     log('Page Number:$currentPage ');
     log('Total:$total ');
 
@@ -508,7 +552,9 @@ class CheckOutController extends FxController {
       }
     } else if (currentPage == 1) {
       log('selected page 1');
-
+      // if (selectedPayment == 1) {
+      //   log('Activity Time Slot');
+      // } else
       if (selectedPayment == 1) {
         log('1');
         createOrderccAvenue(selectedExcursionsDatas, token);
@@ -561,6 +607,117 @@ class CheckOutController extends FxController {
   //     );
   //   }
   // }
+  nextPageBurj(
+      // selectedExcursionsDatas,
+      List<Activity> selectedExcursionsDatas,
+      context,
+      total,
+      token) async {
+    log('Page Number:$currentPage ');
+    log('Total:$total ');
+
+    if (currentPage == 0) {
+      log('selected page 0');
+      if (selectedname == null || selectedname!.isEmpty) {
+        CustomSnackbar.show(
+          context: context,
+          message: 'Please Select Mr/Ms/Mrs',
+          backgroundColor: const Color(0xff1529e8),
+          duration: const Duration(seconds: 2),
+        );
+        // ScaffoldMessenger.of(context).showSnackBar(
+        //     const SnackBar(content: Text("Please Select Mr/Ms/Mrs")));
+      } else if (FnameTE.text.isEmpty) {
+        CustomSnackbar.show(
+          context: context,
+          message: 'Please Enter First Name',
+          backgroundColor: const Color(0xff1529e8),
+          duration: const Duration(seconds: 2),
+        );
+        // ScaffoldMessenger.of(context).showSnackBar(
+        //     const SnackBar(content: Text("Please Enter First Name")));
+      } else if (LnameTE.text.isEmpty) {
+        CustomSnackbar.show(
+          context: context,
+          message: 'Please Enter Last Name',
+          backgroundColor: const Color(0xff1529e8),
+          duration: const Duration(seconds: 2),
+        );
+        // ScaffoldMessenger.of(context).showSnackBar(
+        //     const SnackBar(content: Text("Please Enter Last Name")));
+      } else if (emailTE.text.isEmpty) {
+        CustomSnackbar.show(
+          context: context,
+          message: 'Please Enter email',
+          backgroundColor: const Color(0xff1529e8),
+          duration: const Duration(seconds: 2),
+        );
+        // ScaffoldMessenger.of(context)
+        //     .showSnackBar(const SnackBar(content: Text("Please Enter Email")));
+      } else if (
+          // selectedcountry == null || selectedcountry!.isEmpty
+          selectedCountryName == null || selectedCountryName!.isEmpty) {
+        // ScaffoldMessenger.of(context).showSnackBar(
+        //     const SnackBar(content: Text("Please Select Country")));
+        CustomSnackbar.show(
+          context: context,
+          message: 'Please Select Country',
+          backgroundColor: const Color(0xff1529e8),
+          duration: const Duration(seconds: 2),
+        );
+      } else if (selectedCountryCode == null || selectedCountryCode!.isEmpty) {
+        // ScaffoldMessenger.of(context).showSnackBar(
+        //     const SnackBar(content: Text("Please Select Phone Code")));
+        CustomSnackbar.show(
+          context: context,
+          message: 'Please Select Phone Code',
+          backgroundColor: const Color(0xff1529e8),
+          duration: const Duration(seconds: 2),
+        );
+      } else if (phoneTE.text.isEmpty
+          // || phoneTE.text.length != 10
+          ) {
+        CustomSnackbar.show(
+          context: context,
+          message: 'Please Enter Phone Number',
+          backgroundColor: const Color(0xff1529e8),
+          duration: const Duration(seconds: 2),
+        );
+        // ScaffoldMessenger.of(context).showSnackBar(
+        //     const SnackBar(content: Text("Please Enter Phone Number")));
+      }
+      // else if (reqTE.text.isEmpty) {
+      //   ScaffoldMessenger.of(context)
+      //       .showSnackBar(const SnackBar(content: Text("Enter Request")));
+      // }
+      else {
+        await pageController.animateToPage(
+          currentPage + 1,
+          duration: const Duration(milliseconds: 600),
+          curve: Curves.ease,
+        );
+      }
+    } else if (currentPage == 1) {
+      log('selected page 1');
+      // if (selectedPayment == 1) {
+      //   log('Activity Time Slot');
+      // } else
+      if (selectedPayment == 1) {
+        log('1');
+        createOrderccAvenueBUrj(selectedExcursionsDatas, token);
+      } else {
+        log('2');
+        // createOrder(selectedExcursionsDatas);
+      }
+    } else {
+      log('selected page final');
+      await pageController.animateToPage(
+        currentPage + 1,
+        duration: const Duration(milliseconds: 600),
+        curve: Curves.ease,
+      );
+    }
+  }
 
   onPageChanged(int page, {bool fromUser = false}) async {
     if (!fromUser) currentPage = page;
@@ -710,7 +867,7 @@ class CheckOutController extends FxController {
       log('Response Id:${jsonDecode(res.body)['orderId']}');
       log('order Id:${jsondata['order']['id']}');
       // openGateway(jsonDecode(res.body)['orderId']);
-      openGateway(orderId);
+      // openGateway(orderId);
       // openGateway(jsondata['order']);
       // pageController.animateToPage(
       //   currentPage + 1,
@@ -734,43 +891,6 @@ class CheckOutController extends FxController {
       // ScaffoldMessenger.of(context)
       //     .showSnackBar(SnackBar(content: Text(jsondata['error'])));
       return null;
-    }
-  }
-
-// openGateway(Map<String, dynamic> order)
-  openGateway(String orderId) {
-    log('OrderId:$orderId');
-    log('key:${razorCredentials.keyId}');
-    var options = {
-      "key": razorCredentials.keyId,
-      "amount": 10000, //in the smallest currency sub-unit.
-      "name": "Acme Corp.",
-      "order_id": orderId, // Generate order_id using Orders API
-      "description": "Tours",
-      "timeout": 60 * 5, // in seconds // 5 minutes
-      "prefill": {
-        "contact": phoneTE.text,
-        "email": emailTE.text,
-      }
-    };
-    // _razorpay.open(options);
-    // var datavalue = jsonEncode(options);
-    String encodedMap = jsonEncode(options);
-
-    Map<String, dynamic> user = jsonDecode(encodedMap ?? '');
-    // Map<String, dynamic> map =
-    //     json.decode(options as String) as Map<String, dynamic>;
-    try {
-      // log('Options:$datavalue');
-
-      // _razorpay.open(datavalue);
-      // log('Options:$options');
-      // _razorpay.open(options);
-      //todo
-      log('Options:$user');
-      _razorpay.open(user);
-    } catch (e) {
-      print('razor error:${e.toString()}');
     }
   }
 
@@ -827,13 +947,163 @@ class CheckOutController extends FxController {
     }
   }
 
+  //burjcc
+  void createOrderccAvenueBUrj(
+      List<Activity> selectedExcursionsDatas, token) async {
+    log('Createorder burj');
+
+    log('Excursions pay:${selectedExcursionsDatas.map((e) => e.transferCode).toList()}');
+    List<Map<String, dynamic>> ActivityList = [];
+    List<Map<String, dynamic>> SlotActivityList = [];
+    for (var element in selectedExcursionsDatas) {
+      log('Tansfer:${element.transferCode ?? 'Without'}');
+      // var datas=
+      // Map<String, dynamic> datas = {
+      //   "activity": element.sId,
+      //   // "date": "2023-02-28",
+      //   "date": element.selectedDate,
+      //   "adultsCount": element.adultCount,
+      //   "childrenCount": element.childCount,
+      //   "infantCount": element.infantCount,
+      //   "transferType": element.transferCode ?? 'Without'
+      //   // "activity": "63e6317d20e0e01648630e6a",
+      //   // "date": "2023-04-5",
+      //   // "adultsCount": 1,
+      //   // "childrenCount": 0,
+      //   // "infantCount": 0,
+      //   // "transferType": "private"
+      // };
+
+      //activity
+      // Map<String, dynamic> slotdatas = {
+      //   "EventID": "1211239",
+      //   "EventName": "BW",
+      //   "StartDateTime": "2023-09-3T17:45:00.000",
+      //   "EndDateTime": "2023-09-3T18:15:00.000",
+      //   "ResourceID": "83",
+      //   "Available": "150",
+      //   "Status": "0",
+      //   "AdultPrice": "18",
+      //   "ChildPrice": "0"
+      // };
+
+      // SlotActivityList.add(slotdatas);
+
+      //normal
+      Map<String, dynamic> datas = {
+        "activity": element.sId,
+        "date": element.selectedDate,
+        "adultsCount": element.adultCount,
+        "childrenCount": element.childCount,
+        "infantCount": element.infantCount,
+        "transferType": element.transferCode ?? 'Without',
+        // "slot": SlotActivityList
+        "slot": {
+          // "EventID": "1211239",
+          // "EventName": "BW",
+          // "StartDateTime": "2023-09-3",
+          // "EndDateTime": "2023-09-3",
+          // "ResourceID": "83",
+          // "Available": "150",
+          // "Status": "0",
+          // "AdultPrice": "18",
+          // "ChildPrice": "0"
+
+          "AdultPrice": element.activityTimeSlot!.adultPrice.toString(),
+          "Available": element.activityTimeSlot!.available,
+          "ChildPrice": element.activityTimeSlot!.childPrice.toString(),
+          "EndDateTime":
+              element.activityTimeSlot!.endDateTime.toIso8601String(),
+          "StartDateTime":
+              element.activityTimeSlot!.startDateTime.toIso8601String(),
+          "EventID": element.activityTimeSlot!.eventId,
+          "EventName": element.activityTimeSlot!.eventName,
+          "ResourceID": element.activityTimeSlot!.resourceId,
+          "Status": element.activityTimeSlot!.status
+        }
+      };
+
+      ActivityList.add(datas);
+      log(' burjData-->$datas');
+    }
+    selectedExcursionsDatas.map((e) =>
+        // e,
+        log('selected Activites:$e'));
+    //var body=
+    Map<String, dynamic> body = {
+      "name": FnameTE.text,
+      "email": emailTE.text,
+      "phoneNumber": phoneTE.text,
+      "country": selectedCountryCode,
+      "paymentProcessor": "ccavenue",
+      // "paymentProcessor": selectedPayment == 1 ? "ccavenue" : "razorpay",
+      // "selectedActivities": jsonEncode(ActivityList)
+      "selectedActivities": ActivityList
+    };
+    log('Raw Body:$body');
+    var res = await http.post(
+      Uri.parse(
+          "https://secure.mytravellerschoice.com/api/v1/attractions/orders/create"),
+      headers: <String, String>{
+        "Content-Type": "application/json",
+        // "Accept": "application/json",
+        "authorization": "Bearer $token",
+      },
+      body: jsonEncode(body),
+    );
+    log('cc Bearer Token:$token');
+    log('Body Data:${res.body}');
+
+    //todo
+
+    if (res.statusCode == 200) {
+      log('Response cc:${res.body}');
+
+      var paymentdata = res.body;
+      log('Payment data:$paymentdata');
+
+      Navigator.of(context, rootNavigator: true)
+          .pushReplacement(
+        MaterialPageRoute(
+          builder: (context) => PaymentCC(
+            paymentdata: paymentdata,
+            totalAmount: grandSelectedTourAmount(),
+          ),
+        ),
+      )
+          .whenComplete(() {
+        log('complete');
+        Navigator.of(context, rootNavigator: true).pushReplacement(
+          MaterialPageRoute(
+            builder: (context) => const BookingSuccess(),
+          ),
+        );
+      });
+    } else {
+      var jsondata = jsonDecode(res.body);
+      log(jsondata['error']);
+      print(jsondata['error']);
+      //snackbar
+      CustomSnackbar.show(
+        context: context,
+        message: jsondata['error'],
+        backgroundColor: const Color(0xff1529e8),
+        duration: const Duration(seconds: 2),
+      );
+      // ScaffoldMessenger.of(context)
+      //     .showSnackBar(SnackBar(content: Text(jsondata['error'])));
+      return null;
+    }
+  }
+
   //ccavenue
-  void createOrderccAvenue(selectedExcursionsDatas, token) async {
+  void createOrderccAvenue(
+      List<Activity> selectedExcursionsDatas, token) async {
     String username = razorCredentials.keyId;
     String password = razorCredentials.keySecret;
     String basicAuth =
         'Basic ${base64Encode(utf8.encode('$username:$password'))}';
-
+    log('Excursions pay:${selectedExcursionsDatas.map((e) => e.transferCode).toList()}');
     List<Map<String, dynamic>> ActivityList = [];
     for (var element in selectedExcursionsDatas) {
       print('Element:${element.sId}');
@@ -842,6 +1112,7 @@ class CheckOutController extends FxController {
       print('Adult Count:${element.adultCount}');
       print('child Count:${element.childCount}');
       print('Infant Count:${element.infantCount}');
+      log('Tansfer:${element.transferCode ?? 'Without'}');
       // var datas=
       Map<String, dynamic> datas = {
         "activity": element.sId,
@@ -850,7 +1121,7 @@ class CheckOutController extends FxController {
         "adultsCount": element.adultCount,
         "childrenCount": element.childCount,
         "infantCount": element.infantCount,
-        "transferType": "private"
+        "transferType": element.transferCode ?? 'Without'
         // "activity": "63e6317d20e0e01648630e6a",
         // "date": "2023-04-5",
         // "adultsCount": 1,
@@ -875,6 +1146,7 @@ class CheckOutController extends FxController {
       // "selectedActivities": jsonEncode(ActivityList)
       "selectedActivities": ActivityList
     };
+    log('Raw Body:$body');
     var res = await http.post(
       Uri.parse(
           "https://secure.mytravellerschoice.com/api/v1/attractions/orders/create"),
@@ -895,10 +1167,14 @@ class CheckOutController extends FxController {
 
       var paymentdata = res.body;
       log('Payment data:$paymentdata');
+
       Navigator.of(context, rootNavigator: true)
           .pushReplacement(
         MaterialPageRoute(
-          builder: (context) => PaymentCC(paymentdata: paymentdata),
+          builder: (context) => PaymentCC(
+            paymentdata: paymentdata,
+            totalAmount: grandSelectedTourAmount(),
+          ),
         ),
       )
           .whenComplete(() {

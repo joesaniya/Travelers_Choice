@@ -921,7 +921,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     }
 
     return SingleChildScrollView(
-      controller: controller.scrollController,
+      // controller: controller.scrollController,
+      controller: controller.scrollController1,
       scrollDirection: Axis.horizontal,
       child: Row(
         children: list,

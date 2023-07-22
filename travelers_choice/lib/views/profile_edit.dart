@@ -67,12 +67,12 @@ class _EditProfilePageState extends State<EditProfilePage>
             sharedPrefValue.getString(AppConstants.KEY_ACCESS_TOKEN_Email);
         log(controller.email.toString());
         controller.phoneNumber =
-            sharedPrefValue.getString(AppConstants.KEY_ACCESS_TOKEN_Phone);
+            sharedPrefValue.getInt(AppConstants.KEY_ACCESS_TOKEN_Phone);
         log('Ph Number:${controller.phoneNumber.toString()}');
         log('username');
         controller.token =
             sharedPrefValue.getString(AppConstants.KEY_ACCESS_TOKEN)!;
-        log(controller.token!);
+        log('Edit token:${controller.token!}');
         controller.countryId =
             sharedPrefValue.getString(AppConstants.KEY_ACCESS_TOKEN_countryId)!;
         log(controller.countryId.toString());
@@ -275,7 +275,7 @@ class _EditProfilePageState extends State<EditProfilePage>
                     isDense: true,
                     fillColor: theme.cardTheme.color,
                     hintText: "Phone",
-                    labelText: controller.phoneNumber,
+                    labelText: controller.phoneNumber.toString(),
                     enabledBorder: outlineInputBorder,
                     focusedBorder: outlineInputBorder,
                     border: outlineInputBorder,

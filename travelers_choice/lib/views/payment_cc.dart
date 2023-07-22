@@ -7,12 +7,12 @@ import '../models/atteraction_model.dart';
 import '/theme/app_theme.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import '/controllers/login_controller.dart';
-import 'full_app.dart';
-import 'history_page.dart';
+import 'all_bookings.dart';
 
 class PaymentCC extends StatefulWidget {
   String paymentdata;
-  PaymentCC({super.key, required this.paymentdata});
+  double? totalAmount;
+  PaymentCC({super.key, required this.paymentdata, this.totalAmount});
   // const PaymentCC({Key? key}) : super(key: key);
 
   @override
@@ -59,6 +59,7 @@ class _PaymentCCState extends State<PaymentCC> with TickerProviderStateMixin {
     super.initState();
     theme = AppTheme.shoppingTheme;
     log('Payment cc:${widget.paymentdata}');
+    log('Payment total:${widget.totalAmount}');
     controller = FxControllerStore.put(LogInController(this));
   }
 
@@ -71,7 +72,10 @@ class _PaymentCCState extends State<PaymentCC> with TickerProviderStateMixin {
             onWillPop: () async {
               log('onwillpop called');
               Navigator.of(context, rootNavigator: true).pushReplacement(
-                MaterialPageRoute(builder: (context) => const HistoryScreen()
+                MaterialPageRoute(
+                    builder: (context) =>
+                        // const HistoryScreen()
+                        const AllBookings()
                     // FullApp(_favouriteMeals, _cartMeal)
                     // const BookingSuccess(),
                     ),

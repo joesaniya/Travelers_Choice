@@ -159,7 +159,7 @@ class _NewCartState extends State<NewCart> with TickerProviderStateMixin {
                 ),
                 product.transferCode == null || product.transferCode!.isEmpty
                     ? FxText.bodyMedium(
-                        'PrivateDemo',
+                        'Without Transfer',
                         fontWeight: 700,
                       )
                     : FxText.bodyMedium(

@@ -39,7 +39,15 @@ class AllBookingController extends FxController {
   late Intro intro;
   int searchCounter = 0;
   String? token;
-  AllAttractionOrders? orders;
+  // AllAttractionOrders? orders;
+  List<AllAttractionOrders>? orders;
+  List<AllAttractionOrders> selectedOrder = [];
+  List<AllAttractionOrders> Totalorders = [];
+
+
+  void updateOrder(AllAttractionOrders tour){
+
+  }
 
   @override
   void initState() {

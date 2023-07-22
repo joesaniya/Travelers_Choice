@@ -1213,7 +1213,7 @@ class _HistoryScreenState extends State<HistoryScreen>
               //     color: Color(0xff1529e8),
               //     borderRadius: BorderRadius.circular(25)
               // ),
-    
+
               // labelStyle: TextStyle(color: Colors.white) ,
               //   unselectedLabelColor: Colors.black,
               tabs: const [

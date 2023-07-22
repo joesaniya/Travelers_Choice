@@ -26,8 +26,8 @@ List<Activity> favouriteListCart = <Activity>[];
 class FullApp extends StatefulWidget {
   List<AllattractionModal> favouriteMeal;
   List<Activity> cartMeal;
-   SlotTime? event;
-  FullApp(this.favouriteMeal, this.cartMeal,this.event, {super.key});
+  SlotTime? event;
+  FullApp(this.favouriteMeal, this.cartMeal, this.event, {super.key});
 
   @override
   _FullAppState createState() => _FullAppState();
@@ -107,126 +107,127 @@ class _FullAppState extends State<FullApp> with SingleTickerProviderStateMixin {
     return FxBuilder<FullAppController>(
         controller: controller,
         builder: (controller) {
-          // return _buildItem();
-          return Scaffold(
-            backgroundColor: const Color(0xfff5f5f5),
-            // body: Column(
-            //   children: [
-            //     Expanded(
-            //       child: TabBarView(
-            //         controller: controller.tabController,
-            //         children: <Widget>[
-            //           HomeScreen(),
-            //           // HomeScreen(size: size),
-            //           Text('home'),
-            //           Text('home'),
-            //           Text('home'),
-            //         ],
-            //       ),
-            //     ),
-            //     FxContainer(
-            //       bordered: true,
-            //       enableBorderRadius: false,
-            //       border: Border(
-            //           top: BorderSide(
-            //               color: theme.dividerColor,
-            //               width: 1,
-            //               style: BorderStyle.solid)),
-            //       padding: FxSpacing.xy(12, 16),
-            //       color: theme.scaffoldBackgroundColor,
-            //       child: TabBar(
-            //         controller: controller.tabController,
-            //         indicator: FxTabIndicator(
-            //             indicatorColor: theme.colorScheme.primary,
-            //             indicatorHeight: 3,
-            //             radius: 3,
-            //             indicatorStyle: FxTabIndicatorStyle.rectangle,
-            //             yOffset: -18),
-            //         indicatorSize: TabBarIndicatorSize.tab,
-            //         indicatorColor: theme.colorScheme.primary,
-            //         tabs: buildTab(),
-            //       ),
-            //     )
-            //   ],
-            // ),
+          return _buildItem();
 
-            //crt
-            body: Stack(
-              children: [
-                TabBarView(
-                  controller: controller.tabController,
-                  children: <Widget>[
-                    HomeScreen(widget.cartMeal),
-                    // HomeScreen(size: size),
+          // return Scaffold(
+          //   backgroundColor: const Color(0xfff5f5f5),
+          //   // body: Column(
+          //   //   children: [
+          //   //     Expanded(
+          //   //       child: TabBarView(
+          //   //         controller: controller.tabController,
+          //   //         children: <Widget>[
+          //   //           HomeScreen(),
+          //   //           // HomeScreen(size: size),
+          //   //           Text('home'),
+          //   //           Text('home'),
+          //   //           Text('home'),
+          //   //         ],
+          //   //       ),
+          //   //     ),
+          //   //     FxContainer(
+          //   //       bordered: true,
+          //   //       enableBorderRadius: false,
+          //   //       border: Border(
+          //   //           top: BorderSide(
+          //   //               color: theme.dividerColor,
+          //   //               width: 1,
+          //   //               style: BorderStyle.solid)),
+          //   //       padding: FxSpacing.xy(12, 16),
+          //   //       color: theme.scaffoldBackgroundColor,
+          //   //       child: TabBar(
+          //   //         controller: controller.tabController,
+          //   //         indicator: FxTabIndicator(
+          //   //             indicatorColor: theme.colorScheme.primary,
+          //   //             indicatorHeight: 3,
+          //   //             radius: 3,
+          //   //             indicatorStyle: FxTabIndicatorStyle.rectangle,
+          //   //             yOffset: -18),
+          //   //         indicatorSize: TabBarIndicatorSize.tab,
+          //   //         indicatorColor: theme.colorScheme.primary,
+          //   //         tabs: buildTab(),
+          //   //       ),
+          //   //     )
+          //   //   ],
+          //   // ),
 
-                    // const Center(child: Text('Saved')),
-                    SavedScreen(widget.favouriteMeal),
-                    NewCart(widget.cartMeal,
-                    // widget.event
-                    ),
-                    const HistoryScreen(),
-                    // CartScreen(),
-                    const ProfileScreen()
-                  ],
-                ),
-                Positioned(
-                  bottom: 0,
-                  left: 0,
-                  right: 0,
-                  child: Container(
-                    padding: FxSpacing.xy(12, 8),
-                    child: PhysicalModel(
-                      color: theme.cardTheme.color!.withAlpha(200),
-                      elevation: 12,
-                      borderRadius: const BorderRadius.all(Radius.circular(32)),
-                      shadowColor: theme.colorScheme.onBackground.withAlpha(12),
-                      shape: BoxShape.rectangle,
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: theme.cardTheme.color!.withAlpha(200),
-                          borderRadius:
-                              const BorderRadius.all(Radius.circular(32)),
-                        ),
-                        padding: FxSpacing.xy(16, 12),
-                        child: Row(
-                          children: <Widget>[
-                            singleItem(
-                                index: 0,
-                                iconData: FeatherIcons.search,
-                                activeIconData: FeatherIcons.search,
-                                title: "search"),
-                            singleItem(
-                                index: 1,
-                                iconData: FeatherIcons.heart,
-                                activeIconData: FeatherIcons.heart,
-                                title: "Saved"),
-                            singleItem(
-                                index: 2,
-                                activeIconData: FeatherIcons.shoppingBag,
-                                iconData: FeatherIcons.shoppingBag,
-                                title: "Cart"),
-                            singleItem(
-                                index: 3,
-                                // activeIconData: Icons.luggage,
-                                // iconData: Icons.luggage,
-                                activeIconData: FeatherIcons.clock,
-                                iconData: FeatherIcons.clock,
-                                title: "History"),
-                            singleItem(
-                                index: 4,
-                                iconData: FeatherIcons.user,
-                                activeIconData: FeatherIcons.user,
-                                title: "Profile"),
-                            Expanded(child: Container())
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                )
-              ],
-            ),
-          );
+          //   //crt
+          //   body: Stack(
+          //     children: [
+          //       TabBarView(
+          //         controller: controller.tabController,
+          //         children: <Widget>[
+          //           HomeScreen(widget.cartMeal),
+          //           // HomeScreen(size: size),
+
+          //           // const Center(child: Text('Saved')),
+          //           SavedScreen(widget.favouriteMeal),
+          //           NewCart(widget.cartMeal,
+          //           // widget.event
+          //           ),
+          //           const HistoryScreen(),
+          //           // CartScreen(),
+          //           const ProfileScreen()
+          //         ],
+          //       ),
+          //       Positioned(
+          //         bottom: 0,
+          //         left: 0,
+          //         right: 0,
+          //         child: Container(
+          //           padding: FxSpacing.xy(12, 8),
+          //           child: PhysicalModel(
+          //             color: theme.cardTheme.color!.withAlpha(200),
+          //             elevation: 12,
+          //             borderRadius: const BorderRadius.all(Radius.circular(32)),
+          //             shadowColor: theme.colorScheme.onBackground.withAlpha(12),
+          //             shape: BoxShape.rectangle,
+          //             child: Container(
+          //               decoration: BoxDecoration(
+          //                 color: theme.cardTheme.color!.withAlpha(200),
+          //                 borderRadius:
+          //                     const BorderRadius.all(Radius.circular(32)),
+          //               ),
+          //               padding: FxSpacing.xy(16, 12),
+          //               child: Row(
+          //                 children: <Widget>[
+          //                   singleItem(
+          //                       index: 0,
+          //                       iconData: FeatherIcons.search,
+          //                       activeIconData: FeatherIcons.search,
+          //                       title: "search"),
+          //                   singleItem(
+          //                       index: 1,
+          //                       iconData: FeatherIcons.heart,
+          //                       activeIconData: FeatherIcons.heart,
+          //                       title: "Saved"),
+          //                   singleItem(
+          //                       index: 2,
+          //                       activeIconData: FeatherIcons.shoppingBag,
+          //                       iconData: FeatherIcons.shoppingBag,
+          //                       title: "Cart"),
+          //                   singleItem(
+          //                       index: 3,
+          //                       // activeIconData: Icons.luggage,
+          //                       // iconData: Icons.luggage,
+          //                       activeIconData: FeatherIcons.clock,
+          //                       iconData: FeatherIcons.clock,
+          //                       title: "History"),
+          //                   singleItem(
+          //                       index: 4,
+          //                       iconData: FeatherIcons.user,
+          //                       activeIconData: FeatherIcons.user,
+          //                       title: "Profile"),
+          //                   Expanded(child: Container())
+          //                 ],
+          //               ),
+          //             ),
+          //           ),
+          //         ),
+          //       )
+          //     ],
+          //   ),
+          // );
         });
   }
 
@@ -239,16 +240,19 @@ class _FullAppState extends State<FullApp> with SingleTickerProviderStateMixin {
   }
 
   Widget _buildItem() {
+    double width = MediaQuery.of(context).size.width - 122;
+    double selectedWidth = width * (1.5 / 4.5);
     return Scaffold(
       extendBody: true,
+      backgroundColor: const Color(0xfff5f5f5),
       body: Stack(
         children: [
           [
             HomeScreen(widget.cartMeal),
             SavedScreen(widget.favouriteMeal),
             NewCart(widget.cartMeal
-            // ,widget.event
-            ),
+                // ,widget.event
+                ),
             const HistoryScreen(),
             const ProfileScreen()
           ][_selectedIndex],
@@ -262,30 +266,57 @@ class _FullAppState extends State<FullApp> with SingleTickerProviderStateMixin {
           borderRadius: const BorderRadius.all(Radius.circular(32)),
           shadowColor: theme.colorScheme.onBackground.withAlpha(12),
           shape: BoxShape.rectangle,
-          child: SizedBox(
-            height: 70,
+          child: ClipRRect(
+            borderRadius: const BorderRadius.all(Radius.circular(32)),
             child: BottomNavigationBar(
+              backgroundColor: theme.cardTheme.color!.withAlpha(200),
+              //use both properties
+              // backgroundColor: Colors.red,
+              type: BottomNavigationBarType.fixed,
+              showUnselectedLabels: false,
+              //-----------
               currentIndex: _selectedIndex,
               onTap: _onItemTapped,
               showSelectedLabels: false,
-              showUnselectedLabels: false,
+
               elevation: 0,
-              selectedLabelStyle: const TextStyle(
+              selectedLabelStyle: TextStyle(
 
                   // color: theme.colorScheme.onPrimary,
-                  color: Colors.blue,
+                  //  color: Color(0xff1529e8),
+                  color: theme.colorScheme.onPrimary,
                   letterSpacing: 0.3,
                   fontWeight: FontWeight.w600),
               items: [
                 (_selectedIndex == 0)
-                    ? const BottomNavigationBarItem(
-                        icon: Icon(
-                          FeatherIcons.search,
-                          size: 20,
-                          color: Color(0xff1529e8),
-                          // color: theme.colorScheme.onPrimary,
+                    ? BottomNavigationBarItem(
+                        icon: Container(
+                          width: selectedWidth,
+                          padding: FxSpacing.xy(0, 8),
+                          decoration: const BoxDecoration(
+                              // color: theme.colorScheme.primary,
+                              color: Color(0xff1529e8),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(24))),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                FeatherIcons.search,
+                                size: 20,
+                                // color: Color(0xff1529e8),
+                                color: theme.colorScheme.onPrimary,
+                              ),
+                              FxSpacing.width(3),
+                              FxText.bodyMedium('Search',
+                                  color: theme.colorScheme.onPrimary,
+                                  letterSpacing: 0.3,
+                                  // color: const Color(0xff1529e8),
+                                  fontWeight: 600),
+                            ],
+                          ),
                         ),
-                        label: 'Search',
+                        label: '',
                       )
                     : BottomNavigationBarItem(
                         icon: Icon(
@@ -295,14 +326,34 @@ class _FullAppState extends State<FullApp> with SingleTickerProviderStateMixin {
                         ),
                         label: ''),
                 (_selectedIndex == 1)
-                    ? const BottomNavigationBarItem(
-                        icon: Icon(
-                          FeatherIcons.heart,
-                          size: 20,
-                          color: Color(0xff1529e8),
-                          // color: theme.colorScheme.onPrimary,
+                    ? BottomNavigationBarItem(
+                        icon: Container(
+                          width: selectedWidth,
+                          padding: FxSpacing.xy(0, 8),
+                          decoration: const BoxDecoration(
+                              // color: theme.colorScheme.primary,
+                              color: Color(0xff1529e8),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(24))),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                FeatherIcons.heart,
+                                size: 20,
+                                // color: Color(0xff1529e8),
+                                color: theme.colorScheme.onPrimary,
+                              ),
+                              FxSpacing.width(3),
+                              FxText.bodyMedium('Saved',
+                                  color: theme.colorScheme.onPrimary,
+                                  letterSpacing: 0.3,
+                                  // color: const Color(0xff1529e8),
+                                  fontWeight: 600),
+                            ],
+                          ),
                         ),
-                        label: 'Saved')
+                        label: '')
                     : BottomNavigationBarItem(
                         icon: Icon(
                           FeatherIcons.heart,
@@ -311,14 +362,34 @@ class _FullAppState extends State<FullApp> with SingleTickerProviderStateMixin {
                         ),
                         label: ''),
                 (_selectedIndex == 2)
-                    ? const BottomNavigationBarItem(
-                        icon: Icon(
-                          FeatherIcons.shoppingBag,
-                          size: 20,
-                          color: Color(0xff1529e8),
-                          // color: theme.colorScheme.onPrimary,
+                    ? BottomNavigationBarItem(
+                        icon: Container(
+                          width: selectedWidth,
+                          padding: FxSpacing.xy(5, 8),
+                          decoration: const BoxDecoration(
+                              // color: theme.colorScheme.primary,
+                              color: Color(0xff1529e8),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(24))),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                FeatherIcons.shoppingBag,
+                                size: 20,
+                                // color: Color(0xff1529e8),
+                                color: theme.colorScheme.onPrimary,
+                              ),
+                              FxSpacing.width(3),
+                              FxText.bodyMedium('Cart',
+                                  color: theme.colorScheme.onPrimary,
+                                  letterSpacing: 0.3,
+                                  // color: const Color(0xff1529e8),
+                                  fontWeight: 600),
+                            ],
+                          ),
                         ),
-                        label: 'Cart')
+                        label: '')
                     : BottomNavigationBarItem(
                         icon: Icon(
                           FeatherIcons.shoppingBag,
@@ -327,30 +398,70 @@ class _FullAppState extends State<FullApp> with SingleTickerProviderStateMixin {
                         ),
                         label: ''),
                 (_selectedIndex == 3)
-                    ? const BottomNavigationBarItem(
-                        icon: Icon(
-                          Icons.luggage,
-                          size: 20,
-                          color: Color(0xff1529e8),
-                          // color: theme.colorScheme.onPrimary,
+                    ? BottomNavigationBarItem(
+                        icon: Container(
+                          width: selectedWidth,
+                          padding: FxSpacing.xy(0, 8),
+                          decoration: const BoxDecoration(
+                              // color: theme.colorScheme.primary,
+                              color: Color(0xff1529e8),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(24))),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                FeatherIcons.clock,
+                                size: 20,
+                                // color: Color(0xff1529e8),
+                                color: theme.colorScheme.onPrimary,
+                              ),
+                              FxSpacing.width(3),
+                              FxText.bodyMedium('History',
+                                  color: theme.colorScheme.onPrimary,
+                                  letterSpacing: 0.3,
+                                  // color: const Color(0xff1529e8),
+                                  fontWeight: 600),
+                            ],
+                          ),
                         ),
-                        label: 'History')
+                        label: '')
                     : BottomNavigationBarItem(
                         icon: Icon(
-                          Icons.luggage,
+                          FeatherIcons.clock,
                           size: 20,
                           color: theme.colorScheme.onBackground,
                         ),
                         label: ''),
                 (_selectedIndex == 4)
-                    ? const BottomNavigationBarItem(
-                        icon: Icon(
-                          FeatherIcons.user,
-                          size: 20,
-                          color: Color(0xff1529e8),
-                          // color: theme.colorScheme.onPrimary,
+                    ? BottomNavigationBarItem(
+                        icon: Container(
+                          width: selectedWidth,
+                          padding: FxSpacing.xy(0, 8),
+                          decoration: const BoxDecoration(
+                              // color: theme.colorScheme.primary,
+                              color: Color(0xff1529e8),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(24))),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                FeatherIcons.user,
+                                size: 20,
+                                // color: Color(0xff1529e8),
+                                color: theme.colorScheme.onPrimary,
+                              ),
+                              FxSpacing.width(3),
+                              FxText.bodyMedium('Profile',
+                                  color: theme.colorScheme.onPrimary,
+                                  letterSpacing: 0.3,
+                                  // color: const Color(0xff1529e8),
+                                  fontWeight: 600),
+                            ],
+                          ),
                         ),
-                        label: 'Profile')
+                        label: '')
                     : BottomNavigationBarItem(
                         icon: Icon(
                           FeatherIcons.user,

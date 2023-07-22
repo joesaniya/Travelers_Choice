@@ -53,7 +53,7 @@ class AuthService {
         sharedPreferences.setInt("balance", jsondata['newUser']['balance']);
         sharedPreferences.setString(AppConstants.KEY_ACCESS_TOKEN_countryId,
             jsondata['newUser']['country']);
-        sharedPreferences.setString(AppConstants.KEY_ACCESS_TOKEN_Phone,
+        sharedPreferences.setInt(AppConstants.KEY_ACCESS_TOKEN_Phone,
             jsondata['newUser']['phoneNumber']);
         return response.body;
       } else {
@@ -305,7 +305,7 @@ class AuthService {
             updateProfileModalFromJson(response.body).email);
         // sharedPreferences.setString(
         //     "flagSymbol", jsondata['countries']['flag']);
-        sharedPreferences.setString(AppConstants.KEY_ACCESS_TOKEN_Phone,
+        sharedPreferences.setInt(AppConstants.KEY_ACCESS_TOKEN_Phone,
             updateProfileModalFromJson(response.body).phoneNumber);
 
         return updateProfileModalFromJson(response.body);

@@ -300,6 +300,8 @@ class ActivityController extends FxController {
         // }
         // log('Esther1:${Estheramount.toInt()}');
         log('activity type');
+        amount = amount + (tour.grandTotal);
+        log('amountgrandSelectedTourAmount() transfer:$amount');
       } else if (tour.privateTransfers!.isEmpty) {
         log('no transfers');
         amount = amount + (tour.grandTotal);
@@ -307,7 +309,7 @@ class ActivityController extends FxController {
         // amount =
         //     amount + (tour.grandTotal + tour.privateTransfers!.first.price);
         amount = amount + (tour.grandTotal);
-        log('amount:$amount');
+        log('amountgrandSelectedTourAmount():$amount');
       }
       // amount = amount + (tour.grandTotal + tour.privateTransfers!.first.price);
       // // amount = amount + (tour.grandTotal);
@@ -378,62 +380,73 @@ class ActivityController extends FxController {
     List<Activity> value =
         person_count.where((element) => element.sId == tour.sId).toList();
 
-    print("Person Count Added=-> $value");
-    if (value.isEmpty) {
-      if (isAdult) {
-        isIncrement
-            ? tour.adultCount++
-            : (tour.adultCount != 1)
-                ? tour.adultCount--
-                : 1;
-      }
-      if (isChild) {
-        isIncrement
-            ? tour.childCount++
-            : (tour.childCount != 1)
-                ? tour.childCount--
-                : 1;
-      }
-      if (isInfant) {
-        isIncrement
-            ? tour.infantCount++
-            : (tour.infantCount != 1)
-                ? tour.infantCount--
-                : 1;
-      }
-      double val = getGrandTotal(tour);
-      tour.grandTotal = val;
-      person_count.add(tour);
-    } else {
-      int index = person_count.indexOf(value[0]);
+    if (tour.transferCode != null) {
+      print("Person Count Added=-> $value");
+      if (value.isEmpty) {
+        if (isAdult) {
+          isIncrement
+              ? tour.adultCount++
+              : (tour.adultCount != 1)
+                  ? tour.adultCount--
+                  : 1;
+        }
+        if (isChild) {
+          isIncrement
+              ? tour.childCount++
+              : (tour.childCount != 1)
+                  ? tour.childCount--
+                  : 1;
+        }
+        if (isInfant) {
+          isIncrement
+              ? tour.infantCount++
+              : (tour.infantCount != 1)
+                  ? tour.infantCount--
+                  : 1;
+        }
+        double val = getGrandTotal(tour);
+        tour.grandTotal = val;
+        person_count.add(tour);
+      } else {
+        int index = person_count.indexOf(value[0]);
 
-      if (isAdult) {
-        isIncrement
-            ? person_count[index].adultCount++
-            : (person_count[index].adultCount != 1)
-                ? person_count[index].adultCount--
-                : 1;
+        if (isAdult) {
+          isIncrement
+              ? person_count[index].adultCount++
+              : (person_count[index].adultCount != 1)
+                  ? person_count[index].adultCount--
+                  : 1;
+        }
+        if (isChild) {
+          isIncrement
+              ? person_count[index].childCount++
+              : (person_count[index].childCount != 0)
+                  ? person_count[index].childCount--
+                  : 0;
+        }
+        if (isInfant) {
+          isIncrement
+              ? person_count[index].infantCount++
+              : (person_count[index].infantCount != 0)
+                  ? person_count[index].infantCount--
+                  : 0;
+        }
       }
-      if (isChild) {
-        isIncrement
-            ? person_count[index].childCount++
-            : (person_count[index].childCount != 0)
-                ? person_count[index].childCount--
-                : 0;
-      }
-      if (isInfant) {
-        isIncrement
-            ? person_count[index].infantCount++
-            : (person_count[index].infantCount != 0)
-                ? person_count[index].infantCount--
-                : 0;
+      if (value.isNotEmpty) {
+        int index = person_count.indexOf(value[0]);
+        double val = getGrandTotal(person_count[index]);
+        person_count[index].grandTotal = val;
+        print('List Value=> ${person_count.length}');
       }
     }
-    if (value.isNotEmpty) {
-      int index = person_count.indexOf(value[0]);
-      double val = getGrandTotal(person_count[index]);
-      person_count[index].grandTotal = val;
-      print('List Value=> ${person_count.length}');
+   
+    else {
+      CustomSnackbar.show(
+        context: context,
+        message: 'Please Select Your Transfer Type',
+        backgroundColor: const Color(0xff1529e8),
+        duration: const Duration(seconds: 2),
+      );
     }
     update();
   }
@@ -456,7 +469,7 @@ class ActivityController extends FxController {
       log('Pvt:${tour.privateTransfers!.map((e) => e.price).toList()}');
       log('if Adult Price:${tour.adultPrice}');
       log('if Adult cost:${tour.adultCost}');
-      log('if transfer:${tour.privateTransfers!.first.toJson()}');
+      // log('if transfer:${tour.privateTransfers!.first.toJson()}');
       List<PrivateTransfers>? private =
           tour.privateTransfers!.where((element) => element.isActive).toList();
       return tour.adultPrice == null
@@ -474,9 +487,23 @@ class ActivityController extends FxController {
       log('Else value ${value[0].toJson()}');
       List<PrivateTransfers>? private =
           tour.privateTransfers!.where((element) => element.isActive).toList();
-      return (value[0].adultCount * (value[0].adultPrice ?? private[0].price)) +
-          (value[0].childCount * (value[0].childPrice ?? private[0].price)) +
-          (value[0].infantCount * (value[0].infantPrice ?? private[0].price));
+      // return (value[0].adultCount * (value[0].adultPrice ?? private[0].price)) +
+      //     (value[0].childCount * (value[0].childPrice ?? private[0].price)) +
+      //     (value[0].infantCount * (value[0].infantPrice ?? private[0].price));
+
+      if (private.isNotEmpty && tour.activityType == 'transfer') {
+        log("Remainder Value => ${(tour.adultCount + tour.childCount).remainder(private[0].maxCapacity!)}");
+        log("Remainder Value / => ${(tour.adultCount + tour.childCount) / private[0].maxCapacity!}");
+        log("Remainder Value ceil => ${((tour.adultCount + tour.childCount) / private[0].maxCapacity!).ceil()}");
+        log("Remainder Value Round => ${((tour.adultCount + tour.childCount) / private[0].maxCapacity!).round()}");
+        return private[0].price *
+            (((tour.adultCount + tour.childCount) / private[0].maxCapacity!)
+                .ceil());
+      }
+      return (value[0].adultCount *
+              (value[0].adultPrice ?? value[0].adultCost)) +
+          (value[0].childCount * (value[0].childPrice ?? value[0].adultCost)) +
+          (value[0].infantCount * (value[0].infantPrice ?? value[0].adultCost));
       // return (value[0].adultCount * (value[0].adultPrice ?? 1.0)) +
       //     (value[0].childCount * (value[0].childPrice ?? 1.0)) +
       //     (value[0].infantCount * (value[0].infantPrice ?? 1.0));
@@ -554,13 +581,17 @@ class ActivityController extends FxController {
       tour = value[0];
     }
     double amount = double.parse(getTotal(tour).toString());
+    log('Get:$amount');
 
     if (tour.transferCode != null && tour.transferCode == "private") {
       // amount = amount + tour.privateTransferPrice!;//added transfer fee
       List<PrivateTransfers>? private =
           tour.privateTransfers!.where((element) => element.isActive).toList();
 
-      amount = amount + (private.isNotEmpty ? private[0].price : 0);
+      amount = amount +
+          (tour.activityType == 'transfer'
+              ? 0
+              : (private.isNotEmpty ? private[0].price : 0));
       log(" Private Amount => $amount");
       // amount = amount +
       //     tour.privateTransferPrice! +
@@ -825,7 +856,7 @@ class ActivityController extends FxController {
     // log(selectedtour.first.adultCount.toString());
     log('Length:${selectedtour.length}');
     log('Selected Tour:$selectedtour');
-    log('Dates:${dateTE.text}');
+    // log('Dates:${dateTE.text}');
     log('Selected Transfer$selectedtransfer');
 
     Navigator.of(context, rootNavigator: true).push(PageRouteBuilder(
@@ -873,7 +904,7 @@ class ActivityController extends FxController {
       // print(selectedtransfer);
       log('Length:${selectedtour.length}');
       log('Selected Tour:$selectedtour');
-      log('Dates:${dateTE.text}');
+      // log('Dates:${dateTE.text}');
       log('Selected Transfer$selectedtransfer');
       print(grandSelectedTourAmount());
       Navigator.of(context, rootNavigator: true).push(PageRouteBuilder(

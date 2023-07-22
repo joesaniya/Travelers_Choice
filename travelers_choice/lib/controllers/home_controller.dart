@@ -34,6 +34,7 @@ class HomeController extends FxController {
   String? selectedCountryCode;
   final focus = FocusNode();
   final scrollController = ScrollController();
+    final scrollController1 = ScrollController();
   final itemsPerPage = 10;
   var loadedItems = 0;
   var items = <String>[];
@@ -42,6 +43,13 @@ class HomeController extends FxController {
     log('scroll listener calling');
     if (scrollController.offset >= scrollController.position.maxScrollExtent &&
         !scrollController.position.outOfRange) {
+      _loadMoreItems();
+    }
+  }
+  void scrollListener1() {
+    log('scroll listener calling');
+    if (scrollController1.offset >= scrollController1.position.maxScrollExtent &&
+        !scrollController1.position.outOfRange) {
       _loadMoreItems();
     }
   }
@@ -63,6 +71,7 @@ class HomeController extends FxController {
   void initState() {
     super.initState();
     scrollController.addListener(scrollListener);
+    scrollController1.addListener(scrollListener1);
     fetchData();
     fetchloader();
     animationController = AnimationController(
@@ -165,6 +174,7 @@ Country Code => $countryCode
   void dispose() {
     animationController.dispose();
     scrollController.dispose();
+     scrollController1.dispose();
     bellController.dispose();
     super.dispose();
   }

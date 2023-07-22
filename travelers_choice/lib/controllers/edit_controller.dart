@@ -6,6 +6,7 @@ import '../views/login_Screens/login_screen.dart';
 import '../views/splash_screens/splash_screen2.dart';
 import 'auth_controller.dart';
 import '../card_widgets/customsnackbar.dart';
+
 class EditController extends FxController {
   TickerProvider ticker;
   EditController(this.ticker);
@@ -14,7 +15,9 @@ class EditController extends FxController {
   String? selectedCountryCode;
   String? token;
   String? countryId;
-  String? name, email, phoneNumber;
+  String? name, email;
+  // String? phoneNumber;
+  int?  phoneNumber;
   String? displayname, displayemailD, displayphoneNumber;
   double? balanceamount;
   bool uiLoading = true;
@@ -303,8 +306,8 @@ class EditController extends FxController {
         backgroundColor: Color(0xff1529e8),
         duration: Duration(seconds: 2),
       );
-    //   ScaffoldMessenger.of(context)
-    //       .showSnackBar(const SnackBar(content: Text("Please enter email")));
+      //   ScaffoldMessenger.of(context)
+      //       .showSnackBar(const SnackBar(content: Text("Please enter email")));
     }
     // else if (_selectedCountryCode == null || _selectedCountryCode!.isEmpty) {
     //   // log('isempty');
@@ -323,7 +326,7 @@ class EditController extends FxController {
     } else if (phoneTE.text.isEmpty
         // || phoneTE.text.length != 10
         ) {
-          CustomSnackbar.show(
+      CustomSnackbar.show(
         context: context,
         message: 'Please Enter Phone Number',
         backgroundColor: Color(0xff1529e8),

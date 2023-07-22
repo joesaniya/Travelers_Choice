@@ -50,6 +50,7 @@ class _NewCartPageState extends State<NewCartPage>
     selectedExcursions = widget.selectedtourOption;
     log('Selected Tour length:${widget.selectedtourOption.first.sId}');
     log('Selected Total Amount:${widget.totalAmount}');
+    
     // log('Selected Slots:${widget.event!.endDateTime}');
 
     fetchlog();
@@ -296,7 +297,7 @@ class _NewCartPageState extends State<NewCartPage>
                               widget.selectedtourOption[index].transferCode!
                                   .isEmpty
                           ? FxText.bodyMedium(
-                              'PrivateDemo',
+                              'Without Transfer',
                               fontWeight: 700,
                             )
                           : FxText.bodyMedium(

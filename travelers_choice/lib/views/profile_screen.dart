@@ -5,7 +5,9 @@ import 'package:flutx/flutx.dart';
 import 'package:hotel_travel/views/all_bookings.dart';
 import 'package:hotel_travel/views/update_Password.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:url_launcher/url_launcher.dart';
 
+import '../card_widgets/customsnackbar.dart';
 import '../controllers/profile_controller.dart';
 import '../loading_effect.dart';
 import '../services/app_constants.dart';
@@ -41,6 +43,24 @@ class _ProfileScreenState extends State<ProfileScreen> {
         // code that updates state
       });
     });
+  }
+
+  launchingUrl(String Url) async {
+    // String url = "https://www.travellerschoice.ae/terms-and-conditions/";
+    String url = Url;
+    var urllaunchable =
+        await canLaunch(url); //canLaunch is from url_launcher package
+    if (urllaunchable) {
+      await launch(url); //launch is from url_launcher package to launch URL
+    } else {
+      log("URL can't be launched.");
+      CustomSnackbar.show(
+        context: context,
+        message: 'URL can\'t be launched',
+        backgroundColor: const Color(0xff1529e8),
+        duration: const Duration(seconds: 2),
+      );
+    }
   }
 
   Future<bool> _onWillPop() async {
@@ -212,8 +232,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                           bool result = await profileController
                                               .EditProfile();
                                           if (result) {
-                                            print(
-                                                "resultresultresultresult $result");
+                                            log("resultresultresultresult $result");
 
                                             initializingData();
                                           }
@@ -375,6 +394,50 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             },
                             value: profileController.notification,
                           ),
+                          FxSpacing.height(8),
+
+                          ListTile(
+                            onTap: () async {
+                              log('t&c clicked');
+                              String url =
+                                  "https://www.travellerschoice.ae/terms-and-conditions/";
+                              await launchingUrl(url);
+                            },
+                            dense: true,
+                            contentPadding: FxSpacing.zero,
+                            visualDensity: VisualDensity.compact,
+                            title: FxText.bodyMedium(
+                              "Terms & Conditions",
+                              letterSpacing: 0,
+                            ),
+                            trailing: Icon(
+                              Icons.chevron_right,
+                              size: 20,
+                              color: theme.colorScheme.onBackground,
+                            ),
+                          ),
+                          FxSpacing.height(8),
+                          ListTile(
+                            onTap: () async {
+                              log('privacy policy clicked');
+                              String url =
+                                  "https://www.travellerschoice.ae/privacy-policy/";
+                              await launchingUrl(url);
+                            },
+                            dense: true,
+                            contentPadding: FxSpacing.zero,
+                            visualDensity: VisualDensity.compact,
+                            title: FxText.bodyMedium(
+                              "Privacy Policy",
+                              letterSpacing: 0,
+                            ),
+                            trailing: Icon(
+                              Icons.chevron_right,
+                              size: 20,
+                              color: theme.colorScheme.onBackground,
+                            ),
+                          ),
+
                           // ListTile(
                           //   dense: true,
                           //   contentPadding: FxSpacing.zero,
@@ -481,6 +544,28 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                         color: theme.colorScheme.onBackground,
                                       ),
                                     ),
+                                    FxSpacing.height(8),
+                                    ListTile(
+                                      onTap: () async {
+                                        log('del acc clicked');
+                                        String url =
+                                            "https://mytravellerschoice.com/remove-account";
+                                        await launchingUrl(url);
+                                      },
+                                      dense: true,
+                                      contentPadding: FxSpacing.zero,
+                                      visualDensity: VisualDensity.compact,
+                                      title: FxText.bodyMedium(
+                                        "Delete Account",
+                                        letterSpacing: 0,
+                                      ),
+                                      trailing: Icon(
+                                        Icons.chevron_right,
+                                        size: 20,
+                                        color: theme.colorScheme.onBackground,
+                                      ),
+                                    ),
+
                                     //cmd
 
                                     // ListTile(
