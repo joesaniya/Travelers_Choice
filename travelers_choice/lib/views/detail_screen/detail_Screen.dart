@@ -677,12 +677,43 @@ class _DetailScreenState extends State<DetailScreen>
                         // FxSpacing.height(20),
                         Align(
                           alignment: Alignment.centerLeft,
-                          child: FxText.bodyLarge(
-                            controller.detailattraction!.first.activities![i]
-                                    .name ??
-                                '',
-                            muted: true,
-                            fontWeight: 900,
+                          child: Row(
+                            children: [
+                              FxText.bodyLarge(
+                                controller.detailattraction!.first
+                                        .activities![i].name ??
+                                    '',
+                                muted: true,
+                                fontWeight: 900,
+                              ),
+                              controller.detailattraction!.first.activities![i]
+                                          .isPromoCode ==
+                                      true
+                                  ? const SizedBox(
+                                      width: 5,
+                                    )
+                                  : const SizedBox(),
+                              controller.detailattraction!.first.activities![i]
+                                          .isPromoCode ==
+                                      true
+                                  ? FxContainer(
+                                      borderRadiusAll: 10,
+                                      // padding: FxSpacing.xy(8, 4),
+                                      padding: FxSpacing.xy(6, 2),
+                                      color: const Color(0xff1529e8),
+                                      // color: Colors.blueGrey,
+                                      child: Center(
+                                        child: FxText.bodySmall(
+                                          '${((controller.detailattraction!.first.activities![i].promoAmount! * conversionRate!)).toStringAsFixed(2)} $currencySymbol OFF',
+
+                                          fontWeight: 900,
+                                          color: Colors.white,
+                                          // color: theme.colorScheme.onPrimary,
+                                        ),
+                                      ),
+                                    )
+                                  : const SizedBox(),
+                            ],
                           ),
                         ),
                         Column(children: [
@@ -1081,6 +1112,56 @@ class _DetailScreenState extends State<DetailScreen>
                                         ],
                                       ),
                                     ),
+                                    controller.detailattraction!.first
+                                                .activities![i].isPromoCode ==
+                                            true
+                                        ? FxSpacing.height(10)
+                                        : const SizedBox(),
+                                    controller.detailattraction!.first
+                                                .activities![i].isPromoCode ==
+                                            true
+                                        ? Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            children: [
+                                              Transform.scale(
+                                                scale: 1.0,
+                                                child: Checkbox(
+                                                  value: controller.isChecked,
+                                                  onChanged: (value) {
+                                                    controller
+                                                        .toggleCheckbox(value!);
+                                                  },
+                                                  activeColor:
+                                                      const Color(0xff1529e8),
+                                                  checkColor: Colors.white,
+                                                  tristate: false,
+                                                ),
+                                              ),
+                                              controller.isChecked == true
+                                                  ? FxText.bodyMedium(
+                                                      'Coupon Applied',
+                                                      fontWeight: 700,
+                                                      // fontSize: 20,
+                                                      color: const Color(
+                                                          0xff1529e8),
+                                                    )
+                                                  : FxText.bodyMedium(
+                                                      'Coupon Apply',
+                                                      fontWeight: 700,
+                                                      // fontSize: 20,
+                                                      color: const Color(
+                                                          0xff1529e8),
+                                                    ),
+                                            ],
+                                          )
+                                        : const SizedBox(),
+                                    // FxText.bodyMedium(
+                                    //   'Coupon ${controller.detailattraction!.first.activities![i].isPromoCode}${controller.isChecked}',
+                                    //   fontWeight: 700,
+                                    //   // fontSize: 20,
+                                    //   color: const Color(0xff1529e8),
+                                    // ),
 
                                     FxSpacing.height(10),
                                     Row(
@@ -1103,6 +1184,38 @@ class _DetailScreenState extends State<DetailScreen>
                                         ),
                                       ],
                                     ),
+                                    FxSpacing.height(10),
+                                    controller.isChecked == true
+                                        ? Align(
+                                            alignment: Alignment.centerRight,
+                                            child: RichText(
+                                              text: TextSpan(
+                                                children: <TextSpan>[
+                                                  const TextSpan(
+                                                      text: '🎉 You Saved ',
+                                                      style: TextStyle(
+                                                          // height: 2,
+                                                          // letterSpacing: 1.0,
+                                                          color: Colors.black,
+                                                          fontSize: 15,
+                                                          fontWeight:
+                                                              FontWeight.w400)),
+                                                  TextSpan(
+                                                      text:
+                                                          '${((controller.detailattraction!.first.activities![i].promoAmount! * conversionRate!)).toStringAsFixed(2)} $currencySymbol',
+                                                      style: const TextStyle(
+                                                          color: Colors.black,
+                                                          // decoration:
+                                                          //     TextDecoration.underline,
+                                                          fontSize: 15,
+                                                          fontWeight:
+                                                              FontWeight.w500)),
+                                                ],
+                                              ),
+                                            ),
+                                          )
+                                        : const SizedBox(),
+
                                     FxSpacing.height(6),
                                     controllerTE[i].text.isNotEmpty
                                         ? Row(
@@ -2988,26 +3101,32 @@ class _DetailScreenState extends State<DetailScreen>
                               animation: controller.cartController,
                               builder: (BuildContext context, _) {
                                 return GestureDetector(
-                                  onTap: () async {
-                                    bool existing = false;
+                                  onTap: controller.selectedtour.isEmpty
+                                      ? null
+                                      : () async {
+                                          bool existing = false;
 
-                                    log('Fav Item Slot:${favouriteListCart.map((e) => e.sId)}');
+                                          log('Fav Item Slot:${favouriteListCart.map((e) => e.sId)}');
 
-                                    print(
-                                        "controller.selectedtour ${controller.selectedtour}");
+                                          print(
+                                              "controller.selectedtour ${controller.selectedtour}");
 
-                                    favouriteListCart
-                                        .addAll(controller.selectedtour);
+                                          favouriteListCart
+                                              .addAll(controller.selectedtour);
 
-                                    SharedPreferences prefs =
-                                        await SharedPreferences.getInstance();
-                                    prefs.setBool("youKey", isSelected);
-                                    setState(() {
-                                      favouriteListCart;
-                                      isSelected = !isSelected;
-                                    });
-                                    bool? isHasCheckout;
-                                    /*  if (controller.detailattraction != null) {
+                                          /*SharedPreferences prefs =
+                                              await SharedPreferences
+                                                  .getInstance();
+                                          prefs.setBool("youKey", isSelected);
+                                          setState(() {
+                                            favouriteListCart;
+                                            isSelected = !isSelected;
+                                          });*/ //fav
+                                          setState(() {
+                                            favouriteListCart;
+                                          });
+                                          bool? isHasCheckout;
+                                          /*  if (controller.detailattraction != null) {
                                       for (var activity in controller
                                           .detailattraction!
                                           .first
@@ -3026,61 +3145,66 @@ class _DetailScreenState extends State<DetailScreen>
                                         }
                                       }
                                     } */
-                                    bool isBurjkhalifa = widget.productid ==
-                                        '63ff12f5d7333637a938cad4';
-                                    if (isBurjkhalifa) {
-                                      for (var e in controller.selectedtour) {
-                                        if (e.activityTimeSlot != null) {
-                                          isHasCheckout ??= true;
-                                          isHasCheckout =
-                                              isHasCheckout ? true : false;
-                                        } else {
-                                          isHasCheckout ??= false;
-                                          isHasCheckout = false;
-                                        }
-                                      }
-                                    } else {
-                                      for (var e in controller.selectedtour) {
-                                        log("Selected Date => ${e.selectedDate}");
-                                        if (e.selectedDate != null) {
-                                          isHasCheckout ??= true;
-                                          isHasCheckout =
-                                              isHasCheckout ? true : false;
-                                        } else {
-                                          isHasCheckout ??= false;
-                                          isHasCheckout = false;
-                                        }
-                                      }
-                                    }
-                                    log('Selected Date:${controller.selectedtour.map((e) => e.selectedDate).toList()}');
+                                          bool isBurjkhalifa =
+                                              widget.productid ==
+                                                  '63ff12f5d7333637a938cad4';
+                                          if (isBurjkhalifa) {
+                                            for (var e
+                                                in controller.selectedtour) {
+                                              if (e.activityTimeSlot != null) {
+                                                isHasCheckout ??= true;
+                                                isHasCheckout = isHasCheckout
+                                                    ? true
+                                                    : false;
+                                              } else {
+                                                isHasCheckout ??= false;
+                                                isHasCheckout = false;
+                                              }
+                                            }
+                                          } else {
+                                            for (var e
+                                                in controller.selectedtour) {
+                                              log("Selected Date => ${e.selectedDate}");
+                                              if (e.selectedDate != null) {
+                                                isHasCheckout ??= true;
+                                                isHasCheckout = isHasCheckout
+                                                    ? true
+                                                    : false;
+                                              } else {
+                                                isHasCheckout ??= false;
+                                                isHasCheckout = false;
+                                              }
+                                            }
+                                          }
+                                          log('Selected Date:${controller.selectedtour.map((e) => e.selectedDate).toList()}');
 
-                                    !isHasCheckout!
-                                        ? CustomSnackbar.show(
-                                            context: context,
-                                            message: isBurjkhalifa
-                                                ? 'Select Your Tour time slots'
-                                                : 'Select Your Tour date',
-                                            backgroundColor:
-                                                const Color(0xff1529e8),
-                                            duration:
-                                                const Duration(seconds: 2),
-                                          )
+                                          !isHasCheckout!
+                                              ? CustomSnackbar.show(
+                                                  context: context,
+                                                  message: isBurjkhalifa
+                                                      ? 'Select Your Tour time slots'
+                                                      : 'Select Your Tour date',
+                                                  backgroundColor:
+                                                      const Color(0xff1529e8),
+                                                  duration: const Duration(
+                                                      seconds: 2),
+                                                )
 
-                                        // controller.selectedtour.first
-                                        //                 .selectedDate ==
-                                        //             null &&
-                                        //         controller.selectedtour.isEmpty
-                                        //     ? CustomSnackbar.show(
-                                        //         context: context,
-                                        //         message: 'Select Your Tour date',
-                                        //         backgroundColor:
-                                        //             const Color(0xff1529e8),
-                                        //         duration:
-                                        //             const Duration(seconds: 2),
-                                        //       )
-                                        : controller.goToCheckout(
-                                            context, widget.productid);
-                                  },
+                                              // controller.selectedtour.first
+                                              //                 .selectedDate ==
+                                              //             null &&
+                                              //         controller.selectedtour.isEmpty
+                                              //     ? CustomSnackbar.show(
+                                              //         context: context,
+                                              //         message: 'Select Your Tour date',
+                                              //         backgroundColor:
+                                              //             const Color(0xff1529e8),
+                                              //         duration:
+                                              //             const Duration(seconds: 2),
+                                              //       )
+                                              : controller.goToCheckout(
+                                                  context, widget.productid);
+                                        },
                                   child: Stack(
                                     children: [
                                       FxContainer(
@@ -3121,15 +3245,17 @@ class _DetailScreenState extends State<DetailScreen>
                             Expanded(
                               //fadeanim
                               child: FxButton.block(
-                                  onPressed: () async {
-                                    // widget.productid ==
-                                    //         '63ff12f5d7333637a938cad4'
-                                    //     ? log(
-                                    //         'TimeSlot:${controller.listSLotDetails.last}')
-                                    //     : log('No Picked');
+                                  onPressed: controller.selectedtour.isEmpty
+                                      ? null
+                                      : () async {
+                                          // widget.productid ==
+                                          //         '63ff12f5d7333637a938cad4'
+                                          //     ? log(
+                                          //         'TimeSlot:${controller.listSLotDetails.last}')
+                                          //     : log('No Picked');
 
-                                    bool? isHasCheckout;
-                                    /*  if (controller.detailattraction != null) {
+                                          bool? isHasCheckout;
+                                          /*  if (controller.detailattraction != null) {
                                       for (var activity in controller
                                           .detailattraction!
                                           .first
@@ -3148,82 +3274,88 @@ class _DetailScreenState extends State<DetailScreen>
                                         }
                                       }
                                     } */
-                                    bool isBurjkhalifa = widget.productid ==
-                                        '63ff12f5d7333637a938cad4';
-                                    if (isBurjkhalifa) {
-                                      for (var e in controller.selectedtour) {
-                                        if (e.activityTimeSlot != null) {
-                                          isHasCheckout ??= true;
-                                          isHasCheckout =
-                                              isHasCheckout ? true : false;
-                                        } else {
-                                          isHasCheckout ??= false;
-                                          isHasCheckout = false;
-                                        }
-                                      }
-                                    } else {
-                                      for (var e in controller.selectedtour) {
-                                        log("Selected Date => ${e.selectedDate}");
-                                        if (e.selectedDate != null) {
-                                          isHasCheckout ??= true;
-                                          isHasCheckout =
-                                              isHasCheckout ? true : false;
-                                        } else {
-                                          isHasCheckout ??= false;
-                                          isHasCheckout = false;
-                                        }
-                                      }
-                                    }
-                                    log('Selected Date:${controller.selectedtour.map((e) => e.selectedDate).toList()}');
-                                    // controller.selectedtour[i].selectedDate ==
-                                    //             null &&
-                                    //         controller.selectedtour.isEmpty
-                                    // controllerTE[index].text.isNotEmpty
-                                    !isHasCheckout!
-                                        ? CustomSnackbar.show(
-                                            context: context,
-                                            message: isBurjkhalifa
-                                                ? 'Select Your Tour time slots'
-                                                : 'Select Your Tour date',
-                                            backgroundColor:
-                                                const Color(0xff1529e8),
-                                            duration:
-                                                const Duration(seconds: 2),
-                                          )
-                                        : await showModalBottomSheet(
-                                            context: context,
-                                            builder:
-                                                (BuildContext buildContext) {
-                                              return SelectedTourBottomSheet(
-                                                // pid: widget.productid,
+                                          bool isBurjkhalifa =
+                                              widget.productid ==
+                                                  '63ff12f5d7333637a938cad4';
+                                          if (isBurjkhalifa) {
+                                            for (var e
+                                                in controller.selectedtour) {
+                                              if (e.activityTimeSlot != null) {
+                                                isHasCheckout ??= true;
+                                                isHasCheckout = isHasCheckout
+                                                    ? true
+                                                    : false;
+                                              } else {
+                                                isHasCheckout ??= false;
+                                                isHasCheckout = false;
+                                              }
+                                            }
+                                          } else {
+                                            for (var e
+                                                in controller.selectedtour) {
+                                              log("Selected Date => ${e.selectedDate}");
+                                              if (e.selectedDate != null) {
+                                                isHasCheckout ??= true;
+                                                isHasCheckout = isHasCheckout
+                                                    ? true
+                                                    : false;
+                                              } else {
+                                                isHasCheckout ??= false;
+                                                isHasCheckout = false;
+                                              }
+                                            }
+                                          }
+                                          log('Selected Date:${controller.selectedtour.map((e) => e.selectedDate).toList()}');
+                                          // controller.selectedtour[i].selectedDate ==
+                                          //             null &&
+                                          //         controller.selectedtour.isEmpty
+                                          // controllerTE[index].text.isNotEmpty
+                                          !isHasCheckout!
+                                              ? CustomSnackbar.show(
+                                                  context: context,
+                                                  message: isBurjkhalifa
+                                                      ? 'Select Your Tour time slots'
+                                                      : 'Select Your Tour date',
+                                                  backgroundColor:
+                                                      const Color(0xff1529e8),
+                                                  duration: const Duration(
+                                                      seconds: 2),
+                                                )
+                                              : await showModalBottomSheet(
+                                                  context: context,
+                                                  builder: (BuildContext
+                                                      buildContext) {
+                                                    return SelectedTourBottomSheet(
+                                                      // pid: widget.productid,
 
-                                                // //  _toggleFavorite, _isMealFavorite,
-                                                // Datas: widget.productdatum,
-                                                // ProductSlug: widget.productSlug,
-                                                len: controller
-                                                    .selectedtour.length,
+                                                      // //  _toggleFavorite, _isMealFavorite,
+                                                      // Datas: widget.productdatum,
+                                                      // ProductSlug: widget.productSlug,
+                                                      len: controller
+                                                          .selectedtour.length,
 
-                                                Option: controller.selectedtour,
-                                                textdate:
-                                                    controller.dateTE.text,
-                                                Transfer:
-                                                    controller.selectedtransfer,
-                                                totalAmount: controller
-                                                    .grandSelectedTourAmount(),
-                                                // Total: controller
-                                                //     .grandSelectedTourAmount()
-                                              );
-                                            });
-                                    setState(() {});
-                                    // : controller.goToCheckout1();
-                                    //       var data = await showModalBottomSheet(
-                                    // context: context,
-                                    // builder: (BuildContext buildContext) {
-                                    //   return CategoriesBottomSheet(
-                                    //     categoryplace: widget.place,
-                                    //   );
-                                    // });
-                                  },
+                                                      Option: controller
+                                                          .selectedtour,
+                                                      textdate: controller
+                                                          .dateTE.text,
+                                                      Transfer: controller
+                                                          .selectedtransfer,
+                                                      totalAmount: controller
+                                                          .grandSelectedTourAmount(),
+                                                      // Total: controller
+                                                      //     .grandSelectedTourAmount()
+                                                    );
+                                                  });
+                                          setState(() {});
+                                          // : controller.goToCheckout1();
+                                          //       var data = await showModalBottomSheet(
+                                          // context: context,
+                                          // builder: (BuildContext buildContext) {
+                                          //   return CategoriesBottomSheet(
+                                          //     categoryplace: widget.place,
+                                          //   );
+                                          // });
+                                        },
                                   backgroundColor: const Color(0xff1529e8),
                                   // backgroundColor: theme.colorScheme.primary,
                                   elevation: 0,

@@ -11,6 +11,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../controllers/attraction_Controller.dart';
 import '../controllers/search_Home_controller.dart';
+import '../images.dart';
 import '../loading_effect.dart';
 import '../models/all_attraction_modal.dart';
 import '../services/app_constants.dart';
@@ -1041,35 +1042,134 @@ class _SearchScreenState extends State<SearchScreen>
               margin: const EdgeInsets.all(8),
               child: Row(
                 children: [
-                  Container(
-                    // margin: EdgeInsets.all(8),
-                    // paddingAll: 0,
-                    // borderRadiusAll: 4,
-                    // margin: EdgeInsets.all(8),
+                  // Container(
+                  //   // margin: EdgeInsets.all(8),
+                  //   // paddingAll: 0,
+                  //   // borderRadiusAll: 4,
+                  //   // margin: EdgeInsets.all(8),
 
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    clipBehavior: Clip.antiAliasWithSaveLayer,
-                    // child: Image(image: NetworkImage(product.images.first)),
-                    child: Hero(
-                      tag: "product_image_${product.images.first}",
-                      child: CachedNetworkImage(
-                        height: 132,
-                        width: 150,
-                        fit: BoxFit.cover,
-                        fadeOutDuration: const Duration(seconds: 1),
-                        fadeInDuration: const Duration(seconds: 3),
-                        progressIndicatorBuilder: (context, url, progress) =>
-                            Center(
-                          child: CircularProgressIndicator(
-                            value: progress.progress,
+                  //   decoration: BoxDecoration(
+                  //     borderRadius: BorderRadius.circular(10),
+                  //   ),
+                  //   clipBehavior: Clip.antiAliasWithSaveLayer,
+                  //   // child: Image(image: NetworkImage(product.images.first)),
+                  //   child: Hero(
+                  //     tag: "product_image_${product.images.first}",
+                  //     child: CachedNetworkImage(
+                  //       height: 132,
+                  //       width: 150,
+                  //       fit: BoxFit.cover,
+                  //       fadeOutDuration: const Duration(seconds: 1),
+                  //       fadeInDuration: const Duration(seconds: 3),
+                  //       progressIndicatorBuilder: (context, url, progress) =>
+                  //           Center(
+                  //         child: CircularProgressIndicator(
+                  //           value: progress.progress,
+                  //         ),
+                  //       ),
+                  //       imageUrl:
+                  //           'https://a.walletbot.online${product.images.first}',
+                  //     ),
+                  //   ),
+                  // ),
+
+                  // Container(
+                  //   width: 180,
+                  //   decoration: BoxDecoration(
+                  //     borderRadius: BorderRadius.circular(10),
+                  //   ),
+                  //   clipBehavior: Clip.antiAliasWithSaveLayer,
+                  //   // child: Image(image: NetworkImage(product.images.first)),
+                  //   child: Hero(
+                  //     tag: "product_image_${product.images.first}",
+                  //     child: CachedNetworkImage(
+                  //       height: 132,
+                  //       width: 150,
+                  //       fit: BoxFit.cover,
+                  //       fadeOutDuration: const Duration(seconds: 1),
+                  //       fadeInDuration: const Duration(seconds: 3),
+                  //       progressIndicatorBuilder: (context, url, progress) =>
+                  //           Center(
+                  //         child: CircularProgressIndicator(
+                  //           value: progress.progress,
+                  //         ),
+                  //       ),
+                  //       imageUrl:
+                  //           'https://a.walletbot.online${product.images.first}',
+                  //     ),
+                  //   ),
+                  // ),
+                  Stack(
+                    children: [
+                      Container(
+                        width: 180,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        clipBehavior: Clip.antiAliasWithSaveLayer,
+                        // child: Image(image: NetworkImage(product.images.first)),
+                        child: Hero(
+                          tag: "product_image_${product.images.first}",
+                          child: CachedNetworkImage(
+                            height: 132,
+                            width: 150,
+                            fit: BoxFit.cover,
+                            fadeOutDuration: const Duration(seconds: 1),
+                            fadeInDuration: const Duration(seconds: 3),
+                            progressIndicatorBuilder:
+                                (context, url, progress) => Center(
+                              child: CircularProgressIndicator(
+                                value: progress.progress,
+                              ),
+                            ),
+                            imageUrl:
+                                'https://a.walletbot.online${product.images.first}',
                           ),
                         ),
-                        imageUrl:
-                            'https://a.walletbot.online${product.images.first}',
                       ),
-                    ),
+                      product.isPromoCode == true
+                          ? Positioned(
+                              top: 5,
+                              left: 5,
+                              child: FxContainer(
+                                borderRadiusAll: 10,
+                                // padding: FxSpacing.xy(8, 4),
+                                padding: FxSpacing.xy(6, 2),
+                                // color: const Color(0xffFFEDD5),
+                                color: const Color(0xffF0FDF4),
+
+                                child: Row(
+                                  children: [
+                                    //  Image.asset(
+                                    //     "assets/images/apps/shopping2/icons/attraction.png",
+                                    //     height: 20,
+                                    //     width: 20,
+                                    //     color: _tabbed == '1'
+                                    //         ? Colors.white
+                                    //         : Colors.black),
+                                    // Icon(
+                                    //   LineIcons.percentage,
+                                    //   color: theme.colorScheme.onBackground,
+                                    //   size: 16,
+                                    // ),
+                                    Image(
+                                      height: 24,
+                                      width: 24,
+                                      image: AssetImage(Images.discount),
+                                    ),
+                                    FxText.labelSmall(
+                                      'Promotion Available',
+                                      fontWeight: 500,
+                                      letterSpacing: 0,
+                                      color: const Color(0xff15803D),
+                                      // color: const Color(0xff1529e8),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            )
+                          : const SizedBox()
+                    ],
                   ),
                   FxSpacing.width(20),
                   Expanded(

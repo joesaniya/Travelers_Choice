@@ -99,6 +99,26 @@ class DetailController extends FxController {
         .toList();
   }
 
+  bool isChecked = false;
+
+  var checkedResult = 'Checkbox is CHECKED';
+
+  void toggleCheckbox(bool value) {
+    if (isChecked == false) {
+      // Put your code here which you want to execute on CheckBox Checked event.
+
+      isChecked = true;
+      checkedResult = 'Checkbox is CHECKED';
+      update();
+    } else {
+      // Put your code here which you want to execute on CheckBox Un-Checked event.
+
+      isChecked = false;
+      checkedResult = 'Checkbox is UN-CHECKED';
+      update();
+    }
+  }
+
   //
   List<SlotTime> listSLotDetails = <SlotTime>[];
   BaseOptions options = BaseOptions(
@@ -584,26 +604,44 @@ class DetailController extends FxController {
       List<PrivateTransfers>? private =
           tour.privateTransfers!.where((element) => element.isActive).toList();
 
+      // amount = amount +
+      //     (tour.activityType == 'transfer'
+      //         ? 0
+      //         : (private.isNotEmpty ? private[0].price : 0));
       amount = amount +
           (tour.activityType == 'transfer'
               ? 0
-              : (private.isNotEmpty ? private[0].price : 0));
+              : (private.isNotEmpty ? private[0].price : 0)) -
+          (isChecked == true
+              ? (tour.promoAmount == null)
+                  ? 0
+                  : tour.promoAmount!
+              : 0);
+      // (tour.promoAmount!.toInt()) : 0);
+      log("Promo Code Transfer => ${tour.promoAmount}");
       log(" Private Amount => $amount");
-      // amount = amount +
-      //     tour.privateTransferPrice! +
-      //     tour.privateTransfers!.first.cost!.toDouble();
+
       log('Grand Total Privat:$amount');
     }
     if (tour.transferCode != null && tour.transferCode == "shared") {
       // amount = amount + tour.sharedTransferPrice!;
+      // amount = amount +
+      //     double.parse(
+      //         (tour.sharedTransferPrice ?? 0).toString()); //added transfer fee
       amount = amount +
-          double.parse(
-              (tour.sharedTransferPrice ?? 0).toString()); //added transfer fee
+          double.parse((tour.sharedTransferPrice ?? 0).toString()) -
+          (isChecked == true
+              ? (tour.promoAmount == null)
+                  ? 0
+                  : tour.promoAmount!
+              : 0);
+      // (isChecked == true ? (tour.promoAmount!.toInt()) : 0);
+      log("Promo Code Shared => ${tour.promoAmount}");
       log('Grand Total sharing:$amount');
     }
     log("Current Grand Total => $amount");
-    return amount;
     update();
+    return amount;
   }
 
   String getCount(String id) {

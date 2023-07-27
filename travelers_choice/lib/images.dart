@@ -9,6 +9,7 @@ class Images {
   static String profile4 = 'assets/images/profiles/avatar_4.jpg';
   static String profile5 = 'assets/images/profiles/avatar_5.jpg';
   static String profile6 = 'assets/images/profiles/avatar_6.jpg';
+  static String discount = 'assets/brand/discount.png';
 
   static List<String> profiles = [
     'assets/images/profile/avatar_1.jpg',
@@ -77,12 +78,12 @@ class Images {
   static String rangeSelectorIcon = 'assets/icons/range_selector_outline.png';
   static String settingIcon = 'assets/icons/setting_outline.png';
 
-  static final String darkModeOutline = "assets/icons/moon_outline.png";
-  static final String lightModeOutline = "assets/icons/sun_outline.png";
-  static final String languageOutline = "assets/icons/global_outline.png";
-  static final String paragraphRTLOutline =
+  static const String darkModeOutline = "assets/icons/moon_outline.png";
+  static const String lightModeOutline = "assets/icons/sun_outline.png";
+  static const String languageOutline = "assets/icons/global_outline.png";
+  static const String paragraphRTLOutline =
       "assets/icons/paragraph_rtl_outline.png";
-  static final String paragraphLTROutline =
+  static const String paragraphLTROutline =
       "assets/icons/paragraph_ltr_outline.png";
 
   ///----------------- Square images ------------------------------//

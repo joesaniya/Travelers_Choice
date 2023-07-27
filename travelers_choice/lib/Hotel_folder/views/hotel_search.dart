@@ -501,6 +501,8 @@ class _HotelSearchState extends State<HotelSearch>
                             onTap: () async {
                               var data = await showModalBottomSheet(
                                   context: context,
+                                  isScrollControlled: true,
+                                  useSafeArea: true,
                                   builder: (BuildContext buildContext) {
                                     return const PersonSeat();
                                   });

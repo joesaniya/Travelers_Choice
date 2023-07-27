@@ -1255,10 +1255,26 @@ class _HistoryScreenState extends State<HistoryScreen>
                   child: TabBarView(
                     controller: controller.tabController,
                     children: [
-                      attractionList(), visaList(),
-                      // _buildflightList()
-                      flightList(),
-                      HotelList()
+                      attractionList(),
+                      //  visaList(),
+                      // // _buildflightList()
+                      // flightList(),
+                      // HotelList()
+                      Center(
+                        child: FxText.bodySmall(
+                          "We Will Update Soon!!",
+                        ),
+                      ),
+                      Center(
+                        child: FxText.bodySmall(
+                          "We Will Update Soon!!",
+                        ),
+                      ),
+                      Center(
+                        child: FxText.bodySmall(
+                          "We Will Update Soon!!",
+                        ),
+                      ),
                     ],
                   ),
                 ),

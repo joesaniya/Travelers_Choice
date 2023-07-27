@@ -548,6 +548,9 @@ class Activity {
   SlotTime? event;
   SlotTime? activityTimeSlot;
   String? selectedValue;
+  bool? isPromoCode;
+  int? promoAmount;
+  String? promoCode;
 
   Activity({
     this.sId,
@@ -601,6 +604,9 @@ class Activity {
     this.customSlots,
     this.event,
     this.activityTimeSlot,
+    this.isPromoCode,
+    this.promoAmount,
+    this.promoCode,
   });
 
   Activity.fromJson(Map<String, dynamic> json) {
@@ -668,6 +674,9 @@ class Activity {
         ? SlotTime.fromJson(json['activityTimeSlot'])
         : null;
     // slotsdata=(json['slotsdata']!=null?SlotTime.fromJson(json['slotsdata']):null) as List<SlotTime>?;
+    isPromoCode = json['isPromoCode'];
+    promoAmount = json['promoAmount'];
+    promoCode = json['promoCode'];
   }
 
   Map<String, dynamic> toJson() {
@@ -727,6 +736,9 @@ class Activity {
     if (activityTimeSlot != null) {
       data['activityTimeSlot'] = activityTimeSlot!.toJson();
     }
+    data['isPromoCode'] = isPromoCode;
+    data['promoAmount'] = promoAmount;
+    data['promoCode'] = promoCode;
     return data;
   }
 }

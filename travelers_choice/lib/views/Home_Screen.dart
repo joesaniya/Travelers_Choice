@@ -1242,7 +1242,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                     //     isocode: selectedCountry!.isocode,
                     //     conversionRate: selectedCountry!.conversionRate)
                     : _tabbed == '3'
-                        ? const HotelSearch()
+                        ? SizedBox()
+                        // const HotelSearch()
                         : const SizedBox(),
                 // : const SearchVisa(),
 
@@ -1316,235 +1317,128 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                 ),
                               ),
                             ),
-                            const SizedBox(
-                              width: 10,
-                            ),
-                            GestureDetector(
-                              onTap: () {
-                                log('flight');
-                                _tabbed = '2';
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            const FlightSplash()));
-                                setState(() {});
-                              },
-                              child: Container(
-                                  width: 120,
-                                  decoration: BoxDecoration(
-                                      color: _tabbed == '2'
-                                          ? const Color(0xff1529e8)
-                                          // theme1.colorScheme.primary
-                                          : Colors.transparent,
-                                      border: Border.all(
-                                          color: _tabbed == '2'
-                                              ? Colors.transparent
-                                              : theme1
-                                                  .colorScheme.primaryContainer,
-                                          width: _tabbed == '2' ? 0.0 : 1.0),
-                                      borderRadius: BorderRadius.circular(20.0)
-                                      // borderRadius:
-                                      //     new BorderRadius.all(Radius.elliptical(90, 45)),
-                                      ),
-                                  padding:
-                                      const EdgeInsets.symmetric(horizontal: 5),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: [
-                                      Image.asset(
-                                          "assets/images/apps/shopping2/icons/flight.png",
-                                          height: 20,
-                                          width: 20,
-                                          color: _tabbed == '2'
-                                              ? Colors.white
-                                              : Colors.black),
-                                      const SizedBox(
-                                        width: 7,
-                                      ),
-                                      FxText.bodyLarge(
-                                        'Flight',
-                                        style: TextStyle(
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.w800,
-                                          color: _tabbed == '2'
-                                              ? Colors.white
-                                              : Colors.black,
-                                        ),
-                                      ),
-                                    ],
-                                  )),
-                            ),
-                            const SizedBox(
-                              width: 10,
-                            ),
-                            GestureDetector(
-                              onTap: () {
-                                log('Hotel');
-                                _tabbed = '3';
-                                setState(() {});
-                                // Navigator.of(context, rootNavigator: true).push(
-                                //     PageRouteBuilder(
-                                //         transitionDuration:
-                                //             const Duration(milliseconds: 500),
-                                //         transitionsBuilder: (
-                                //           BuildContext context,
-                                //           Animation<double> animation,
-                                //           Animation<double> secondaryAnimation,
-                                //           Widget child,
-                                //         ) =>
-                                //             FadeTransition(
-                                //               opacity: animation,
-                                //               child: child,
-                                //             ),
-                                //         pageBuilder: (_, __, ___) =>
-                                //             const HotelSplash()));
-                              },
-                              child: Container(
-                                width: 120,
-                                decoration: BoxDecoration(
-                                    color: _tabbed == '3'
-                                        ? const Color(0xff1529e8)
-                                        // theme1.colorScheme.primary
-                                        : Colors.transparent,
-                                    border: Border.all(
-                                        color: _tabbed == '3'
-                                            ? Colors.transparent
-                                            : theme1
-                                                .colorScheme.primaryContainer,
-                                        width: _tabbed == '3' ? 0.0 : 1.0),
-                                    borderRadius: BorderRadius.circular(20.0)),
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 5),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Image.asset(
-                                        "assets/images/apps/shopping2/icons/hotel.png",
-                                        height: 20,
-                                        width: 20,
-                                        color: _tabbed == '3'
-                                            ? Colors.white
-                                            : Colors.black),
-                                    const SizedBox(
-                                      width: 7,
-                                    ),
-                                    FxText.bodyLarge(
-                                      'Hotel',
-                                      style: TextStyle(
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.w800,
-                                          color: _tabbed == '3'
-                                              ? Colors.white
-                                              : Colors.black),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-
-                            const SizedBox(
-                              width: 10,
-                            ),
-                            GestureDetector(
-                              onTap: () {
-                                log('visa');
-                                _tabbed = '4';
-                                setState(() {});
-                                // Navigator.push(context, MaterialPageRoute(builder: (context)=> VisaScreen()));
-                              },
-                              child: Container(
-                                width: 120,
-                                decoration: BoxDecoration(
-                                    color: _tabbed == '4'
-                                        ? const Color(0xff1529e8)
-                                        // theme1.colorScheme.primary
-                                        : Colors.transparent,
-                                    border: Border.all(
-                                        color: _tabbed == '4'
-                                            ? Colors.transparent
-                                            : theme1
-                                                .colorScheme.primaryContainer,
-                                        width: _tabbed == '4' ? 0.0 : 1.0),
-                                    borderRadius: BorderRadius.circular(20.0)),
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 5),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Image.asset(
-                                        "assets/images/apps/shopping2/icons/visa_icon.png",
-                                        height: 20,
-                                        width: 20,
-                                        color: _tabbed == '4'
-                                            ? Colors.white
-                                            : Colors.black),
-                                    const SizedBox(
-                                      width: 7,
-                                    ),
-                                    FxText.bodyLarge(
-                                      'Visa',
-                                      style: TextStyle(
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.w800,
-                                          color: _tabbed == '4'
-                                              ? Colors.white
-                                              : Colors.black),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
                             // const SizedBox(
                             //   width: 10,
                             // ),
                             // GestureDetector(
                             //   onTap: () {
-                            //     log('Transfer');
-                            //     _tabbed = '5';
+                            //     log('flight');
+                            //     _tabbed = '2';
+                            //     Navigator.push(
+                            //         context,
+                            //         MaterialPageRoute(
+                            //             builder: (context) =>
+                            //                 const FlightSplash()));
                             //     setState(() {});
+                            //   },
+                            //   child: Container(
+                            //       width: 120,
+                            //       decoration: BoxDecoration(
+                            //           color: _tabbed == '2'
+                            //               ? const Color(0xff1529e8)
+                            //               // theme1.colorScheme.primary
+                            //               : Colors.transparent,
+                            //           border: Border.all(
+                            //               color: _tabbed == '2'
+                            //                   ? Colors.transparent
+                            //                   : theme1
+                            //                       .colorScheme.primaryContainer,
+                            //               width: _tabbed == '2' ? 0.0 : 1.0),
+                            //           borderRadius: BorderRadius.circular(20.0)
+                            //           // borderRadius:
+                            //           //     new BorderRadius.all(Radius.elliptical(90, 45)),
+                            //           ),
+                            //       padding:
+                            //           const EdgeInsets.symmetric(horizontal: 5),
+                            //       child: Row(
+                            //         mainAxisAlignment: MainAxisAlignment.center,
+                            //         crossAxisAlignment:
+                            //             CrossAxisAlignment.center,
+                            //         children: [
+                            //           Image.asset(
+                            //               "assets/images/apps/shopping2/icons/flight.png",
+                            //               height: 20,
+                            //               width: 20,
+                            //               color: _tabbed == '2'
+                            //                   ? Colors.white
+                            //                   : Colors.black),
+                            //           const SizedBox(
+                            //             width: 7,
+                            //           ),
+                            //           FxText.bodyLarge(
+                            //             'Flight',
+                            //             style: TextStyle(
+                            //               fontSize: 18,
+                            //               fontWeight: FontWeight.w800,
+                            //               color: _tabbed == '2'
+                            //                   ? Colors.white
+                            //                   : Colors.black,
+                            //             ),
+                            //           ),
+                            //         ],
+                            //       )),
+                            // ),
+                            // const SizedBox(
+                            //   width: 10,
+                            // ),
+                            // GestureDetector(
+                            //   onTap: () {
+                            //     log('Hotel');
+                            //     _tabbed = '3';
+                            //     setState(() {});
+                            //     // Navigator.of(context, rootNavigator: true).push(
+                            //     //     PageRouteBuilder(
+                            //     //         transitionDuration:
+                            //     //             const Duration(milliseconds: 500),
+                            //     //         transitionsBuilder: (
+                            //     //           BuildContext context,
+                            //     //           Animation<double> animation,
+                            //     //           Animation<double> secondaryAnimation,
+                            //     //           Widget child,
+                            //     //         ) =>
+                            //     //             FadeTransition(
+                            //     //               opacity: animation,
+                            //     //               child: child,
+                            //     //             ),
+                            //     //         pageBuilder: (_, __, ___) =>
+                            //     //             const HotelSplash()));
                             //   },
                             //   child: Container(
                             //     width: 120,
                             //     decoration: BoxDecoration(
-                            //         color: _tabbed == '5'
+                            //         color: _tabbed == '3'
                             //             ? const Color(0xff1529e8)
                             //             // theme1.colorScheme.primary
                             //             : Colors.transparent,
                             //         border: Border.all(
-                            //             color: _tabbed == '5'
+                            //             color: _tabbed == '3'
                             //                 ? Colors.transparent
-                            //                 : theme1.colorScheme.primaryContainer,
-                            //             width: _tabbed == '5' ? 0.0 : 1.0),
-                            //         borderRadius: BorderRadius.circular(20.0)
-                            //         // borderRadius:
-                            //         //     new BorderRadius.all(Radius.elliptical(90, 45)),
-                            //         ),
-                            //     padding: const EdgeInsets.symmetric(horizontal: 5),
+                            //                 : theme1
+                            //                     .colorScheme.primaryContainer,
+                            //             width: _tabbed == '3' ? 0.0 : 1.0),
+                            //         borderRadius: BorderRadius.circular(20.0)),
+                            //     padding:
+                            //         const EdgeInsets.symmetric(horizontal: 5),
                             //     child: Row(
                             //       mainAxisAlignment: MainAxisAlignment.center,
                             //       crossAxisAlignment: CrossAxisAlignment.center,
                             //       children: [
                             //         Image.asset(
-                            //             "assets/images/apps/shopping2/icons/card.png",
+                            //             "assets/images/apps/shopping2/icons/hotel.png",
                             //             height: 20,
                             //             width: 20,
-                            //             color: _tabbed == '5'
+                            //             color: _tabbed == '3'
                             //                 ? Colors.white
                             //                 : Colors.black),
                             //         const SizedBox(
                             //           width: 7,
                             //         ),
                             //         FxText.bodyLarge(
-                            //           'Transfer',
+                            //           'Hotel',
                             //           style: TextStyle(
                             //               fontSize: 18,
                             //               fontWeight: FontWeight.w800,
-                            //               color: _tabbed == '5'
+                            //               color: _tabbed == '3'
                             //                   ? Colors.white
                             //                   : Colors.black),
                             //         ),
@@ -1552,6 +1446,113 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                             //     ),
                             //   ),
                             // ),
+
+                            // const SizedBox(
+                            //   width: 10,
+                            // ),
+                            // GestureDetector(
+                            //   onTap: () {
+                            //     log('visa');
+                            //     _tabbed = '4';
+                            //     setState(() {});
+                            //     // Navigator.push(context, MaterialPageRoute(builder: (context)=> VisaScreen()));
+                            //   },
+                            //   child: Container(
+                            //     width: 120,
+                            //     decoration: BoxDecoration(
+                            //         color: _tabbed == '4'
+                            //             ? const Color(0xff1529e8)
+                            //             // theme1.colorScheme.primary
+                            //             : Colors.transparent,
+                            //         border: Border.all(
+                            //             color: _tabbed == '4'
+                            //                 ? Colors.transparent
+                            //                 : theme1
+                            //                     .colorScheme.primaryContainer,
+                            //             width: _tabbed == '4' ? 0.0 : 1.0),
+                            //         borderRadius: BorderRadius.circular(20.0)),
+                            //     padding:
+                            //         const EdgeInsets.symmetric(horizontal: 5),
+                            //     child: Row(
+                            //       mainAxisAlignment: MainAxisAlignment.center,
+                            //       crossAxisAlignment: CrossAxisAlignment.center,
+                            //       children: [
+                            //         Image.asset(
+                            //             "assets/images/apps/shopping2/icons/visa_icon.png",
+                            //             height: 20,
+                            //             width: 20,
+                            //             color: _tabbed == '4'
+                            //                 ? Colors.white
+                            //                 : Colors.black),
+                            //         const SizedBox(
+                            //           width: 7,
+                            //         ),
+                            //         FxText.bodyLarge(
+                            //           'Visa',
+                            //           style: TextStyle(
+                            //               fontSize: 18,
+                            //               fontWeight: FontWeight.w800,
+                            //               color: _tabbed == '4'
+                            //                   ? Colors.white
+                            //                   : Colors.black),
+                            //         ),
+                            //       ],
+                            //     ),
+                            //   ),
+                            // ),
+                            // // const SizedBox(
+                            // //   width: 10,
+                            // // ),
+                            // // GestureDetector(
+                            // //   onTap: () {
+                            // //     log('Transfer');
+                            // //     _tabbed = '5';
+                            // //     setState(() {});
+                            // //   },
+                            // //   child: Container(
+                            // //     width: 120,
+                            // //     decoration: BoxDecoration(
+                            // //         color: _tabbed == '5'
+                            // //             ? const Color(0xff1529e8)
+                            // //             // theme1.colorScheme.primary
+                            // //             : Colors.transparent,
+                            // //         border: Border.all(
+                            // //             color: _tabbed == '5'
+                            // //                 ? Colors.transparent
+                            // //                 : theme1.colorScheme.primaryContainer,
+                            // //             width: _tabbed == '5' ? 0.0 : 1.0),
+                            // //         borderRadius: BorderRadius.circular(20.0)
+                            // //         // borderRadius:
+                            // //         //     new BorderRadius.all(Radius.elliptical(90, 45)),
+                            // //         ),
+                            // //     padding: const EdgeInsets.symmetric(horizontal: 5),
+                            // //     child: Row(
+                            // //       mainAxisAlignment: MainAxisAlignment.center,
+                            // //       crossAxisAlignment: CrossAxisAlignment.center,
+                            // //       children: [
+                            // //         Image.asset(
+                            // //             "assets/images/apps/shopping2/icons/card.png",
+                            // //             height: 20,
+                            // //             width: 20,
+                            // //             color: _tabbed == '5'
+                            // //                 ? Colors.white
+                            // //                 : Colors.black),
+                            // //         const SizedBox(
+                            // //           width: 7,
+                            // //         ),
+                            // //         FxText.bodyLarge(
+                            // //           'Transfer',
+                            // //           style: TextStyle(
+                            // //               fontSize: 18,
+                            // //               fontWeight: FontWeight.w800,
+                            // //               color: _tabbed == '5'
+                            // //                   ? Colors.white
+                            // //                   : Colors.black),
+                            // //         ),
+                            // //       ],
+                            // //     ),
+                            // //   ),
+                            // // ),
                           ],
                         ),
                       ),

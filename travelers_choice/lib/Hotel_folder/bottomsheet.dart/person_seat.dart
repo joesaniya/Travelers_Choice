@@ -127,6 +127,7 @@ class _PersonSeatState extends State<PersonSeat> with TickerProviderStateMixin {
     return ListView.builder(
         shrinkWrap: true,
         itemCount: controller.roomscount,
+        
         itemBuilder: (context, index) {
           return Container(
             margin: const EdgeInsets.all(5.0),
