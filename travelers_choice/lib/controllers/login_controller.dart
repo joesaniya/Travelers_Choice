@@ -220,7 +220,6 @@ class LogInController extends FxController {
     }
   }
 
-
   //fb
   Future<UserCredential> signInWithFacebook() async {
     final LoginResult result = await FacebookAuth.instance.login();
@@ -229,7 +228,6 @@ class LogInController extends FxController {
 
     return await _auth.signInWithCredential(facebookAuthCredential);
   }
-
 
   @override
   void dispose() {
@@ -256,13 +254,14 @@ class LogInController extends FxController {
       passwordController.forward();
 
       return "Please enter password";
-    } else if (!FxStringValidator.validateStringRange(
-      text,
-    )) {
-      passwordController.forward();
-
-      return "Password length must between 8 and 20";
     }
+    // else if (!FxStringValidator.validateStringRange(
+    //   text,
+    // )) {
+    //   passwordController.forward();
+
+    //   return "Password length must between 8 and 20";
+    // }
     return null;
   }
 

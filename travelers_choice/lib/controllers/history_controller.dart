@@ -135,7 +135,7 @@ class HistoryController extends FxController {
   void initState() {
     super.initState();
     //new
-    tabController = TabController(length: 4, vsync: ticker);
+    tabController = TabController(length: 1, vsync: ticker);
     scrollController = ScrollController(initialScrollOffset: 0.0);
     scrollController.addListener(() {
       changeAppBarColor(scrollController);

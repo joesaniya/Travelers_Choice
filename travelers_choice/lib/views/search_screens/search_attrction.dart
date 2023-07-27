@@ -145,6 +145,10 @@ class _SearchAttractionScreenState extends State<SearchAttractionScreen>
     });
   }
 
+  void myf(String value) {
+    log('data Submit');
+  }
+
   // AttractionSearchDataModal? _selectedCountry;
   // String? _selectedCountry;
 
@@ -288,9 +292,10 @@ class _SearchAttractionScreenState extends State<SearchAttractionScreen>
 
             borderRadius: BorderRadius.circular(10),
           ),
-          onSubmit: (value) {
-            log('ONSUBIT');
-          },
+          // onSubmit: (value) {
+          //   log('ONSUBIT');
+          // },
+          onSubmit: myf,
           onSuggestionTap: (value) {
             if (controller.countryList.first.attractions.isNotEmpty) {
               controller.slugslist =

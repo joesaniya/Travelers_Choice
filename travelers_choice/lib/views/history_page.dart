@@ -1195,6 +1195,7 @@ class _HistoryScreenState extends State<HistoryScreen>
       child: Scaffold(
           backgroundColor: const Color(0xfff5f5f5),
           appBar: AppBar(
+            elevation: 0,
             automaticallyImplyLeading: false,
             title: FxText.titleMedium(
               'History',
@@ -1202,47 +1203,47 @@ class _HistoryScreenState extends State<HistoryScreen>
             ),
             centerTitle: true,
             backgroundColor: const Color(0xfff5f5f5),
-            bottom: TabBar(
-              labelColor: Colors.black,
-              isScrollable: true,
-              unselectedLabelColor: Colors.black,
-              controller: controller.tabController,
-              indicatorSize: TabBarIndicatorSize.label,
-              indicatorColor: const Color(0xff1529e8),
-              // BoxDecoration(
-              //     color: Color(0xff1529e8),
-              //     borderRadius: BorderRadius.circular(25)
-              // ),
+            // bottom: TabBar(
+            //   labelColor: Colors.black,
+            //   isScrollable: true,
+            //   unselectedLabelColor: Colors.black,
+            //   controller: controller.tabController,
+            //   indicatorSize: TabBarIndicatorSize.label,
+            //   indicatorColor: const Color(0xff1529e8),
+            //   // BoxDecoration(
+            //   //     color: Color(0xff1529e8),
+            //   //     borderRadius: BorderRadius.circular(25)
+            //   // ),
 
-              // labelStyle: TextStyle(color: Colors.white) ,
-              //   unselectedLabelColor: Colors.black,
-              tabs: const [
-                Tab(
-                    // text: "credits",
-                    child: Text(
-                  "Attraction",
-                  style: TextStyle(fontSize: 16),
-                )),
-                Tab(
-                  child: Text(
-                    "Visa",
-                    style: TextStyle(fontSize: 16),
-                  ),
-                ),
-                Tab(
-                  child: Text(
-                    "Flight",
-                    style: TextStyle(fontSize: 16),
-                  ),
-                ),
-                Tab(
-                  child: Text(
-                    "Hotel",
-                    style: TextStyle(fontSize: 16),
-                  ),
-                ),
-              ],
-            ),
+            //   // labelStyle: TextStyle(color: Colors.white) ,
+            //   //   unselectedLabelColor: Colors.black,
+            //   tabs: const [
+            //     Tab(
+            //         // text: "credits",
+            //         child: Text(
+            //       "Attraction",
+            //       style: TextStyle(fontSize: 16),
+            //     )),
+            //     // Tab(
+            //     //   child: Text(
+            //     //     "Visa",
+            //     //     style: TextStyle(fontSize: 16),
+            //     //   ),
+            //     // ),
+            //     // Tab(
+            //     //   child: Text(
+            //     //     "Flight",
+            //     //     style: TextStyle(fontSize: 16),
+            //     //   ),
+            //     // ),
+            //     // Tab(
+            //     //   child: Text(
+            //     //     "Hotel",
+            //     //     style: TextStyle(fontSize: 16),
+            //     //   ),
+            //     // ),
+            //   ],
+            // ),
           ),
           body: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
@@ -1252,32 +1253,36 @@ class _HistoryScreenState extends State<HistoryScreen>
                   height: 10,
                 ),
                 Expanded(
-                  child: TabBarView(
-                    controller: controller.tabController,
-                    children: [
-                      attractionList(),
-                      //  visaList(),
-                      // // _buildflightList()
-                      // flightList(),
-                      // HotelList()
-                      Center(
-                        child: FxText.bodySmall(
-                          "We Will Update Soon!!",
-                        ),
-                      ),
-                      Center(
-                        child: FxText.bodySmall(
-                          "We Will Update Soon!!",
-                        ),
-                      ),
-                      Center(
-                        child: FxText.bodySmall(
-                          "We Will Update Soon!!",
-                        ),
-                      ),
-                    ],
-                  ),
+                  child: attractionList(),
                 ),
+                // Expanded(
+                //   child: TabBarView(
+                //     controller: controller.tabController,
+                //     children: [
+                //       attractionList(),
+                //       //  visaList(),
+                //       // // _buildflightList()
+                //       // flightList(),
+                //       // HotelList()
+                //      /* Center(
+                //         child: FxText.bodySmall(
+                //           "We Will Update Soon!!",
+                //         ),
+                //       ),
+                //       Center(
+                //         child: FxText.bodySmall(
+                //           "We Will Update Soon!!",
+                //         ),
+                //       ),
+                //       Center(
+                //         child: FxText.bodySmall(
+                //           "We Will Update Soon!!",
+                //         ),
+                //       ),*/
+                //     ],
+                //   ),
+                // ),
+
                 FxSpacing.height(60),
               ],
             ),
