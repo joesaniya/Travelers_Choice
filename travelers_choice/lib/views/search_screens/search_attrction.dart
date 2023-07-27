@@ -292,11 +292,12 @@ class _SearchAttractionScreenState extends State<SearchAttractionScreen>
 
             borderRadius: BorderRadius.circular(10),
           ),
-          // onSubmit: (value) {
-          //   log('ONSUBIT');
-          // },
-          onSubmit: myf,
-          onSuggestionTap: (value) {
+          onSubmit: (value) {
+            log('ONSUBIT');
+          },
+          // onSubmit: myf,
+
+          onSuggestionTap: (value) async {
             if (controller.countryList.first.attractions.isNotEmpty) {
               controller.slugslist =
                   controller.countryList.first.attractions.where((element) {
@@ -306,6 +307,78 @@ class _SearchAttractionScreenState extends State<SearchAttractionScreen>
               log('Slug List:${controller.slugslist.map((e) => e.slug).toList()}');
               controller.SlugnameId =
                   controller.slugslist.map((e) => e.slug).toList();
+              //       Navigator.of(context, rootNavigator: true).pushReplacement(
+              // MaterialPageRoute(
+              //   builder: (context) => const BookingSuccess(),
+              // ));
+              // await _pretendSearch();
+              // if (controller.countryList.first.attractions
+              //     .map((e) => e.id)
+              //     .toList()
+              //     .contains(keydata)) {
+              //   log('attraction name');
+              //   log('Slug Id:${controller.SlugnameId.last}');
+              //   Navigator.of(context, rootNavigator: true).push(
+              //       PageRouteBuilder(
+              //           transitionDuration: const Duration(milliseconds: 500),
+              //           transitionsBuilder: (
+              //             BuildContext context,
+              //             Animation<double> animation,
+              //             Animation<double> secondaryAnimation,
+              //             Widget child,
+              //           ) =>
+              //               FadeTransition(
+              //                 opacity: animation,
+              //                 child: child,
+              //               ),
+              //           pageBuilder: (_, __, ___) => DetailScreen(
+              //               keydata.toString(),
+              //               controller.allattractionList!.first.attractions.data
+              //                   .first,
+              //               controller.SlugnameId.last)
+              //           // SingleProductScreen(product.id)
+              //           ));
+              // } else {
+              //   log('destination name');
+              //   Navigator.of(context, rootNavigator: true)
+              //       .push(PageRouteBuilder(
+              //           transitionDuration: const Duration(milliseconds: 500),
+              //           transitionsBuilder: (
+              //             BuildContext context,
+              //             Animation<double> animation,
+              //             Animation<double> secondaryAnimation,
+              //             Widget child,
+              //           ) =>
+              //               FadeTransition(
+              //                 opacity: animation,
+              //                 child: child,
+              //               ),
+              //           pageBuilder: (_, __, ___) => SearchScreen(
+              //                 // place: Destination.fromJson(jsonDecode(selectedCountry)),
+              //                 place: controller.selectedCountry,
+              //                 placeId: keydata,
+              //                 currencySymbol: widget.isocode,
+              //                 conversionRate: widget.conversionRate,
+              //                 // currencySymbol: currencySymbol,
+              //                 // conversionRate: conversionRate
+              //                 // place:locationTE.text
+              //               )));
+              // }
+
+              // controller.searchbtn(
+              //     controller.locationTE.text,
+              //     // controller.selectedCountry!,
+              //     keydata!,
+              //     widget.isocode,
+              //     widget.conversionRate,
+              //     // controller.SlugnameId.last
+              //     controller.SlugnameId.isEmpty
+              //         ? 'burj-khalifa-:-at-the-top'
+              //         : controller.SlugnameId.last
+              //     // slugname.toString()
+
+              //     // controller.allattractionList.first
+              //     );
             } else {
               // controller.SlugnameId = [];
               log('slug destination nuull');

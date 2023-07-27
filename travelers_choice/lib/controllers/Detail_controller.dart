@@ -596,7 +596,13 @@ class DetailController extends FxController {
     } else {
       tour = value[0];
     }
-    double amount = double.parse(getTotal(tour).toString());
+    // double amount = double.parse(getTotal(tour).toString());
+    double amount = double.parse(getTotal(tour).toString()) -
+        (isChecked == true
+            ? (tour.promoAmount == null)
+                ? 0
+                : tour.promoAmount!
+            : 0);
     log('Get:$amount');
 
     if (tour.transferCode != null && tour.transferCode == "private") {

@@ -175,12 +175,19 @@ class AuthService {
         var jsondata = jsonDecode(response.body);
         log(jsondata['error']);
 
-        CustomSnackbar.show(
-          context: context,
-          message: jsondata['error'],
-          backgroundColor: const Color(0xff1529e8),
-          duration: const Duration(seconds: 2),
-        );
+        jsondata['error'] == 'Invalid Email'
+            ? CustomSnackbar.show(
+                context: context,
+                message: 'Login failed please check credentials!!',
+                backgroundColor: const Color(0xff1529e8),
+                duration: const Duration(seconds: 2),
+              )
+            : CustomSnackbar.show(
+                context: context,
+                message: jsondata['error'],
+                backgroundColor: const Color(0xff1529e8),
+                duration: const Duration(seconds: 2),
+              );
         // ScaffoldMessenger.of(context)
         //     .showSnackBar(SnackBar(content: Text(jsondata['error'])));
       }

@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutx/flutx.dart';
+import 'package:hotel_travel/views/remove_privacy_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../card_widgets/customsnackbar.dart';
@@ -19,6 +20,7 @@ import '../services/auth_service.dart';
 import '../theme/app_theme.dart';
 import 'package:lottie/lottie.dart';
 import 'package:intl/intl.dart';
+
 
 class CheckOutScreen extends StatefulWidget {
   dynamic? length;
@@ -278,39 +280,6 @@ class _CheckOutScreenState extends State<CheckOutScreen>
   String? rateconversion;
   String? rateselectedtourOption;
   Widget _billingWidget() {
-    // //selectedslotdate
-
-    // String StartTime = widget.event!.startDateTime.toString();
-
-    // DateTime parsedStartTime = DateTime.parse(StartTime);
-    // String formattedStartTime = DateFormat('HH:mm:ss').format(parsedStartTime);
-
-    // log('formattedTime:$formattedStartTime');
-
-    // String originalStartTime = formattedStartTime;
-
-    // DateTime parsedTimeStart =
-    //     DateFormat('HH:mm:ss').parseStrict(originalStartTime);
-    // String formattedStartAMPN = DateFormat('h:mm a').format(parsedTimeStart);
-
-    // log('Start:$formattedStartAMPN');
-    // // log('currentSlot!.length:${currentSlot!.length}');
-
-    // //end
-    // String EndTime = widget.event!.endDateTime.toString();
-
-    // DateTime parsedEndTime = DateTime.parse(EndTime);
-    // String formattedEndTime = DateFormat('HH:mm:ss').format(parsedEndTime);
-
-    // log('formattedTime:$formattedEndTime');
-
-    // String originalEndTime = formattedEndTime;
-
-    // DateTime parsedTimeEnd =
-    //     DateFormat('HH:mm:ss').parseStrict(originalEndTime);
-    // String formattedEndAMPN = DateFormat('h:mm a').format(parsedTimeEnd);
-
-    // log('End:$formattedEndAMPN');
     List<Widget> list = [];
     log('message');
     log(widget.length.toString());
@@ -322,6 +291,10 @@ class _CheckOutScreenState extends State<CheckOutScreen>
         itemBuilder: (context, index) {
           // String? rateconversion;
           // String? rateselectedtourOption;
+          controller.checkboxStatus =
+              List.generate(widget.length, (_) => false);
+          // controller.checkboxValue =
+          //     List<bool>.generate(widget.length, (counter) => false);
           log('amount not equal:${widget.totalAmount}');
           if (conversionRate != null) {
             log('ConersionRate:$conversionRate');
@@ -610,6 +583,60 @@ class _CheckOutScreenState extends State<CheckOutScreen>
                       ),
                     ],
                   ),
+                  widget.selectedtourOption[index].isPromoCode == true
+                      ? FxSpacing.height(10)
+                      : const SizedBox(),
+                  widget.selectedtourOption[index].isPromoCode == true
+                      ? Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Transform.scale(
+                              scale: 1.0,
+                              child: Checkbox(
+                                value: controller.isChecked,
+                                onChanged: (value) {
+                                  controller.toggleCheckbox(value!);
+                                },
+                                activeColor: const Color(0xff1529e8),
+                                checkColor: Colors.white,
+                                tristate: false,
+                              ),
+                            ),
+                            controller.isChecked == true
+                                ? FxText.bodyMedium(
+                                    'Coupon Applied',
+                                    fontWeight: 700,
+                                    // fontSize: 20,
+                                    color: const Color(0xff1529e8),
+                                  )
+                                : FxText.bodyMedium(
+                                    'Coupon Apply',
+                                    fontWeight: 700,
+                                    // fontSize: 20,
+                                    color: const Color(0xff1529e8),
+                                  ),
+                          ],
+                        )
+                      : const SizedBox(),
+                  widget.selectedtourOption[index].isPromoCode == true
+                      ? CheckboxListTile(
+                          value: controller.checkboxStatus[index],
+                          activeColor: Colors.red,
+                          onChanged: (newValue) {
+                            setState(() {
+                              log('Check:${controller.checkboxStatus[index]}');
+                              controller.checkboxStatus[index] =
+                                  newValue ?? false;
+                              log('Check1:${controller.checkboxStatus[index]}');
+                            });
+                          },
+                          title: FxText.bodyMedium(
+                            'Coupon Apply',
+                            fontWeight: 700,
+                            color: const Color(0xff1529e8),
+                          ),
+                        )
+                      : const SizedBox()
                 ],
               ),
             ),
@@ -1886,25 +1913,18 @@ class _CheckOutScreenState extends State<CheckOutScreen>
                           recognizer: TapGestureRecognizer()
                             ..onTap = () async {
                               log('terms and conditions clicked');
-                              String url =
-                                  "https://www.travellerschoice.ae/terms-and-conditions/";
-                              await launchingUrl(url);
                               // String url =
                               //     "https://www.travellerschoice.ae/terms-and-conditions/";
-                              // var urllaunchable = await canLaunch(
-                              //     url); //canLaunch is from url_launcher package
-                              // if (urllaunchable) {
-                              //   await launch(
-                              //       url); //launch is from url_launcher package to launch URL
-                              // } else {
-                              //   log("URL can't be launched.");
-                              //   CustomSnackbar.show(
-                              //     context: context,
-                              //     message: 'URL can\'t be launched',
-                              //     backgroundColor: const Color(0xff1529e8),
-                              //     duration: const Duration(seconds: 2),
-                              //   );
-                              // }
+                              // await launchingUrl(url);
+                              await Navigator.of(context, rootNavigator: true)
+                                  .pushReplacement(
+                                MaterialPageRoute(
+                                  builder: (context) => RemovePrivacyScreen(
+                                    linkdata:
+                                        'https://www.travellerschoice.ae/terms-and-conditions/',
+                                  ),
+                                ),
+                              );
                             },
                           style: const TextStyle(
                               color: Colors.white,

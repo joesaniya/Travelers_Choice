@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutx/flutx.dart';
 import 'package:hotel_travel/views/all_bookings.dart';
+import 'package:hotel_travel/views/remove_privacy_screen.dart';
 import 'package:hotel_travel/views/update_Password.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -420,9 +421,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           ListTile(
                             onTap: () async {
                               log('privacy policy clicked');
-                              String url =
-                                  "https://www.travellerschoice.ae/privacy-policy/";
-                              await launchingUrl(url);
+                              Navigator.of(context, rootNavigator: true)
+                                  .pushReplacement(
+                                MaterialPageRoute(
+                                  builder: (context) => RemovePrivacyScreen(
+                                    linkdata:
+                                        'https://www.travellerschoice.ae/privacy-policy/',
+                                  ),
+                                ),
+                              );
+                              // String url =
+                              //     "https://www.travellerschoice.ae/privacy-policy/";
+                              // await launchingUrl(url);
                             },
                             dense: true,
                             contentPadding: FxSpacing.zero,
@@ -548,9 +558,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     ListTile(
                                       onTap: () async {
                                         log('del acc clicked');
-                                        String url =
-                                            "https://mytravellerschoice.com/remove-account";
-                                        await launchingUrl(url);
+                                        await Navigator.of(context,
+                                                rootNavigator: true)
+                                            .pushReplacement(
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                RemovePrivacyScreen(
+                                              linkdata:
+                                                  'https://mytravellerschoice.com/remove-account',
+                                            ),
+                                          ),
+                                        );
+                                        // String url =
+                                        //     "https://mytravellerschoice.com/remove-account";
+                                        // await launchingUrl(url);
                                       },
                                       dense: true,
                                       contentPadding: FxSpacing.zero,

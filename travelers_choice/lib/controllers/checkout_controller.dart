@@ -46,6 +46,33 @@ class CheckOutController extends FxController {
 
   List<TabWidget> tabs = [];
   String? token;
+  List<bool> checkboxStatus = [];
+  int userInputLength = 0;
+  void updateCheckboxes() {
+    checkboxStatus = List.generate(userInputLength, (_) => false);
+    update();
+  }
+
+  bool isChecked = false;
+
+  var checkedResult = 'Checkbox is CHECKED';
+
+  void toggleCheckbox(bool value) {
+    if (isChecked == false) {
+      // Put your code here which you want to execute on CheckBox Checked event.
+
+      isChecked = true;
+      checkedResult = 'Checkbox is CHECKED';
+      update();
+    } else {
+      // Put your code here which you want to execute on CheckBox Un-Checked event.
+
+      isChecked = false;
+      checkedResult = 'Checkbox is UN-CHECKED';
+      update();
+    }
+  }
+
 //form
   late Animation<double> fadeAnimation, cartAnimation;
   // late AnimationController animationController;

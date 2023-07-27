@@ -678,6 +678,8 @@ class _DetailScreenState extends State<DetailScreen>
                         Align(
                           alignment: Alignment.centerLeft,
                           child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               FxText.bodyLarge(
                                 controller.detailattraction!.first
@@ -696,7 +698,8 @@ class _DetailScreenState extends State<DetailScreen>
                               controller.detailattraction!.first.activities![i]
                                           .isPromoCode ==
                                       true
-                                  ? FxContainer(
+                                  ? Flexible(
+                                      child: FxContainer(
                                       borderRadiusAll: 10,
                                       // padding: FxSpacing.xy(8, 4),
                                       padding: FxSpacing.xy(6, 2),
@@ -704,14 +707,14 @@ class _DetailScreenState extends State<DetailScreen>
                                       // color: Colors.blueGrey,
                                       child: Center(
                                         child: FxText.bodySmall(
-                                          '${((controller.detailattraction!.first.activities![i].promoAmount! * conversionRate!)).toStringAsFixed(2)} $currencySymbol OFF',
-
+                                          // '${((controller.detailattraction!.first.activities![i].promoAmount! * conversionRate!)).toStringAsFixed(2)} $currencySymbol OFF',
+                                          '${controller.detailattraction!.first.activities![i].promoCode}',
                                           fontWeight: 900,
                                           color: Colors.white,
                                           // color: theme.colorScheme.onPrimary,
                                         ),
                                       ),
-                                    )
+                                    ))
                                   : const SizedBox(),
                             ],
                           ),
@@ -2622,15 +2625,7 @@ class _DetailScreenState extends State<DetailScreen>
                       //             null
                       return controller
                               .detailattraction!.first.sections!.isEmpty
-                          //      ||
-                          // controller.detailattraction!.first
-                          //         .sections ==
-                          //     null
-                          ?
-                          // Html(
-                          //     data: controller.detailattraction!.first
-                          //         .itineraryDescription)
-                          SizedBox(
+                          ? SizedBox(
                               child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -2659,6 +2654,7 @@ class _DetailScreenState extends State<DetailScreen>
                                         data: controller.detailattraction!.first
                                             .itineraryDescription,
                                       ),
+                                FxSpacing.height(40)
                               ],
                             ))
 
@@ -2687,6 +2683,7 @@ class _DetailScreenState extends State<DetailScreen>
                                 Html(
                                     data: controller.detailattraction!.first
                                         .sections![index].body),
+                                FxSpacing.height(40)
                               ],
                             ));
                     },
@@ -2819,10 +2816,11 @@ class _DetailScreenState extends State<DetailScreen>
               //       ],
               //     )),
 
-              // const SizedBox(height: 10.0),
+              const SizedBox(height: 10.0),
             ],
           ),
         ),
+        FxSpacing.height(40)
       ],
     );
   }
