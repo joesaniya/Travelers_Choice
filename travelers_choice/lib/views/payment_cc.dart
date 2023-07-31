@@ -11,7 +11,8 @@ import 'all_bookings.dart';
 
 class PaymentCC extends StatefulWidget {
   String paymentdata;
-  double? totalAmount;
+  // double? totalAmount;
+  String? totalAmount;
   PaymentCC({super.key, required this.paymentdata, this.totalAmount});
   // const PaymentCC({Key? key}) : super(key: key);
 

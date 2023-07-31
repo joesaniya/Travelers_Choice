@@ -10,6 +10,7 @@ import 'package:hotel_travel/views/remove_privacy_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../card_widgets/customsnackbar.dart';
+import '../controllers/Detail_controller.dart';
 import '../controllers/checkout_controller.dart';
 import '../localizations/language.dart';
 import '../models/Country_modal.dart';
@@ -21,8 +22,8 @@ import '../theme/app_theme.dart';
 import 'package:lottie/lottie.dart';
 import 'package:intl/intl.dart';
 
-
 class CheckOutScreen extends StatefulWidget {
+  DetailController controller;
   dynamic? length;
   // String? name;
   // String? acount;
@@ -48,6 +49,7 @@ class CheckOutScreen extends StatefulWidget {
   // VoidCallback finalAmount;
 
   CheckOutScreen(
+      this.controller,
       this.length,
       this.selectedtourOption,
       this.textdate,
@@ -78,14 +80,15 @@ class _CheckOutScreenState extends State<CheckOutScreen>
   @override
   void initState() {
     super.initState();
+
     initializingData();
     customTheme = AppTheme.customTheme;
-    selectedExcursions = widget.selectedtourOption;
-    // log('Selected Tour length:${widget.selectedtourOption.first.sId}');
-    log('Selected Total Amount:${widget.totalAmount}');
-    // log('Selected Total Amount:${widget.onButtonTap}');
-    fetchlog();
-    log('Selected Final Amount:${widget.selectedtourOption.first.grandTotal}');
+    // selectedExcursions = widget.selectedtourOption;
+    // // log('Selected Tour length:${widget.selectedtourOption.first.sId}');
+    // log('Selected Total Amount:${widget.totalAmount}');
+    // // log('Selected Total Amount:${widget.onButtonTap}');
+    // fetchlog();
+    // log('Selected Final Amount:${widget.selectedtourOption.first.grandTotal}');
     // log('Adult Count:${widget.adultCount}');
     // log('date:${widget.textdate}');
     // log('Transfer:${widget.Transfer}');
@@ -279,34 +282,48 @@ class _CheckOutScreenState extends State<CheckOutScreen>
 
   String? rateconversion;
   String? rateselectedtourOption;
+  getCheckoutTotalAmount(int index, Activity tour) {
+    double promoAmount = widget.controller.checkboxStatus[index]
+        ? double.parse((tour.promoAmount ?? "0").toString())
+        : 0.0;
+    log('amount not equal:${widget.controller.grandSelectedTourAmount()}');
+    if (tour.promoAmount != null) {
+      log('ConersionRate:$conversionRate');
+      rateconversion = ((widget.controller.selectedtour[index].grandTotal *
+                  conversionRate!) -
+              (promoAmount * conversionRate!))
+          .toStringAsFixed(2);
+      log('Rate:$rateconversion');
+      rateselectedtourOption =
+          ((widget.controller.selectedtour[index].grandTotal * conversionRate!))
+              .toStringAsFixed(2);
+    } else {
+      rateconversion =
+          ((widget.controller.selectedtour[index].grandTotal * conversionRate!))
+              .toStringAsFixed(2);
+      log('Rate:$rateconversion');
+      rateselectedtourOption =
+          ((widget.controller.selectedtour[index].grandTotal * conversionRate!))
+              .toStringAsFixed(2);
+    }
+  }
+
   Widget _billingWidget() {
-    List<Widget> list = [];
+    // List<Widget> list = [];
     log('message');
     log(widget.length.toString());
     return SizedBox(
       child: ListView.separated(
         physics: const AlwaysScrollableScrollPhysics(),
-        itemCount: widget.length,
+        itemCount: widget.controller.selectedtour.length,
         shrinkWrap: true,
         itemBuilder: (context, index) {
-          // String? rateconversion;
-          // String? rateselectedtourOption;
-          controller.checkboxStatus =
-              List.generate(widget.length, (_) => false);
+          log('PromoAmount:${widget.controller.selectedtour[index].promoAmount ?? '1'}');
+
           // controller.checkboxValue =
           //     List<bool>.generate(widget.length, (counter) => false);
-          log('amount not equal:${widget.totalAmount}');
-          if (conversionRate != null) {
-            log('ConersionRate:$conversionRate');
-            rateconversion = ((widget.selectedtourOption[index].grandTotal *
-                    conversionRate!))
-                .toStringAsFixed(2);
-            log('Rate:$rateconversion');
-            rateselectedtourOption =
-                ((widget.selectedtourOption[index].grandTotal *
-                        conversionRate!))
-                    .toStringAsFixed(2);
-          }
+          getCheckoutTotalAmount(index, widget.controller.selectedtour[index]);
+
           return FadeTransition(
             opacity: controller.fadeAnimation,
             child: FxContainer(
@@ -314,12 +331,38 @@ class _CheckOutScreenState extends State<CheckOutScreen>
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  FxText.bodyMedium(
-                    'Billing Information',
-                    muted: true,
-                    fontWeight: 700,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      FxText.bodyMedium(
+                        'Billing Information',
+                        muted: true,
+                        fontWeight: 700,
+                      ),
+                      IconButton(
+                        onPressed: () {
+                          log('remove clicked');
+                          setState(() {
+                            widget.controller.selectedtour.removeAt(index);
+                          });
+                        },
+                        icon: const Icon(
+                          Icons.delete,
+                          color: Colors.red,
+                          // color: Colors.transparent,
+                        ),
+                      ),
+                    ],
                   ),
                   FxSpacing.height(20),
+
+                  // widget.controller.selectedtour[index].promoAmount == null
+                  //     ? const Text('no Promo')
+                  //     : FxText.bodyMedium(
+                  //         '${widget.controller.selectedtour[index].promoAmount}',
+                  //         fontWeight: 600,
+                  //       ),
+                  // FxSpacing.height(20),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -334,7 +377,8 @@ class _CheckOutScreenState extends State<CheckOutScreen>
                           alignment: Alignment.centerLeft,
                           child: FxText.bodyMedium(
                             // '\$' + controller.order.precise,
-                            widget.selectedtourOption[index].name.toString(),
+                            widget.controller.selectedtour[index].name
+                                .toString(),
                             fontWeight: 700,
                             textAlign: TextAlign.left,
                           ),
@@ -350,33 +394,24 @@ class _CheckOutScreenState extends State<CheckOutScreen>
                         'Transfer',
                         fontWeight: 600,
                       ),
-                      widget.selectedtourOption[index].transferCode == null ||
-                              widget.selectedtourOption[index].transferCode!
-                                  .isEmpty
+                      widget.controller.selectedtour[index].transferCode ==
+                                  null ||
+                              widget.controller.selectedtour[index]
+                                  .transferCode!.isEmpty
                           ? FxText.bodyMedium(
                               'Without Transfer',
                               fontWeight: 700,
                             )
                           : FxText.bodyMedium(
-                              widget.selectedtourOption[index].transferCode
+                              widget.controller.selectedtour[index].transferCode
                                   .toString(),
                               fontWeight: 700,
                             ),
-
-                      // widget.Transfer == null
-                      //     ? FxText.bodyMedium(
-                      //         'Private',
-                      //         fontWeight: 700,
-                      //       )
-                      //     : FxText.bodyMedium(
-                      //         widget.Transfer.toString(),
-                      //         fontWeight: 700,
-                      //       ),
                     ],
                   ),
                   FxSpacing.height(4),
                   // widget.event!.endDateTime == null
-                  widget.selectedtourOption[index].activityTimeSlot == null
+                  widget.controller.selectedtour[index].activityTimeSlot == null
                       ? const SizedBox()
                       : Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -391,7 +426,8 @@ class _CheckOutScreenState extends State<CheckOutScreen>
                                 FxText.bodyMedium(
                                   // '20 Jul',
                                   getFormattedDate(widget
-                                          .selectedtourOption[index]
+                                          .controller
+                                          .selectedtour[index]
                                           .activityTimeSlot!
                                           .startDateTime
                                           .toString()
@@ -410,7 +446,8 @@ class _CheckOutScreenState extends State<CheckOutScreen>
                                 FxText.bodyMedium(
                                   // '20 Jul',
                                   getFormattedDate(widget
-                                      .selectedtourOption[index]
+                                      .controller
+                                      .selectedtour[index]
                                       .activityTimeSlot!
                                       .endDateTime
                                       .toString()),
@@ -432,7 +469,7 @@ class _CheckOutScreenState extends State<CheckOutScreen>
                         fontWeight: 600,
                       ),
                       FxText.bodyMedium(
-                        widget.selectedtourOption[index].selectedDate
+                        widget.controller.selectedtour[index].selectedDate
                             .toString(),
                         fontWeight: 700,
                       ),
@@ -467,7 +504,8 @@ class _CheckOutScreenState extends State<CheckOutScreen>
                             child: Row(
                               children: [
                                 FxText.bodyMedium(
-                                    widget.selectedtourOption[index].adultCount
+                                    widget.controller.selectedtour[index]
+                                        .adultCount
                                         .toString(),
                                     color: const Color(0xff1529e8),
                                     // color: customTheme.groceryPrimary,
@@ -489,7 +527,8 @@ class _CheckOutScreenState extends State<CheckOutScreen>
                             child: Row(
                               children: [
                                 FxText.bodyMedium(
-                                    widget.selectedtourOption[index].childCount
+                                    widget.controller.selectedtour[index]
+                                        .childCount
                                         .toString(),
                                     color: const Color(0xff1529e8),
                                     // color: customTheme.groceryPrimary,
@@ -511,7 +550,8 @@ class _CheckOutScreenState extends State<CheckOutScreen>
                             child: Row(
                               children: [
                                 FxText.bodyMedium(
-                                    widget.selectedtourOption[index].infantCount
+                                    widget.controller.selectedtour[index]
+                                        .infantCount
                                         .toString(),
                                     color: const Color(0xff1529e8),
                                     // color: customTheme.groceryPrimary,
@@ -583,57 +623,66 @@ class _CheckOutScreenState extends State<CheckOutScreen>
                       ),
                     ],
                   ),
-                  widget.selectedtourOption[index].isPromoCode == true
-                      ? FxSpacing.height(10)
-                      : const SizedBox(),
-                  widget.selectedtourOption[index].isPromoCode == true
-                      ? Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Transform.scale(
-                              scale: 1.0,
-                              child: Checkbox(
-                                value: controller.isChecked,
-                                onChanged: (value) {
-                                  controller.toggleCheckbox(value!);
-                                },
-                                activeColor: const Color(0xff1529e8),
-                                checkColor: Colors.white,
-                                tristate: false,
-                              ),
+                  // widget.controller.selectedtour[index].isPromoCode == true
+                  //     ? FxSpacing.height(10)
+                  //     : const SizedBox(),
+                  // widget.controller.selectedtour[index].isPromoCode == true
+                  //     ? Row(
+                  //         mainAxisAlignment: MainAxisAlignment.start,
+                  //         children: [
+                  //           Transform.scale(
+                  //             scale: 1.0,
+                  //             child: Checkbox(
+                  //               value: controller.isChecked,
+                  //               onChanged: (value) {
+                  //                 controller.toggleCheckbox(value!);
+                  //               },
+                  //               activeColor: const Color(0xff1529e8),
+                  //               checkColor: Colors.white,
+                  //               tristate: false,
+                  //             ),
+                  //           ),
+                  //           controller.isChecked == true
+                  //               ? FxText.bodyMedium(
+                  //                   'Coupon Applied',
+                  //                   fontWeight: 700,
+                  //                   // fontSize: 20,
+                  //                   color: const Color(0xff1529e8),
+                  //                 )
+                  //               : FxText.bodyMedium(
+                  //                   'Coupon Apply',
+                  //                   fontWeight: 700,
+                  //                   // fontSize: 20,
+                  //                   color: const Color(0xff1529e8),
+                  //                 ),
+                  //         ],
+                  //       )
+                  //     : const SizedBox(),
+                  widget.controller.selectedtour[index].isPromoCode == true
+                      ? ListTileTheme(
+                          contentPadding: const EdgeInsets.all(0),
+                          child: CheckboxListTile(
+                            value: widget.controller.checkboxStatus[index],
+                            // activeColor: Colors.red,
+                            activeColor: const Color(0xff1529e8),
+                            selected: widget.controller.checkboxStatus[index],
+                            onChanged: (newValue) {
+                              setState(() {
+                                log('Check:${widget.controller.checkboxStatus[index]}');
+                                widget.controller.checkboxStatus[index] =
+                                    newValue ?? false;
+                                log('Check1 index => $index => :${widget.controller.checkboxStatus[index]}');
+                                widget.controller.selectedtour[index]
+                                        .promoapplied =
+                                    widget.controller.checkboxStatus[index];
+                                log('PromoApplied:${widget.controller.selectedtour[index].promoapplied}=>${widget.controller.checkboxStatus[index]}');
+                              });
+                            },
+                            title: FxText.bodyMedium(
+                              'Coupon Apply',
+                              fontWeight: 700,
+                              color: const Color(0xff1529e8),
                             ),
-                            controller.isChecked == true
-                                ? FxText.bodyMedium(
-                                    'Coupon Applied',
-                                    fontWeight: 700,
-                                    // fontSize: 20,
-                                    color: const Color(0xff1529e8),
-                                  )
-                                : FxText.bodyMedium(
-                                    'Coupon Apply',
-                                    fontWeight: 700,
-                                    // fontSize: 20,
-                                    color: const Color(0xff1529e8),
-                                  ),
-                          ],
-                        )
-                      : const SizedBox(),
-                  widget.selectedtourOption[index].isPromoCode == true
-                      ? CheckboxListTile(
-                          value: controller.checkboxStatus[index],
-                          activeColor: Colors.red,
-                          onChanged: (newValue) {
-                            setState(() {
-                              log('Check:${controller.checkboxStatus[index]}');
-                              controller.checkboxStatus[index] =
-                                  newValue ?? false;
-                              log('Check1:${controller.checkboxStatus[index]}');
-                            });
-                          },
-                          title: FxText.bodyMedium(
-                            'Coupon Apply',
-                            fontWeight: 700,
-                            color: const Color(0xff1529e8),
                           ),
                         )
                       : const SizedBox()
@@ -1510,6 +1559,8 @@ class _CheckOutScreenState extends State<CheckOutScreen>
                     onPressed: () {
                       controller.nextPage(
                           // selectedExcursions,
+                          checkoutGrandTotalAmount,
+                          widget.controller,
                           widget.selectedtourOption,
                           context,
                           widget.totalAmount,
@@ -1532,23 +1583,46 @@ class _CheckOutScreenState extends State<CheckOutScreen>
     );
   }
 
-  String? rateconversion1;
-  Widget paymentInfo() {
-    // String? rateconversion;
-    if (widget.totalAmount != null) {
-      log('amount not equal:${widget.totalAmount}');
-      if (conversionRate != null) {
-        log('ConersionRate:$conversionRate');
-        rateconversion1 =
-            ((widget.totalAmount! * conversionRate!)).toStringAsFixed(2);
-        log('Rate:$rateconversion');
-      }
+  String? rateselectedtourOption1;
+  String checkoutGrandTotalAmount = '0', DeductionAmount = '0';
+  Map<String, String> getCheckoutGrandAmount() {
+    double tempAmount = 0, tempDeductionAmount = 0;
+    bool hasPromotion = false;
+
+    log("Total tour length => ${widget.controller.selectedtour.length}");
+    for (var tour in widget.controller.selectedtour) {
+      int index = widget.controller.selectedtour.indexOf(tour);
+      log("index promotion => $index, chekbox is empty => ${widget.controller.checkboxStatus.length}");
+      hasPromotion = widget.controller.checkboxStatus[index];
+      tempAmount += tour.grandTotal * (conversionRate ?? 1) -
+          (hasPromotion ? (tour.promoAmount ?? 0) : 0);
+
+      tempDeductionAmount += (hasPromotion ? (tour.promoAmount ?? 0) : 0);
+      log("Promotion Amount => $tempDeductionAmount");
     }
+
+    DeductionAmount = tempDeductionAmount.toStringAsFixed(2);
+    checkoutGrandTotalAmount = tempAmount.toStringAsFixed(2);
+
+    return {"amount": checkoutGrandTotalAmount, "promotion": DeductionAmount};
+  }
+
+  Widget paymentInfo() {
+    log('PaymentInfo Calling');
+    // if (widget.controller.grandSelectedTourAmount() != null) {
+    //   log('amount not equal:${widget.controller.grandSelectedTourAmount()}');
+    //   if (conversionRate != null) {
+    //     log('ConersionRate:$conversionRate');
+    //     rateconversion1 =
+    //         ((widget.controller.grandSelectedTourAmount()! * conversionRate!))
+    //             .toStringAsFixed(2);
+    //     log('Rate:$rateconversion');
+    //   }
+    // }
     return Container(
       padding: FxSpacing.x(20),
       child: ListView(
         physics: const AlwaysScrollableScrollPhysics(),
-        // crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // FxText.labelLarge(
           //   'Select payment method',
@@ -1780,92 +1854,116 @@ class _CheckOutScreenState extends State<CheckOutScreen>
 // //cc
 //           payment(
 //               "assets/images/apps/shopping2/icons/razor_logo.png", "CCavenue"),
-          FxSpacing.height(20),
-          // MaterialButton(
-          //   onPressed: () {
-          //     controller.initPlatformState();
-          //     // controller.nextPage(
-          //     //     selectedExcursions, context, widget.totalAmount);
-          //   },
-          //   // child: const Text('Button')
-          //   child: controller.selectedPayment == 1
-          //       ? const Text('ccavenue')
-          //       : controller.selectedPayment == 2
-          //           ? const Text('razor')
-          //           : const Text('select'),
-          // ),
-          FxButton.block(
-            onPressed: () {
-              // controller.selectedPayment == 1
-              //     ? controller.nextPage(
-              //         selectedExcursions, context, widget.totalAmount)
-              //     : ScaffoldMessenger.of(context).showSnackBar(
-              //         const SnackBar(content: Text('Select payment method')));
-              // controller.selectedPayment == 1
-              //     ? controller.nextPage(
-              //         selectedExcursions, context, widget.totalAmount)
-              //     : controller.selectedPayment == 2
-              //         ? controller.nextPage(
-              //             selectedExcursions, context, widget.totalAmount)
-              //         : ScaffoldMessenger.of(context).showSnackBar(
-              //             const SnackBar(
-              //                 content: Text('Select payment method')));
-              //todo
-              token == null
-                  ? controller.Login()
-                  : controller.selectedPayment == 1
-                      ? widget.selectedtourOption.first.activityTimeSlot == null
-                          ? controller.nextPage(
-                              widget.selectedtourOption,
-                              // selectedExcursions,
-                              context,
-                              widget.totalAmount,
-                              controller.token)
-                          : controller.nextPageBurj(
-                              widget.selectedtourOption,
-                              // selectedExcursions,
-                              context,
-                              widget.totalAmount,
-                              controller.token)
-                      //          controller.selectedPayment == 1
-                      // ? controller.nextPage(
-                      //       widget.selectedtourOption,
-                      //       // selectedExcursions,
-                      //        context,
-                      //         widget.totalAmount, controller.token)
-                      : controller.selectedPayment == 2
-                          ? widget.selectedtourOption.first.activityTimeSlot ==
-                                  null
-                              ? controller.nextPage(
-                                  widget.selectedtourOption,
-                                  // selectedExcursions,
-                                  context,
-                                  widget.totalAmount,
-                                  controller.token)
-                              : controller.nextPageBurj(
-                                  widget.selectedtourOption,
-                                  // selectedExcursions,
-                                  context,
-                                  widget.totalAmount,
-                                  controller.token)
-                          : CustomSnackbar.show(
-                              context: context,
-                              message: 'Select payment method',
-                              backgroundColor: const Color(0xff1529e8),
-                              duration: const Duration(seconds: 2),
-                            );
-              //  ScaffoldMessenger.of(context).showSnackBar(
-              //     const SnackBar(
-              //         content: Text('Select payment method')));
+          FxSpacing.height(10),
+          // controller.isChecked == true
+          Align(
+            alignment: Alignment.centerRight,
+            child: RichText(
+              text: TextSpan(
+                children: <TextSpan>[
+                  const TextSpan(
+                      text: '🎉 You Saved ',
+                      style: TextStyle(
+                          // height: 2,
+                          // letterSpacing: 1.0,
+                          color: Colors.black,
+                          fontSize: 15,
+                          fontWeight: FontWeight.w400)),
+                  TextSpan(
+                      text:
+                          '${getCheckoutGrandAmount()['promotion']} $currencySymbol',
+                          // '${((getCheckoutGrandAmount()['promotion']! * conversionRate!.toInt()))} $currencySymbol',
+                      // '${getCheckoutGrandAmount()['promotion']} deduction',
+                      // '${((controller.detailattraction!.first.activities![i].promoAmount! * conversionRate!)).toStringAsFixed(2)} $currencySymbol',
+                      style: const TextStyle(
+                          color: Colors.black,
+                          // decoration:
+                          //     TextDecoration.underline,
+                          fontSize: 15,
+                          fontWeight: FontWeight.w500)),
+                ],
+              ),
+            ),
+          ),
 
-              // controller.initPlatformState();
-            },
+          FxSpacing.height(20),
+          FxButton.block(
+            onPressed: widget.controller.selectedtour.isEmpty
+                ? null
+                : () {
+                    token == null
+                        ? controller.Login()
+                        : controller.selectedPayment == 1
+                            ? widget.controller.selectedtour.first
+                                        .activityTimeSlot ==
+                                    null
+                                ? controller.nextPage(
+                                    checkoutGrandTotalAmount,
+                                    widget.controller,
+                                    widget.controller.selectedtour,
+                                    // selectedExcursions,
+                                    context,
+                                    widget.controller.grandSelectedTourAmount(),
+                                    controller.token)
+                                : controller.nextPageBurj(
+                                    checkoutGrandTotalAmount,
+                                    widget.controller,
+                                    widget.controller.selectedtour,
+                                    // selectedExcursions,
+                                    context,
+                                    widget.controller.grandSelectedTourAmount(),
+                                    controller.token)
+                            //          controller.selectedPayment == 1
+                            // ? controller.nextPage(
+                            //       widget.selectedtourOption,
+                            //       // selectedExcursions,
+                            //        context,
+                            //         widget.totalAmount, controller.token)
+                            : controller.selectedPayment == 2
+                                ? widget.controller.selectedtour.first
+                                            .activityTimeSlot ==
+                                        null
+                                    ? controller.nextPage(
+                                        checkoutGrandTotalAmount,
+                                        widget.controller,
+                                        widget.controller.selectedtour,
+                                        // selectedExcursions,
+                                        context,
+                                        widget.controller
+                                            .grandSelectedTourAmount(),
+                                        controller.token)
+                                    : controller.nextPageBurj(
+                                        checkoutGrandTotalAmount,
+                                        widget.controller,
+                                        widget.controller.selectedtour,
+                                        // selectedExcursions,
+                                        context,
+                                        widget.controller
+                                            .grandSelectedTourAmount(),
+                                        controller.token)
+                                : CustomSnackbar.show(
+                                    context: context,
+                                    message: 'Select payment method',
+                                    backgroundColor: const Color(0xff1529e8),
+                                    duration: const Duration(seconds: 2),
+                                  );
+                    //  ScaffoldMessenger.of(context).showSnackBar(
+                    //     const SnackBar(
+                    //         content: Text('Select payment method')));
+
+                    // controller.initPlatformState();
+                  },
             borderRadiusAll: 4,
             elevation: 0,
             splashColor: const Color(0xff1529e8).withAlpha(40),
             backgroundColor: const Color(0xff1529e8),
             child: Column(
               children: [
+                // FxText.bodyMedium(
+                //   '${getCheckoutGrandAmount()['promotion']} deduction',
+                //   fontWeight: 600,
+                //   color: theme.colorScheme.onPrimary,
+                // ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -1882,8 +1980,9 @@ class _CheckOutScreenState extends State<CheckOutScreen>
                           )
                         : FxText.bodyMedium(
                             // ' ${widget.totalAmount} AED',
-                            // rateconversion,
-                            '$rateconversion1 $currencySymbol',
+                            // '${controller.getCheckoutGrandAmount(widget.controller,conversionRate!)} $currencySymbol',
+                            '${getCheckoutGrandAmount()['amount']} $currencySymbol',
+                            // '$rateconversion1 $currencySymbol',
                             // '${((widget.totalAmount! * conversionRate!)).toStringAsFixed(2)} $currencySymbol',
                             // '${widget.selectedtourOption.first.GrandTotalAmount}',
                             // '${widget.totalAmount} AED',
@@ -1943,48 +2042,62 @@ class _CheckOutScreenState extends State<CheckOutScreen>
           //continue
           token == null
               ? FxButton.block(
-                  onPressed: () {
-                    controller.selectedPayment == 1
-                        ? widget.selectedtourOption.first.activityTimeSlot ==
-                                null
-                            ? controller.nextPage(
-                                widget.selectedtourOption,
-                                // selectedExcursions,
-                                context,
-                                widget.totalAmount,
-                                controller.token)
-                            : controller.nextPageBurj(
-                                widget.selectedtourOption,
-                                // selectedExcursions,
-                                context,
-                                widget.totalAmount,
-                                controller.token)
-                        : controller.selectedPayment == 2
-                            ? widget.selectedtourOption.first
-                                        .activityTimeSlot ==
-                                    null
-                                ? controller.nextPage(
-                                    widget.selectedtourOption,
-                                    // selectedExcursions,
-                                    context,
-                                    widget.totalAmount,
-                                    controller.token)
-                                : controller.nextPageBurj(
-                                    widget.selectedtourOption,
-                                    // selectedExcursions,
-                                    context,
-                                    widget.totalAmount,
-                                    controller.token)
-                            : CustomSnackbar.show(
-                                context: context,
-                                message: 'Select payment method',
-                                backgroundColor: const Color(0xff1529e8),
-                                duration: const Duration(seconds: 2),
-                              );
-                    // : ScaffoldMessenger.of(context).showSnackBar(
-                    //     const SnackBar(
-                    //         content: Text('Select payment method')));
-                  },
+                  onPressed: widget.controller.selectedtour.isEmpty
+                      ? null
+                      : () {
+                          controller.selectedPayment == 1
+                              ? widget.controller.selectedtour.first
+                                          .activityTimeSlot ==
+                                      null
+                                  ? controller.nextPage(
+                                      checkoutGrandTotalAmount,
+                                      widget.controller,
+                                      widget.controller.selectedtour,
+                                      // selectedExcursions,
+                                      context,
+                                      widget.controller
+                                          .grandSelectedTourAmount(),
+                                      controller.token)
+                                  : controller.nextPageBurj(
+                                      checkoutGrandTotalAmount,
+                                      widget.controller,
+                                      widget.controller.selectedtour,
+                                      // selectedExcursions,
+                                      context,
+                                      widget.totalAmount,
+                                      controller.token)
+                              : controller.selectedPayment == 2
+                                  ? widget.controller.selectedtour.first
+                                              .activityTimeSlot ==
+                                          null
+                                      ? controller.nextPage(
+                                          checkoutGrandTotalAmount,
+                                          widget.controller,
+                                          widget.controller.selectedtour,
+                                          // selectedExcursions,
+                                          context,
+                                          widget.controller
+                                              .grandSelectedTourAmount(),
+                                          controller.token)
+                                      : controller.nextPageBurj(
+                                          checkoutGrandTotalAmount,
+                                          widget.controller,
+                                          widget.controller.selectedtour,
+                                          // selectedExcursions,
+                                          context,
+                                          widget.controller
+                                              .grandSelectedTourAmount(),
+                                          controller.token)
+                                  : CustomSnackbar.show(
+                                      context: context,
+                                      message: 'Select payment method',
+                                      backgroundColor: const Color(0xff1529e8),
+                                      duration: const Duration(seconds: 2),
+                                    );
+                          // : ScaffoldMessenger.of(context).showSnackBar(
+                          //     const SnackBar(
+                          //         content: Text('Select payment method')));
+                        },
                   borderRadiusAll: 4,
                   elevation: 0,
                   splashColor: const Color(0xff1529e8).withAlpha(40),
@@ -2002,7 +2115,8 @@ class _CheckOutScreenState extends State<CheckOutScreen>
                           ),
                           FxText.bodyMedium(
                             // ' ${widget.totalAmount} AED',
-                            '$rateconversion1 $currencySymbol',
+                            // '${controller.getCheckoutGrandAmount(widget.controller,conversionRate!)} $currencySymbol',
+                            '${getCheckoutGrandAmount()['amount']} $currencySymbol',
                             // '${((widget.totalAmount! * conversionRate!)).toStringAsFixed(2)} $currencySymbol',
                             // '${widget.selectedtourOption.first.GrandTotalAmount}',
                             // '${widget.totalAmount} AED',
@@ -2036,22 +2150,6 @@ class _CheckOutScreenState extends State<CheckOutScreen>
                                     String url =
                                         "https://www.travellerschoice.ae/terms-and-conditions/";
                                     await launchingUrl(url);
-                                    // String url =
-                                    //     "https://www.travellerschoice.ae/terms-and-conditions/";
-                                    // var urllaunchable = await canLaunch(
-                                    //     url); //canLaunch is from url_launcher package
-                                    // if (urllaunchable) {
-                                    //   await launch(
-                                    //       url); //launch is from url_launcher package to launch URL
-                                    // } else {
-                                    //   log("URL can't be launched.");
-                                    //   CustomSnackbar.show(
-                                    //     context: context,
-                                    //     message: 'URL can\'t be launched',
-                                    //     backgroundColor: const Color(0xff1529e8),
-                                    //     duration: const Duration(seconds: 2),
-                                    //   );
-                                    // }
                                   },
                                 style: const TextStyle(
                                     color: Color(0xff1529e8),

@@ -2,6 +2,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutx/flutx.dart';
 import 'package:intl/intl.dart';
+import '../controllers/Detail_controller.dart';
 import '../controllers/new_cart_controller.dart';
 import '../loading_effect.dart';
 import '../models/atteraction_model.dart';
@@ -13,8 +14,9 @@ import 'full_app.dart';
 
 class NewCart extends StatefulWidget {
   final List<Activity> cartMeal;
+  DetailController controller;
   // SlotTime? event;
-  const NewCart(this.cartMeal, {super.key}
+   NewCart(this.cartMeal,this.controller, {super.key}
       //  this.event,{super.key}
       );
 
@@ -465,7 +467,7 @@ class _NewCartState extends State<NewCart> with TickerProviderStateMixin {
                                                 value + element);
 
                                         controller.goToCheckout(
-                                          favouriteListCart, grandTotal,
+                                          favouriteListCart, grandTotal,widget.controller
                                           // widget.event,
                                         );
                                       },

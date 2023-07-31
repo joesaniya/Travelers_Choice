@@ -7,6 +7,7 @@ import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../controllers/Activity_Controller.dart';
+import '../controllers/Detail_controller.dart';
 import '../controllers/checkout_controller.dart';
 import '../models/atteraction_model.dart';
 import '../services/app_constants.dart';
@@ -21,13 +22,15 @@ class NewCartPage extends StatefulWidget {
   String textdate;
   String? Transfer;
   double? totalAmount;
-  // SlotTime? event;
+  DetailController controller;
+  // SlotTime? event;;
 
   @override
   Key? key;
 
   NewCartPage(this.length, this.selectedtourOption, this.textdate,
-      this.Transfer, this.totalAmount,
+      this.Transfer, this.totalAmount, this.controller,
+
       //  this.event,
       {super.key});
 
@@ -50,7 +53,7 @@ class _NewCartPageState extends State<NewCartPage>
     selectedExcursions = widget.selectedtourOption;
     log('Selected Tour length:${widget.selectedtourOption.first.sId}');
     log('Selected Total Amount:${widget.totalAmount}');
-    
+
     // log('Selected Slots:${widget.event!.endDateTime}');
 
     fetchlog();
@@ -293,7 +296,7 @@ class _NewCartPageState extends State<NewCartPage>
                         'Transfer',
                         fontWeight: 600,
                       ),
-                        widget.selectedtourOption[index].transferCode == null ||
+                      widget.selectedtourOption[index].transferCode == null ||
                               widget.selectedtourOption[index].transferCode!
                                   .isEmpty
                           ? FxText.bodyMedium(
@@ -606,11 +609,13 @@ class _NewCartPageState extends State<NewCartPage>
                         child: child,
                       ),
                   pageBuilder: (_, __, ___) => CheckOutScreen(
+                     widget.controller,
                       widget.selectedtourOption.length,
                       widget.selectedtourOption,
                       widget.textdate,
                       widget.Transfer,
-                      widget.totalAmount
+                      widget.totalAmount,
+                     
                       // widget.event
                       )));
             },

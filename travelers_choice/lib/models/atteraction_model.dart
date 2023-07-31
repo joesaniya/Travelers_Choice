@@ -551,6 +551,7 @@ class Activity {
   bool? isPromoCode;
   int? promoAmount;
   String? promoCode;
+  bool? promoapplied = false;
 
   Activity({
     this.sId,
@@ -607,6 +608,7 @@ class Activity {
     this.isPromoCode,
     this.promoAmount,
     this.promoCode,
+    this.promoapplied = false,
   });
 
   Activity.fromJson(Map<String, dynamic> json) {

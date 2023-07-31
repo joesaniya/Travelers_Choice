@@ -21,7 +21,7 @@ class SelectedTourBottomSheet extends StatefulWidget {
   // double? conversionRate;
   dynamic? len;
   List<Activity> Option;
-
+  DetailController controller;
   String? textdate;
   String? Transfer;
   double? totalAmount;
@@ -34,6 +34,7 @@ class SelectedTourBottomSheet extends StatefulWidget {
     // this.currencySymbol,
     // this.conversionRate,
     this.len,
+    required this.controller,
     required this.Option,
     this.textdate,
     this.Transfer,
@@ -50,8 +51,6 @@ class _SelectedTourBottomSheetState extends State<SelectedTourBottomSheet>
     with TickerProviderStateMixin {
   late ThemeData theme, theme1;
 
-  late DetailController controller;
-  // late ActivityController activitycontroller;
   late CheckOutController checkoutcontroller;
   List? selectedExcursions;
 
@@ -63,11 +62,6 @@ class _SelectedTourBottomSheetState extends State<SelectedTourBottomSheet>
     theme = AppTheme.shoppingTheme;
     theme1 = AppTheme.learningTheme;
     initializingData();
-    controller = FxControllerStore.put(DetailController(
-      this,
-      //  widget.productid
-    ));
-
     checkoutcontroller = FxControllerStore.put(CheckOutController(this));
 
     //  log('Grand Total Function${widget.Total}');
@@ -76,11 +70,8 @@ class _SelectedTourBottomSheetState extends State<SelectedTourBottomSheet>
       // addCategories();
     });
 
-    log('Grand Total${controller.grandSelectedTourAmount()}');
     log('Selected Total Amount:${widget.totalAmount}');
     selectedExcursions = widget.Option;
-    // log('Selected Tour length:${widget.selectedtourOption.first.sId}');
-    log('Selected Total Amount:${widget.totalAmount}');
 
     log('Selected Final Amount:${widget.Option.first.grandTotal}');
 
@@ -154,7 +145,7 @@ class _SelectedTourBottomSheetState extends State<SelectedTourBottomSheet>
                     .toStringAsFixed(2);
           }
           return FadeTransition(
-            opacity: controller.fadeAnimation,
+            opacity: widget.controller.fadeAnimation,
             child: FxContainer(
               // borderRadiusAll: 4,
               color: Colors.white,
@@ -177,13 +168,13 @@ class _SelectedTourBottomSheetState extends State<SelectedTourBottomSheet>
                         onPressed: () {
                           log('remove clicked');
                           setState(() {
-                            // widget.Option.removeAt(index);
+                            widget.Option.removeAt(index);
                           });
                         },
                         icon: const Icon(
                           Icons.delete,
-                          // color: Colors.red,
-                          color: Colors.transparent,
+                          color: Colors.red,
+                          // color: Colors.transparent,
                         ),
                       )
                     ],
@@ -425,20 +416,21 @@ class _SelectedTourBottomSheetState extends State<SelectedTourBottomSheet>
   }
 
   String? rateconversion1;
+  String amtCalculation() {
+    double totPaymenet = widget.controller.grandSelectedTourAmount();
+    log('Total Payment:$totPaymenet');
+    log('amount not equal:$totPaymenet');
+    if (conversionRate != null) {
+      log('ConersionRate:$conversionRate');
+      rateconversion1 = ((totPaymenet * conversionRate!)).toStringAsFixed(2);
+      log('Rate:$rateconversion1');
+    }
+    return rateconversion1 ?? '';
+  }
+
   Widget paymentInfo() {
     // String? rateconversion;
 
-    double totPaymenet = controller.grandSelectedTourAmount();
-    log('Total Payment:$totPaymenet');
-    if (widget.totalAmount != null) {
-      log('amount not equal:${widget.totalAmount}');
-      if (conversionRate != null) {
-        log('ConersionRate:$conversionRate');
-        rateconversion1 =
-            ((widget.totalAmount! * conversionRate!)).toStringAsFixed(2);
-        log('Rate:$rateconversion1');
-      }
-    }
     return Container(
       // padding: FxSpacing.x(20),
       child: _billingWidget(),
@@ -457,10 +449,10 @@ class _SelectedTourBottomSheetState extends State<SelectedTourBottomSheet>
 
   @override
   Widget build(BuildContext context) {
-    double totPaymenetBuild = controller.grandSelectedTourAmount();
+    double totPaymenetBuild = widget.controller.grandSelectedTourAmount();
     log('Total Payment Build:$totPaymenetBuild');
     return FxBuilder<DetailController>(
-        controller: controller,
+        controller: widget.controller,
         builder: (controller) {
           return Container(
             color: Colors.transparent,
@@ -470,8 +462,6 @@ class _SelectedTourBottomSheetState extends State<SelectedTourBottomSheet>
                   // color: customTheme.card,
                   color: Color(0xfff5f5f5),
                   borderRadius: BorderRadius.only(
-                      // topLeft: Radius.circular(16),
-                      // topRight: Radius.circular(16)
                       topLeft: Radius.circular(40),
                       topRight: Radius.circular(40))),
               child:
@@ -479,7 +469,7 @@ class _SelectedTourBottomSheetState extends State<SelectedTourBottomSheet>
                   // rateconversion1 == null
                   //     ? const CircularProgressIndicator()
                   //     :
-                  Builder(builder: (context) {
+                  Builder(builder: (_) {
                 return Column(
                   children: [
                     Align(
@@ -496,7 +486,7 @@ class _SelectedTourBottomSheetState extends State<SelectedTourBottomSheet>
                     Align(
                       alignment: Alignment.centerLeft,
                       child: FxText.displaySmall(
-                        '$currencySymbol $rateconversion1',
+                        '$currencySymbol ${amtCalculation()}',
                         // '${((controller.grandSelectedTourAmount() * conversionRate) as double).toStringAsFixed(2)} $currencySymbol',
                         color: theme.colorScheme.onBackground,
                         fontWeight: 600,
@@ -515,35 +505,6 @@ class _SelectedTourBottomSheetState extends State<SelectedTourBottomSheet>
                         child: Column(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            // Expanded(
-                            //   child: ListView(
-                            //     // padding: FxSpacing.all(20),
-                            //     physics: const AlwaysScrollableScrollPhysics(),
-                            //     children: [
-                            //       // Container(
-                            //       //   child: Row(
-                            //       //     mainAxisAlignment:
-                            //       //         MainAxisAlignment.spaceBetween,
-                            //       //     children: [
-                            //       //       Padding(
-                            //       //         padding: FxSpacing.x(20),
-                            //       //         child: FxText.displaySmall(
-                            //       //           // '${((
-                            //       //           //     // controller.grandSelectedTourAmount()
-                            //       //           //     widget.Option.first.grandTotal * conversionRate!)).toStringAsFixed(2)} $currencySymbol',
-                            //       //           '$rateconversion1 $currencySymbol',
-
-                            //       //           color: theme.colorScheme.onBackground,
-                            //       //           fontWeight: 600,
-                            //       //         ),
-                            //       //       ),
-                            //       //     ],
-                            //       //   ),
-                            //       // ),
-                            //       paymentInfo(),
-                            //     ],
-                            //   ),
-                            // ),
                             Expanded(
                               child: paymentInfo(),
                             ),
@@ -563,7 +524,7 @@ class _SelectedTourBottomSheetState extends State<SelectedTourBottomSheet>
                                     fontSize: 20,
                                   ),
                                   FxText.bodyMedium(
-                                    '$rateconversion1 $currencySymbol',
+                                    '${amtCalculation()} $currencySymbol',
                                     color: theme.colorScheme.onBackground,
                                     fontWeight: 900,
                                     fontSize: 20,
@@ -578,19 +539,21 @@ class _SelectedTourBottomSheetState extends State<SelectedTourBottomSheet>
                                 // vertical: 15
                               ),
                               child: FxButton.block(
-                                onPressed: () {
-                                  // controller.goToCheckout1();
-                                  controller.BottomgoToCheckout1(
-                                      widget.len,
-                                      widget.Option,
-                                      widget.textdate,
-                                      widget.Transfer,
-                                      widget.totalAmount);
-                                },
+                                onPressed:
+                                    widget.controller.selectedtour.isEmpty
+                                        ? null
+                                        : () {
+                                            controller.BottomgoToCheckout1(
+                                              
+                                                widget.len,
+                                                widget.Option,
+                                                widget.textdate,
+                                                widget.Transfer,
+                                                widget.totalAmount,
+                                                widget.controller);
+                                          },
                                 backgroundColor: const Color(0xff1529e8),
-                                // backgroundColor: customTheme.estatePrimary,
                                 borderRadiusAll: 12,
-
                                 elevation: 0,
                                 child: FxText.bodyMedium(
                                   'Book Now',

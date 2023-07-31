@@ -11,6 +11,7 @@ import 'package:hotel_travel/views/history_page.dart';
 import 'package:hotel_travel/views/profile_screen.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:line_icons/line_icons.dart';
+import '../controllers/Detail_controller.dart';
 import '../controllers/full_app_conrtoller.dart';
 import '../models/Slot_Time.dart';
 import '../models/atteraction_model.dart';
@@ -27,8 +28,10 @@ List<Activity> favouriteListCart = <Activity>[];
 class FullApp extends StatefulWidget {
   List<AllattractionModal> favouriteMeal;
   List<Activity> cartMeal;
+  DetailController controller;
   SlotTime? event;
-  FullApp(this.favouriteMeal, this.cartMeal, this.event, {super.key});
+  FullApp(this.favouriteMeal, this.cartMeal, this.controller, this.event,
+      {super.key});
 
   @override
   _FullAppState createState() => _FullAppState();
@@ -142,7 +145,7 @@ class _FullAppState extends State<FullApp> with SingleTickerProviderStateMixin {
           // return _buildItem();-->custombottom
           // return GoogleBottom();
 
-          return Scaffold(
+          return widget.controller==null?Center(child: Text('Loadig')) :Scaffold(
             backgroundColor: const Color(0xfff5f5f5),
             // body: Column(
             //   children: [
@@ -195,10 +198,9 @@ class _FullAppState extends State<FullApp> with SingleTickerProviderStateMixin {
 
                     // const Center(child: Text('Saved')),
                     SavedScreen(widget.favouriteMeal),
-                    NewCart(
-                      widget.cartMeal,
-                      // widget.event
-                    ),
+                    NewCart(widget.cartMeal, widget.controller
+                        // widget.event
+                        ),
                     const HistoryScreen(),
                     // CartScreen(),
                     const ProfileScreen()
@@ -284,7 +286,7 @@ class _FullAppState extends State<FullApp> with SingleTickerProviderStateMixin {
           [
             HomeScreen(widget.cartMeal),
             SavedScreen(widget.favouriteMeal),
-            NewCart(widget.cartMeal
+            NewCart(widget.cartMeal, widget.controller
                 // ,widget.event
                 ),
             const HistoryScreen(),

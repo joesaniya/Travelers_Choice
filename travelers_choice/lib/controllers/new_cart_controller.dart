@@ -9,6 +9,7 @@ import '../models/all_attraction_modal.dart';
 import '../models/cart.dart';
 import '../models/product.dart';
 import '../views/detail_screen/detail_Screen.dart';
+import 'Detail_controller.dart';
 
 class NewCartController extends FxController {
   TickerProvider ticker;
@@ -176,6 +177,7 @@ class NewCartController extends FxController {
   Future<void> goToCheckout(
     List<Activity> favouriteListCart,
     double grandTotal,
+    DetailController controller
     // SlotTime? event
   ) async {
     await Future.delayed(const Duration(seconds: 1));
@@ -193,6 +195,8 @@ class NewCartController extends FxController {
               child: child,
             ),
         pageBuilder: (_, __, ___) => CheckOutScreen(
+          controller
+          ,
               favouriteListCart.length,
               // selectedtours,
               favouriteListCart,

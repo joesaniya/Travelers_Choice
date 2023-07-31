@@ -59,6 +59,14 @@ class DetailController extends FxController {
   // List<Product>? products;
   late double order, tax = 30, offer = 50, total;
 
+  List<bool> checkboxStatus = [];
+
+  void updateCheckboxes(int checkboxLength) {
+    checkboxStatus = List.generate(checkboxLength, (_) => false);
+    log("Indexes => ${checkboxStatus.length}");
+    update();
+  }
+
   String? selectedtransfer;
   List<String> TransferCodes = ['without', 'private', 'shared'];
   final List<String> SharedwithoutCodes = [
@@ -99,11 +107,9 @@ class DetailController extends FxController {
         .toList();
   }
 
-  bool isChecked = false;
-
   var checkedResult = 'Checkbox is CHECKED';
 
-  void toggleCheckbox(bool value) {
+  void toggleCheckbox(bool isChecked, bool value) {
     if (isChecked == false) {
       // Put your code here which you want to execute on CheckBox Checked event.
 
@@ -597,12 +603,7 @@ class DetailController extends FxController {
       tour = value[0];
     }
     // double amount = double.parse(getTotal(tour).toString());
-    double amount = double.parse(getTotal(tour).toString()) -
-        (isChecked == true
-            ? (tour.promoAmount == null)
-                ? 0
-                : tour.promoAmount!
-            : 0);
+    double amount = double.parse(getTotal(tour).toString());
     log('Get:$amount');
 
     if (tour.transferCode != null && tour.transferCode == "private") {
@@ -617,12 +618,7 @@ class DetailController extends FxController {
       amount = amount +
           (tour.activityType == 'transfer'
               ? 0
-              : (private.isNotEmpty ? private[0].price : 0)) -
-          (isChecked == true
-              ? (tour.promoAmount == null)
-                  ? 0
-                  : tour.promoAmount!
-              : 0);
+              : (private.isNotEmpty ? private[0].price : 0));
       // (tour.promoAmount!.toInt()) : 0);
       log("Promo Code Transfer => ${tour.promoAmount}");
       log(" Private Amount => $amount");
@@ -634,20 +630,16 @@ class DetailController extends FxController {
       // amount = amount +
       //     double.parse(
       //         (tour.sharedTransferPrice ?? 0).toString()); //added transfer fee
-      amount = amount +
-          double.parse((tour.sharedTransferPrice ?? 0).toString()) -
-          (isChecked == true
-              ? (tour.promoAmount == null)
-                  ? 0
-                  : tour.promoAmount!
-              : 0);
+      amount =
+          amount + double.parse((tour.sharedTransferPrice ?? 0).toString());
       // (isChecked == true ? (tour.promoAmount!.toInt()) : 0);
       log("Promo Code Shared => ${tour.promoAmount}");
       log('Grand Total sharing:$amount');
     }
     log("Current Grand Total => $amount");
-    update();
+
     return amount;
+    update();
   }
 
   String getCount(String id) {
@@ -1005,8 +997,14 @@ class DetailController extends FxController {
   //           grandSelectedTourAmount())));
   // }
 
-  Future<void> BottomgoToCheckout1(dynamic lengthData, List<Activity> Option,
-      String? textdate, String? Transfer, double? totalAmount) async {
+  Future<void> BottomgoToCheckout1(
+    dynamic lengthData,
+    List<Activity> Option,
+    String? textdate,
+    String? Transfer,
+    double? totalAmount,
+    DetailController controller,
+  ) async {
     await Future.delayed(const Duration(seconds: 1));
     log('slot checkout');
 
@@ -1018,6 +1016,9 @@ class DetailController extends FxController {
 
     log('Selected Transfer$Transfer');
 
+if (controller.checkboxStatus.isEmpty) {
+      controller.updateCheckboxes(controller.selectedtour.length);
+    }
     Navigator.of(context, rootNavigator: true).push(PageRouteBuilder(
         transitionDuration: const Duration(milliseconds: 500),
         transitionsBuilder: (
@@ -1030,13 +1031,13 @@ class DetailController extends FxController {
               opacity: animation,
               child: child,
             ),
-        pageBuilder: (_, __, ___) =>
-            CheckOutScreen(lengthData, Option, textdate!, Transfer, totalAmount
-                // customSlots!.event,
-                )));
+        pageBuilder: (_, __, ___) => CheckOutScreen(
+            controller, lengthData, Option, textdate!, Transfer, totalAmount
+            // customSlots!.event,
+            )));
   }
 
-  Future<void> goToCheckout1() async {
+  Future<void> goToCheckout1(DetailController controller) async {
     await Future.delayed(const Duration(seconds: 1));
     log('slot checkout');
 
@@ -1061,6 +1062,7 @@ class DetailController extends FxController {
               child: child,
             ),
         pageBuilder: (_, __, ___) => CheckOutScreen(
+              controller,
               selectedtour.length,
               selectedtour,
               dateTE.text,
@@ -1070,7 +1072,8 @@ class DetailController extends FxController {
             )));
   }
 
-  Future<void> goToCheckout(BuildContext context, String pid) async {
+  Future<void> goToCheckout(
+      BuildContext context, String pid, DetailController controller) async {
     // log('SLots Checkout:${selectedtour.first.customSlots!.slots!.first.endDateTime}');
     // log('SLots Checkout:${selectedtour.first.event!.eventName}');
     await Future.delayed(const Duration(seconds: 1));
@@ -1135,14 +1138,14 @@ class DetailController extends FxController {
           //     grandSelectedTourAmount())
 
           pageBuilder: (_, __, ___) => NewCartPage(
-                selectedtour.length,
-                // selectedtours,
-                selectedtour,
-                dateTE.text,
-                selectedtransfer,
-
-                grandSelectedTourAmount(),
-                //  customSlots!.event,
+              selectedtour.length,
+              // selectedtours,
+              selectedtour,
+              dateTE.text,
+              selectedtransfer,
+              grandSelectedTourAmount(),
+              controller
+              //  customSlots!.event,
               )
 
           // CheckOutScreen(
@@ -1159,60 +1162,60 @@ class DetailController extends FxController {
     }
   }
 
-  Future<void> goToCheckoutFromCart() async {
-    await Future.delayed(const Duration(seconds: 1));
-    if (selectedtour.isEmpty) {
-      CustomSnackbar.show(
-        context: context,
-        message: 'Select Your Tour Option',
-        backgroundColor: const Color(0xff1529e8),
-        duration: const Duration(seconds: 2),
-      );
-      // ScaffoldMessenger.of(context).showSnackBar(
-      //     const SnackBar(content: Text("Select Your Tour Option")));
-    } else {
-      log(selectedtour.length.toString());
-      log(selectedtour.first.name.toString());
-      log(selectedtour.first.adultCount.toString());
-      Navigator.of(context, rootNavigator: true).push(PageRouteBuilder(
-          transitionDuration: const Duration(milliseconds: 500),
-          transitionsBuilder: (
-            BuildContext context,
-            Animation<double> animation,
-            Animation<double> secondaryAnimation,
-            Widget child,
-          ) =>
-              FadeTransition(
-                opacity: animation,
-                child: child,
-              ),
-          pageBuilder: (_, __, ___) => NewCartPage(
-                selectedtour.length,
-                // selectedtours,
-                selectedtour,
-                dateTE.text,
-                selectedtransfer,
+  // Future<void> goToCheckoutFromCart() async {
+  //   await Future.delayed(const Duration(seconds: 1));
+  //   if (selectedtour.isEmpty) {
+  //     CustomSnackbar.show(
+  //       context: context,
+  //       message: 'Select Your Tour Option',
+  //       backgroundColor: const Color(0xff1529e8),
+  //       duration: const Duration(seconds: 2),
+  //     );
+  //     // ScaffoldMessenger.of(context).showSnackBar(
+  //     //     const SnackBar(content: Text("Select Your Tour Option")));
+  //   } else {
+  //     log(selectedtour.length.toString());
+  //     log(selectedtour.first.name.toString());
+  //     log(selectedtour.first.adultCount.toString());
+  //     Navigator.of(context, rootNavigator: true).push(PageRouteBuilder(
+  //         transitionDuration: const Duration(milliseconds: 500),
+  //         transitionsBuilder: (
+  //           BuildContext context,
+  //           Animation<double> animation,
+  //           Animation<double> secondaryAnimation,
+  //           Widget child,
+  //         ) =>
+  //             FadeTransition(
+  //               opacity: animation,
+  //               child: child,
+  //             ),
+  //         pageBuilder: (_, __, ___) => NewCartPage(
+  //               selectedtour.length,
+  //               // selectedtours,
+  //               selectedtour,
+  //               dateTE.text,
+  //               selectedtransfer,
 
-                // excursions.activities!
-                // amount
-                grandSelectedTourAmount(),
-                // customSlots!.event
-              )
+  //               // excursions.activities!
+  //               // amount
+  //               grandSelectedTourAmount(),
+  //               // customSlots!.event
+  //             )
 
-          // CheckOutScreen(
-          //     selectedtour.length,
-          //     // selectedtours,
-          //     selectedtour,
-          //     dateTE.text,
-          //     selectedtransfer,
+  //         // CheckOutScreen(
+  //         //     selectedtour.length,
+  //         //     // selectedtours,
+  //         //     selectedtour,
+  //         //     dateTE.text,
+  //         //     selectedtransfer,
 
-          //     // excursions.activities!
+  //         //     // excursions.activities!
 
-          //     // amount
-          //     grandSelectedTourAmount())
-          ));
-    }
-  }
+  //         //     // amount
+  //         //     grandSelectedTourAmount())
+  //         ));
+  //   }
+  // }
   //
 
   String? currencies, countryCode;

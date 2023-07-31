@@ -1115,56 +1115,6 @@ class _DetailScreenState extends State<DetailScreen>
                                         ],
                                       ),
                                     ),
-                                    controller.detailattraction!.first
-                                                .activities![i].isPromoCode ==
-                                            true
-                                        ? FxSpacing.height(10)
-                                        : const SizedBox(),
-                                    controller.detailattraction!.first
-                                                .activities![i].isPromoCode ==
-                                            true
-                                        ? Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            children: [
-                                              Transform.scale(
-                                                scale: 1.0,
-                                                child: Checkbox(
-                                                  value: controller.isChecked,
-                                                  onChanged: (value) {
-                                                    controller
-                                                        .toggleCheckbox(value!);
-                                                  },
-                                                  activeColor:
-                                                      const Color(0xff1529e8),
-                                                  checkColor: Colors.white,
-                                                  tristate: false,
-                                                ),
-                                              ),
-                                              controller.isChecked == true
-                                                  ? FxText.bodyMedium(
-                                                      'Coupon Applied',
-                                                      fontWeight: 700,
-                                                      // fontSize: 20,
-                                                      color: const Color(
-                                                          0xff1529e8),
-                                                    )
-                                                  : FxText.bodyMedium(
-                                                      'Coupon Apply',
-                                                      fontWeight: 700,
-                                                      // fontSize: 20,
-                                                      color: const Color(
-                                                          0xff1529e8),
-                                                    ),
-                                            ],
-                                          )
-                                        : const SizedBox(),
-                                    // FxText.bodyMedium(
-                                    //   'Coupon ${controller.detailattraction!.first.activities![i].isPromoCode}${controller.isChecked}',
-                                    //   fontWeight: 700,
-                                    //   // fontSize: 20,
-                                    //   color: const Color(0xff1529e8),
-                                    // ),
 
                                     FxSpacing.height(10),
                                     Row(
@@ -1188,82 +1138,82 @@ class _DetailScreenState extends State<DetailScreen>
                                       ],
                                     ),
                                     FxSpacing.height(10),
-                                    controller.isChecked == true
-                                        ? Align(
-                                            alignment: Alignment.centerRight,
-                                            child: RichText(
-                                              text: TextSpan(
-                                                children: <TextSpan>[
-                                                  const TextSpan(
-                                                      text: '🎉 You Saved ',
-                                                      style: TextStyle(
-                                                          // height: 2,
-                                                          // letterSpacing: 1.0,
-                                                          color: Colors.black,
-                                                          fontSize: 15,
-                                                          fontWeight:
-                                                              FontWeight.w400)),
-                                                  TextSpan(
-                                                      text:
-                                                          '${((controller.detailattraction!.first.activities![i].promoAmount! * conversionRate!)).toStringAsFixed(2)} $currencySymbol',
-                                                      style: const TextStyle(
-                                                          color: Colors.black,
-                                                          // decoration:
-                                                          //     TextDecoration.underline,
-                                                          fontSize: 15,
-                                                          fontWeight:
-                                                              FontWeight.w500)),
-                                                ],
-                                              ),
-                                            ),
-                                          )
-                                        : const SizedBox(),
+                                    // controller.isChecked == true
+                                    //     ? Align(
+                                    //         alignment: Alignment.centerRight,
+                                    //         child: RichText(
+                                    //           text: TextSpan(
+                                    //             children: <TextSpan>[
+                                    //               const TextSpan(
+                                    //                   text: '🎉 You Saved ',
+                                    //                   style: TextStyle(
+                                    //                       // height: 2,
+                                    //                       // letterSpacing: 1.0,
+                                    //                       color: Colors.black,
+                                    //                       fontSize: 15,
+                                    //                       fontWeight:
+                                    //                           FontWeight.w400)),
+                                    //               TextSpan(
+                                    //                   text:
+                                    //                       '${((controller.detailattraction!.first.activities![i].promoAmount! * conversionRate!)).toStringAsFixed(2)} $currencySymbol',
+                                    //                   style: const TextStyle(
+                                    //                       color: Colors.black,
+                                    //                       // decoration:
+                                    //                       //     TextDecoration.underline,
+                                    //                       fontSize: 15,
+                                    //                       fontWeight:
+                                    //                           FontWeight.w500)),
+                                    //             ],
+                                    //           ),
+                                    //         ),
+                                    //       )
+                                    //     : const SizedBox(),
 
                                     FxSpacing.height(6),
-                                    controllerTE[i].text.isNotEmpty
-                                        ? Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.end,
-                                            // crossAxisAlignment: CrossAxisAlignment.start,
-                                            children: [
-                                              GestureDetector(
-                                                onTap: () {
-                                                  controller.goToCheckout(
-                                                      context,
-                                                      widget.productid);
-                                                },
-                                                child: FxContainer(
-                                                  color: const Color(0xff1529e8)
-                                                      .withAlpha(40),
-                                                  // paddingAll: controller
-                                                  //     .paddingAnimation.value,
-                                                  paddingAll: 9,
+                                    // controllerTE[i].text.isNotEmpty
+                                    //     ? Row(
+                                    //         mainAxisAlignment:
+                                    //             MainAxisAlignment.end,
+                                    //         // crossAxisAlignment: CrossAxisAlignment.start,
+                                    //         children: [
+                                    //           GestureDetector(
+                                    //             onTap: () {
+                                    //               controller.goToCheckout(
+                                    //                   context,
+                                    //                   widget.productid);
+                                    //             },
+                                    //             child: FxContainer(
+                                    //               color: const Color(0xff1529e8)
+                                    //                   .withAlpha(40),
+                                    //               // paddingAll: controller
+                                    //               //     .paddingAnimation.value,
+                                    //               paddingAll: 9,
 
-                                                  child: Icon(
-                                                    FeatherIcons.shoppingBag,
-                                                    color:
-                                                        const Color(0xff1529e8),
-                                                    size: controller
-                                                        .cartAnimation.value,
-                                                  ),
-                                                ),
-                                              ),
-                                              FxSpacing.width(10),
-                                              FxContainer(
-                                                onTap: controller.goToCheckout1,
-                                                borderRadiusAll: 10,
-                                                // padding: FxSpacing.xy(8, 4),
-                                                padding: FxSpacing.xy(6, 10),
-                                                color: const Color(0xff1529e8),
-                                                child: FxText.bodyMedium(
-                                                  'CheckOut',
-                                                  fontWeight: 600,
-                                                  color: Colors.white,
-                                                ),
-                                              )
-                                            ],
-                                          )
-                                        : const SizedBox()
+                                    //               child: Icon(
+                                    //                 FeatherIcons.shoppingBag,
+                                    //                 color:
+                                    //                     const Color(0xff1529e8),
+                                    //                 size: controller
+                                    //                     .cartAnimation.value,
+                                    //               ),
+                                    //             ),
+                                    //           ),
+                                    //           FxSpacing.width(10),
+                                    //           FxContainer(
+                                    //             onTap: controller.goToCheckout1,
+                                    //             borderRadiusAll: 10,
+                                    //             // padding: FxSpacing.xy(8, 4),
+                                    //             padding: FxSpacing.xy(6, 10),
+                                    //             color: const Color(0xff1529e8),
+                                    //             child: FxText.bodyMedium(
+                                    //               'CheckOut',
+                                    //               fontWeight: 600,
+                                    //               color: Colors.white,
+                                    //             ),
+                                    //           )
+                                    //         ],
+                                    //       )
+                                    //     : const SizedBox()
                                   ],
                                 )
                         ]),
@@ -3200,8 +3150,8 @@ class _DetailScreenState extends State<DetailScreen>
                                               //         duration:
                                               //             const Duration(seconds: 2),
                                               //       )
-                                              : controller.goToCheckout(
-                                                  context, widget.productid);
+                                              : controller.goToCheckout(context,
+                                                  widget.productid, controller);
                                         },
                                   child: Stack(
                                     children: [
@@ -3331,6 +3281,7 @@ class _DetailScreenState extends State<DetailScreen>
                                                       // ProductSlug: widget.productSlug,
                                                       len: controller
                                                           .selectedtour.length,
+                                                      controller: controller,
 
                                                       Option: controller
                                                           .selectedtour,

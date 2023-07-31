@@ -859,26 +859,26 @@ class ActivityController extends FxController {
     // log('Dates:${dateTE.text}');
     log('Selected Transfer$selectedtransfer');
 
-    Navigator.of(context, rootNavigator: true).push(PageRouteBuilder(
-        transitionDuration: const Duration(milliseconds: 500),
-        transitionsBuilder: (
-          BuildContext context,
-          Animation<double> animation,
-          Animation<double> secondaryAnimation,
-          Widget child,
-        ) =>
-            FadeTransition(
-              opacity: animation,
-              child: child,
-            ),
-        pageBuilder: (_, __, ___) => CheckOutScreen(
-              selectedtour.length,
-              selectedtour,
-              dateTE.text,
-              selectedtransfer,
-              grandSelectedTourAmount(),
-              // customSlots!.event,
-            )));
+    // Navigator.of(context, rootNavigator: true).push(PageRouteBuilder(
+    //     transitionDuration: const Duration(milliseconds: 500),
+    //     transitionsBuilder: (
+    //       BuildContext context,
+    //       Animation<double> animation,
+    //       Animation<double> secondaryAnimation,
+    //       Widget child,
+    //     ) =>
+    //         FadeTransition(
+    //           opacity: animation,
+    //           child: child,
+    //         ),
+    //     pageBuilder: (_, __, ___) => CheckOutScreen(
+    //           selectedtour.length,
+    //           selectedtour,
+    //           dateTE.text,
+    //           selectedtransfer,
+    //           grandSelectedTourAmount(),
+    //           // customSlots!.event,
+    //         )));
   }
 
   Future<void> goToCheckout() async {
@@ -907,51 +907,51 @@ class ActivityController extends FxController {
       // log('Dates:${dateTE.text}');
       log('Selected Transfer$selectedtransfer');
       print(grandSelectedTourAmount());
-      Navigator.of(context, rootNavigator: true).push(PageRouteBuilder(
-          transitionDuration: const Duration(milliseconds: 500),
-          transitionsBuilder: (
-            BuildContext context,
-            Animation<double> animation,
-            Animation<double> secondaryAnimation,
-            Widget child,
-          ) =>
-              FadeTransition(
-                opacity: animation,
-                child: child,
-              ),
-          // pageBuilder: (_, __, ___) => AttractionCartPage(
-          //     selectedtour.length,
-          //     // selectedtours,
-          //     selectedtour,
-          //     dateTE.text,
-          //     selectedtransfer,
-          //
-          //     // excursions.activities!
-          //     // amount
-          //     grandSelectedTourAmount())
+      // Navigator.of(context, rootNavigator: true).push(PageRouteBuilder(
+      //     transitionDuration: const Duration(milliseconds: 500),
+      //     transitionsBuilder: (
+      //       BuildContext context,
+      //       Animation<double> animation,
+      //       Animation<double> secondaryAnimation,
+      //       Widget child,
+      //     ) =>
+      //         FadeTransition(
+      //           opacity: animation,
+      //           child: child,
+      //         ),
+      //     // pageBuilder: (_, __, ___) => AttractionCartPage(
+      //     //     selectedtour.length,
+      //     //     // selectedtours,
+      //     //     selectedtour,
+      //     //     dateTE.text,
+      //     //     selectedtransfer,
+      //     //
+      //     //     // excursions.activities!
+      //     //     // amount
+      //     //     grandSelectedTourAmount())
 
-          pageBuilder: (_, __, ___) => NewCartPage(
-                selectedtour.length,
-                // selectedtours,
-                selectedtour,
-                dateTE.text,
-                selectedtransfer,
+      //     pageBuilder: (_, __, ___) => NewCartPage(
+      //           selectedtour.length,
+      //           // selectedtours,
+      //           selectedtour,
+      //           dateTE.text,
+      //           selectedtransfer,
 
-                grandSelectedTourAmount(),
-                //  customSlots!.event,
-              )
+      //           grandSelectedTourAmount(),
+      //           //  customSlots!.event,
+      //         )
 
-          // CheckOutScreen(
-          //     selectedtour.length,
-          //     // selectedtours,
-          //     selectedtour,
-          //     dateTE.text,
-          //     selectedtransfer,
+      //     // CheckOutScreen(
+      //     //     selectedtour.length,
+      //     //     // selectedtours,
+      //     //     selectedtour,
+      //     //     dateTE.text,
+      //     //     selectedtransfer,
 
-          //     // excursions.activities!
-          //     // amount
-          //     grandSelectedTourAmount())
-          ));
+      //     //     // excursions.activities!
+      //     //     // amount
+      //     //     grandSelectedTourAmount())
+      //     ));
     }
   }
 
@@ -970,43 +970,44 @@ class ActivityController extends FxController {
       log(selectedtour.length.toString());
       log(selectedtour.first.name.toString());
       log(selectedtour.first.adultCount.toString());
-      Navigator.of(context, rootNavigator: true).push(PageRouteBuilder(
-          transitionDuration: const Duration(milliseconds: 500),
-          transitionsBuilder: (
-            BuildContext context,
-            Animation<double> animation,
-            Animation<double> secondaryAnimation,
-            Widget child,
-          ) =>
-              FadeTransition(
-                opacity: animation,
-                child: child,
-              ),
-          pageBuilder: (_, __, ___) => NewCartPage(
-                selectedtour.length,
-                // selectedtours,
-                selectedtour,
-                dateTE.text,
-                selectedtransfer,
+      // Navigator.of(context, rootNavigator: true).push(PageRouteBuilder(
+      //     transitionDuration: const Duration(milliseconds: 500),
+      //     transitionsBuilder: (
+      //       BuildContext context,
+      //       Animation<double> animation,
+      //       Animation<double> secondaryAnimation,
+      //       Widget child,
+      //     ) =>
+      //         FadeTransition(
+      //           opacity: animation,
+      //           child: child,
+      //         ),
+      //     pageBuilder: (_, __, ___) => NewCartPage(
+      //           selectedtour.length,
+      //           // selectedtours,
+      //           selectedtour,
+      //           dateTE.text,
+      //           selectedtransfer,
 
-                // excursions.activities!
-                // amount
-                grandSelectedTourAmount(),
-                // customSlots!.event
-              )
+      //           // excursions.activities!
+      //           // amount
+      //           grandSelectedTourAmount(),
+      //           // customSlots!.event
+      //         )
 
-          // CheckOutScreen(
-          //     selectedtour.length,
-          //     // selectedtours,
-          //     selectedtour,
-          //     dateTE.text,
-          //     selectedtransfer,
+      //     // CheckOutScreen(
+      //     //     selectedtour.length,
+      //     //     // selectedtours,
+      //     //     selectedtour,
+      //     //     dateTE.text,
+      //     //     selectedtransfer,
 
-          //     // excursions.activities!
+      //     //     // excursions.activities!
 
-          //     // amount
-          //     grandSelectedTourAmount())
-          ));
+      //     //     // amount
+      //     //     grandSelectedTourAmount())
+      //     ));
+   
     }
   }
 

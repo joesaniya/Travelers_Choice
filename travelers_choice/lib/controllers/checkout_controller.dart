@@ -17,6 +17,7 @@ import 'dart:convert';
 import '../services/app_constants.dart';
 import '../views/login_Screens/login_screen.dart';
 import '../views/payment_cc.dart';
+import 'Detail_controller.dart';
 import 'razor_credentials.dart' as razorCredentials;
 
 class TabWidget {
@@ -391,6 +392,20 @@ class CheckOutController extends FxController {
     );
   }
 
+  String? rateselectedtourOption1;
+  String getCheckoutGrandAmount(
+      DetailController controller, double conversion) {
+    double tempAmount = 0;
+    bool hasPromotion = false;
+    for (var tour in controller.selectedtour) {
+      int index = controller.selectedtour.indexOf(tour);
+      hasPromotion = controller.checkboxStatus[index];
+      tempAmount += tour.grandTotal * (conversion ?? 1) -
+          (hasPromotion ? (tour.promoAmount ?? 0) : 0);
+    }
+    return tempAmount.toStringAsFixed(2);
+  }
+
   void fetchData() async {
     products = HotelTravelCache.products;
     // calculateBilling();
@@ -489,6 +504,8 @@ class CheckOutController extends FxController {
   //next button
   nextPage(
       // selectedExcursionsDatas,
+      String TotalGet,
+      DetailController controller,
       List<Activity> selectedExcursionsDatas,
       context,
       total,
@@ -584,7 +601,8 @@ class CheckOutController extends FxController {
       // } else
       if (selectedPayment == 1) {
         log('1');
-        createOrderccAvenue(selectedExcursionsDatas, token);
+        createOrderccAvenue(
+            TotalGet, controller, selectedExcursionsDatas, token);
       } else {
         log('2');
         createOrder(selectedExcursionsDatas);
@@ -636,6 +654,8 @@ class CheckOutController extends FxController {
   // }
   nextPageBurj(
       // selectedExcursionsDatas,
+      String TotalGet,
+      DetailController controller,
       List<Activity> selectedExcursionsDatas,
       context,
       total,
@@ -731,7 +751,12 @@ class CheckOutController extends FxController {
       // } else
       if (selectedPayment == 1) {
         log('1');
-        createOrderccAvenueBUrj(selectedExcursionsDatas, token);
+        createOrderccAvenueBUrj(
+          TotalGet,
+          controller,
+          selectedExcursionsDatas,
+          token,
+        );
       } else {
         log('2');
         // createOrder(selectedExcursionsDatas);
@@ -975,7 +1000,7 @@ class CheckOutController extends FxController {
   }
 
   //burjcc
-  void createOrderccAvenueBUrj(
+  void createOrderccAvenueBUrj(String TotalGet, DetailController controller,
       List<Activity> selectedExcursionsDatas, token) async {
     log('Createorder burj');
 
@@ -1092,10 +1117,10 @@ class CheckOutController extends FxController {
       Navigator.of(context, rootNavigator: true)
           .pushReplacement(
         MaterialPageRoute(
-          builder: (context) => PaymentCC(
-            paymentdata: paymentdata,
-            totalAmount: grandSelectedTourAmount(),
-          ),
+          builder: (context) =>
+              PaymentCC(paymentdata: paymentdata, totalAmount: TotalGet
+                  // totalAmount: grandSelectedTourAmount(),
+                  ),
         ),
       )
           .whenComplete(() {
@@ -1124,7 +1149,7 @@ class CheckOutController extends FxController {
   }
 
   //ccavenue
-  void createOrderccAvenue(
+  void createOrderccAvenue(String TotalAmount, DetailController controller,
       List<Activity> selectedExcursionsDatas, token) async {
     String username = razorCredentials.keyId;
     String password = razorCredentials.keySecret;
@@ -1148,7 +1173,10 @@ class CheckOutController extends FxController {
         "adultsCount": element.adultCount,
         "childrenCount": element.childCount,
         "infantCount": element.infantCount,
-        "transferType": element.transferCode ?? 'Without'
+        "transferType": element.transferCode ?? 'Without',
+        // "isPromoAdded": true,
+        "isPromoAdded": element.promoapplied
+        // "isPromoAdded": controller.checkboxStatus[index],
         // "activity": "63e6317d20e0e01648630e6a",
         // "date": "2023-04-5",
         // "adultsCount": 1,
@@ -1169,6 +1197,7 @@ class CheckOutController extends FxController {
       "phoneNumber": phoneTE.text,
       "country": selectedCountryCode,
       "paymentProcessor": "ccavenue",
+
       // "paymentProcessor": selectedPayment == 1 ? "ccavenue" : "razorpay",
       // "selectedActivities": jsonEncode(ActivityList)
       "selectedActivities": ActivityList
@@ -1198,10 +1227,10 @@ class CheckOutController extends FxController {
       Navigator.of(context, rootNavigator: true)
           .pushReplacement(
         MaterialPageRoute(
-          builder: (context) => PaymentCC(
-            paymentdata: paymentdata,
-            totalAmount: grandSelectedTourAmount(),
-          ),
+          builder: (context) =>
+              PaymentCC(paymentdata: paymentdata, totalAmount: TotalAmount
+                  // totalAmount: grandSelectedTourAmount(),
+                  ),
         ),
       )
           .whenComplete(() {
@@ -1217,12 +1246,19 @@ class CheckOutController extends FxController {
       log(jsondata['error']);
       print(jsondata['error']);
       //snackbar
-      CustomSnackbar.show(
-        context: context,
-        message: jsondata['error'],
-        backgroundColor: const Color(0xff1529e8),
-        duration: const Duration(seconds: 2),
-      );
+      jsondata['error'] == 'jwt malformed'
+          ? CustomSnackbar.show(
+              context: context,
+              message: 'Please Login!!!',
+              backgroundColor: const Color(0xff1529e8),
+              duration: const Duration(seconds: 2),
+            )
+          : CustomSnackbar.show(
+              context: context,
+              message: jsondata['error'],
+              backgroundColor: const Color(0xff1529e8),
+              duration: const Duration(seconds: 2),
+            );
       // ScaffoldMessenger.of(context)
       //     .showSnackBar(SnackBar(content: Text(jsondata['error'])));
       return null;

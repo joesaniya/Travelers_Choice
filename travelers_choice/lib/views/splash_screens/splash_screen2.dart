@@ -1,3 +1,4 @@
+import '../../controllers/Detail_controller.dart';
 import '../../controllers/splas_screen2-controllers.dart';
 import '/theme/app_theme.dart';
 import 'package:flutter/material.dart';
@@ -14,10 +15,12 @@ class SplashScreen2 extends StatefulWidget {
   _SplashScreen2State createState() => _SplashScreen2State();
 }
 
-class _SplashScreen2State extends State<SplashScreen2> {
+class _SplashScreen2State extends State<SplashScreen2>
+    with TickerProviderStateMixin {
   late ThemeData theme;
 
   late SplashScreen2Controller controller;
+  late DetailController detailcontroller;
 
   late StreamSubscription subscription;
   late StreamSubscription internetSubscription;
@@ -29,6 +32,10 @@ class _SplashScreen2State extends State<SplashScreen2> {
     theme = AppTheme.shoppingTheme;
 
     controller = FxControllerStore.putOrFind(SplashScreen2Controller());
+    detailcontroller = FxControllerStore.put(DetailController(
+      this,
+    ));
+    controller.goToFullApp(detailcontroller);
     // subscription =
     //     Connectivity().onConnectivityChanged.listen(_showConnectivitySnackBar);
     // internetSubscription =

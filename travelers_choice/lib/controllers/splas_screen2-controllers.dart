@@ -14,6 +14,8 @@ import '../views/full_app.dart';
 import '../views/hotel_travel_constants.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
+import 'Detail_controller.dart';
+
 class SplashScreen2Controller extends FxController {
   final bool _isLoggedIn = false;
   GoogleSignInAccount? _userObj;
@@ -21,12 +23,13 @@ class SplashScreen2Controller extends FxController {
   @override
   void initState() {
     super.initState();
-    goToFullApp();
+    // goToFullApp();
   }
 
   final List<AllattractionModal> _favouriteMeals = [];
+  // DetailController? controller;
   final List<Activity> _cartMeal = [];
-   SlotTime? _eventMeal;
+  SlotTime? _eventMeal;
   final List<AllattractionModal> _availableMeals = <AllattractionModal>[];
 
   void _toggleFavorite(String mealId) {
@@ -64,7 +67,7 @@ class SplashScreen2Controller extends FxController {
     );
   }
 
-  goToFullApp() async {
+  goToFullApp(DetailController controller) async {
     HotelTravelCache.products = await Product.getDummyList();
     // HotelTravelCache.categories = await Category.getDummyList();
     HotelTravelCache.carts = await Cart.getDummyList();
@@ -76,8 +79,12 @@ class SplashScreen2Controller extends FxController {
     Navigator.of(context, rootNavigator: true).pushReplacement(
       PageRouteBuilder(
           transitionDuration: const Duration(seconds: 2),
-          pageBuilder: (_, __, ___) =>
-              FullApp(_favouriteMeals, _cartMeal, _eventMeal)),
+          pageBuilder: (_, __, ___) => FullApp(
+                _favouriteMeals,
+                _cartMeal,
+                controller,
+                _eventMeal,
+              )),
     );
   }
 
