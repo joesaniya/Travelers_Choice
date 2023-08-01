@@ -102,7 +102,7 @@ class AllBookingController extends FxController {
       stepCount: 2,
       maskClosable: true,
       onHighlightWidgetTap: (introStatus) {
-        print(introStatus);
+        // log(introStatus);
       },
       widgetBuilder: StepWidgetBuilder.useDefaultTheme(
         texts: [
@@ -210,7 +210,7 @@ class AllBookingController extends FxController {
       log('img error');
       var jsondata = jsonDecode(res.body);
       log(jsondata['error']);
-      print(jsondata['error']);
+      log(jsondata['error']);
       //snackbar
       CustomSnackbar.show(
         context: context,

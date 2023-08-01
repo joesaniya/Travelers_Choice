@@ -119,12 +119,12 @@ class _PaymentCCState extends State<PaymentCC> with TickerProviderStateMixin {
                       _webViewController.addJavaScriptHandler(
                           handlerName: 'handlerFooWithArgs',
                           callback: (args) {
-                            print(args);
+                            // print(args);
                             // it will print: [1, true, [bar, 5], {foo: baz}, {bar: bar_value, baz: baz_value}]
                           });
                     },
                     onConsoleMessage: (controller, consoleMessage) {
-                      print(consoleMessage);
+                      // print(consoleMessage);
                       // it will print: {message: {"bar":"bar_value","baz":"baz_value"}, messageLevel: 1}
                     },
                   ),

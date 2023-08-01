@@ -248,7 +248,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
           // controller.countryCode = sharedPreferences!
           //     .getString(AppConstants.KEY_ACCESS_TOKEN_countryId);
           controller.countryCode = '63ac33ecff04e5652a2583f5';
-          print("controller.countryCode ${controller.countryCode}");
+          log("controller.countryCode ${controller.countryCode}");
           log("controller.countryCode ${controller.countryCode}");
           selectedCountry = countryList.first.currencies.firstWhere(
               (element) => element.country.id == controller.countryCode);
@@ -624,7 +624,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
 
       // var currencySymbol = selectedCountry!.isocode;
       // var conversionRate = selectedCountry!.conversionRate;
-      print(text);
+      log(text);
       //todo
       list.add(
           // car(controller.products![i])

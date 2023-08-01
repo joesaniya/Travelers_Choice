@@ -313,7 +313,7 @@ class _ActivityScreenState extends State<TourWidgets>
                                     //         .listSLotDetails.last);
                                   });
                                   // activitiesListTime.add(listSLotDetails.last);
-                                  // print(activitiesListTime);
+                                  // log(activitiesListTime);
 
                                   Navigator.pop(context);
                                 },
@@ -530,7 +530,7 @@ class _ActivityScreenState extends State<TourWidgets>
 
     activitycontroller = FxControllerStore.put(ActivityController(this));
     checkoutcontroller = FxControllerStore.put(CheckOutController(this));
-    print(activitycontroller.person_count);
+    // log(activitycontroller.person_count);
   }
 
   String? currencySymbol;
@@ -986,7 +986,7 @@ class _ActivityScreenState extends State<TourWidgets>
       bool? isShared = widget.excursions[i].isSharedTransferAvailable;
       controllerTE.add(TextEditingController());
 
-      print(
+      log(
           'Selected Tour Date:${activitycontroller.selectedtour.map((e) => e.selectedDate)}');
 //slot
       List<TextEditingController> Slotcontrollers = List.generate(
@@ -1215,12 +1215,12 @@ class _ActivityScreenState extends State<TourWidgets>
                                                               DateTime(2101))
                                                       .then((value) async {
                                                 if (value != null) {
-                                                  print(
-                                                      value); //pickedDate output format => 2021-03-10 00:00:00.000
+                                                  // log(
+                                                  //     value); //pickedDate output format => 2021-03-10 00:00:00.000
                                                   String formattedDate =
                                                       DateFormat('yyyy-MM-dd')
                                                           .format(value);
-                                                  print(formattedDate);
+                                                  log(formattedDate);
                                                   // dateTE.text = formattedDate;
                                                   controllerTE[i].text =
                                                       formattedDate;
@@ -1273,7 +1273,7 @@ class _ActivityScreenState extends State<TourWidgets>
                                                   //   dateinput.text = formattedDate; //set output date to TextField value.
                                                   // });
                                                 } else {
-                                                  print("Date is not selected");
+                                                  log("Date is not selected");
                                                 }
                                                 return null;
                                               });

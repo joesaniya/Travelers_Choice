@@ -114,7 +114,7 @@ class _SavedScreenState extends State<SavedScreen>
           controller.countryCode = '63ac33ecff04e5652a2583f5';
           // controller.countryCode = sharedPreferences!
           //     .getString(AppConstants.KEY_ACCESS_TOKEN_countryId);
-          print("controller.countryCode ${controller.countryCode}");
+          log("controller.countryCode ${controller.countryCode}");
           log("controller.countryCode ${controller.countryCode}");
           selectedCountry = countryList.first.currencies.firstWhere(
               (element) => element.country.id == controller.countryCode);

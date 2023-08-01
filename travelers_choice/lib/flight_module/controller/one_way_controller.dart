@@ -146,7 +146,7 @@ class OneWayController extends FxController {
 
     if (result != null) {
       // Rebuild the UI
-      print(result.start.toString());
+      log(result.start.toString());
 
       selectedDateRange = result;
       update();

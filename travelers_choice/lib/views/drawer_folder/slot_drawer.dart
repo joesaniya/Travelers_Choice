@@ -58,7 +58,7 @@ class _SlotTimeDrawerState extends State<SlotTimeDrawer>
     log('Slots:${widget.Slots.map((e) => e.slots!.first.eventName).toList()}');
     // log('Date:${widget.selectedDate}');
 
-    print(controller.person_count);
+    // log(controller.person_count);
   }
 
   String? currencySymbol;

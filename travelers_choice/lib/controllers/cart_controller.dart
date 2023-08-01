@@ -150,11 +150,11 @@ class CartController extends FxController {
   //     // log(selectedtour.length.toString());
   //     // log(selectedtour.first.name.toString());
   //     // log(selectedtour.first.adultCount.toString());
-  //     print( selectedtour.length);
-  //     print(selectedtour);
-  //     print( dateTE.text);
-  //     print(selectedtransfer);
-  //     print(grandSelectedTourAmount());
+  //     log( selectedtour.length);
+  //     log(selectedtour);
+  //     log( dateTE.text);
+  //     log(selectedtransfer);
+  //     log(grandSelectedTourAmount());
   //     Navigator.of(context, rootNavigator: true).push(PageRouteBuilder(
   //         transitionDuration: const Duration(milliseconds: 500),
   //         transitionsBuilder: (

@@ -109,7 +109,7 @@ class _NewCartState extends State<NewCart> with TickerProviderStateMixin {
   Widget _buildSingleProduct(Activity product) {
     String text = product.name!;
 
-    print("product$product");
+    log("product$product");
     // text = text.replaceAll("_", " ");
 
     // List<String> words = text.split(" ");

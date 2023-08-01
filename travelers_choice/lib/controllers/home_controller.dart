@@ -105,7 +105,7 @@ class HomeController extends FxController {
       stepCount: 2,
       maskClosable: true,
       onHighlightWidgetTap: (introStatus) {
-        print(introStatus);
+        // log(introStatus);
       },
       widgetBuilder: StepWidgetBuilder.useDefaultTheme(
         texts: [
@@ -147,7 +147,7 @@ class HomeController extends FxController {
       String? isoCode;
 
       log("Country list => $countriesList");
-      print('''
+      log('''
 Country Code => $countryCode
 ''');
       for (var val in countriesList) {
@@ -216,8 +216,8 @@ Country Code => $countryCode
     log(product.id);
     log('Slug:${product.slug}');
     log('message');
-    // print(currencySymbol);
-    // print("utfyjhvbn  $conversionRate");
+    // log(currencySymbol);
+    // log("utfyjhvbn  $conversionRate");
     Navigator.of(context, rootNavigator: true).push(PageRouteBuilder(
         transitionDuration: const Duration(milliseconds: 500),
         transitionsBuilder: (

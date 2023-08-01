@@ -520,11 +520,11 @@ class _EditProfileScreenState extends State<EditProfileScreen>
             // FxSpacing.height(20),
             FxButton.block(
               onPressed: () async {
-                print('Name:${controller.nameTE.text}');
-                print('Email:${controller.emailTE.text}');
-                print('Country:${controller.countryId}');
-                print('Mobile:${controller.mobileTE.text}');
-                print('Token:${controller.token}');
+                log('Name:${controller.nameTE.text}');
+                log('Email:${controller.emailTE.text}');
+                log('Country:${controller.countryId}');
+                log('Mobile:${controller.mobileTE.text}');
+                log('Token:${controller.token}');
                 var result = await controller.patchEdit(
                     controller.nameTE.text,
                     controller.emailTE.text,

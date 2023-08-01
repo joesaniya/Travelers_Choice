@@ -55,7 +55,7 @@ class _PDFViewerPageState extends State<PDFViewerPage> {
               return status! < 500;
             }),
       );
-      print(response.headers);
+      log(response.headers.toString());
       File file = File(savePath);
       var raf = file.openSync(mode: FileMode.write);
       // response.data is List<int> type
@@ -70,7 +70,7 @@ class _PDFViewerPageState extends State<PDFViewerPage> {
       );
       await raf.close();
     } catch (e) {
-      print(e);
+      log(e.toString());
       log('Error:$e');
       // ScaffoldMessenger.of(context)
       //     .showSnackBar(SnackBar(content: Text(e.toString())));
@@ -85,7 +85,7 @@ class _PDFViewerPageState extends State<PDFViewerPage> {
 
   void showDownloadProgress(received, total) {
     if (total != -1) {
-      print((received / total * 100).toStringAsFixed(0) + "%");
+      log((received / total * 100).toStringAsFixed(0) + "%");
     } else {
       log('downloaded');
       // ScaffoldMessenger.of(BuildContext context).showSnackBar(const SnackBar(
@@ -134,7 +134,7 @@ class _PDFViewerPageState extends State<PDFViewerPage> {
               //
               //String fullPath = tempDir.path + "/boo2.pdf'";
               String fullPath = "$path/${widget.IdActivity}.pdf";
-              print('full path $fullPath');
+              log('full path $fullPath');
 
               const ticketimage =
                   "https://secure.mytravellerschoice.com/api/v1/attractions/orders/6401e4f5913789806d34b998/ticket/6401e4f5913789806d34b999";

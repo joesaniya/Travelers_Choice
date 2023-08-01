@@ -145,7 +145,7 @@ class RegisterController extends FxController {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   Future<UserCredential> googleSignIn() async {
-    print('googe sign in');
+    log('googe sign in');
     GoogleSignIn googleSignIn = GoogleSignIn();
     GoogleSignInAccount? googleUser = await googleSignIn.signIn();
     if (googleUser != null) {
@@ -171,12 +171,12 @@ class RegisterController extends FxController {
           'accesstoken': user.credential!.accessToken
         };
         FirebaseFirestore.instance.collection("test").add(data).then((data) {
-          print(data);
+          // log(data);
           log('Success data:$data');
-          print("Success!!");
-          print(data);
+          log("Success!!");
+          // log(data);
         }).catchError((onError) {
-          print('error');
+          log('error');
           log('Error:$onError');
         });
 

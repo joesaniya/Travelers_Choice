@@ -591,11 +591,11 @@ class _NewCartPageState extends State<NewCartPage>
             onPressed: () {
               log('book');
               // controller1.goToCheckout1();
-              print(widget.selectedtourOption.length);
-              print(widget.selectedtourOption);
-              print(widget.textdate);
-              log('Transfer${widget.Transfer}');
-              print(widget.totalAmount);
+              // print(widget.selectedtourOption.length);
+              // print(widget.selectedtourOption);
+              // print(widget.textdate);
+              // log('Transfer${widget.Transfer}');
+              // print(widget.totalAmount);
               Navigator.of(context, rootNavigator: true).push(PageRouteBuilder(
                   transitionDuration: const Duration(milliseconds: 500),
                   transitionsBuilder: (

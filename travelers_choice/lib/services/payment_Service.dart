@@ -19,12 +19,12 @@ class PaymentService {
     // log('Activities:$SelectedActivities');
     List<Map<String, dynamic>> ActivityList = [];
     for (var element in SelectedActivities) {
-      print('Element:${element.sId}');
-      print('Element Date:${element.selectedDate}');
-      print('Element Type:${element.transferType}');
-      print('Adult Count:${element.adultCount}');
-      print('child Count:${element.childCount}');
-      print('Infant Count:${element.infantCount}');
+      log('Element:${element.sId}');
+      log('Element Date:${element.selectedDate}');
+      log('Element Type:${element.transferType}');
+      log('Adult Count:${element.adultCount}');
+      log('child Count:${element.childCount}');
+      log('Infant Count:${element.infantCount}');
       var datas = {
         // "activity": element.sId,
         // "date": "2023-02-28",
@@ -41,7 +41,7 @@ class PaymentService {
         "transferType": "private"
       };
       ActivityList.add(datas);
-      print('Data-->$datas');
+      log('Data-->$datas');
     }
     SelectedActivities.map((e) =>
         // e,
@@ -58,7 +58,7 @@ class PaymentService {
         "selectedActivities": ActivityList
       };
       log(body.toString());
-      print('Body:${body.toString()}');
+      log('Body:${body.toString()}');
       var response = await http.post(
           Uri.parse(
             'https://secure.mytravellerschoice.com/api/v1/attractions/orders/create',
@@ -67,13 +67,13 @@ class PaymentService {
           body: jsonEncode(body));
       if (response.statusCode == 200) {
         var jsondata = jsonDecode(response.body);
-        print("Peyment/Personal Data => $jsondata");
+        log("Peyment/Personal Data => $jsondata");
 
         return response.body;
       } else {
         var jsondata = jsonDecode(response.body);
         log(jsondata['error']);
-        print(jsondata['error']);
+        log(jsondata['error']);
         //snackbar
         CustomSnackbar.show(
           context: context,

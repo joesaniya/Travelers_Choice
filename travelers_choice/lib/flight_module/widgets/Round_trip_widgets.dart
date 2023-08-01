@@ -49,7 +49,7 @@ class _RoundTripWidgetsState extends State<RoundTripWidgets>
     DateTime newdate = DateTime.now();
     // String formattedDate = DateFormat.yMMMEd().format(newdate);
     String formattedDate = DateFormat.MMMd().format(newdate);
-    print(formattedDate);
+    log(formattedDate);
     String formattedYear = DateFormat('EEEE, yyyy').format(newdate);
     log('start:${controller.selectedDateRange?.start.day}');
 

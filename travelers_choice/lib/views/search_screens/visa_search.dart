@@ -212,14 +212,14 @@ class _SearchVisaState extends State<SearchVisa>
               onSuggestionTap: (value) {
                 log('tap');
 
-                print('value Country-->${value.item!}');
-                print('value Country value-->${value.item.runtimeType}');
+                // print('value Country-->${value.item!}');
+                // print('value Country value-->${value.item.runtimeType}');
 
 
                 _selectedCountry = value.item! as VisaCountryModal;
 
                 log('onSuggestionTap');
-                print('onsugguest');
+                
                 // log('value Country-->${value.item!.name}');
 
                 log(value.searchKey.toString());

@@ -317,7 +317,7 @@ class _HistoryScreenState extends State<HistoryScreen>
                 // log('Order Length history:${orderlength!.length}');
                 var date = orders!.result!.data![index].activities!.date;
                 var newDate = date!.toLocal().toString().substring(0, 10);
-                print(newDate);
+                log(newDate);
                 return FxContainer(
                   margin: FxSpacing.bottom(20),
                   borderRadiusAll: 4,
@@ -876,7 +876,7 @@ class _HistoryScreenState extends State<HistoryScreen>
                 // log('Order Length history:${orderlength!.length}');
                 var date = orders!.result!.data![index].activities!.date;
                 var newDate = date!.toLocal().toString().substring(0, 10);
-                print(newDate);
+                log(newDate);
                 return FxContainer(
                   margin: FxSpacing.bottom(20),
                   borderRadiusAll: 4,
@@ -1144,7 +1144,7 @@ class _HistoryScreenState extends State<HistoryScreen>
           //     ElevatedButton(
           //         onPressed: () {},
           //         child: const Text(
-          //           "Print Ticket",
+          //           "log Ticket",
           //           style: TextStyle(color: Colors.black),
           //         ))
           //   ],
@@ -1157,7 +1157,7 @@ class _HistoryScreenState extends State<HistoryScreen>
             elevation: 2,
             backgroundColor: const Color(0xff1529e8),
             child: FxText.labelLarge(
-              "Print Ticket",
+              "log Ticket",
               color: Colors.white,
             ),
           ))

@@ -35,7 +35,7 @@ class SlotTimeService {
       log('sts:${response.statusCode}');
       if (response.statusCode == 200) {
         var jsondata = jsonDecode(response.body);
-        print("Slot Data => $jsondata");
+        log("Slot Data => $jsondata");
         return jsondata;
       } else {
         var jsondata = jsonDecode(response.body);

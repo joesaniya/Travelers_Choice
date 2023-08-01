@@ -159,7 +159,7 @@ class PostReviewController extends FxController {
       // });
       // Navigator.pop(context);
     } else {
-      print("Data search Null");
+      log("Data search Null");
       CustomSnackbar.show(
         context: context,
         message: 'Please Fill All Fields',

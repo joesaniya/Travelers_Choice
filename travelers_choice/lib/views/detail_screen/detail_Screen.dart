@@ -96,7 +96,7 @@ class _DetailScreenState extends State<DetailScreen>
         widget.productid, widget.productSlug, setState);
     // var selectedData = controller.detailattraction!.first;
 
-    print(controller.person_count);
+    // log(controller.person_count);
 
     log('isSelected:$isSelected');
     theme = AppTheme.shoppingTheme;
@@ -517,7 +517,7 @@ class _DetailScreenState extends State<DetailScreen>
           .detailattraction!.first.activities![i].isSharedTransferAvailable;
       controllerTE.add(TextEditingController());
 
-      print(
+      log(
           'Selected Tour Date:${controller.selectedtour.map((e) => e.selectedDate)}');
 //slot
       List<TextEditingController> Slotcontrollers = List.generate(
@@ -782,12 +782,12 @@ class _DetailScreenState extends State<DetailScreen>
                                                               DateTime(2101))
                                                       .then((value) async {
                                                 if (value != null) {
-                                                  print(
-                                                      value); //pickedDate output format => 2021-03-10 00:00:00.000
+                                                  // log(
+                                                  //     value); //pickedDate output format => 2021-03-10 00:00:00.000
                                                   String formattedDate =
                                                       DateFormat('yyyy-MM-dd')
                                                           .format(value);
-                                                  print(formattedDate);
+                                                  log(formattedDate);
                                                   // dateTE.text = formattedDate;
                                                   controllerTE[i].text =
                                                       formattedDate;
@@ -857,7 +857,7 @@ class _DetailScreenState extends State<DetailScreen>
                                                   //   dateinput.text = formattedDate; //set output date to TextField value.
                                                   // });
                                                 } else {
-                                                  print("Date is not selected");
+                                                  log("Date is not selected");
                                                 }
                                                 return null;
                                               });
@@ -1746,7 +1746,7 @@ class _DetailScreenState extends State<DetailScreen>
                                     //         .listSLotDetails.last);
                                   });
                                   // activitiesListTime.add(listSLotDetails.last);
-                                  // print(activitiesListTime);
+                                  // log(activitiesListTime);
                                   log('Apply Date:${controller.listSLotDetails.last.endDateTime}');
                                   log('Apply Default DateL:${controller.detailattraction!.first.activities![index].activityTimeSlot!.endDateTime}');
 
@@ -2543,7 +2543,7 @@ class _DetailScreenState extends State<DetailScreen>
                       //         //         .description!
                       //         //         .isEmpty
                       //         ? FxText.bodyMedium(
-                      //             'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.',
+                      //             'Lorem Ipsum is simply dummy text of the loging and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown loger took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.',
                       //             // color: theme.colorScheme.onPrimary,
                       //             // color: Colors.black,
                       //             letterSpacing: 0.4,
@@ -2609,7 +2609,7 @@ class _DetailScreenState extends State<DetailScreen>
                             ))
 
                           // FxText.bodyMedium(
-                          //     'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.',
+                          //     'Lorem Ipsum is simply dummy text of the loging and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown loger took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.',
                           //     // color: theme.colorScheme.onPrimary,
                           //     // color: Colors.black,
                           //     letterSpacing: 0.4,
@@ -2956,10 +2956,10 @@ class _DetailScreenState extends State<DetailScreen>
   }
 
   Widget _buildnew() {
-    print("currencysymbol detail $currencySymbol");
-    print("currencysymbol detail $conversionRate");
+    log("currencysymbol detail $currencySymbol");
+    log("currencysymbol detail $conversionRate");
 
-    // print("currencysymbol detail ${widget.conversionRate}");
+    // log("currencysymbol detail ${widget.conversionRate}");
     final mealId = widget.productid;
     // log('Meal Id:${widget.productid}');
     final selectedMeal = controller.allattractionList
@@ -3056,7 +3056,7 @@ class _DetailScreenState extends State<DetailScreen>
 
                                           log('Fav Item Slot:${favouriteListCart.map((e) => e.sId)}');
 
-                                          print(
+                                          log(
                                               "controller.selectedtour ${controller.selectedtour}");
 
                                           favouriteListCart

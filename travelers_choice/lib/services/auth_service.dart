@@ -43,7 +43,7 @@ class AuthService {
 
       if (response.statusCode == 200) {
         var jsondata = jsonDecode(response.body);
-        print("Profile Data => $jsondata");
+        log("Profile Data => $jsondata");
         SharedPreferences sharedPreferences =
             await SharedPreferences.getInstance();
         sharedPreferences.setString("token", jsondata['jwtToken']);
@@ -136,10 +136,10 @@ class AuthService {
           headers: {'Content-Type': 'application/json'},
           body: jsonEncode(body));
 
-      print('Response => ${response.body}');
+      log('Response => ${response.body}');
       if (response.statusCode == 200) {
         var jsondata = jsonDecode(response.body);
-        print("Profile Data => $jsondata");
+        log("Profile Data => $jsondata");
         SharedPreferences sharedPreferences =
             await SharedPreferences.getInstance();
         sharedPreferences.setString("token", jsondata['jwtToken']);
@@ -156,9 +156,9 @@ class AuthService {
 
         // //todo
         // var body = jsonDecode(response.body);
-        // // print(body);
+        // // log(body);
         // var data = body['user'];
-        // // print(data);
+        // // log(data);
         // LoginModal loginuser = LoginModal.fromJson(data);
         // log(loginuser.jwtToken);
         // log('jwttoken');
@@ -225,7 +225,7 @@ class AuthService {
             jsonEncode(jsondata['countries']));
         // sharedPreferences.setString("countrycode", countryModalFromJson(response.body).toJson() );
         log('currencies:${AppConstants.KEY_ACCESS_TOKEN_CurrenciesList}');
-        print("new response ${countryModalFromJson(response.body)}");
+        log("new response ${countryModalFromJson(response.body)}");
         return countryModalFromJson(response.body);
       } else {
         var jsondata = jsonDecode(response.body);
@@ -302,7 +302,7 @@ class AuthService {
 
       if (response.statusCode == 200) {
         var jsondata = jsonDecode(response.body);
-        print('Response => ${response.body}');
+        log('Response => ${response.body}');
         SharedPreferences sharedPreferences =
             await SharedPreferences.getInstance();
         // sharedPreferences.setString("token", jsondata['jwtToken']);
@@ -349,7 +349,7 @@ class AuthService {
 
       if (response.statusCode == 200) {
         var jsondata = jsonDecode(response.body);
-        print('Response => ${response.body}');
+        log('Response => ${response.body}');
         CustomSnackbar.show(
           context: context,
           message: jsondata['message'],
@@ -392,7 +392,7 @@ class AuthService {
 
       if (response.statusCode == 200) {
         var jsondata = jsonDecode(response.body);
-        print('Response => ${response.body}');
+        log('Response => ${response.body}');
         CustomSnackbar.show(
           context: context,
           message: jsondata['message'],
@@ -441,7 +441,7 @@ class AuthService {
 
       if (response.statusCode == 200) {
         var jsondata = jsonDecode(response.body);
-        print('Response => ${response.body}');
+        log('Response => ${response.body}');
         CustomSnackbar.show(
           context: context,
           message: jsondata['message'],
@@ -493,7 +493,7 @@ class AuthService {
         var jsondata = jsonDecode(response.body);
         log(response.body);
 
-        print(
+        log(
             "new response search attraction:${attractionSearchDataModalFromJson(response.body)}");
         return attractionSearchDataModalFromJson(response.body);
       } else {
@@ -515,14 +515,14 @@ class AuthService {
 
   //     AttractionSearchResponse attractionSearchResponse =
   //         AttractionSearchResponse.fromJson(json.decode(response.toString()));
-  //     print("llllll ${attractionSearchResponse.destinations!.length}");
+  //     log("llllll ${attractionSearchResponse.destinations!.length}");
 
   //     return attractionSearchResponse;
   //   } catch (error) {
   //     AttractionSearchResponse attractionSearchResponse =
   //         AttractionSearchResponse();
 
-  //     print(error);
+  //     log(error);
   //     attractionSearchResponse.errorResponse = handleError(error);
   //     return attractionSearchResponse;
   //   }

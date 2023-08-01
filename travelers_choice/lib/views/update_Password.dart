@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutx/flutx.dart';
@@ -280,9 +282,9 @@ class _UpdatePasswordScreenState extends State<UpdatePasswordScreen>
             elevation: 0,
             borderRadiusAll: 4,
             onPressed: () {
-              print(controller.oldpasswordTE.text);
-              print(controller.confirmPasswordTE.text);
-              print(widget.token!);
+              log(controller.oldpasswordTE.text);
+              log(controller.confirmPasswordTE.text);
+              log(widget.token!);
 
               controller.resetPassword();
               controller

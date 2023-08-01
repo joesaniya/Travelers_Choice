@@ -500,7 +500,7 @@ class _RegisterScreenState extends State<RegisterScreen>
                   //       selectorConfig: const SelectorConfig(
                   //           selectorType: PhoneInputSelectorType.DIALOG),
                   //       onInputChanged: (PhoneNumber number) {
-                  //         print(number.phoneNumber);
+                  //         log(number.phoneNumber);
                   //       },
                   //     ),
                   //   ),

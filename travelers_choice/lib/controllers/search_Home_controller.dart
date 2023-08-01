@@ -112,44 +112,44 @@ class HomeSearchController extends FxController {
   }
 
   void attractFilter(String enteredKeyword) {
-    print('runFilters');
+    log('runFilters');
     List results = [];
     if (enteredKeyword.isEmpty) {
-      print('runFilters if');
+      log('runFilters if');
       results = searchReasult.cast<Map<String, dynamic>>();
     } else {
-      print('runFilters else');
+      log('runFilters else');
       results = searchReasult
           .where((AllattractionModal) => AllattractionModal
               .attractions.data.first.title
               .toLowerCase()
               .contains(enteredKeyword.toLowerCase()))
           .toList();
-      print(results);
+      // log(results);
     }
     foundrecipe = results.cast<AllattractionModal>();
 
     // setState(() {
-    //   print('set state');
+    //   log('set state');
     //   foundrecipe = results.cast<AllattractionModal>();
 
     // });
   }
 
   void runFilter1(String enteredKeyword) {
-    print('runFilters');
+    log('runFilters');
     List results = [];
     if (enteredKeyword.isEmpty) {
-      print('runFilters if');
+      log('runFilters if');
       results = searchReasult.cast<Map<String, dynamic>>();
     } else {
-      print('runFilters else');
+      log('runFilters else');
       results = searchReasult
           .where((Recipe) => Recipe.attractions.data.first.title
               .toLowerCase()
               .contains(enteredKeyword.toLowerCase()))
           .toList();
-      print(results);
+      // log(results);
     }
 
     foundrecipe = results.cast<AllattractionModal>();
@@ -227,16 +227,16 @@ class HomeSearchController extends FxController {
         lastDate: DateTime(2101));
 
     if (pickedDate != null) {
-      print(pickedDate); //pickedDate output format => 2021-03-10 00:00:00.000
+      // log(pickedDate); //pickedDate output format => 2021-03-10 00:00:00.000
       String formattedDate = DateFormat('yyyy-MM-dd').format(pickedDate);
-      print(formattedDate);
+      log(formattedDate);
       dateTE.text = formattedDate;
 
       // setState(() {
       //   dateinput.text = formattedDate; //set output date to TextField value.
       // });
     } else {
-      print("Date is not selected");
+      log("Date is not selected");
     }
   }
 

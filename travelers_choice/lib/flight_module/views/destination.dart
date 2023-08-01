@@ -33,13 +33,13 @@ class _DestinationAirportState extends State<DestinationAirport>
   }
 
   void _runFilter(String enteredKeyword) {
-    print('runFilters');
+    log('runFilters');
     List results = [];
     if (enteredKeyword.isEmpty) {
-      print('runFilters if');
+      log('runFilters if');
       results = Planes as List;
     } else {
-      print('runFilters else');
+      log('runFilters else');
       results = controller.planes!
           .where((Planes) =>
               Planes.Airportname.toString()
@@ -49,11 +49,11 @@ class _DestinationAirportState extends State<DestinationAirport>
                   .toLowerCase()
                   .contains(enteredKeyword.toLowerCase()))
           .toList();
-      print(results);
+      // log(results);
     }
 
     setState(() {
-      print('set state');
+      log('set state');
       controller.foundCompany = results.cast<Planes>();
       // foundrecipe = searchResult;
     });

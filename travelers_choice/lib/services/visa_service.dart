@@ -30,7 +30,7 @@ class VisaService{
 
       if (response.statusCode == 200) {
         final parsed = json.decode(response.body).cast<Map<String, dynamic>>();
-        print("response${parsed}");
+        log("response${parsed}");
         return parsed.map<VisaCountryModal>((item) => VisaCountryModal.fromJson(item)).toList();
 
       } else {
@@ -78,7 +78,7 @@ class VisaService{
 
       Map body
       ) async {
-    print("bodycheck $body");
+    log("bodycheck $body");
     try {
       var response = await http.post(
 
@@ -98,7 +98,7 @@ class VisaService{
         //     AppConstants.KEY_ACCESS_TOKEN_CurrenciesList,
         //     jsonEncode(jsondata['currencies']));
         // sharedPreferences.setString("countrycode", countryModalFromJson(response.body).toJson() );
-        print("jsondata$response");
+        log("jsondata$response");
 
         var createVisaResponse = createVisaApplicationFromJson(response.body);
         return createVisaResponse;
@@ -123,7 +123,7 @@ class VisaService{
       // String id
       ) async {
 
-    // print("bodycheck $body");
+    // log("bodycheck $body");
     try {
       // var formData ;
       //
@@ -175,7 +175,7 @@ class VisaService{
         //     AppConstants.KEY_ACCESS_TOKEN_CurrenciesList,
         //     jsonEncode(jsondata['currencies']));
         // sharedPreferences.setString("countrycode", countryModalFromJson(response.body).toJson() );
-        print("jsondata$response");
+        log("jsondata$response");
 
         return visaDocumentUploadFromJson(response.data);
         // return uploadDocuments;

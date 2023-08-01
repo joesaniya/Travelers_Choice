@@ -303,8 +303,8 @@ class _SearchPlaceState extends State<SearchPlace>
             _selectedCountry = value.item!;
 
             log('onSuggestionTap');
-            print('onsugguest');
-            print('value Country-->${value.item!.name}');
+            // print('onsugguest');
+            // print('value Country-->${value.item!.name}');
             log('value Country-->${value.item!.name}');
 
             log(value.searchKey.toString());

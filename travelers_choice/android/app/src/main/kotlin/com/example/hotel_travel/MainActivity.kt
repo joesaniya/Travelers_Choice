@@ -1,4 +1,4 @@
-package com.example.hotel_travel
+package com.tctt.travellerschoice
 
 import com.facebook.FacebookSdk;
 import com.facebook.appevents.AppEventsLogger;

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutx/flutx.dart';
@@ -79,7 +81,7 @@ class _SeatPageState extends State<SeatPage> with TickerProviderStateMixin {
           color: Colors.transparent,
           child: InkWell(
             onTap: () {
-              print("Seat Click: $seatNum");
+              log("Seat Click: $seatNum");
             },
             child: Center(
               child: Text(

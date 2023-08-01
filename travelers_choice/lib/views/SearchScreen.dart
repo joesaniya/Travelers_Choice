@@ -51,25 +51,25 @@ class _SearchScreenState extends State<SearchScreen>
   List<AllattractionModal> temp = [];
   List<AllattractionModal> temp2 = [];
   void _runFilter(String enteredKeyword) {
-    print('runFilters');
+    log('runFilters');
     List results = [];
     if (enteredKeyword.isEmpty) {
-      print('runFilters if');
+      log('runFilters if');
       results = controller.SearchTE as List;
     } else {
-      print('runFilters else');
+      log('runFilters else');
       results = controller.allattractionList!
           .where((Attract) => Attract.attractions.data.first.title
               .toString()
               .toLowerCase()
               .contains(enteredKeyword.toLowerCase()))
           .toList();
-      print(results);
+      // log(results);
       log('results$results');
     }
 
     setState(() {
-      print('set state');
+      log('set state');
       // foundCustomer = results.cast<Customer>();
       foundCustomer = results.cast<AllattractionModal>();
       // foundrecipe = searchResult;
@@ -102,7 +102,7 @@ class _SearchScreenState extends State<SearchScreen>
             }
           }
         }
-        // print("Temp List => ${temp.length}");
+        // log("Temp List => ${temp.length}");
         setState(() => controller.allattractionList = temp);
       });
     });
@@ -122,7 +122,7 @@ class _SearchScreenState extends State<SearchScreen>
         controller.allattractionList = _filteredBooks;
       });
 
-      print('Search:$_filteredBooks');
+      log('Search:$_filteredBooks');
       log('Search:$_filteredBooks');
     });
   }
@@ -289,7 +289,7 @@ class _SearchScreenState extends State<SearchScreen>
                             }
 
                             len = 1;
-                            // print(' => ${_filteredBooks.first.attractions.toJson()}');
+                            // log(' => ${_filteredBooks.first.attractions.toJson()}');
 
                             List<Datum> data = _filteredBooks
                                 .first.attractions.data
@@ -598,7 +598,7 @@ class _SearchScreenState extends State<SearchScreen>
                               //   }
 
                               //   len = 1;
-                              //   // print(' => ${_filteredBooks.first.attractions.toJson()}');
+                              //   // log(' => ${_filteredBooks.first.attractions.toJson()}');
 
                               //   List<Datum> data =
                               //       temp2.first.attractions.data.where((Datum i) {
@@ -617,7 +617,7 @@ class _SearchScreenState extends State<SearchScreen>
                               //   });
 
                               //   // log('Controller:${controller.allattractionList!.first.attractions.data.map((e) => e.title)}');
-                              //   // print('temp:${temp2[0].attractions.data}');
+                              //   // log('temp:${temp2[0].attractions.data}');
                               // },
                               // onChanged: (value) {
                               //   // log('Total Data:${_filteredBooks.first.attractions.data.map((e) => e.title)}');
@@ -647,7 +647,7 @@ class _SearchScreenState extends State<SearchScreen>
                               //   }
 
                               //   len = 1;
-                              //   // print(' => ${_filteredBooks.first.attractions.toJson()}');
+                              //   // log(' => ${_filteredBooks.first.attractions.toJson()}');
 
                               //   List<Datum> data =
                               //       temp2.first.attractions.data.where((Datum i) {
@@ -666,7 +666,7 @@ class _SearchScreenState extends State<SearchScreen>
                               //   });
 
                               //   // log('Controller:${controller.allattractionList!.first.attractions.data.map((e) => e.title)}');
-                              //   // print('temp:${temp2[0].attractions.data}');
+                              //   // log('temp:${temp2[0].attractions.data}');
                               // },
                               //2
                               onChanged: (value) async {
@@ -699,7 +699,7 @@ class _SearchScreenState extends State<SearchScreen>
                                 }
 
                                 len = 1;
-                                // print(' => ${_filteredBooks.first.attractions.toJson()}');
+                                // log(' => ${_filteredBooks.first.attractions.toJson()}');
 
                                 List<Datum> data = _filteredBooks
                                     .first.attractions.data
@@ -719,7 +719,7 @@ class _SearchScreenState extends State<SearchScreen>
                                 });
 
                                 // log('Controller:${controller.allattractionList!.first.attractions.data.map((e) => e.title)}');
-                                // print('temp:${temp2[0].attractions.data}');
+                                // log('temp:${temp2[0].attractions.data}');
                               },
                               // onChanged: (e) {
                               //   if (e != Null || e.isNotEmpty) {

@@ -61,7 +61,7 @@ class ReviewService {
       log('sts:${response.statusCode}');
       if (response.statusCode == 200) {
         var jsondata = jsonDecode(response.body);
-        print("Review Data => $jsondata");
+        log("Review Data => $jsondata");
 
         return 'Success';
       } else {

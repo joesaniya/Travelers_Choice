@@ -85,10 +85,10 @@ class _LogInScreenState extends State<LogInScreen>
         controller.signInWithFacebook().then((userCredential) {
           // Successful login
           log('Logged in as: ${userCredential.user!.displayName}');
-          print('Logged in as: ${userCredential.user!.displayName}');
+          log('Logged in as: ${userCredential.user!.displayName}');
         }).catchError((e) {
           // Error occurred during login
-          print('Error logging in with Facebook: $e');
+          log('Error logging in with Facebook: $e');
         });
       },
       child: Row(

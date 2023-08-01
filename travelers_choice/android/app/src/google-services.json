@@ -1,41 +1,41 @@
 {
   "project_info": {
-    "project_number": "664627157882",
-    "project_id": "ttlc-c746a",
-    "storage_bucket": "ttlc-c746a.appspot.com"
+    "project_number": "1089986043907",
+    "project_id": "tctt-bfed6",
+    "storage_bucket": "tctt-bfed6.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:664627157882:android:268a2822df69449ac754c3",
+        "mobilesdk_app_id": "1:1089986043907:android:63936889e30b3a69d5ae36",
         "android_client_info": {
-          "package_name": "com.example.hotel_travel"
+          "package_name": "com.tctt.travellerschoice"
         }
       },
       "oauth_client": [
         {
-          "client_id": "664627157882-30q0iuoo56k72mend4ppuhpspsg5sg41.apps.googleusercontent.com",
+          "client_id": "1089986043907-k2a3rtp812fqpsj6bv75cjh91vt4emv7.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.example.hotel_travel",
+            "package_name": "com.tctt.travellerschoice",
             "certificate_hash": "09b2eee061a23fb05032901ba3435c9c0a1a3006"
           }
         },
         {
-          "client_id": "664627157882-j0saqd1d5ig4eniv3lir34upiviuglnr.apps.googleusercontent.com",
+          "client_id": "1089986043907-tgnqdqqtn953hn35a9nfp1ifo5sc16j0.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDEArJfGHhMuIYk7W7syVHdhKQ-UfD4XWQ"
+          "current_key": "AIzaSyBbVYsV7_dq8FBxJ-DsywYkKENM5Wpb8B8"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "664627157882-j0saqd1d5ig4eniv3lir34upiviuglnr.apps.googleusercontent.com",
+              "client_id": "1089986043907-tgnqdqqtn953hn35a9nfp1ifo5sc16j0.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

@@ -61,7 +61,7 @@ class ReviewController extends FxController {
       stepCount: 2,
       maskClosable: true,
       onHighlightWidgetTap: (introStatus) {
-        print(introStatus);
+        // log(introStatus);
       },
       widgetBuilder: StepWidgetBuilder.useDefaultTheme(
         texts: [

@@ -256,16 +256,16 @@ class VisaController extends FxController {
         lastDate: DateTime(2101));
 
     if (pickedDate != null) {
-      print(pickedDate); //pickedDate output format => 2021-03-10 00:00:00.000
+      // log(pickedDate); //pickedDate output format => 2021-03-10 00:00:00.000
       String formattedDate = DateFormat('yyyy-MM-dd').format(pickedDate);
-      print(formattedDate);
+      log(formattedDate);
       dateTE.text = formattedDate;
 
       // setState(() {
       //   dateinput.text = formattedDate; //set output date to TextField value.
       // });
     } else {
-      print("Date is not selected");
+      log("Date is not selected");
     }
   }
 

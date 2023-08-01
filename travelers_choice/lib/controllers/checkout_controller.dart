@@ -112,7 +112,7 @@ class CheckOutController extends FxController {
   List<Map<String, dynamic>> details = [];
   void _handlePaymentSuccess(PaymentSuccessResponse response) {
     // Do something when payment succeeds
-    print('response Success');
+    log('response Success');
     log('response Success');
     verifySignature(
       signature: response.signature,
@@ -122,7 +122,7 @@ class CheckOutController extends FxController {
   }
 
   void _handlePaymentError(PaymentFailureResponse response) {
-    print('responseError');
+    log('responseError');
     log('responseError');
     // Do something when payment fails
     // ScaffoldMessenger.of(context).showSnackBar(
@@ -139,7 +139,7 @@ class CheckOutController extends FxController {
   }
 
   void _handleExternalWallet(ExternalWalletResponse response) {
-    print('responsewallet:');
+    log('responsewallet:');
     log('response wallet:');
     // Do something when an external wallet is selected
     // ScaffoldMessenger.of(context).showSnackBar(
@@ -798,10 +798,10 @@ class CheckOutController extends FxController {
 
     map['currency'] = "INR";
     map['receipt'] = "receipt1";
-    print("map $map");
+    log("map $map");
     var response = await http.post(Uri.https("api.razorpay.com", "/v1/orders"),
         headers: mapHeader, body: map);
-    print("....${response.body}");
+    log("....${response.body}");
     if (response.statusCode == 200) {
       RazorpayOrderResponse1 data =
           RazorpayOrderResponse1.fromJson(json.decode(response.body));
@@ -850,12 +850,12 @@ class CheckOutController extends FxController {
 
     List<Map<String, dynamic>> ActivityList = [];
     for (var element in selectedExcursionsDatas) {
-      print('Element:${element.sId}');
-      print('Element Date:${element.selectedDate}');
-      print('Element Type:${element.transferType}');
-      print('Adult Count:${element.adultCount}');
-      print('child Count:${element.childCount}');
-      print('Infant Count:${element.infantCount}');
+      log('Element:${element.sId}');
+      log('Element Date:${element.selectedDate}');
+      log('Element Type:${element.transferType}');
+      log('Adult Count:${element.adultCount}');
+      log('child Count:${element.childCount}');
+      log('Infant Count:${element.infantCount}');
       // var datas=
       Map<String, dynamic> datas = {
         // "activity": element.sId,
@@ -873,7 +873,7 @@ class CheckOutController extends FxController {
         "transferType": "private"
       };
       ActivityList.add(datas);
-      print('Data-->$datas');
+      log('Data-->$datas');
     }
     selectedExcursionsDatas.map((e) =>
         // e,
@@ -927,12 +927,12 @@ class CheckOutController extends FxController {
       //   curve: Curves.ease,
       // );
     }
-    // print('Body:${res.body}');
+    // log('Body:${res.body}');
     // log('Body:${res.body}');
     else {
       var jsondata = jsonDecode(res.body);
       log(jsondata['error']);
-      print(jsondata['error']);
+      log(jsondata['error']);
       //snackbar
       CustomSnackbar.show(
         context: context,
@@ -982,7 +982,7 @@ class CheckOutController extends FxController {
       body: formData,
     );
 
-    print('sign:${res.body}');
+    log('sign:${res.body}');
     log('sign:${res.body}');
     if (res.statusCode == 200) {
       // ScaffoldMessenger.of(context).showSnackBar(
@@ -1134,7 +1134,7 @@ class CheckOutController extends FxController {
     } else {
       var jsondata = jsonDecode(res.body);
       log(jsondata['error']);
-      print(jsondata['error']);
+      log(jsondata['error']);
       //snackbar
       CustomSnackbar.show(
         context: context,
@@ -1158,12 +1158,12 @@ class CheckOutController extends FxController {
     log('Excursions pay:${selectedExcursionsDatas.map((e) => e.transferCode).toList()}');
     List<Map<String, dynamic>> ActivityList = [];
     for (var element in selectedExcursionsDatas) {
-      print('Element:${element.sId}');
-      print('Element Date:${element.selectedDate}');
-      print('Element Type:${element.transferType}');
-      print('Adult Count:${element.adultCount}');
-      print('child Count:${element.childCount}');
-      print('Infant Count:${element.infantCount}');
+      log('Element:${element.sId}');
+      log('Element Date:${element.selectedDate}');
+      log('Element Type:${element.transferType}');
+      log('Adult Count:${element.adultCount}');
+      log('child Count:${element.childCount}');
+      log('Infant Count:${element.infantCount}');
       log('Tansfer:${element.transferCode ?? 'Without'}');
       // var datas=
       Map<String, dynamic> datas = {
@@ -1185,7 +1185,7 @@ class CheckOutController extends FxController {
         // "transferType": "private"
       };
       ActivityList.add(datas);
-      print('Data-->$datas');
+      log('Data-->$datas');
     }
     selectedExcursionsDatas.map((e) =>
         // e,
@@ -1244,7 +1244,7 @@ class CheckOutController extends FxController {
     } else {
       var jsondata = jsonDecode(res.body);
       log(jsondata['error']);
-      print(jsondata['error']);
+      log(jsondata['error']);
       //snackbar
       jsondata['error'] == 'jwt malformed'
           ? CustomSnackbar.show(
@@ -1294,7 +1294,7 @@ class CheckOutController extends FxController {
     if (res.statusCode == 200) {
       openGatewaydemo(jsonDecode(res.body)['id'], total);
     }
-    print('Body:${res.body}');
+    log('Body:${res.body}');
     log('Body:${res.body}');
   }
 

@@ -41,7 +41,7 @@ class LogInController extends FxController {
     update();
 
     if (accessToken != null) {
-      print(accessToken.toJson());
+      // log(accessToken.toJson());
       final userData = await FacebookAuth.instance.getUserData();
       accessToken1 = accessToken;
 
@@ -64,8 +64,8 @@ class LogInController extends FxController {
     } else {
       log('result:${result.status}');
       log('message${result.message}');
-      print(result.status);
-      print(result.message);
+      log(result.status.toString());
+      log(result.message.toString());
     }
 
     checking = false;
@@ -164,14 +164,14 @@ class LogInController extends FxController {
         log('signin');
       }
     }).catchError((e) {
-      print(e);
+      log(e);
     });
   }
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   Future<UserCredential> googleSignIn() async {
-    print('googe sign in');
+    log('googe sign in');
     GoogleSignIn googleSignIn = GoogleSignIn();
     GoogleSignInAccount? googleUser = await googleSignIn.signIn();
     if (googleUser != null) {
@@ -197,12 +197,12 @@ class LogInController extends FxController {
           'accesstoken': user.credential!.accessToken
         };
         FirebaseFirestore.instance.collection("test").add(data).then((data) {
-          print(data);
+          // log(data);
           log('Success data:$data');
-          print("Success!!");
-          print(data);
+          log("Success!!");
+          // log(data);
         }).catchError((onError) {
-          print('error');
+          log('error');
           log('Error:$onError');
         });
 

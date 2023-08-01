@@ -79,7 +79,7 @@ class _AllBookingsState extends State<AllBookings>
   var dio = Dio();
 
   void getPermission() async {
-    print("getPermission");
+    log("getPermission");
     await Permission.storage.request();
     // await PermissionHandler().requestPermissions([PermissionGroup.storage]);
     // Map<PermissionGroup, PermissionStatus> permissions =
@@ -100,7 +100,7 @@ class _AllBookingsState extends State<AllBookings>
               return status! < 500;
             }),
       );
-      print(response.headers);
+      log(response.headers.toString());
       File file = File(savePath);
       var raf = file.openSync(mode: FileMode.write);
       // response.data is List<int> type
@@ -115,7 +115,7 @@ class _AllBookingsState extends State<AllBookings>
       );
       await raf.close();
     } catch (e) {
-      print(e);
+      log(e.toString());
       log('Error:$e');
       CustomSnackbar.show(
         context: context,
@@ -130,7 +130,7 @@ class _AllBookingsState extends State<AllBookings>
 
   void showDownloadProgress(received, total) {
     if (total != -1) {
-      print((received / total * 100).toStringAsFixed(0) + "%");
+      log((received / total * 100).toStringAsFixed(0) + "%");
     } else {
       CustomSnackbar.show(
         context: context,
@@ -173,7 +173,7 @@ class _AllBookingsState extends State<AllBookings>
       log('finding Path');
       log('Save Path:$savePath');
     } catch (e) {
-      print(e.toString());
+      log(e.toString());
     }
   }
 
@@ -850,7 +850,7 @@ class _AllBookingsState extends State<AllBookings>
                                 //String fullPath = tempDir.path + "/boo2.pdf'";
                                 String fullPath =
                                     "$path/${controller.orders!.first.result!.data![index].activities!.activity!.name!}.pdf";
-                                print('full path $fullPath');
+                                log('full path $fullPath');
                                 String Idorder = controller
                                     .orders!.first.result!.data![index].id
                                     .toString();

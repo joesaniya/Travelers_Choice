@@ -56,7 +56,7 @@ class ApplyVisaController extends FxController {
 
   void _handlePaymentSuccess(PaymentSuccessResponse response) {
     // Do something when payment succeeds
-    print('response Success');
+    log('response Success');
     log('response Success');
     verifySignature(
       signature: response.signature,
@@ -66,7 +66,7 @@ class ApplyVisaController extends FxController {
   }
 
   void _handlePaymentError(PaymentFailureResponse response) {
-    print('responseError');
+    log('responseError');
     log('responseError');
     // Do something when payment fails
     // ScaffoldMessenger.of(context).showSnackBar(
@@ -83,7 +83,7 @@ class ApplyVisaController extends FxController {
   }
 
   void _handleExternalWallet(ExternalWalletResponse response) {
-    print('responsewallet:');
+    log('responsewallet:');
     log('response wallet:');
     // Do something when an external wallet is selected
     // ScaffoldMessenger.of(context).showSnackBar(
@@ -245,7 +245,7 @@ class ApplyVisaController extends FxController {
   initState() {
     super.initState();
     fetchData();
-    // print("erfdv fervf $visaApplication");
+    // log("erfdv fervf $visaApplication");
     fetchloader();
     currentPage = 0;
     addressList = ShippingAddress.shipping();
@@ -454,7 +454,7 @@ class ApplyVisaController extends FxController {
 
   void createVisaOrderccAvenue(visaOrderId) async {
 
-print(visaOrderId);
+log(visaOrderId);
 
     var res = await http.post(
       Uri.parse(
@@ -480,7 +480,7 @@ print(visaOrderId);
     } else {
       var jsondata = jsonDecode(res.body);
       log(jsondata['error']);
-      print(jsondata['error']);
+      log(jsondata['error']);
       //snackbar
       CustomSnackbar.show(
         context: context,
@@ -646,7 +646,7 @@ print(visaOrderId);
       body: formData,
     );
 
-    print('sign:${res.body}');
+    log('sign:${res.body}');
     log('sign:${res.body}');
     if (res.statusCode == 200) {
       // ScaffoldMessenger.of(context).showSnackBar(
@@ -707,16 +707,16 @@ print(visaOrderId);
         lastDate: DateTime(2101));
 
     if (pickedDate != null) {
-      print(pickedDate); //pickedDate output format => 2021-03-10 00:00:00.000
+      // log(pickedDate); //pickedDate output format => 2021-03-10 00:00:00.000
       String formattedDate = DateFormat('yyyy-MM-dd').format(pickedDate);
-      print(formattedDate);
+      log(formattedDate);
       dateTE.text = formattedDate;
 
       // setState(() {
       //   dateinput.text = formattedDate; //set output date to TextField value.
       // });
     } else {
-      print("Date is not selected");
+      log("Date is not selected");
     }
   }
 
@@ -828,7 +828,7 @@ print(visaOrderId);
       // log('Options:$map');
       // _razorpay.open(map);
     } catch (e) {
-      print('razor error:${e.toString()}');
+      log('razor error:${e.toString()}');
     }
   }
 
@@ -915,7 +915,7 @@ print(visaOrderId);
   //   });
   //
   //   request.send().then((response) {
-  //     if (response.statusCode == 200) print("Uploaded!");
+  //     if (response.statusCode == 200) log("Uploaded!");
   //   });
   // }
 }

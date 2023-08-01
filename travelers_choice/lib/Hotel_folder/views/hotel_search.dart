@@ -237,8 +237,8 @@ class _HotelSearchState extends State<HotelSearch>
                             _selectedCountry = value.item!;
 
                             log('onSuggestionTap');
-                            print('onsugguest');
-                            print('value Country-->${value.item!.name}');
+                            log('onsugguest');
+                            log('value Country-->${value.item!.name}');
                             log('value Country-->${value.item!.name}');
 
                             log(value.searchKey.toString());
@@ -380,12 +380,12 @@ class _HotelSearchState extends State<HotelSearch>
                             //               1900), //DateTime.now() - not to allow to choose before today.
                             //           lastDate: DateTime(2101));
                             //   if (pickedDate != null) {
-                            //     print(
+                            //     log(
                             //         pickedDate); //pickedDate output format => 2021-03-10 00:00:00.000
                             //     String formattedDate =
                             //         DateFormat('yyyy-MM-dd')
                             //             .format(pickedDate);
-                            //     print(formattedDate);
+                            //     log(formattedDate);
                             //     controller.selectedValue =
                             //         formattedDate as DateTime;
                             //     log('Checkin:${controller.selectedValue}');
@@ -420,12 +420,12 @@ class _HotelSearchState extends State<HotelSearch>
                                     //                   1900), //DateTime.now() - not to allow to choose before today.
                                     //               lastDate: DateTime(2101));
                                     //       if (pickedDate != null) {
-                                    //         print(
+                                    //         log(
                                     //             pickedDate); //pickedDate output format => 2021-03-10 00:00:00.000
                                     //         String formattedDate =
                                     //             DateFormat('yyyy-MM-dd')
                                     //                 .format(pickedDate);
-                                    //         print(formattedDate);
+                                    //         log(formattedDate);
                                     //         controller.checkInTE.text =
                                     //             formattedDate;
                                     //         log('Checkin:${controller.checkInTE.text}');
