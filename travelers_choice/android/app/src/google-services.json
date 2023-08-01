@@ -9,7 +9,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:664627157882:android:268a2822df69449ac754c3",
         "android_client_info": {
-          "package_name": "com.example.hotel_travel"
+          "package_name": "com.ttlc.travellerschoice"
         }
       },
       "oauth_client": [
@@ -17,7 +17,7 @@
           "client_id": "664627157882-30q0iuoo56k72mend4ppuhpspsg5sg41.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.example.hotel_travel",
+            "package_name": "com.ttlc.travellerschoice",
             "certificate_hash": "09b2eee061a23fb05032901ba3435c9c0a1a3006"
           }
         },
