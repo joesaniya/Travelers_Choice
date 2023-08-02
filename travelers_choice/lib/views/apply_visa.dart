@@ -233,8 +233,8 @@ String userName = "";
   @override
   Widget build(BuildContext context){
     // print(widget.visa!.visa.country);
-    print(countryList);
-    print(widget.visa!.visa.country.countryName);
+    // print(countryList);
+    // print(widget.visa!.visa.country.countryName);
     return FxBuilder<ApplyVisaController>(
         controller: controller,
         builder: (controller) {
@@ -1402,7 +1402,7 @@ String userName = "";
                 // setState(() {
                 //   isLoading =true;
                 // });
-                print(controller.selectedTitle.first);
+                // print(controller.selectedTitle.first);
                 if(controller.formKey.currentState!.validate()) {
                   // controller.formKey.currentState!.save();
 
@@ -1480,7 +1480,7 @@ String userName = "";
                   };
 
 
-                  print(body);
+                  // print(body);
 
                   // controller.visaApplication.add(createdVisaOrder!.totalAmount)
                   createdVisaOrder = await  controller.postCreateVisa(
@@ -1488,7 +1488,7 @@ String userName = "";
                       );
 
 
-                 print("resultresult ======== ${createdVisaOrder!.totalAmount}");
+                //  print("resultresult ======== ${createdVisaOrder!.totalAmount}");
 
 
                  if(createdVisaOrder!=null && createdVisaOrder!.noOfTravellers!=null){
@@ -1528,9 +1528,9 @@ String userName = "";
       _fileName.insert(index,  results.files.single.name);
       // storage.uploadFile(path, fileName);
       setState(() {});
-      print(_fileName);
-      print(results.files.single.name);
-      print(path1);
+      // print(_fileName);
+      // print(results.files.single.name);
+      // print(path1);
 
     } else {
       // User canceled the picker
@@ -1550,7 +1550,7 @@ String userName = "";
       _fileName2.insert(index,  results.files.single.name);
       // storage.uploadFile(path, fileName);
       setState(() {});
-      print(_fileName2);
+      // print(_fileName2);
     } else {
       // User canceled the picker
     }
@@ -1569,7 +1569,7 @@ String userName = "";
       _fileName3.insert(index,  results.files.single.name);
       // storage.uploadFile(path, fileName);
       setState(() {});
-      print(_fileName3);
+      // print(_fileName3);
     } else {
       // User canceled the picker
     }
@@ -1588,7 +1588,7 @@ String userName = "";
       _fileName4.insert(index,  results.files.single.name);
       // storage.uploadFile(path, fileName);
       setState(() {});
-      print(_fileName4);
+      // print(_fileName4);
     } else {
       // User canceled the picker
     }
@@ -2031,7 +2031,7 @@ String userName = "";
                    // id: createdVisaOrder!.travellers!.first.id
                   );
 
-                  print(_passportFirstPage.first!.path);
+                  // print(_passportFirstPage.first!.path);
                   setState(() {
 
                     // controller.currentPage++;
@@ -2434,7 +2434,7 @@ String userName = "";
               // controller.openGateway(visaOrderId!);
               // controller.initPlatformState();
               // setState(() {
-              print(visaOrderId);
+              // print(visaOrderId);
               controller.createVisaOrderccAvenue(visaOrderId!);
                 // controller.currentPage++;
               //   // isFinished1 = true;
