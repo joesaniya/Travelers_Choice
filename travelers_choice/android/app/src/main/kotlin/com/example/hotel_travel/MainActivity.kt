@@ -1,4 +1,4 @@
-package com.tctt.travellerschoice
+package com.tcttb2c.travellerschoice
 
 import com.facebook.FacebookSdk;
 import com.facebook.appevents.AppEventsLogger;

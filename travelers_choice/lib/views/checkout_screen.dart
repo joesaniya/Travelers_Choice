@@ -2019,6 +2019,7 @@ class _CheckOutScreenState extends State<CheckOutScreen>
                                   .pushReplacement(
                                 MaterialPageRoute(
                                   builder: (context) => RemovePrivacyScreen(
+                                    pageTitle: 'Terms and Conditions',
                                     linkdata:
                                         'https://www.travellerschoice.ae/terms-and-conditions/',
                                   ),

@@ -1,41 +1,41 @@
 {
   "project_info": {
-    "project_number": "1089986043907",
-    "project_id": "tctt-bfed6",
-    "storage_bucket": "tctt-bfed6.appspot.com"
+    "project_number": "426714602621",
+    "project_id": "b2ctctt",
+    "storage_bucket": "b2ctctt.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1089986043907:android:63936889e30b3a69d5ae36",
+        "mobilesdk_app_id": "1:426714602621:android:3f6d999fcc193752cbe514",
         "android_client_info": {
-          "package_name": "com.tctt.travellerschoice"
+          "package_name": "com.tcttb2c.travellerschoice"
         }
       },
       "oauth_client": [
         {
-          "client_id": "1089986043907-k2a3rtp812fqpsj6bv75cjh91vt4emv7.apps.googleusercontent.com",
+          "client_id": "426714602621-biao7ik963a7m118milnih8hcsplnucl.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.tctt.travellerschoice",
+            "package_name": "com.tcttb2c.travellerschoice",
             "certificate_hash": "09b2eee061a23fb05032901ba3435c9c0a1a3006"
           }
         },
         {
-          "client_id": "1089986043907-tgnqdqqtn953hn35a9nfp1ifo5sc16j0.apps.googleusercontent.com",
+          "client_id": "426714602621-jl2asg5r69g6mk1pv40om1otdvrapg9e.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBbVYsV7_dq8FBxJ-DsywYkKENM5Wpb8B8"
+          "current_key": "AIzaSyBLRyINPuTPewC7jxmJvIKsvV0844JfJGo"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "1089986043907-tgnqdqqtn953hn35a9nfp1ifo5sc16j0.apps.googleusercontent.com",
+              "client_id": "426714602621-jl2asg5r69g6mk1pv40om1otdvrapg9e.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

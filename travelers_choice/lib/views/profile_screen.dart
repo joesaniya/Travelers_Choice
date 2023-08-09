@@ -400,9 +400,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           ListTile(
                             onTap: () async {
                               log('t&c clicked');
-                              String url =
-                                  "https://www.travellerschoice.ae/terms-and-conditions/";
-                              await launchingUrl(url);
+                              Navigator.of(context, rootNavigator: true)
+                                  .pushReplacement(
+                                MaterialPageRoute(
+                                  builder: (context) => RemovePrivacyScreen(
+                                    pageTitle: 'Terms and Conditions',
+                                    linkdata:
+                                        'https://www.travellerschoice.ae/terms-and-conditions/',
+                                  ),
+                                ),
+                              );
+                              // String url =
+                              //     "https://www.travellerschoice.ae/terms-and-conditions/";
+                              // await launchingUrl(url);
                             },
                             dense: true,
                             contentPadding: FxSpacing.zero,
@@ -425,6 +435,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   .pushReplacement(
                                 MaterialPageRoute(
                                   builder: (context) => RemovePrivacyScreen(
+                                    pageTitle: 'Privacy Policy',
                                     linkdata:
                                         'https://www.travellerschoice.ae/privacy-policy/',
                                   ),
@@ -564,6 +575,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                           MaterialPageRoute(
                                             builder: (context) =>
                                                 RemovePrivacyScreen(
+                                              pageTitle: 'Delete Account',
                                               linkdata:
                                                   'https://mytravellerschoice.com/remove-account',
                                             ),
