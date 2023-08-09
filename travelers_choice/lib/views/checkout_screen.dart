@@ -115,6 +115,7 @@ class _CheckOutScreenState extends State<CheckOutScreen>
       borderRadius: BorderRadius.all(Radius.circular(4)),
       borderSide: BorderSide(width: 1, color: Color(0xff1529e8)),
     );
+    log('List Length:${widget.controller.selectedtour.length}');
   }
 
   String? currencySymbol;
@@ -1872,7 +1873,7 @@ class _CheckOutScreenState extends State<CheckOutScreen>
                   TextSpan(
                       text:
                           '${getCheckoutGrandAmount()['promotion']} $currencySymbol',
-                          // '${((getCheckoutGrandAmount()['promotion']! * conversionRate!.toInt()))} $currencySymbol',
+                      // '${((getCheckoutGrandAmount()['promotion']! * conversionRate!.toInt()))} $currencySymbol',
                       // '${getCheckoutGrandAmount()['promotion']} deduction',
                       // '${((controller.detailattraction!.first.activities![i].promoAmount! * conversionRate!)).toStringAsFixed(2)} $currencySymbol',
                       style: const TextStyle(

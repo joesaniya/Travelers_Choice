@@ -10,6 +10,7 @@ class Images {
   static String profile5 = 'assets/images/profiles/avatar_5.jpg';
   static String profile6 = 'assets/images/profiles/avatar_6.jpg';
   static String discount = 'assets/brand/discount.png';
+  static String inquiry = 'assets/brand/inquiry.png';
 
   static List<String> profiles = [
     'assets/images/profile/avatar_1.jpg',

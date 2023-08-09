@@ -1016,7 +1016,7 @@ class DetailController extends FxController {
 
     log('Selected Transfer$Transfer');
 
-if (controller.checkboxStatus.isEmpty) {
+    if (controller.checkboxStatus.isEmpty) {
       controller.updateCheckboxes(controller.selectedtour.length);
     }
     Navigator.of(context, rootNavigator: true).push(PageRouteBuilder(
