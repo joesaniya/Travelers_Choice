@@ -22,6 +22,8 @@ import '../theme/app_theme.dart';
 import 'package:lottie/lottie.dart';
 import 'package:intl/intl.dart';
 
+import 'full_app.dart';
+
 class CheckOutScreen extends StatefulWidget {
   DetailController controller;
   dynamic? length;
@@ -311,7 +313,9 @@ class _CheckOutScreenState extends State<CheckOutScreen>
 
   Widget _billingWidget() {
     // List<Widget> list = [];
-    log('message');
+
+    log('Favourite:${favouriteListCart.length}=>checkout:${widget.controller.selectedtour.length}');
+
     log(widget.length.toString());
     return SizedBox(
       child: ListView.separated(

@@ -16,7 +16,7 @@ class NewCart extends StatefulWidget {
   final List<Activity> cartMeal;
   DetailController controller;
   // SlotTime? event;
-   NewCart(this.cartMeal,this.controller, {super.key}
+  NewCart(this.cartMeal, this.controller, {super.key}
       //  this.event,{super.key}
       );
 
@@ -43,6 +43,7 @@ class _NewCartState extends State<NewCart> with TickerProviderStateMixin {
     initializingData();
     controller = FxControllerStore.put(NewCartController(this));
     log('Item:${favouriteListCart.map((e) => e.sId)}');
+    log('Controller Items:${widget.controller.selectedtour.length}');
   }
 
   String? currencySymbol;
@@ -467,9 +468,11 @@ class _NewCartState extends State<NewCart> with TickerProviderStateMixin {
                                                 value + element);
 
                                         controller.goToCheckout(
-                                          favouriteListCart, grandTotal,widget.controller
-                                          // widget.event,
-                                        );
+                                            favouriteListCart,
+                                            grandTotal,
+                                            widget.controller
+                                            // widget.event,
+                                            );
                                       },
                                       backgroundColor: const Color(0xff1529e8),
                                       // backgroundColor: theme.colorScheme.primary,

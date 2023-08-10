@@ -8,6 +8,7 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 import '../controllers/visa_controller.dart';
 import '../loading_effect.dart';
 import 'apply_visa.dart';
+import 'bottomSheet/visa_enquire_bottom.dart';
 
 class VisaScreen extends StatefulWidget {
   final VisaCountryModal place;
@@ -575,8 +576,21 @@ class _VisaScreenState extends State<VisaScreen> with TickerProviderStateMixin {
           // padding: const EdgeInsets.only(bottom: 8.0),
           padding: FxSpacing.y(45),
           child: FloatingActionButton.extended(
-            onPressed: () {
-              // Add your onPressed code here!
+            onPressed: () async{
+              var data = await showModalBottomSheet(
+                  context: context,
+                  isScrollControlled: true,
+                  useSafeArea: true,
+                  shape: const RoundedRectangleBorder(
+                    // <-- SEE HERE
+                    borderRadius: BorderRadius.vertical(
+                      top: Radius.circular(25.0),
+                    ),
+                  ),
+                  builder: (BuildContext buildContext) {
+                    return const VisaEnquireBottom();
+                  });
+              setState(() {});              // Add your onPressed code here!
             },
             label: FxText.bodyMedium(
               "Enquire",

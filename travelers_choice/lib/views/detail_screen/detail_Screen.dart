@@ -517,8 +517,7 @@ class _DetailScreenState extends State<DetailScreen>
           .detailattraction!.first.activities![i].isSharedTransferAvailable;
       controllerTE.add(TextEditingController());
 
-      log(
-          'Selected Tour Date:${controller.selectedtour.map((e) => e.selectedDate)}');
+      log('Selected Tour Date:${controller.selectedtour.map((e) => e.selectedDate)}');
 //slot
       List<TextEditingController> Slotcontrollers = List.generate(
         controller.detailattraction!.first.activities!.length,
@@ -3056,11 +3055,11 @@ class _DetailScreenState extends State<DetailScreen>
 
                                           log('Fav Item Slot:${favouriteListCart.map((e) => e.sId)}');
 
-                                          log(
-                                              "controller.selectedtour ${controller.selectedtour}");
+                                          log("controller.selectedtour ${controller.selectedtour}");
 
                                           favouriteListCart
                                               .addAll(controller.selectedtour);
+                                            
 
                                           /*SharedPreferences prefs =
                                               await SharedPreferences
@@ -3196,11 +3195,8 @@ class _DetailScreenState extends State<DetailScreen>
                                   onPressed: controller.selectedtour.isEmpty
                                       ? null
                                       : () async {
-                                          // widget.productid ==
-                                          //         '63ff12f5d7333637a938cad4'
-                                          //     ? log(
-                                          //         'TimeSlot:${controller.listSLotDetails.last}')
-                                          //     : log('No Picked');
+                                          
+                                        
 
                                           bool? isHasCheckout;
                                           /*  if (controller.detailattraction != null) {

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutx/flutx.dart';
 
+import '../../card_widgets/customsnackbar.dart';
 import '../../controllers/post_review_controller.dart';
 import '../../theme/app_theme.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
@@ -288,6 +289,13 @@ class _PostReviewSheetState extends State<PostReviewSheet>
                                         controller.reqTE.text.isEmpty ||
                                         controller.ratingValue == null) {
                                       log('empty');
+                                      CustomSnackbar.show(
+                                        context: context,
+                                        message: 'Please Enter Required Fields..',
+                                        backgroundColor:
+                                            const Color(0xff1529e8),
+                                        duration: const Duration(seconds: 2),
+                                      );
                                     } else {
                                       log('filled');
 
