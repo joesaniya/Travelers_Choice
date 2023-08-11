@@ -16,6 +16,7 @@ import '../models/slot_pick.dart';
 import '../services/Slot_Time_Service.dart';
 import '../views/checkout_screen.dart';
 import '../views/detail_screen/review_Screen.dart';
+import '../views/full_app.dart';
 import '../views/login_Screens/login_screen.dart';
 import '../views/new_cart.dart';
 
@@ -63,7 +64,7 @@ class DetailController extends FxController {
 
   void updateCheckboxes(int checkboxLength) {
     checkboxStatus = List.generate(checkboxLength, (_) => false);
-    log("Indexes => ${checkboxStatus.length}");
+    log("Indexes checkbox => ${checkboxStatus.length}");
     update();
   }
 
@@ -1017,6 +1018,7 @@ class DetailController extends FxController {
     log('Selected Transfer$Transfer');
 
     if (controller.checkboxStatus.isEmpty) {
+      log('Checkbox status:${controller.selectedtour.length}');
       controller.updateCheckboxes(controller.selectedtour.length);
     }
     Navigator.of(context, rootNavigator: true).push(PageRouteBuilder(
@@ -1110,10 +1112,14 @@ class DetailController extends FxController {
       // log(dateTE.text);
       // log(selectedtransfer);
       log('Length:${selectedtour.length}');
-      log('Selected Tour:$selectedtour');
+      log('Selected Tour:${favouriteListCart.length}');
       // log('Dates:${dateTE.text}');
       log('Selected Transfer$selectedtransfer');
-      log(grandSelectedTourAmount());
+      // log(grandSelectedTourAmount());
+      if (controller.checkboxStatus.isEmpty) {
+        log('Checkbox status Shopping:${favouriteListCart.length}');
+        controller.updateCheckboxes(favouriteListCart.length);
+      }
       Navigator.of(context, rootNavigator: true).push(PageRouteBuilder(
           transitionDuration: const Duration(milliseconds: 500),
           transitionsBuilder: (

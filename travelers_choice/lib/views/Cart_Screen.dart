@@ -59,6 +59,30 @@ class _NewCartState extends State<NewCart> with TickerProviderStateMixin {
     });
   }
 
+  String? rateselectedtourOption1;
+  String checkoutGrandTotalAmount = '0', DeductionAmount = '0';
+  Map<String, String> getCheckoutGrandAmount() {
+    double tempAmount = 0, tempDeductionAmount = 0;
+    bool hasPromotion = false;
+
+    log("Total tour length => ${favouriteListCart.length}");
+    for (var tour in favouriteListCart) {
+      int index = favouriteListCart.indexOf(tour);
+      log("index promotion => $index, chekbox is empty => ${widget.controller.checkboxStatus.length}");
+      // hasPromotion = widget.controller.checkboxStatus[index];
+      tempAmount += tour.grandTotal * (conversionRate ?? 1) -
+          (hasPromotion ? (tour.promoAmount ?? 0) : 0);
+
+      tempDeductionAmount += (hasPromotion ? (tour.promoAmount ?? 0) : 0);
+      log("Promotion Amount => $tempDeductionAmount");
+    }
+
+    DeductionAmount = tempDeductionAmount.toStringAsFixed(2);
+    checkoutGrandTotalAmount = tempAmount.toStringAsFixed(2);
+
+    return {"amount": checkoutGrandTotalAmount, "promotion": DeductionAmount};
+  }
+
   String getFormattedDate(String date) {
     //selectedslotdate
     // DateTime now = date;
@@ -492,13 +516,35 @@ class _NewCartState extends State<NewCart> with TickerProviderStateMixin {
                                             ),
                                           ),
                                           Expanded(
-                                            child: Center(
-                                              child: FxText.bodyMedium(
-                                                'Checkout',
-                                                fontWeight: 600,
-                                                color:
-                                                    theme.colorScheme.onPrimary,
-                                              ),
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.center,
+                                              children: [
+                                                Center(
+                                                  child: FxText.bodyMedium(
+                                                    'Checkout',
+                                                    fontWeight: 600,
+                                                    color: theme
+                                                        .colorScheme.onPrimary,
+                                                  ),
+                                                ),
+                                                // FxText.bodyMedium(
+                                                //   // ' ${widget.totalAmount} AED',
+                                                //   // '${controller.getCheckoutGrandAmount(widget.controller,conversionRate!)} $currencySymbol',
+                                                //   '${getCheckoutGrandAmount()['amount']} $currencySymbol',
+                                                //   // '${((widget.totalAmount! * conversionRate!)).toStringAsFixed(2)} $currencySymbol',
+                                                //   // '${widget.selectedtourOption.first.GrandTotalAmount}',
+                                                //   // '${widget.totalAmount} AED',
+                                                //   // widget.finalAmount.toString(),
+                                                //   // widget.TotalCalculation.toString(),
+                                                //   // controller1.grandSelectedTourAmount().toString(),
+                                                //   fontWeight: 700,
+                                                //   color: Colors.white,
+                                                //   // color: theme.colorScheme.onPrimary,
+                                                // ),
+                                              ],
                                             ),
                                           ),
                                         ],
