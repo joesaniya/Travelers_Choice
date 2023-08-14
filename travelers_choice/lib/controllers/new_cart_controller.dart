@@ -3,11 +3,11 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutx/flutx.dart';
 import 'package:hotel_travel/models/atteraction_model.dart';
-import 'package:hotel_travel/views/checkout_screen.dart';
 
 import '../models/all_attraction_modal.dart';
 import '../models/cart.dart';
 import '../models/product.dart';
+import '../views/cart_checkout.dart';
 import '../views/detail_screen/detail_Screen.dart';
 import 'Detail_controller.dart';
 
@@ -174,14 +174,16 @@ class NewCartController extends FxController {
     return "new_cart_controller";
   }
 
-  Future<void> goToCheckout(
-    List<Activity> favouriteListCart,
-    double grandTotal,
-    DetailController controller
-    // SlotTime? event
-  ) async {
+  Future<void> goToCheckout(List<Activity> favouriteListCart, double grandTotal,
+      DetailController controller
+      // SlotTime? event
+      ) async {
     await Future.delayed(const Duration(seconds: 1));
     // print("product${product}");
+    if (controller.checkboxStatus.isEmpty) {
+      log('Checkbox status Shopping New Cart:${favouriteListCart.length}');
+      controller.updateCheckboxes(favouriteListCart.length);
+    }
     Navigator.of(context, rootNavigator: true).push(PageRouteBuilder(
         transitionDuration: const Duration(milliseconds: 500),
         transitionsBuilder: (
@@ -194,11 +196,10 @@ class NewCartController extends FxController {
               opacity: animation,
               child: child,
             ),
-        pageBuilder: (_, __, ___) => CheckOutScreen(
-          controller
-          ,
+        pageBuilder: (_, __, ___) => CartCheckOutScreen(
+              controller,
               favouriteListCart.length,
-              // selectedtours,
+
               favouriteListCart,
               favouriteListCart.first.selectedDate!,
               favouriteListCart.first.transferType,
@@ -220,5 +221,44 @@ class NewCartController extends FxController {
         //     // amount
         //     grandSelectedTourAmount())
         ));
+
+    // Navigator.of(context, rootNavigator: true).push(PageRouteBuilder(
+    //     transitionDuration: const Duration(milliseconds: 500),
+    //     transitionsBuilder: (
+    //       BuildContext context,
+    //       Animation<double> animation,
+    //       Animation<double> secondaryAnimation,
+    //       Widget child,
+    //     ) =>
+    //         FadeTransition(
+    //           opacity: animation,
+    //           child: child,
+    //         ),
+    //     pageBuilder: (_, __, ___) => CheckOutScreen(
+    //       controller
+    //       ,
+    //           favouriteListCart.length,
+    //           // selectedtours,
+    //           favouriteListCart,
+    //           favouriteListCart.first.selectedDate!,
+    //           favouriteListCart.first.transferType,
+
+    //           // excursions.activities!
+    //           // amount
+    //           grandTotal,
+    //           // event
+    //         )
+
+    //     // CheckOutScreen(
+    //     //     selectedtour.length,
+    //     //     // selectedtours,
+    //     //     selectedtour,
+    //     //     dateTE.text,
+    //     //     selectedtransfer,
+
+    //     //     // excursions.activities!
+    //     //     // amount
+    //     //     grandSelectedTourAmount())
+    //     ));
   }
 }
