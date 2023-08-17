@@ -118,7 +118,7 @@ class AllBookingController extends FxController {
 
     intro.setStepConfig(0, borderRadius: BorderRadius.circular(64));
     Timer(
-      const Duration(milliseconds: 2000),
+      const Duration(milliseconds:0),
       () {
         if (HotelTravelCache.isFirstTime) {
           // intro.start(context);

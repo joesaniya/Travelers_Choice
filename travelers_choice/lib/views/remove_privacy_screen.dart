@@ -1,6 +1,5 @@
 import 'dart:developer';
 
-import 'package:flutx/widgets/text/text.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:flutter/material.dart';
 
@@ -26,30 +25,30 @@ class _RemovePrivacyScreenState extends State<RemovePrivacyScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: AppBar(
-      //   title: const Text(''),
-      // ),
+      
       backgroundColor: const Color(0xfff5f5f5),
-      // backgroundColor: theme.scaffoldBackgroundColor,
-      appBar: AppBar(
-        backgroundColor: const Color(0xfff5f5f5),
-        elevation: 0,
-        centerTitle: true,
-        title: FxText.titleMedium(
-          widget.pageTitle,
-          fontWeight: 600,
-        ),
-        // leading: InkWell(
-        //   onTap: () {
-        //     // controller.goBack();
-        //     Navigator.pop(context);
-        //   },
-        //   child: const Icon(
-        //     FeatherIcons.chevronLeft,
-        //     size: 20,
-        //   ),
-        // ),
-      ),
+      
+      // appBar: AppBar(
+      //   backgroundColor: const Color(0xfff5f5f5),
+      //   elevation: 0,
+      //   centerTitle: true,
+      //   title: FxText.titleMedium(
+      //     widget.pageTitle,
+      //     fontWeight: 600,
+      //   ),
+      //   // leading: InkWell(
+      //   //   onTap: () {
+      //   //     // controller.goBack();
+      //   //     Navigator.pop(context);
+      //   //   },
+      //   //   child: const Icon(
+      //   //     FeatherIcons.chevronLeft,
+      //   //     size: 20,
+      //   //   ),
+      //   // ),
+      // ),
+     
+     
       body: widget.linkdata.isEmpty
           ? const Center(child: CircularProgressIndicator())
           : WebView(

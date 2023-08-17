@@ -680,12 +680,14 @@ class _DetailScreenState extends State<DetailScreen>
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              FxText.bodyLarge(
-                                controller.detailattraction!.first
-                                        .activities![i].name ??
-                                    '',
-                                muted: true,
-                                fontWeight: 900,
+                              Flexible(
+                                child: FxText.bodyLarge(
+                                  controller.detailattraction!.first
+                                          .activities![i].name ??
+                                      '',
+                                  muted: true,
+                                  fontWeight: 900,
+                                ),
                               ),
                               controller.detailattraction!.first.activities![i]
                                           .isPromoCode ==
@@ -697,7 +699,7 @@ class _DetailScreenState extends State<DetailScreen>
                               controller.detailattraction!.first.activities![i]
                                           .isPromoCode ==
                                       true
-                                  ? Flexible(
+                                  ? FittedBox(
                                       child: FxContainer(
                                       borderRadiusAll: 10,
                                       // padding: FxSpacing.xy(8, 4),
@@ -728,7 +730,8 @@ class _DetailScreenState extends State<DetailScreen>
                                           .adultPrice ==
                                       null
                                   ? FxText.bodyLarge(
-                                      '0',
+                                      // '0',
+                                      '${((controller.detailattraction!.first.activities![i].privateTransfers![i].cost! * conversionRate!.toDouble())).toStringAsFixed(2)} $currencySymbol',
                                       fontWeight: 900,
                                     )
                                   : FxText.bodyLarge(
@@ -1226,12 +1229,16 @@ class _DetailScreenState extends State<DetailScreen>
         ),
       ));
     }
-    return ListView(
-      // physics: const AlwaysScrollableScrollPhysics(),
-      shrinkWrap: true,
-      // padding: FxSpacing.nTop(20),
+    return Padding(
       padding: const EdgeInsets.only(top: 0, right: 20, left: 20, bottom: 0),
-      children: list,
+      child: Column(
+        //>Listview
+        // physics: const AlwaysScrollableScrollPhysics(),
+        // shrinkWrap: true,
+        // padding: FxSpacing.nTop(20),
+        // padding: const EdgeInsets.only(top: 0, right: 20, left: 20, bottom: 0),
+        children: list,
+      ),
     );
   }
 
@@ -2782,13 +2789,52 @@ class _DetailScreenState extends State<DetailScreen>
     bool? isShared = controller
         .detailattraction!.first.activities![i].isSharedTransferAvailable;
 
+    String transfer = controller
+        .detailattraction!.first.activities![i].activityType
+        .toString();
+    log('transfer drop:$transfer');
     log("TransferCode Private => $isPrivate Shared => $isShared");
+    // if (((isPrivate != null && !isPrivate) &&
+    //         (isShared != null && !isShared)) ||
+    //     ((isPrivate != null && isPrivate) && (isShared != null && isShared))) {
+    //   if (!tempTransferCodes.contains("without")) {
+    //     tempTransferCodes.add("without");
+    //   }
+    // }-->crt
+
+    // if (controller.detailattraction!.first.activities![i].activityType ==
+    //     'transfer') {
+    //   log('transfer drop1:$transfer');
+    //   if (((isPrivate != null && !isPrivate) &&
+    //           (isShared != null && !isShared)) ||
+    //       ((isPrivate != null && isPrivate) &&
+    //           (isShared != null && isShared))) {
+    //     if (!tempTransferCodes.contains("without")) {
+    //       tempTransferCodes.remove("without");
+    //     }
+    //   } else {
+    //     if (((isPrivate != null && !isPrivate) &&
+    //             (isShared != null && !isShared)) ||
+    //         ((isPrivate != null && isPrivate) &&
+    //             (isShared != null && isShared))) {
+    //       if (!tempTransferCodes.contains("without")) {
+    //         tempTransferCodes.add("without");
+    //       }
+    //     }
+    //   }
+    // }
     if (((isPrivate != null && !isPrivate) &&
             (isShared != null && !isShared)) ||
         ((isPrivate != null && isPrivate) && (isShared != null && isShared))) {
       if (!tempTransferCodes.contains("without")) {
         tempTransferCodes.add("without");
       }
+      if (!tempTransferCodes.contains("without") ||
+          controller.detailattraction!.first.activities![i].activityType ==
+              'transfer') {
+        tempTransferCodes.remove("without");
+      }
+      // tempTransferCodes.add("without");
     }
     if (isPrivate != null && isPrivate) {
       if (!tempTransferCodes.contains("private")) {
@@ -3059,7 +3105,6 @@ class _DetailScreenState extends State<DetailScreen>
 
                                           favouriteListCart
                                               .addAll(controller.selectedtour);
-                                            
 
                                           /*SharedPreferences prefs =
                                               await SharedPreferences
@@ -3195,9 +3240,6 @@ class _DetailScreenState extends State<DetailScreen>
                                   onPressed: controller.selectedtour.isEmpty
                                       ? null
                                       : () async {
-                                          
-                                        
-
                                           bool? isHasCheckout;
                                           /*  if (controller.detailattraction != null) {
                                       for (var activity in controller

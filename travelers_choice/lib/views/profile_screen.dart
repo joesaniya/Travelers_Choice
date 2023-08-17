@@ -435,10 +435,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   .pushReplacement(
                                 MaterialPageRoute(
                                   builder: (context) => RemovePrivacyScreen(
-                                    pageTitle: 'Privacy Policy',
-                                    linkdata:
-                                        'https://www.travellerschoice.ae/privacy-policy/',
-                                  ),
+                                      pageTitle: 'Privacy Policy',
+                                      linkdata:
+                                          'https://mytravellerschoice.com/privacy-policy'
+                                      // 'https://www.travellerschoice.ae/privacy-policy/',
+                                      ),
                                 ),
                               );
                               // String url =

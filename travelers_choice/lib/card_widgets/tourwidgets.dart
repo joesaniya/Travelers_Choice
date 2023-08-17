@@ -1116,7 +1116,7 @@ class _ActivityScreenState extends State<TourWidgets>
                                 // width: 40 ?? 28,
                                 height: 20,
                                 width: 20,
-                                duration: const Duration(milliseconds: 500),
+                                duration: const Duration(milliseconds: 0),
                                 curve: Curves.fastLinearToSlowEaseIn,
                                 decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(2.0),

@@ -34,7 +34,7 @@ class HomeController extends FxController {
   String? selectedCountryCode;
   final focus = FocusNode();
   final scrollController = ScrollController();
-    final scrollController1 = ScrollController();
+  final scrollController1 = ScrollController();
   final itemsPerPage = 10;
   var loadedItems = 0;
   var items = <String>[];
@@ -46,9 +46,11 @@ class HomeController extends FxController {
       _loadMoreItems();
     }
   }
+
   void scrollListener1() {
     log('scroll listener calling');
-    if (scrollController1.offset >= scrollController1.position.maxScrollExtent &&
+    if (scrollController1.offset >=
+            scrollController1.position.maxScrollExtent &&
         !scrollController1.position.outOfRange) {
       _loadMoreItems();
     }
@@ -121,7 +123,9 @@ class HomeController extends FxController {
 
     intro.setStepConfig(0, borderRadius: BorderRadius.circular(64));
     Timer(
-      const Duration(milliseconds: 2000),
+      const Duration(milliseconds: 0
+          // 2000
+          ),
       () {
         if (HotelTravelCache.isFirstTime) {
           // intro.start(context);
@@ -174,7 +178,7 @@ Country Code => $countryCode
   void dispose() {
     animationController.dispose();
     scrollController.dispose();
-     scrollController1.dispose();
+    scrollController1.dispose();
     bellController.dispose();
     super.dispose();
   }
@@ -219,7 +223,9 @@ Country Code => $countryCode
     // log(currencySymbol);
     // log("utfyjhvbn  $conversionRate");
     Navigator.of(context, rootNavigator: true).push(PageRouteBuilder(
-        transitionDuration: const Duration(milliseconds: 500),
+        transitionDuration: const Duration(milliseconds: 0
+            // 500
+            ),
         transitionsBuilder: (
           BuildContext context,
           Animation<double> animation,

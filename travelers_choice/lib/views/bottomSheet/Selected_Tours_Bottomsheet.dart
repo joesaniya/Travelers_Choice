@@ -154,16 +154,18 @@ class _SelectedTourBottomSheetState extends State<SelectedTourBottomSheet>
                 children: [
                   Row(
                     children: [
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        child: FxText.bodyMedium(
-                          // '\$' + controller.order.precise,
-                          widget.Option[index].name.toString(),
-                          fontWeight: 900,
-                          textAlign: TextAlign.left,
+                      Expanded(
+                        child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: FxText.bodyMedium(
+                            // '\$' + controller.order.precise,
+                            widget.Option[index].name.toString(),
+                            fontWeight: 900,
+                            textAlign: TextAlign.left,
+                          ),
                         ),
                       ),
-                      Expanded(child: Container()),
+                      // Expanded(child: Container()),
                       IconButton(
                         onPressed: () {
                           log('remove clicked');
@@ -544,7 +546,6 @@ class _SelectedTourBottomSheetState extends State<SelectedTourBottomSheet>
                                         ? null
                                         : () {
                                             controller.BottomgoToCheckout1(
-                                              
                                                 widget.len,
                                                 widget.Option,
                                                 widget.textdate,

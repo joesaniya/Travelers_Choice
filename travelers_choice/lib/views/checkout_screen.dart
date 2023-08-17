@@ -5,6 +5,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:flutx/flutx.dart';
 import 'package:hotel_travel/views/remove_privacy_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -628,6 +629,7 @@ class _CheckOutScreenState extends State<CheckOutScreen>
                       ),
                     ],
                   ),
+                  FxSpacing.height(5),
                   // widget.controller.selectedtour[index].isPromoCode == true
                   //     ? FxSpacing.height(10)
                   //     : const SizedBox(),
@@ -664,29 +666,57 @@ class _CheckOutScreenState extends State<CheckOutScreen>
                   //       )
                   //     : const SizedBox(),
                   widget.controller.selectedtour[index].isPromoCode == true
-                      ? ListTileTheme(
-                          contentPadding: const EdgeInsets.all(0),
-                          child: CheckboxListTile(
-                            value: widget.controller.checkboxStatus[index],
-                            // activeColor: Colors.red,
-                            activeColor: const Color(0xff1529e8),
-                            selected: widget.controller.checkboxStatus[index],
-                            onChanged: (newValue) {
-                              setState(() {
-                                log('Check:${widget.controller.checkboxStatus[index]}');
-                                widget.controller.checkboxStatus[index] =
-                                    newValue ?? false;
-                                log('Check1 index => $index => :${widget.controller.checkboxStatus[index]}');
-                                widget.controller.selectedtour[index]
-                                        .promoapplied =
-                                    widget.controller.checkboxStatus[index];
-                                log('PromoApplied:${widget.controller.selectedtour[index].promoapplied}=>${widget.controller.checkboxStatus[index]}');
-                              });
-                            },
-                            title: FxText.bodyMedium(
-                              'Coupon Apply',
-                              fontWeight: 700,
-                              color: const Color(0xff1529e8),
+                      ?
+                      // FxContainer(
+                      //     borderRadiusAll: 10,
+
+                      //     padding: FxSpacing.xy(6, 2),
+                      //     color: const Color(0xff1529e8).withAlpha(24),
+                      Container(
+                          padding: FxSpacing.x(6),
+                          decoration: const BoxDecoration(
+                            borderRadius: BorderRadius.all(Radius.circular(10)),
+                            gradient: LinearGradient(
+                                begin: Alignment.centerLeft,
+                                end: Alignment.centerRight,
+                                colors: [
+                                  Color(0xffE45813),
+                                  Color(0xff2B63E4),
+                                  // const Color.fromARGB(255, 8, 19, 118)
+                                  //     .withOpacity(0.8),
+                                ]),
+                            // boxShadow: [
+                            //   BoxShadow(
+                            //     color: Colors.black.withOpacity(0.4),
+                            //     spreadRadius: 3,
+                            //     blurRadius: 5,
+                            //     offset: const Offset(0, 5),
+                            //   ),
+                            // ],
+                          ),
+                          child: ListTileTheme(
+                            contentPadding: const EdgeInsets.all(0),
+                            child: CheckboxListTile(
+                              value: widget.controller.checkboxStatus[index],
+                              activeColor: const Color(0xffE45813),
+                              // activeColor: const Color(0xff1529e8),
+                              selected: widget.controller.checkboxStatus[index],
+                              onChanged: (newValue) {
+                                setState(() {
+                                  log('Check:${widget.controller.checkboxStatus[index]}');
+                                  widget.controller.checkboxStatus[index] =
+                                      newValue ?? false;
+                                  log('Check1 index => $index => :${widget.controller.checkboxStatus[index]}');
+                                  widget.controller.selectedtour[index]
+                                          .promoapplied =
+                                      widget.controller.checkboxStatus[index];
+                                  log('PromoApplied:${widget.controller.selectedtour[index].promoapplied}=>${widget.controller.checkboxStatus[index]}');
+                                });
+                              },
+                              title: FxText.bodyMedium('Coupon Apply',
+                                  fontWeight: 700, color: Colors.white
+                                  // color: const Color(0xff1529e8),
+                                  ),
                             ),
                           ),
                         )
@@ -1097,9 +1127,19 @@ class _CheckOutScreenState extends State<CheckOutScreen>
                                   return DropdownMenuItem<String>(
                                       value: value.id.toString(),
                                       child: Center(
-                                        child: Text(
-                                          value.countryName.toString(),
-                                          style: FxTextStyle.bodyMedium(),
+                                        child: Row(
+                                          children: [
+                                            SvgPicture.network(
+                                              value.flag,
+                                              width: 16,
+                                              height: 16,
+                                            ),
+                                            FxSpacing.width(5),
+                                            Text(
+                                              value.countryName.toString(),
+                                              style: FxTextStyle.bodyMedium(),
+                                            ),
+                                          ],
                                         ),
                                       ));
                                 }).toList()
@@ -1327,10 +1367,21 @@ class _CheckOutScreenState extends State<CheckOutScreen>
                                             return DropdownMenuItem<String>(
                                                 value: value.id.toString(),
                                                 child: Center(
-                                                  child: Text(
-                                                    value.phonecode.toString(),
-                                                    style: FxTextStyle
-                                                        .bodyMedium(),
+                                                  child: Row(
+                                                    children: [
+                                                      SvgPicture.network(
+                                                        value.flag,
+                                                        width: 16,
+                                                        height: 16,
+                                                      ),
+                                                      FxSpacing.width(5),
+                                                      Text(
+                                                        value.phonecode
+                                                            .toString(),
+                                                        style: FxTextStyle
+                                                            .bodyMedium(),
+                                                      ),
+                                                    ],
                                                   ),
                                                 ));
                                           }).toList()
@@ -1562,6 +1613,12 @@ class _CheckOutScreenState extends State<CheckOutScreen>
                   child: FxButton(
                     padding: FxSpacing.y(12),
                     onPressed: () {
+                      FocusScopeNode currentFocus = FocusScope.of(context);
+
+                      if (!currentFocus.hasPrimaryFocus) {
+                        log('keypad');
+                        currentFocus.unfocus();
+                      }
                       controller.nextPage(
                           // selectedExcursions,
                           checkoutGrandTotalAmount,

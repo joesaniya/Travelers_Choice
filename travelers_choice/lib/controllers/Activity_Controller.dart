@@ -6,14 +6,12 @@ import 'package:flutter/material.dart';
 import 'package:flutx/flutx.dart';
 // import 'package:global_snack_bar/global_snack_bar.dart';
 import 'package:hotel_travel/models/atteraction_model.dart';
-import 'package:hotel_travel/views/new_cart.dart';
 import 'package:intl/intl.dart';
 import '../card_widgets/customsnackbar.dart';
 import '../models/Slot_Time.dart';
 import '../models/cart.dart';
 import '../models/slot_pick.dart';
 import '../services/Slot_Time_Service.dart';
-import '../views/checkout_screen.dart';
 import '../views/hotel_travel_constants.dart';
 import '../views/login_Screens/login_screen.dart';
 import 'package:http/http.dart' as http;
@@ -438,9 +436,7 @@ class ActivityController extends FxController {
         person_count[index].grandTotal = val;
         log('List Value=> ${person_count.length}');
       }
-    }
-   
-    else {
+    } else {
       CustomSnackbar.show(
         context: context,
         message: 'Please Select Your Transfer Type',
@@ -664,13 +660,13 @@ class ActivityController extends FxController {
       curve: Curves.easeIn,
     ));
     animationController = AnimationController(
-        vsync: ticker, duration: const Duration(milliseconds: 500));
+        vsync: ticker, duration: const Duration(milliseconds: 0));
     animationController = AnimationController(
       duration: const Duration(seconds: 1),
       vsync: ticker,
     );
     cartController = AnimationController(
-        vsync: ticker, duration: const Duration(milliseconds: 500));
+        vsync: ticker, duration: const Duration(milliseconds: 0));
     fadeController = AnimationController(
       duration: const Duration(seconds: 2),
       vsync: ticker,
@@ -1007,7 +1003,6 @@ class ActivityController extends FxController {
       //     //     // amount
       //     //     grandSelectedTourAmount())
       //     ));
-   
     }
   }
 
