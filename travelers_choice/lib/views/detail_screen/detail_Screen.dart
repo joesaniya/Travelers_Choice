@@ -2866,8 +2866,13 @@ class _DetailScreenState extends State<DetailScreen>
               Expanded(
                   child: FxText.labelLarge(
                 // activitycontroller.TransferCodes[0],
+                controller.TransferCodes[0] == 'without'
+                    ? 'without Transfer'
+                    : controller.TransferCodes[0] == 'shared'
+                        ? 'shared'
+                        : 'private',
 
-                'Select Transfer',
+                // 'Select Transfer',
                 fontWeight: 600,
                 color: Colors.black,
                 letterSpacing: 0.4,

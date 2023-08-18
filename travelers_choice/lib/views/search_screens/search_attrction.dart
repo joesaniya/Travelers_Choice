@@ -15,8 +15,13 @@ import '../../theme/app_theme.dart';
 class SearchAttractionScreen extends StatefulWidget {
   String isocode;
   double conversionRate;
-  SearchAttractionScreen(
-      {super.key, required this.isocode, required this.conversionRate});
+  // List<AllattractionModal>? allattractionList;
+  SearchAttractionScreen({
+    super.key,
+    required this.isocode,
+    required this.conversionRate,
+    // this.allattractionList
+  });
 
   @override
   State<SearchAttractionScreen> createState() => _SearchAttractionScreenState();
@@ -54,48 +59,49 @@ class _SearchAttractionScreenState extends State<SearchAttractionScreen>
   ];
 
   bool isLoading = true; //searchbuttonloading
-  bool isLoadingg = true; //getattraction
+  // bool isLoadingg = true; //getattraction
 
   @override
   void initState() {
     super.initState();
     log('ConversionRate111:${widget.isocode}');
     log('ConversionSymbol111:${widget.conversionRate}');
+    // log('Attractions Search:${widget.allattractionList}');
     customTheme = AppTheme.customTheme;
     theme = AppTheme.theme;
     controller = FxControllerStore.put(SearchAttractionController(this));
     fetchData();
-    getAttraction(context);
+   controller. getAttraction(context);
     _width = 100;
     _btnText = "Search";
   }
 
-  SharedPreferences? sharedPreferences;
-  // List<AllattractionModal> allattractionList = <AllattractionModal>[];
+  // SharedPreferences? sharedPreferences;
+  // // List<AllattractionModal> allattractionList = <AllattractionModal>[];
 
-  getAttraction(BuildContext context) async {
-    await AuthService().getCountry();
-    log('searchAttraction function called');
-    sharedPreferences = await SharedPreferences.getInstance();
-    Future.delayed(Duration.zero, () async {
-      await AttractionController().getAllattractionList(context).then((value) {
-        if (value != null) {
-          isLoadingg = false;
-          controller.allattractionList = [];
-          controller.allattractionList!.add(value);
-          log('All1:${controller.allattractionList}');
+  // getAttraction(BuildContext context) async {
+  //   await AuthService().getCountry();
+  //   log('searchAttraction function called');
+  //   sharedPreferences = await SharedPreferences.getInstance();
+  //   Future.delayed(Duration.zero, () async {
+  //     await AttractionController().getAllattractionList(context).then((value) {
+  //       if (value != null) {
+  //         isLoadingg = false;
+  //         controller.allattractionList = [];
+  //         controller.allattractionList!.add(value);
+  //         log('AllSearch1:${controller.allattractionList}');
 
-          setState(() {
-            controller.countryCode = sharedPreferences!
-                .getString(AppConstants.KEY_ACCESS_TOKEN_countryId);
-            log('CountryCode:${controller.countryCode}');
-            controller.currencies = sharedPreferences!
-                .getString(AppConstants.KEY_ACCESS_TOKEN_CurrenciesList);
-          });
-        }
-      });
-    });
-  }
+  //         setState(() {
+  //           controller.countryCode = sharedPreferences!
+  //               .getString(AppConstants.KEY_ACCESS_TOKEN_countryId);
+  //           log('CountryCode:${controller.countryCode}');
+  //           controller.currencies = sharedPreferences!
+  //               .getString(AppConstants.KEY_ACCESS_TOKEN_CurrenciesList);
+  //         });
+  //       }
+  //     });
+  //   });
+  // }
 
   double? _width;
   String? _btnText;
@@ -248,7 +254,111 @@ class _SearchAttractionScreenState extends State<SearchAttractionScreen>
             _searchField(),
             // _searchBtn(),
           ],
-        ));
+        )
+        /*child: controller.allattractionList!.isEmpty ||
+              controller.allattractionList!.first.attractions.data.isEmpty
+          ? _searchFieldLoader()
+          : _searchField(),*/
+        );
+  }
+
+  Widget _searchFieldLoader() {
+    return Expanded(
+      child: SlideTransition(
+        position: controller.locationAnimation,
+        child: SearchField(
+          focusNode: controller.focus,
+
+          // searchStyle: FxTextStyle.bodyMedium(),
+          searchStyle: const TextStyle(color: Colors.white),
+          suggestionStyle: FxTextStyle.bodyMedium(),
+          controller: controller.locationTE,
+          hint: 'Where do you want to see?',
+
+          searchInputDecoration: InputDecoration(
+              floatingLabelBehavior: FloatingLabelBehavior.never,
+              filled: true,
+              isDense: true,
+              // fillColor: theme.cardTheme.color,
+              fillColor: Colors.transparent,
+              suffixIcon: const Icon(
+                Iconsax.location,
+                // color: theme.colorScheme.onBackground,
+                color: Colors.white,
+              ),
+              hintText: "Where do you want to see?",
+              border: InputBorder.none,
+              focusedBorder: InputBorder.none,
+              enabledBorder: InputBorder.none,
+              errorBorder: InputBorder.none,
+              disabledBorder: InputBorder.none,
+              contentPadding: FxSpacing.all(16),
+              hintStyle: const TextStyle(color: Colors.white),
+              isCollapsed: true),
+          maxSuggestionsInViewPort: 6,
+          itemHeight: 50,
+          suggestionsDecoration: BoxDecoration(
+            // color: Colors.white
+            color: const Color(0xfff5f5f5),
+
+            borderRadius: BorderRadius.circular(10),
+          ),
+          onSubmit: (value) {
+            log('ONSUBIT');
+          },
+          // onSubmit: myf,
+
+          onSuggestionTap: (value) async {},
+
+          suggestions: controller.allattractionList!.isEmpty ||
+                  controller.allattractionList!.first.attractions.data.isEmpty
+              /*||
+                  widget.allattractionList!.isEmpty*/
+              ? []
+              : controller.countryList.first.destinations
+                      .map((e) => SearchFieldListItem<dynamic>(
+                          // e,
+                          // 'Esther',
+
+                          e.name.toString()[0].toUpperCase() +
+                              e.name.toString().substring(1).toLowerCase(),
+                          item: e.sId,
+                          child: Padding(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 8.0),
+                            child: Text(
+                              'Loading...',
+
+                              // e.name.toString()[0].toUpperCase() +
+                              //     e.name.toString().substring(1).toLowerCase(),
+                              style: FxTextStyle.bodyMedium(),
+                            ),
+                          )))
+                      .toList() +
+                  controller.countryList.first.attractions
+                      .map((e) => SearchFieldListItem<dynamic>(
+                          // e,
+
+                          e.title.toString()[0].toUpperCase() +
+                              e.title.toString().substring(1).toLowerCase(),
+                          item: e.id,
+
+                          // key: e.slug,
+                          child: Padding(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 8.0),
+                            child: Text(
+                              'Loading....,',
+
+                              // e.title.toString()[0].toUpperCase() +
+                              //     e.title.toString().substring(1).toLowerCase(),
+                              style: FxTextStyle.bodyMedium(),
+                            ),
+                          )))
+                      .toList(),
+        ),
+      ),
+    );
   }
 
   Widget _searchField() {
@@ -366,6 +476,11 @@ class _SearchAttractionScreenState extends State<SearchAttractionScreen>
 
           suggestions: controller.countryList.isEmpty ||
                   controller.countryList.first.destinations.isEmpty
+              //  ||
+              // controller.allattractionList!.isEmpty ||
+              // controller.allattractionList!.first.attractions.data.isEmpty
+              /*||
+                  widget.allattractionList!.isEmpty*/
               ? []
               : controller.countryList.first.destinations
                       .map((e) => SearchFieldListItem<dynamic>(

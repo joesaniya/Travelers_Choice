@@ -128,7 +128,7 @@ class SavedController extends FxController {
 
     uiLoading = false;
     log('fetchloader');
-    log(uiLoading.toString());
+    log('UIloading${uiLoading.toString()}');
     update();
   }
 

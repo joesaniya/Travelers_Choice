@@ -5,13 +5,17 @@ import 'package:flutx/flutx.dart';
 import 'package:hotel_travel/models/visaModels/visa_country_modal.dart';
 import 'package:hotel_travel/views/visa_screen.dart';
 import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../card_widgets/customsnackbar.dart';
 
 import '../models/all_attraction_modal.dart';
 import '../models/attraction_search_modal.dart';
+import '../services/app_constants.dart';
+import '../services/auth_service.dart';
 import '../views/SearchScreen.dart';
 import '../views/detail_screen/detail_Screen.dart';
+import 'attraction_Controller.dart';
 
 class SearchAttractionController extends FxController {
   TickerProvider ticker;
@@ -36,6 +40,7 @@ class SearchAttractionController extends FxController {
   @override
   void initState() {
     super.initState();
+    getAttraction(context);
     locationTE = TextEditingController();
     visaTE = TextEditingController();
     dateTE = TextEditingController();
@@ -116,6 +121,33 @@ class SearchAttractionController extends FxController {
   List<AllattractionModal>? allattractionList;
   Future<void> Destinationbtn() async {
     log('searchDestinationbtn');
+  }
+
+  SharedPreferences? sharedPreferences;
+  bool isLoadingg = true;
+  // List<AllattractionModal> allattractionList = <AllattractionModal>[];
+
+  getAttraction(BuildContext context) async {
+    await AuthService().getCountry();
+    log('searchAttraction function called');
+    sharedPreferences = await SharedPreferences.getInstance();
+    Future.delayed(Duration.zero, () async {
+      await AttractionController().getAllattractionList(context).then((value) {
+        if (value != null) {
+          isLoadingg = false;
+          allattractionList = [];
+          allattractionList!.add(value);
+          log('AllSearch1:$allattractionList');
+
+          countryCode = sharedPreferences!
+              .getString(AppConstants.KEY_ACCESS_TOKEN_countryId);
+          log('CountryCode:$countryCode');
+          currencies = sharedPreferences!
+              .getString(AppConstants.KEY_ACCESS_TOKEN_CurrenciesList);
+          update();
+        }
+      });
+    });
   }
 
   Future<void> searchbtn(
