@@ -543,7 +543,7 @@ class DetailController extends FxController {
       //     (value[0].childCount * (value[0].childPrice ?? private[0].price)) +
       //     (value[0].infantCount * (value[0].infantPrice ?? private[0].price));
 
-      if (private.isNotEmpty && tour.activityType == 'transfer') {
+      if (private.isNotEmpty || tour.activityType == 'transfer') {
         log("Remainder Value => ${(tour.adultCount + tour.childCount).remainder(private[0].maxCapacity!)}");
         log("Remainder Value / => ${(tour.adultCount + tour.childCount) / private[0].maxCapacity!}");
         log("Remainder Value ceil => ${((tour.adultCount + tour.childCount) / private[0].maxCapacity!).ceil()}");
@@ -552,13 +552,19 @@ class DetailController extends FxController {
             (((tour.adultCount + tour.childCount) / private[0].maxCapacity!)
                 .ceil());
       }
+      /*else if (tour.activityType == 'transfer') {
+        log('get shared transfer');
+        return (value[0].adultCount) +
+            (value[0].childCount) +
+            (value[0].infantCount);
+      }*/
       return (value[0].adultCount *
               (value[0].adultPrice ?? value[0].adultCost)) +
           (value[0].childCount * (value[0].childPrice ?? value[0].adultCost)) +
           (value[0].infantCount * (value[0].infantPrice ?? value[0].adultCost));
-      // return (value[0].adultCount * (value[0].adultPrice ?? 1.0)) +
-      //     (value[0].childCount * (value[0].childPrice ?? 1.0)) +
-      //     (value[0].infantCount * (value[0].infantPrice ?? 1.0));
+      /* return (value[0].adultCount * (value[0].adultPrice ?? 1.0)) +
+          (value[0].childCount * (value[0].childPrice ?? 1.0)) +
+          (value[0].infantCount * (value[0].infantPrice ?? 1.0));*/
     }
   }
 

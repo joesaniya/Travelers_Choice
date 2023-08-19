@@ -3134,25 +3134,8 @@ class _DetailScreenState extends State<DetailScreen>
                                             favouriteListCart;
                                           });
                                           bool? isHasCheckout;
-                                          /*  if (controller.detailattraction != null) {
-                                      for (var activity in controller
-                                          .detailattraction!
-                                          .first
-                                          .activities!) {
-                                        if (controller.selectedtour
-                                            .contains(activity)) {
-                                          int i = controller.selectedtour
-                                              .indexOf(activity);
-                                          if (controller.selectedtour[i]
-                                                  .selectedDate !=
-                                              null) {
-                                            isHasCheckout = true;
-                                          } else {
-                                            isHasCheckout = false;
-                                          }
-                                        }
-                                      }
-                                    } */
+                                          bool? isHasCheckoutDate;
+
                                           bool isBurjkhalifa =
                                               widget.productid ==
                                                   '63ff12f5d7333637a938cad4';
@@ -3185,7 +3168,20 @@ class _DetailScreenState extends State<DetailScreen>
                                             }
                                           }
                                           log('Selected Date:${controller.selectedtour.map((e) => e.selectedDate).toList()}');
-
+                                          for (var e
+                                              in controller.selectedtour) {
+                                            log("Selected Transfer => ${e.transferCode}");
+                                            if (e.transferCode != null) {
+                                              isHasCheckoutDate ??= true;
+                                              isHasCheckoutDate =
+                                                  isHasCheckoutDate
+                                                      ? true
+                                                      : false;
+                                            } else {
+                                              isHasCheckoutDate ??= false;
+                                              isHasCheckoutDate = false;
+                                            }
+                                          }
                                           !isHasCheckout!
                                               ? CustomSnackbar.show(
                                                   context: context,
@@ -3198,20 +3194,32 @@ class _DetailScreenState extends State<DetailScreen>
                                                       seconds: 2),
                                                 )
 
-                                              // controller.selectedtour.first
-                                              //                 .selectedDate ==
-                                              //             null &&
-                                              //         controller.selectedtour.isEmpty
-                                              //     ? CustomSnackbar.show(
-                                              //         context: context,
-                                              //         message: 'Select Your Tour date',
-                                              //         backgroundColor:
-                                              //             const Color(0xff1529e8),
-                                              //         duration:
-                                              //             const Duration(seconds: 2),
-                                              //       )
-                                              : controller.goToCheckout(context,
-                                                  widget.productid, controller);
+                                              /*controller.selectedtour.first
+                                                              .selectedDate ==
+                                                          null &&
+                                                      controller.selectedtour.isEmpty
+                                                  ? CustomSnackbar.show(
+                                                      context: context,
+                                                      message: 'Select Your Tour date',
+                                                      backgroundColor:
+                                                          const Color(0xff1529e8),
+                                                      duration:
+                                                          const Duration(seconds: 2),
+                                                    )*/
+                                              : !isHasCheckoutDate!
+                                                  ? CustomSnackbar.show(
+                                                      context: context,
+                                                      message:
+                                                          'Select Your Transfer Type',
+                                                      backgroundColor:
+                                                          const Color(
+                                                              0xff1529e8),
+                                                      duration: const Duration(
+                                                          seconds: 2))
+                                                  : controller.goToCheckout(
+                                                      context,
+                                                      widget.productid,
+                                                      controller);
                                         },
                                   child: Stack(
                                     children: [
