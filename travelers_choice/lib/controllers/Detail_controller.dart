@@ -16,7 +16,6 @@ import '../models/slot_pick.dart';
 import '../services/Slot_Time_Service.dart';
 import '../views/checkout_screen.dart';
 import '../views/detail_screen/review_Screen.dart';
-import '../views/full_app.dart';
 import '../views/login_Screens/login_screen.dart';
 import '../views/new_cart.dart';
 
@@ -64,7 +63,7 @@ class DetailController extends FxController {
 
   void updateCheckboxes(int checkboxLength) {
     checkboxStatus = List.generate(checkboxLength, (_) => false);
-    log("Indexes checkbox => ${checkboxStatus.length}");
+    log("Indexes => ${checkboxStatus.length}");
     update();
   }
 
@@ -137,7 +136,7 @@ class DetailController extends FxController {
       String productCode, String date, String activityId) async {
     try {
       log("Activity Id:$activityId");
-      log("time Slot api hit");
+      print("time Slot api hit");
       var response = await dio.post(
         'https://a.walletbot.online/api/v1/attractions/timeslot',
         data: {
@@ -164,7 +163,7 @@ class DetailController extends FxController {
           timeSlotList.add(timeResponse);
         }
 
-        log("RRRRRRR ${response.data.runtimeType}");
+        print("RRRRRRR ${response.data.runtimeType}");
 
         return timeSlotList;
       } else {
@@ -173,7 +172,7 @@ class DetailController extends FxController {
         return [];
       }
     } catch (error) {
-      log("erorrr $error");
+      print("erorrr $error");
       rethrow;
     }
   }
@@ -255,7 +254,7 @@ class DetailController extends FxController {
 
     // List<SlotTime> value =
     //     slottimeget.where((element) => element.eventId == tour.eventId).toList();
-    // log("Coutn => ${value.length}");
+    // print("Coutn => ${value.length}");
     // if (value.isEmpty) {
     //   double val = getGrandTotalSlots(tour);
     //   tour.grandTotal = val;
@@ -278,7 +277,7 @@ class DetailController extends FxController {
     //     selectedtour.add(person_count[index]);
     //   }
 
-    //   log(person_count[index].grandTotal);
+    //   print(person_count[index].grandTotal);
     // }
     // // log('Select:${selectedtour.map((e) => e.selectedDate)}');
     // update();
@@ -290,7 +289,7 @@ class DetailController extends FxController {
 
     List<Activity> value =
         person_count.where((element) => element.sId == tour.sId).toList();
-    log("Coutn => ${value.length}");
+    print("Coutn => ${value.length}");
     if (value.isEmpty) {
       double val = getGrandTotal(tour);
       tour.grandTotal = val;
@@ -435,7 +434,7 @@ class DetailController extends FxController {
         person_count.where((element) => element.sId == tour.sId).toList();
 
     if (tour.transferCode != null) {
-      log("Person Count Added=-> $value");
+      print("Person Count Added=-> $value");
       if (value.isEmpty) {
         if (isAdult) {
           isIncrement
@@ -490,7 +489,7 @@ class DetailController extends FxController {
         int index = person_count.indexOf(value[0]);
         double val = getGrandTotal(person_count[index]);
         person_count[index].grandTotal = val;
-        log('List Value=> ${person_count.length}');
+        print('List Value=> ${person_count.length}');
       }
     } else {
       CustomSnackbar.show(
@@ -543,7 +542,7 @@ class DetailController extends FxController {
       //     (value[0].childCount * (value[0].childPrice ?? private[0].price)) +
       //     (value[0].infantCount * (value[0].infantPrice ?? private[0].price));
 
-      if (private.isNotEmpty || tour.activityType == 'transfer') {
+      if (private.isNotEmpty && tour.activityType == 'transfer') {
         log("Remainder Value => ${(tour.adultCount + tour.childCount).remainder(private[0].maxCapacity!)}");
         log("Remainder Value / => ${(tour.adultCount + tour.childCount) / private[0].maxCapacity!}");
         log("Remainder Value ceil => ${((tour.adultCount + tour.childCount) / private[0].maxCapacity!).ceil()}");
@@ -552,19 +551,13 @@ class DetailController extends FxController {
             (((tour.adultCount + tour.childCount) / private[0].maxCapacity!)
                 .ceil());
       }
-      /*else if (tour.activityType == 'transfer') {
-        log('get shared transfer');
-        return (value[0].adultCount) +
-            (value[0].childCount) +
-            (value[0].infantCount);
-      }*/
       return (value[0].adultCount *
               (value[0].adultPrice ?? value[0].adultCost)) +
           (value[0].childCount * (value[0].childPrice ?? value[0].adultCost)) +
           (value[0].infantCount * (value[0].infantPrice ?? value[0].adultCost));
-      /* return (value[0].adultCount * (value[0].adultPrice ?? 1.0)) +
-          (value[0].childCount * (value[0].childPrice ?? 1.0)) +
-          (value[0].infantCount * (value[0].infantPrice ?? 1.0));*/
+      // return (value[0].adultCount * (value[0].adultPrice ?? 1.0)) +
+      //     (value[0].childCount * (value[0].childPrice ?? 1.0)) +
+      //     (value[0].infantCount * (value[0].infantPrice ?? 1.0));
     }
   }
 
@@ -928,9 +921,9 @@ class DetailController extends FxController {
         lastDate: DateTime(2101));
 
     if (pickedDate != null) {
-      // log(pickedDate); //pickedDate output format => 2021-03-10 00:00:00.000
+      print(pickedDate); //pickedDate output format => 2021-03-10 00:00:00.000
       String formattedDate = DateFormat('yyyy-MM-dd').format(pickedDate);
-      log(formattedDate);
+      print(formattedDate);
       // dateTE.text = formattedDate;
       controllerTE[index].text = formattedDate;
 
@@ -938,13 +931,12 @@ class DetailController extends FxController {
       //   dateinput.text = formattedDate; //set output date to TextField value.
       // });
     } else {
-      log("Date is not selected");
+      print("Date is not selected");
     }
   }
 
   @override
   void dispose() {
-    log('detail dispose');
     animationController.dispose();
     dateController.dispose();
     fadeController.dispose();
@@ -1025,7 +1017,6 @@ class DetailController extends FxController {
     log('Selected Transfer$Transfer');
 
     if (controller.checkboxStatus.isEmpty) {
-      log('Checkbox status:${controller.selectedtour.length}');
       controller.updateCheckboxes(controller.selectedtour.length);
     }
     Navigator.of(context, rootNavigator: true).push(PageRouteBuilder(
@@ -1114,19 +1105,15 @@ class DetailController extends FxController {
       // log(selectedtour.length.toString());
       // log(selectedtour.first.name.toString());
       // log(selectedtour.first.adultCount.toString());
-      // log(selectedtour.length);
-      // log(selectedtour);
-      // log(dateTE.text);
-      // log(selectedtransfer);
+      // print(selectedtour.length);
+      // print(selectedtour);
+      // print(dateTE.text);
+      // print(selectedtransfer);
       log('Length:${selectedtour.length}');
-      log('Selected Tour:${favouriteListCart.length}');
+      log('Selected Tour:$selectedtour');
       // log('Dates:${dateTE.text}');
       log('Selected Transfer$selectedtransfer');
-      // log(grandSelectedTourAmount());
-      if (controller.checkboxStatus.isEmpty) {
-        log('Checkbox status Shopping:${favouriteListCart.length}');
-        controller.updateCheckboxes(favouriteListCart.length);
-      }
+      print(grandSelectedTourAmount());
       Navigator.of(context, rootNavigator: true).push(PageRouteBuilder(
           transitionDuration: const Duration(milliseconds: 500),
           transitionsBuilder: (
@@ -1239,7 +1226,7 @@ class DetailController extends FxController {
       String? isoCode;
 
       log("Country list => $countriesList");
-      log('''
+      print('''
 Country Code => $countryCode
 ''');
       for (var val in countriesList) {

@@ -616,8 +616,11 @@ class _DetailScreenState extends State<DetailScreen>
                     top: 8,
                   ),
                   decoration: BoxDecoration(
-                      // color: Colors.white,
-                      color: const Color(0xffF6F8FB),
+                      color: !controller.selectedtour.contains(
+                              controller.detailattraction!.first.activities![i])
+                          ? Colors.white
+                          : const Color(0xffE0E8F2),
+                      // color: const Color(0xffF6F8FB),
                       borderRadius: const BorderRadius.all(Radius.circular(10)),
                       border:
                           Border.all(color: Colors.grey.shade300, width: 1)),
@@ -883,9 +886,40 @@ class _DetailScreenState extends State<DetailScreen>
                                                 fillColor:
                                                     theme.cardTheme.color,
                                                 hintText: "yyyy-mm-dd",
-                                                border: InputBorder.none,
-                                                enabledBorder: InputBorder.none,
-                                                focusedBorder: InputBorder.none,
+                                                // border: InputBorder.none,
+                                                // enabledBorder: InputBorder.none,
+                                                // focusedBorder: InputBorder.none,
+                                                border: OutlineInputBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            10),
+                                                    borderSide:
+                                                        const BorderSide(
+                                                            color: Colors.green,
+                                                            // color: Colors.lightBlueAccent,
+                                                            width: 1)),
+                                                enabledBorder:
+                                                    OutlineInputBorder(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(10),
+                                                        borderSide:
+                                                            const BorderSide(
+                                                                color: Colors
+                                                                    .green,
+                                                                // color: Colors.lightBlueAccent,
+                                                                width: 1)),
+                                                focusedBorder:
+                                                    OutlineInputBorder(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(10),
+                                                        borderSide:
+                                                            const BorderSide(
+                                                                color: Colors
+                                                                    .green,
+                                                                // color: Colors.lightBlueAccent,
+                                                                width: 1)),
                                                 contentPadding:
                                                     FxSpacing.all(16),
                                                 hintStyle: const TextStyle(
@@ -2872,6 +2906,8 @@ class _DetailScreenState extends State<DetailScreen>
       child: DropdownButtonHideUnderline(
         child: DropdownButton2(
           isExpanded: true,
+          // buttonHighlightColor: Colors.red,
+          // focusColor: Colors.green,
           hint: Row(
             children: [
               Expanded(
@@ -2939,6 +2975,7 @@ class _DetailScreenState extends State<DetailScreen>
             color: Colors.white,
           ),
           buttonDecoration: BoxDecoration(
+            border: Border.all(color: Colors.green, width: 1),
             borderRadius: BorderRadius.circular(10),
             color: theme.cardTheme.color,
           ),
