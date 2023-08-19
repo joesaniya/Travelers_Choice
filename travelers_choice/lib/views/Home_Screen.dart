@@ -1229,6 +1229,11 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                 //     isocode: selectedCountry!.isocode,
                 //     conversionRate: selectedCountry!.conversionRate),
                 // FxSpacing.height(29),
+                // TextField(
+                //   controller: controller.myController,
+                //   decoration:
+                //       const InputDecoration(labelText: 'Enter Fruit Name'),
+                // ),
                 _tabbed == '1'
                     ? SearchAttractionScreen(
                         isocode: currencySymbol.toString(),

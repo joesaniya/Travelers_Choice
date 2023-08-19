@@ -938,6 +938,7 @@ class DetailController extends FxController {
 
   @override
   void dispose() {
+    log('detail dispose');
     animationController.dispose();
     dateController.dispose();
     fadeController.dispose();

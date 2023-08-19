@@ -81,22 +81,22 @@ class _SearchAttractionScreenState extends State<SearchAttractionScreen>
     _btnText = "Search";
   }
 
-  @override
-  void dispose() {
-    log('Search Attraction dispose UI calling');
-    // searchController.dispose();
-    // locationController.dispose();
-    // dateController.dispose();
-    // locationTE.dispose();
-    searchAttractioncontroller.searchController.reset();
-    searchAttractioncontroller.locationController.reset();
-    searchAttractioncontroller.dateController.reset();
-    searchAttractioncontroller.locationTE.clear();
-    searchAttractioncontroller.selectedCountry = '';
-    searchAttractioncontroller.focus.dispose();
-    searchAttractioncontroller.visaFocus.dispose();
-    super.dispose();
-  }
+  // @override
+  // void dispose() {
+  //   log('Search Attraction dispose UI calling');
+  //   // searchController.dispose();
+  //   // locationController.dispose();
+  //   // dateController.dispose();
+  //   // locationTE.dispose();
+  //   searchAttractioncontroller.searchController.reset();
+  //   searchAttractioncontroller.locationController.reset();
+  //   searchAttractioncontroller.dateController.reset();
+  //   searchAttractioncontroller.locationTE.clear();
+  //   searchAttractioncontroller.selectedCountry = '';
+  //   searchAttractioncontroller.focus.dispose();
+  //   searchAttractioncontroller.visaFocus.dispose();
+  //   super.dispose();
+  // }
 
   SharedPreferences? sharedPreferences;
   // List<AllattractionModal> allattractionList = <AllattractionModal>[];

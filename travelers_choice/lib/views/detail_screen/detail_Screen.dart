@@ -28,7 +28,9 @@ import '../bottomSheet/Selected_Tours_Bottomsheet.dart';
 import '../full_app.dart';
 
 class DetailScreen extends StatefulWidget {
+  // final Function()? disposeFn;
   final String productid;
+
   // final Function toggleFavourite;
 
   // final Function isFavourite;
@@ -38,6 +40,7 @@ class DetailScreen extends StatefulWidget {
   double? conversionRate;
 
   DetailScreen(
+      // this.disposeFn,
       this.productid,
       // this.toggleFavourite, this.isFavourite,
       this.productdatum,
@@ -107,6 +110,13 @@ class _DetailScreenState extends State<DetailScreen>
             color: Color(0xff1529e8),
             // color: Colors.lightBlueAccent,
             width: 0));
+    //         WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+    //   // addCategories();
+    // });
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      // widget.notifyIsMountedFn();
+      log('dispose widget');
+    });
   }
 
   void initializingData() {
@@ -2867,13 +2877,13 @@ class _DetailScreenState extends State<DetailScreen>
               Expanded(
                   child: FxText.labelLarge(
                 // activitycontroller.TransferCodes[0],
-                controller.TransferCodes[0] == 'without'
-                    ? 'without Transfer'
-                    : controller.TransferCodes[0] == 'shared'
-                        ? 'shared'
-                        : 'private',
+                // controller.TransferCodes[0] == 'without'
+                //     ? 'without Transfer'
+                //     : controller.TransferCodes[0] == 'shared'
+                //         ? 'shared'
+                //         : 'private',
 
-                // 'Select Transfer',
+                'Select Transfer',
                 fontWeight: 600,
                 color: Colors.black,
                 letterSpacing: 0.4,
@@ -3247,6 +3257,7 @@ class _DetailScreenState extends State<DetailScreen>
                                       ? null
                                       : () async {
                                           bool? isHasCheckout;
+                                          bool? isHasCheckoutDate;
                                           /*  if (controller.detailattraction != null) {
                                       for (var activity in controller
                                           .detailattraction!
@@ -3298,10 +3309,26 @@ class _DetailScreenState extends State<DetailScreen>
                                             }
                                           }
                                           log('Selected Date:${controller.selectedtour.map((e) => e.selectedDate).toList()}');
-                                          // controller.selectedtour[i].selectedDate ==
-                                          //             null &&
-                                          //         controller.selectedtour.isEmpty
-                                          // controllerTE[index].text.isNotEmpty
+                                          /* controller.selectedtour[i].selectedDate ==
+                                                      null &&
+                                                  controller.selectedtour.isEmpty
+                                        
+                                          controllerTE[index].text.isNotEmpty*/
+                                          // -->code
+                                          for (var e
+                                              in controller.selectedtour) {
+                                            log("Selected Transfer => ${e.transferCode}");
+                                            if (e.transferCode != null) {
+                                              isHasCheckoutDate ??= true;
+                                              isHasCheckoutDate =
+                                                  isHasCheckoutDate
+                                                      ? true
+                                                      : false;
+                                            } else {
+                                              isHasCheckoutDate ??= false;
+                                              isHasCheckoutDate = false;
+                                            }
+                                          }
                                           !isHasCheckout!
                                               ? CustomSnackbar.show(
                                                   context: context,
@@ -3313,32 +3340,44 @@ class _DetailScreenState extends State<DetailScreen>
                                                   duration: const Duration(
                                                       seconds: 2),
                                                 )
-                                              : await showModalBottomSheet(
-                                                  context: context,
-                                                  builder: (BuildContext
-                                                      buildContext) {
-                                                    return SelectedTourBottomSheet(
-                                                      // pid: widget.productid,
+                                              : !isHasCheckoutDate!
+                                                  ? CustomSnackbar.show(
+                                                      context: context,
+                                                      message:
+                                                          'Select Your Transfer Type',
+                                                      backgroundColor:
+                                                          const Color(
+                                                              0xff1529e8),
+                                                      duration: const Duration(
+                                                          seconds: 2))
+                                                  : await showModalBottomSheet(
+                                                      context: context,
+                                                      builder: (BuildContext
+                                                          buildContext) {
+                                                        return SelectedTourBottomSheet(
+                                                          // pid: widget.productid,
 
-                                                      // //  _toggleFavorite, _isMealFavorite,
-                                                      // Datas: widget.productdatum,
-                                                      // ProductSlug: widget.productSlug,
-                                                      len: controller
-                                                          .selectedtour.length,
-                                                      controller: controller,
+                                                          // //  _toggleFavorite, _isMealFavorite,
+                                                          // Datas: widget.productdatum,
+                                                          // ProductSlug: widget.productSlug,
+                                                          len: controller
+                                                              .selectedtour
+                                                              .length,
+                                                          controller:
+                                                              controller,
 
-                                                      Option: controller
-                                                          .selectedtour,
-                                                      textdate: controller
-                                                          .dateTE.text,
-                                                      Transfer: controller
-                                                          .selectedtransfer,
-                                                      totalAmount: controller
-                                                          .grandSelectedTourAmount(),
-                                                      // Total: controller
-                                                      //     .grandSelectedTourAmount()
-                                                    );
-                                                  });
+                                                          Option: controller
+                                                              .selectedtour,
+                                                          textdate: controller
+                                                              .dateTE.text,
+                                                          Transfer: controller
+                                                              .selectedtransfer,
+                                                          totalAmount: controller
+                                                              .grandSelectedTourAmount(),
+                                                          // Total: controller
+                                                          //     .grandSelectedTourAmount()
+                                                        );
+                                                      });
                                           setState(() {});
                                           // : controller.goToCheckout1();
                                           //       var data = await showModalBottomSheet(

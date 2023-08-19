@@ -50,8 +50,11 @@ class SavedController extends FxController {
   @override
   void initState() {
     super.initState();
+    uiLoading = false;
+
+    log('UIloading init Saved:${uiLoading.toString()}');
     fetchData();
-    fetchloader();
+    // fetchloader();
     animationController = AnimationController(
       duration: const Duration(seconds: 1),
       vsync: ticker,
@@ -128,7 +131,7 @@ class SavedController extends FxController {
 
     uiLoading = false;
     log('fetchloader');
-    log('UIloading${uiLoading.toString()}');
+    log('UIloading Saved:${uiLoading.toString()}');
     update();
   }
 

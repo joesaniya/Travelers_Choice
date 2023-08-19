@@ -26,6 +26,7 @@ import 'package:intl/intl.dart';
 import 'full_app.dart';
 
 class CheckOutScreen extends StatefulWidget {
+  
   DetailController controller;
   dynamic? length;
   // String? name;
@@ -1182,9 +1183,25 @@ class _CheckOutScreenState extends State<CheckOutScreen>
                                           children: [
                                             SvgPicture.network(
                                               value.flag,
+                                              // width: 30,
+                                              // height: 30,
                                               width: 16,
                                               height: 16,
+                                              fit: BoxFit.fill,
                                             ),
+                                            // Container(
+                                            //   width: 16,
+                                            //   height: 16,
+                                            //   decoration: BoxDecoration(
+                                            //     color: Colors.red,
+                                            //     image: DecorationImage(
+                                            //       image: NetworkImage(
+                                            //         value.flag,
+                                            //       ),
+                                            //       fit: BoxFit.cover,
+                                            //     ),
+                                            //   ),
+                                            // ),
                                             FxSpacing.width(5),
                                             Text(
                                               value.countryName.toString(),

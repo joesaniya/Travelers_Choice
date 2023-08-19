@@ -26,9 +26,12 @@ class ProfileController extends FxController {
   @override
   initState() {
     super.initState();
+    uiLoading = false;
+
+    log('UIloading init Profile${uiLoading.toString()}');
 
     fetchData();
-    skeletonloader();
+    // skeletonloader();
   }
 
   void skeletonloader() async {
@@ -36,7 +39,7 @@ class ProfileController extends FxController {
 
     uiLoading = false;
     log('skeletonloader');
-    log(uiLoading.toString());
+    log('UIloading Profile${uiLoading.toString()}');
     update();
   }
 

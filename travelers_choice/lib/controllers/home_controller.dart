@@ -41,6 +41,8 @@ class HomeController extends FxController {
   String? locationplace;
   GlobalKey<FormState> formKey = GlobalKey();
 
+  final myController = TextEditingController();
+
   // List<AllattractionModal> searchResult = <AllattractionModal>[];
 
   //country
@@ -287,10 +289,10 @@ class HomeController extends FxController {
   @override
   void initState() {
     super.initState();
+    fetchloader();
     scrollController.addListener(scrollListener);
     scrollController1.addListener(scrollListener1);
     fetchData();
-    fetchloader();
 
     //
     locationTE = TextEditingController();
@@ -442,6 +444,7 @@ Country Code => $countryCode
   @override
   void dispose() {
     log('Home dispose calling');
+    myController.dispose();
     animationController.dispose();
     scrollController.dispose();
     scrollController1.dispose();

@@ -195,6 +195,10 @@ class SearchAttractionController extends FxController {
           .contains(keyid)) {
         log('attraction name');
         log('Slug Id:${SlugnameId.last}');
+        /*while (Navigator.of(context).canPop()) {
+          Navigator.of(context).pop();
+        }
+        // Navigator.of(context).pushReplacementNamed('/news');*/
         Navigator.of(context, rootNavigator: true).push(PageRouteBuilder(
             transitionDuration: const Duration(milliseconds: 500),
             transitionsBuilder: (
@@ -207,8 +211,11 @@ class SearchAttractionController extends FxController {
                   opacity: animation,
                   child: child,
                 ),
-            pageBuilder: (_, __, ___) => DetailScreen(keyid,
-                allattractionList!.first.attractions.data.first, SlugnameId.last
+            pageBuilder: (_, __, ___) => DetailScreen(
+                // disposemethod,
+                keyid,
+                allattractionList!.first.attractions.data.first,
+                SlugnameId.last
                 //  slugname
 
                 // product,
@@ -319,6 +326,7 @@ class SearchAttractionController extends FxController {
 
   @override
   void dispose() {
+    super.dispose();
     log('Search Attraction dispose calling');
     // searchController.dispose();
     // locationController.dispose();
@@ -331,7 +339,6 @@ class SearchAttractionController extends FxController {
     selectedCountry = '';
     focus.dispose();
     visaFocus.dispose();
-    super.dispose();
   }
 
   @override

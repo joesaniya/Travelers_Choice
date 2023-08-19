@@ -50,8 +50,11 @@ class NewCartController extends FxController {
   @override
   void initState() {
     super.initState();
+    uiLoading = false;
+
+    log('UIloading init New Cart${uiLoading.toString()}');
     // fetchData();
-    fetchloader();
+    // fetchloader();
     animationController = AnimationController(
       duration: const Duration(seconds: 1),
       vsync: ticker,
@@ -128,7 +131,7 @@ class NewCartController extends FxController {
 
     uiLoading = false;
     log('fetchloader');
-    log(uiLoading.toString());
+    log('UIloading New Cart${uiLoading.toString()}');
     update();
   }
 
