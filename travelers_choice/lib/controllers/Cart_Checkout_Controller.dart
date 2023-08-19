@@ -501,6 +501,477 @@ class CartCheckOutController extends FxController {
   //           grandSelectedTourAmount())));
   // }
 
+   //withoutpayment
+  WithoutPayementnextPage(
+      // selectedExcursionsDatas,
+      String TotalGet,
+      DetailController controller,
+      List<Activity> selectedExcursionsDatas,
+      context,
+      total,
+      token) async {
+    log('Page Number:$currentPage ');
+    log('Total:$total ');
+
+    if (currentPage == 0) {
+      log('selected page 0');
+      if (selectedname == null || selectedname!.isEmpty) {
+        CustomSnackbar.show(
+          context: context,
+          message: 'Please Select Mr/Ms/Mrs',
+          backgroundColor: const Color(0xff1529e8),
+          duration: const Duration(seconds: 2),
+        );
+        // ScaffoldMessenger.of(context).showSnackBar(
+        //     const SnackBar(content: Text("Please Select Mr/Ms/Mrs")));
+      } else if (FnameTE.text.isEmpty) {
+        CustomSnackbar.show(
+          context: context,
+          message: 'Please Enter First Name',
+          backgroundColor: const Color(0xff1529e8),
+          duration: const Duration(seconds: 2),
+        );
+        // ScaffoldMessenger.of(context).showSnackBar(
+        //     const SnackBar(content: Text("Please Enter First Name")));
+      } else if (LnameTE.text.isEmpty) {
+        CustomSnackbar.show(
+          context: context,
+          message: 'Please Enter Last Name',
+          backgroundColor: const Color(0xff1529e8),
+          duration: const Duration(seconds: 2),
+        );
+        // ScaffoldMessenger.of(context).showSnackBar(
+        //     const SnackBar(content: Text("Please Enter Last Name")));
+      } else if (emailTE.text.isEmpty) {
+        CustomSnackbar.show(
+          context: context,
+          message: 'Please Enter email',
+          backgroundColor: const Color(0xff1529e8),
+          duration: const Duration(seconds: 2),
+        );
+        // ScaffoldMessenger.of(context)
+        //     .showSnackBar(const SnackBar(content: Text("Please Enter Email")));
+      } else if (
+          // selectedcountry == null || selectedcountry!.isEmpty
+          selectedCountryName == null || selectedCountryName!.isEmpty) {
+        // ScaffoldMessenger.of(context).showSnackBar(
+        //     const SnackBar(content: Text("Please Select Country")));
+        CustomSnackbar.show(
+          context: context,
+          message: 'Please Select Country',
+          backgroundColor: const Color(0xff1529e8),
+          duration: const Duration(seconds: 2),
+        );
+      } else if (selectedCountryCode == null || selectedCountryCode!.isEmpty) {
+        // ScaffoldMessenger.of(context).showSnackBar(
+        //     const SnackBar(content: Text("Please Select Phone Code")));
+        CustomSnackbar.show(
+          context: context,
+          message: 'Please Select Phone Code',
+          backgroundColor: const Color(0xff1529e8),
+          duration: const Duration(seconds: 2),
+        );
+      } else if (phoneTE.text.isEmpty
+          // || phoneTE.text.length != 10
+          ) {
+        CustomSnackbar.show(
+          context: context,
+          message: 'Please Enter Phone Number',
+          backgroundColor: const Color(0xff1529e8),
+          duration: const Duration(seconds: 2),
+        );
+        // ScaffoldMessenger.of(context).showSnackBar(
+        //     const SnackBar(content: Text("Please Enter Phone Number")));
+      }
+      // else if (reqTE.text.isEmpty) {
+      //   ScaffoldMessenger.of(context)
+      //       .showSnackBar(const SnackBar(content: Text("Enter Request")));
+      // }
+      else {
+        await pageController.animateToPage(
+          currentPage + 1,
+          duration: const Duration(milliseconds: 600),
+          curve: Curves.ease,
+        );
+      }
+    } else if (currentPage == 1) {
+      log('selected page 1');
+      // if (selectedPayment == 1) {
+      //   log('Activity Time Slot');
+      // } else
+      if (selectedPayment == 1) {
+        log('1');
+        WithoutPaymentcreateOrderccAvenue(
+            TotalGet, controller, selectedExcursionsDatas, token);
+      } else {
+        log('2');
+        createOrder(selectedExcursionsDatas);
+      }
+    } else {
+      log('selected page final');
+      await pageController.animateToPage(
+        currentPage + 1,
+        duration: const Duration(milliseconds: 600),
+        curve: Curves.ease,
+      );
+    }
+  }
+
+  //withoutcc
+  void WithoutPaymentcreateOrderccAvenue(
+      String TotalAmount,
+      DetailController controller,
+      List<Activity> selectedExcursionsDatas,
+      token) async {
+    String username = razorCredentials.keyId;
+    String password = razorCredentials.keySecret;
+    String basicAuth =
+        'Basic ${base64Encode(utf8.encode('$username:$password'))}';
+    log('Excursions pay:${selectedExcursionsDatas.map((e) => e.transferCode).toList()}');
+    List<Map<String, dynamic>> ActivityList = [];
+    for (var element in selectedExcursionsDatas) {
+      log('Element:${element.sId}');
+      log('Element Date:${element.selectedDate}');
+      log('Element Type:${element.transferType}');
+      log('Adult Count:${element.adultCount}');
+      log('child Count:${element.childCount}');
+      log('Infant Count:${element.infantCount}');
+      log('Tansfer:${element.transferCode ?? 'Without'}');
+      // var datas=
+      Map<String, dynamic> datas = {
+        "activity": element.sId,
+        // "date": "2023-02-28",
+        "date": element.selectedDate,
+        "adultsCount": element.adultCount,
+        "childrenCount": element.childCount,
+        "infantCount": element.infantCount,
+        "transferType": element.transferCode ?? 'Without',
+        // "isPromoAdded": true,
+        "isPromoAdded": element.promoapplied
+        // "isPromoAdded": controller.checkboxStatus[index],
+        // "activity": "63e6317d20e0e01648630e6a",
+        // "date": "2023-04-5",
+        // "adultsCount": 1,
+        // "childrenCount": 0,
+        // "infantCount": 0,
+        // "transferType": "private"
+      };
+      ActivityList.add(datas);
+      log('Data-->$datas');
+    }
+    selectedExcursionsDatas.map((e) =>
+        // e,
+        log('selected Activites:$e'));
+    //var body=
+    Map<String, dynamic> body = {
+      "name": FnameTE.text,
+      "email": emailTE.text,
+      "phoneNumber": phoneTE.text,
+      "country": selectedCountryCode,
+      "paymentProcessor": "ccavenue",
+
+      // "paymentProcessor": selectedPayment == 1 ? "ccavenue" : "razorpay",
+      // "selectedActivities": jsonEncode(ActivityList)
+      "selectedActivities": ActivityList
+    };
+    log('Raw Body:$body');
+    var res = await http.post(
+      Uri.parse(
+          "https://secure.mytravellerschoice.com/api/v1/attractions/orders/create"),
+      headers: <String, String>{
+        "Content-Type": "application/json",
+
+        // "authorization": "Bearer $token",
+      },
+      body: jsonEncode(body),
+    );
+    log('cc Bearer Token:$token');
+    log('Body Data:${res.body}');
+
+    //todo
+
+    if (res.statusCode == 200) {
+      log('Response cc:${res.body}');
+
+      var paymentdata = res.body;
+      log('Payment data:$paymentdata');
+
+      Navigator.of(context, rootNavigator: true)
+          .pushReplacement(
+        MaterialPageRoute(
+          builder: (context) =>
+              PaymentCC(paymentdata: paymentdata, totalAmount: TotalAmount
+                  // totalAmount: grandSelectedTourAmount(),
+                  ),
+        ),
+      )
+          .whenComplete(() {
+        log('complete');
+        Navigator.of(context, rootNavigator: true).pushReplacement(
+          MaterialPageRoute(
+            builder: (context) => const BookingSuccess(),
+          ),
+        );
+      });
+    } else {
+      var jsondata = jsonDecode(res.body);
+      log(jsondata['error']);
+      log(jsondata['error']);
+      //snackbar
+      jsondata['error'] == 'jwt malformed'
+          ? CustomSnackbar.show(
+              context: context,
+              message: 'Please Login!!!',
+              backgroundColor: const Color(0xff1529e8),
+              duration: const Duration(seconds: 2),
+            )
+          : CustomSnackbar.show(
+              context: context,
+              message: jsondata['error'],
+              backgroundColor: const Color(0xff1529e8),
+              duration: const Duration(seconds: 2),
+            );
+      // ScaffoldMessenger.of(context)
+      //     .showSnackBar(SnackBar(content: Text(jsondata['error'])));
+      return null;
+    }
+  }
+
+//withoutPaymentBurj
+  WithoutPayemntnextPageBurj(
+      // selectedExcursionsDatas,
+      String TotalGet,
+      DetailController controller,
+      List<Activity> selectedExcursionsDatas,
+      context,
+      total,
+      token) async {
+    log('Page Number:$currentPage ');
+    log('Total:$total ');
+
+    if (currentPage == 0) {
+      log('selected page 0');
+      if (selectedname == null || selectedname!.isEmpty) {
+        CustomSnackbar.show(
+          context: context,
+          message: 'Please Select Mr/Ms/Mrs',
+          backgroundColor: const Color(0xff1529e8),
+          duration: const Duration(seconds: 2),
+        );
+        // ScaffoldMessenger.of(context).showSnackBar(
+        //     const SnackBar(content: Text("Please Select Mr/Ms/Mrs")));
+      } else if (FnameTE.text.isEmpty) {
+        CustomSnackbar.show(
+          context: context,
+          message: 'Please Enter First Name',
+          backgroundColor: const Color(0xff1529e8),
+          duration: const Duration(seconds: 2),
+        );
+        // ScaffoldMessenger.of(context).showSnackBar(
+        //     const SnackBar(content: Text("Please Enter First Name")));
+      } else if (LnameTE.text.isEmpty) {
+        CustomSnackbar.show(
+          context: context,
+          message: 'Please Enter Last Name',
+          backgroundColor: const Color(0xff1529e8),
+          duration: const Duration(seconds: 2),
+        );
+        // ScaffoldMessenger.of(context).showSnackBar(
+        //     const SnackBar(content: Text("Please Enter Last Name")));
+      } else if (emailTE.text.isEmpty) {
+        CustomSnackbar.show(
+          context: context,
+          message: 'Please Enter email',
+          backgroundColor: const Color(0xff1529e8),
+          duration: const Duration(seconds: 2),
+        );
+        // ScaffoldMessenger.of(context)
+        //     .showSnackBar(const SnackBar(content: Text("Please Enter Email")));
+      } else if (
+          // selectedcountry == null || selectedcountry!.isEmpty
+          selectedCountryName == null || selectedCountryName!.isEmpty) {
+        // ScaffoldMessenger.of(context).showSnackBar(
+        //     const SnackBar(content: Text("Please Select Country")));
+        CustomSnackbar.show(
+          context: context,
+          message: 'Please Select Country',
+          backgroundColor: const Color(0xff1529e8),
+          duration: const Duration(seconds: 2),
+        );
+      } else if (selectedCountryCode == null || selectedCountryCode!.isEmpty) {
+        // ScaffoldMessenger.of(context).showSnackBar(
+        //     const SnackBar(content: Text("Please Select Phone Code")));
+        CustomSnackbar.show(
+          context: context,
+          message: 'Please Select Phone Code',
+          backgroundColor: const Color(0xff1529e8),
+          duration: const Duration(seconds: 2),
+        );
+      } else if (phoneTE.text.isEmpty
+          // || phoneTE.text.length != 10
+          ) {
+        CustomSnackbar.show(
+          context: context,
+          message: 'Please Enter Phone Number',
+          backgroundColor: const Color(0xff1529e8),
+          duration: const Duration(seconds: 2),
+        );
+      } else {
+        await pageController.animateToPage(
+          currentPage + 1,
+          duration: const Duration(milliseconds: 600),
+          curve: Curves.ease,
+        );
+      }
+    } else if (currentPage == 1) {
+      log('selected page 1');
+      // if (selectedPayment == 1) {
+      //   log('Activity Time Slot');
+      // } else
+      if (selectedPayment == 1) {
+        log('1');
+        WithoutPayemntcreateOrderccAvenueBUrj(
+          TotalGet,
+          controller,
+          selectedExcursionsDatas,
+          token,
+        );
+      } else {
+        log('2');
+        // createOrder(selectedExcursionsDatas);
+      }
+    } else {
+      log('selected page final');
+      await pageController.animateToPage(
+        currentPage + 1,
+        duration: const Duration(milliseconds: 600),
+        curve: Curves.ease,
+      );
+    }
+  }
+
+  //withoutpaymenttccburj
+  void WithoutPayemntcreateOrderccAvenueBUrj(
+      String TotalGet,
+      DetailController controller,
+      List<Activity> selectedExcursionsDatas,
+      token) async {
+    log('Createorder burj');
+
+    log('Excursions pay:${selectedExcursionsDatas.map((e) => e.transferCode).toList()}');
+    List<Map<String, dynamic>> ActivityList = [];
+    List<Map<String, dynamic>> SlotActivityList = [];
+    for (var element in selectedExcursionsDatas) {
+      log('Tansfer:${element.transferCode ?? 'Without'}');
+
+      //normal
+      Map<String, dynamic> datas = {
+        "activity": element.sId,
+        "date": element.selectedDate,
+        "adultsCount": element.adultCount,
+        "childrenCount": element.childCount,
+        "infantCount": element.infantCount,
+        "transferType": element.transferCode ?? 'Without',
+        // "slot": SlotActivityList
+        "slot": {
+          // "EventID": "1211239",
+          // "EventName": "BW",
+          // "StartDateTime": "2023-09-3",
+          // "EndDateTime": "2023-09-3",
+          // "ResourceID": "83",
+          // "Available": "150",
+          // "Status": "0",
+          // "AdultPrice": "18",
+          // "ChildPrice": "0"
+
+          "AdultPrice": element.activityTimeSlot!.adultPrice.toString(),
+          "Available": element.activityTimeSlot!.available,
+          "ChildPrice": element.activityTimeSlot!.childPrice.toString(),
+          "EndDateTime":
+              element.activityTimeSlot!.endDateTime.toIso8601String(),
+          "StartDateTime":
+              element.activityTimeSlot!.startDateTime.toIso8601String(),
+          "EventID": element.activityTimeSlot!.eventId,
+          "EventName": element.activityTimeSlot!.eventName,
+          "ResourceID": element.activityTimeSlot!.resourceId,
+          "Status": element.activityTimeSlot!.status
+        }
+      };
+
+      ActivityList.add(datas);
+      log(' burjData-->$datas');
+    }
+    selectedExcursionsDatas.map((e) =>
+        // e,
+        log('selected Activites:$e'));
+    //var body=
+    Map<String, dynamic> body = {
+      "name": FnameTE.text,
+      "email": emailTE.text,
+      "phoneNumber": phoneTE.text,
+      "country": selectedCountryCode,
+      "paymentProcessor": "ccavenue",
+      // "paymentProcessor": selectedPayment == 1 ? "ccavenue" : "razorpay",
+      // "selectedActivities": jsonEncode(ActivityList)
+      "selectedActivities": ActivityList
+    };
+    log('Raw Body:$body');
+    var res = await http.post(
+      Uri.parse(
+          "https://secure.mytravellerschoice.com/api/v1/attractions/orders/create"),
+      headers: <String, String>{
+        "Content-Type": "application/json",
+
+        // "authorization": "Bearer $token",
+      },
+      body: jsonEncode(body),
+    );
+    log('cc Bearer Token:$token');
+    log('Body Data:${res.body}');
+
+    //todo
+
+    if (res.statusCode == 200) {
+      log('Response cc:${res.body}');
+
+      var paymentdata = res.body;
+      log('Payment data:$paymentdata');
+
+      Navigator.of(context, rootNavigator: true)
+          .pushReplacement(
+        MaterialPageRoute(
+          builder: (context) =>
+              PaymentCC(paymentdata: paymentdata, totalAmount: TotalGet
+                  // totalAmount: grandSelectedTourAmount(),
+                  ),
+        ),
+      )
+          .whenComplete(() {
+        log('complete');
+        Navigator.of(context, rootNavigator: true).pushReplacement(
+          MaterialPageRoute(
+            builder: (context) => const BookingSuccess(),
+          ),
+        );
+      });
+    } else {
+      var jsondata = jsonDecode(res.body);
+      log(jsondata['error']);
+      log(jsondata['error']);
+      //snackbar
+      CustomSnackbar.show(
+        context: context,
+        message: jsondata['error'],
+        backgroundColor: const Color(0xff1529e8),
+        duration: const Duration(seconds: 2),
+      );
+      // ScaffoldMessenger.of(context)
+      //     .showSnackBar(SnackBar(content: Text(jsondata['error'])));
+      return null;
+    }
+  }
+
+
   //next button
   nextPage(
       // selectedExcursionsDatas,

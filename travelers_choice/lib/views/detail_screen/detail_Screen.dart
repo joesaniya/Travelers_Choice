@@ -78,6 +78,7 @@ class _DetailScreenState extends State<DetailScreen>
   @override
   void initState() {
     super.initState();
+    log('attraction detail');
     getAllSavedData();
     favouriteListCheck();
     favouriteListCheckActivity();

@@ -126,7 +126,7 @@ class SearchAttractionController extends FxController {
   SharedPreferences? sharedPreferences;
   bool isLoadingg = true;
   // List<AllattractionModal> allattractionList = <AllattractionModal>[];
-
+  // List<AllattractionModal> searchAttractionList = <AllattractionModal>[];
   getAttraction(BuildContext context) async {
     await AuthService().getCountry();
     log('searchAttraction function called');
@@ -137,7 +137,9 @@ class SearchAttractionController extends FxController {
           isLoadingg = false;
           allattractionList = [];
           allattractionList!.add(value);
-          log('AllSearch1:$allattractionList');
+          log('AllSearch Attraction:$allattractionList');
+          // allattractionList = searchAttractionList;
+          // log('Search:$searchAttractionList');
 
           countryCode = sharedPreferences!
               .getString(AppConstants.KEY_ACCESS_TOKEN_countryId);
@@ -317,10 +319,15 @@ class SearchAttractionController extends FxController {
 
   @override
   void dispose() {
-    searchController.dispose();
-    locationController.dispose();
-    dateController.dispose();
-    locationTE.dispose();
+    log('Search Attraction dispose calling');
+    // searchController.dispose();
+    // locationController.dispose();
+    // dateController.dispose();
+    // locationTE.dispose();
+    searchController.reset();
+    locationController.reset();
+    dateController.reset();
+    locationTE.clear();
     selectedCountry = '';
     focus.dispose();
     visaFocus.dispose();

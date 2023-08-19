@@ -231,6 +231,7 @@ class LogInController extends FxController {
 
   @override
   void dispose() {
+    log('Logindispose calling');
     arrowController.dispose();
     emailController.dispose();
     passwordController.dispose();

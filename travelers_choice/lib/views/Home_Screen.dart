@@ -1233,7 +1233,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                     ? SearchAttractionScreen(
                         isocode: currencySymbol.toString(),
                         conversionRate: conversionRate.toDouble(),
-                        // allattractionList: allattractionList,
+                        allattractionList: allattractionList,
                         //isocode: selectedCountry!.isocode,
                         //conversionRate: selectedCountry!.conversionRate
                       )

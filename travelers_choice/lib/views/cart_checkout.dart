@@ -678,31 +678,80 @@ class _CartCheckOutScreenState extends State<CartCheckOutScreen>
                             //   ),
                             // ],
                           ),
-                          child: ListTileTheme(
-                            contentPadding: const EdgeInsets.all(0),
-                            child: CheckboxListTile(
-                              value: widget.controller.checkboxStatus[index],
-                              activeColor: const Color(0xffE45813),
-                              // activeColor: const Color(0xff1529e8),
-                              selected: widget.controller.checkboxStatus[index],
-                              onChanged: (newValue) {
-                                setState(() {
-                                  log('Check:${widget.controller.checkboxStatus[index]}');
-                                  widget.controller.checkboxStatus[index] =
-                                      newValue ?? false;
-                                  log('Check1 index => $index => :${widget.controller.checkboxStatus[index]}');
-                                  favouriteListCart[index].promoapplied =
-                                      widget.controller.checkboxStatus[index];
-                                  log('PromoApplied:${favouriteListCart[index].promoapplied}=>${widget.controller.checkboxStatus[index]}');
-                                });
-                              },
-                              title: FxText.bodyMedium(
-                                'Coupon Apply',
-                                fontWeight: 700,
-                                color: Colors.white,
-                                // color: const Color(0xff1529e8),
-                              ),
-                            ),
+                          child: Column(
+                            children: [
+                              Row(children: [
+                                Expanded(
+                                  child: FxText.bodyMedium('Coupon Apply',
+                                      fontWeight: 700, color: Colors.white
+                                      // color: const Color(0xff1529e8),
+                                      ),
+                                ),
+                                Row(children: [
+                                  Theme(
+                                    data: ThemeData(
+                                        unselectedWidgetColor: Colors.white
+                                        // unselectedWidgetColor: const Color(
+                                        //     0xff00C8E8) // Your color
+                                        ),
+                                    child: Checkbox(
+                                      value: widget
+                                          .controller.checkboxStatus[index],
+                                      activeColor: const Color(0xffE45813),
+                                      onChanged: (newValue) {
+                                        setState(() {
+                                          log('Check:${widget.controller.checkboxStatus[index]}');
+                                          widget.controller
+                                                  .checkboxStatus[index] =
+                                              newValue ?? false;
+                                          log('Check1 index => $index => :${widget.controller.checkboxStatus[index]}');
+                                          widget.controller.selectedtour[index]
+                                                  .promoapplied =
+                                              widget.controller
+                                                  .checkboxStatus[index];
+                                          log('PromoApplied:${widget.controller.selectedtour[index].promoapplied}=>${widget.controller.checkboxStatus[index]}');
+                                        });
+                                      },
+                                    ),
+                                  ),
+                                  FxText.bodyMedium(
+                                      widget.controller.selectedtour[index]
+                                          .promoCode
+                                          .toString(),
+                                      fontWeight: 700,
+                                      color: Colors.white
+                                      // color: const Color(0xff1529e8),
+                                      ),
+                                ]),
+                              ]),
+
+                              // ListTileTheme(
+                              //   contentPadding: const EdgeInsets.all(0),
+                              //   child: CheckboxListTile(
+                              //     value: widget.controller.checkboxStatus[index],
+                              //     activeColor: const Color(0xffE45813),
+                              //     // activeColor: const Color(0xff1529e8),
+                              //     selected: widget.controller.checkboxStatus[index],
+                              //     onChanged: (newValue) {
+                              //       setState(() {
+                              //         log('Check:${widget.controller.checkboxStatus[index]}');
+                              //         widget.controller.checkboxStatus[index] =
+                              //             newValue ?? false;
+                              //         log('Check1 index => $index => :${widget.controller.checkboxStatus[index]}');
+                              //         favouriteListCart[index].promoapplied =
+                              //             widget.controller.checkboxStatus[index];
+                              //         log('PromoApplied:${favouriteListCart[index].promoapplied}=>${widget.controller.checkboxStatus[index]}');
+                              //       });
+                              //     },
+                              //     title: FxText.bodyMedium(
+                              //       'Coupon Apply',
+                              //       fontWeight: 700,
+                              //       color: Colors.white,
+                              //       // color: const Color(0xff1529e8),
+                              //     ),
+                              //   ),
+                              // ),
+                            ],
                           ),
                         )
                       : const SizedBox()
@@ -2092,7 +2141,7 @@ class _CartCheckOutScreenState extends State<CartCheckOutScreen>
                       : () {
                           controller.selectedPayment == 1
                               ? favouriteListCart.first.activityTimeSlot == null
-                                  ? controller.nextPage(
+                                  ? controller.WithoutPayementnextPage(
                                       checkoutGrandTotalAmount,
                                       widget.controller,
                                       favouriteListCart,
@@ -2101,7 +2150,7 @@ class _CartCheckOutScreenState extends State<CartCheckOutScreen>
                                       widget.controller
                                           .grandSelectedTourAmount(),
                                       controller.token)
-                                  : controller.nextPageBurj(
+                                  : controller.WithoutPayemntnextPageBurj(
                                       checkoutGrandTotalAmount,
                                       widget.controller,
                                       favouriteListCart,
@@ -2112,7 +2161,7 @@ class _CartCheckOutScreenState extends State<CartCheckOutScreen>
                               : controller.selectedPayment == 2
                                   ? favouriteListCart.first.activityTimeSlot ==
                                           null
-                                      ? controller.nextPage(
+                                      ? controller.WithoutPayementnextPage(
                                           checkoutGrandTotalAmount,
                                           widget.controller,
                                           favouriteListCart,
@@ -2121,7 +2170,7 @@ class _CartCheckOutScreenState extends State<CartCheckOutScreen>
                                           widget.controller
                                               .grandSelectedTourAmount(),
                                           controller.token)
-                                      : controller.nextPageBurj(
+                                      : controller.WithoutPayemntnextPageBurj(
                                           checkoutGrandTotalAmount,
                                           widget.controller,
                                           favouriteListCart,

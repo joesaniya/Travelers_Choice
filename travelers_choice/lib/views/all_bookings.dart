@@ -273,7 +273,9 @@ class _AllBookingsState extends State<AllBookings>
                   )),
             ),
             body: controller.token == null
-                ? const Text('Login or signup')
+                ? Center(
+                    child: FxText.bodySmall(
+                        'Please Login or signup Your Accout!!'))
                 : ListView(
                     padding: FxSpacing.fromLTRB(20, 0, 20, 20),
                     physics: const AlwaysScrollableScrollPhysics(),

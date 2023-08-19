@@ -8,6 +8,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../controllers/attraction_Controller.dart';
 import '../../controllers/search_attraction_controller.dart';
 
+import '../../models/all_attraction_modal.dart';
 import '../../services/app_constants.dart';
 import '../../services/auth_service.dart';
 import '../../theme/app_theme.dart';
@@ -15,13 +16,12 @@ import '../../theme/app_theme.dart';
 class SearchAttractionScreen extends StatefulWidget {
   String isocode;
   double conversionRate;
-  // List<AllattractionModal>? allattractionList;
-  SearchAttractionScreen({
-    super.key,
-    required this.isocode,
-    required this.conversionRate,
-    // this.allattractionList
-  });
+  List<AllattractionModal>? allattractionList;
+  SearchAttractionScreen(
+      {super.key,
+      required this.isocode,
+      required this.conversionRate,
+      this.allattractionList});
 
   @override
   State<SearchAttractionScreen> createState() => _SearchAttractionScreenState();
@@ -31,9 +31,9 @@ class _SearchAttractionScreenState extends State<SearchAttractionScreen>
     with TickerProviderStateMixin {
   late CustomTheme customTheme;
   late ThemeData theme;
-  late SearchAttractionController controller;
-  // late LogInController controller;
-  // late OutlineInputBorder outlineInputBorder;
+  late SearchAttractionController searchAttractioncontroller;
+  // late HomeController searchAttractioncontroller;
+
   TextEditingController dateinput = TextEditingController();
 
   int? len;
@@ -59,49 +59,71 @@ class _SearchAttractionScreenState extends State<SearchAttractionScreen>
   ];
 
   bool isLoading = true; //searchbuttonloading
-  // bool isLoadingg = true; //getattraction
+  bool isLoadingg = true; //getattraction
 
   @override
   void initState() {
     super.initState();
     log('ConversionRate111:${widget.isocode}');
     log('ConversionSymbol111:${widget.conversionRate}');
-    // log('Attractions Search:${widget.allattractionList}');
+
+    log('Attractions Search:${widget.allattractionList}');
     customTheme = AppTheme.customTheme;
     theme = AppTheme.theme;
-    controller = FxControllerStore.put(SearchAttractionController(this));
+    // searchAttractioncontroller = FxControllerStore.put(HomeController(this));
+    searchAttractioncontroller =
+        FxControllerStore.put(SearchAttractionController(this));
+    getAttraction(context);
     fetchData();
-   controller. getAttraction(context);
+    // searchAttractioncontroller.getAttraction(context);
+    // log('AllSearch Attraction View:${searchAttractioncontroller.allattractionList}');
     _width = 100;
     _btnText = "Search";
   }
 
-  // SharedPreferences? sharedPreferences;
-  // // List<AllattractionModal> allattractionList = <AllattractionModal>[];
+  @override
+  void dispose() {
+    log('Search Attraction dispose UI calling');
+    // searchController.dispose();
+    // locationController.dispose();
+    // dateController.dispose();
+    // locationTE.dispose();
+    searchAttractioncontroller.searchController.reset();
+    searchAttractioncontroller.locationController.reset();
+    searchAttractioncontroller.dateController.reset();
+    searchAttractioncontroller.locationTE.clear();
+    searchAttractioncontroller.selectedCountry = '';
+    searchAttractioncontroller.focus.dispose();
+    searchAttractioncontroller.visaFocus.dispose();
+    super.dispose();
+  }
 
-  // getAttraction(BuildContext context) async {
-  //   await AuthService().getCountry();
-  //   log('searchAttraction function called');
-  //   sharedPreferences = await SharedPreferences.getInstance();
-  //   Future.delayed(Duration.zero, () async {
-  //     await AttractionController().getAllattractionList(context).then((value) {
-  //       if (value != null) {
-  //         isLoadingg = false;
-  //         controller.allattractionList = [];
-  //         controller.allattractionList!.add(value);
-  //         log('AllSearch1:${controller.allattractionList}');
+  SharedPreferences? sharedPreferences;
+  // List<AllattractionModal> allattractionList = <AllattractionModal>[];
 
-  //         setState(() {
-  //           controller.countryCode = sharedPreferences!
-  //               .getString(AppConstants.KEY_ACCESS_TOKEN_countryId);
-  //           log('CountryCode:${controller.countryCode}');
-  //           controller.currencies = sharedPreferences!
-  //               .getString(AppConstants.KEY_ACCESS_TOKEN_CurrenciesList);
-  //         });
-  //       }
-  //     });
-  //   });
-  // }
+  getAttraction(BuildContext context) async {
+    await AuthService().getCountry();
+    log('searchAttraction function called');
+    sharedPreferences = await SharedPreferences.getInstance();
+    Future.delayed(Duration.zero, () async {
+      await AttractionController().getAllattractionList(context).then((value) {
+        if (value != null) {
+          isLoadingg = false;
+          searchAttractioncontroller.allattractionList = [];
+          searchAttractioncontroller.allattractionList!.add(value);
+          log('AllSearch Value:${searchAttractioncontroller.allattractionList}');
+
+          setState(() {
+            searchAttractioncontroller.countryCode = sharedPreferences!
+                .getString(AppConstants.KEY_ACCESS_TOKEN_countryId);
+            log('CountryCode:${searchAttractioncontroller.countryCode}');
+            searchAttractioncontroller.currencies = sharedPreferences!
+                .getString(AppConstants.KEY_ACCESS_TOKEN_CurrenciesList);
+          });
+        }
+      });
+    });
+  }
 
   double? _width;
   String? _btnText;
@@ -113,16 +135,16 @@ class _SearchAttractionScreenState extends State<SearchAttractionScreen>
       _width = 36;
     });
     await Future.delayed(const Duration(seconds: 2));
-    controller.searchbtn(
-        controller.locationTE.text,
+    searchAttractioncontroller.searchbtn(
+        searchAttractioncontroller.locationTE.text,
         // controller.selectedCountry!,
         keydata!,
         widget.isocode,
         widget.conversionRate,
         // controller.SlugnameId.last
-        controller.SlugnameId.isEmpty
+        searchAttractioncontroller.SlugnameId.isEmpty
             ? 'burj-khalifa-:-at-the-top'
-            : controller.SlugnameId.last
+            : searchAttractioncontroller.SlugnameId.last
         // slugname.toString()
 
         // controller.allattractionList.first
@@ -166,10 +188,10 @@ class _SearchAttractionScreenState extends State<SearchAttractionScreen>
       log('try');
       // var data = await AuthService().getCountry();
       var data = await AuthService().getSearch();
-      controller.countryList.clear();
+      searchAttractioncontroller.countryList.clear();
       if (data != null) {
         setState(() {});
-        controller.countryList.add(data);
+        searchAttractioncontroller.countryList.add(data);
         isCountryListLoading = false;
         log('get');
         return true;
@@ -187,8 +209,9 @@ class _SearchAttractionScreenState extends State<SearchAttractionScreen>
         // isLoading
         //     ? const CircularProgressIndicator()
         //     :
+        // FxBuilder<HomeController>
         FxBuilder<SearchAttractionController>(
-            controller: controller,
+            controller: searchAttractioncontroller,
             builder: (controller) {
               return Container(
                 child: Column(
@@ -265,14 +288,14 @@ class _SearchAttractionScreenState extends State<SearchAttractionScreen>
   Widget _searchFieldLoader() {
     return Expanded(
       child: SlideTransition(
-        position: controller.locationAnimation,
+        position: searchAttractioncontroller.locationAnimation,
         child: SearchField(
-          focusNode: controller.focus,
+          focusNode: searchAttractioncontroller.focus,
 
           // searchStyle: FxTextStyle.bodyMedium(),
           searchStyle: const TextStyle(color: Colors.white),
           suggestionStyle: FxTextStyle.bodyMedium(),
-          controller: controller.locationTE,
+          controller: searchAttractioncontroller.locationTE,
           hint: 'Where do you want to see?',
 
           searchInputDecoration: InputDecoration(
@@ -310,12 +333,13 @@ class _SearchAttractionScreenState extends State<SearchAttractionScreen>
 
           onSuggestionTap: (value) async {},
 
-          suggestions: controller.allattractionList!.isEmpty ||
-                  controller.allattractionList!.first.attractions.data.isEmpty
+          suggestions: searchAttractioncontroller.allattractionList!.isEmpty ||
+                  searchAttractioncontroller
+                      .allattractionList!.first.attractions.data.isEmpty
               /*||
                   widget.allattractionList!.isEmpty*/
               ? []
-              : controller.countryList.first.destinations
+              : searchAttractioncontroller.countryList.first.destinations
                       .map((e) => SearchFieldListItem<dynamic>(
                           // e,
                           // 'Esther',
@@ -335,7 +359,7 @@ class _SearchAttractionScreenState extends State<SearchAttractionScreen>
                             ),
                           )))
                       .toList() +
-                  controller.countryList.first.attractions
+                  searchAttractioncontroller.countryList.first.attractions
                       .map((e) => SearchFieldListItem<dynamic>(
                           // e,
 
@@ -364,14 +388,14 @@ class _SearchAttractionScreenState extends State<SearchAttractionScreen>
   Widget _searchField() {
     return Expanded(
       child: SlideTransition(
-        position: controller.locationAnimation,
+        position: searchAttractioncontroller.locationAnimation,
         child: SearchField(
-          focusNode: controller.focus,
+          focusNode: searchAttractioncontroller.focus,
 
           // searchStyle: FxTextStyle.bodyMedium(),
           searchStyle: const TextStyle(color: Colors.white),
           suggestionStyle: FxTextStyle.bodyMedium(),
-          controller: controller.locationTE,
+          controller: searchAttractioncontroller.locationTE,
           hint: 'Where do you want to see?',
 
           searchInputDecoration: InputDecoration(
@@ -403,86 +427,164 @@ class _SearchAttractionScreenState extends State<SearchAttractionScreen>
             borderRadius: BorderRadius.circular(10),
           ),
           onSubmit: (value) {
-            log('ONSUBIT');
-          },
-          // onSubmit: myf,
+            log('Onsubmit');
 
-          onSuggestionTap: (value) async {
-            if (controller.countryList.first.attractions.isNotEmpty) {
-              controller.slugslist =
-                  controller.countryList.first.attractions.where((element) {
-                return element.id == value.item;
-              }).toList();
-
-              log('Slug List:${controller.slugslist.map((e) => e.slug).toList()}');
-              controller.SlugnameId =
-                  controller.slugslist.map((e) => e.slug).toList();
-              //       Navigator.of(context, rootNavigator: true).pushReplacement(
-              // MaterialPageRoute(
-              //   builder: (context) => const BookingSuccess(),
-              // ));
-            } else {
-              // controller.SlugnameId = [];
-              log('slug destination nuull');
-              controller.Destinationbtn();
-            }
-
-            //  controller.slugslist =
-            //     controller.countryList.first.attractions.where((element) {
-            //   return element.id == value.item;
-            // }).toList();
-
-            // log('Slug List:${controller.slugslist.map((e) => e.slug).toList()}');
-            // controller.SlugnameId =
-            //     controller.slugslist.map((e) => e.slug).toList();
-
-            log('Slug.searchKey:${value.searchKey}');
-            log('SearchKey Id:${value.key}');
-            controller.selectedCountry = value.searchKey;
-            log('controller.selectedCountry Sluf${controller.selectedCountry}');
-
-            log('value Country-->${value.item!}');
-
-            // log(value.searchKey.toString());
-            log(value.item.toString());
-            controller.focus.unfocus();
-            keydata = value.item.toString();
-
-            log('keydata1:$keydata');
-            // slugname = value.item.toString();
-            // log('keydataslug:$slugname');
-            setState(() {
-              controller.selectedCountry = keydata;
-              log('keydata:$keydata');
-              controller.selectedCountry = controller.locationTE.text;
-              // controller.locationTE.text = controller.locationplace!;
-              log('controller TE:${controller.locationTE.text}');
-            });
-            controller.searchbtn(
-                controller.locationTE.text,
+            log('Onsubmit controller:${searchAttractioncontroller.locationTE.text}');
+            log('Onsubmit key:$keydata');
+            log('Onsubmit slug:${searchAttractioncontroller.SlugnameId.last}');
+            searchAttractioncontroller.searchbtn(
+                searchAttractioncontroller.locationTE.text,
                 // controller.selectedCountry!,
                 keydata!,
                 widget.isocode,
                 widget.conversionRate,
                 // controller.SlugnameId.last
-                controller.SlugnameId.isEmpty
+                searchAttractioncontroller.SlugnameId.isEmpty
                     ? 'burj-khalifa-:-at-the-top'
-                    : controller.SlugnameId.last
-                // slugname.toString()
+                    : searchAttractioncontroller.SlugnameId.last);
 
-                // controller.allattractionList.first
-                );
+            /*  if (searchAttractioncontroller
+                .countryList.first.attractions.isNotEmpty) {
+              searchAttractioncontroller.slugslist = searchAttractioncontroller
+                  .countryList.first.attractions
+                  .where((element) {
+                return element.id == value;
+              }).toList();
+
+              log('Slug List onsubmit:${searchAttractioncontroller.slugslist.map((e) => e.slug).toList()}');
+              searchAttractioncontroller.SlugnameId = searchAttractioncontroller
+                  .slugslist
+                  .map((e) => e.slug)
+                  .toList();
+            } else {
+              log('slug destination nuull onsubmit');
+              searchAttractioncontroller.Destinationbtn();
+            }
+
+            log('Slug.searchKey onSubmit:$value');
+
+            searchAttractioncontroller.selectedCountry = value;
+            log('controller.selectedCountry Sluf onsubmit${searchAttractioncontroller.selectedCountry}');
+
+            log('value Country onsubmit-->$value');
+
+            searchAttractioncontroller.focus.unfocus();
+            keydata = value;
+
+            log('keydata1 onsubmi:$keydata');
+
+            setState(() {
+              searchAttractioncontroller.selectedCountry = keydata;
+              log('keydata onsubmit:$keydata');
+              searchAttractioncontroller.selectedCountry =
+                  searchAttractioncontroller.locationTE.text;
+
+              log('controller TE onsubmit:${searchAttractioncontroller.locationTE.text}');
+            });
+            searchAttractioncontroller.searchbtn(
+                searchAttractioncontroller.locationTE.text,
+                // controller.selectedCountry!,
+                keydata!,
+                widget.isocode,
+                widget.conversionRate,
+                // controller.SlugnameId.last
+                searchAttractioncontroller.SlugnameId.isEmpty
+                    ? 'burj-khalifa-:-at-the-top'
+                    : searchAttractioncontroller.SlugnameId.last);
+          */
+          },
+          // onSubmit: _pretendSearch(),
+
+          onSuggestionTap: (value) async {
+            if (searchAttractioncontroller.allattractionList == null &&
+                searchAttractioncontroller.allattractionList!.isEmpty) {
+              log('suggestiontab if');
+            } else {
+              log('suggestiontab else');
+              if (searchAttractioncontroller
+                      .countryList.first.attractions.isNotEmpty ||
+                  searchAttractioncontroller.allattractionList!.isNotEmpty) {
+                searchAttractioncontroller.slugslist =
+                    searchAttractioncontroller.countryList.first.attractions
+                        .where((element) {
+                  return element.id == value.item;
+                }).toList();
+
+                log('Slug List:${searchAttractioncontroller.slugslist.map((e) => e.slug).toList()}');
+                searchAttractioncontroller.SlugnameId =
+                    searchAttractioncontroller.slugslist
+                        .map((e) => e.slug)
+                        .toList();
+                //       Navigator.of(context, rootNavigator: true).pushReplacement(
+                // MaterialPageRoute(
+                //   builder: (context) => const BookingSuccess(),
+                // ));
+              } else {
+                // controller.SlugnameId = [];
+                log('slug destination nuull');
+                searchAttractioncontroller.Destinationbtn();
+              }
+
+              //  controller.slugslist =
+              //     controller.countryList.first.attractions.where((element) {
+              //   return element.id == value.item;
+              // }).toList();
+
+              // log('Slug List:${controller.slugslist.map((e) => e.slug).toList()}');
+              // controller.SlugnameId =
+              //     controller.slugslist.map((e) => e.slug).toList();
+
+              log('Slug.searchKey:${value.searchKey}');
+              log('SearchKey Id:${value.key}');
+              searchAttractioncontroller.selectedCountry = value.searchKey;
+              log('controller.selectedCountry Sluf${searchAttractioncontroller.selectedCountry}');
+
+              log('value Country-->${value.item!}');
+
+              // log(value.searchKey.toString());
+              log(value.item.toString());
+              searchAttractioncontroller.focus.unfocus();
+              keydata = value.item.toString();
+
+              log('keydata1:$keydata');
+              // slugname = value.item.toString();
+              // log('keydataslug:$slugname');
+              setState(() {
+                searchAttractioncontroller.selectedCountry = keydata;
+                log('keydata:$keydata');
+                searchAttractioncontroller.selectedCountry =
+                    searchAttractioncontroller.locationTE.text;
+                // controller.locationTE.text = controller.locationplace!;
+                log('controller TE:${searchAttractioncontroller.locationTE.text}');
+              });
+              searchAttractioncontroller.searchbtn(
+                  searchAttractioncontroller.locationTE.text,
+                  // controller.selectedCountry!,
+                  keydata!,
+                  widget.isocode,
+                  widget.conversionRate,
+                  // controller.SlugnameId.last
+                  searchAttractioncontroller.SlugnameId.isEmpty
+                      ? 'burj-khalifa-:-at-the-top'
+                      : searchAttractioncontroller.SlugnameId.last
+                  // slugname.toString()
+
+                  // controller.allattractionList.first
+                  );
+            }
           },
 
-          suggestions: controller.countryList.isEmpty ||
-                  controller.countryList.first.destinations.isEmpty
+          suggestions: searchAttractioncontroller.countryList.isEmpty ||
+                  searchAttractioncontroller
+                      .countryList.first.destinations.isEmpty
+
               //  ||
               // controller.allattractionList!.isEmpty ||
               // controller.allattractionList!.first.attractions.data.isEmpty
               /*||
                   widget.allattractionList!.isEmpty*/
               ? []
-              : controller.countryList.first.destinations
+              : searchAttractioncontroller.countryList.first.destinations
                       .map((e) => SearchFieldListItem<dynamic>(
                           // e,
                           // 'Esther',
@@ -503,7 +605,7 @@ class _SearchAttractionScreenState extends State<SearchAttractionScreen>
                             ),
                           )))
                       .toList() +
-                  controller.countryList.first.attractions
+                  searchAttractioncontroller.countryList.first.attractions
                       .map((e) => SearchFieldListItem<dynamic>(
                           // e,
 
