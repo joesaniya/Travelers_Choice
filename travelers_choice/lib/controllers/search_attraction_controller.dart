@@ -224,6 +224,7 @@ class SearchAttractionController extends FxController {
                 )
             // SingleProductScreen(product.id)
             ));
+        locationTE.clear();
       } else {
         log('destination name');
         Navigator.of(context, rootNavigator: true).push(PageRouteBuilder(
@@ -248,6 +249,7 @@ class SearchAttractionController extends FxController {
                   // conversionRate: conversionRate
                   // place:locationTE.text
                 )));
+        locationTE.clear();
       }
       // Navigator.of(context, rootNavigator: true).push(PageRouteBuilder(
       //     transitionDuration: const Duration(milliseconds: 500),
@@ -326,19 +328,19 @@ class SearchAttractionController extends FxController {
 
   @override
   void dispose() {
-    super.dispose();
     log('Search Attraction dispose calling');
-    // searchController.dispose();
-    // locationController.dispose();
-    // dateController.dispose();
+    searchController.dispose();
+    locationController.dispose();
+    dateController.dispose();
     // locationTE.dispose();
-    searchController.reset();
-    locationController.reset();
-    dateController.reset();
+    // searchController.reset();
+    // locationController.reset();
+    // dateController.reset();
     locationTE.clear();
     selectedCountry = '';
     focus.dispose();
     visaFocus.dispose();
+    super.dispose();
   }
 
   @override

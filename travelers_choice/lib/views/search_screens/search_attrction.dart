@@ -81,22 +81,12 @@ class _SearchAttractionScreenState extends State<SearchAttractionScreen>
     _btnText = "Search";
   }
 
-  // @override
-  // void dispose() {
-  //   log('Search Attraction dispose UI calling');
-  //   // searchController.dispose();
-  //   // locationController.dispose();
-  //   // dateController.dispose();
-  //   // locationTE.dispose();
-  //   searchAttractioncontroller.searchController.reset();
-  //   searchAttractioncontroller.locationController.reset();
-  //   searchAttractioncontroller.dateController.reset();
-  //   searchAttractioncontroller.locationTE.clear();
-  //   searchAttractioncontroller.selectedCountry = '';
-  //   searchAttractioncontroller.focus.dispose();
-  //   searchAttractioncontroller.visaFocus.dispose();
-  //   super.dispose();
-  // }
+  @override
+  void dispose() {
+    log('Search Attraction dispose UI calling');
+    searchAttractioncontroller.dispose();
+    super.dispose();
+  }
 
   SharedPreferences? sharedPreferences;
   // List<AllattractionModal> allattractionList = <AllattractionModal>[];
@@ -107,7 +97,7 @@ class _SearchAttractionScreenState extends State<SearchAttractionScreen>
     sharedPreferences = await SharedPreferences.getInstance();
     Future.delayed(Duration.zero, () async {
       await AttractionController().getAllattractionList(context).then((value) {
-        if (value != null) {
+        if (value != null) { 
           isLoadingg = false;
           searchAttractioncontroller.allattractionList = [];
           searchAttractioncontroller.allattractionList!.add(value);

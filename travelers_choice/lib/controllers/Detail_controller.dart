@@ -542,6 +542,8 @@ class DetailController extends FxController {
       //     (value[0].childCount * (value[0].childPrice ?? private[0].price)) +
       //     (value[0].infantCount * (value[0].infantPrice ?? private[0].price));
 
+      log("Given avtivity type => =>? ${tour.activityType}, Private dAta =>  ${private.isNotEmpty}");
+
       if (private.isNotEmpty && tour.activityType == 'transfer') {
         log("Remainder Value => ${(tour.adultCount + tour.childCount).remainder(private[0].maxCapacity!)}");
         log("Remainder Value / => ${(tour.adultCount + tour.childCount) / private[0].maxCapacity!}");
@@ -550,6 +552,11 @@ class DetailController extends FxController {
         return private[0].price *
             (((tour.adultCount + tour.childCount) / private[0].maxCapacity!)
                 .ceil());
+      } else if (private.isEmpty && tour.activityType == "transfer") {
+        log("Shared Amount => ${tour.sharedTransferPrice}");
+        return ((value[0].adultCount) +
+            (value[0].childCount) +
+            (value[0].infantCount));
       }
       return (value[0].adultCount *
               (value[0].adultPrice ?? value[0].adultCost)) +
@@ -606,6 +613,7 @@ class DetailController extends FxController {
     double amount = double.parse(getTotal(tour).toString());
     log('Get:$amount');
 
+    log("=>>> is private => ${tour.transferType}, transfer code => ${tour.transferCode}");
     if (tour.transferCode != null && tour.transferCode == "private") {
       // amount = amount + tour.privateTransferPrice!;//added transfer fee
       List<PrivateTransfers>? private =
@@ -615,6 +623,8 @@ class DetailController extends FxController {
       //     (tour.activityType == 'transfer'
       //         ? 0
       //         : (private.isNotEmpty ? private[0].price : 0));
+
+      log("given transfer type => now private selected =>> Amount =-> $amount");
       amount = amount +
           (tour.activityType == 'transfer'
               ? 0
@@ -630,8 +640,14 @@ class DetailController extends FxController {
       // amount = amount +
       //     double.parse(
       //         (tour.sharedTransferPrice ?? 0).toString()); //added transfer fee
-      amount =
-          amount + double.parse((tour.sharedTransferPrice ?? 0).toString());
+      log("Given transfer Type => ${tour.activityType}");
+      if (tour.activityType == "transfer") {
+        amount =
+            amount * double.parse((tour.sharedTransferPrice ?? 0).toString());
+      } else {
+        amount =
+            amount + double.parse((tour.sharedTransferPrice ?? 0).toString());
+      }
       // (isChecked == true ? (tour.promoAmount!.toInt()) : 0);
       log("Promo Code Shared => ${tour.promoAmount}");
       log('Grand Total sharing:$amount');
