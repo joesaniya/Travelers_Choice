@@ -127,7 +127,7 @@ class LoadingEffect {
       shrinkWrap: true,
       children: list,
     );
-   /* return Column(
+    /* return Column(
       children: [
         ListView(
           shrinkWrap: true,
