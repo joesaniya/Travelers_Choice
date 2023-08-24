@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:ui';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutx/flutx.dart';
@@ -66,22 +67,124 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     });
   }
 
+  //best
+  /* List<BestTopModel>? bestTopList;
+  bool isHomeLoading = true;
+  getBestTopAttraction(BuildContext context) async {
+    await AuthService().getCountry();
+    log('HomeAttraction function called');
+    sharedPreferences = await SharedPreferences.getInstance();
+    Future.delayed(Duration.zero, () async {
+      await AttractionController()
+          .getTopBestattractionList(context)
+          .then((value) {
+        if (value != null) {
+          log('first data');
+          isHomeLoading = false;
+          bestTopList = [];
+          bestTopList!.add(value);
+          log('HomeData:$bestTopList');
+          log('HomeData top attractions:${bestTopList!.first.home}');
+          setState(() {
+            controller.countryCode = sharedPreferences!
+                .getString(AppConstants.KEY_ACCESS_TOKEN_countryId);
+            log('CountryCode:${controller.countryCode}');
+            controller.currencies = sharedPreferences!
+                .getString(AppConstants.KEY_ACCESS_TOKEN_CurrenciesList);
+          });
+        }
+      });
+    });
+  }
+*/
+
+  Future<bool> _onWillPopTest(BuildContext context) async {
+    log('Home on will pop calling...');
+    bool? exitResult = await showDialog(
+      context: context,
+      builder: (context) => _buildExitDialog(context),
+    );
+    return exitResult ?? false;
+  }
+
+  Future<bool?> _showExitDialog(BuildContext context) async {
+    log('dialog calling..');
+    return await showDialog(
+      context: context,
+      builder: (context) => _buildExitDialog(context),
+    );
+  }
+
+  AlertDialog _buildExitDialog(BuildContext context) {
+    log('Dialog widget calling...');
+    return AlertDialog(
+      backgroundColor: const Color(0xffE0E8F2),
+      // const Color(0xff72C9E9),
+      // backgroundColor: const Color(0xff1529e8).withAlpha(40),
+      shape: RoundedRectangleBorder(
+        // This line is added
+        borderRadius: BorderRadius.circular(
+            12), // Change this value to change the corner radius
+      ),
+      title: FxText.bodyLarge('Are you sure?',
+          color: const Color(0xff1529e8), fontWeight: 500),
+      content: FxText.bodyMedium('Do you want to exit the App',
+          fontWeight: 500, letterSpacing: -0.2),
+      actions: <Widget>[
+        TextButton(
+          // onPressed: () {},
+          onPressed: () => Navigator.of(context).pop(false),
+          child: FxText.bodyMedium('No',
+              color: Colors.red, fontWeight: 500, letterSpacing: -0.2),
+        ),
+        TextButton(
+          // onPressed: () {},
+          //  Navigator.of(context, rootNavigator: true).pop();
+          onPressed: () => Navigator.of(context).pop(true),
+          child: FxText.bodyMedium('Yes',
+              color: Colors.green, fontWeight: 500, letterSpacing: -0.2),
+        ),
+      ],
+    );
+  }
+
   Future<bool> _onWillPop() async {
+    log('Home back button calling....');
     return (await showDialog(
           context: context,
-          builder: (context) => AlertDialog(
-            title: const Text('Are you sure?'),
-            content: const Text('Do you want to exit the App'),
-            actions: <Widget>[
-              TextButton(
-                onPressed: () => Navigator.of(context).pop(false),
-                child: const Text('No'),
+          builder: (context) => BackdropFilter(
+            filter: ImageFilter.blur(sigmaX: 6, sigmaY: 6),
+            child: AlertDialog(
+              backgroundColor: const Color(0xffE0E8F2),
+              // const Color(0xff72C9E9),
+              // backgroundColor: const Color(0xff1529e8).withAlpha(40),
+              shape: RoundedRectangleBorder(
+                // This line is added
+                borderRadius: BorderRadius.circular(
+                    12), // Change this value to change the corner radius
               ),
-              TextButton(
-                onPressed: () => Navigator.of(context).pop(true),
-                child: const Text('Yes'),
-              ),
-            ],
+              title: FxText.bodyLarge('Are you sure?',
+                  color: const Color(0xff1529e8), fontWeight: 500),
+              content: FxText.bodyMedium('Do you want to exit the App',
+                  fontWeight: 500, letterSpacing: -0.2),
+              actions: <Widget>[
+                TextButton(
+                  // onPressed: () {},
+                  onPressed: () => Navigator.of(context).pop(false),
+                  child: FxText.bodyMedium('No',
+                      color: Colors.red, fontWeight: 500, letterSpacing: -0.2),
+                ),
+                TextButton(
+                  // onPressed: () {},
+                  //  Navigator.of(context, rootNavigator: true).pop();
+                  onPressed: () => Navigator.of(context).pop(true),
+                  child: FxText.bodyMedium('Yes',
+                      color: Colors.green,
+                      fontWeight: 500,
+                      letterSpacing: -0.2),
+                ),
+              ],
+            ),
           ),
         )) ??
         false;
@@ -110,45 +213,18 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     // });
   }
 
-  // final scrollController = ScrollController();
-  // final itemsPerPage = 10;
-  // var loadedItems = 0;
-  // // var items = <String>[];
-
-  // void scrollListener() {
-  //   log('scroll listener calling');
-  //   if (scrollController.offset >= scrollController.position.maxScrollExtent &&
-  //       !scrollController.position.outOfRange) {
-  //     _loadMoreItems();
-  //   }
-  // }
-
-  // Future<void> _loadMoreItems() async {
-  //   await Future.delayed(
-  //       const Duration(seconds: 10)); // simulate network latency
-  //   log('loadmore items calling');
-
-  //   setState(() {
-  //     allattractionList!.addAll(_generateItems(loadedItems, itemsPerPage));
-  //     loadedItems += itemsPerPage;
-  //   });
-  // }
-
-  // List<AllattractionModal> _generateItems(int start, int count) {
-  //   return List.generate(count, (index) => 'Item ${start + index + 1}');
-  // }
-
   @override
   void initState() {
     super.initState();
-    // scrollController.addListener(scrollListener);
-    // controller.scrollController.addListener(controller.scrollListener);
+
     // getData();
     getCountryList();
     getAttraction(context);
+    // getBestTopAttraction(context);
     getVisa(context);
     // fetchData();
     log('All Data:$allattractionList');
+    // log('Home Datass:$bestTopList');
     theme = AppTheme.shoppingTheme;
     theme1 = AppTheme.learningTheme;
     SharedPreferences.getInstance().then((sharedPrefValue) {
@@ -180,12 +256,6 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
           setState(() {});
         }
       });
-      // await AuthController().getCountryList().then((value) {
-      //   if (value) {
-      //     isLoading = false;
-      //     setState(() {});
-      //   }
-      // });
     });
   }
 
@@ -595,16 +665,324 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         });
   }
 
+  //hometop
+  /* Widget HomeData() {
+    List<Widget> list = [];
+
+    for (Datum product in bestTopList!.first.topAttractions) {
+      // String text = product.category.categoryName.name;
+      String text = product.category.categoryName;
+
+      log(text);
+      //todo
+      list.add(
+          // car(controller.products![i])
+          InkWell(
+        onTap: () {
+          controller.TopSingleProduct(
+            product,
+            // currencySymbol, conversionRate
+          );
+        },
+        child: Container(
+          margin: const EdgeInsets.all(5.0),
+
+          // height: 250,
+          // height: 267,
+          // height: 278,
+          // height: 286,
+          // height: 300,
+
+          // width: 300,
+          width: 260,
+          // height: 274,
+          // height: 280,
+          height: 296,
+          // height: MediaQuery.of(context).size.height * 0.360,
+
+          decoration: BoxDecoration(
+              // color: Color(0xffe6e1e5),
+              color: Colors.white,
+              // color: Color(0xffe5fdfd),
+              borderRadius: const BorderRadius.all(Radius.circular(10)),
+              border: Border.all(color: Colors.grey.shade300, width: 1)),
+
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Container(
+              //   margin: const EdgeInsets.all(8),
+              //   height: 150,
+              //   decoration: BoxDecoration(
+              //       borderRadius: BorderRadius.circular(10),
+              //       image: DecorationImage(
+              //           image: NetworkImage(
+              //               'https://a.walletbot.online${product.images.first}'
+              //               // product.images.first.toString()
+              //               ),
+              //           fit: BoxFit.fill)
+              //           ),
+              // ),
+              Container(
+                margin: const EdgeInsets.all(8),
+                height: 150,
+                child: CachedNetworkImage(
+                  imageUrl: 'https://a.walletbot.online${product.images.first}',
+                  imageBuilder: (context, imageProvider) => Container(
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image: imageProvider,
+                        fit: BoxFit.cover,
+                        // colorFilter: const ColorFilter.mode(
+                        //   Colors.red,
+                        //   BlendMode.colorBurn,
+                        // ),
+                      ),
+                    ),
+                  ),
+                  placeholder: (context, url) => const Center(
+                      child: CircularProgressIndicator(
+                    color: Color(0xff1529e8),
+                  )),
+                  errorWidget: (context, url, error) => const Icon(Icons.error),
+                  fadeOutDuration: const Duration(seconds: 1),
+                  fadeInDuration: const Duration(seconds: 1),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        FxContainer(
+                          borderRadiusAll: 10,
+                          // padding: FxSpacing.xy(8, 4),
+                          padding: FxSpacing.xy(6, 2),
+                          // color: Color(0xff1529e8),
+                          color: Colors.blueGrey,
+                          child: Center(
+                            child: FxText.bodySmall(
+                              // text,
+                              capitalizeAllWord(product.category.categoryName),
+
+                              // product.category.categoryName.name[0]
+                              //         .toUpperCase() +
+                              //     product.category.categoryName.name
+                              //         .substring(1)
+                              //         .toLowerCase(),
+                              fontWeight: 300,
+                              color: Colors.white,
+                              // color: theme.colorScheme.onPrimary,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 5,
+                        ),
+                        FxContainer(
+                          borderRadiusAll: 10,
+                          // padding: FxSpacing.xy(8, 4),
+                          padding: FxSpacing.xy(6, 2),
+                          // color: Color(0xff1529e8),
+                          color: Colors.blueGrey,
+                          child: Center(
+                            child: FxText.bodySmall(
+                              product.bookingType.name[0].toUpperCase() +
+                                  product.bookingType.name
+                                      .substring(1)
+                                      .toLowerCase(),
+
+                              fontWeight: 300,
+                              color: Colors.white,
+                              // color: theme.colorScheme.onPrimary,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 5,
+                        ),
+                        product.isOffer == false
+                            ? const SizedBox()
+                            : FxContainer(
+                                borderRadiusAll: 10,
+                                // padding: FxSpacing.xy(8, 4),
+                                padding: FxSpacing.xy(6, 2),
+                                // color: Color(0xff1529e8),
+                                color: Colors.blueGrey,
+                                child: FxText.bodySmall(
+                                  'Offer',
+
+                                  fontWeight: 300,
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  color: Colors.white,
+                                  // color: theme.colorScheme.onPrimary,
+                                ),
+
+                                // child: FxText.bodySmall(
+                                //  '${product.duration}${product.durationType.name.toString() == "hours" ? 'Hrs' : 'Hrs'}',
+                                //   // '${product.duration} hrs',
+                                //   // 'offer',
+
+                                //   fontWeight: 300,
+                                //   maxLines: 1,
+                                //   overflow: TextOverflow.ellipsis,
+                                //   color: Colors.white,
+                                //   // color: theme.colorScheme.onPrimary,
+                                // ),
+                              ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              FxSpacing.height(10),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    height: 30,
+                    color: Colors.transparent,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8),
+                      child: FxText.bodyLarge(
+                        // product.title[0].toUpperCase() +
+                        //     product.title.substring(1).toLowerCase(),
+                        capitalizeAllWord(product.title),
+                        fontWeight: 800,
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 1,
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
+                          children: [
+                            const Icon(
+                              // FeatherIcons.star,
+                              Icons.star,
+                              color: Colors.yellow,
+                              size: 12,
+                            ),
+                            FxSpacing.width(4),
+                            FxText.bodySmall(
+                              // '4.5',
+                              product.averageRating.toStringAsFixed(1),
+                              fontWeight: 600,
+                              color: Colors.black,
+                            ),
+                            FxSpacing.width(4),
+                            FxText.bodySmall(
+                              "(${product.totalReviews})",
+                              fontWeight: 600,
+                              color: Colors.black,
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+              FxSpacing.height(10),
+              Padding(
+                padding: const EdgeInsets.only(right: 8),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        FxContainer(
+                          borderRadiusAll: 8,
+                          padding: FxSpacing.xy(8, 4),
+                          // color: theme.colorScheme.primary,
+                          // color: Colors.yellow.shade400,
+                          color: Colors.white,
+                          child: Row(
+                            children: [
+                              const Icon(
+                                Iconsax.location,
+                                color: Colors.black,
+                                // color: theme.colorScheme.onPrimary,
+                                size: 12,
+                              ),
+                              FxSpacing.width(4),
+                              FxText.labelLarge(
+                                // '\$' + product.price.toString(),
+                                capitalizeAllWord(product.destination.name),
+                                // capitalizelocation(
+                                //     product.destination.name[0].toUpperCase() +
+                                //         product.destination.name),
+
+                                //crt
+                                // product.destination.name[0].toUpperCase() +
+                                //     product.destination.name
+                                //         .substring(1)
+                                //         .toLowerCase(),
+
+                                // product.price.toString() + " " + "AED",
+                                // "\$" + product.price.toString() + "/hour",
+                                // fontWeight: 700,
+                              ),
+                            ],
+                          ),
+                        ),
+                        // FxContainer.bordered(
+                        //   paddingAll: 4,
+                        //   borderRadiusAll: 4,
+                        //   child: Icon(
+                        //     FeatherIcons.plus,
+                        //     size: 14,
+                        //     color: theme.colorScheme.onBackground,
+                        //   ),
+                        // ),
+                      ],
+                    ),
+                    //currencyChange
+                    Column(
+                      children: [
+                        FxText.bodyMedium("Starting From", fontWeight: 500),
+                        FxText(
+                          // "76",
+                          // "${product.activity.adultPrice.toString()} AED",,
+                          " ${(selectedCountry != null ? "${((product.activity.lowPrice * selectedCountry!.conversionRate) as double).toStringAsFixed(2)} ${selectedCountry!.isocode} " : "")}",
+                          // "${product.activity.lowPrice.toString()} AED",
+                          // '${controller.currency() ?? '\$'} ${product.activity.adultPrice.toString()}',
+                          color: const Color(0xff1529e8),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ));
+    }
+
+    return SingleChildScrollView(
+      // controller: controller.scrollController,
+      controller: controller.scrollController1,
+      scrollDirection: Axis.horizontal,
+      child: Row(
+        children: list,
+      ),
+    );
+  }*/
+
   //car
   Widget TopAttraction() {
     List<Widget> list = [];
 
-    // list.add(FxSpacing.width(20));
-
-    // for (int i = 0; i < controller.products; i++) {
-    //   list.add(car(controller.products![i]));
-    // }
-    // for (Product product in controller.products!)
     for (Datum product in allattractionList!.first.attractions.data) {
       // String text = product.category.categoryName.name;
       String text = product.category.categoryName;
@@ -928,6 +1306,24 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     );
   }
 
+/*VoidCallback continueCallBack = () {
+  Navigator.of(context).pop();
+  // code on continue comes here
+};
+
+BlurryDialog alert = BlurryDialog(
+  title: "Your Title",         // Provide 'title'
+  content: "Your Content Text",        // Provide 'content'
+  continueCallBack: continueCallBack,   // Provide 'continueCallBack'
+);
+
+showDialog(
+  context: context,
+  builder: (BuildContext context) {
+    return alert;
+  },
+);*/
+
   Widget _buildBody() {
     double width = MediaQuery.of(context).size.width;
     double containerWidth = width / 2;
@@ -937,11 +1333,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       return Scaffold(
           body: Padding(
         padding: FxSpacing.top(FxSpacing.safeAreaTop(context) + 20),
-        child: LoadingEffect.getHomeLoadingScreen
-            // getProductLoadingScreen->profile
-            //getDatingHomeScreen->detail
-
-            (
+        child: LoadingEffect.getHomeLoadingScreen(
           context,
           // theme, theme.colorScheme
         ),
@@ -953,6 +1345,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       } else {
         return WillPopScope(
           // onWillPop: () => controller.onWillPop(),
+          // onWillPop: () => _onWillPopTest(context),
           onWillPop: _onWillPop,
           child: Scaffold(
             backgroundColor: const Color(0xfff5f5f5),
@@ -1565,23 +1958,27 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                       FxSpacing.height(20),
                       allattractionList == null || allattractionList!.isEmpty
                           ? SizedBox(
-                              width: MediaQuery.of(context).size.width *
-                                  0.8, // 80% of the screen width
-                              height: MediaQuery.of(context).size.height * 0.6,
-                              // height: double.infinity,
-                              // width: double.infinity,
-                              child: Center(
+                              // width: MediaQuery.of(context).size.width *
+                              //     0.8, // 80% of the screen width
+                              // height: MediaQuery.of(context).size.height * 0.6,
+
+                              child: LoadingEffect.getTopHomeLoadingScreen(
+                              context,
+                            )
+                              /*child: Center(
                                 child: FxText.bodySmall(
                                   "Wait here, we are fetching data",
                                 ),
-                              ),
-                            )
+                              ),*/
+                              )
                           : const SizedBox(),
+                      // HomeData(),
                       allattractionList == null || allattractionList!.isEmpty
                           ? const SizedBox()
                           : TopAttraction(),
                       // const TopAttractionCard(),->crt
                       // _buildAttractionList(),
+
                       allattractionList == null || allattractionList!.isEmpty
                           ? const SizedBox()
                           : FxSpacing.height(20),

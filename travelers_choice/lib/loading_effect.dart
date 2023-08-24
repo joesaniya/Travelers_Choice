@@ -26,6 +26,127 @@ class LoadingThemeData {
 }
 
 class LoadingEffect {
+  //toploading
+  static Widget getTopHomeLoadingScreen(BuildContext context,
+      {int itemCount = 10}) {
+    LoadingThemeData theme = LoadingThemeData.theme;
+    Widget singleLoading = Shimmer.fromColors(
+        baseColor: theme.shimmerBaseColor,
+        highlightColor: theme.shimmerHighlightColor,
+        child: Container(
+          height: 96,
+          padding: FxSpacing.all(16),
+          width: MediaQuery.of(context).size.width,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(8),
+            border: Border.all(color: Colors.grey),
+          ),
+          child: Row(
+            mainAxisSize: MainAxisSize.max,
+            children: <Widget>[
+              Container(
+                height: 56,
+                width: 56,
+                color: Colors.grey,
+              ),
+              Expanded(
+                child: Container(
+                  height: 56,
+                  padding: FxSpacing.only(left: 8.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.max,
+                    children: <Widget>[
+                      Row(
+                        children: <Widget>[
+                          Flexible(
+                            flex: 2,
+                            child: Container(
+                              alignment: Alignment.topLeft,
+                              height: 8,
+                              color: Colors.grey,
+                            ),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        children: <Widget>[
+                          Flexible(
+                            flex: 2,
+                            child: Container(
+                              child: Container(
+                                height: 8,
+                                color: Colors.grey,
+                              ),
+                            ),
+                          ),
+                          const Flexible(
+                            flex: 1,
+                            child: Align(
+                              alignment: Alignment.centerRight,
+                            ),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        children: <Widget>[
+                          Flexible(
+                            flex: 2,
+                            child: Container(
+                              child: Container(
+                                height: 8,
+                                color: Colors.grey,
+                              ),
+                            ),
+                          ),
+                          Flexible(
+                            flex: 1,
+                            child: Align(
+                              alignment: Alignment.centerRight,
+                              child: Container(
+                                  height: 8, width: 36, color: Colors.grey),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ));
+
+    List<Widget> list = [];
+    for (int i = 0; i < itemCount; i++) {
+      list.add(Container(
+          padding: FxSpacing.fromLTRB(16, 0, 16, 8), child: singleLoading));
+    }
+    return ListView(
+      shrinkWrap: true,
+      children: list,
+    );
+   /* return Column(
+      children: [
+        ListView(
+          shrinkWrap: true,
+          scrollDirection: Axis.horizontal,
+          children: list,
+        ),
+        FxSpacing.height(10),
+        const Align(
+          alignment: Alignment.centerRight,
+        ),
+        FxSpacing.height(10),
+        ListView(
+          shrinkWrap: true,
+          children: list,
+        ),
+      ],
+    );*/
+  }
+
   //home
   static Widget getHomeLoadingScreen(BuildContext context,
       {int itemCount = 10}) {

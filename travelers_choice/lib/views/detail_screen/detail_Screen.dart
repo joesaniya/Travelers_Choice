@@ -2838,7 +2838,7 @@ class _DetailScreenState extends State<DetailScreen>
         .detailattraction!.first.activities![i].activityType
         .toString();
     log('transfer drop:$transfer');
-    log("TransferCode Private => $isPrivate Shared => $isShared");
+    log("TransferCode Private => $isPrivate Shared => $isShared   transfer=>$transfer");
     // if (((isPrivate != null && !isPrivate) &&
     //         (isShared != null && !isShared)) ||
     //     ((isPrivate != null && isPrivate) && (isShared != null && isShared))) {
@@ -2870,11 +2870,13 @@ class _DetailScreenState extends State<DetailScreen>
     // }
     if (((isPrivate != null && !isPrivate) &&
             (isShared != null && !isShared)) ||
-        ((isPrivate != null && isPrivate) && (isShared != null && isShared))) {
+        ((isPrivate != null && isPrivate) && (isShared != null && isShared)) ||
+        ((isPrivate != null && isPrivate) && (isShared != null && !isShared))) {
       if (!tempTransferCodes.contains("without")) {
         tempTransferCodes.add("without");
       }
       if (!tempTransferCodes.contains("without") ||
+          ((!isPrivate) && (!isShared)) ||
           controller.detailattraction!.first.activities![i].activityType ==
               'transfer') {
         tempTransferCodes.remove("without");

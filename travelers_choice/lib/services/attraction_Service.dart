@@ -7,6 +7,8 @@ import 'package:http/http.dart' as http;
 
 import '../card_widgets/customsnackbar.dart';
 import '../models/atteraction_model.dart';
+
+import '../models/best_top_model.dart';
 import '../models/order_attraction_modal.dart';
 
 class AttractionService {
@@ -157,6 +159,43 @@ class AttractionService {
         return null;
       }
     } catch (e) {
+      rethrow;
+    }
+  }
+
+
+  //top
+  Future<BestTopModel?> getTopBest(context) async {
+    try {
+      var response = await http.get(
+        Uri.parse(
+            'https://cdn.mytravellerschoice.com/api/v1/home'
+            // 'https://secure.mytravellerschoice.com/api/v1/attractions/all?limit=1000'
+            
+            ),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      );
+      if (response.statusCode == 200) {
+        log(response.body);
+
+        return bestTopModelFromJson(response.body);
+      } else {
+        var jsondata = jsonDecode(response.body);
+        log(jsondata['error']);
+        return null;
+      }
+    } catch (e) {
+      // ScaffoldMessenger.of(context)
+      //     .showSnackBar(SnackBar(content: Text(e.toString())));
+      CustomSnackbar.show(
+        context: context,
+        message: e.toString(),
+        backgroundColor: const Color(0xff1529e8),
+        duration: const Duration(seconds: 2),
+      );
+
       rethrow;
     }
   }

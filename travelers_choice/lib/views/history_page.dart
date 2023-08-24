@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:ui';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -56,25 +57,54 @@ class _HistoryScreenState extends State<HistoryScreen>
     //         width: 0));
   }
 
-  Future<bool> _onWillPop() async {
-    return (await showDialog(
-          context: context,
-          builder: (context) => AlertDialog(
-            title: const Text('Are you sure?'),
-            content: const Text('Do you want to exit the App'),
-            actions: <Widget>[
-              TextButton(
-                onPressed: () => Navigator.of(context).pop(false),
-                child: const Text('No'),
-              ),
-              TextButton(
-                onPressed: () => Navigator.of(context).pop(true),
-                child: const Text('Yes'),
-              ),
-            ],
-          ),
-        )) ??
-        false;
+   Future<bool> _onWillPopTest(BuildContext context) async {
+    log('Home 0n will pop calling...');
+    bool? exitResult = await showDialog(
+      context: context,
+      builder: (context) => _buildExitDialog(context),
+    );
+    return exitResult ?? false;
+  }
+
+  Future<bool?> _showExitDialog(BuildContext context) async {
+    return await showDialog(
+      context: context,
+      builder: (context) => BackdropFilter(
+          filter: ImageFilter.blur(sigmaX: 6, sigmaY: 6),
+          child: _buildExitDialog(context)),
+    );
+  }
+
+  AlertDialog _buildExitDialog(BuildContext context) {
+    return AlertDialog(
+      backgroundColor: const Color(0xffE0E8F2),
+      // const Color(0xff72C9E9),
+      // backgroundColor: const Color(0xff1529e8).withAlpha(40),
+      shape: RoundedRectangleBorder(
+        // This line is added
+        borderRadius: BorderRadius.circular(
+            12), // Change this value to change the corner radius
+      ),
+      title: FxText.bodyLarge('Are you sure?',
+          color: const Color(0xff1529e8), fontWeight: 500),
+      content: FxText.bodyMedium('Do you want to exit the App',
+          fontWeight: 500, letterSpacing: -0.2),
+      actions: <Widget>[
+        TextButton(
+          // onPressed: () {},
+          onPressed: () => Navigator.of(context).pop(false),
+          child: FxText.bodyMedium('No',
+              color: Colors.red, fontWeight: 500, letterSpacing: -0.2),
+        ),
+        TextButton(
+          // onPressed: () {},
+          //  Navigator.of(context, rootNavigator: true).pop();
+          onPressed: () => Navigator.of(context).pop(true),
+          child: FxText.bodyMedium('Yes',
+              color: Colors.green, fontWeight: 500, letterSpacing: -0.2),
+        ),
+      ],
+    );
   }
 
   fetchData() {
@@ -185,7 +215,20 @@ class _HistoryScreenState extends State<HistoryScreen>
   Widget attractionList() {
     if (orders == null) {
       log('You have no attractions orders');
-      return const Text("You have no attractions orders");
+      return Center(
+          child: FxText.bodySmall(
+        "You've no attraction orders yet - start Booking some item!",
+        fontWeight: 400,
+        fontSize: 16,
+      )
+          /* child: Text(
+            'You have no attraction orders yet - start Booking some item!',
+            style: TextStyle(
+                fontFamily: 'inter',
+                fontWeight: FontWeight.w400,
+                fontSize: 16)),*/
+          );
+      // return const Text("You have no attractions orders");
     } else {
       if (orders!.result == null) {
         log('You have no attractions');
@@ -1191,7 +1234,7 @@ class _HistoryScreenState extends State<HistoryScreen>
     //       ));
     // }else {
     return WillPopScope(
-      onWillPop: _onWillPop,
+      onWillPop: () => _onWillPopTest(context),
       child: Scaffold(
           backgroundColor: const Color(0xfff5f5f5),
           appBar: AppBar(

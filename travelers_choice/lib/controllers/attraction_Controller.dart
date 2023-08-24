@@ -4,6 +4,7 @@ import 'package:hotel_travel/models/all_attraction_modal.dart';
 import 'package:hotel_travel/services/Search_Service.dart';
 import '../models/atteraction_model.dart';
 
+import '../models/best_top_model.dart';
 import '../models/search_categories_modal.dart';
 import '../services/attraction_Service.dart';
 
@@ -87,6 +88,27 @@ class AttractionController {
       categoriesList.clear();
       if (data != null) {
         categoriesList.add(data);
+        // isCountryListLoading = false;
+        return data; //removed true
+      } else {
+        return null; //falseremoved
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+
+  //bestop
+  List<BestTopModel> bestTopList = <BestTopModel>[];
+  bool isbestTopListLoading = true;
+  Future<BestTopModel?> getTopBestattractionList(context) async {
+    // isCountryListLoading = true;
+    try {
+      var data = await AttractionService().getTopBest(context);
+      bestTopList.clear();
+      if (data != null) {
+        bestTopList.add(data);
         // isCountryListLoading = false;
         return data; //removed true
       } else {

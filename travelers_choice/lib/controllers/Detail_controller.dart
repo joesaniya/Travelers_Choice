@@ -640,7 +640,14 @@ class DetailController extends FxController {
       // amount = amount +
       //     double.parse(
       //         (tour.sharedTransferPrice ?? 0).toString()); //added transfer fee
+
       log("Given transfer Type => ${tour.activityType}");
+
+      // if (tour.transferCode == "shared") {
+      //   amount = 0;
+      //   amount =
+      //       amount * double.parse((tour.sharedTransferPrice ?? 0).toString());
+      // }
       if (tour.activityType == "transfer") {
         amount =
             amount * double.parse((tour.sharedTransferPrice ?? 0).toString());

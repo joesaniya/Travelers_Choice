@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutx/flutx.dart';
 import 'package:intl/intl.dart';
@@ -108,27 +109,6 @@ class _NewCartState extends State<NewCart> with TickerProviderStateMixin {
     // log('currentSlot!.length:${currentSlot!.length}');
 
     return formattedStartAMPN;
-  }
-
-  Future<bool> _onWillPop() async {
-    return (await showDialog(
-          context: context,
-          builder: (context) => AlertDialog(
-            title: const Text('Are you sure?'),
-            content: const Text('Do you want to exit the App'),
-            actions: <Widget>[
-              TextButton(
-                onPressed: () => Navigator.of(context).pop(false),
-                child: const Text('No'),
-              ),
-              TextButton(
-                onPressed: () => Navigator.of(context).pop(true),
-                child: const Text('Yes'),
-              ),
-            ],
-          ),
-        )) ??
-        false;
   }
 
   Widget _buildSingleProduct(Activity product) {
@@ -392,6 +372,56 @@ class _NewCartState extends State<NewCart> with TickerProviderStateMixin {
     );
   }
 
+  Future<bool> _onWillPopTest(BuildContext context) async {
+    log('Home 0n will pop calling...');
+    bool? exitResult = await showDialog(
+      context: context,
+      builder: (context) => _buildExitDialog(context),
+    );
+    return exitResult ?? false;
+  }
+
+  Future<bool?> _showExitDialog(BuildContext context) async {
+    return await showDialog(
+      context: context,
+      builder: (context) => BackdropFilter(
+          filter: ImageFilter.blur(sigmaX: 6, sigmaY: 6),
+          child: _buildExitDialog(context)),
+    );
+  }
+
+  AlertDialog _buildExitDialog(BuildContext context) {
+    return AlertDialog(
+      backgroundColor: const Color(0xffE0E8F2),
+      // const Color(0xff72C9E9),
+      // backgroundColor: const Color(0xff1529e8).withAlpha(40),
+      shape: RoundedRectangleBorder(
+        // This line is added
+        borderRadius: BorderRadius.circular(
+            12), // Change this value to change the corner radius
+      ),
+      title: FxText.bodyLarge('Are you sure?',
+          color: const Color(0xff1529e8), fontWeight: 500),
+      content: FxText.bodyMedium('Do you want to exit the App',
+          fontWeight: 500, letterSpacing: -0.2),
+      actions: <Widget>[
+        TextButton(
+          // onPressed: () {},
+          onPressed: () => Navigator.of(context).pop(false),
+          child: FxText.bodyMedium('No',
+              color: Colors.red, fontWeight: 500, letterSpacing: -0.2),
+        ),
+        TextButton(
+          // onPressed: () {},
+          //  Navigator.of(context, rootNavigator: true).pop();
+          onPressed: () => Navigator.of(context).pop(true),
+          child: FxText.bodyMedium('Yes',
+              color: Colors.green, fontWeight: 500, letterSpacing: -0.2),
+        ),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return FxBuilder<NewCartController>(
@@ -413,7 +443,7 @@ class _NewCartState extends State<NewCart> with TickerProviderStateMixin {
       );
     } else {
       return WillPopScope(
-        onWillPop: _onWillPop,
+        onWillPop: () => _onWillPopTest(context),
         child: Scaffold(
             backgroundColor: const Color(0xfff5f5f5),
             appBar: AppBar(
